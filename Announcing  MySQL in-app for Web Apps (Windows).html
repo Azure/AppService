@@ -1,0 +1,188 @@
+<html><head>
+<meta charset='UTF-8'>
+<link href='resource/bootstrap.min.css' rel='Stylesheet' type='text/css' />
+<link href='resource/style.css' rel='Stylesheet' type='text/css' />
+</head>
+<body>
+<div id='page'>
+<h1 class='entry-title'>Announcing  MySQL in-app for Web Apps (Windows)</h1>
+ <a class='url fn n profile-usercard-hover' href='https://social.msdn.microsoft.com/profile/mksunitha' target='_blank'>mksunitha</a>
+<time>    8/18/2016 4:26:55 PM</time>
+<hr>
+<div id='content'>MySQL in-app feature enables running MySql natively on Azure App Service platform.You don’t need to provision a database explicitly as during the creation of the web app when using this feature,  we take care of enabling it if you select “MySQL in-app ” during creation or if the feature is turned ON for existing web app. To understand what MySQL in-app means , I have highlighted core functionality supported with the preview release of the feature:
+<ul>
+ 	<li>Support PHP , MYSQL applications like WordPress, Joomla , Drupal etc .</li>
+ 	<li>MySQL server running on the same instance side by side with your web server hosting the site. This will boost performance of your application</li>
+ 	<li>Storage is shared between both MySQL and your web app files. Note with Free and Shared plans you may hit our quota limits when using the site based on the actions you perform . Check out <a target="_blank" href="https://azure.microsoft.com/en-us/pricing/details/app-service/plans/">quota limitations </a>for Free and Shared plans.</li>
+ 	<li>You can turn on Slow query logging and general logging for MySQL . Note that this can impact the site performance and should NOT always be turned ON . The logging feature will help investigation any application issues .</li>
+</ul>
+&nbsp;
+
+<em>Note : This MySQL in-app is specific to Windows version of Azure app service. If you are looking for local mysql on Linux MySQL app service , click <a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/06/07/mysql-in-app-feature-for-web-apps-on-linux/">here.</a></em>
+<h3>Create new Web App with MySQL in-app</h3>
+Login to <a target="_blank" href="https://portal.azure.com">Azure portal</a>  and launch Web App + MySQL template by clicking <a href="https://portal.azure.com/#create/Microsoft.WebSiteMySQLDatabase">here</a> .Enter the Site name and select <strong>MySQL in-app </strong> as the database provider. Click on <strong>Create</strong> to deploy a web app using MySQL in-app.
+
+<a href="media/2016/08/webappmysqlcreate.png"><img src="media/2016/08/webappmysqlcreate-618x1024.png" alt="webappmysqlcreate" width="311" height="515" class="alignnone wp-image-4855" /></a>
+
+You may also create a <a href="https://portal.azure.com#create/WordPress.WordPress">WordPress application</a> with MySQL in-app from Azure marketplace. Test drive our <a href="https://wordpress3295.azurewebsites.net">demo site</a> here using MySQL in-app.You can login with username : <strong><em>demo</em></strong> and password: <em><strong>demopassword</strong> . </em>
+<h2>Limitations</h2>
+For preview release the feature has some limitations that to keep in mind.
+<ul>
+ 	<li><a href="https://azure.microsoft.com/en-us/documentation/articles/web-sites-scale/">Auto scale feature</a> is not supported since MySQL currently runs on on <span style="text-decoration: underline">a single instance </span>.</li>
+ 	<li>Enabling <a href="https://azure.microsoft.com/en-us/documentation/articles/app-service-local-cache/">Local cache</a> is not supported.</li>
+ 	<li>MySQL database cannot be accessed remotely. You can only access your database content using <a href="https://blogs.msdn.microsoft.com/appserviceteam/?p=805#phpmyadmin">PHPMyadmin</a> or using MySQL utilities in <a href="https://blogs.msdn.microsoft.com/appserviceteam/?p=805#kuduconsole">KUDU debug console</a>. This is described in detail below.</li>
+ 	<li><a href="https://portal.azure.com/#create/WordPress.WordPress">WordPress</a> and <a href="https://portal.azure.com/#create/Microsoft.WebSiteMySQLDatabase">Web App + MySQL</a> templates currently support MySQL in-app in the create experience.We are working on bringing this feature in for other MySQL based applications in Web category for Azure marketplace.</li>
+</ul>
+<p id="manage-mysqlinapp" />
+<h2>Manage MySQL in-app</h2>
+Go to your web app and select <strong>MySQL in-app </strong> in the Menu blade on the right. You can use the setting here to manage your MySQL in-app feature , turn on logging , access PHPmyadmin etc.
+
+<img src="media/2016/08/localmysql8-1024x904.png" alt="localmysql8" width="660" height="582" class="alignnone wp-image-1155 " />
+
+&nbsp;
+<h2>Access database content</h2>
+The database is protected by our sandbox environment and hence cannot be accessed remotely through MySQL workbench or MySQL command line tools (running on remote machine) . There are two ways you can manage your database content :
+<ul>
+<ul>
+ 	<li>
+<p id="phpmyadmin"><strong>Using PHPMyAdmin</strong>:  With MySQL in-app , the MySQL process ( mysqld.exe) must be ready for connections before using PHPmyadmin tool to access the database. This means your web app has to open the mysql connection. You can use the sample code mentioned in section <a href="https://blogs.msdn.microsoft.com/appserviceteam/?p=805#mysqlconnect">Get database connection string</a> to open mysql connection.
+<span>Go to your web app and select </span><strong>MySQL in-app </strong><span> in the Menu blade on the right</span><strong> . </strong>Click on the <strong>Browse</strong> button to open PHPmyadmin.</p>
+</li>
+</ul>
+</ul>
+<a href="media/2016/08/localmysql3-2.png"><img src="media/2016/08/localmysql3-2-1024x206.png" alt="localmysql3 (2)" width="530" height="106" class="alignnone wp-image-1195 " /></a>
+
+The database enabled with your web app is "<strong>localdb</strong>". You are now ready to import your database schema or create a new one for your web app.
+
+<a href="media/2016/08/localmysql5.png"><img src="media/2016/08/localmysql5-1024x596.png" alt="localmysql5" width="879" height="512" class="alignnone wp-image-926 size-large" /></a>
+<ul>
+ 	<li>
+<p id="kuduconsole"><strong>Using Kudu Debug console:</strong> Access your <a href="https://blogs.msdn.microsoft.com/benjaminperkins/2014/03/24/using-kudu-with-windows-azure-web-sites/">Kudu debug console</a>  from the portal , go to your web app and Select Advanced Tools or use use a URL in this format <a href="https://sitename.scm.azurewebsites.net/debugconsole">https://sitename.scm.azurewebsites.net/debugconsole</a> (replace sitename with your web app name).<a href="media/2016/08/kuduconsoleportal.png"><img src="media/2016/08/kuduconsoleportal-984x1024.png" alt="kuduconsoleportal" width="552" height="574" class="alignnone wp-image-1185 " /></a></p>
+<p id="kuduconsole">Run the following command to run your query <span style="text-decoration: underline">(remember to update the <strong>port</strong> number to your web app’s MySQL port</span> since this feature does not use 3306 port)</p>
+</li>
+</ul>
+<pre class="prettyprint">D:\Program Files (x86)\mysql\5.7.9.0\bin\mysql.exe -e "ENTER SQL STATEMENTS" --user=azure --password=password --port=49175 --bind-address=127.0.0.1  
+</pre>
+Example:
+<pre class="prettyprint">D:\Program Files (x86)\mysql\5.7.9.0\bin\mysql.exe -e "USE localdb;Select * from tasks;" --user=azure --password=password --port=49175 --bind-address=127.0.0.1  
+mysql: [Warning] Using a password on the command line interface can be insecure.
+mysql: Unknown OS character set 'cp0'.
+mysql: Switching to the default character set 'latin1'.
+task_id    subject    start_date    end_date    description
+1    task1    2016-02-18    2016-02-19     sample task
+</pre>
+The mysql warning statements can be ignored in the output. You can use mysqladmin.exe and mysqld.exe as well , in the similar format as above .Please review the password and database information from <strong>D:\home\data\mysql\MYSQLCONNSTR_localdb.ini </strong> before entering the connection information in the commands below. Here is an example to flush logs
+<pre class="prettyprint">mysqladmin.exe flush-logs --user=azure --password=password --port=49175 --bind-address=127.0.0.1</pre>
+<h3>Logging</h3>
+Turn on slow query logs or general logs for MySQL . Once turned on , you can find these logs in <strong>D:\home\logfiles\mysql</strong> folder. Note if these settings are always on , then this can impact your web app performance
+
+<a href="media/2016/08/localmysql6.png"><img src="media/2016/08/localmysql6-1024x558.png" alt="localmysql6" width="661" height="360" class="alignnone wp-image-936 " /></a>
+<h2>How to deploy your web app to using MySQL in-app</h2>
+<h3>Get the database connection string</h3>
+<p id="mysqlconnect">Before you deploy your web app code , the key thing to note when using this feature is to use ENVIRONMENT VARIABLES since the database connection information is not accessible directly. You can get the database connection information using <strong>MYSQLCONNSTR_localdb</strong> environment variable . You can also get the connection string from <strong>D:\home\data\mysql\MYSQLCONNSTR_localdb.ini </strong><span>.</span>Here is a sample code snippet that you can use in your application to get the database host, port, database name , database user, database password.</p>
+
+<pre class="prettyprint">$connectstr_dbhost = '';
+$connectstr_dbname = '';
+$connectstr_dbusername = '';
+$connectstr_dbpassword = '';
+
+foreach ($_SERVER as $key =&gt; $value) {
+    if (strpos($key, "MYSQLCONNSTR_localdb") !== 0) {
+        continue;
+    }
+    
+    $connectstr_dbhost = preg_replace("/^.*Data Source=(.+?);.*$/", "\\1", $value);
+    $connectstr_dbname = preg_replace("/^.*Database=(.+?);.*$/", "\\1", $value);
+    $connectstr_dbusername = preg_replace("/^.*User Id=(.+?);.*$/", "\\1", $value);
+    $connectstr_dbpassword = preg_replace("/^.*Password=(.+?)$/", "\\1", $value);
+}
+
+$link = mysqli_connect($connectstr_dbhost, $connectstr_dbusername, $connectstr_dbpassword,$connectstr_dbname);
+
+if (!$link) {
+    echo "Error: Unable to connect to MySQL." . PHP_EOL;
+    echo "Debugging errno: " . mysqli_connect_errno() . PHP_EOL;
+    echo "Debugging error: " . mysqli_connect_error() . PHP_EOL;
+    exit;
+}
+
+echo "Success: A proper connection to MySQL was made! The my_db database is great." . PHP_EOL;
+echo "Host information: " . mysqli_get_host_info($link) . PHP_EOL;
+
+mysqli_close($link);
+</pre>
+As an example , if you are running a WordPress site you need to update wp-config.php such that it reads the connection string from the environment variable .
+<pre class="prettyprint">/*Add at the begining of the file*/
+
+$connectstr_dbhost = '';
+$connectstr_dbname = '';
+$connectstr_dbusername = '';
+$connectstr_dbpassword = '';
+
+foreach ($_SERVER as $key =&gt; $value) {
+    if (strpos($key, "MYSQLCONNSTR_localdb") !== 0) {
+        continue;
+    }
+    
+    $connectstr_dbhost = preg_replace("/^.*Data Source=(.+?);.*$/", "\\1", $value);
+    $connectstr_dbname = preg_replace("/^.*Database=(.+?);.*$/", "\\1", $value);
+    $connectstr_dbusername = preg_replace("/^.*User Id=(.+?);.*$/", "\\1", $value);
+    $connectstr_dbpassword = preg_replace("/^.*Password=(.+?)$/", "\\1", $value);
+}
+
+// ** MySQL settings - You can get this info from your web host ** //
+/** The name of the database for WordPress */
+define('DB_NAME', $connectstr_dbname);
+
+/** MySQL database username */
+define('DB_USER', $connectstr_dbusername);
+
+/** MySQL database password */
+define('DB_PASSWORD', $connectstr_dbpassword);
+
+/** MySQL hostname : this contains the port number in this format host:port . Port is not 3306 when using this feature*/
+define('DB_HOST', $connectstr_dbhost);
+</pre>
+As a <strong>BEST PRACTICE</strong> when using MySQL in-app, we recommend to ALWAYS use Environment variables for the database information to prevent database connection issues with your web app. If your application requires a separate variable for port , you can use <strong>WEBSITE_MYSQL_PORT </strong>environment variable. The port number selected can vary if the instance is recycled and hence <strong><em>ALWAYS use environment variables.</em></strong>
+<h3>Deploy you code</h3>
+Deploy your web app code using GIT or FTP or any one of the supported deployment processes with Azure Web Apps . Refer <a href="https://azure.microsoft.com/en-us/documentation/articles/web-sites-deploy/">Deploy to Azure app service web apps</a> for details .
+<h3>Deploy your database</h3>
+You cannot directly deploy you database . Hence , export your local database into a SQL script . Access your web app MySQL in-app database using PHPmyAdmin ( <a href="https://sitename.scm.azurewebsites.net/phpmyadmin">https://sitename.scm.azurewebsites.net/phpmyadmin</a>) and click on the IMPORT tab to import your script into the <strong>localdb</strong>database . For example:
+<pre class="prettyprint">USE localdb;
+
+CREATE TABLE IF NOT EXISTS tasks (
+  task_id INT(11) NOT NULL AUTO_INCREMENT,
+  subject VARCHAR(45) DEFAULT NULL,
+  start_date DATE DEFAULT NULL,
+  end_date DATE DEFAULT NULL,
+  description VARCHAR(200) DEFAULT NULL,
+  PRIMARY KEY (task_id)
+) ENGINE=InnoDB</pre>
+Remember to include <em><strong>USE localdb; </strong></em> statement in your script so that the your schema and data are imported into the correct database.
+<h3>How to turn on MySQL for existing Web Apps</h3>
+<span>Go to your web app and select </span><strong>MySQL in-app </strong><span> in the Menu blade on the right</span><strong> . </strong>Turn ON MySQL in-app feature.
+
+<a href="media/2016/08/localmysql9.png"><img src="media/2016/08/localmysql9-1024x468.png" alt="localmysql9" width="499" height="228" class="alignnone wp-image-1175 " /></a>
+
+Browse your web app and Check the process explorer to verify if mysqld.exe is running. If the process is running, then MySQL server is ready to use. Remember to open the MySQL connection to your MySQL in-app database , <strong>localdb</strong> in your web app.
+
+<a href="media/2016/08/processexploreremysql.png"><img src="media/2016/08/processexploreremysql-1024x715.png" alt="processexploreremysql" width="677" height="473" class="alignnone wp-image-1165 " /></a>
+<h3>Migration to production database</h3>
+You can easily migrate this database when ready for production to
+<ul>
+ 	<li><a href="http://azure.microsoft.com/services/mysql">Azure database for MySQL(Preview)</a></li>
+ 	<li><a href="https://azuremarketplace.microsoft.com/en-us/marketplace/apps/SuccessBricksInc.ClearDBMySQLDatabase">ClearDB database</a></li>
+ 	<li>MySQL on virtual machine on <a href="https://azure.microsoft.com/en-us/documentation/articles/virtual-machines-linux-classic-mysql-on-opensuse/">Linux</a> or <a href="https://azure.microsoft.com/en-us/documentation/articles/virtual-machines-windows-classic-mysql-2008r2/">Windows</a> OS</li>
+</ul>
+<h3>Best practices</h3>
+<ul>
+ 	<li>When using Web app with MySQL in-app provider with Basic, Standard or Premium app service plans, turn on ALWAYS ON setting as described here. By default, web apps are unloaded if they are idle for some period of time which means both the web app and MySQL in-app server will be take a longer time to load from an idle state. PHPMyadmin may not be accessible during the idle state. With ALWAYS ON feature, you can keep your web app from getting into an idle state.</li>
+ 	<li>When using this feature with Free and Shared Web App pricing plans, add the app setting WEBSITE_FASTCGI_MAXINSTANCES and set its value to 3 if your web app is likely to get traffic from a few users say between 10-20. This setting will prevent creating too many PHP FastCGI instances which will consume all the memory causing your web app to hit the quota too early. Checkout <a href="//blogs.msdn.microsoft.com/appserviceteam/2016/08/02/benchmarking-mysql-in-app-performance">benchmarking blog post</a> for more information.</li>
+</ul>
+<h3>References</h3>
+<a href="https://blogs.msdn.microsoft.com/appserviceteam/2016/08/18/exporting-your-database-to-local-mysql/">Exporting your MySQL database to MySQL in-app database</a>
+<a href="https://blogs.msdn.microsoft.com/appserviceteam/2016/08/18/benchmarking-mysql-in-app-performance/">Benchmarking MySQL in-app performance</a></div>
+</div></body>
+<script type='text/javascript' src='resource/jquery-1.12.1.min.js'></script>
+<script type='text/javascript' src='resource/replace.js'></script>
+</html>
