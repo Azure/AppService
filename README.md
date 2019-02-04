@@ -1,3 +1,7 @@
-# Contributing
+# App Service Blog Post Archives
 
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+View the GitHub Pages site at [azure.github.io/AppService/](https://azure.github.io/AppService/).
+
+### Notes:
+- [/media](/media): All images and digital content from MSDN blog.
+- [/resource](/resource): All the CSS and JS content from MSDN blog.
