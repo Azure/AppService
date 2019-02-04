@@ -18,7 +18,7 @@ Snapshots contain both the contents of a web app and the web app configuration. 
 <h2>Accessing snapshots in the Azure Portal</h2>
 Snapshots can be listed and restored in the Azure Portal from the Backups settings of the web app.
 
-<a href="/media/2018/05/snapshots-blade-portal.png"><img src="/media/2018/05/snapshots-blade-portal-1024x691.png" alt="" width="879" height="593" class="alignnone size-large wp-image-8195" /></a>
+<a href="{{ site.baseurl }}/media/2018/05/snapshots-blade-portal.png"><img src="{{ site.baseurl }}/media/2018/05/snapshots-blade-portal-1024x691.png" alt="" width="879" height="593" class="alignnone size-large wp-image-8195" /></a>
 <h2>How to list snapshots</h2>
 <h3>Azure CLI</h3>
 <pre>az webapp config snapshot list -g &lt;resource group&gt; -n &lt;app name&gt;</pre>
@@ -58,6 +58,6 @@ $snapshots[0] | Restore-AzureRmWebAppSnapshot -ResourceGroupName $snapshotRgName
 <h2>Learn More</h2>
 <a href="https://docs.microsoft.com/en-us/Azure/app-service/app-service-web-restore-snapshots">https://docs.microsoft.com/en-us/Azure/app-service/app-service-web-restore-snapshots</a></div>
 </div></body>
-<script type='text/javascript' src='/resource/jquery-1.12.1.min.js'></script>
-<script type='text/javascript' src='/resource/replace.js'></script>
+<script type='text/javascript' src='{{ site.baseurl }}/resource/jquery-1.12.1.min.js'></script>
+<script type='text/javascript' src='{{ site.baseurl }}/resource/replace.js'></script>
 </html>
