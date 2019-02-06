@@ -39,3 +39,5 @@ Once you have identified Zend Z-Ray instances in your subscription you can manua
 Once the Zend Z-Ray resource has been manually deleted any monthly charges associated with it will also stop.
 
 [![Delete Z-Ray]({{ site.baseurl }}/media/2019/02/delete-z-ray.png "Delete Z-Ray")]({{ site.baseurl }}/media/2019/02/delete-z-ray.png)
+
+If you have questions, please contact [Azure Support](https://portal.azure.com/#blade/Microsoft_Azure_Support/HelpAndSupportBlade/overview).

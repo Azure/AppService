@@ -1,9 +1,11 @@
 # Instructions for posting content
+
 > For Antares team members only
 
 **Note:** You must have contributor access to the repository to publish.
 
 ## Environment Setup
+
 1. Download and install the [Ruby development kit](https://jekyllrb.com/docs/installation/)
 1. Clone the Jekyll project
     ```bash
@@ -20,6 +22,7 @@
     The blog will now be running at http://127.0.0.1:4000/AppService/
 
 ## Authoring new posts:
+
 1. All posts go under the `_posts` directory with the following file name format: `YYYY-MM-DD-Your Article Title.md`
     - All new posts should be in Markdown format. Only the migrated posts are in html.
 1. Add the following to the top of your posts:
@@ -36,6 +39,7 @@
 1. For Jekyll-related formatting, please see these [Jekyll Docs](https://jekyllrb.com/docs/posts/).
 
 ## Digital Content
+
 To add images, GIFs, or other digital content to your post...
 1. Add the content file under the `/media/YEAR/` directory.
     - Where `YEAR` is the current year. If the directory does not yet exist, please create one.
@@ -46,6 +50,7 @@ To add images, GIFs, or other digital content to your post...
     For more information on `baseurl`, please see [this post](https://byparker.com/blog/2014/clearing-up-confusion-around-baseurl/).
 
 ## Publishing:
+
 1. After you have proofread your post, you can publish to the GitHub Pages site using the following commands:
     ```
     git add -A
