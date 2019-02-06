@@ -15,6 +15,7 @@ Beginning March 9, 2019, Z-Ray will no longer be available for purchase in the A
 Even though no action is required for customers that have configured Zend Z-Ray for the app, you can look for instances of Zend Z-Ray using the [Azure Cloud Shell](https://azure.microsoft.com/features/cloud-shell/) and one of the following sample scripts:
 
 **Azure Powershell**
+
 ```poweshell
 Get-AzResource -ResourceType Microsoft.Web/sites/premieraddons `
    | Where-Object {$_.name -like '*/zray*'} `
@@ -22,6 +23,7 @@ Get-AzResource -ResourceType Microsoft.Web/sites/premieraddons `
 ```
 
 **Azure CLI**
+
 ```bash
 az resource  list --query "[?contains(name, 'zray') && type=='Microsoft.Web/sites/premieraddons'].{Name:name, RG:resourceGroup, Type:type}" --output table
 ```
