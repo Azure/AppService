@@ -10,7 +10,7 @@ The **Z-Ray PHP debugging** feature will soon be discontinued in App Service. Th
 
 Beginning March 9, 2019, Z-Ray will no longer be available for purchase in the Azure portal. If you already have applications configured with Z-Ray, you may continue to use it until June 7, 2019. After that date, the Z-Ray feature will be removed from all applications and you’ll no longer be charged for it.
 
-## Identify
+## Have you configured Zend Z-Ray for your app?
 
 Even though no action is required for customers that have configured Zend Z-Ray for the app, you can look for instances of Zend Z-Ray using the [Azure Cloud Shell](https://azure.microsoft.com/features/cloud-shell/) and one of the following sample scripts:
 
