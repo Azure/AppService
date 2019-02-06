@@ -9,6 +9,10 @@
     ```bash
     git clone https://github.com/Azure/AppService.git
     ```
+1. Install any missing Ruby gems:
+    ```bash
+    bundle install
+    ```    
 1. Run the local Jekyll server. From the project directory, run the following command:
     ```bash
     bundle exec jekyll serve
@@ -37,7 +41,7 @@ To add images, GIFs, or other digital content to your post...
     - Where `YEAR` is the current year. If the directory does not yet exist, please create one.
 1. Once the file is added, you can link to the file in your markdown using the path:
     ```
-    {{ site.baseurl }}/media/YEAR/your_file_name.jpg
+    {{ site.baseurl }}/media/YEAR/MONTH/your_file_name.jpg
     ```
     For more information on `baseurl`, please see [this post](https://byparker.com/blog/2014/clearing-up-confusion-around-baseurl/).
 
