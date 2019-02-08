@@ -1,8 +1,8 @@
 # Instructions for posting content
 
-> For Antares team members only
-
-**Note:** You must have contributor access to the repository to publish.
+> For **Antares team** members only
+>
+> **Note:** You must have contributor access to the repository to publish.
 
 ## Environment Setup
 
@@ -25,7 +25,9 @@
     bundle exec jekyll serve
     ```
 
-    The blog will now be running at http://127.0.0.1:4000/AppService/
+    The blog will now be running at <http://127.0.0.1:4000/AppService/>
+
+> **VSCODE** If you are using VSCode to author blog post please install [Markdown Linting extension](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint)
 
 ## Authoring new posts
 
@@ -46,7 +48,7 @@
 
 1. Now you can author your markdown-formatted post. When you save the file, the local server will update the file in the browser.
 
-1. For Markdown syntax, please see the [Markdown cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet).
+1. For Markdown syntax, please see the [Markdown cheat-sheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet).
 
 1. For Jekyll-related formatting, please see these [Jekyll Docs](https://jekyllrb.com/docs/posts/).
 
@@ -67,7 +69,7 @@ To add images, GIFs, or other digital content to your post...
 ## Publishing
 
 1. After you have proofread your post, you can publish to the GitHub Pages site using the following commands:
-    
+
     ```bash
     git add -A
     git commit -m "your commit message"
