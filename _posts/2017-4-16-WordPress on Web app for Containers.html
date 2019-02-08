@@ -1,0 +1,704 @@
+---
+layout: post
+---
+<html>
+ <head>
+  <meta charset="utf-8"/>
+ </head>
+ <body>
+  <div id="page">
+   <a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/mksunitha" target="_blank">
+    mksunitha
+   </a>
+   <time>
+    4/16/2017 9:23:18 PM
+   </time>
+   <hr/>
+   <div id="content">
+    <a href="https://docs.microsoft.com/en-us/azure/app-service-web/app-service-linux-intro">
+     Web Apps on Linux
+    </a>
+    allows running web apps natively on Linux. WordPress is popular blogging platform primarily used on Linux distributions.  Today we have released
+    <a href="https://portal.azure.com/?feature.customportal=false#create/WordPress.WordPressonlinux">
+     WordPress for App Service on Linux
+    </a>
+    in the Azure marketplace that helps you quickly create a WordPress application on Web apps (Linux) .
+
+This docker image enables you to run a WordPress site on Azure Web App on Linux  using either :
+    <ol>
+     <li style="list-style-type: none">
+      <ol>
+       <li>
+        <a href="https://azure.microsoft.com/en-us/services/mysql">
+         <strong>
+          Azure Database for MySQL
+         </strong>
+        </a>
+        : It is a Microsoft solution for MySQL service on Azure that provides a managed database service for app development and deployment that allows you to stand up a MySQL database in minutes and scale on the fly .
+       </li>
+       <li>
+        <strong>
+         <a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/03/21/create-wordpress-using-web-apps-on-linux#local-db">
+          Local Database
+         </a>
+         :
+        </strong>
+        You can manually setup your web app to use Local database. This option is not provided from Azure portal for WordPress on Linux template.
+       </li>
+      </ol>
+     </li>
+    </ol>
+    <h2>
+     Before you begin
+    </h2>
+    If you don't have an Azure subscription, create a
+    <a href="https://azure.microsoft.com/free/?WT.mc_id=A261C142F">
+     free account
+    </a>
+    before you begin.
+    <h2>
+     Deploy from Marketplace
+    </h2>
+    Log in to the
+    <a href="https://portal.azure.com">
+     Azure portal
+    </a>
+    .Click
+    <a href="https://portal.azure.com/?feature.customportal=false#create/WordPress.WordPressonlinux">
+     here
+    </a>
+    to create the WordPress application.
+    <a href="{{ site.base_url }}/media/2017/05/wordpress-linux.png">
+     <img alt="wordpress-linux" class="alignnone size-large wp-image-4695" height="1024" src="{{ site.base_url }}/media/2017/05/wordpress-linux-358x1024.png" width="358"/>
+    </a>
+    <table>
+     <thead>
+      <tr>
+       <th>
+        Name
+       </th>
+       <th>
+        Description
+       </th>
+      </tr>
+     </thead>
+     <tbody>
+      <tr>
+       <td>
+        App Name
+       </td>
+       <td>
+        <div>
+         <div>
+          <span>
+           Enter a unique app name for your
+          </span>
+          <span>
+           **Web App Name**
+          </span>
+          <span>
+           . This name is used as part of the default DNS name for your app
+          </span>
+          <em>
+           &lt;app_name&gt;.azurewebsites.net
+          </em>
+          <span>
+           , so it needs to be unique across all apps in Azure. You can later map a custom domain name to your app before you expose it to your users
+          </span>
+         </div>
+        </div>
+       </td>
+      </tr>
+      <tr>
+       <td>
+        Subscription
+       </td>
+       <td>
+        Select a
+        <span>
+         <strong>
+          Subscription
+         </strong>
+        </span>
+        <span>
+         . If you have multiple subscriptions, choose the appropriate subscription.
+        </span>
+       </td>
+      </tr>
+      <tr>
+       <td>
+        Resource group
+       </td>
+       <td>
+        <div>
+         <div>
+          <span>
+           Enter a
+          </span>
+          <span>
+           <strong>
+            resource group
+           </strong>
+          </span>
+          <span>
+           . A resource group is a logical container into which Azure resources like web apps, databases that is deployed and managed. You can create a resource group or use an existing one
+          </span>
+         </div>
+        </div>
+       </td>
+      </tr>
+      <tr>
+       <td>
+        App Service Plan
+       </td>
+       <td>
+        <div>
+         <div style="text-align: left">
+          <span>
+           App Service plans represent the collection of physical resources used to host your apps. Select the
+          </span>
+          <span>
+           <strong>
+            Location
+           </strong>
+          </span>
+          <span>
+           and the
+          </span>
+          <span>
+           <strong>
+            Pricing tier
+           </strong>
+          </span>
+          <span>
+           . For more information on pricing, see
+           <a href="https://azure.microsoft.com/pricing/details/app-service">
+            App service pricing tier
+           </a>
+          </span>
+         </div>
+        </div>
+       </td>
+      </tr>
+      <tr>
+       <td>
+        Database Provider
+       </td>
+       <td>
+        Use
+        <strong>
+         Azure Database for MySQL
+        </strong>
+        for database solution
+       </td>
+      </tr>
+     </tbody>
+    </table>
+    This will deploy a WordPress custom image on to Web Apps on Linux . Note there might be cold start for the first request to the site created.
+    <h2>
+     Using GIT repo for WordPress code
+    </h2>
+    Version 0.3 pulls wordpress code from our
+    <a href="https://github.com/azureappserviceoss/wordpress-azure">
+     GIT repo
+    </a>
+    when you create a when app using this Docker image .  If you have custom code on Github as well , you can edit GIT_REPO after the app is created and GIT_BRANCH values in app settings.
+    <ol>
+     <li>
+      Create a Web App for Containers
+     </li>
+     <li>
+      Add new App Settings
+     </li>
+    </ol>
+    <table>
+     <thead>
+      <tr>
+       <th>
+        Name
+       </th>
+       <th>
+        Default Value
+       </th>
+      </tr>
+     </thead>
+     <tbody>
+      <tr>
+       <td>
+        GIT_REPO
+       </td>
+       <td>
+        <a href="https://github.com/azureappserviceoss/wordpress-azure">
+         https://github.com/azureappserviceoss/wordpress-azure
+        </a>
+       </td>
+      </tr>
+      <tr>
+       <td>
+        GIT_BRANCH
+       </td>
+       <td>
+        linux_appservice
+       </td>
+      </tr>
+     </tbody>
+    </table>
+    <ol start="4">
+     <li>
+      Browse your site
+     </li>
+    </ol>
+    <i>
+     <strong>
+      Note:
+     </strong>
+     GIT directory: /home/site/wwwroot.
+    </i>
+    <em>
+     When you deploy it first time, Sometimes need to check wp-config.php. RM it and re-config DB information is necessary.
+    </em>
+    <em>
+     Before restart web app, need to store your changes by "git push", it will be pulled again after restart.
+    </em>
+    <h2 id="local-db">
+     How to configure to use Local Database with web app
+    </h2>
+    <ol>
+     <li>
+      Create a Web App for Containers
+     </li>
+     <li>
+      Update App Setting
+      <span>
+      </span>
+      <code>
+       WEBSITES_ENABLE_APP_SERVICE_STORAGE
+      </code>
+      <span>
+      </span>
+      = true (If you like to keep you DB after restart.)
+     </li>
+     <li>
+      Add new App Settings
+     </li>
+    </ol>
+    <table>
+     <thead>
+      <tr>
+       <th>
+        Name
+       </th>
+       <th>
+        Default Value
+       </th>
+      </tr>
+     </thead>
+     <tbody>
+      <tr>
+       <td>
+        DATABASE_TYPE
+       </td>
+       <td>
+        local
+       </td>
+      </tr>
+      <tr>
+       <td>
+        DATABASE_USERNAME
+       </td>
+       <td>
+        wordpress
+       </td>
+      </tr>
+      <tr>
+       <td>
+        DATABASE_PASSWORD
+       </td>
+       <td>
+        some-string
+       </td>
+      </tr>
+     </tbody>
+    </table>
+    <i>
+     Note: We create a database "azurelocaldb" when using local mysql . Hence use this name when setting up the app
+    </i>
+    <ol start="4">
+     <li>
+      Browse your site
+     </li>
+     <li>
+      Complete WordPress install
+     </li>
+    </ol>
+    <i>
+     Note: Do not use the app setting DATABASE_TYPE=local if using Azure database for MySQL
+    </i>
+    <h2>
+     How to update WordPress core , theme or plugins
+    </h2>
+    <div>
+     If WEBSITES_ENABLE_APP_SERVICE_STORAGE= false  ( which is the default setting ) , we recommend you
+     <em>
+      <span style="text-decoration: underline">
+       <strong>
+        DO NOT update
+       </strong>
+       the WordPress core version , themes or files from WordPress admin dashboard.
+      </span>
+     </em>
+    </div>
+    <div>
+    </div>
+    <div>
+     There is a trade off between file server stability and file persistence . Choose either one option to updated your files :
+    </div>
+    <div>
+    </div>
+    <div>
+     <b>
+      <span>
+       OPTION 1 :
+      </span>
+     </b>
+    </div>
+    <div>
+     <span>
+      Since we are using local storage for better stability for the web app , you will not get file persistence.  In this case , we recommend to follow these steps to update WordPress Core  or a theme or a Plugins version :
+     </span>
+    </div>
+    <ol>
+     <li>
+      <span>
+       Fork the repo
+      </span>
+      <a class="OWAAutoLink" href="https://github.com/azureappserviceoss/wordpress-azure" id="LPlnk679334">
+       <span>
+        https://github.com/azureappserviceoss/wordpress-azure
+       </span>
+      </a>
+      <span>
+      </span>
+     </li>
+     <li>
+      <span>
+       Clone your repo locally and make sure to use ONLY linux-appservice branch
+      </span>
+     </li>
+     <li>
+      <span>
+       Download the latest version of WordPress , plugin or theme being used locally
+      </span>
+     </li>
+     <li>
+      <span>
+       Commit the latest version bits into local folder of your cloned repo
+      </span>
+     </li>
+     <li>
+      <span>
+       Push your changes to the your forked repo
+      </span>
+     </li>
+     <li>
+      <span>
+       Login to Azure portal and select your web app
+      </span>
+     </li>
+     <li>
+      <span>
+       Click on
+      </span>
+      <b>
+       <span>
+        Application Settings -&gt; App Settings
+       </span>
+      </b>
+      <span>
+       and change GIT_REPO to use your repository from step #1. If you have changed the branch name , you can continue to use
+      </span>
+      <b>
+       <span>
+        linux-apservice
+       </span>
+      </b>
+      <span>
+       . If you wish to use a different branch , update GIT_BRANCH setting as well.
+      </span>
+     </li>
+    </ol>
+    <div>
+     <span>
+     </span>
+    </div>
+    <div>
+     <b>
+      <span>
+       OPTION 2 :
+      </span>
+     </b>
+     <span>
+      You can update WEBSITES_ENABLE_APP_SERVICE_STORAGE =true  to enable app service storage to have file persistence . Note when there are issues with storage  due to networking or when app service platform is being updated , your app can be impacted .
+     </span>
+    </div>
+    <h2>
+     How to turn on Xdebug
+    </h2>
+    <ol>
+     <li>
+      By default Xdebug is turned off as turning it on impacts performance.
+     </li>
+     <li>
+      Connect by SSH.
+     </li>
+     <li>
+      Go to
+      <span>
+      </span>
+      <code>
+       /usr/local/php/etc/conf.d
+      </code>
+      , Update
+      <span>
+      </span>
+      <code>
+       xdebug.ini
+      </code>
+      <span>
+      </span>
+      as wish, don't modify the path of below line.
+      <code>
+       zend_extension=/usr/local/php/lib/php/extensions/no-debug-non-zts-20170718/xdebug.so
+      </code>
+     </li>
+     <li>
+      Save
+      <span>
+      </span>
+      <code>
+       xdebug.ini
+      </code>
+      , Restart apache by below cmd:
+      <span>
+      </span>
+      <code>
+       apachectl restart
+      </code>
+     </li>
+     <li>
+      Xdebug is turned on.
+     </li>
+    </ol>
+    <h2>
+     Limitations
+    </h2>
+    <ul>
+     <li>
+      Some unexpected issues may happen after you scale out your site to multiple instances, if you deploy a WordPress site on Azure with this docker image and use the MariaDB built in this docker image as the database.
+     </li>
+     <li>
+      The phpMyAdmin built in this docker image is available only when you use the MariaDB built in this docker image as the database.
+     </li>
+     <li>
+      Please Include App Setting
+      <span>
+      </span>
+      <code>
+       WEBSITES_ENABLE_APP_SERVICE_STORAGE
+      </code>
+      <span>
+      </span>
+      = true when use built in MariaDB since we need files to be persisted.
+     </li>
+    </ul>
+    <h2>
+     Change Log
+    </h2>
+    <ul>
+     <li>
+      <strong>
+       Version 0.3
+      </strong>
+      <ol>
+       <li>
+        Use Git to deploy wordpress.
+       </li>
+       <li>
+        Update version of PHP/Apache/Mariadb/Phpmyadmin.
+       </li>
+       <li>
+        Add Xdebug extenstion of PHP.
+       </li>
+       <li>
+        Use supervisord to keep SSHD and Apache.
+       </li>
+       <li>
+        This is NOT compatible with tag 0.2 and tag 0.1 for Docker image
+        <a href="https://hub.docker.com/r/appsvcorg/wordpress-alpine-php/">
+         wordpress-alpine-php
+        </a>
+       </li>
+      </ol>
+     </li>
+    </ul>
+    <h2>
+     Migrating an existing WordPress site
+    </h2>
+    This image creates a new WordPress application every time it is deployed. If you are migrating your application to this site , please follow directions to
+    <a href="https://codex.wordpress.org/Tools_Export_Screen">
+     export
+    </a>
+    and
+    <a href="https://codex.wordpress.org/Tools_Import_Screen">
+     import
+    </a>
+    as mentioned on Wordpress Codex.
+
+If you have a complex WordPress application where the above mentioned export and import options are not effective, Web Apps on Linux supports git deployment and you use
+    <a href="https://docs.microsoft.com/en-us/azure/app-service-web/app-service-deploy-content-sync">
+     FTP
+    </a>
+    or
+    <a href="https://docs.microsoft.com/en-us/azure/app-service-web/app-service-deploy-local-git">
+     GIT
+    </a>
+    deployment to replace the file system on the site created with this template to bring your own content. You can use PHPmyadmin available with this solution to import your application database content.
+    <h2 id="troubleshooting">
+     Troubleshooting
+    </h2>
+    The docker image has been updated from this
+    <a href="https://github.com/Azure-App-Service/apps/tree/master/Wordpress/0.2">
+     docker image
+    </a>
+    to using a new format where the docker image only contains the server components. The application code for WordPress is deployed via GIT from
+    <a href="https://github.com/azureappserviceoss/wordpress-azure">
+     github repo
+    </a>
+    .
+    <h4 id="update-image">
+     Update your application to use the new image appsvc/apps:
+     <span>
+      apache-php-mysql-0.1
+     </span>
+    </h4>
+    <ul>
+     <li>
+      If you have an existing application created using the WordPress image , check the Application setting to verfiy which image is being used with DOCKER_CUSTOM_IMAGE setting .
+     </li>
+     <li>
+      If the setting value is
+      <strong>
+       apache-php-mysql-0.1
+      </strong>
+      , no changes needed .
+     </li>
+     <li>
+      If the value is
+      <strong>
+       wordpress-0.2
+      </strong>
+      or
+      <strong>
+       wordpress-0.1
+      </strong>
+      or
+      <strong>
+       wordpress
+      </strong>
+      and  follow the steps below based on the database being used :
+      <ul>
+       <li>
+        Azure Database for MySQL
+        <ul>
+         <li>
+          Create a new web app with WordPress  from the Azure marketplace.
+         </li>
+         <li>
+          Select "Existing resource group"  and choose the resource group in which your
+          <span>
+           Azure Database for MySQL
+          </span>
+          database exists.
+         </li>
+         <li>
+          Select the same app service plan in which the current site assigned to.
+         </li>
+         <li>
+          If using Azure Database for MySQL   , select your existing database that is being used by your web app.   Test the new site to make sure it is working as expected before deleting the older app.
+         </li>
+        </ul>
+       </li>
+       <li>
+        Local database
+        <ul>
+         <li>
+          Backup your web app and database manually.
+         </li>
+         <li>
+          Create a new web app with WordPress  from the Azure marketplace and choose Azure database for MySQL
+         </li>
+         <li>
+          Migrate your database to the new database and your files to newly created web app.
+         </li>
+         <li>
+          <strong>
+           Note :
+          </strong>
+          There is bug with Local database causing the application to break once the app is  provisioned which will be fixed in early August 2017 . If you wish to use Local database , wait until Local database is support for WordPress template next month.
+         </li>
+        </ul>
+       </li>
+      </ul>
+     </li>
+    </ul>
+    <strong>
+     Using App  Service Storage
+    </strong>
+    If you using a web app that was created from Azure marketplace for Web App on Linux using WordPress , Drupal , Mediawiki and  Joomla  , please add the following app setting
+    <code>
+     WEBSITES_ENABLE_APP_SERVICE_STORAGE
+    </code>
+    <span>
+     app setting to
+    </span>
+    <code>
+     true
+    </code>
+    <span>
+     to continue using App service Storage  (platform SMB share i.e /home/ folder ) . Use the platform file storage in these  two scenarios :
+    </span>
+    <ol>
+     <li>
+      <span>
+      </span>
+      <span>
+       When you scale out using the autoscale feature in Web app for Linux.
+      </span>
+     </li>
+     <li>
+      <span style="color: #222222;font-family: segoe-ui_normal, 'Segoe UI', Segoe, 'Segoe WP', 'Helvetica Neue', Helvetica, sans-serif">
+       If your application modifies the the files system and you need this new changes to the file system to be persistent . For example , with a WordPress app if you install a plugin , Wordpress adds a few files to the files system for the plugin and modifies the database. If you scale up or the instance your app is running on is recycled you will loose the plugin files which can break your production application.   Hence in such cases it is recommended to set the app setting to true.
+      </span>
+     </li>
+    </ol>
+    <div>
+     <span style="color: #222222;font-family: segoe-ui_normal, 'Segoe UI', Segoe, 'Segoe WP', 'Helvetica Neue', Helvetica, sans-serif">
+     </span>
+     <em>
+      <span style="color: #222222;font-family: segoe-ui_normal, 'Segoe UI', Segoe, 'Segoe WP', 'Helvetica Neue', Helvetica, sans-serif">
+       NOTE: If the setting is not set to
+       <code>
+        true
+       </code>
+       the changes to the file system are not persisted.
+      </span>
+     </em>
+    </div>
+   </div>
+  </div>
+ </body>
+ <script src="{{ site.base_url }}/resource/jquery-1.12.1.min.js" type="text/javascript">
+ </script>
+ <script src="{{ site.base_url }}/resource/replace.js" type="text/javascript">
+ </script>
+</html>

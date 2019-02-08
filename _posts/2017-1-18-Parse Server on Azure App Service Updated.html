@@ -1,0 +1,119 @@
+---
+layout: post
+---
+<html>
+ <head>
+  <meta charset="utf-8"/>
+ </head>
+ <body>
+  <div id="page">
+   <a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Adrian Hall (MSFT)" target="_blank">
+    Adrian Hall (MSFT)
+   </a>
+   <time>
+    1/18/2017 5:19:01 PM
+   </time>
+   <hr/>
+   <div id="content">
+    The open-source
+    <a href="https://github.com/ParsePlatform/parse-server" target="_blank">
+     Parse Server project
+    </a>
+    has moved on since we first published
+    <a href="https://azure.microsoft.com/en-us/marketplace/partners/microsoft/parseserver/" target="_blank">
+     the Marketplace resource
+    </a>
+    for running your own version of Parse Server on Azure App Service.  The Azure version of Parse Server uses all Azure resources - DocumentDb, Storage, Notification Hubs and App Service.  Recently, Parse Server
+    <a href="https://github.com/ParsePlatform/parse-server/releases/tag/2.3.0" target="_blank">
+     got updated to v2.3.0
+    </a>
+    .
+
+If you wish to deploy a new Parse Server and use the new v2.3.0 codebase, then you can simply deploy the Marketplace resource.  In the Azure Portal, click on the
+    <b>
+     + NEW
+    </b>
+    resource.  Use the search box to search for Parse Server and create the
+    <b>
+     Parse Server on managed Azure services
+    </b>
+    resource.  All the relevant resources will be created for you.  This allows you to get up and running quickly.
+
+If you have an existing Parse Server running with managed Azure services, you will need to upgrade your server rather than deploy a new server.  To do this:
+    <ul>
+     <li>
+      Click
+      <b>
+       Resource Groups
+      </b>
+      and find the resource group containing your parse server resources.
+     </li>
+     <li>
+      Click the
+      <b>
+       App Service
+      </b>
+      that has the same name as your parse server.
+     </li>
+     <li>
+      Click the
+      <b>
+       Application settings
+      </b>
+      node in the menu.
+     </li>
+     <li>
+      Add the following App Settings:
+      <code>
+       <pre>WEBSITE_NODE_DEFAULT_VERSION = 4.4.0
+WEBSITE_NPM_DEFAULT_VERSION = 3.8.3</pre>
+      </code>
+      You can set these values by scrolling to the
+      <b>
+       App settings
+      </b>
+      section and filling in the key/value fields appropriately, then press Enter.
+     </li>
+     <li>
+      Click
+      <b>
+       Console
+      </b>
+      to open a management console.
+     </li>
+     <li>
+      Type the following:
+      <code>
+       <pre>npm install -s buffer-shims
+npm install -s parse-server@2.3.x</pre>
+      </code>
+     </li>
+     <li>
+      Restart your
+      <b>
+       App Service
+      </b>
+      .
+     </li>
+    </ul>
+    This will install the latest 2.3.x release of parse-server (currently 2.3.2).
+
+If you notice any red text in the console, then an error has occurred.  You should analyze the error message.  Please report any problems through
+    <a href="https://social.msdn.microsoft.com/Forums/en-US/home?forum=windowsazurewebsitespreview&amp;filter=alltypes&amp;sort=lastpostdesc" target="_blank">
+     Azure Forums
+    </a>
+    or
+    <a href="http://stackoverflow.com/questions/tagged/parse-server" target="_blank">
+     Stack Overflow
+    </a>
+    .
+
+Upgrading your Parse Server is identical to upgrading any other server code - try it on a non-production service first and ensure all your client-server communications still work properly.  Things change between Parse Server versions.  You should reach out to the Parse Server project directly if you are experiencing problems in your code.
+   </div>
+  </div>
+ </body>
+ <script src="{{ site.base_url }}/resource/jquery-1.12.1.min.js" type="text/javascript">
+ </script>
+ <script src="{{ site.base_url }}/resource/replace.js" type="text/javascript">
+ </script>
+</html>

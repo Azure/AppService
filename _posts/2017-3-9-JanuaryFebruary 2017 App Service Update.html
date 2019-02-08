@@ -1,0 +1,155 @@
+---
+layout: post
+---
+<html>
+ <head>
+  <meta charset="utf-8"/>
+ </head>
+ <body>
+  <div id="page">
+   <a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Byron Tardif" target="_blank">
+    Byron Tardif
+   </a>
+   <time>
+    3/9/2017 4:00:58 PM
+   </time>
+   <hr/>
+   <div id="content">
+    <h1>
+     Diagnose and solve problems
+    </h1>
+    App Service has a new experience for
+    <b>
+     Diagnose and solve problems.
+    </b>
+    With this new UI we make it easier to distinguish between application issues (your code) and platform issues (App Service). We also provide quick solutions (Fix it!) tailored to the problems you might be experiencing.
+
+The UI provides a view of the health of your application, health of the platform as well as traffic over the last 24 hours. If any availability issues are detected in that time window, they are listed below the graphs. You can drill down into more detail from there.
+
+If the issue is currently ongoing we try to provide a custom solution specific to the issue we detected. This should point you in the right direction to fix your problem and help get your application back into a healthy state.
+
+You can reach the new experience by clicking on the
+    <b>
+     Diagnose and solve problems
+    </b>
+    item in the general section of any Web, Mobile or API app.
+    <blockquote>
+     <a href="{{ site.base_url }}/media/2017/03/image167.png">
+      <img alt="image" border="0" height="576" src="{{ site.base_url }}/media/2017/03/image_thumb160.png" style="padding-top: 0px;padding-left: 0px;padding-right: 0px;border: 0px" title="image" width="1024"/>
+     </a>
+    </blockquote>
+    <h1>
+     GA for MySQL in App
+    </h1>
+    The MySQL in-app feature enables running MySQL natively on the Azure App Service platform. While this feature is ideal for small applications running on a single instance, or for development scenarios, you will need a full fledged MySQL resource that you can manage and scale independently for any production scenario.
+
+To ease the migration from your MySQL in App to an external MySQL database we have added Export functionality in the portal to make this a turnkey experience.
+
+You can read more about MySQL in App in the
+    <a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/03/06/announcing-general-availability-for-mysql-in-app/">
+     MySql-in-app general availability announcement
+    </a>
+    , and learn how to
+    <a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/03/06/migrate-development-database-on-mysql-in-app-to-production-mysql-database/">
+     Migrate development database on MySQL in-app to production MySQL database
+    </a>
+    using the export experience.
+    <blockquote>
+     <a href="{{ site.base_url }}/media/2017/03/image168.png">
+      <img alt="image" border="0" height="634" src="{{ site.base_url }}/media/2017/03/image_thumb161.png" style="padding-top: 0px;padding-left: 0px;padding-right: 0px;border: 0px" title="image" width="1024"/>
+     </a>
+    </blockquote>
+    <h1>
+     Improved integration with PowerApps and PowerFlows
+    </h1>
+    Under the
+    <b>
+     API definition
+    </b>
+    feature for any Web, API or Mobile app you will find the new
+    <b>
+     Export to PowerApps + Micosoft Flow
+    </b>
+    button:
+    <blockquote>
+     <a href="{{ site.base_url }}/media/2017/03/image169.png">
+      <img alt="image" border="0" height="683" src="{{ site.base_url }}/media/2017/03/image_thumb162.png" style="padding-top: 0px;padding-left: 0px;padding-right: 0px;border: 0px" title="image" width="1024"/>
+     </a>
+    </blockquote>
+    Clicking on it will provide the necessary instructions based on your API metadata to allow your PowerApps + Microsoft Flow apps to consume it:
+    <blockquote>
+     <a href="{{ site.base_url }}/media/2017/03/clip_image0029.png">
+      <img alt="clip_image002" border="0" height="683" src="{{ site.base_url }}/media/2017/03/clip_image002_thumb7.png" style="padding-top: 0px;padding-left: 0px;padding-right: 0px;border: 0px" title="clip_image002" width="1024"/>
+     </a>
+    </blockquote>
+    <h1>
+     Export App Service certificates to use with other Azure Resources
+    </h1>
+    Certificates purchased through App Service certificates can now be exported to use with other Azure Resources:
+    <blockquote>
+     <a href="{{ site.base_url }}/media/2017/03/clip_image00261.png">
+      <img alt="clip_image002[6]" border="0" height="683" src="{{ site.base_url }}/media/2017/03/clip_image0026_thumb.png" style="padding-top: 0px;padding-left: 0px;padding-right: 0px;border: 0px" title="clip_image002[6]" width="1024"/>
+     </a>
+    </blockquote>
+    <h1>
+     App Service on Linux
+    </h1>
+    We released a few new built-in containers including support for Node 6.9.3 as well as Ruby 2.3:
+    <blockquote>
+     <a href="{{ site.base_url }}/media/2017/03/clip_image00281.png">
+      <img alt="clip_image002[8]" border="0" height="683" src="{{ site.base_url }}/media/2017/03/clip_image0028_thumb.png" style="padding-top: 0px;padding-left: 0px;padding-right: 0px;border: 0px" title="clip_image002[8]" width="1024"/>
+     </a>
+    </blockquote>
+    <strong>
+     Bitbucket
+    </strong>
+    has also been added as a supported Deployment source under
+    <b>
+     Deployment options:
+    </b>
+    <blockquote>
+     <a href="{{ site.base_url }}/media/2017/03/clip_image0043.png">
+      <img alt="clip_image004" border="0" height="683" src="{{ site.base_url }}/media/2017/03/clip_image004_thumb1.png" style="padding-top: 0px;padding-left: 0px;padding-right: 0px;border: 0px" title="clip_image004" width="1024"/>
+     </a>
+    </blockquote>
+    <h1>
+     App service Companion
+    </h1>
+    We have a new
+    <a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/02/22/app_service_companion_for_ios_update/">
+     App Service Companion for iOS update
+    </a>
+    that includes new functionality such as support for
+    <b>
+     Push Notifications
+    </b>
+    and ability to
+    <b>
+     Favorite
+    </b>
+    apps for quick access.
+
+ 
+
+If you have any questions about any of this features or App Service in general be sure to check our forums in
+    <a href="https://social.msdn.microsoft.com/Forums/en-US/home?forum=windowsazurewebsitespreview">
+     MSDN
+    </a>
+    and
+    <a href="https://stackoverflow.com/questions/tagged/azure-web-sites">
+     Stack Overflow
+    </a>
+    .
+
+For any feature requests or ideas check out our
+    <a href="https://feedback.azure.com/forums/169385-web-apps-formerly-websites">
+     User Voice
+    </a>
+   </div>
+  </div>
+ </body>
+ <script src="{{ site.base_url }}/resource/jquery-1.12.1.min.js" type="text/javascript">
+ </script>
+ <script src="{{ site.base_url }}/resource/replace.js" type="text/javascript">
+ </script>
+</html>

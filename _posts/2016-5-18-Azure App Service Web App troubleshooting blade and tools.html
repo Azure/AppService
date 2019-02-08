@@ -1,0 +1,300 @@
+---
+layout: post
+---
+<html>
+ <head>
+  <meta charset="utf-8"/>
+ </head>
+ <body>
+  <div id="page">
+   <a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Apurva Joshi (AJ)" target="_blank">
+    Apurva Joshi (AJ)
+   </a>
+   <time>
+    5/18/2016 11:17:05 AM
+   </time>
+   <hr/>
+   <div id="content">
+    I have been fortunate to have an opportunity to Build/Ship/Support on premise products as well as cloud services for Microsoft. One of my biggest take away from this experience is, “You ship an on-premises product and make it’s issues/bugs your
+    <strong>
+     CUSTOMER’S
+    </strong>
+    problem. You ship a service in the cloud and now the same issues/bugs are
+    <strong>
+     YOUR
+    </strong>
+    problem!” Azure App Service Web App team aggress to this philosophy and has been aggressively investing in troubleshooting and diagnostic tools.
+
+I highly recommend watching this one hour “short” video (short from troubleshooting standards) from my
+    <strong>
+     <a href="https://channel9.msdn.com/Events/Build/2015/2-764" target="_blank">
+      //Build 2015 session, When bad things happen to good apps
+     </a>
+     .
+    </strong>
+    It all started as an experiment outside of the Azure portal, we called it
+    <strong>
+     <a href="https://azure.microsoft.com/en-us/blog/support-site-extension-for-azure-websites-preview-release/" target="_blank">
+      Support Portal
+     </a>
+    </strong>
+    . It was a success and was ready to be first-class citizen inside Azure portal. It found a place inside
+    <strong>
+     SUPPORT + TROUBLESHOOTING
+    </strong>
+    section of your Web App settings.
+    <img alt="settingsBlade" border="0" height="454" src="https://azurecomcdn.azureedge.net/mediahandler/acomblog/media/Default/blog/da0ad09a-4329-4a61-8750-5fc282a4fc77.png" title="settingsBlade" width="480"/>
+    We soon realized that while these tools are great ingredients which are better served as a recipe. In another words, Please tell me what tools to use when and how? This is where
+    <strong>
+     Troubleshoot Blade
+    </strong>
+    comes handy.
+    <h2>
+     Troubleshoot blade
+    </h2>
+    Troubleshoot blade is part of
+    <strong>
+     SUPPORT + TROUBLESHOOTING
+    </strong>
+    section of key Azure Services like Web Apps, Virtual Machine, SQL. etc. Every participating Azure Service populates this blade with their most common and usually top support issues.
+    <img alt="TroubleshootBlade" border="0" height="461" src="https://azurecomcdn.azureedge.net/mediahandler/acomblog/media/Default/blog/d5b4ab0a-888c-43b1-b1cb-72a73ba17664.png" title="TroubleshootBlade" width="480"/>
+    <h4>
+     This blade has three top level sections which we will cover in detail soon.
+    </h4>
+    <ol>
+     <li>
+      <a href="https://azure.microsoft.com/en-us/blog/reduce-troubleshooting-time-with-azure-resource-health/" target="_blank">
+       Resource health check
+      </a>
+     </li>
+     <li>
+      Common support issues and solutions
+     </li>
+     <li>
+      Ability to submit support request to Azure Customer Support
+     </li>
+    </ol>
+    <h2>
+     Resource health check for Web Apps
+    </h2>
+    Resource Health Check for Web Apps is like a doctor that attempts to diagnose an issue (runtime issues) with your application to be either service level outage or application specific issue. It makes this determination mainly by reading two distinct signals. First signal is
+    <strong>
+     health of Canary Web App (static web page running under every VM instance)
+    </strong>
+    and second signal is
+    <strong>
+     active live site incident (service issue)
+    </strong>
+    .
+    <ul>
+     <li>
+      <strong>
+       Scenario 1:
+      </strong>
+      <strong>
+       IF
+      </strong>
+      Canary Web App signal
+      <strong>
+       IS
+      </strong>
+      healthy (HTTP 200 OK) and there
+      <strong>
+       IS NO
+      </strong>
+      active live site incident impacting your Web App
+      <strong>
+       THEN
+      </strong>
+      it will say
+      <strong>
+       Healthy
+      </strong>
+      , meaning we think life is good, but if you think otherwise then it is most likely an application issue.
+     </li>
+     <li>
+      <strong>
+       Scenario 2:
+      </strong>
+      <strong>
+       IF
+      </strong>
+      Canary Web App signal
+      <strong>
+       IS
+      </strong>
+      <strong>
+       NOT
+      </strong>
+      healthy (HTTP 200 NOT OK) and there
+      <strong>
+       IS
+      </strong>
+      an active live site incident impacting your Web App THEN it will say
+      <strong>
+       Unhealthy
+      </strong>
+      , meaning we think life is not good and someone in Redmond is actively working to resolve this issue.
+     </li>
+     <li>
+      <strong>
+       Scenario 3:
+      </strong>
+      <strong>
+       IF
+      </strong>
+      Canary Web App signal
+      <strong>
+       IS
+      </strong>
+      <strong>
+       NOT
+      </strong>
+      healthy (HTTP 200 NOT OK) and there
+      <strong>
+       IS
+      </strong>
+      <strong>
+       NO
+      </strong>
+      active live site incident impacting your Web App THEN it will say
+      <strong>
+       Unhealthy
+      </strong>
+      meaning we think life could be better and doctor needs to perform more diagnostics.
+     </li>
+    </ul>
+    <strong>
+     NOTE
+    </strong>
+    : Resource Health Check for Web Apps is
+    <strong>
+     NOT
+    </strong>
+    available to FREE and Shared offerings (as there is no SLA for these offerings and hence no canary web app). Putting an analogy here would be recipe for disaster, so I would stop right here.
+    <h2>
+     Common solutions
+    </h2>
+    This is the place where we put together a recipe (step-by-step troubleshooting guide) to resolve a specific issue using some of the ingredients (troubleshooting tools). Here we list out our common supportability issues based on symptoms or scenarios. In this blog post I will pick one scenario and explain the steps in detail.
+    <h4>
+     My App is returning HTTP 5xx errors
+    </h4>
+    You are here because resource health check told you it is Scenario 1 or Scenario 3.
+    <strong>
+     Step 1:
+    </strong>
+    <strong>
+     Assess the HTTP errors impact using Live HTTP traffic chart
+    </strong>
+    When my Web App starts giving HTTP 5xx errors my 1st instinct is to try and asses the impact. Are all requests failing? What percent of requests are failing? etc. “
+    <strong>
+     Live HTTP traffic
+    </strong>
+    ” chart is a great way to assess the impact. This tools shows you aggregated live traffic for the selected Web App across different hostnames. There is hardly 10 seconds delay in charting. It basically aggregates your HTTP server logs from all the instances, including multi region deployments behind traffic manager. It then splits our success vs. failures and charts them.
+    <img alt="http" border="0" height="297" src="https://azurecomcdn.azureedge.net/mediahandler/acomblog/media/Default/blog/8d39e29f-ace1-49a4-ab28-537c823de6ae.png" title="http" width="480"/>
+    Image above shows about 30% of my requests are failing and it is not entire Web app down situation. (Blue represent success, Red represents failures). I can choose to filter the graph by hostnames etc.
+
+(While the situation is not that pretty, got to admit the graph is very pretty!)
+    <strong>
+     Step 2: Identify instance(s) exhibiting poor application performance
+    </strong>
+    Now we know that about 30% of my requests are failing, would not it be nice to know if these failures are tied to single instance (if my web app is running multi-instances) or distributed across all? Or I just want to check the load distribution across various instances, or may be check CPU/Memory usage for last one hour across various instances. All of above mysteries can be solved by clicking on this view. This view provides you critical statistics about your Web App (site) per instances over span of Last 1 hour, Last 24 hours and Last 5 days
+    <a href="https://azurecomcdn.azureedge.net/mediahandler/acomblog/media/Default/blog/03c5362d-24fc-4d6d-959b-37bc0da6067b.png">
+     <img alt="SiteMetrics" border="0" height="190" src="https://azurecomcdn.azureedge.net/mediahandler/acomblog/media/Default/blog/8d6d56b9-8577-4340-ae8f-f31bb864a892.png" title="SiteMetrics" width="610"/>
+    </a>
+    Image above shows I have two instances (RD0003FF451561 and RD0003FF454F62) in last one hours. If I had more or less instances in last 24 hours or five days, it would show them all regardless of current configuration. I think that’s kind of cool, especially when investigating past issues. The mage above also confirms my load was equally distributed across both the machines and both of them were giving HTTP 5xx, so this issue is not tied to a single instance. I can also check the CPU/Memory/Network IO etc. by scrolling down the charts.
+    <strong>
+     Step 3: Attempt to resolve the issue by using Advanced Application restart
+    </strong>
+    Restart is an answer to all technical issues – isn’t it? It surely is first thing one tries to recover. If Step 2 helped you identify an instance that is “bad” then this blade is a pure blessing. Just select the “bad” instance and click on Restart. If it is all of them then you can select them all with
+    <strong>
+     Restart Sleep Timer
+    </strong>
+    of 90 seconds and click away the Restart button. Yep, it’s that easy!
+    <a href="https://azurecomcdn.azureedge.net/mediahandler/acomblog/media/Default/blog/84f9b272-2b64-4309-9d08-3ce15641edbd.png">
+     <img alt="Restart" border="0" height="522" src="https://azurecomcdn.azureedge.net/mediahandler/acomblog/media/Default/blog/79d77940-7184-4b1c-9198-152051da41fa.png" title="Restart" width="585"/>
+    </a>
+    Let’s see what the “Restart button” does in background.
+    <ul>
+     <li>
+      For start, this is
+      <strong>
+       NOT
+      </strong>
+      same as Restarting your Web App. Web App Restart is ruthless beast that goes out and fires restart across all instances at the same time. (If you have single instance then the impact is the same).
+     </li>
+     <li>
+      This is
+      <strong>
+       NOT
+      </strong>
+      same as Rebooting your VM. Well in Azure App Service, you can’t reboot your VM (yet), at least by choice. (If you really want to reboot the VM instance, then simply trick the system by changing the scale Up or Down. That is switch to medium from small or large etc.)
+     </li>
+     <li>
+      This is simply graceful restart of your Web App process (w3wp.exe) in an overlapped recycling manner. Similar to Costco registers where they open new lane for check out before closing the old one. If you happen to be in the old one (existing requests to your web app) you get 90 seconds to finish your business (well not quite like Costco, but you get the point), while all new checkouts (new incoming requests) goes to the new open lane. Thus minimizing the impact down to few handful requests.
+     </li>
+     <li>
+      “Restart Sleep timer” of 90 seconds adds additional layer of protection by waiting for 90 seconds before going to other instances.
+     </li>
+     <li>
+      If you have multiple Web Apps running on same instance then it does not impact other Web Apps. It only restarts Web App you initiated this operation from.
+     </li>
+    </ul>
+    <strong>
+     Step 4: Identify highest CPU/Memory consuming Web app(s) within your App Service Plan
+    </strong>
+    Let’s refresh our memory little bit and bring back
+    <strong>
+     Resource Health Check Scenario 3
+    </strong>
+    .  This blade helps you find out the offending Web App in the App Service Plan. We named this blade “
+    <strong>
+     App Service plan Metric per Instance
+    </strong>
+    ”. It does exactly what it says. This view will help you quickly identify highest CPU/Memory consuming Web App (Site) in your Plan.
+    <img alt="AppServicePlan" border="0" height="370" src="https://azurecomcdn.azureedge.net/mediahandler/acomblog/media/Default/blog/bcb932d8-6590-449d-89a4-84d613c863c6.png" title="AppServicePlan" width="480"/>
+    Above image indicates that I have 2 Web Apps (Sites) in the App Service Plan. DemoDaas seems to be the one using all CPU and Memory in this case. At the same note, you can also observe that PHPDemo could be taking all CPU and Memory, hence impacting performance for DemoDaas. You can use this view to separate out the culprits from victims and go to Step 3 to click on “Restart Button” for culprit Web App.
+
+Finally, Restart is really not an answer to all the problems and that’s where the Restart button is not that glorious. If HTTP 5xx is because a bug in your application and not the hostile surrounding it found itself in, then restarts are not really going to help. This is where we move to next Step.
+    <strong>
+     Step 5: “Check out the application event logs  to understand the potential root cause”
+    </strong>
+    This is really old school event viewer logs. The beauty of this feature here is that, these logs are aggregated across multiple instances (if you have multiple instances) into single view. You can filter them per instance or other attributes of your choice. It only contains logs are that specific to this Web App and it’s life cycle, so they are pre filtered for your need.
+    <img alt="EventLogs" border="0" height="393" src="https://azurecomcdn.azureedge.net/mediahandler/acomblog/media/Default/blog/60b8de04-0b7b-4159-b3fb-aba7bfe75744.png" title="EventLogs" width="480"/>
+    <strong>
+     Step 6: “Enable FREB Logging” OR “Trace source of failure using Failed Request Tracing  feature”
+    </strong>
+    I call step as
+    <strong>
+     Peeling the Onion
+    </strong>
+    step. This step will help you identify source of HTTP 5xx errors or Slow Performance. It won’t really tell you exact root cause (unless you are the developer who check-in had the bug then knowing the source is usually enough). Please watch
+    <a href="https://www.youtube.com/watch?v=tlp2O_clvVc" target="_blank">
+     <strong>
+      this short video
+     </strong>
+    </a>
+    by
+    <strong>
+     Felipe Barreiros
+    </strong>
+    that explains the feature.
+    <h4>
+     Recommended documents, Profilers like App Insight, New Relic etc.
+    </h4>
+    It finally provides links to some recommended documentations to will help peel the onion even further. Application bug that are easily reproducible  are best root caused using some sort of profiler or remote debugging inside stage/QA environment.
+    <h2>
+     Need help?
+    </h2>
+    If none of above helped and you want to engage Microsoft Azure Support team then journey begins by clicking on open a Support request.
+    <img alt="SupportCase" border="0" height="66" src="https://azurecomcdn.azureedge.net/mediahandler/acomblog/media/Default/blog/fe2124ec-c086-4915-bf5d-02a9d02105c9.png" title="SupportCase" width="360"/>
+    Do try out other common scenarios and let us know the feedback by simply clicking on Feedback smiley at the top of the blade.
+    <img alt="feedback" border="0" height="79" src="https://azurecomcdn.azureedge.net/mediahandler/acomblog/media/Default/blog/3f2f587c-d130-4382-a9ad-d78b3657904e.png" title="feedback" width="360"/>
+   </div>
+  </div>
+ </body>
+ <script src="{{ site.base_url }}/resource/jquery-1.12.1.min.js" type="text/javascript">
+ </script>
+ <script src="{{ site.base_url }}/resource/replace.js" type="text/javascript">
+ </script>
+</html>

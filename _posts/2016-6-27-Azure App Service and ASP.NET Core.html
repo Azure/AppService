@@ -1,0 +1,153 @@
+---
+layout: post
+---
+<html>
+ <head>
+  <meta charset="utf-8"/>
+ </head>
+ <body>
+  <div id="page">
+   <a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Daria Grigoriu" target="_blank">
+    Daria Grigoriu
+   </a>
+   <time>
+    6/27/2016 12:00:28 AM
+   </time>
+   <hr/>
+   <div id="content">
+    <span style="color: #000000;font-family: Calibri">
+     The release of ASP.NET Core 1.0 was announced today! ASP.NET Core 1.0 supports modern web development with its lightweight and modular design. ASP.NET Core is also cross-platform ready and open source. You can read all the details for the release in
+     <a href="https://blogs.msdn.microsoft.com/webdev/2016/06/27/announcing-asp-net-core-1-0">
+      this announcement
+     </a>
+     .
+     <a href="https://blogs.msdn.microsoft.com/visualstudio/2016/06/27/visual-studio-2015-update-3-and-net-core-1-0-available-now">
+      Visual Studio 2015 Update 3
+     </a>
+     was also announced today with support to build .NET Core apps in Visual Studio.
+    </span>
+    <span style="color: #000000;font-family: Calibri">
+     Azure App Service is ready to welcome your ASP.NET Core 1.0 apps. Please see the
+     <a href="https://blogs.msdn.microsoft.com/webdev/2016/06/27/announcing-asp-net-core-1-0">
+      ASP.NET Core 1.0 announcement
+     </a>
+     for pointers on getting started. Great resources are also available on the
+     <a href="https://docs.asp.net/en/latest/">
+      ASP.NET Core documentation page
+     </a>
+     . To get started bring your own ASP.NET Core repo or select a sample from Visual Studio. To get started in Visual Studio 2015 navigate to
+     <b>
+      New
+     </b>
+     -&gt;
+     <b>
+      Project
+     </b>
+     -&gt;
+     <b>
+      Web
+     </b>
+     and select an ASP.NET Core sample. Request a Git repo on sample creation.
+    </span>
+    <a href="{{ site.base_url }}/media/2016/05/vs-create.png">
+     <img alt="Azure App Service and ASP.NET Core RC2" class="alignnone wp-image-415 size-mediumlarge" height="348" src="{{ site.base_url }}/media/2016/05/vs-create-500x348.png" width="500"/>
+    </a>
+    <span style="color: #000000;font-family: Calibri">
+     Create a web app in Azure App Service and configure Local Git as the deployment source as described in
+     <a href="https://azure.microsoft.com/en-us/documentation/articles/app-service-deploy-local-git">
+      documentation here
+     </a>
+    </span>
+    <a href="https://azure.microsoft.com/en-us/documentation/articles/app-service-deploy-local-git">
+     <span style="color: #000000;font-family: Calibri">
+      .
+     </span>
+    </a>
+    <span style="color: #000000;font-family: Calibri">
+     Copy the Git URL from the
+     <b>
+      Settings
+     </b>
+     -&gt;
+     <b>
+      Properties
+     </b>
+     blade of your app in the
+     <a href="https://portal.azure.com">
+      Azure Portal
+     </a>
+    </span>
+    <span style="color: #000000;font-family: Calibri">
+     .
+    </span>
+    <span style="color: #000000;font-family: Calibri">
+     From your ASP.NET Core app Git repo push the content to Azure App Service using the Git URL copied.
+    </span>
+    <span style="color: #000000;font-family: Calibri">
+     The Kudu deployment engine running in Azure App Service is able to detect ASP.NET Core apps and generate a custom deployment script for these apps. If you would like to explore and customize
+     <span style="color: #000000;font-family: Calibri">
+      the deployment script generated for Azure App Service deployment
+     </span>
+    </span>
+    <span style="color: #000000;font-family: Calibri">
+     you can easily access this script. Navigate to the Kudu SCM management app running alongside the web app from the
+     <b>
+      Tools
+     </b>
+     -&gt;
+     <b>
+      Kudu
+     </b>
+     blade of your app in the Azure Portal. Using the Kudu debug console access
+     <b>
+      D:\home\site\deployments\tools\deploy.cmd
+     </b>
+     .
+    </span>
+    <a href="{{ site.base_url }}/media/2016/05/deployment.png">
+     <img alt="Azure App Service and ASP.NET Core RC2 " class="alignnone size-mediumlarge wp-image-425" height="342" src="{{ site.base_url }}/media/2016/05/deployment-500x342.png" width="500"/>
+    </a>
+    <span style="color: #000000;font-family: Calibri">
+     The first step in the deployment script is a NuGet restore with the home drive of the app as the restore location. Restore will be revisited for subsequent deployment only if new dependencies are detected.
+    </span>
+    <span style="color: #000000;font-family: Calibri">
+     The next step in the deployment script detects the type of project. If the project originated from Visual Studio and a .sln file is available the deployment engine will run msbuild and then use the new dotnet.exe utility to publish with a no build flag. Otherwise use the new dotnet.exe utility to build and publish. All build actions are completed on the
+     <span style="color: #000000;font-family: Calibri">
+      target Azure App Service hosting environment
+     </span>
+     .
+    </span>
+    <span style="color: #000000;font-family: Calibri">
+     An alternate Visual Studio deployment option bypassing source control is using the
+     <strong>
+      Publish
+     </strong>
+     action which will leverage WebDeploy to deploy to Azure App Service instead of leveraging the Kudu deployment engine. With this option build actions would be completed in the source development environment as opposed to build actions being completed in the target Azure App Service hosting environment.
+    </span>
+    <a href="{{ site.base_url }}/media/2016/05/vs-publish.png">
+     <img alt="Azure App Service and ASP.NET Core RC2" class="alignnone size-mediumlarge wp-image-435" height="254" src="{{ site.base_url }}/media/2016/05/vs-publish-500x254.png" width="500"/>
+    </a>
+    <span style="color: #000000;font-family: Calibri">
+     If you don't have an Azure account you can still try ASP.NET Core 1.0 on Azure App Service free of charge and commitment with our
+     <a href="https://tryappservice.azure.com/?appservice=web">
+      Azure App Service free trial
+     </a>
+     .
+    </span>
+    <span style="color: #000000;font-family: Calibri">
+     Looking forward to feedback and questions on the
+     <a href="https://social.msdn.microsoft.com/Forums/en-US/home?forum=windowsazurewebsitespreview">
+      Azure App Service forum
+     </a>
+    </span>
+    <span style="color: #000000;font-family: Calibri">
+     .
+    </span>
+   </div>
+  </div>
+ </body>
+ <script src="{{ site.base_url }}/resource/jquery-1.12.1.min.js" type="text/javascript">
+ </script>
+ <script src="{{ site.base_url }}/resource/replace.js" type="text/javascript">
+ </script>
+</html>

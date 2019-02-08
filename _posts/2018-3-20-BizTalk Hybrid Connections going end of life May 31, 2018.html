@@ -1,0 +1,68 @@
+---
+layout: post
+---
+<html>
+ <head>
+  <meta charset="utf-8"/>
+ </head>
+ <body>
+  <div id="page">
+   <a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Christina Compy (MSFT)" target="_blank">
+    Christina Compy (MSFT)
+   </a>
+   <time>
+    3/20/2018 6:24:08 PM
+   </time>
+   <hr/>
+   <div id="content">
+    Azure App Service has two features named Hybrid Connections. There is the original BizTalk Hybrid Connections and the newer Azure Relay based App Service Hybrid Connections.
+BizTalk Hybrid Connections is going end of life May 31, 2018.
+
+To avoid problems, you should migrate from BizTalk Hybrid Connections to the new Azure Relay based Hybrid Connections. You can read more about them in
+    <a href="http://docs.microsoft.com/azure/app-service/app-service-hybrid-connections">
+     Azure App Service Hybrid Connections
+    </a>
+    To migrate your BizTalk Hybrid Connections to the new Hybrid Connections, you need to:
+    <ol>
+     <li>
+      Make sure the apps you want to use Hybrid Connections with are running in a Basic, Standard, Premium, Premiumv2, or Isolated App Service plan.
+     </li>
+     <li>
+      Create a new Hybrid Connection using the information in
+      <a href="http://docs.microsoft.com/azure/app-service/app-service-hybrid-connections#add-and-create-hybrid-connections-in-your-app">
+       Add and Create Hybrid Connections in your app
+      </a>
+      .  The name of the new Hybrid Connection does not have to match the old one but the endpoints should be the same between the new and the old Hybrid Connection.
+     </li>
+     <li>
+      Add the new Hybrid Connection to the apps that are using the BizTalk Hybrid Connection.
+     </li>
+     <li>
+      Upgrade all of your Hybrid Connection Managers to the newest version. The installer for the new Hybrid Connection Manager will upgrade your older instances. You can read more about the new Hybrid Connection Manager
+      <a href="http://docs.microsoft.com/azure/app-service/app-service-hybrid-connections#hybrid-connection-manager">
+       here
+      </a>
+      and can download it from the Azure portal in the App Service Hybrid Connections portal.
+     </li>
+     <li>
+      Add your new Hybrid Connections to all of the Hybrid Connection Managers you want to use.
+     </li>
+     <li>
+      After the new Hybrid Connection shows a status of Connected in the portal, delete the older BizTalk Hybrid Connection.
+     </li>
+    </ol>
+    The new Relay based Hybrid Connections exist as a service outside of Azure App Service. You can find more details starting with the
+    <a href="http://docs.microsoft.com/azure/service-bus-relay/relay-what-is-it#hybrid-connections">
+     Overview on Azure Relay
+    </a>
+    .
+
+Relay based Hybrid Connections does have a number of improvements over the BizTalk Hybrid Connections.  The newer feature uses TLS 1.2, communicates to Azure only over port 443, creates connections based on a DNS name, and has a much easier user experience.
+   </div>
+  </div>
+ </body>
+ <script src="{{ site.base_url }}/resource/jquery-1.12.1.min.js" type="text/javascript">
+ </script>
+ <script src="{{ site.base_url }}/resource/replace.js" type="text/javascript">
+ </script>
+</html>

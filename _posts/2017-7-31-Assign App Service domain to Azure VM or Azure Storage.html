@@ -1,0 +1,435 @@
+---
+layout: post
+---
+<html>
+ <head>
+  <meta charset="utf-8"/>
+ </head>
+ <body>
+  <div id="page">
+   <a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/mksunitha" target="_blank">
+    mksunitha
+   </a>
+   <time>
+    7/31/2017 10:16:06 AM
+   </time>
+   <hr/>
+   <div id="content">
+    <p class="lf-text-block lf-block">
+     <a href="https://azuremarketplace.microsoft.com/en-us/marketplace/apps/Microsoft.Domain?tab=Overview">
+      App Service domains (preview)
+     </a>
+     simplifies to create and manage domains for various Azure services. App Service domains leverages Azure DNS for hosting the domain and GoDaddy as the domain registrar.In addition to the domain registration fee, usage charges for Azure DNS apply. For information, see
+     <span>
+     </span>
+     <a href="https://azure.microsoft.com/pricing/details/dns/">
+      Azure DNS Pricing
+     </a>
+     .
+    </p>
+    <p class="lf-text-block lf-block">
+     This tutorial shows you how to buy an App Service domain and assign DNS names a Virtual machine and Azure Storage
+     <span class="lf-thread-btn">
+     </span>
+    </p>
+    <h3 id="sign-in-to-azure">
+     Sign in to Azure
+    </h3>
+    <p class="lf-text-block lf-block">
+     Open the
+     <span>
+     </span>
+     <a href="https://portal.azure.com/">
+      Azure portal
+     </a>
+     <span>
+     </span>
+     and sign in with your Azure account.
+     <span class="lf-thread-btn">
+     </span>
+    </p>
+    <h3 id="navigate-to-the-app-in-the-azure-portal">
+     Navigate to the app in the Azure portal
+    </h3>
+    <p class="lf-text-block lf-block">
+     From the left menu, select
+     <span>
+     </span>
+     <strong>
+      New -&gt; Everything -&gt; App Service Domain (preview)
+     </strong>
+    </p>
+    <p class="lf-text-block lf-block">
+     <a href="{{ site.base_url }}/media/2017/07/domain-marketplace.png">
+      <img alt="" class="alignnone wp-image-5335 size-large" height="229" src="{{ site.base_url }}/media/2017/07/domain-marketplace-1024x267.png" width="879"/>
+     </a>
+    </p>
+    <h3 id="configure-the-domain-purchase">
+     Purchase a domain
+    </h3>
+    <p class="lf-text-block lf-block">
+     In the
+     <span>
+     </span>
+     <strong>
+      App Service Domain
+     </strong>
+     <span>
+     </span>
+     page, in the
+     <span>
+     </span>
+     <strong>
+      Search for domain
+     </strong>
+     <span>
+     </span>
+     box, type the domain name you want to buy and type
+     <span>
+     </span>
+     <code>
+      Enter
+     </code>
+     . The suggested available domains are shown just below the text box. Select one or more domains you want to buy.
+     <span class="lf-thread-btn">
+     </span>
+    </p>
+    <a href="{{ site.base_url }}/media/2017/07/create-domain.png">
+     <img alt="" class="alignnone wp-image-5345" height="750" src="{{ site.base_url }}/media/2017/07/create-domain-370x1024.png" width="271"/>
+    </a>
+    <p class="lf-text-block lf-block">
+     Click the
+     <span>
+     </span>
+     <strong>
+      Contact Information
+     </strong>
+     <span>
+     </span>
+     and fill out the domain's contact information form. When finished, click
+     <span>
+     </span>
+     <strong>
+      OK
+     </strong>
+     <span>
+     </span>
+     to return to the App Service Domain page. Next, select the desired options for your domain. See the following table for explanations:
+     <span class="lf-thread-btn">
+     </span>
+    </p>
+    <table>
+     <thead>
+      <tr>
+       <th>
+        Setting
+       </th>
+       <th>
+        Suggested Value
+       </th>
+       <th>
+        Description
+       </th>
+      </tr>
+     </thead>
+     <tbody>
+      <tr>
+       <td>
+        Subscription
+       </td>
+       <td>
+        Pay-As-You-Go
+       </td>
+       <td>
+        Select a
+        <span>
+        </span>
+        <strong>
+         Subscription
+        </strong>
+        . If you have multiple subscriptions, choose the appropriate subscription.
+       </td>
+      </tr>
+      <tr>
+       <td>
+        Contact Information
+       </td>
+       <td>
+        Enter your contact information  such as address, phone number etc ..
+       </td>
+       <td>
+        Fill out the domain's contact information form. When finished, click OK to return to the App Service Domain page.
+       </td>
+      </tr>
+      <tr>
+       <td>
+        Resource Group
+       </td>
+       <td>
+        myprojectgroup
+       </td>
+       <td>
+        Enter a
+        <span>
+        </span>
+        <strong>
+         resource group
+        </strong>
+        . A resource group is a logical container into which Azure resources like web apps, databases that is deployed and managed. You can create a resource group or use an existing one
+       </td>
+      </tr>
+      <tr>
+       <td>
+        Auto renew
+       </td>
+       <td>
+        Enable
+       </td>
+       <td>
+        Renews your App Service Domain automatically every year. Your credit card is charged the same purchase price at the time of renewal.
+       </td>
+      </tr>
+      <tr>
+       <td>
+        Privacy protection
+       </td>
+       <td>
+        Enable
+       </td>
+       <td>
+        Opt in to "Privacy protection", which is included in the purchase price
+        <span>
+        </span>
+        <em>
+         for free
+        </em>
+        (except for top-level domains whose registry do not support privacy protection, such as
+        <span>
+        </span>
+        <em>
+         .co.in
+        </em>
+        ,
+        <span>
+        </span>
+        <em>
+         .co.uk
+        </em>
+        , and so on).
+       </td>
+      </tr>
+      <tr>
+       <td>
+        Accept terms and purchase
+       </td>
+       <td>
+        Accept
+       </td>
+       <td>
+        Click Legal Terms to review the terms and the charges, then click Buy.
+       </td>
+      </tr>
+     </tbody>
+    </table>
+    <h3>
+     Assign domain to Azure Virtual machine
+    </h3>
+    Resource Manager VMs can have a Public IP. A VM with a Public IP address may also be behind a load balancer. You can create a DNS A or CNAME record for the Public address. This custom name can be used to bypass the VIP on the load balancer.
+
+To verify if you VM has a public IP , go the resource group used by the VM to see if you have a resource "Public IP address" .
+    <a href="{{ site.base_url }}/media/2017/07/ip-address-vm.png">
+     <img alt="" class="alignnone wp-image-5365" height="443" src="{{ site.base_url }}/media/2017/07/ip-address-vm-1024x844.png" width="537"/>
+    </a>
+    You can get the IP address by selecting the Public IP address resource or select your Virtual machine to get the IP address
+    <a href="{{ site.base_url }}/media/2017/07/get-ip-vm.png">
+     <img alt="" class="alignnone size-large wp-image-5376" height="332" src="{{ site.base_url }}/media/2017/07/get-ip-vm-1024x387.png" width="879"/>
+    </a>
+    Select your domain and choose DNS Zone setting
+    <a href="{{ site.base_url }}/media/2017/07/dns-zone.png">
+     <img alt="" class="alignnone wp-image-5405" height="482" src="{{ site.base_url }}/media/2017/07/dns-zone-501x1024.png" width="236"/>
+    </a>
+    Click on
+    <strong>
+     Add a Record Set
+    </strong>
+    . Add an A record for your Public IP  configured to
+    <span>
+     a subdomain alias such
+    </span>
+    as
+    <strong>
+     www
+    </strong>
+    or
+    <strong>
+     blog
+    </strong>
+    as
+    <strong>
+    </strong>
+    shown below. Configure your TTL setting on when your domain should resolve to the new domain hosting service.
+    <h3>
+     <a href="{{ site.base_url }}/media/2017/07/add-record-set.png">
+      <img alt="" class="alignnone size-large wp-image-5386" height="313" src="{{ site.base_url }}/media/2017/07/add-record-set-1024x365.png" width="879"/>
+     </a>
+    </h3>
+    Enter your domain in a browser address bar based on your TTL configuration.
+    <h3>
+     <a href="{{ site.base_url }}/media/2017/07/resolve-domain.png">
+      <img alt="" class="alignnone wp-image-5396" height="201" src="{{ site.base_url }}/media/2017/07/resolve-domain-1024x376.png" width="548"/>
+     </a>
+     Add Custom domain for Azure storage
+    </h3>
+    Create an App Service Domain . Once provisioned , select
+    <strong>
+     DNS Zone
+    </strong>
+    setting and
+    <strong>
+     Add a record set .
+    </strong>
+    Create a new
+    <strong>
+     CNAME
+    </strong>
+    record and provide a subdomain alias such as
+    <span>
+    </span>
+    <strong>
+     www
+    </strong>
+    <span>
+    </span>
+    or
+    <span>
+     <strong>
+      images
+     </strong>
+    </span>
+    . Then provide a host name, which is your Blob service endpoint, in the format
+    <span>
+     <strong>
+      my-storage-account-name
+     </strong>
+    </span>
+    <strong>
+     .blob.core.windows.net
+    </strong>
+    <span>
+    </span>
+    (where
+    <span>
+    </span>
+    <em>
+     my-storage-account-name
+    </em>
+    <span>
+    </span>
+    is the name of your storage account).
+    <a href="{{ site.base_url }}/media/2017/07/add-storage-record-set.png">
+     <img alt="" class="alignnone wp-image-5415" height="433" src="{{ site.base_url }}/media/2017/07/add-storage-record-set-986x1024.png" width="417"/>
+    </a>
+    Go to your storage resource in the
+    <a href="https://portal.azure.com/">
+     Azure portal
+    </a>
+    and select Custom Domain setting. In the text box on the
+    <span>
+    </span>
+    <em>
+     Custom domain
+    </em>
+    <span>
+    </span>
+    blade in the
+    <span>
+    </span>
+    <a href="https://portal.azure.com/">
+     Azure portal
+    </a>
+    , enter the name of your custom domain, including the subdomain. For example, if your domain is
+    <span>
+     <strong>
+      example.
+     </strong>
+    </span>
+    <strong>
+     com
+    </strong>
+    <span>
+    </span>
+    and your subdomain alias is
+    <span>
+    </span>
+    <strong>
+     www
+    </strong>
+    , enter
+    <span>
+    </span>
+    <strong>
+     www.example.com
+    </strong>
+    . If your subdomain is
+    <span>
+    </span>
+    <strong>
+     images
+    </strong>
+    , enter
+    <span>
+    </span>
+    <strong>
+     images.contoso.com
+    </strong>
+    . The subdomain is
+    <span>
+    </span>
+    <em>
+     required
+    </em>
+    .
+    <a href="{{ site.base_url }}/media/2017/07/map-storage-domain.png">
+     <img alt="" class="alignnone size-large wp-image-5425" height="640" src="{{ site.base_url }}/media/2017/07/map-storage-domain-1024x745.png" width="879"/>
+    </a>
+    Click on
+    <strong>
+     Save.
+    </strong>
+    Access your files on Azure storage using the custom domain.
+    <h3>
+     Auto Renew your Domain
+    </h3>
+    You can change your billing setup for your domain registration anytime to either enable or disable auto-renew by selecting
+    <strong>
+     Domain Renewal
+    </strong>
+    setting
+    <a href="{{ site.base_url }}/media/2017/07/domain-renewal.png">
+     <img alt="" class="alignnone size-large wp-image-5355" height="423" src="{{ site.base_url }}/media/2017/07/domain-renewal-1024x493.png" width="879"/>
+    </a>
+    App Service domains can be used to setup domain for other Azure services as stated in this
+    <a href="https://docs.microsoft.com/en-us/azure/dns/dns-for-azure-services">
+     article
+    </a>
+    .
+    <em>
+     Note : The hostname bindings setting only shows Web Apps and Traffic Manager if confugred to your domain for now. Your VM or Storage or any other Azure service using this domain will not show up in hostname binding setting. We will continue to work on improving this experience to display other services assigned to the domain.
+    </em>
+    <div class="NOTE alert">
+     Submit your ideas/feedback in
+     <a href="https://aka.ms/webapps-uservoice" title="">
+      UserVoice
+     </a>
+     . Please add [Domain] at the beginning of the title.
+    </div>
+    <p class="lf-text-block lf-block">
+    </p>
+   </div>
+  </div>
+ </body>
+ <script src="{{ site.base_url }}/resource/jquery-1.12.1.min.js" type="text/javascript">
+ </script>
+ <script src="{{ site.base_url }}/resource/replace.js" type="text/javascript">
+ </script>
+</html>

@@ -1,0 +1,137 @@
+---
+layout: post
+---
+<html>
+ <head>
+  <meta charset="utf-8"/>
+ </head>
+ <body>
+  <div id="page">
+   <a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/mksunitha" target="_blank">
+    mksunitha
+   </a>
+   <time>
+    3/6/2017 11:00:24 PM
+   </time>
+   <hr/>
+   <div id="content">
+    MySQL in-app was a preview feature
+    <a href="https://azure.microsoft.com/en-us/blog/mysql-in-app-preview-app-service/">
+     launched last year
+    </a>
+    in August.  The feature primary objective was to make it easier to build and test MySQL based applications on App Service.  Today, I am excited to announce general availability of MySQL in-app feature.
+    <em>
+     Note : This MySQL in-app is specific to Windows version of Azure app service. If you are looking for local mysql on Linux MySQL app service , click
+     <a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/06/07/mysql-in-app-feature-for-web-apps-on-linux/">
+      here.
+     </a>
+    </em>
+    We have rolled out a
+    <a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/03/06/migrate-development-database-on-mysql-in-app-to-production-mysql-database/">
+     database migration feature
+    </a>
+    from MySQL in-app that allows you to export your database content from
+    <strong>
+     localdb
+    </strong>
+    database provided by MySQL in-app and import it into a production database. A
+    <strong>
+     production database
+    </strong>
+    can be managed MySQL service or your custom MySQL server solution.  See
+    <a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/03/06/announcing-general-availability-for-mysql-in-app#productionmysql">
+     options
+    </a>
+    for production MySQL database in Azure.
+
+This feature will be continue to accelerate your development and testing scenarios . Here are key benefits of using this feature :
+    <ol>
+     <li>
+      It supports any runtime stack that is available in App Service (Windows) applications such as Node JS , .NET , Python , PHP etc. For  Python, Node JS , .NET do make sure you have the appropriate libraries or drivers with your code in order to connect to MySQL database provided with MySQL in-app
+     </li>
+     <li>
+      It’s cost-effective since there’s no additional cost to use this feature and you only pay for the App Service plan (since resources are shared).
+     </li>
+     <li>
+      The MySQL and Web processes are co-located in the same environment (hence the term in-app) which means storage is shared.
+     </li>
+     <li>
+      Includes support for slow query logging and general logging, which you’ll need to turn on as needed (this feature impacts performance, so you shouldn’t use it all the time).
+     </li>
+     <li>
+      One click migration of your database from MySQL in-app to a production MySQL database solution.
+      <span id="productionmysql">
+       Azure offers many solutions for MySQL
+      </span>
+      , including:
+      <ul>
+       <li>
+        <a href="http://azure.microsoft.com/services/mysql">
+         Azure database for MySQL(Preview)
+        </a>
+       </li>
+       <li>
+        Marketplace solutions for
+        <a href="https://azure.microsoft.com/en-us/marketplace/?term=mysql">
+         MySQL
+        </a>
+        ,
+        <a href="https://azure.microsoft.com/en-us/marketplace/?term=mariadb">
+         MariaDB
+        </a>
+        , and other MySQL-compatible solutions from partners like
+        <a href="https://azure.microsoft.com/en-us/marketplace/partners/bitnami/mysql/">
+         Bitnami
+        </a>
+        and
+        <a href="https://azure.microsoft.com/en-us/marketplace/partners/mariadb/cluster-maxscale/">
+         MariaDB
+        </a>
+       </li>
+       <li>
+        Community-contributed
+        <a href="https://azure.microsoft.com/en-us/documentation/templates/?term=mysql+cluster+centos+-lamp+-website">
+         Azure Resource Manager (ARM) templates
+        </a>
+        deploying on VMs
+       </li>
+       <li>
+        MySQL on virtual machine on
+        <a href="https://azure.microsoft.com/en-us/documentation/articles/virtual-machines-linux-classic-mysql-on-opensuse/">
+         Linux
+        </a>
+        or
+        <a href="https://azure.microsoft.com/en-us/documentation/articles/virtual-machines-windows-classic-mysql-2008r2/">
+         Windows
+        </a>
+        OS
+       </li>
+      </ul>
+     </li>
+    </ol>
+    <div id="production">
+     If you intend to use this feature for PRODUCTION web application , your web application must meet one or more of the criteria below :
+     <ul>
+      <li>
+       your application is read only web site [ when file server is in read only mode , the database is read only as well ]
+      </li>
+      <li>
+       your application does not need auto scale
+      </li>
+      <li>
+       File servers may go into read only mode from 1 to 6 mins depending on whether an upgrade is occurring or any intermittent storage connectivity issue occurs. For example if you use wordpress and during this time you cannot write a post or edit content. You can retry in a few minutes and it will work. If this is okay for your production app then use MySQL inapp
+      </li>
+      <li>
+       Review your user traffic on your application and test to see if your application can run on one instance. If it can manage the load , you can use MySQL inapp for production.
+      </li>
+     </ul>
+     The reason for the criteria mentioned above is due to the lack of support for auto scale on App service with MySQL in-app.
+    </div>
+   </div>
+  </div>
+ </body>
+ <script src="{{ site.base_url }}/resource/jquery-1.12.1.min.js" type="text/javascript">
+ </script>
+ <script src="{{ site.base_url }}/resource/replace.js" type="text/javascript">
+ </script>
+</html>

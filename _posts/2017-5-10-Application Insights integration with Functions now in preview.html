@@ -1,0 +1,136 @@
+---
+layout: post
+---
+<html>
+ <head>
+  <meta charset="utf-8"/>
+ </head>
+ <body>
+  <div id="page">
+   <a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Chris Anderson (Azure)" target="_blank">
+    Chris Anderson (Azure)
+   </a>
+   <time>
+    5/10/2017 8:00:44 AM
+   </time>
+   <hr/>
+   <div id="content">
+    Azure Functions support for Application Insights has moved out of limited beta and into a wider public preview. We’ve also added support to add Application Insights on create, as well as, a direct link from Azure Functions’ portal to the Application Insights blade. We’ve also added additional settings to help control what data get sent and how much to send, helping you to control the volume of data that is sent.
+    <h1>
+     Getting Started
+    </h1>
+    To get started with Azure Functions and Azure Application Insights, you can create a new Function App and set the Application Insights toggle to “On”, which will create an Application Insights resource for you, automatically.
+    <a href="{{ site.base_url }}/media/2017/05/create-Function-App.png">
+     <img alt="create-function-app" class="aligncenter size-full wp-image-4725" height="642" src="{{ site.base_url }}/media/2017/05/create-Function-App.png" width="432"/>
+    </a>
+    If you want to use add an existing Application Insights resource or you have an existing Azure Function App, you can add Application Insights by adding an App Setting with your instrumentation key.
+    <ol>
+     <li>
+      Create an Application Insights instance.
+      <ol>
+       <li>
+        Application type should be set to General
+       </li>
+       <li>
+        Grab the instrumentation key
+       </li>
+      </ol>
+     </li>
+     <li>
+      Update your Function App’s settings
+      <ol>
+       <li>
+        Add App Setting – APPINSIGHTS_INSTRUMENTATIONKEY = {Instrumentation Key}
+       </li>
+      </ol>
+     </li>
+    </ol>
+    <a href="{{ site.base_url }}/media/2017/05/grabIKey.png">
+     <img alt="grabikey" class="aligncenter size-large wp-image-4735" height="388" src="{{ site.base_url }}/media/2017/05/grabIKey-1024x452.png" width="879"/>
+    </a>
+    Once you’ve done this, you can navigate to your Application Insights resource from the “Configured Features” page of your Function App.
+    <a href="{{ site.base_url }}/media/2017/05/configuredfeatures.png">
+     <img alt="configuredfeatures" class="aligncenter size-full wp-image-4715" height="215" src="{{ site.base_url }}/media/2017/05/configuredfeatures.png" width="409"/>
+    </a>
+    <h1>
+     Using Application Insights
+    </h1>
+    <h2>
+     Live Stream
+    </h2>
+    If you open your Application Insights resource in the portal, you should see the option for “Live Metrics Stream” in the menu. Click on it and you’ll see a near-live view of what’s coming from your Function App. For executions, it has info on #/second, average duration, and failures/second. It also has information on resource consumption. You can pivot all of these by the “instance” your functions are on; providing you insight on whether a specific instance might be having an issue or all of your Functions.
+
+Known issues: there are no dependencies being tracked right now, so the middle section is mostly useless for now. If you send your own custom dependencies, it’s not likely to show up here since they won’t be going through the Live Stream API since you’re normally using a different client, today.
+    <a href="{{ site.base_url }}/media/2017/05/livestream.png">
+     <img alt="livestream" class="aligncenter size-large wp-image-4745" height="368" src="{{ site.base_url }}/media/2017/05/livestream-1024x429.png" width="879"/>
+    </a>
+    <h2>
+     Metrics Explorer
+    </h2>
+    This view gives you insights on your metrics coming from your Function App. You can add new charts for your Dashboards and set up new Alert rules from this page.
+    <h2>
+     Failures
+    </h2>
+    This view gives you insights on which things are failing. It has pivots on “Operation” which are your Functions, Dependencies, and exception messages.
+
+Known issues: Dependencies will be blank unless you add custom dependency metrics.
+    <h2>
+     Performance
+    </h2>
+    Shows information on the count, latency, and more of Function executions. You can customize this pretty aggressively to make it more useful.
+    <h2>
+     Servers
+    </h2>
+    Shows resource utilization and throughput per server. Useful for debugging Functions that might be bogging down your underlying resources. Putting the servers back in Serverless. J
+    <h2>
+     Analytics
+    </h2>
+    The analytics portal provides you the ability to write custom queries against your data. This is one of the most powerful tools in your tool box. Currently, the following tables are full of data from the Functions runtime:
+    <ul>
+     <li>
+      Requests – one of these is logged for each execution
+     </li>
+     <li>
+      Exceptions – tracks any exceptions thrown by the runtime
+     </li>
+     <li>
+      Traces – any traces written to context.log or ILogger show up here
+     </li>
+     <li>
+      PerformanceMetrics – Auto collected info about the performance of the servers the functions are running on
+     </li>
+     <li>
+      CustomEvents – Custom events from your functions and anything that the host sees that may or may not be tied to a specific request
+     </li>
+     <li>
+      CustomMetrics – Custom metrics from your functions and general performance and throughput info on your Functions. This is very helpful for high throughput scenarios where you might not capture every request message to save costs, but you still want a full picture of your throughput/etc. as the host will attempt to aggregate these client side, before sending to Application Insights
+     </li>
+    </ul>
+    The other tables are from availability tests and client/browser telemetry, which you can also add. The only thing that’s currently missing is dependencies. There is also more metrics/events we’ll add over the course of the preview (based off your generous feedback on what you need to see).
+
+Example:
+
+This will show us the distribution of requests/worker over the last 30 minutes.
+    <script src="https://gist.github.com/christopheranderson/84a9ec7c26f76964fc5a03fbe050dc14.js">
+    </script>
+    <a href="{{ site.base_url }}/media/2017/05/analytics.png">
+     <img alt="analytics" class="aligncenter size-large wp-image-4746" height="451" src="{{ site.base_url }}/media/2017/05/analytics-1024x525.png" width="879"/>
+    </a>
+    <h1>
+     Configuring the telemetry pipeline
+    </h1>
+    We wanted to be sure you can still control what data and how much gets sent, so we’ve exposed a handful of configuration settings for your host.json which allows you to finely control how we send data. We our latest updates to the configuration, you can now control the verbosity levels of the various telemetry pieces, as well as enable and configure aggregation and sampling.
+    <script src="https://gist.github.com/christopheranderson/152038b419ae82a836b66e8459cb0cfa.js">
+    </script>
+    <h1>
+     Limitations during preview
+    </h1>
+    Now that we’ve moved out of beta, we don’t have any planned breaking changes, but we’ll still consider the feature in preview from a supportability point of view. Once we’ve had a wider set of users using Application Insights and we complete some missing features like automatic dependency tracking, we’ll remove the preview flag. This means if you should avoid using our Application Insights integration for business critical applications, and instead continuing to instrument your code yourself with Application Insights.
+   </div>
+  </div>
+ </body>
+ <script src="{{ site.base_url }}/resource/jquery-1.12.1.min.js" type="text/javascript">
+ </script>
+ <script src="{{ site.base_url }}/resource/replace.js" type="text/javascript">
+ </script>
+</html>

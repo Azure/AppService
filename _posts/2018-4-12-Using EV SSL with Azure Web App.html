@@ -1,0 +1,112 @@
+---
+layout: post
+---
+<html>
+ <head>
+  <meta charset="utf-8"/>
+ </head>
+ <body>
+  <div id="page">
+   <a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/mksunitha" target="_blank">
+    mksunitha
+   </a>
+   <time>
+    4/12/2018 12:33:21 PM
+   </time>
+   <hr/>
+   <div id="content">
+    You can use EV SSL with Azure web apps. There are many CA that provide EV SSL for your web applications and the two options you have to use EV SSL with azure web app :
+    <ol>
+    </ol>
+    <h3>
+     Option 1 : Bring your own certificate and upload to web app
+    </h3>
+    Contact your CA to get instructions on how to export your EV SSL into PFX format . Then follow the
+    <a href="https://docs.microsoft.com/en-us/azure/app-service/app-service-web-tutorial-custom-ssl#upload-your-ssl-certificate">
+     instructions
+    </a>
+    to upload this certificate into your web app . Once the certificate is uploaded ,
+    <a href="https://docs.microsoft.com/en-us/azure/app-service/app-service-web-tutorial-custom-ssl#bind-your-ssl-certificate-1">
+     add an SSL binding to your web app
+    </a>
+    .
+    <h3>
+     Option 2 : Buy a certificate via Key Vault and import to Web App
+    </h3>
+    Azure Key Vault supports both DigiCert and GlobalSign CA providers to purchase ORG SSL and EV SSL.  You can purchase a EV SSL from either of these providers . Follow instructons on how to purchase and configure a EV SSL from these providers into Key Vault
+    <ul>
+     <li>
+      <a href="https://www.digicert.com/azure-key-vault/">
+       Purchase and configure DigiCert  with Azure Key Vault
+      </a>
+     </li>
+     <li>
+      <a href="https://www.globalsign.com/en/lp/certificates-for-azure-key-vault/">
+       Purchase and configure GlobalSign with Azure Key Vault
+      </a>
+     </li>
+    </ul>
+    Place the certificate (PFX format ) in Key Vault and then  follow the
+    <a href="https://blogs.msdn.microsoft.com/appserviceteam/2016/05/24/deploying-azure-web-app-certificate-through-key-vault/">
+     instructions here
+    </a>
+    to import the Key Vault as an App Service Certificate .
+    <h3>
+     Troubleshooting Issues
+    </h3>
+    In the
+    <a href="https://portal.azure.com">
+     Azure portal
+    </a>
+    , go to your App Service Certificate using this Key Vault resource for your EV SSL certificate . Follow the steps below to troubleshoot issues :
+    <ul>
+     <li>
+      <strong>
+       Key Vault may have moved to another subscription or deleted or in a suspended state
+      </strong>
+      : In the portal , when you open your App Service certificate you will see the status "Key Vault out of Sync "  . In this case , click on the status tile which will prompt you to reconfigure your Key Vault to App Service certificate to a valid Key Vault . Note the Key Vault must be in the same subscription as the App Service certificate
+     </li>
+     <li>
+      <strong>
+       Key Vault secret was updated but I still see the old secret in App Service certificate :
+      </strong>
+      <span>
+       Web App service runs a background job that periodically (once a day ) that syncs all App Service certificate. Hence when you rotate or update a certificate, s
+      </span>
+      <span>
+       ometimes the application is still retrieving the old certificate and not the newly updated certificate.  This  is because the job has not run to sync the certificate resource.   To force a sync of the certificate , you can click on
+      </span>
+      <strong>
+       Rekey and Sync
+      </strong>
+      <span>
+       setting and then click on
+      </span>
+      <strong>
+       Sync
+      </strong>
+      <span>
+       button .
+      </span>
+     </li>
+    </ul>
+    <h3>
+     <img src="{{ site.base_url }}/media/2018/02/sync-asc-1024x508.png"/>
+    </h3>
+    <ul>
+     <li>
+      <strong>
+       Documentation Support :
+      </strong>
+      Checkout our FAQs for more details if you run into any issues managing your App Service Certificate
+      <img src="{{ site.base_url }}/media/2018/02/faq-asc-1024x649.png"/>
+     </li>
+    </ul>
+   </div>
+  </div>
+ </body>
+ <script src="{{ site.base_url }}/resource/jquery-1.12.1.min.js" type="text/javascript">
+ </script>
+ <script src="{{ site.base_url }}/resource/replace.js" type="text/javascript">
+ </script>
+</html>

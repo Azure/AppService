@@ -1,0 +1,144 @@
+---
+layout: post
+---
+<html>
+ <head>
+  <meta charset="utf-8"/>
+ </head>
+ <body>
+  <div id="page">
+   <a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Adrian Hall (MSFT)" target="_blank">
+    Adrian Hall (MSFT)
+   </a>
+   <time>
+    6/29/2016 12:21:44 PM
+   </time>
+   <hr/>
+   <div id="content">
+    In the past, I've introduced you to
+    <a href="http://shellmonger.com/2016/04/04/30-days-of-zumo-v2-azure-mobile-apps-day-3-azure-ad-authentication/">
+     a TodoList application
+    </a>
+    built in Apache Cordova so that it is available for iOS, Android or any other platform that Apache Cordova supports.  You can find the QuickStart for Apache Cordova from within the Azure Portal, and read about it within
+    <a href="https://azure.microsoft.com/en-us/documentation/articles/app-service-mobile-cordova-get-started/">
+     our documentation
+    </a>
+    . Recently, we released a new beta for the Azure Mobile Apps Cordova SDK that supports offline sync, which is a feature we didn't have.
+
+Underneath, the Cordova offline sync functionality uses SQLite - this means it isn't an option at this point for HTML/JS applications.  We'll have to work out how to do this with IndexDB or something similar, but for now that isn't an option without a lot of custom work.
+
+Let's take a look at the differences.
+    <h3>
+     Step 1: New variables
+    </h3>
+    Just like other clients, I need a local store reference and a sync context that is used to keep track of the operational aspects for synchronization:
+
+[javascript]
+    var client,        // Connection to the Azure Mobile App backend
+        store,         // Sqlite store to use for offline data sync
+        syncContext,   // Offline data sync context
+        todoItemTable; // Reference to a table endpoint on backend
+[/javascript]
+    <h3>
+     Step 2: Initialization
+    </h3>
+    All the initialization is done in the
+    <tt>
+     onDeviceReady()
+    </tt>
+    method.  I have to set up a model so that the SQLite database is set up to match what is on the server:
+
+[javascript]
+function onDeviceReady() {
+
+    // Create the connection to the backend
+    client = new WindowsAzure.MobileServiceClient('https://yoursite.azurewebsites.net');
+
+    // Set up the SQLite database
+    store = new WindowsAzure.MobileServiceSqliteStore();
+
+    // Define the table schema
+    store.defineTable({
+        name: 'todoitem',
+        columnDefinitions: {
+            // sync interface
+            id: 'string',
+            deleted: 'boolean',
+            version: 'string',
+            // Now for the model
+            text: 'string',
+            complete: 'boolean'
+        }
+    }).then(function () {
+        // Initialize the sync context
+        syncContext = client.getSyncContext();
+        syncContext.pushHandler = {
+            onConflict: function (serverRecord, clientRecord, pushError) {
+                window.alert('TODO: onConflict');
+            },
+            onError: function(pushError) {
+                window.alert('TODO: onError');
+            }
+        };
+        return syncContext.initialize(store);
+    }).then(function () {
+        // I can now get a reference to the table
+        todoItemTable = client.getSyncTable('todoitem');
+
+        refreshData();
+
+        $('#add-item').submit(addItemHandler);
+        $('#refresh').on('click', refreshData);
+    });
+}
+[/javascript]
+
+There are three distinct areas here, separated by promises.  The first promise defines the tables.  If you are using multiple tables, you must ensure that all promises are complete before progressing to the next section.  You can do this with `Promise.all()` as an example.
+
+The second section initializes the sync context.  You need to define two sections for the push handler - the conflict handler and the error handler.  I'll go into the details of a conflict handler at a later date, but this is definitely something you will want to spend some time thinking about.  Do you want the last one in to be the winner, or the current client edition to be the winner, or do you want to prompt the user on conflicts?  It's all possible.
+
+Once I have created a sync context, I can get a reference to the local SQLite database table, which is used instead of the `getTable()` call that it replaces.  The rest of the code is identical - I refresh the data and add the event handlers.
+    <h3>
+     Step 3: Adjusting the Refresh
+    </h3>
+    In the past, refresh was just a query to the backend.  Now I need to do something a bit different.  When refresh is clicked, I want to do the push/pull cycle for synchronizing the data.
+
+[javascript]
+function refreshData() {
+    updateSummaryMessage('Loading data from Azure');
+    syncContext.push().then(function () {
+        return syncContext.pull(new WindowsAzure.Query('todoitem'));
+    }).then(function () {
+        todoItemtable
+            .where({ complete: false })
+            .read()
+            .then(createTodoItemList, handleError);
+    });
+}
+[/javascript]
+
+Just like the initialization, the SDK uses promises to proceed asynchronously.  First push (which resolves as a promise), then pull (which also resolves as a promise) and finally you do EXACTLY THE SAME THING AS BEFORE - you query the table, read the results and then build the todo list.  Seriously - this bit really didn't change.
+
+That means you can add offline to your app without changing your existing code - just add the initialization and something to trigger the push/pull.
+    <h3>
+     Wrap Up
+    </h3>
+    This is still a beta, which means a work-in-progress.   Feel free to try it out and give us feedback.  You can file issues and ideas at
+    <a href="https://github.com/azure/azure-mobile-apps-js-client/issues" target="_blank">
+     our GitHub repository
+    </a>
+    .
+    <i>
+     Cross-posted to
+     <a href="http://wp.me/p6gQt8-2oB">
+      my personal blog
+     </a>
+    </i>
+   </div>
+  </div>
+ </body>
+ <script src="{{ site.base_url }}/resource/jquery-1.12.1.min.js" type="text/javascript">
+ </script>
+ <script src="{{ site.base_url }}/resource/replace.js" type="text/javascript">
+ </script>
+</html>

@@ -1,0 +1,136 @@
+---
+layout: post
+---
+<html>
+ <head>
+  <meta charset="utf-8"/>
+ </head>
+ <body>
+  <div id="page">
+   <a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/mksunitha" target="_blank">
+    mksunitha
+   </a>
+   <time>
+    6/29/2017 6:36:46 PM
+   </time>
+   <hr/>
+   <div id="content">
+    Here is a list of frequently asked questions designed to provide a better understanding of the Azure marketplace for Web
+    <ol>
+     <li>
+      <strong>
+       How do I submit my Web Application to Windows Web Application Gallery?
+      </strong>
+      A. You can submit your application
+      <a href="http://azuregallery.azurewebsites.net">
+       here
+      </a>
+      . Before you submit the application please read through the guidelines and process for submission in this
+      <a href="https://blogs.msdn.microsoft.com/appserviceteam/2016/08/26/onboarding-to-azure-web-marketplace/">
+       article
+      </a>
+      .
+     </li>
+     <li>
+      <strong>
+       Why is Deployment option connected to a github repository when I deploy an application like WordPress from the marketplace?
+      </strong>
+      A. The deployment process for application from the marketplace uses a GIT deployment method. This makes it easier for app owners to push updates to the application as quickly as possible and have it available to Azure users. Hence we use a github repository configured by the app owner with the application code that is deployed during provisioning of the application.
+     </li>
+     <li>
+      <strong>
+       How long does it take for the Web Application Gallery Team to validate the application?
+      </strong>
+      A. Once the application is submitted, it will take 3-5 business days for us to validate the application and send you the status.
+     </li>
+     <li>
+      <strong>
+       How do I build a package for Web Application Gallery?
+      </strong>
+      A. Please refer to
+      <a href="https://blogs.msdn.microsoft.com/appserviceteam/2016/08/26/onboarding-to-azure-web-marketplace#azurepackage">
+       this article
+      </a>
+      on how to to build a package for Azure marketplace.
+     </li>
+     <li>
+      <strong>
+       How do I test my application for Windows App Gallery?
+      </strong>
+      A. Find the process to test your application in the following
+      <a href="https://blogs.msdn.microsoft.com/appserviceteam/2016/08/26/onboarding-to-azure-web-marketplace/#testyourapp">
+       article
+      </a>
+      .
+     </li>
+     <li>
+      <strong>
+       Can I on-board a commercial application to the Azure marketplace?
+      </strong>
+      A. Yes. Commercial application are supported with
+      <em>
+       <span style="text-decoration: underline">
+        Bring your own License model (BOYL)
+       </span>
+      </em>
+      . Here are two approaches on how to allow an azure user to acquire a license:
+      <ul>
+       <li>
+        Approach 1 :
+        <ul>
+         <li>
+          Ask customer to purchase an license from solution partner website directly.
+         </li>
+         <li>
+          Provision the application solution from the Azure Marketplace
+         </li>
+         <li>
+          When user views the app in the browser ask user to enter the license information
+         </li>
+         <li>
+          Solution partner API are called to validate the license key and allow the user to use the application solution as documented by the solution partner
+         </li>
+        </ul>
+       </li>
+       <li>
+        Approach 2 :
+        <ul>
+         <li>
+          Provision the application solution from the Azure Marketplace
+         </li>
+         <li>
+          When user views the app in the browser the app ask the user to provide the information needed to procure a license key from the run time experience using solution partners APIs.
+         </li>
+        </ul>
+       </li>
+      </ul>
+     </li>
+     <li>
+      <b>
+       An application was removed from the marketplace and how do I deploy the same solution?
+      </b>
+      A. If an application is removed from the marketplace , this means it is no longer supported by the application owner in the marketplace. In such cases we remove the application if it does have support from the application owner to maintain fixes or issues. If you want to deploy the same application , you can. Follow these steps to do so :
+      <ul>
+       <li>
+        Create an empty Web App and any additional resources such as MySQL , SQL DB etc that the application may need.
+       </li>
+       <li>
+        Access the web application file storage and deploy the code via FTP or GIT.
+       </li>
+       <li>
+        Browse the application and complete the installation of the application based on the documentation provided in the application framework documentation.
+       </li>
+       <li>
+        If you run into issues , please report these issues in the community forums for the application being used .
+       </li>
+      </ul>
+     </li>
+    </ol>
+   </div>
+  </div>
+ </body>
+ <script src="{{ site.base_url }}/resource/jquery-1.12.1.min.js" type="text/javascript">
+ </script>
+ <script src="{{ site.base_url }}/resource/replace.js" type="text/javascript">
+ </script>
+</html>

@@ -1,0 +1,183 @@
+---
+layout: post
+---
+<html>
+ <head>
+  <meta charset="utf-8"/>
+ </head>
+ <body>
+  <div id="page">
+   <a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/mksunitha" target="_blank">
+    mksunitha
+   </a>
+   <time>
+    5/16/2016 8:03:55 PM
+   </time>
+   <hr/>
+   <div id="content">
+    Azure app service allows you to auto scale your web app by dynamically adding web server instances to handle the traffic to your web app. Azure app service uses
+    <a href="http://www.iis.net/learn/extensions/planning-for-arr">
+     Application Request Routing
+    </a>
+    IIS Extension to distribute your connecting users between your active instances serving up the content. ARR cleverly identifies the user by assigning them a special cookie (known as an
+    <strong>
+     affinity cookie
+    </strong>
+    ), which allows the service to choose the right instance the user was using to serve subsequent requests made by that user. This means, a client establishes a session with an instance and it will keep talking to the same instance until his session has expired.
+
+If you already have a web app on Azure app service , just browse the app and use browser debugger ( click on F12)  to see the list of cookies. In the list of cookie you will see
+    <strong>
+     ARRAffinity
+    </strong>
+    Cookie
+    <a href="{{ site.base_url }}/media/2016/05/viewarrcookie1.png">
+     <img alt="viewarrcookie1" class="alignnone wp-image-335 size-large" height="524" src="{{ site.base_url }}/media/2016/05/viewarrcookie1-1024x610.png" width="879"/>
+    </a>
+    There are situations where in keeping the affinity is not desired. For example, if you are getting way too many requests from a single user and the requests going to the same web server instance can overload it.  If maintaining session affinity is not important and you want better load balancing , it is recommended to disable session affinity cookie. Follow the steps for either
+    <strong>
+     Azure portal
+    </strong>
+    or
+    <strong>
+     Azure resource Explorer
+    </strong>
+    to  disable the session affinity cookie:
+    <h3>
+     Azure Portal:
+    </h3>
+    <ul>
+     <li>
+      Login to the
+      <a href="https://portal.azure.com" target="_blank">
+       Azure portal
+      </a>
+     </li>
+     <li>
+      Browse
+      <strong>
+       App Services
+      </strong>
+      and select your web application.
+     </li>
+     <li>
+      Click on
+      <strong>
+       Settings-&gt;Application Settings.
+      </strong>
+      Find
+      <span style="text-decoration: underline">
+       ARR affinity
+      </span>
+      setting under
+      <strong>
+       General Settings
+      </strong>
+      and click on
+      <strong>
+       Off
+      </strong>
+     </li>
+    </ul>
+    <a href="{{ site.base_url }}/media/2016/05/arrcookieportal.png">
+     <img alt="Disable ARR cookie in portal" class="alignnone wp-image-815 size-mediumlarge" height="332" src="{{ site.base_url }}/media/2016/05/arrcookieportal-500x332.png" width="500"/>
+    </a>
+    <h3>
+     Azure Resource Explorer:
+    </h3>
+    <ul>
+     <li>
+      Go to
+      <a href="https://resources.azure.com/">
+       Azure resource explorer
+      </a>
+      .
+     </li>
+     <li>
+      Click on
+      <strong>
+       subscriptions
+      </strong>
+     </li>
+    </ul>
+    <a href="{{ site.base_url }}/media/2016/05/subscription-expand.png">
+     <img alt="subscription-expand" class="alignnone size-medium wp-image-285" height="200" src="{{ site.base_url }}/media/2016/05/subscription-expand-300x200.png" width="300"/>
+    </a>
+    <ul>
+     <li>
+      Click on your azure subscription in which your web app is located. Click on
+      <strong>
+       resourcegroups
+      </strong>
+     </li>
+    </ul>
+    <a href="{{ site.base_url }}/media/2016/05/subname-expand.png">
+     <img alt="subname-expand" class="alignnone size-medium wp-image-275" height="113" src="{{ site.base_url }}/media/2016/05/subname-expand-300x113.png" width="300"/>
+    </a>
+    <ul>
+     <li>
+      Click on the resource group where the web app is located. Click on
+      <strong>
+       Microsoft.Web.
+      </strong>
+      Click on
+      <strong>
+       sites
+      </strong>
+      and Select your web app . Click on
+      <strong>
+       Edit
+      </strong>
+      to make your changes .
+     </li>
+    </ul>
+    <strong>
+     <a href="{{ site.base_url }}/media/2016/05/edit-schema.png">
+      <img alt="edit-schema" class="alignnone size-large wp-image-246" height="325" src="{{ site.base_url }}/media/2016/05/edit-schema-1024x379.png" width="879"/>
+     </a>
+    </strong>
+    <ul>
+     <li>
+      Search for
+      <strong>
+       clientAffinityCookie
+      </strong>
+      and set it to
+      <strong>
+       false
+      </strong>
+     </li>
+    </ul>
+    <a href="{{ site.base_url }}/media/2016/05/set-affinitycookie.png">
+     <img alt="set-affinitycookie" class="alignnone size-mediumlarge wp-image-266" height="63" src="{{ site.base_url }}/media/2016/05/set-affinitycookie-500x63.png" width="500"/>
+    </a>
+    <ul>
+     <li>
+      Click on
+      <strong>
+       PUT
+      </strong>
+      to save your changes.
+     </li>
+    </ul>
+    <a href="{{ site.base_url }}/media/2016/05/put-savechanges.png">
+     <img alt="put-savechanges" class="aligncenter wp-image-256 size-large" height="135" src="{{ site.base_url }}/media/2016/05/put-savechanges-1024x157.png" width="879"/>
+    </a>
+    <strong>
+    </strong>
+    That’s it! You have now disabled the session affinity cookie. You can browse your web app and click on F12 key to access the debugger on your browser to view the cookies generated. For an app without Session affinity cookie you will  not see
+    <strong>
+     ARRAffinity
+    </strong>
+    in the list of cookies.
+    <a href="{{ site.base_url }}/media/2016/05/removedcookiearr.png">
+     <img alt="removedcookiearr" class="alignnone wp-image-316 size-large" height="468" src="{{ site.base_url }}/media/2016/05/removedcookiearr-1024x545.png" width="879"/>
+    </a>
+    Without the cookie the requests for your web app, will be distributed evenly across all the instances serving your web app content. You can achieve  better load balancing for your web app.
+   </div>
+  </div>
+ </body>
+ <script src="{{ site.base_url }}/resource/jquery-1.12.1.min.js" type="text/javascript">
+ </script>
+ <script src="{{ site.base_url }}/resource/replace.js" type="text/javascript">
+ </script>
+</html>

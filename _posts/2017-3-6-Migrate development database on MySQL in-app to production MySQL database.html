@@ -1,0 +1,95 @@
+---
+layout: post
+---
+<html>
+ <head>
+  <meta charset="utf-8"/>
+ </head>
+ <body>
+  <div id="page">
+   <a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/mksunitha" target="_blank">
+    mksunitha
+   </a>
+   <time>
+    3/6/2017 10:56:56 PM
+   </time>
+   <hr/>
+   <div id="content">
+    MySQL in-app feature on App service  has
+    <a href="https://blogs.msdn.microsoft.com/appserviceteam/?p=3225">
+     announced general availability
+    </a>
+    today.  The feature has been keen on improve the experience of developing MySQL based applications on Azure App Service.  Once your application is ready to go live , you need to migrate the database content to your production database.  This can be tedious  task when done manually .
+
+In the MySQL in-app management settings ,  we now have, we have an option for easily exporting your
+    <strong>
+     localdb
+    </strong>
+    database from MySQL in-app to a production MySQL database.  This blog will discuss how to perform this migration of your database. Follow the steps below :
+    <div class="post">
+     <div class="body">
+      <div class="postBody" id="3151915e-35a4-4bd5-8502-4fbac00341b7" style="margin: 4px 0px 0px;border-width: 0px;padding: 0px">
+       1. Create a production MySQL database using any
+       <a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/03/06/announcing-general-availability-for-mysql-in-app/#productionmysql">
+        one
+       </a>
+       these options. For this blog post I am using a production Azure database for MySQL(Preview).
+       <span>
+        For details , refer to
+       </span>
+       <a href="https://docs.microsoft.com/en-us/azure/mysql/quickstart-create-mysql-server-database-using-azure-portal">
+        How to create MySQL database from Portal
+       </a>
+       <span>
+        or
+       </span>
+       <a href="https://docs.microsoft.com/en-us/azure/mysql/quickstart-create-mysql-server-database-using-azure-cli">
+        How to create MySQL database using CLI.
+       </a>
+       2. Copy the connection string for the Azure database for MySQL(Preview) database.  If you are using a different database solution for production , collect the database connection information for your production database.
+       <a href="{{ site.base_url }}/media/2017/03/connectionstringmysql.jpg">
+        <img alt="connectionstringmysql" class="alignnone size-large wp-image-4865" height="358" src="{{ site.base_url }}/media/2017/03/connectionstringmysql-1024x417.jpg" width="879"/>
+       </a>
+       3. Login to the
+       <a href="https://portal.azure.com">
+        Azure portal
+       </a>
+       . Click on your web app using MySQL in-app. Select MySQL in-app setting for your web app and Click on
+       <strong>
+        Export
+       </strong>
+       button under
+       <strong>
+        MySQL in App Export
+       </strong>
+       <a href="{{ site.base_url }}/media/2017/03/migrate2.png">
+        <img alt="migrate2" class="alignnone size-large wp-image-3255" height="459" src="{{ site.base_url }}/media/2017/03/migrate2-1024x535.png" width="879"/>
+       </a>
+       4. You have a choice of using a connections string for your production database or enter the credentials manually. Once the production database connection information has been entered , click on Save to start the process of export.  During the export a connection string will be added to the connection string setting in the portal.
+       <a href="{{ site.base_url }}/media/2017/03/migrate4.png">
+        <img alt="migrate4" class="alignnone size-large wp-image-3305" height="353" src="{{ site.base_url }}/media/2017/03/migrate4-1024x411.png" width="879"/>
+       </a>
+       During the export , you cannot make any changes to MySQL in-app configuration in the portal.  All options will be disabled to manage MySQL in-app during export process .You must wait until the export is completed.
+       <a href="{{ site.base_url }}/media/2017/03/migrate3.png">
+        <img alt="migrate3" class="alignnone size-large wp-image-3275" height="482" src="{{ site.base_url }}/media/2017/03/migrate3-1024x561.png" width="879"/>
+       </a>
+       8. Once the export is successful , review your production database to make sure all the content was successfully updated.  Note
+       <span style="text-decoration: underline">
+        <strong>
+         we do not turn off
+        </strong>
+       </span>
+       the MySQL in-app feature since your production application may still be using it.
+
+Update your application to connect to the production database and test your application before going live with your application. After successful testing , you can now turn off MySQL in-app feature for your web app to continue using production database.
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+ </body>
+ <script src="{{ site.base_url }}/resource/jquery-1.12.1.min.js" type="text/javascript">
+ </script>
+ <script src="{{ site.base_url }}/resource/replace.js" type="text/javascript">
+ </script>
+</html>

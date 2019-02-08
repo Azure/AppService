@@ -1,0 +1,185 @@
+---
+layout: post
+---
+<html>
+ <head>
+  <meta charset="utf-8"/>
+ </head>
+ <body>
+  <div id="page">
+   <a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Daria Grigoriu" target="_blank">
+    Daria Grigoriu
+   </a>
+   <time>
+    11/15/2017 12:30:20 AM
+   </time>
+   <hr/>
+   <div id="content">
+    The new Azure Functions on Linux preview enables local Azure Functions development on Linux and Mac platforms to seamlessly translate to cloud hosting on Linux across a broader choice of hosting options. The Linux hosting model for Azure Functions is based on Docker containers which brings greater flexibility in terms of packaging and leveraging app specific dependencies. This is another stepping stone in the journey to run Azure Functions anywhere and to enable reuse of your Function App code assets.
+
+Functions on Linux can be hosted in a
+    <a href="https://docs.microsoft.com/azure/azure-functions/functions-scale">
+     dedicated App Service
+    </a>
+    tier in 2 different modes:
+    <ul>
+     <li>
+      You bring the Function App code and we provide and manage the container, no specific Docker related knowledge required.
+     </li>
+     <li>
+      You bring your own Docker container including the Azure Functions runtime 2.0, specific dependencies, and Function App code.
+     </li>
+    </ul>
+    Please note that charges for the dedicated App Service Plan you select will apply to the preview as published on the
+    <a href="https://azure.microsoft.com/en-us/pricing/details/app-service">
+     App Service pricing page
+    </a>
+    .
+
+With the Azure Functions on Linux preview you should be able to run any Azure Functions scenarios supported by the
+    <a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/09/25/develop-azure-functions-on-any-platform/">
+     Azure Functions runtime 2.0
+    </a>
+    . Notes for known Azure Functions runtime 2.0 limitations are available
+    <a href="https://github.com/Azure/azure-webjobs-sdk-script/wiki/Azure-Functions-runtime-2.0-known-issues">
+     at this link
+    </a>
+    . Support for the Azure Functions on Linux preview is available with the
+    <a href="https://portal.azure.com/">
+     Azure Portal
+    </a>
+    and the
+    <a href="https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest">
+     Azure CLI
+    </a>
+    . This blog post will focus on the Azure CLI for creating Azure Functions resources. The following steps are required regardless of the hosting mode selected:
+    <ol>
+     <li>
+      Install the latest version of the
+      <a href="https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest">
+       Azure CLI
+      </a>
+      .
+     </li>
+     <li>
+      Run az login to access your Azure account.
+     </li>
+     <li>
+      Create Azure resources:
+     </li>
+    </ol>
+    <pre># Create a Resource Group
+az group create -n rg-name -l "South Central US"
+
+# Create a Linux App Service Plan (use S2 or S3 as the sku value for larger VMs)
+az appservice plan create -n plan-name -g rg-name --is-linux -l "South Central US" --sku S1 --number-of-workers 1
+
+# Create a storage account
+az storage account create -n storage-name --location "South Central US" --resource-group rg-name --sku Standard_LRS</pre>
+    <h3>
+     Host Function App content via an App Service managed container
+    </h3>
+    To host Function App content via an App Service managed container first create a Linux Function App:
+    <pre># Create a Linux Function App
+az functionapp create -n fun-app-name -g rg-name -p plan-name -s storage-name</pre>
+    You can manage the Function App in the
+    <a href="https://portal.azure.com/">
+     Azure Portal
+    </a>
+    and deploy Function App content using your preferred workflow. Read more about this hosting mode in
+    <a href="https://docs.microsoft.com/azure/azure-functions/functions-create-first-azure-function-azure-cli-linux">
+     our App Service managed container for Azure Functions documentation.
+    </a>
+    <h3>
+     Host a custom Azure Functions container
+    </h3>
+    To create a Function App pointing to a specific container image use the example below (referencing the latest
+    <a href="https://hub.docker.com/r/microsoft/azure-functions-runtime">
+     Azure Functions on Linux starter image
+    </a>
+    ):
+    <pre># Create a Linux Function App pointing to a specific container image
+az functionapp create -n fun-app-name -g rg-name -p plan-name -i microsoft/azure-functions-runtime:2.0.0-jessie -s storage-name</pre>
+    You can manage the Function App in the
+    <a href="https://portal.azure.com/">
+     Azure Portal
+    </a>
+    . The Function App content however is not editable in the Azure Portal when using a custom container.
+
+To create your own container image, you must install a few
+    <strong>
+     prerequisites
+    </strong>
+    :
+    <ul>
+     <li>
+      <a href="https://www.docker.com/">
+       Docker
+      </a>
+     </li>
+     <li>
+      <a href="https://www.microsoft.com/net/download/">
+       .NET Core 2.0
+      </a>
+     </li>
+     <li>
+      The latest
+      <a href="https://github.com/Azure/azure-functions-cli">
+       azure-functions-core-tools
+      </a>
+      : npm i -g azure-functions-core-tools@core
+     </li>
+    </ul>
+    Please note that app specific configuration can be included in the Dockerfile or managed as App Settings for the Function App. Once the prerequisites are installed you can follow these steps:
+    <ol>
+     <li>
+      Create a Function App directory locally.
+     </li>
+     <li>
+      Generate a Dockerfile and optionally a sample function:
+     </li>
+    </ol>
+    <pre>func init . --docker --sample
+func start</pre>
+    <ol start="3">
+     <li>
+      Build your container image and optionally test your Function App running in a container locally:
+     </li>
+    </ol>
+    <pre>docker build -t my-functions.
+docker run -p 8080:80 my-functions</pre>
+    <ol start="4">
+     <li>
+      Publish your container image to an online registry such as Docker Hub:
+     </li>
+    </ol>
+    <pre>docker login
+docker tag my-functions my-repo/my-functions
+docker push my-repo/my-functions</pre>
+    Read more about this hosting mode in
+    <a href="{{ site.base_url }}///docs.microsoft.com/azure/azure-functions/functions-create-function-linux-custom-image">
+     our custom Azure Functions containers documentation.
+    </a>
+    You can also run your Function App in a container on other container-based hosting platforms such as
+    <a href="https://azure.microsoft.com/services/container-instances">
+     Azure Container Instances
+    </a>
+    :
+    <pre>az container create --name &lt;your name="" container=""&gt; --image &lt;your alias="" hub="" docker=""&gt;/&lt;your name="" image=""&gt; --resource-group &lt;your name="" group="" resource=""&gt; --ip-address public</pre>
+    Known issues for this preview are listed on the
+    <a href="https://github.com/Azure/Azure-Functions/wiki/Known-Issues">
+     Azure Functions wiki
+    </a>
+    . To ask questions or share issues with the engineering team for the Azure Functions on Linux preview please use the
+    <a href="https://social.msdn.microsoft.com/Forums/en-US/home?forum=AzureFunctions">
+     Azure Functions MSDN forum
+    </a>
+    .
+   </div>
+  </div>
+ </body>
+ <script src="{{ site.base_url }}/resource/jquery-1.12.1.min.js" type="text/javascript">
+ </script>
+ <script src="{{ site.base_url }}/resource/replace.js" type="text/javascript">
+ </script>
+</html>

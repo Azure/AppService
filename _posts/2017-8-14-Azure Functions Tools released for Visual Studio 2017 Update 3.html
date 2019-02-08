@@ -1,0 +1,143 @@
+---
+layout: post
+---
+<html>
+ <head>
+  <meta charset="utf-8"/>
+ </head>
+ <body>
+  <div id="page">
+   <a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Donna Malayeri" target="_blank">
+    Donna Malayeri
+   </a>
+   <time>
+    8/14/2017 11:00:16 AM
+   </time>
+   <hr/>
+   <div id="content">
+    We're excited to announce that Azure Functions tools for Visual Studio are out of preview! The tools are now included in the Azure workload of
+    <a href="https://blogs.msdn.microsoft.com/visualstudio/2017/08/14/visual-studio-2017-version-15-3-released/">
+     Visual Studio 2017 Update 3
+    </a>
+    . Just update your existing VS 2017 installation to Update 3--there's no need to use the preview channel or manually install the Functions tooling extension.
+
+The tools support building and publishing a class library as the implementation of your functions. Configure bindings and triggers using attributes in your code, rather than a separate metadata file.
+
+To get started with the tools, check out these articles:
+    <ul>
+     <li>
+      <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-create-your-first-function-visual-studio">
+       Create your first function using Visual Studio
+      </a>
+     </li>
+     <li>
+      <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-develop-vs">
+       Azure Functions Tools for Visual Studio
+      </a>
+     </li>
+     <li>
+      <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-dotnet-class-library">
+       Using .NET class libraries with Azure Functions
+      </a>
+     </li>
+    </ul>
+    <h2>
+     Azure Functions Core Tools
+    </h2>
+    Along with this release is the 1.0 version of the
+    <a href="https://www.npmjs.com/package/azure-functions-core-tools">
+     Azure Functions Core Tools
+    </a>
+    . These are used by the Visual Studio tools when you run or debug a Function App locally. You can also use the Core Tools directly to retrieve app settings from Azure or publish your Function App. To learn more, see
+    <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local">
+     Run locally using the Azure Functions Core Tools
+    </a>
+    .
+    <a href="{{ site.base_url }}/media/2017/08/cli-screenshot.png">
+     <img alt="" class="alignnone wp-image-5536 size-medium" height="209" src="{{ site.base_url }}/media/2017/08/cli-screenshot-300x209.png" width="300"/>
+    </a>
+    <h2>
+     What's new in this release
+    </h2>
+    If you've used the preview tooling, you've probably seen the package
+    <a href="https://www.nuget.org/packages/Microsoft.NET.Sdk.Functions">
+     Microsoft.NET.Sdk.Functions
+    </a>
+    . This package is automatically added by the New Function project template and ensures that generated files are always in sync with your code.
+
+In this release, only triggers are generated in function.json. There is a new property in function.json that tells the runtime to use .NET attributes for input and output bindings, rather than function.json configuration:
+
+[sourcecode language="plain"]
+"configurationSource": "attributes" // possible values are "attributes" or "config"
+[/sourcecode]
+
+If the value of
+    <strong>
+     configurationSource
+    </strong>
+    is
+    <strong>
+     attributes
+    </strong>
+    , then the contents of function.json cannot be changed after it is generated. That is because the Functions runtime uses attributes in the assembly to configure bindings and triggers. (If you’re wondering why some properties are still in function.json, it’s because the
+    <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-scale#how-the-consumption-plan-works">
+     Scale Controller uses it to make scaling decisions on the Consumption plan
+    </a>
+    .)
+    <h2>
+     Functions project type
+    </h2>
+    The Functions project type is a .NET Standard class library though it currently targets
+    <strong>
+     net461
+    </strong>
+    . This is because the Azure Functions runtime does not yet take a dependency on the .NET Standard 2.0 facades that enable full framework support. Now that .NET Standard 2.0 is RTM, we will make this update in a future release. See
+    <a href="https://github.com/Azure/azure-webjobs-sdk-script/issues/1792">
+     Support .NET Standard 2.0 class libraries #1792
+    </a>
+    .
+
+Once we have completed the
+    <a href="https://github.com/Azure/Azure-Functions/issues/98">
+     Azure Functions port to .NET Core 2.0
+    </a>
+    , the .NET Standard 2.0 target will become much more important. At that time, we will change the default in the Visual Studio New Project dialog.
+    <h2>
+     Learn more
+    </h2>
+    We’ve seen a great response to our preview tooling and we’re excited to release this version.
+    <ul>
+     <li>
+      For more product news, follow
+      <a href="https://twitter.com/AzureFunctions">
+       @AzureFunctions
+      </a>
+      .
+     </li>
+     <li>
+      To report bugs or file feature requests, please open an issue on the
+      <a href="https://github.com/Azure/Azure-Functions">
+       Azure-Functions
+      </a>
+      GitHub repo. Please include “Visual Studio” in the issue title.
+     </li>
+     <li>
+      For technical questions, please post on the
+      <a href="https://social.msdn.microsoft.com/Forums/azure/en-US/home?forum=azurefunctions">
+       MSDN forums
+      </a>
+      or
+      <a href="https://stackoverflow.com/questions/tagged/azure-functions">
+       StackOverflow
+      </a>
+      . The entire Functions engineering team monitors these questions, so you’re sure to get an expert answer.
+     </li>
+    </ul>
+   </div>
+  </div>
+ </body>
+ <script src="{{ site.base_url }}/resource/jquery-1.12.1.min.js" type="text/javascript">
+ </script>
+ <script src="{{ site.base_url }}/resource/replace.js" type="text/javascript">
+ </script>
+</html>

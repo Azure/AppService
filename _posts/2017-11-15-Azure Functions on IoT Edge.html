@@ -1,0 +1,97 @@
+---
+layout: post
+---
+<html>
+ <head>
+  <meta charset="utf-8"/>
+ </head>
+ <body>
+  <div id="page">
+   <a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Colby Tresness" target="_blank">
+    Colby Tresness
+   </a>
+   <time>
+    11/15/2017 12:30:42 AM
+   </time>
+   <hr/>
+   <div id="content">
+    <h1>
+     Running Azure Functions on IoT Edge
+    </h1>
+    Today, we’re very excited to have released the public preview of
+    <a href="https://aka.ms/iot-connect-blog">
+     Azure IoT Edge
+    </a>
+    at our yearly developer conference, Connect();. This adds to the Azure IoT Suite the ability to write code which executes directly on IoT devices, allowing devices to react more quickly to events and spend less time sending messages to the cloud. The simplicity of Azure Functions fits extremely well as a programming model for these scenarios, and from day one users of IoT Edge will be able to write a Function to implement business logic right on their IoT devices. IoT devices are a great addition to the already robust list of places you can run a Function.
+    <h2>
+     When Would IoT Edge be Useful?
+    </h2>
+    To best answer this question, let’s consider a simple example. Imagine you’re a factory administrator who oversees thousands of machines. With
+    <em>
+     Azure IoT Hub
+    </em>
+    , you can track the status of all your devices, send messages to those devices, receive messages from those devices, and more. Let’s assume you have a system in place receiving telemetry data about the temperature of your machines. To prevent damage due to overheating, you’re running a Function which is listening on all device to cloud messages (through the underlying EventHub.) The result of this is that you get a notification any time a device gets too hot, so you can mitigate and avoid disaster.
+
+Since you have thousands of machines sending temperature readings constantly, this is getting expensive and is taking up all your bandwidth. Here’s where IoT Edge comes in – by running your business logic directly on the devices, you only have to send messages to the cloud when an anomaly is detected. So, you augment your current system by adding the IoT Edge Runtime to your devices, writing a Function module deciding whether a message is necessary, and deploying this module to all your devices. You now have the same end system without the massive amount of message passing, and you can sit back and relax knowing your machines will tell you if they are overheating.
+    <h2>
+     How do I Run Functions on a Device?
+    </h2>
+    <p style="text-align: left">
+     <em>
+      Azure IoT Edge
+     </em>
+     is made up of three main components: IoT Edge modules, the IoT Edge runtime, and the cloud based interface. Modules are the units of execution that are pushed to your devices and run your custom code.  The runtime is deployed to each device and manages these modules, which are implemented as Docker containers.
+     <a href="{{ site.base_url }}/media/2017/11/iotedge.png">
+      <img alt="IoT Edge Architecture Diagram" class="size-large wp-image-6405 aligncenter" height="312" src="{{ site.base_url }}/media/2017/11/iotedge-1024x363.png" width="879"/>
+     </a>
+    </p>
+    <p style="text-align: center">
+     <em>
+      Figure 1: IoT Edge Experience Illustrated
+     </em>
+    </p>
+    When a user writes a Function they’d like to run on the Edge, we package it up as one of these modules and deploy to your devices for you. We’ve released a Visual Studio Code extension  to help you with this – no advanced knowledge of containers is needed, even though it’s a container under the hood. Follow the more detailed instruction set
+    <a href="https://docs.microsoft.com/en-us/azure/iot-edge/tutorial-deploy-function">
+     here
+    </a>
+    in order to set up an edge enabled device, write a sample function, get it up and running on said device, and monitor the results.
+    <h2>
+    </h2>
+    <h2>
+     Looking Forward
+    </h2>
+    The ability to write code which executes on IoT devices is an exciting addition for Azure users. For public preview, only C# Functions are supported, but we’re looking to add the ability to write Functions in more languages as we move towards GA. Also note that for public preview Functions won’t run on devices with ARM distributions of Linux.
+
+Be sure to visit the more detailed IoT Edge preview
+    <a href="https://docs.microsoft.com/en-us/azure/iot-edge/">
+     documentation
+    </a>
+    , and try running a Function on the Edge! Also, please feel free to engage either me or the overall Functions team on Twitter with any questions:
+    <p style="text-align: center">
+     @ColbyTresness
+    </p>
+    <p style="text-align: center">
+     @AzureFunctions
+    </p>
+    <h2>
+     Reference Code
+    </h2>
+    <p style="text-align: left">
+     The below code is an example of a Function reacting to IoT Edge events – parsing a message to find a machine’s temperature, checking if its over a threshold, and appending an alert if it is.
+     <a href="{{ site.base_url }}/media/2017/11/iotedgecode1.png">
+      <img alt="" class="size-full wp-image-6416 aligncenter" height="647" src="{{ site.base_url }}/media/2017/11/iotedgecode1.png" width="985"/>
+     </a>
+    </p>
+    <p style="text-align: center">
+     <em>
+      Code Sample 1: The Run Method of a Function Reacting to IoT Edge Events
+     </em>
+    </p>
+   </div>
+  </div>
+ </body>
+ <script src="{{ site.base_url }}/resource/jquery-1.12.1.min.js" type="text/javascript">
+ </script>
+ <script src="{{ site.base_url }}/resource/replace.js" type="text/javascript">
+ </script>
+</html>
