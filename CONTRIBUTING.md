@@ -1,8 +1,8 @@
 # Instructions for posting content
 
-> For Antares team members only
-
-**Note:** You must have contributor access to the repository to publish.
+> For **Antares team** members only
+>
+> **Note:** You must have contributor access to the repository to publish.
 
 ## Environment Setup
 
@@ -26,6 +26,8 @@
     ```
 
     The blog will now be running at http://127.0.0.1:4000/AppService/
+
+> **VSCODE** If you are using VSCode to author blog post please install [Markdown Linting extension](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint)
 
 ## Authoring new posts
 
