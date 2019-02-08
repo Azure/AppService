@@ -17,7 +17,7 @@ layout: post
    <div id="content">
     If you are reading this blog, you have most likely heard the term Serverless once or twice in the past few months. In a nutshell, Serverless means a fully managed platform capable of running your code (in the form of functions), at almost any given scale while paying only for the time when your code is running. Serverless is sometimes categorized as ‘reactive’ compute, where functions are executed (react) when specific events occur. For the purpose of this blog, I will focus on the developer experience.
     <a href="https://azure.microsoft.com/services/functions/">
-     <img alt="Try_00_ACOM" class="alignleft size-mediumlarge wp-image-1576" height="293" src="{{ site.base_url }}/media/2016/10/Try_00_ACOM-500x293.jpg" width="500"/>
+     <img alt="Try_00_ACOM" class="alignleft size-mediumlarge wp-image-1576" height="293" src="{{ site.baseurl }}/media/2016/10/Try_00_ACOM-500x293.jpg" width="500"/>
     </a>
     There are several options to get firsthand experience with Serverless development, but all options require creating an account (typically providing credit card information) with a vendor. This changes today. Now you you can get a peek into the world of Serverless for free (no credit card required) with no commitment. If you have a Microsoft, Google, or Facebook account you can get started immediately. To get an hour of free Azure Functions experience browse to
     <a href="https://functions.azure.com">
@@ -60,15 +60,15 @@ Here is a very simple HTTP trigger “Hello World” example. Try it yourself:
      </li>
     </ol>
     <a href="http://functions.azure.com/try">
-     <img alt="Try_0" class="aligncenter wp-image-1555 size-large" height="476" src="{{ site.base_url }}/media/2016/10/Try_0-1024x555.jpg" width="879"/>
+     <img alt="Try_0" class="aligncenter wp-image-1555 size-large" height="476" src="{{ site.baseurl }}/media/2016/10/Try_0-1024x555.jpg" width="879"/>
     </a>
     You can copy the Azure Function URL (highlighted below) and paste it into your browser. You should receive a response. You might want to add
     <em>
      &amp;name=YourName
     </em>
     to the Function URL as the default http trigger template expects name query parameter. Just like that, you created a fully working HTTP endpoint in the cloud.
-    <a href="{{ site.base_url }}/media/2016/10/Try_11.jpg">
-     <img alt="Try_1" class="aligncenter size-large wp-image-1585" height="577" src="{{ site.base_url }}/media/2016/10/Try_11-1024x672.jpg" width="879"/>
+    <a href="{{ site.baseurl }}/media/2016/10/Try_11.jpg">
+     <img alt="Try_1" class="aligncenter size-large wp-image-1585" height="577" src="{{ site.baseurl }}/media/2016/10/Try_11-1024x672.jpg" width="879"/>
     </a>
     While this was is an impressive example of how easy it is to create an HTTP endpoint in the cloud, it turns out you can do quite a lot more!  Let’s put together the following scenario. Upload an image that includes some text in it, run an OCR on the image to extract the text, store the text, and finally retrieve both image and text. For small images or for a low volume of image uploads, you can probably do it all in a single Function. However, we want to leverage the Serverless nature of Azure Functions to create a scalable and highly performant design. To do so, we will create three functions:
     <ul>
@@ -82,8 +82,8 @@ Here is a very simple HTTP trigger “Hello World” example. Try it yourself:
       Another HTTP trigger function exposing simple REST API to query the results of the text extraction.
      </li>
     </ul>
-    <a href="{{ site.base_url }}/media/2016/10/scenario_description.png">
-     <img alt="scenario_description" class="aligncenter size-full wp-image-1595" height="365" src="{{ site.base_url }}/media/2016/10/scenario_description.png" width="624"/>
+    <a href="{{ site.baseurl }}/media/2016/10/scenario_description.png">
+     <img alt="scenario_description" class="aligncenter size-full wp-image-1595" height="365" src="{{ site.baseurl }}/media/2016/10/scenario_description.png" width="624"/>
     </a>
     <h2>
      First Function – a simple REST API uploading an image to Azure Blob
@@ -108,7 +108,7 @@ Here is a very simple HTTP trigger “Hello World” example. Try it yourself:
      &lt;/form&gt;
     </em>
     We want our function to receive an image and store it in Azure Blob Storage. This is a classic reader/writer pattern, where you want your API layer to do as little complex computing as possible.  The Azure Functions concept of Bindings enables developers to directly interact with the input and output values of Functions data sources. Those include Azure Storage Queue, Tables, and Blobs as well as Azure Event Hubs, Azure DocumentDB and more.
-    <a href="{{ site.base_url }}//azure.microsoft.com/en-us/documentation/articles/functions-reference/#bindings]">
+    <a href="{{ site.baseurl }}//azure.microsoft.com/en-us/documentation/articles/functions-reference/#bindings]">
      Click here for full list of binding
     </a>
     .
@@ -118,8 +118,8 @@ Let’s add an Azure Blob output binding. On the
      Integrate
     </strong>
     tab, click New Output and choose Azure Storage Blob.
-    <a href="{{ site.base_url }}/media/2016/10/Try_21.jpg">
-     <img alt="Try_2" class="aligncenter size-large wp-image-1605" height="476" src="{{ site.base_url }}/media/2016/10/Try_21-1024x555.jpg" width="879"/>
+    <a href="{{ site.baseurl }}/media/2016/10/Try_21.jpg">
+     <img alt="Try_2" class="aligncenter size-large wp-image-1605" height="476" src="{{ site.baseurl }}/media/2016/10/Try_21-1024x555.jpg" width="879"/>
     </a>
     The Blob parameter name, is an input argument (parameter) passed to your Function. Just like you would expect when programing any regular function. Azure Functions takes it one step further, enabling to use such bindings without knowing anything about the underlying infrastructure. This means that you don’t need to know how Azure Storage works or install Storage SDKs to use Azure Blob as your function output. You just use the
     <em>
@@ -134,8 +134,8 @@ Let’s add an Azure Blob output binding. On the
      “.jpg
     </em>
     ”, and hit Save.
-    <a href="{{ site.base_url }}/media/2016/10/Try_31.jpg">
-     <img alt="Try_3" class="aligncenter size-large wp-image-1615" height="476" src="{{ site.base_url }}/media/2016/10/Try_31-1024x555.jpg" width="879"/>
+    <a href="{{ site.baseurl }}/media/2016/10/Try_31.jpg">
+     <img alt="Try_3" class="aligncenter size-large wp-image-1615" height="476" src="{{ site.baseurl }}/media/2016/10/Try_31-1024x555.jpg" width="879"/>
     </a>
     In the function code, we refer to
     <em>
@@ -195,8 +195,8 @@ public static HttpResponseMessage Run(HttpRequestMessage req, Stream outputBlob,
      outcontainer
     </em>
     ) by the first function. Then the function will run OCR on that image to extract text embedded in it. Note, this function will run only when a new image (or any other file…) is uploaded to the blob. Again, this is Serverless in its best form, your code will run only when needed and you will pay only for that time.
-    <a href="{{ site.base_url }}/media/2016/10/Try_4.jpg">
-     <img alt="Try_4" class="aligncenter size-large wp-image-1505" height="476" src="{{ site.base_url }}/media/2016/10/Try_4-1024x555.jpg" width="879"/>
+    <a href="{{ site.baseurl }}/media/2016/10/Try_4.jpg">
+     <img alt="Try_4" class="aligncenter size-large wp-image-1505" height="476" src="{{ site.baseurl }}/media/2016/10/Try_4-1024x555.jpg" width="879"/>
     </a>
     Make sure the Azure Storage Blob container name you use to trigger is the same as the Blob container name used to write the image from the first function. If you have not changed the default, the container name of the first function is
     <em>
@@ -326,8 +326,8 @@ To perform the OCR on a given image, I am going to use using
     files to identify nuget packages (for C#) to be automatically restore with the function. For node.js Azure Functions support npm.
 
 In the Functions UI, click on View files and add project.json with the following text. once you save this file, Azure Functions will automatically restore the ProjectOxford package.
-    <a href="{{ site.base_url }}/media/2016/10/Try_5.jpg">
-     <img alt="Try_5" class="aligncenter size-large wp-image-1515" height="476" src="{{ site.base_url }}/media/2016/10/Try_5-1024x555.jpg" width="879"/>
+    <a href="{{ site.baseurl }}/media/2016/10/Try_5.jpg">
+     <img alt="Try_5" class="aligncenter size-large wp-image-1515" height="476" src="{{ site.baseurl }}/media/2016/10/Try_5-1024x555.jpg" width="879"/>
     </a>
     In order to make the ImageOCR fFunction code work, you’ll need to import Project Oxford assemblies. Azure Ffunctions supports a project.json files to identify nuget NuGet packages (for C#) to be automatically restored with the functionFunction. For node.js, Azure Functions supports npm.
 
@@ -346,8 +346,8 @@ In the Functions UI, click on View files and add project.json with the following
     We want to save the results somewhere. In this Try Functions example we are using Azure Storage Table. Note – if you have an Azure Subscription, you can use many other Data Services provided by Azure to store and process the results.
 
 Let’s add an output binding to Azure Table Store
-    <a href="{{ site.base_url }}/media/2016/10/Try_5_1.jpg">
-     <img alt="Try_5_1" class="aligncenter size-large wp-image-1516" height="476" src="{{ site.base_url }}/media/2016/10/Try_5_1-1024x555.jpg" width="879"/>
+    <a href="{{ site.baseurl }}/media/2016/10/Try_5_1.jpg">
+     <img alt="Try_5_1" class="aligncenter size-large wp-image-1516" height="476" src="{{ site.baseurl }}/media/2016/10/Try_5_1-1024x555.jpg" width="879"/>
     </a>
     Next, change the Table name from the default to
     <em>
@@ -358,8 +358,8 @@ Let’s add an output binding to Azure Table Store
      outputTable
     </em>
     will be used in the function code.
-    <a href="{{ site.base_url }}/media/2016/10/Try_5_2.jpg">
-     <img alt="Try_5_2" class="aligncenter size-large wp-image-1526" height="476" src="{{ site.base_url }}/media/2016/10/Try_5_2-1024x555.jpg" width="879"/>
+    <a href="{{ site.baseurl }}/media/2016/10/Try_5_2.jpg">
+     <img alt="Try_5_2" class="aligncenter size-large wp-image-1526" height="476" src="{{ site.baseurl }}/media/2016/10/Try_5_2-1024x555.jpg" width="879"/>
     </a>
     And again, just like with the blob, I don’t need to know a lot about how Azure Storage Tables work. Azure Functions is doing all the heavy lifting. We are using the
     <em>
@@ -378,8 +378,8 @@ This time we will add an Azure Storage table as an input binding, because you wo
      TryFunctions
     </em>
     .
-    <a href="{{ site.base_url }}/media/2016/10/Try_61.jpg">
-     <img alt="Try_6" class="aligncenter size-large wp-image-1625" height="476" src="{{ site.base_url }}/media/2016/10/Try_61-1024x555.jpg" width="879"/>
+    <a href="{{ site.baseurl }}/media/2016/10/Try_61.jpg">
+     <img alt="Try_6" class="aligncenter size-large wp-image-1625" height="476" src="{{ site.baseurl }}/media/2016/10/Try_61-1024x555.jpg" width="879"/>
     </a>
     The function input argument is of type
     <em>
@@ -444,14 +444,14 @@ This time we will add an Azure Storage table as an input binding, because you wo
      Postman
     </a>
     , using form-data as a Body to POST to the first function URL. You should receive “great” as a response and if you look at the first function log, in the Try Azure Function UI, you will notice traces from your function. If something went wrong, try debugging it… or ping me on Twitter (@yochayk)
-    <a href="{{ site.base_url }}/media/2016/10/Try_7.jpg">
-     <img alt="Try_7" class="aligncenter wp-image-1545 size-mediumlarge" height="278" src="{{ site.base_url }}/media/2016/10/Try_7-500x278.jpg" width="500"/>
+    <a href="{{ site.baseurl }}/media/2016/10/Try_7.jpg">
+     <img alt="Try_7" class="aligncenter wp-image-1545 size-mediumlarge" height="278" src="{{ site.baseurl }}/media/2016/10/Try_7-500x278.jpg" width="500"/>
     </a>
     Assuming your first function worked, go to the OCR image function and upload another image. You will notice that the OCR function got triggered, which means your first function successfully saved the image to storage and your second function picked it up. Again, you should see in the log traces from your function.
 
 Use Postman to call the last function and you should see JSON array including two images and the text extracted from them.
-    <a href="{{ site.base_url }}/media/2016/10/Try_8.jpg">
-     <img alt="Try_8" class="aligncenter size-full wp-image-1635" height="393" src="{{ site.base_url }}/media/2016/10/Try_8.jpg" width="623"/>
+    <a href="{{ site.baseurl }}/media/2016/10/Try_8.jpg">
+     <img alt="Try_8" class="aligncenter size-full wp-image-1635" height="393" src="{{ site.baseurl }}/media/2016/10/Try_8.jpg" width="623"/>
     </a>
     here is
     <a href="https://github.com/yochay/FunctionSimpleImageUpload">
@@ -525,8 +525,8 @@ One small note: if you want to view the images, you will need to generate a SAS 
     <a href="http://tryfunctionsdemo.blob.core.windows.net/static-site/test-try-functions.html">
      http://tryfunctionsdemo.blob.core.windows.net/static-site/test-try-functions.html
     </a>
-    <a href="{{ site.base_url }}/media/2016/10/testingWitaSPA.jpg">
-     <img alt="testingWitaSPA" class="aligncenter size-large wp-image-1547" height="590" src="{{ site.base_url }}/media/2016/10/testingWitaSPA-1024x687.jpg" width="879"/>
+    <a href="{{ site.baseurl }}/media/2016/10/testingWitaSPA.jpg">
+     <img alt="testingWitaSPA" class="aligncenter size-large wp-image-1547" height="590" src="{{ site.baseurl }}/media/2016/10/testingWitaSPA-1024x687.jpg" width="879"/>
     </a>
     This simple HTML application has two text box for you to paste the URL of your function. You upload an image by dragging and dropping. You can get images by clinking the GetImages button. The screen capture shows the network calls and console for getting images. You can see on the console, the get images return array of images, with respective URIs and each image text, which we use to then display. Note the images have SAS tokens.
 
@@ -534,8 +534,8 @@ Hope you enjoy trying Azure Functions as much as I enjoyed writing this little d
    </div>
   </div>
  </body>
- <script src="{{ site.base_url }}/resource/jquery-1.12.1.min.js" type="text/javascript">
+ <script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript">
  </script>
- <script src="{{ site.base_url }}/resource/replace.js" type="text/javascript">
+ <script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript">
  </script>
 </html>

@@ -70,14 +70,14 @@ Before beginning worldwide updates, we deploy first to a private region which is
 Our typical time for completing updates worldwide is about 10 business days, which allows us to deploy during each region’s off hours and also avoid deploying to Paired Regions at the same time (for example, East US and West US). When you are planning your app’s infrastructure for high availability and looking to deploy in multiple regions, it’s always a good idea to deploy to the paired region of your target region, since if there is a platform issue in the update, it won’t affect the paired region. After mitigating any issue, we will only then continue to the paired region, after the first is complete.
 
 As a managed service, we always leave a buffer in our capacity for new resources, for scaling operations on existing resources, in case instances become unhealthy and force us to move apps to other instances and of course for our OS update process, detailed here.
-    <a href="{{ site.base_url }}/media/2018/01/18.jpg">
+    <a href="{{ site.baseurl }}/media/2018/01/18.jpg">
     </a>
-    <a href="{{ site.base_url }}/media/2018/01/18.jpg">
-     <img alt="" class="alignnone wp-image-6956 size-full" height="996" src="{{ site.base_url }}/media/2018/01/18.jpg" width="2258"/>
+    <a href="{{ site.baseurl }}/media/2018/01/18.jpg">
+     <img alt="" class="alignnone wp-image-6956 size-full" height="996" src="{{ site.baseurl }}/media/2018/01/18.jpg" width="2258"/>
     </a>
     When the update reaches a specific region, we update available instances without apps on them, then move the apps to the updated instances, then update the offloaded instances.
-    <a href="{{ site.base_url }}/media/2018/01/28.jpg">
-     <img alt="" class="alignnone wp-image-6965 size-full" height="1115" src="{{ site.base_url }}/media/2018/01/28.jpg" width="2342"/>
+    <a href="{{ site.baseurl }}/media/2018/01/28.jpg">
+     <img alt="" class="alignnone wp-image-6965 size-full" height="1115" src="{{ site.baseurl }}/media/2018/01/28.jpg" width="2342"/>
     </a>
     This move results in a cold start, and there may be a performance hit associated with this. Application binaries are loaded to the new Virtual Machine, and libraries are loaded from the disk. Externally the user will see a one-time delay in responses to requests to the app, after which the site will run normally. The delay is dependent on many things, mainly on the complexity of the app, the framework it’s built on, and dependencies. You can reduce the impact of cold starts on your application by properly configuring the App Initialization model, as detailed in
     <a href="http://ruslany.net/2015/09/how-to-warm-up-azure-web-app-during-deployment-slots-swap/" rel="noopener" target="_blank">
@@ -103,8 +103,8 @@ If you have questions about App Service, please reach out to us through the deve
    </div>
   </div>
  </body>
- <script src="{{ site.base_url }}/resource/jquery-1.12.1.min.js" type="text/javascript">
+ <script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript">
  </script>
- <script src="{{ site.base_url }}/resource/replace.js" type="text/javascript">
+ <script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript">
  </script>
 </html>

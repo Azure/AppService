@@ -49,8 +49,8 @@ I’m happy to announce that we have some great new functionality to share on th
      Web Tools team blog
     </a>
     .
-    <a href="{{ site.base_url }}/media/2016/12/visual-studio-functions-debugging.png">
-     <img alt="visual-studio-functions-debugging" class="alignnone size-full wp-image-2646" height="89" src="{{ site.base_url }}/media/2016/12/visual-studio-functions-debugging.png" width="691"/>
+    <a href="{{ site.baseurl }}/media/2016/12/visual-studio-functions-debugging.png">
+     <img alt="visual-studio-functions-debugging" class="alignnone size-full wp-image-2646" height="89" src="{{ site.baseurl }}/media/2016/12/visual-studio-functions-debugging.png" width="691"/>
     </a>
     <h1>
      VS Code and azure-functions-cli
@@ -112,12 +112,12 @@ Initialized empty Git repository in C:/CDriveCode/MyAwesomeFunctionProj/.git/</p
     <strong>
      func new
     </strong>
-    <a href="{{ site.base_url }}/media/2016/11/156.png">
-     <img alt="1" class="alignnone size-mediumlarge wp-image-2355" height="271" src="{{ site.base_url }}/media/2016/11/156-500x271.png" width="500"/>
+    <a href="{{ site.baseurl }}/media/2016/11/156.png">
+     <img alt="1" class="alignnone size-mediumlarge wp-image-2355" height="271" src="{{ site.baseurl }}/media/2016/11/156-500x271.png" width="500"/>
     </a>
     I chose HttpTrigger-JavaScript and named it HttpTrigger-JS.
-    <a href="{{ site.base_url }}/media/2016/11/246.png">
-     <img alt="2" class="alignnone size-mediumlarge wp-image-2285" height="98" src="{{ site.base_url }}/media/2016/11/246-500x98.png" width="500"/>
+    <a href="{{ site.baseurl }}/media/2016/11/246.png">
+     <img alt="2" class="alignnone size-mediumlarge wp-image-2285" height="98" src="{{ site.baseurl }}/media/2016/11/246-500x98.png" width="500"/>
     </a>
     <h2>
      Running the function
@@ -133,14 +133,14 @@ Initialized empty Git repository in C:/CDriveCode/MyAwesomeFunctionProj/.git/</p
      Integrated Terminal
     </strong>
     <pre>func run .\HttpTrigger-JS\ -c "{\"name\": \"Donna\"}"</pre>
-    <a href="{{ site.base_url }}/media/2016/11/terminal1.png">
-     <img alt="terminal" class="alignnone size-large wp-image-2395" height="143" src="{{ site.base_url }}/media/2016/11/terminal1-1024x167.png" width="879"/>
+    <a href="{{ site.baseurl }}/media/2016/11/terminal1.png">
+     <img alt="terminal" class="alignnone size-large wp-image-2395" height="143" src="{{ site.baseurl }}/media/2016/11/terminal1-1024x167.png" width="879"/>
     </a>
     You’ll see that a separate window launches, which is the Functions host. By default, it will listen on http://localhost:7071.
 
 In the Functions host window, you’ll see that the URL of HTTP triggers is listed. You can then use a web debugging tool like Fiddler or Postman to create more complex requests.
-    <a href="{{ site.base_url }}/media/2016/11/426.png">
-     <img alt="4" class="alignnone size-large wp-image-2305" height="207" src="{{ site.base_url }}/media/2016/11/426-1024x241.png" width="879"/>
+    <a href="{{ site.baseurl }}/media/2016/11/426.png">
+     <img alt="4" class="alignnone size-large wp-image-2305" height="207" src="{{ site.baseurl }}/media/2016/11/426-1024x241.png" width="879"/>
     </a>
     <h2>
      Debugging the function in Visual Studio Code
@@ -169,11 +169,11 @@ In the Functions host window, you’ll see that the URL of HTTP triggers is list
       In the terminal or command prompt, press any character and you’ll see your breakpoint being hit!
      </li>
     </ul>
-    <a href="{{ site.base_url }}/media/2016/11/522.png">
-     <img alt="5" class="alignnone size-large wp-image-2315" height="332" src="{{ site.base_url }}/media/2016/11/522-1024x387.png" width="879"/>
+    <a href="{{ site.baseurl }}/media/2016/11/522.png">
+     <img alt="5" class="alignnone size-large wp-image-2315" height="332" src="{{ site.baseurl }}/media/2016/11/522-1024x387.png" width="879"/>
     </a>
-    <a href="{{ site.base_url }}/media/2016/11/623.png">
-     <img alt="6" class="alignnone size-large wp-image-2316" height="244" src="{{ site.base_url }}/media/2016/11/623-1024x284.png" width="879"/>
+    <a href="{{ site.baseurl }}/media/2016/11/623.png">
+     <img alt="6" class="alignnone size-large wp-image-2316" height="244" src="{{ site.baseurl }}/media/2016/11/623-1024x284.png" width="879"/>
     </a>
     <h2>
      Running a queue-triggered function
@@ -344,15 +344,15 @@ By default, the Functions CLI will poll for new queue items every minute. For de
      AzureWebJobsStorage
     </strong>
     connection string:
-    <a href="{{ site.base_url }}/media/2016/11/721.png">
-     <img alt="7" class="alignnone size-full wp-image-2325" height="104" src="{{ site.base_url }}/media/2016/11/721.png" width="303"/>
+    <a href="{{ site.baseurl }}/media/2016/11/721.png">
+     <img alt="7" class="alignnone size-full wp-image-2325" height="104" src="{{ site.baseurl }}/media/2016/11/721.png" width="303"/>
     </a>
-    <a href="{{ site.base_url }}/media/2016/11/818.png">
-     <img alt="8" class="alignnone size-full wp-image-2335" height="194" src="{{ site.base_url }}/media/2016/11/818.png" width="916"/>
+    <a href="{{ site.baseurl }}/media/2016/11/818.png">
+     <img alt="8" class="alignnone size-full wp-image-2335" height="194" src="{{ site.baseurl }}/media/2016/11/818.png" width="916"/>
     </a>
     Then, in Visual Studio Code, we see out breakpoint being hit:
-    <a href="{{ site.base_url }}/media/2016/11/916.png">
-     <img alt="9" class="alignnone size-large wp-image-2345" height="275" src="{{ site.base_url }}/media/2016/11/916-1024x320.png" width="879"/>
+    <a href="{{ site.baseurl }}/media/2016/11/916.png">
+     <img alt="9" class="alignnone size-large wp-image-2345" height="275" src="{{ site.baseurl }}/media/2016/11/916-1024x320.png" width="879"/>
     </a>
     This is just a taste of what you can accomplish with the Azure Functions CLI. Try it out today and let us know what you think!
     <h1>
@@ -407,8 +407,8 @@ For general feedback and questions about Azure Functions:
    </div>
   </div>
  </body>
- <script src="{{ site.base_url }}/resource/jquery-1.12.1.min.js" type="text/javascript">
+ <script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript">
  </script>
- <script src="{{ site.base_url }}/resource/replace.js" type="text/javascript">
+ <script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript">
  </script>
 </html>

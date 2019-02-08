@@ -20,8 +20,8 @@ layout: post
      Tabs
     </h3>
     The new SSL settings experience divides the features into 3 tabs. Namely SSL Bindings, Private certificates (.pfx), and Public certificates (.cer). The Bindings tab allows the user to configure the protocol settings and add/edit/delete SSL bindings, the private certificates tab allows the user to upload and manage private certificates (.pfx) used in SSL bindings and the public certificates tab allows the user to upload and manage public certificates (.cer). We also call out what type of certificate type the customer needs to use for each feature.
-    <a href="{{ site.base_url }}/media/2018/08/Tabs.png">
-     <img alt="" class="aligncenter size-full wp-image-9325" height="477" src="{{ site.base_url }}/media/2018/08/Tabs.png" width="1191"/>
+    <a href="{{ site.baseurl }}/media/2018/08/Tabs.png">
+     <img alt="" class="aligncenter size-full wp-image-9325" height="477" src="{{ site.baseurl }}/media/2018/08/Tabs.png" width="1191"/>
     </a>
     <h3>
      Editing SSL Bindings
@@ -35,12 +35,12 @@ layout: post
      here
     </a>
     .
-    <a href="{{ site.base_url }}/media/2018/08/EditableBindings.png">
+    <a href="{{ site.baseurl }}/media/2018/08/EditableBindings.png">
     </a>
-    <a href="{{ site.base_url }}/media/2018/08/Bindings.png">
-     <img alt="" class="size-full wp-image-9345 aligncenter" height="943" src="{{ site.base_url }}/media/2018/08/Bindings.png" width="1426"/>
+    <a href="{{ site.baseurl }}/media/2018/08/Bindings.png">
+     <img alt="" class="size-full wp-image-9345 aligncenter" height="943" src="{{ site.baseurl }}/media/2018/08/Bindings.png" width="1426"/>
     </a>
-    <a href="{{ site.base_url }}/media/2018/08/EditableBindings.png">
+    <a href="{{ site.baseurl }}/media/2018/08/EditableBindings.png">
     </a>
     <h3>
      <strong>
@@ -50,14 +50,14 @@ layout: post
     Private certificates used in App Service required a facelift to show the information we already gather when the certificate is uploaded, imported from App Service Certificate or imported from KeyVault. The driving reason was when we saw hundreds of private certificates configured on their app and had a tough time browsing through the certificates, the revamp allows the customer to now to get details of the certificates uploaded and imported. We added a new status column to the grid showing three possible states. Healthy, Warning and Expired. Warning being a certificate about to expire in the next 60 days. We also explicitly mention that you will need to upload a .pfx file to add a private certificate.
 
 [caption id="attachment_9355" align="aligncenter" width="1429"]
-    <a href="{{ site.base_url }}/media/2018/08/CertificateDetails.png">
-     <img alt="" class="wp-image-9355 size-full" height="881" src="{{ site.base_url }}/media/2018/08/CertificateDetails.png" width="1429"/>
+    <a href="{{ site.baseurl }}/media/2018/08/CertificateDetails.png">
+     <img alt="" class="wp-image-9355 size-full" height="881" src="{{ site.baseurl }}/media/2018/08/CertificateDetails.png" width="1429"/>
     </a>
     Showing a test certificate that is valid.[/caption]
 
 We also show the KeyVault details and the sync status of the certificates pulled from KeyVault like certificates imported from App Service Certificate.
-    <a href="{{ site.base_url }}/media/2018/08/KeyVaultDetails.png">
-     <img alt="" class="size-full wp-image-9365 aligncenter" height="606" src="{{ site.base_url }}/media/2018/08/KeyVaultDetails.png" width="413"/>
+    <a href="{{ site.baseurl }}/media/2018/08/KeyVaultDetails.png">
+     <img alt="" class="size-full wp-image-9365 aligncenter" height="606" src="{{ site.baseurl }}/media/2018/08/KeyVaultDetails.png" width="413"/>
     </a>
     <h3>
      Uploading certificates
@@ -67,12 +67,12 @@ We also show the KeyVault details and the sync status of the certificates pulled
      Now upload certificates from the private certificates opens the UX where you can only upload the private certificates to avoid the confusion about uploading .cer or .pfx file.
     </strong>
     When the Upload certificate flow is opened from the public certificate tab we show only the public certificate option.
-    <a href="{{ site.base_url }}/media/2018/08/PrivateCert.png">
-     <img alt="" class="aligncenter size-full wp-image-9385" height="735" src="{{ site.base_url }}/media/2018/08/PrivateCert.png" width="1428"/>
+    <a href="{{ site.baseurl }}/media/2018/08/PrivateCert.png">
+     <img alt="" class="aligncenter size-full wp-image-9385" height="735" src="{{ site.baseurl }}/media/2018/08/PrivateCert.png" width="1428"/>
     </a>
     We updated the upload certificate UX (and the underlying way it is implemented) to show errors while trying to upload a certificate without leaving the upload blade.
-    <a href="{{ site.base_url }}/media/2018/08/UploadFails.png">
-     <img alt="" class="aligncenter size-full wp-image-9375" height="942" src="{{ site.base_url }}/media/2018/08/UploadFails.png" width="433"/>
+    <a href="{{ site.baseurl }}/media/2018/08/UploadFails.png">
+     <img alt="" class="aligncenter size-full wp-image-9375" height="942" src="{{ site.baseurl }}/media/2018/08/UploadFails.png" width="433"/>
     </a>
     <h3>
      Public Certificates
@@ -84,8 +84,8 @@ We also show the KeyVault details and the sync status of the certificates pulled
      </a>
     </u>
     ) and now public certificates add another dimension to that feature by allowing you to upload (.cer) files and get the certificates in runtime.
-    <a href="{{ site.base_url }}/media/2018/08/publiccert.png">
-     <img alt="" class="aligncenter size-full wp-image-9395" height="563" src="{{ site.base_url }}/media/2018/08/publiccert.png" width="1428"/>
+    <a href="{{ site.baseurl }}/media/2018/08/publiccert.png">
+     <img alt="" class="aligncenter size-full wp-image-9395" height="563" src="{{ site.baseurl }}/media/2018/08/publiccert.png" width="1428"/>
     </a>
     Thanks for reading! I am writing this blog to showcase the changes we made to improve the overall certificate management experience for customers using App Service day in and day out. We are always open to feedback and looking forward to your comments.
 
@@ -99,8 +99,8 @@ Feel free to reach out to us for any feature request or issues.
    </div>
   </div>
  </body>
- <script src="{{ site.base_url }}/resource/jquery-1.12.1.min.js" type="text/javascript">
+ <script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript">
  </script>
- <script src="{{ site.base_url }}/resource/replace.js" type="text/javascript">
+ <script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript">
  </script>
 </html>

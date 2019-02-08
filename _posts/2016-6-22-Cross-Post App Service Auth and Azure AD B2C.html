@@ -68,8 +68,8 @@ In this post, I’ll describe how you can use Easy Auth to add Azure AD B2C capa
      https
     </strong>
     address of the web app you previously created as the Reply URL and you must suffix it with “/.auth/login/aad/callback” (again, in my case this is https://cgillum-b2c-preview.azurewebsites.net/.auth/login/aad/callback). Once this is done, you should have an application in the B2C portal which looks something like the following:
-    <a href="{{ site.base_url }}/media/2016/06/B2C-ApplicationBlade.png">
-     <img alt="B2C Application Blade" class="aligncenter size-full wp-image-89" height="776" src="{{ site.base_url }}/media/2016/06/B2C-ApplicationBlade.png" width="947"/>
+    <a href="{{ site.baseurl }}/media/2016/06/B2C-ApplicationBlade.png">
+     <img alt="B2C Application Blade" class="aligncenter size-full wp-image-89" height="776" src="{{ site.baseurl }}/media/2016/06/B2C-ApplicationBlade.png" width="947"/>
     </a>
     Make a note of the
     <strong>
@@ -88,8 +88,8 @@ In this post, I’ll describe how you can use Easy Auth to add Azure AD B2C capa
      Metadata Endpoint for this policy
     </strong>
     URL which gets generated, like in the screenshot below:
-    <a href="{{ site.base_url }}/media/2016/06/B2C-PolicyBlade.png">
-     <img alt="B2C Policy Blade" class="aligncenter size-full wp-image-92" height="590" src="{{ site.base_url }}/media/2016/06/B2C-PolicyBlade.png" width="1213"/>
+    <a href="{{ site.baseurl }}/media/2016/06/B2C-PolicyBlade.png">
+     <img alt="B2C Policy Blade" class="aligncenter size-full wp-image-92" height="590" src="{{ site.baseurl }}/media/2016/06/B2C-PolicyBlade.png" width="1213"/>
     </a>
     Azure AD B2C supports other policy types as well, but the combination sign-up/sign-in is currently the one best suited for Easy Auth login integration.
     <h2>
@@ -166,18 +166,18 @@ In this post, I’ll describe how you can use Easy Auth to add Azure AD B2C capa
      </li>
     </ol>
     Your Authentication / Authorization settings blade should look something like the following:
-    <a href="{{ site.base_url }}/media/2016/06/B2C-EasyAuthBlade.png">
-     <img alt="Authentication / Authorization Blade" class="aligncenter size-full wp-image-90" height="482" src="{{ site.base_url }}/media/2016/06/B2C-EasyAuthBlade.png" width="1168"/>
+    <a href="{{ site.baseurl }}/media/2016/06/B2C-EasyAuthBlade.png">
+     <img alt="Authentication / Authorization Blade" class="aligncenter size-full wp-image-90" height="482" src="{{ site.baseurl }}/media/2016/06/B2C-EasyAuthBlade.png" width="1168"/>
     </a>
     Now if you navigate to your site, you should see the B2C login page that you configured previously. Depending on how it was configured, you can sign up using social identity credentials or you can sign up using username (or email) and password. You will also be prompted for additional registration information, such as your name, etc (again, all dictated by the policies you configured).
 
 Here is an example of what your initial sign-in page might look like. Notice the link on the bottom of the image which allows users to register:
-    <a href="{{ site.base_url }}/media/2016/06/B2C-LoginPage.png">
-     <img alt="B2C Login Page" class="aligncenter size-full wp-image-91" height="399" src="{{ site.base_url }}/media/2016/06/B2C-LoginPage.png" width="919"/>
+    <a href="{{ site.baseurl }}/media/2016/06/B2C-LoginPage.png">
+     <img alt="B2C Login Page" class="aligncenter size-full wp-image-91" height="399" src="{{ site.baseurl }}/media/2016/06/B2C-LoginPage.png" width="919"/>
     </a>
     Below is an example of what your “sign-up” registration page will look like. If you selected the email option, Azure AD B2C will even implement the email verification workflow for you.
-    <a href="{{ site.base_url }}/media/2016/06/B2C-SignUpPage.png">
-     <img alt="B2C Sign-Up Page" class="aligncenter size-full wp-image-93" height="546" src="{{ site.base_url }}/media/2016/06/B2C-SignUpPage.png" width="930"/>
+    <a href="{{ site.baseurl }}/media/2016/06/B2C-SignUpPage.png">
+     <img alt="B2C Sign-Up Page" class="aligncenter size-full wp-image-93" height="546" src="{{ site.baseurl }}/media/2016/06/B2C-SignUpPage.png" width="930"/>
     </a>
     That’s it! You’ve now created a skeleton B2C web application that allows users to sign-up and sign-in without writing any code or deploying any databases! I’ve used all the defaults in terms of styling, but Azure AD B2C does allow you to customize the look and feel of these pages to match your own application branding, if you choose. See the
     <a href="https://azure.microsoft.com/en-us/documentation/articles/active-directory-b2c-reference-ui-customization/">
@@ -243,8 +243,8 @@ Once signed in, you can write code which inspects the inbound HTTP headers and/o
    </div>
   </div>
  </body>
- <script src="{{ site.base_url }}/resource/jquery-1.12.1.min.js" type="text/javascript">
+ <script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript">
  </script>
- <script src="{{ site.base_url }}/resource/replace.js" type="text/javascript">
+ <script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript">
  </script>
 </html>

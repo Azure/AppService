@@ -117,12 +117,12 @@ To get the certificates of the chain to be part of the pfx, you will need to ins
      make sure you mark the certificate as exportable
     </strong>
     .
-    <a href="{{ site.base_url }}/media/2017/02/Exportable.png">
-     <img alt="" class="alignnone size-full wp-image-8895" height="555" src="{{ site.base_url }}/media/2017/02/Exportable.png" width="577"/>
+    <a href="{{ site.baseurl }}/media/2017/02/Exportable.png">
+     <img alt="" class="alignnone size-full wp-image-8895" height="555" src="{{ site.baseurl }}/media/2017/02/Exportable.png" width="577"/>
     </a>
     Once you have installed the exported certificate open the certificate from your certificate store and navigate to the Certification Path tab, it would look something like below,
-    <a href="{{ site.base_url }}/media/2017/02/CertificationPath.png">
-     <img alt="" class="alignnone size-full wp-image-8885" height="463" src="{{ site.base_url }}/media/2017/02/CertificationPath.png" width="403"/>
+    <a href="{{ site.baseurl }}/media/2017/02/CertificationPath.png">
+     <img alt="" class="alignnone size-full wp-image-8885" height="463" src="{{ site.baseurl }}/media/2017/02/CertificationPath.png" width="403"/>
     </a>
     Now go to
     <a href="https://certs.godaddy.com/repository">
@@ -141,8 +141,8 @@ To get the certificates of the chain to be part of the pfx, you will need to ins
      "Include all certificates in the certification path if possible"
     </strong>
     is checked.
-    <a href="{{ site.base_url }}/media/2017/02/Export.png">
-     <img alt="" class="alignnone size-full wp-image-8905" height="563" src="{{ site.base_url }}/media/2017/02/Export.png" width="644"/>
+    <a href="{{ site.baseurl }}/media/2017/02/Export.png">
+     <img alt="" class="alignnone size-full wp-image-8905" height="563" src="{{ site.baseurl }}/media/2017/02/Export.png" width="644"/>
     </a>
     Once exported into a new pfx file we can check if the new pfx has the certificate chain included in it by running the command,
     <pre>certutil -dump &lt;path of the certificate file&gt;</pre>
@@ -271,8 +271,8 @@ To get the certificates of the chain to be part of the pfx, you will need to ins
    </div>
   </div>
  </body>
- <script src="{{ site.base_url }}/resource/jquery-1.12.1.min.js" type="text/javascript">
+ <script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript">
  </script>
- <script src="{{ site.base_url }}/resource/replace.js" type="text/javascript">
+ <script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript">
  </script>
 </html>

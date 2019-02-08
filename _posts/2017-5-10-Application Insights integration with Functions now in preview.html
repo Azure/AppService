@@ -20,8 +20,8 @@ layout: post
      Getting Started
     </h1>
     To get started with Azure Functions and Azure Application Insights, you can create a new Function App and set the Application Insights toggle to “On”, which will create an Application Insights resource for you, automatically.
-    <a href="{{ site.base_url }}/media/2017/05/create-Function-App.png">
-     <img alt="create-function-app" class="aligncenter size-full wp-image-4725" height="642" src="{{ site.base_url }}/media/2017/05/create-Function-App.png" width="432"/>
+    <a href="{{ site.baseurl }}/media/2017/05/create-Function-App.png">
+     <img alt="create-function-app" class="aligncenter size-full wp-image-4725" height="642" src="{{ site.baseurl }}/media/2017/05/create-Function-App.png" width="432"/>
     </a>
     If you want to use add an existing Application Insights resource or you have an existing Azure Function App, you can add Application Insights by adding an App Setting with your instrumentation key.
     <ol>
@@ -45,12 +45,12 @@ layout: post
       </ol>
      </li>
     </ol>
-    <a href="{{ site.base_url }}/media/2017/05/grabIKey.png">
-     <img alt="grabikey" class="aligncenter size-large wp-image-4735" height="388" src="{{ site.base_url }}/media/2017/05/grabIKey-1024x452.png" width="879"/>
+    <a href="{{ site.baseurl }}/media/2017/05/grabIKey.png">
+     <img alt="grabikey" class="aligncenter size-large wp-image-4735" height="388" src="{{ site.baseurl }}/media/2017/05/grabIKey-1024x452.png" width="879"/>
     </a>
     Once you’ve done this, you can navigate to your Application Insights resource from the “Configured Features” page of your Function App.
-    <a href="{{ site.base_url }}/media/2017/05/configuredfeatures.png">
-     <img alt="configuredfeatures" class="aligncenter size-full wp-image-4715" height="215" src="{{ site.base_url }}/media/2017/05/configuredfeatures.png" width="409"/>
+    <a href="{{ site.baseurl }}/media/2017/05/configuredfeatures.png">
+     <img alt="configuredfeatures" class="aligncenter size-full wp-image-4715" height="215" src="{{ site.baseurl }}/media/2017/05/configuredfeatures.png" width="409"/>
     </a>
     <h1>
      Using Application Insights
@@ -61,8 +61,8 @@ layout: post
     If you open your Application Insights resource in the portal, you should see the option for “Live Metrics Stream” in the menu. Click on it and you’ll see a near-live view of what’s coming from your Function App. For executions, it has info on #/second, average duration, and failures/second. It also has information on resource consumption. You can pivot all of these by the “instance” your functions are on; providing you insight on whether a specific instance might be having an issue or all of your Functions.
 
 Known issues: there are no dependencies being tracked right now, so the middle section is mostly useless for now. If you send your own custom dependencies, it’s not likely to show up here since they won’t be going through the Live Stream API since you’re normally using a different client, today.
-    <a href="{{ site.base_url }}/media/2017/05/livestream.png">
-     <img alt="livestream" class="aligncenter size-large wp-image-4745" height="368" src="{{ site.base_url }}/media/2017/05/livestream-1024x429.png" width="879"/>
+    <a href="{{ site.baseurl }}/media/2017/05/livestream.png">
+     <img alt="livestream" class="aligncenter size-large wp-image-4745" height="368" src="{{ site.baseurl }}/media/2017/05/livestream-1024x429.png" width="879"/>
     </a>
     <h2>
      Metrics Explorer
@@ -113,8 +113,8 @@ Example:
 This will show us the distribution of requests/worker over the last 30 minutes.
     <script src="https://gist.github.com/christopheranderson/84a9ec7c26f76964fc5a03fbe050dc14.js">
     </script>
-    <a href="{{ site.base_url }}/media/2017/05/analytics.png">
-     <img alt="analytics" class="aligncenter size-large wp-image-4746" height="451" src="{{ site.base_url }}/media/2017/05/analytics-1024x525.png" width="879"/>
+    <a href="{{ site.baseurl }}/media/2017/05/analytics.png">
+     <img alt="analytics" class="aligncenter size-large wp-image-4746" height="451" src="{{ site.baseurl }}/media/2017/05/analytics-1024x525.png" width="879"/>
     </a>
     <h1>
      Configuring the telemetry pipeline
@@ -129,8 +129,8 @@ This will show us the distribution of requests/worker over the last 30 minutes.
    </div>
   </div>
  </body>
- <script src="{{ site.base_url }}/resource/jquery-1.12.1.min.js" type="text/javascript">
+ <script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript">
  </script>
- <script src="{{ site.base_url }}/resource/replace.js" type="text/javascript">
+ <script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript">
  </script>
 </html>

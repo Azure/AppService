@@ -82,15 +82,15 @@ I have written a simply asp.net page that lists all certificates in CurrentUser-
      }
     </em>
     Here is a screenshot of this App Service after executing the ARM client command shared above.
-    <a href="{{ site.base_url }}/media/2017/06/116.jpg">
-     <img alt="" class="alignnone size-full wp-image-5186" height="116" src="{{ site.base_url }}/media/2017/06/116.jpg" width="1148"/>
+    <a href="{{ site.baseurl }}/media/2017/06/116.jpg">
+     <img alt="" class="alignnone size-full wp-image-5186" height="116" src="{{ site.baseurl }}/media/2017/06/116.jpg" width="1148"/>
     </a>
     Similarly, we can execute the following ARMClient command to install another public certificate in CurrentUser-Personal certificate store:
     <em>
      ARMClient PUT https://management.azure.com/subscriptions/fb2c25dc-6bab-45c4-8cc9-cece7c42a95a/resourcegroups/publiccertificaterg/providers/Microsoft.Web/sites/publiccertificatedemo/publicCertificates/currentuser2?api-version=2016-02-01  "{'Properties':{'Blob':'MI…nc','publicCertificateLocation':'CurrentUserMy'}}"
     </em>
-    <a href="{{ site.base_url }}/media/2017/06/27.jpg">
-     <img alt="" class="alignnone size-full wp-image-5185" height="128" src="{{ site.base_url }}/media/2017/06/27.jpg" width="1146"/>
+    <a href="{{ site.baseurl }}/media/2017/06/27.jpg">
+     <img alt="" class="alignnone size-full wp-image-5185" height="128" src="{{ site.baseurl }}/media/2017/06/27.jpg" width="1146"/>
     </a>
     Since ‘sites/publicCertificates’ is an ARM resource, you can call other standard ARM APIs to perform CRUD operations.
 
@@ -120,8 +120,8 @@ List all public certificates inside an App Service:
    </div>
   </div>
  </body>
- <script src="{{ site.base_url }}/resource/jquery-1.12.1.min.js" type="text/javascript">
+ <script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript">
  </script>
- <script src="{{ site.base_url }}/resource/replace.js" type="text/javascript">
+ <script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript">
  </script>
 </html>

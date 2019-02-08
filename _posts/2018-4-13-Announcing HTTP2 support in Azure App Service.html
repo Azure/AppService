@@ -62,8 +62,8 @@ Compression also helps multiplexing, because requests are smaller. This enables 
     All you need is a just a simple configuration! HTTP/2 is disabled by default for all customers. However, if you would like to opt-in and apply HTTP/2 for your site, follow the steps below:
 
 Through the Azure Portal, browse to your app and search for the "Application settings", where you will find the setting called "HTTP Version". Select 1.1 or 2.0 by your needs.
-    <a href="{{ site.base_url }}/media/2018/04/http2portal.jpg">
-     <img alt="" class="alignnone wp-image-8545" height="251" src="{{ site.base_url }}/media/2018/04/http2portal-300x180.jpg" width="419"/>
+    <a href="{{ site.baseurl }}/media/2018/04/http2portal.jpg">
+     <img alt="" class="alignnone wp-image-8545" height="251" src="{{ site.baseurl }}/media/2018/04/http2portal-300x180.jpg" width="419"/>
     </a>
     You may also browse to the Azure Resource Explorer using one of the following steps:
     <ol>
@@ -75,12 +75,12 @@ Through the Azure Portal, browse to your app and search for the "Application set
       , select “Resource explorer” in your App Service app’s menu.
      </li>
     </ol>
-    <a href="{{ site.base_url }}/media/2018/03/1.png">
-     <img alt="" class="alignnone size-medium wp-image-7615" height="300" src="{{ site.base_url }}/media/2018/03/1-184x300.png" width="184"/>
+    <a href="{{ site.baseurl }}/media/2018/03/1.png">
+     <img alt="" class="alignnone size-medium wp-image-7615" height="300" src="{{ site.baseurl }}/media/2018/03/1-184x300.png" width="184"/>
     </a>
     Then select ‘Go’
-    <a href="{{ site.base_url }}/media/2018/03/2.png">
-     <img alt="" class="alignnone size-medium wp-image-7625" height="63" src="{{ site.base_url }}/media/2018/03/2-300x63.png" width="300"/>
+    <a href="{{ site.baseurl }}/media/2018/03/2.png">
+     <img alt="" class="alignnone size-medium wp-image-7625" height="63" src="{{ site.baseurl }}/media/2018/03/2-300x63.png" width="300"/>
     </a>
     <ol start="2">
      <li>
@@ -96,34 +96,34 @@ Through the Azure Portal, browse to your app and search for the "Application set
 If browsing directly to Resource Explorer, drill down through the tree hierarchy to your site using the following path:
 
 Subscription &gt; Resource Group &gt; your site name &gt; Providers &gt; Microsoft.Web &gt; sites &gt; your site name &gt; config &gt; web
-    <a href="{{ site.base_url }}/media/2018/03/3.png">
-     <img alt="" class="alignnone size-medium wp-image-7665" height="300" src="{{ site.base_url }}/media/2018/03/3-206x300.png" width="206"/>
+    <a href="{{ site.baseurl }}/media/2018/03/3.png">
+     <img alt="" class="alignnone size-medium wp-image-7665" height="300" src="{{ site.baseurl }}/media/2018/03/3-206x300.png" width="206"/>
     </a>
     On the top of the page make sure you’re in Read/Write mode:
-    <a href="{{ site.base_url }}/media/2018/03/4.png">
-     <img alt="" class="alignnone size-full wp-image-7635" height="44" src="{{ site.base_url }}/media/2018/03/4.png" width="211"/>
+    <a href="{{ site.baseurl }}/media/2018/03/4.png">
+     <img alt="" class="alignnone size-full wp-image-7635" height="44" src="{{ site.baseurl }}/media/2018/03/4.png" width="211"/>
     </a>
     Select Edit:
-    <a href="{{ site.base_url }}/media/2018/03/5.png">
+    <a href="{{ site.baseurl }}/media/2018/03/5.png">
     </a>
-    <a href="{{ site.base_url }}/media/2018/03/select-edit.png">
-     <img alt="" class="alignnone wp-image-7825 size-full" height="47" src="{{ site.base_url }}/media/2018/03/select-edit.png" width="121"/>
+    <a href="{{ site.baseurl }}/media/2018/03/select-edit.png">
+     <img alt="" class="alignnone wp-image-7825 size-full" height="47" src="{{ site.baseurl }}/media/2018/03/select-edit.png" width="121"/>
     </a>
     Find the parameter for HTTP/2:
-    <a href="{{ site.base_url }}/media/2018/03/6.png">
-     <img alt="" class="alignnone size-medium wp-image-7685" height="34" src="{{ site.base_url }}/media/2018/03/6-300x34.png" width="300"/>
+    <a href="{{ site.baseurl }}/media/2018/03/6.png">
+     <img alt="" class="alignnone size-medium wp-image-7685" height="34" src="{{ site.baseurl }}/media/2018/03/6-300x34.png" width="300"/>
     </a>
     Type in ‘
     <strong>
      true
     </strong>
     ’ in place of ‘false’:
-    <a href="{{ site.base_url }}/media/2018/03/7.png">
-     <img alt="" class="alignnone size-medium wp-image-7655" height="32" src="{{ site.base_url }}/media/2018/03/7-300x32.png" width="300"/>
+    <a href="{{ site.baseurl }}/media/2018/03/7.png">
+     <img alt="" class="alignnone size-medium wp-image-7655" height="32" src="{{ site.baseurl }}/media/2018/03/7-300x32.png" width="300"/>
     </a>
     On the top, select ‘PUT’:
-    <a href="{{ site.base_url }}/media/2018/03/8.png">
-     <img alt="" class="alignnone size-medium wp-image-7675" height="60" src="{{ site.base_url }}/media/2018/03/8-300x60.png" width="300"/>
+    <a href="{{ site.baseurl }}/media/2018/03/8.png">
+     <img alt="" class="alignnone size-medium wp-image-7675" height="60" src="{{ site.baseurl }}/media/2018/03/8-300x60.png" width="300"/>
     </a>
     You’re done!
     <ul>
@@ -172,8 +172,8 @@ Subscription &gt; Resource Group &gt; your site name &gt; Providers &gt; Microso
    </div>
   </div>
  </body>
- <script src="{{ site.base_url }}/resource/jquery-1.12.1.min.js" type="text/javascript">
+ <script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript">
  </script>
- <script src="{{ site.base_url }}/resource/replace.js" type="text/javascript">
+ <script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript">
  </script>
 </html>

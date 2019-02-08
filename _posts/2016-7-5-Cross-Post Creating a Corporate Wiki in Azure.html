@@ -134,8 +134,8 @@ Note that I'm assuming you're already familiar with Azure Active Directory and t
       .
      </li>
     </ul>
-    <a href="{{ site.base_url }}/media/2016/07/MediaWiki-EnableEasyAuth.png">
-     <img alt="Enable AAD Authentication" class="aligncenter size-full wp-image-140" height="538" src="{{ site.base_url }}/media/2016/07/MediaWiki-EnableEasyAuth.png" width="1482"/>
+    <a href="{{ site.baseurl }}/media/2016/07/MediaWiki-EnableEasyAuth.png">
+     <img alt="Enable AAD Authentication" class="aligncenter size-full wp-image-140" height="538" src="{{ site.baseurl }}/media/2016/07/MediaWiki-EnableEasyAuth.png" width="1482"/>
     </a>
     At this point, your new web app is now protected using Azure Active Directory authentication and only users in your organization will be able to access the site.
     <h1>
@@ -282,8 +282,8 @@ The last step is to add a URL rewrite rule to fix your URLs so that you don't ne
      IIS rewrite rules
     </a>
     on your app to remove the installation directory as well as to "prettify" your URLs. Without doing this, your URLs are quite ugly and hard to discover.
-    <a href="{{ site.base_url }}/media/2016/07/MediaWiki-UglyUrl.png">
-     <img alt="Ugly URL" class="aligncenter size-full wp-image-139" height="222" src="{{ site.base_url }}/media/2016/07/MediaWiki-UglyUrl.png" width="947"/>
+    <a href="{{ site.baseurl }}/media/2016/07/MediaWiki-UglyUrl.png">
+     <img alt="Ugly URL" class="aligncenter size-full wp-image-139" height="222" src="{{ site.baseurl }}/media/2016/07/MediaWiki-UglyUrl.png" width="947"/>
     </a>
     There are many ways to configure this so consider the below just one of many examples.
     <ul>
@@ -339,8 +339,8 @@ $wgUsePathInfo = true;
 [/php]
 
 Now, if you navigate to your site root, you'll get redirected to https://{appname}.azurewebsites.net/wiki and you will see your wiki content. If you click on a page, you'll get a friendly /wiki/PageTitle URL.
-    <a href="{{ site.base_url }}/media/2016/07/MediaWiki-ShortUrl.png">
-     <img alt="Pretty URL" class="aligncenter size-full wp-image-138" height="223" src="{{ site.base_url }}/media/2016/07/MediaWiki-ShortUrl.png" width="948"/>
+    <a href="{{ site.baseurl }}/media/2016/07/MediaWiki-ShortUrl.png">
+     <img alt="Pretty URL" class="aligncenter size-full wp-image-138" height="223" src="{{ site.baseurl }}/media/2016/07/MediaWiki-ShortUrl.png" width="948"/>
     </a>
     This is a big improvement from before!
     <h2 id="Anchors">
@@ -371,8 +371,8 @@ One potential workaround is to have people complete the login and then click the
      true
     </strong>
     in the Azure management portal.
-    <a href="{{ site.base_url }}/media/2016/07/MediaWiki-PreserveUrlFragments.png">
-     <img alt="Preserving URL fragments in login" class="aligncenter size-full wp-image-142" height="276" src="{{ site.base_url }}/media/2016/07/MediaWiki-PreserveUrlFragments.png" width="972"/>
+    <a href="{{ site.baseurl }}/media/2016/07/MediaWiki-PreserveUrlFragments.png">
+     <img alt="Preserving URL fragments in login" class="aligncenter size-full wp-image-142" height="276" src="{{ site.baseurl }}/media/2016/07/MediaWiki-PreserveUrlFragments.png" width="972"/>
     </a>
     With this setting in place, when users click on your links which contain URL fragments, the login process will ensure that the URL fragment part of your URL does not get lost in the login redirect process. Let us know in the comments if you found this feature helpful for you, we'd love to know about it. If it helps out enough folks, we'll likely turn on this capability by default.
     <footer>
@@ -387,8 +387,8 @@ One potential workaround is to have people complete the login and then click the
    </div>
   </div>
  </body>
- <script src="{{ site.base_url }}/resource/jquery-1.12.1.min.js" type="text/javascript">
+ <script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript">
  </script>
- <script src="{{ site.base_url }}/resource/replace.js" type="text/javascript">
+ <script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript">
  </script>
 </html>
