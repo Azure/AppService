@@ -1,170 +1,69 @@
 ---
 layout: post
+hide_excerpt: true
 ---
-<html>
- <head>
-  <meta charset="utf-8"/>
- </head>
- <body>
-  <div id="page">
-   <a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Alex Karcher" target="_blank">
-    Alex Karcher
-   </a>
-   <time>
-    11/15/2017 12:30:22 AM
-   </time>
-   <hr/>
-   <div id="content">
-    Functions Proxies is an API toolkit built into Functions to enable you to build APIs faster! Proxies makes it easy to perform simple API operations, like nesting multiple Functions together under one API, as well as API fundamentals, like mock APIs, OpenAPI definitions, and monitoring.
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
 
-Since preview we’ve gotten a lot of awesome feedback and responded with some new functionality to make Proxies even better. We’re now releasing Proxies under General Availability today, November 15
-    <sup>
-     th
-    </sup>
-    .
-    <a href="https://channel9.msdn.com/Events/Connect/2017/T114" rel="noopener" target="_blank">
-     Check out what’s new in Proxies at Connect()
-    </a>
-    <a href="https://channel9.msdn.com/Events/Connect/2017/T114">
-     <iframe allowfullscreen="allowfullscreen" frameborder="0" height="540" src="https://channel9.msdn.com/Events/Connect/2017/T114/player" width="960">
-     </iframe>
-    </a>
-    <strong>
-     New Portal Experience for Proxie
-    </strong>
-    <strong>
-     s
-    </strong>
-    <ul>
-     <li>
-      Request and response overrides can now be set in the portal
-     </li>
-     <li>
-      Modify input request to send different HTTP verbs, headers, or query parameters to a backend service
-     </li>
-     <li>
-      Replace backend response status code, headers, and body
-     </li>
-    </ul>
-    <strong>
-     Mock API support in Proxies
-    </strong>
-    <img alt="" class="aligncenter size-full wp-image-6475" height="839" src="{{ site.baseurl }}/media/2017/11/MockAPI.gif" width="1786"/>
-    Using the new editor, you can create mock APIs. You do this by using only response overrides and no backend URL. Mock APIs allow you to create a simple API at your real REST endpoint, allowing developers to start testing API integrations while the API is still under development.
-    <strong>
-     <a href="{{ site.baseurl }}/media/2017/11/MockAPI.gif">
-     </a>
-     Functions Core Tools (CLI) Support for Proxies
-    </strong>
-    The
-    <a href="https://aka.ms/functionscoretools">
-     Functions Core Tools
-    </a>
-    are our set of CLI tools for locally developing Functions, and they now support authoring and running Proxies!
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Alex Karcher" target="_blank">Alex Karcher</a>
+<time>    11/15/2017 12:30:22 AM</time>
+<hr/>
+<div id="content">Functions Proxies is an API toolkit built into Functions to enable you to build APIs faster! Proxies makes it easy to perform simple API operations, like nesting multiple Functions together under one API, as well as API fundamentals, like mock APIs, OpenAPI definitions, and monitoring.
+
+Since preview we’ve gotten a lot of awesome feedback and responded with some new functionality to make Proxies even better. We’re now releasing Proxies under General Availability today, November 15<sup>th</sup>.  <a href="https://channel9.msdn.com/Events/Connect/2017/T114" rel="noopener" target="_blank">Check out what’s new in Proxies at Connect()</a><a href="https://channel9.msdn.com/Events/Connect/2017/T114">
+<iframe allowfullscreen="allowfullscreen" frameborder="0" height="540" src="https://channel9.msdn.com/Events/Connect/2017/T114/player" width="960"></iframe></a>
+<strong>New Portal Experience for Proxie</strong><strong>s</strong>
+<ul>
+<li>Request and response overrides can now be set in the portal</li>
+<li>Modify input request to send different HTTP verbs, headers, or query parameters to a backend service</li>
+<li>Replace backend response status code, headers, and body</li>
+</ul>
+<strong>Mock API support in Proxies</strong>
+<img alt="" class="aligncenter size-full wp-image-6475" height="839" src="{{ site.baseurl }}/media/2017/11/MockAPI.gif" width="1786"/>
+
+Using the new editor, you can create mock APIs. You do this by using only response overrides and no backend URL. Mock APIs allow you to create a simple API at your real REST endpoint, allowing developers to start testing API integrations while the API is still under development.
+
+<strong><a href="{{ site.baseurl }}/media/2017/11/MockAPI.gif"></a>Functions Core Tools (CLI) Support for Proxies</strong>
+
+The <a href="https://aka.ms/functionscoretools">Functions Core Tools</a> are our set of CLI tools for locally developing Functions, and they now support authoring and running Proxies!
 
 Get started with a new proxy using
-    <pre>Function proxy create --name &lt;yourproxyname&gt;</pre>
-    When prompted for a template, choosing SampleProxy will create a simple proxy to call httpbin.org/ip and returns your public IP address. Choosing RequestResponseOverride will create a simple mock API that returns  a sample body and header. Note that the template uses “localhost” to reference a local function. This will allow the same Proxy to work in the cloud, once the Function App has a different hostname.
-    <a href="{{ site.baseurl }}/media/2017/11/ProxiesCLI.gif">
-     <img alt="" class="aligncenter size-full wp-image-6485" height="961" src="{{ site.baseurl }}/media/2017/11/ProxiesCLI.gif" width="1555"/>
-    </a>
-    Read more about developing locally
-    <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local">
-     in our docs.
-    </a>
-    <strong>
-     Application Insights Support
-    </strong>
-    <strong>
-    </strong>
-    Proxies will now publish telemetry to Azure Application Insights when App Insights is enabled for your function App. This allows for real time analytics steaming, as well as rich historical analysis. With Proxies you can not only measure your serverless API, but also proxy a legacy API and leverage App Insights to measure that API. Read more about our Application Insights support in Functions
-    <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-monitoring">
-     in the docs
-    </a>
-    .
-    <strong>
-     OpenAPI Support
-    </strong>
-    Proxy rules will now show up in OpenAPI definition templates generated in Functions! A completed OpenAPI definition allows you to import APIs defined in Proxies into a wide range of tools and services, like Logic Apps, Visual Studio solutions, Power Apps, Flow, and Azure API Management.
+<pre>Function proxy create --name &lt;yourproxyname&gt;</pre>
+When prompted for a template, choosing SampleProxy will create a simple proxy to call httpbin.org/ip and returns your public IP address. Choosing RequestResponseOverride will create a simple mock API that returns  a sample body and header. Note that the template uses “localhost” to reference a local function. This will allow the same Proxy to work in the cloud, once the Function App has a different hostname.
 
-Read more about Functions OpenAPI support
-    <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-openapi-definition">
-     here in the docs
-    </a>
-    .
-    <strong>
-     On by Default
-    </strong>
-    As a part of the GA release, Proxies will now be enabled by default on  all Function Apps! We have also baked in some performance improvements to Proxies.
-    <strong>
-     Get Started Now!
-    </strong>
-    <strong>
-    </strong>
-    We’re very excited to release Proxies to the world! We’ve already seen the community build awesome widgets for single page applications, serverless URL shorteners, and much more with Proxies, and we’re excited to see what you build next!
-    <ul>
-     <li>
-      <span>
-      </span>
-      Get started at our docs at
-      <a href="http://aka.ms/ProxiesDocs">
-       aka.ms/ProxiesDocs
-      </a>
-     </li>
-     <li>
-      See a video of
-      <a href="https://channel9.msdn.com/Events/Connect/2017/T114">
-       what’s new with Proxies at Connect()
-      </a>
-     </li>
-     <li>
-      To report bugs, please open an issue on the
-      <a href="https://github.com/Azure/Azure-Functions">
-       Azure-Functions
-      </a>
-      GitHub repo.
-     </li>
-     <li>
-      Submit any feature requests on our
-      <a href="http://aka.ms/functionsUV">
-       UserVoice
-      </a>
-     </li>
-     <li>
-      For technical questions, please post on the
-      <a href="https://social.msdn.microsoft.com/Forums/azure/en-US/home?forum=azurefunctions">
-       MSDN forums
-      </a>
-      or
-      <a href="https://stackoverflow.com/questions/tagged/azure-functions">
-       StackOverflow
-      </a>
-      . The entire Functions engineering team monitors these questions, so you’re sure to get an expert answer.
-     </li>
-     <li>
-      For product news, follow
-      <a href="https://twitter.com/AzureFunctions">
-      </a>
-      <a href="https://twitter.com/AzureFunctions">
-       @AzureFunctions
-      </a>
-     </li>
-     <li>
-      For walkthroughs and live sessions, check out
-      <a href="https://www.youtube.com/c/AzureFunctions">
-       Azure Functions on Youtube
-      </a>
-     </li>
-    </ul>
-    <a href="{{ site.baseurl }}/#_msoanchor_3">
-    </a>
-    <a href="http://aka.ms/proxiesconnectvid">
-    </a>
-   </div>
-  </div>
- </body>
- <script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript">
- </script>
- <script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript">
- </script>
+<a href="{{ site.baseurl }}/media/2017/11/ProxiesCLI.gif"><img alt="" class="aligncenter size-full wp-image-6485" height="961" src="{{ site.baseurl }}/media/2017/11/ProxiesCLI.gif" width="1555"/></a>
+
+Read more about developing locally <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local">in our docs.</a>
+<strong>Application Insights Support</strong>
+<strong>              </strong>Proxies will now publish telemetry to Azure Application Insights when App Insights is enabled for your function App. This allows for real time analytics steaming, as well as rich historical analysis. With Proxies you can not only measure your serverless API, but also proxy a legacy API and leverage App Insights to measure that API. Read more about our Application Insights support in Functions <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-monitoring">in the docs</a>.
+
+<strong>OpenAPI Support</strong>
+
+Proxy rules will now show up in OpenAPI definition templates generated in Functions! A completed OpenAPI definition allows you to import APIs defined in Proxies into a wide range of tools and services, like Logic Apps, Visual Studio solutions, Power Apps, Flow, and Azure API Management.
+
+Read more about Functions OpenAPI support <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-openapi-definition">here in the docs</a>.
+
+<strong>On by Default</strong>
+
+As a part of the GA release, Proxies will now be enabled by default on  all Function Apps! We have also baked in some performance improvements to Proxies.
+
+<strong>Get Started Now!</strong>
+<strong>              </strong>We’re very excited to release Proxies to the world! We’ve already seen the community build awesome widgets for single page applications, serverless URL shorteners, and much more with Proxies, and we’re excited to see what you build next!
+<ul>
+<li><span> </span>Get started at our docs at <a href="http://aka.ms/ProxiesDocs">aka.ms/ProxiesDocs</a></li>
+<li>See a video of <a href="https://channel9.msdn.com/Events/Connect/2017/T114">what’s new with Proxies at Connect()</a></li>
+<li>To report bugs, please open an issue on the <a href="https://github.com/Azure/Azure-Functions">Azure-Functions</a>GitHub repo.</li>
+<li>Submit any feature requests on our <a href="http://aka.ms/functionsUV">UserVoice</a></li>
+<li>For technical questions, please post on the <a href="https://social.msdn.microsoft.com/Forums/azure/en-US/home?forum=azurefunctions">MSDN forums </a>or <a href="https://stackoverflow.com/questions/tagged/azure-functions">StackOverflow</a>. The entire Functions engineering team monitors these questions, so you’re sure to get an expert answer.</li>
+<li>For product news, follow <a href="https://twitter.com/AzureFunctions"></a><a href="https://twitter.com/AzureFunctions">@AzureFunctions</a></li>
+<li>For walkthroughs and live sessions, check out <a href="https://www.youtube.com/c/AzureFunctions">Azure Functions on Youtube</a></li>
+</ul>
+<a href="{{ site.baseurl }}/#_msoanchor_3"></a>
+<a href="http://aka.ms/proxiesconnectvid"></a></div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
 </html>

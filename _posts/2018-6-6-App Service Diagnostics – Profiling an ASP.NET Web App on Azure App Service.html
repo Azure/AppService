@@ -1,253 +1,99 @@
 ---
 layout: post
+hide_excerpt: true
 ---
-<html>
- <head>
-  <meta charset="utf-8"/>
- </head>
- <body>
-  <div id="page">
-   <a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/PuneetG" target="_blank">
-    PuneetG
-   </a>
-   <time>
-    6/6/2018 12:47:44 AM
-   </time>
-   <hr/>
-   <div id="content">
-    The
-    <strong>
-     Diagnostic Tools
-    </strong>
-    options under the
-    <strong>
-     Diagnose and Solve
-    </strong>
-    blade for Azure App Services has been live for a few months now and has many tools that help you troubleshoot apps based on their application stack. In this post, we are going to cover the
-    <strong>
-     Collect .NET Profiler Trace
-    </strong>
-    option in detail and how you can use it to troubleshoot a slow or a failing ASP.NET based Web App.
-    <a href="{{ site.baseurl }}/media/2018/05/tools.png">
-     <img alt="" class="alignnone size-full wp-image-8715" height="145" src="{{ site.baseurl }}/media/2018/05/tools.png" width="615"/>
-    </a>
-    Profiler tool helps in collecting an
-    <strong>
-     on-demand
-    </strong>
-    trace that lets you identify the underlying .NET exceptions, time taken in the various request processing pipeline stages and even lets you drill down into exact methods within the application code that are taking time. It is extremely useful in situations where the problem is happening right now and you want to collect some data to identify the root cause of the issue. Profiling is designed for production scenarios and is based on ETW (Event tracing for Windows) . The analysis component of the profiler uses the
-    <a href="https://blogs.msdn.microsoft.com/dotnet/2013/08/15/announcing-traceevent-monitoring-and-diagnostics-for-the-cloud/">
-     TraceEvent
-    </a>
-    library to generate a report that helps you drill down in to the problems in matter of a few minutes. It should be noted that no changes are made to your Web App code or your configuration during the collection or the analysis phase. In fact, the web app is not even restarted as a result of capturing this trace. The captured trace has ETW events emitted by the IIS and the ASP.NET providers along with stack traces captured at the CPU level. You can use this tool to efficiently troubleshoot delays which are relatively small (less than a second too) without impacting the run-time performance of the application. At this point, the profiler works only for ASP.NET web apps only and ASP.NET Core support might come soon.
-    <h2>
-     How to Collect the Trace
-    </h2>
-    To collect the trace, go to
-    <strong>
-     Diagnose and Solve Problems
-    </strong>
-    and choose the
-    <strong>
-     Collect .NET Profiler Trace
-    </strong>
-    option under
-    <strong>
-     Diagnostic Tools
-    </strong>
-    option and click on
-    <strong>
-     Collect Profiler Trace
-    </strong>
-    . Unless you have isolated that only a specific instance is failing, it is best to just select all the instances on which your Web App is running.
-    <a href="{{ site.baseurl }}/media/2018/05/collect_profiler_Trace.png">
-     <img alt="" class="alignnone size-full wp-image-8615" height="250" src="{{ site.baseurl }}/media/2018/05/collect_profiler_Trace.png" width="968"/>
-    </a>
-    <strong>
-     Add thread report
-    </strong>
-    option - With this option enabled, a thread report of all the threads in the process is also collected at the
-    <em>
-     end
-    </em>
-    of the profiler trace. This is useful especially if you are troubleshooting totally hung processes, deadlocks or requests taking more than 60 seconds. This will pause your process for a few seconds until the thread dump is generated. This option is NOT recommended if you are experiencing high CPU on the instance because if the instance is under stress, it might take a long time to even start a new process to collect the thread dumps.
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
 
-Clicking the
-    <strong>
-     Collect Profiler Trace
-    </strong>
-    will start profiling the Web App and the wizard will show progress of various steps involved.
-    <a href="{{ site.baseurl }}/media/2018/05/reproduce_issue_now.png">
-     <img alt="" class="alignnone size-full wp-image-8635" height="423" src="{{ site.baseurl }}/media/2018/05/reproduce_issue_now.png" width="577"/>
-    </a>
-    Once the profiler trace is started, reproduce the issue by browsing the Web App. If you have a Web App running on multiple instances, make sure to browse a few more times to ensure that the requests to the web app get captured in the profiler trace. The default duration for which the profiler trace runs is 60 seconds and during this 60 seconds, all the requests that were made to the Web App get captured in the profiler trace. It is important to note that the profiler trace only has information about the requests that were captured in these 60 seconds (It is possible to increase this duration as mentioned below in this article)
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/PuneetG" target="_blank">PuneetG</a>
+<time>    6/6/2018 12:47:44 AM</time>
+<hr/>
+<div id="content">The <strong>Diagnostic Tools</strong> options under the <strong>Diagnose and Solve</strong> blade for Azure App Services has been live for a few months now and has many tools that help you troubleshoot apps based on their application stack. In this post, we are going to cover the <strong>Collect .NET Profiler Trace</strong> option in detail and how you can use it to troubleshoot a slow or a failing ASP.NET based Web App.
+
+<a href="{{ site.baseurl }}/media/2018/05/tools.png"><img alt="" class="alignnone size-full wp-image-8715" height="145" src="{{ site.baseurl }}/media/2018/05/tools.png" width="615"/></a>
+
+Profiler tool helps in collecting an <strong>on-demand</strong> trace that lets you identify the underlying .NET exceptions, time taken in the various request processing pipeline stages and even lets you drill down into exact methods within the application code that are taking time. It is extremely useful in situations where the problem is happening right now and you want to collect some data to identify the root cause of the issue. Profiling is designed for production scenarios and is based on ETW (Event tracing for Windows) . The analysis component of the profiler uses the <a href="https://blogs.msdn.microsoft.com/dotnet/2013/08/15/announcing-traceevent-monitoring-and-diagnostics-for-the-cloud/">TraceEvent</a> library to generate a report that helps you drill down in to the problems in matter of a few minutes. It should be noted that no changes are made to your Web App code or your configuration during the collection or the analysis phase. In fact, the web app is not even restarted as a result of capturing this trace. The captured trace has ETW events emitted by the IIS and the ASP.NET providers along with stack traces captured at the CPU level. You can use this tool to efficiently troubleshoot delays which are relatively small (less than a second too) without impacting the run-time performance of the application. At this point, the profiler works only for ASP.NET web apps only and ASP.NET Core support might come soon.
+<h2>How to Collect the Trace</h2>
+To collect the trace, go to <strong>Diagnose and Solve Problems</strong> and choose the <strong>Collect .NET Profiler Trace</strong> option under <strong>Diagnostic Tools</strong> option and click on <strong>Collect Profiler Trace</strong>. Unless you have isolated that only a specific instance is failing, it is best to just select all the instances on which your Web App is running.
+
+<a href="{{ site.baseurl }}/media/2018/05/collect_profiler_Trace.png"><img alt="" class="alignnone size-full wp-image-8615" height="250" src="{{ site.baseurl }}/media/2018/05/collect_profiler_Trace.png" width="968"/></a>
+<strong>Add thread report</strong> option - With this option enabled, a thread report of all the threads in the process is also collected at the <em>end</em> of the profiler trace. This is useful especially if you are troubleshooting totally hung processes, deadlocks or requests taking more than 60 seconds. This will pause your process for a few seconds until the thread dump is generated. This option is NOT recommended if you are experiencing high CPU on the instance because if the instance is under stress, it might take a long time to even start a new process to collect the thread dumps.
+
+Clicking the <strong>Collect Profiler Trace</strong> will start profiling the Web App and the wizard will show progress of various steps involved.
+
+<a href="{{ site.baseurl }}/media/2018/05/reproduce_issue_now.png"><img alt="" class="alignnone size-full wp-image-8635" height="423" src="{{ site.baseurl }}/media/2018/05/reproduce_issue_now.png" width="577"/></a>
+
+Once the profiler trace is started, reproduce the issue by browsing the Web App. If you have a Web App running on multiple instances, make sure to browse a few more times to ensure that the requests to the web app get captured in the profiler trace. The default duration for which the profiler trace runs is 60 seconds and during this 60 seconds, all the requests that were made to the Web App get captured in the profiler trace. It is important to note that the profiler trace only has information about the requests that were captured in these 60 seconds (It is possible to increase this duration as mentioned below in this article)
 
 After 60 seconds, the profiler automatically stops, and an analysis component gets triggered that starts analyzing the profiler trace that just got captured. After the analysis finishes, a link to view the profiler report for every instance serving the web app is generated and you click on the Open Report button to view the Analysis report.
-    <a href="{{ site.baseurl }}/media/2018/05/OpenReportIcon.png">
-     <img alt="" class="alignnone size-full wp-image-8625" height="123" src="{{ site.baseurl }}/media/2018/05/OpenReportIcon.png" width="591"/>
-    </a>
-    <h2>
-     Understanding the Analysis Report
-    </h2>
-    The analysis report provides some basic information about the number of requests captured, successful and failed requests, CPU usage of the instance, CPU usage of the web app and request execution information that helps you identify how fast your Web App was responding when the trace was getting captured. This can be used to validate if the trace is useful and if the right set of requests got captured in the trace and if the cause of slowness is related to high CPU on the instance serving the web app or not. The trace file section also has a link to download the trace file.
-    <a href="{{ site.baseurl }}/media/2018/05/ReportSummaryInformation.png">
-     <img alt="" class="alignnone size-full wp-image-8595" height="212" src="{{ site.baseurl }}/media/2018/05/ReportSummaryInformation.png" width="1570"/>
-    </a>
-    For troubleshooting slow or slow or hung web applications, click on
-    <strong>
-     Slow Requests
-    </strong>
-    tab. This view shows you the top 100 slowest requests that got captured in the trace. It also breaks down the time spent in various modules of request execution in IIS and tries to categorize them in to
-    <em>
-     Platform, Network and Application code
-    </em>
-    to give you a quick indication on where the problem might be.
-    <a href="{{ site.baseurl }}/media/2018/05/slowrequests.png">
-     <img alt="" class="alignnone size-full wp-image-8645" height="418" src="{{ site.baseurl }}/media/2018/05/slowrequests.png" width="1548"/>
-    </a>
-    <ul>
-     <li>
-      <strong>
-       Application Code -
-      </strong>
-      represents the time spent in handlers or modules that get invoked either while executing application code (for e.g ManagedPipelineHandler) or those that are closely related to any explicit configuration done for the application (for e.g. RewriteModule). Any external or third party handlers, modules fall in this category. Anything which does not fall in the native IIS handlers or modules is classified as Application.
-     </li>
-     <li>
-      <strong>
-       Network
-      </strong>
-      - represents the time spent in
-      <strong>
-       reading the request entity body
-      </strong>
-      from the client or time spent in
-      <strong>
-       flushing the response buffer back to the client
-      </strong>
-      . Time spent in waiting on external outbound network calls made from the application (like Database, cache, external HTTP requests etc.) is
-      <strong>
-       <span style="text-decoration: underline">
-        not counted
-       </span>
-      </strong>
-      here and is grouped under Application Code. If requests are spending a lot of time in this category, then it means that there is either a network issue between the client and the web app, the network might be slow or the request and response body is big.
-     </li>
-     <li>
-      <strong>
-       Platform
-      </strong>
-      - represents the time a request spends in
-      <strong>
-       core native modules or handlers of IIS
-      </strong>
-      which are pre-installed in Azure App Service (for e.g. DefautlDocumentModule, StaticFileHandler etc.). A request spending too much time in these modules might indicate an overall platform issue so you can contact Microsoft Support to get more details.
-     </li>
-    </ul>
-    <em>
-    </em>
-    The chart also plots the Top 5 handlers or modules in the IIS processing pipeline where the requests spent most of their time and this can give a quick indication as to where the problem might be. In the above example, we see that 83% of the time was spent in PageLoad and 15% of the time was spent waiting in the CLR thread pool queue waiting for the request to be picked up and assigned to a thread pool thread.
+
+<a href="{{ site.baseurl }}/media/2018/05/OpenReportIcon.png"><img alt="" class="alignnone size-full wp-image-8625" height="123" src="{{ site.baseurl }}/media/2018/05/OpenReportIcon.png" width="591"/></a>
+<h2>Understanding the Analysis Report</h2>
+The analysis report provides some basic information about the number of requests captured, successful and failed requests, CPU usage of the instance, CPU usage of the web app and request execution information that helps you identify how fast your Web App was responding when the trace was getting captured. This can be used to validate if the trace is useful and if the right set of requests got captured in the trace and if the cause of slowness is related to high CPU on the instance serving the web app or not. The trace file section also has a link to download the trace file.
+
+<a href="{{ site.baseurl }}/media/2018/05/ReportSummaryInformation.png"><img alt="" class="alignnone size-full wp-image-8595" height="212" src="{{ site.baseurl }}/media/2018/05/ReportSummaryInformation.png" width="1570"/></a>
+
+For troubleshooting slow or slow or hung web applications, click on <strong>Slow Requests</strong> tab. This view shows you the top 100 slowest requests that got captured in the trace. It also breaks down the time spent in various modules of request execution in IIS and tries to categorize them in to <em>Platform, Network and Application code</em> to give you a quick indication on where the problem might be.
+
+<a href="{{ site.baseurl }}/media/2018/05/slowrequests.png"><img alt="" class="alignnone size-full wp-image-8645" height="418" src="{{ site.baseurl }}/media/2018/05/slowrequests.png" width="1548"/></a>
+<ul>
+<li><strong>Application Code - </strong>represents the time spent in handlers or modules that get invoked either while executing application code (for e.g ManagedPipelineHandler) or those that are closely related to any explicit configuration done for the application (for e.g. RewriteModule). Any external or third party handlers, modules fall in this category. Anything which does not fall in the native IIS handlers or modules is classified as Application.</li>
+<li><strong>Network</strong> - represents the time spent in <strong>reading the request entity body</strong> from the client or time spent in <strong>flushing the response buffer back to the client</strong>. Time spent in waiting on external outbound network calls made from the application (like Database, cache, external HTTP requests etc.) is <strong><span style="text-decoration: underline">not counted</span> </strong>here and is grouped under Application Code. If requests are spending a lot of time in this category, then it means that there is either a network issue between the client and the web app, the network might be slow or the request and response body is big.</li>
+<li><strong>Platform</strong> - represents the time a request spends in <strong>core native modules or handlers of IIS</strong> which are pre-installed in Azure App Service (for e.g. DefautlDocumentModule, StaticFileHandler etc.). A request spending too much time in these modules might indicate an overall platform issue so you can contact Microsoft Support to get more details.</li>
+</ul>
+<em></em>The chart also plots the Top 5 handlers or modules in the IIS processing pipeline where the requests spent most of their time and this can give a quick indication as to where the problem might be. In the above example, we see that 83% of the time was spent in PageLoad and 15% of the time was spent waiting in the CLR thread pool queue waiting for the request to be picked up and assigned to a thread pool thread.
 
 In the same section, if you scroll below, you find a list of Top 100 Slow requests with the time taken in request execution and the slowest module for these requests. Note that stack traces will be captured if the request execution delay is on the same thread or if the application code uses Tasks class (from System.Net.Threading) to perform asynchronous IO in the request. There are lot of ways in .NET Framework to achieve asynchronous execution behavior and not all of them can be tracked so it is possible that for those scenarios, there are no stack traces captured for the request. Even for those scenarios, at least the Module name should help in identifying where the delay might be happening and is good indication of where the problem lies.
-    <a href="{{ site.baseurl }}/media/2018/05/Top100SlowRequests.png">
-     <img alt="" class="alignnone size-full wp-image-8655" height="348" src="{{ site.baseurl }}/media/2018/05/Top100SlowRequests.png" width="1537"/>
-    </a>
-    So the above information tells us that the slowest request in this trace took around 30 seconds and 99.79% of the time was spent in the the Page_Load event of ASP.NET which tells us that something in the Page_Load caused the request to slow down hence narrowing the issue down to Application Code.
 
-The Profiler tries its best to correlate the stack trace of thread to the slow requests and if it manages to find this information, a light bulb icon is displayed next to the Details view to illustrate that there are stack traces captured for this request. You can click on the
-    <strong>
-     Details
-    </strong>
-    button to get the stack trace captured.
-    <h2>
-     Stack Traces - Thread View
-    </h2>
-    For a request, the
-    <strong>
-     Thread View
-    </strong>
-    is shown for requests where the profiler is able to determine that the request execution happened on the same thread and where the delay in request processing happened on the same very thread. It is however possible that the thread view is shown even for ASYNC requests if the .NET Task Scheduler decides to run them on the same thread. It is best advised to look at both the Thread View and Activity view for requests that executed on the same thread to get an idea of methods taking the longest time because at times one view may have more accurate information than the other and might help you go one more step closer to the code that is introducing the delay.
-    <a href="{{ site.baseurl }}/media/2018/05/StackTrace.png">
-     <img alt="" class="alignnone size-full wp-image-8665" height="473" src="{{ site.baseurl }}/media/2018/05/StackTrace.png" width="1202"/>
-    </a>
-    The stack trace helps us identify the delay is happening while trying to open a SqlConnection from a page named SlowSql.aspx and the function name is demomvp.SlowSql.Page_Load. There is also a toggle button for showing the full .NET Framework stack which shows time spent in all the functions that got executed on this thread and at times is helpful if you want to drill down further within the .NET Framework code to identify methods where time is being spent.
+<a href="{{ site.baseurl }}/media/2018/05/Top100SlowRequests.png"><img alt="" class="alignnone size-full wp-image-8655" height="348" src="{{ site.baseurl }}/media/2018/05/Top100SlowRequests.png" width="1537"/></a>
+
+So the above information tells us that the slowest request in this trace took around 30 seconds and 99.79% of the time was spent in the the Page_Load event of ASP.NET which tells us that something in the Page_Load caused the request to slow down hence narrowing the issue down to Application Code.
+
+The Profiler tries its best to correlate the stack trace of thread to the slow requests and if it manages to find this information, a light bulb icon is displayed next to the Details view to illustrate that there are stack traces captured for this request. You can click on the <strong>Details</strong> button to get the stack trace captured.
+<h2>Stack Traces - Thread View</h2>
+For a request, the <strong>Thread View</strong> is shown for requests where the profiler is able to determine that the request execution happened on the same thread and where the delay in request processing happened on the same very thread. It is however possible that the thread view is shown even for ASYNC requests if the .NET Task Scheduler decides to run them on the same thread. It is best advised to look at both the Thread View and Activity view for requests that executed on the same thread to get an idea of methods taking the longest time because at times one view may have more accurate information than the other and might help you go one more step closer to the code that is introducing the delay.
+
+<a href="{{ site.baseurl }}/media/2018/05/StackTrace.png"><img alt="" class="alignnone size-full wp-image-8665" height="473" src="{{ site.baseurl }}/media/2018/05/StackTrace.png" width="1202"/></a>
+
+The stack trace helps us identify the delay is happening while trying to open a SqlConnection from a page named SlowSql.aspx and the function name is demomvp.SlowSql.Page_Load. There is also a toggle button for showing the full .NET Framework stack which shows time spent in all the functions that got executed on this thread and at times is helpful if you want to drill down further within the .NET Framework code to identify methods where time is being spent.
 
 Profiler is able to show the stack traces accurately for requests that have completed in the trace. For requests that started in the trace and have not finished before the trace is stopped, the profiler tries its best to show the time taken but it may not be 100% accurate. Incomplete requests would have a warning icon next to the slow request report and it is suggested to look all the complete requests in the trace to get a better picture of request execution.
-    <h2>
-     Stack Traces - Activity View
-    </h2>
-    If the request has switched multiple threads, you will notice an icon next to the list of requests in the slow request report indicating the request is an async request.
-    <a href="{{ site.baseurl }}/media/2018/05/async.png">
-     <img alt="" class="alignnone size-full wp-image-8685" height="82" src="{{ site.baseurl }}/media/2018/05/async.png" width="1457"/>
-    </a>
-    For asynchronous requests, the profiler report shows you the
-    <strong>
-     Activity View
-    </strong>
-    and the thread view is not shown. Activity view groups method execution by the activity information which is passed by CLR when using Tasks and the profiler groups similar tasks originating with the same Activity Id and stitches them together to show you this view. Here is an example of an asynchronous request's activity view.
-    <a href="{{ site.baseurl }}/media/2018/05/async2.png">
-     <img alt="" class="alignnone size-full wp-image-8695" height="594" src="{{ site.baseurl }}/media/2018/05/async2.png" width="1156"/>
-    </a>
-    In the above stack trace, we can see that the method demomvp.AsyncThreadDelaySleep.WaitForSomeTime invoked a new Delay Task and spent 8 seconds awaiting on it. As you can see, by the nature of asynchronous execution, understanding ASYNC tasks is slightly more trickier than synchronous threads but still the profiler report has grouped the right functions together by grouping .NET Activity. To know more about .NET Activities and how they are flown, check out this detailed post -
-    <a href="https://blogs.msdn.microsoft.com/vancem/2015/09/14/exploring-eventsource-activity-correlation-and-causation-features/">
-     https://blogs.msdn.microsoft.com/vancem/2015/09/14/exploring-eventsource-activity-correlation-and-causation-features/
-    </a>
-    <h2>
-     Failed Requests
-    </h2>
-    For requests, that failed with a HTTP error, the Failed Requests view highlights the HTTP Module or the handler that was responsible for setting the error status code. Clicking on Details will show more information about the failure and will highlight the underlying exception for the request. The profiler tries its best to correlate a request with an exception, however if a request has switched multiple threads (either due to multiple tasks or due to different threading primitives), then the profiler may not be able to correlate the exception with the request.
-    <a href="{{ site.baseurl }}/media/2018/05/failedrequests.png">
-     <img alt="" class="alignnone size-full wp-image-8675" height="854" src="{{ site.baseurl }}/media/2018/05/failedrequests.png" width="1185"/>
-    </a>
-    <h2>
-     .NET Exceptions View
-    </h2>
-    This view shows
-    <strong>
-     all
-    </strong>
-    .NET exceptions that happened in the process during the trace. The difference in this view vs. the Failed Requests view is that this can include all the exceptions that might have happened on background threads , IO threads or on threads that could not be associated to a request directly.
-    <h2>
-     CPU Stacks
-    </h2>
-    If the process traced also consumed high CPU, then the profiler report would also show you the call-stack of the thread that consumed the maximum CPU and this should help in identifying the function that need to be optimized.
-    <a href="{{ site.baseurl }}/media/2018/05/CPU-Stacks.png">
-     <img alt="" class="alignnone size-full wp-image-8705" height="743" src="{{ site.baseurl }}/media/2018/05/CPU-Stacks.png" width="1325"/>
-    </a>
-    In the above example, we can see that there is a
-    <strong>
-     ProfilerClassTest.CalculateDiscounts
-    </strong>
-    method is taking 4 seconds on the CPU
-    <h2>
-     Increasing the duration for the Profiler Trace
-    </h2>
-    It is possible to increase the default profiling duration by setting an application setting
-    <strong>
-     IIS_PROFILING_TIMEOUT_IN_SECONDS
-    </strong>
-    with a maximum value of 900 (i.e. 15 minutes). If you configure this application setting to a number more than 900, it defaults to the 60 second value.
-    <h2>
-     How to Analyze the trace further ?
-    </h2>
-    If the profiler report is not able to identify the issue easily, you can use the
-    <a href="https://github.com/Microsoft/perfview/releases">
-     PerfView
-    </a>
-    tool or Visual Studio to analyze the trace . The trace file generated by the profiler is a
-    <strong>
-     *.diagsession
-    </strong>
-    file that is supported by these tools. The link to download the trace file is also present in the analysis report in the top section.
+<h2>Stack Traces - Activity View</h2>
+If the request has switched multiple threads, you will notice an icon next to the list of requests in the slow request report indicating the request is an async request.
+
+<a href="{{ site.baseurl }}/media/2018/05/async.png"><img alt="" class="alignnone size-full wp-image-8685" height="82" src="{{ site.baseurl }}/media/2018/05/async.png" width="1457"/></a>
+
+For asynchronous requests, the profiler report shows you the <strong>Activity View</strong> and the thread view is not shown. Activity view groups method execution by the activity information which is passed by CLR when using Tasks and the profiler groups similar tasks originating with the same Activity Id and stitches them together to show you this view. Here is an example of an asynchronous request's activity view.
+
+<a href="{{ site.baseurl }}/media/2018/05/async2.png"><img alt="" class="alignnone size-full wp-image-8695" height="594" src="{{ site.baseurl }}/media/2018/05/async2.png" width="1156"/></a>
+
+In the above stack trace, we can see that the method demomvp.AsyncThreadDelaySleep.WaitForSomeTime invoked a new Delay Task and spent 8 seconds awaiting on it. As you can see, by the nature of asynchronous execution, understanding ASYNC tasks is slightly more trickier than synchronous threads but still the profiler report has grouped the right functions together by grouping .NET Activity. To know more about .NET Activities and how they are flown, check out this detailed post - <a href="https://blogs.msdn.microsoft.com/vancem/2015/09/14/exploring-eventsource-activity-correlation-and-causation-features/">https://blogs.msdn.microsoft.com/vancem/2015/09/14/exploring-eventsource-activity-correlation-and-causation-features/</a>
+<h2>Failed Requests</h2>
+For requests, that failed with a HTTP error, the Failed Requests view highlights the HTTP Module or the handler that was responsible for setting the error status code. Clicking on Details will show more information about the failure and will highlight the underlying exception for the request. The profiler tries its best to correlate a request with an exception, however if a request has switched multiple threads (either due to multiple tasks or due to different threading primitives), then the profiler may not be able to correlate the exception with the request.
+
+<a href="{{ site.baseurl }}/media/2018/05/failedrequests.png"><img alt="" class="alignnone size-full wp-image-8675" height="854" src="{{ site.baseurl }}/media/2018/05/failedrequests.png" width="1185"/></a>
+<h2>.NET Exceptions View</h2>
+This view shows <strong>all</strong> .NET exceptions that happened in the process during the trace. The difference in this view vs. the Failed Requests view is that this can include all the exceptions that might have happened on background threads , IO threads or on threads that could not be associated to a request directly.
+<h2>CPU Stacks</h2>
+If the process traced also consumed high CPU, then the profiler report would also show you the call-stack of the thread that consumed the maximum CPU and this should help in identifying the function that need to be optimized.
+
+<a href="{{ site.baseurl }}/media/2018/05/CPU-Stacks.png"><img alt="" class="alignnone size-full wp-image-8705" height="743" src="{{ site.baseurl }}/media/2018/05/CPU-Stacks.png" width="1325"/></a>
+
+ 
+
+In the above example, we can see that there is a <strong>ProfilerClassTest.CalculateDiscounts</strong> method is taking 4 seconds on the CPU
+<h2>Increasing the duration for the Profiler Trace</h2>
+It is possible to increase the default profiling duration by setting an application setting <strong>IIS_PROFILING_TIMEOUT_IN_SECONDS</strong> with a maximum value of 900 (i.e. 15 minutes). If you configure this application setting to a number more than 900, it defaults to the 60 second value.
+<h2>How to Analyze the trace further ?</h2>
+If the profiler report is not able to identify the issue easily, you can use the <a href="https://github.com/Microsoft/perfview/releases">PerfView </a>tool or Visual Studio to analyze the trace . The trace file generated by the profiler is a <strong>*.diagsession</strong> file that is supported by these tools. The link to download the trace file is also present in the analysis report in the top section.
 
 We hope this tool helps you identify issues in production easily and lets you optimize your code to better serve your Web Apps.
-    <strong>
-     Happy Debugging !!!
-    </strong>
-   </div>
-  </div>
- </body>
- <script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript">
- </script>
- <script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript">
- </script>
+
+<strong>Happy Debugging !!!</strong></div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
 </html>

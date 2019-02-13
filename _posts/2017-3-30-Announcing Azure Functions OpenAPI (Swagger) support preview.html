@@ -1,133 +1,60 @@
 ---
 layout: post
+hide_excerpt: true
 ---
-<html>
- <head>
-  <meta charset="utf-8"/>
- </head>
- <body>
-  <div id="page">
-   <a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Alex Karcher" target="_blank">
-    Alex Karcher
-   </a>
-   <time>
-    3/30/2017 12:00:37 PM
-   </time>
-   <hr/>
-   <div id="content">
-    Today we are announcing preview support for editing and hosting OpenAPI 2.0 (Swagger) metadata in Azure Functions. API authoring is a popular application of Functions, and Swagger metadata allows a whole network of Swagger compliant software to easily integrate with those APIs.
-    <a href="{{ site.baseurl }}/media/2017/03/editorapidef.png">
-     <img alt="OpenAPI definition page" class="aligncenter size-full wp-image-4175" height="1243" src="{{ site.baseurl }}/media/2017/03/editorapidef.png" width="2237"/>
-    </a>
-    We are adding a Swagger template generator to create a quickstart Swagger file from the existing metadata in your HTTP Trigger Functions. You just fill in the
-    <a href="http://swagger.io/specification/#operation-object-36" target="_blank">
-     operation objects
-    </a>
-    for each of your HTTP verbs and you’re off!
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Alex Karcher" target="_blank">Alex Karcher</a>
+<time>    3/30/2017 12:00:37 PM</time>
+<hr/>
+<div id="content">Today we are announcing preview support for editing and hosting OpenAPI 2.0 (Swagger) metadata in Azure Functions. API authoring is a popular application of Functions, and Swagger metadata allows a whole network of Swagger compliant software to easily integrate with those APIs.
+
+<a href="{{ site.baseurl }}/media/2017/03/editorapidef.png"><img alt="OpenAPI definition page" class="aligncenter size-full wp-image-4175" height="1243" src="{{ site.baseurl }}/media/2017/03/editorapidef.png" width="2237"/></a>
+
+We are adding a Swagger template generator to create a quickstart Swagger file from the existing metadata in your HTTP Trigger Functions. You just fill in the <a href="http://swagger.io/specification/#operation-object-36" target="_blank">operation objects</a> for each of your HTTP verbs and you’re off!
 
 We host a version of the swagger editor to provide rich inline editing of your Swagger file from within the Function UI. Once you save your Swagger file we’ll host it for you at a url in your Function App's domain.
-    <a href="https://docs.microsoft.com/azure/azure-functions/functions-api-definition-getting-started">
-     Head on over to the documentation to learn more
-    </a>
-    <h2>
-     Integrations
-    </h2>
-    These features integrate with the existing Azure App Service API definition support to allow you to consume your API on a variety of 1st party services, including
-    <a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/02/23/making-your-apis-available-to-powerapps-and-microsoft-flow/">
-     PowerApps, Flow
-    </a>
-    , and
-    <a href="https://docs.microsoft.com/en-us/azure/logic-apps/logic-apps-create-api-app">
-     Logic Apps
-    </a>
-    , as well as the ability to
-    <a href="https://docs.microsoft.com/en-us/azure/app-service-api/app-service-api-dotnet-get-started#a-idcodegena-generate-client-code-for-the-data-tier">
-     generate SDKs for your API in Visual Studio
-    </a>
-    .
-    <h2>
-     Creating your first Open API definition
-    </h2>
-    <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-api-definition-getting-started">
-     Check out our getting started guide for in-depth instructions
-    </a>
-    <ol>
-     <li>
-      To create your first OpenAPI (Swagger) definition you must first have a function App with at least one HTTP Trigger Function.
-      <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-create-first-azure-function">
-       Instructions.
-      </a>
-     </li>
-     <li>
-      Next head over to the "API Definition (preview)" tab in the lower left hand corner of your Function App.
-     </li>
-     <li>
-      Toggle your Swagger source to "Internal." This will enable hosting and inline editing of an OpenAPI definition for this Function App.
-     </li>
-     <li>
-      Click "Load Generated API Definition" to populate the Swagger editor with a quickstart OpenAPI definition.
-      <ol>
-       <li>
-        This definition uses your function.json, represented as the settings in the "Integrate tab," for each Function to populate the definition.
-       </li>
-      </ol>
-     </li>
-     <li>
-      Add an operation object for the POST operation of your function with the expected type of input.
-      <ol>
-       <li>
-        For the HTTP Trigger sample code you can use the following Operation object:
-       </li>
-       <li>
-        <script src="https://gist.github.com/alexkarcher-msft/1530704dd33544c34d86facf151f423c.js">
-        </script>
-       </li>
-      </ol>
-     </li>
-     <li>
-      Remove the entries under Paths/api/&lt;yourFunctionName&gt; for every verb except POST. (get, delete, head, etc)
-      <ol>
-       <li>
-        For the default HTTP Trigger, all HTTP verbs are allowed, so our quickstart will have a blank entry for all 8 possible verbs. We want our definition to only contain the available functionality of our API.
-       </li>
-      </ol>
-     </li>
-     <li>
-      Test your Swagger definition
-      <ol>
-       <li>
-        In the right-hand pane of the swagger editor add your API key as Authentication info, click "try this operation," and enter a name to test your Swagger.
-       </li>
-      </ol>
-     </li>
-    </ol>
-    <h2>
-     Provide Preview Feedback
-    </h2>
-    Try out Swagger support in Functions and let us know how you like it! We are continuing to develop this set of features and would love to know what matters most to you.
 
-If you run into any problems, let us know on the
-    <a href="https://social.msdn.microsoft.com/Forums/en-US/home?forum=AzureFunctions">
-     forums
-    </a>
-    , ask a question on
-    <a href="http://stackoverflow.com/questions/tagged/azure-functions">
-     StackOverFlow
-    </a>
-    , or file an issue on
-    <a href="https://github.com/Azure/Azure-Functions">
-     GitHub
-    </a>
-    . If you have any additional features you would like to see, please let us know on
-    <a href="https://feedback.azure.com/forums/355860-azure-functions/filters/top">
-     Uservoice
-    </a>
-    .
-   </div>
-  </div>
- </body>
- <script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript">
- </script>
- <script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript">
- </script>
+<a href="https://docs.microsoft.com/azure/azure-functions/functions-api-definition-getting-started">Head on over to the documentation to learn more</a>
+<h2>Integrations</h2>
+These features integrate with the existing Azure App Service API definition support to allow you to consume your API on a variety of 1st party services, including <a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/02/23/making-your-apis-available-to-powerapps-and-microsoft-flow/">PowerApps, Flow</a>, and <a href="https://docs.microsoft.com/en-us/azure/logic-apps/logic-apps-create-api-app">Logic Apps</a>, as well as the ability to <a href="https://docs.microsoft.com/en-us/azure/app-service-api/app-service-api-dotnet-get-started#a-idcodegena-generate-client-code-for-the-data-tier">generate SDKs for your API in Visual Studio</a>.
+<h2>Creating your first Open API definition</h2>
+<a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-api-definition-getting-started">Check out our getting started guide for in-depth instructions</a>
+<ol>
+<li>To create your first OpenAPI (Swagger) definition you must first have a function App with at least one HTTP Trigger Function. <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-create-first-azure-function">Instructions.</a></li>
+<li>Next head over to the "API Definition (preview)" tab in the lower left hand corner of your Function App.</li>
+<li>Toggle your Swagger source to "Internal." This will enable hosting and inline editing of an OpenAPI definition for this Function App.</li>
+<li>Click "Load Generated API Definition" to populate the Swagger editor with a quickstart OpenAPI definition.
+<ol>
+<li>This definition uses your function.json, represented as the settings in the "Integrate tab," for each Function to populate the definition.</li>
+</ol>
+</li>
+<li>Add an operation object for the POST operation of your function with the expected type of input.
+<ol>
+<li>For the HTTP Trigger sample code you can use the following Operation object:</li>
+<li><script src="https://gist.github.com/alexkarcher-msft/1530704dd33544c34d86facf151f423c.js"></script></li>
+</ol>
+</li>
+<li>Remove the entries under Paths/api/&lt;yourFunctionName&gt; for every verb except POST. (get, delete, head, etc)
+<ol>
+<li>For the default HTTP Trigger, all HTTP verbs are allowed, so our quickstart will have a blank entry for all 8 possible verbs. We want our definition to only contain the available functionality of our API.</li>
+</ol>
+</li>
+<li>Test your Swagger definition
+<ol>
+<li>In the right-hand pane of the swagger editor add your API key as Authentication info, click "try this operation," and enter a name to test your Swagger.</li>
+</ol>
+</li>
+</ol>
+<h2>Provide Preview Feedback</h2>
+Try out Swagger support in Functions and let us know how you like it! We are continuing to develop this set of features and would love to know what matters most to you.
+
+If you run into any problems, let us know on the <a href="https://social.msdn.microsoft.com/Forums/en-US/home?forum=AzureFunctions">forums</a>, ask a question on <a href="http://stackoverflow.com/questions/tagged/azure-functions">StackOverFlow</a>, or file an issue on <a href="https://github.com/Azure/Azure-Functions">GitHub</a>. If you have any additional features you would like to see, please let us know on <a href="https://feedback.azure.com/forums/355860-azure-functions/filters/top">Uservoice</a>.</div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
 </html>

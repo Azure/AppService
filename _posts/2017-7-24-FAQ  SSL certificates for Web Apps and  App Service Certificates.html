@@ -1,437 +1,131 @@
 ---
 layout: post
+hide_excerpt: true
 ---
-<html>
- <head>
-  <meta charset="utf-8"/>
- </head>
- <body>
-  <div id="page">
-   <a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/mksunitha" target="_blank">
-    mksunitha
-   </a>
-   <time>
-    7/24/2017 11:06:00 PM
-   </time>
-   <hr/>
-   <div id="content">
-    Here is a list of commonly asked questions for App Service Certificates.
-    <h4 id="how-do-i-purchase-and-configure-a-new-ssl-certificate-in-azure-for-my-web-app">
-     <strong>
-      How do I purchase and configure a new SSL certificate in Azure for my web app?
-     </strong>
-    </h4>
-    <p class="lf-text-block lf-block">
-     To learn how to purchase and set up an SSL certificate for your App Service web app, see
-     <span>
-     </span>
-     <a href="https://docs.microsoft.com/en-us/azure/app-service-web/web-sites-purchase-ssl-web-site">
-      Add an SSL certificate to your App Service app
-     </a>
-     .
-    </p>
-    <h4>
-     <strong>
-      I am unable to purchase an SSL certificate or App Service certificate ?
-     </strong>
-    </h4>
-    This could be caused due to one of the following reasons:
-    <ul>
-     <li>
-      App Service plan is Free or Shared pricing plans. We do not support SSL for these pricing tiers.
-     </li>
-     <li>
-      Subscription does not have a valid credit card
-     </li>
-     <li>
-      Subscription offer does not support purchase an App Service certificate such as Microsoft Student offer
-     </li>
-     <li>
-      Subscription has hit the maximum limit of purchases allowed on a subscription
-     </li>
-     <li>
-      App Service certificate was marked as fraud. You will see this error “
-      <em>
-       Your certificate has been flagged for possible fraud. The request is currently under review. If the certificate does not become usable within 24 hours”
-      </em>
-     </li>
-    </ul>
-    <div id="purchase-issue-resolve">
-    </div>
-    Try any of these solutions based on the cause
-    <ul>
-     <li>
-      Upgrade App Service plan to Standard Pricing tier for Web App
-     </li>
-     <li>
-      Add a valid credit card to your subscription if you don’t have one
-     </li>
-     <li>
-      If you are using Microsoft Student subscription or other Azure subscriptions where App Service certificate is not supported, please upgrade your subscription
-     </li>
-     <li>
-      App Service Certificates has a limit of 10 certificate purchases for Pay-As-Go and EA subscriptions types and for other subscription types the limit is 3. To increase the limit Kindly share the following details with us if you want to increase the purchase limit on your subscription for certificates:
-      <ul>
-       <li>
-        Please articulate the business reason for increasing the purchase limit on your subscription.
-       </li>
-       <li>
-        Monthly spending cap on this subscription if any
-       </li>
-       <li>
-        Does the subscription have a valid credit card associated with the subscription
-       </li>
-      </ul>
-     </li>
-    </ul>
-    We shall review and evaluate your business needs internally to either approve or reject your request provided there are no other constraints to meet these needs for you.
-    <ul>
-     <li>
-      If the certificate is marked as Fraud and has not been resolved after 24 hours , then follow the steps below :
-      <ul>
-       <li>
-        Go to App Service certificate in Azure portal
-       </li>
-       <li>
-        Click on Certificate Configuration -&gt; Step 2 : Verify -&gt; Domain Verification
-       </li>
-       <li>
-        Click on
-        <strong>
-         Email Instructions
-        </strong>
-        which will send an email to GoDaddy to resolve the issue
-       </li>
-      </ul>
-     </li>
-    </ul>
-    <h4 id="renew">
-     When does my certificate get renewed?
-    </h4>
-    App Service certificates are valid for one year. If Auto Renew is on for an ASC then it will be renewed automatically before it expires and just like ReKey operation, the linked App Service Apps will be moved to the new certificate. You can change this setting by clicking on ‘Auto Renew Settings’ which is on by default. You can also manually renew a certificate by clicking on Manual Renew irrespective of the current Auto Renew setting if the certificate expiration is within 90 days.
-    <h4 id="rekeyandsync">
-     How can I Rekey and/or ReSync my app service certificate?
-    </h4>
-    In order to stay compliant, many web companies need to rotate their certificates periodically. Also if a customer believes that his certificate has been compromised then he should rotate the certificate as soon as possible to minimize likelihood of the stolen certificate being used for malicious purposes. Traditionally, this requires obtaining a new certificate from the CA which is as complicated as buying a new one. Once a new certificate is created, you need to update all App Service Apps one by one manually. With ASC, we support one click ReKey. ASC allows you to ReKey a certificate unlimited number of times during its lifetime for free.
-    <strong>
-     Using Rekey and Sync option in the portal :
-    </strong>
-    This blade displays the current sync state. You can see the thumbprint of ASC along with the thumbprints of all App Service linked certificates. When these certificates are in sync, all thumbprints will match and when they are out of sync, one or more linked certificate thumbprints will be different from the ASC thumbprint.
-    <span>
-     In order to rotate the certificate, click
-     <strong>
-      ReKey
-     </strong>
-     at the top. The ASC status will move to Rekey Certificate which may take 5-10 minutes. You dont have to click on Sync since a background task runs every 8 hours to sync the changes in the certificate. To force a sync , you can click on the
-     <strong>
-      Sync
-     </strong>
-     button .
-    </span>
-    <img alt="App Service Certificate ReKey and Sync" src="https://azurecomcdn.azureedge.net/mediahandler/acomblog/media/Default/blog/fcccd343-1b0e-4e9e-8a3b-25073cf79e3b.png"/>
-    <h4 id="https-fails">
-     <strong>
-      I see certificate errors shown when enforcing HTTPS?
-     </strong>
-    </h4>
-    <p class="lf-text-block lf-block">
-     If your web app gives you certificate validation errors, it could be due to :
-    </p>
-    <ul>
-     <li class="lf-text-block lf-block">
-      <strong>
-       Using a self-signed certificate
-      </strong>
-      :  In this case avoid using Self signed certificate since we cannot verify the domain ownership . This is not supported with Azure web apps
-     </li>
-     <li>
-      <strong>
-       Missing intermediate certificates when you export your certificate to the PFX file :
-      </strong>
-      In this case , recreate the PFX file and follow guidance
-      <a href="https://technet.microsoft.com/en-us/library/dd261744.aspx">
-       here
-      </a>
-      to make sure intermediate certiificates are also included when exporting it in PFX format.
-     </li>
-     <li>
-      <strong>
-       Domain host name is not added to the Web app:
-      </strong>
-      Please add the domain hostname to your web app as per instructions
-      <a href="https://docs.microsoft.com/en-us/azure/app-service/app-service-web-tutorial-custom-domain">
-       here
-      </a>
-     </li>
-     <li>
-      <strong>
-       If using App Service certificate domain verification is not completed :
-      </strong>
-      In this case , your certificate is not ready to be used. Please complete domain verification step as described
-      <a href="https://docs.microsoft.com/en-us/azure/app-service/web-sites-purchase-ssl-web-site#step-4---verify-the-domain-ownership">
-       here
-      </a>
-      .
-     </li>
-    </ul>
-    <h4 id="cert-for-azurewebsites-domain">
-     Can I get the intermediate certificates for mysite.azurewebsites.net
-    </h4>
-    We support HTTPS on *.azurewebsites.net  domain name. Since this domain is owned by App Service Team , we do not share the certificate information with users for security reasons. We recommend to use a custom domain and bring your own certificate for a production application.
-    <h4>
-     <strong>
-      Domain verification is not working  for App service certificate ?
-     </strong>
-    </h4>
-    We provide alternate solution to manually verify your domain . Manual verification lets you verify domain ownership through your DNS configuration by adding a TXT record.
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/mksunitha" target="_blank">mksunitha</a>
+<time>    7/24/2017 11:06:00 PM</time>
+<hr/>
+<div id="content">Here is a list of commonly asked questions for App Service Certificates.
+<h4 id="how-do-i-purchase-and-configure-a-new-ssl-certificate-in-azure-for-my-web-app"><strong>How do I purchase and configure a new SSL certificate in Azure for my web app?</strong></h4>
+<p class="lf-text-block lf-block">To learn how to purchase and set up an SSL certificate for your App Service web app, see<span> </span><a href="https://docs.microsoft.com/en-us/azure/app-service-web/web-sites-purchase-ssl-web-site">Add an SSL certificate to your App Service app</a>.</p>
+<h4><strong>I am unable to purchase an SSL certificate or App Service certificate ?</strong></h4>
+This could be caused due to one of the following reasons:
+<ul>
+<li>App Service plan is Free or Shared pricing plans. We do not support SSL for these pricing tiers.</li>
+<li>Subscription does not have a valid credit card</li>
+<li>Subscription offer does not support purchase an App Service certificate such as Microsoft Student offer</li>
+<li>Subscription has hit the maximum limit of purchases allowed on a subscription</li>
+<li>App Service certificate was marked as fraud. You will see this error “<em>Your certificate has been flagged for possible fraud. The request is currently under review. If the certificate does not become usable within 24 hours”</em></li>
+</ul>
+<div id="purchase-issue-resolve"></div>
+Try any of these solutions based on the cause
+<ul>
+<li>Upgrade App Service plan to Standard Pricing tier for Web App</li>
+<li>Add a valid credit card to your subscription if you don’t have one</li>
+<li>If you are using Microsoft Student subscription or other Azure subscriptions where App Service certificate is not supported, please upgrade your subscription</li>
+<li>App Service Certificates has a limit of 10 certificate purchases for Pay-As-Go and EA subscriptions types and for other subscription types the limit is 3. To increase the limit Kindly share the following details with us if you want to increase the purchase limit on your subscription for certificates:
+<ul>
+<li>Please articulate the business reason for increasing the purchase limit on your subscription.</li>
+<li>Monthly spending cap on this subscription if any</li>
+<li>Does the subscription have a valid credit card associated with the subscription</li>
+</ul>
+</li>
+</ul>
+We shall review and evaluate your business needs internally to either approve or reject your request provided there are no other constraints to meet these needs for you.
+<ul>
+<li>If the certificate is marked as Fraud and has not been resolved after 24 hours , then follow the steps below :
+<ul>
+<li>Go to App Service certificate in Azure portal</li>
+<li>Click on Certificate Configuration -&gt; Step 2 : Verify -&gt; Domain Verification</li>
+<li>Click on <strong>Email Instructions</strong> which will send an email to GoDaddy to resolve the issue</li>
+</ul>
+</li>
+</ul>
+<h4 id="renew">When does my certificate get renewed?</h4>
+App Service certificates are valid for one year. If Auto Renew is on for an ASC then it will be renewed automatically before it expires and just like ReKey operation, the linked App Service Apps will be moved to the new certificate. You can change this setting by clicking on ‘Auto Renew Settings’ which is on by default. You can also manually renew a certificate by clicking on Manual Renew irrespective of the current Auto Renew setting if the certificate expiration is within 90 days.
+<h4 id="rekeyandsync">How can I Rekey and/or ReSync my app service certificate?</h4>
+In order to stay compliant, many web companies need to rotate their certificates periodically. Also if a customer believes that his certificate has been compromised then he should rotate the certificate as soon as possible to minimize likelihood of the stolen certificate being used for malicious purposes. Traditionally, this requires obtaining a new certificate from the CA which is as complicated as buying a new one. Once a new certificate is created, you need to update all App Service Apps one by one manually. With ASC, we support one click ReKey. ASC allows you to ReKey a certificate unlimited number of times during its lifetime for free.
+
+<strong> Using Rekey and Sync option in the portal :</strong> This blade displays the current sync state. You can see the thumbprint of ASC along with the thumbprints of all App Service linked certificates. When these certificates are in sync, all thumbprints will match and when they are out of sync, one or more linked certificate thumbprints will be different from the ASC thumbprint. <span>In order to rotate the certificate, click <strong>ReKey</strong> at the top. The ASC status will move to Rekey Certificate which may take 5-10 minutes. You dont have to click on Sync since a background task runs every 8 hours to sync the changes in the certificate. To force a sync , you can click on the <strong>Sync </strong> button . </span>
+<img alt="App Service Certificate ReKey and Sync" src="https://azurecomcdn.azureedge.net/mediahandler/acomblog/media/Default/blog/fcccd343-1b0e-4e9e-8a3b-25073cf79e3b.png"/>
+<h4 id="https-fails"><strong>I see certificate errors shown when enforcing HTTPS?</strong></h4>
+<p class="lf-text-block lf-block">If your web app gives you certificate validation errors, it could be due to :</p>
+<ul>
+<li class="lf-text-block lf-block"><strong>Using a self-signed certificate</strong> :  In this case avoid using Self signed certificate since we cannot verify the domain ownership . This is not supported with Azure web apps</li>
+<li><strong>Missing intermediate certificates when you export your certificate to the PFX file : </strong>In this case , recreate the PFX file and follow guidance <a href="https://technet.microsoft.com/en-us/library/dd261744.aspx">here</a> to make sure intermediate certiificates are also included when exporting it in PFX format.</li>
+<li><strong>Domain host name is not added to the Web app: </strong> Please add the domain hostname to your web app as per instructions <a href="https://docs.microsoft.com/en-us/azure/app-service/app-service-web-tutorial-custom-domain">here</a></li>
+<li><strong>If using App Service certificate domain verification is not completed : </strong> In this case , your certificate is not ready to be used. Please complete domain verification step as described <a href="https://docs.microsoft.com/en-us/azure/app-service/web-sites-purchase-ssl-web-site#step-4---verify-the-domain-ownership">here</a>.</li>
+</ul>
+<h4 id="cert-for-azurewebsites-domain">Can I get the intermediate certificates for mysite.azurewebsites.net</h4>
+We support HTTPS on *.azurewebsites.net  domain name. Since this domain is owned by App Service Team , we do not share the certificate information with users for security reasons. We recommend to use a custom domain and bring your own certificate for a production application.
+<h4><strong>Domain verification is not working  for App service certificate ?</strong></h4>
+We provide alternate solution to manually verify your domain . Manual verification lets you verify domain ownership through your DNS configuration by adding a TXT record.
 
 Follow these steps to complete Manual verification :
-    <ol>
-     <li>
-      Go to the Domain Name Service (DNS) provider for
-      <strong>
-       your domain name
-      </strong>
-     </li>
-    </ol>
-    <ol>
-     <li>
-      Add a
-      <strong>
-       Txt record
-      </strong>
-      for your domain with value of the domain token showed in the portal .
-     </li>
-    </ol>
-    Wait a few minutes for DNS propagation to take place and click on
-    <strong>
-     Refresh
-    </strong>
-    button to trigger the verification.
+<ol>
+<li>Go to the Domain Name Service (DNS) provider for <strong>your domain name </strong></li>
+</ol>
+<ol>
+<li>Add a <strong>Txt record</strong> for your domain with value of the domain token showed in the portal .</li>
+</ol>
+Wait a few minutes for DNS propagation to take place and click on <strong>Refresh</strong> button to trigger the verification.
 
 Alternate method to manually verify is the Html Web Page method which can be used to allow the certificate authority to confirm the domain ownership of the domain the certificate is issued for.
-    <ol>
-     <li>
-      Create an
-      <strong>
-       HTML file
-      </strong>
-      named {Domain Verification Token}.html.
-     </li>
-     <li>
-      Content of this file
-      <strong>
-       should be the value of Domain Verification Token.
-      </strong>
-     </li>
-     <li>
-      <strong>
-       Upload this file
-      </strong>
-      at the root of the web server hosting your domain
-     </li>
-     <li>
-      Click on
-      <strong>
-       Refresh button to check the Certificate status
-      </strong>
-      . It might take few minutes for verification to complete.
-     </li>
-    </ol>
-    <strong>
-     For example
-    </strong>
-    , if you are buying a standard certificate for azure.com with Domain Verification Token ‘1234abcd’ then a web request made to
-    <strong>
-     http://azure.com/1234abcd.html
-    </strong>
-    should return 1234abcd.
-    <em>
-     <strong>
-     </strong>
-     <strong>
-      Important notice :
-     </strong>
-     A certificate order has only 15 days to complete domain verification operation, after 15 days the certificate is denied by the certificate authority, you are not charged for the certificate. Please delete this certificate and try again.
-    </em>
-    <h4 id="auto-renew">
-     <strong>
-      My SSL certificate is not being auto-renewed ?
-     </strong>
-    </h4>
-    All App Service certificates issued prior to March 31st 2017 will receive an email to re-verify their domain at the time of renewal even if the auto-renewal is enabled for your certificate.This is a result of change in GoDaddy policy.  Please check your email and complete this one-time domain verification to continue to auto-renew the SSL certificate. Also , note that GoDaddy does require you to verify your domain once every three years and you will receive a email once every three years  to verify your domain.
-    <h4 id="how-do-i-upload-and-configure-an-existing-ssl-certificate-for-my-web-app">
-     <strong>
-      Can I bring my own SSL certificate and how do I upload/configure it for my web app?
-     </strong>
-    </h4>
-    <p class="lf-text-block lf-block">
-     Yes , you can bring your own SSL certificate. To learn how to upload and set up an existing custom SSL certificate, see
-     <span>
-     </span>
-     <a href="https://docs.microsoft.com/en-us/azure/app-service-web/app-service-web-tutorial-custom-ssl#upload">
-      Bind an existing custom SSL certificate to an Azure web app
-     </a>
-     .
-    </p>
-    <h4 id="my-app-service-certificate-is-flagged-for-fraud-how-do-i-resolve-this">
-     <strong>
-      My App Service certificate is flagged for fraud. How do I resolve this?
-      <strong>
-      </strong>
-     </strong>
-    </h4>
-    <p class="lf-text-block lf-block">
-     During the domain verification of an App Service certificate purchase, you might see the following message:
-     <span class="lf-thread-btn">
-     </span>
-    </p>
-    <p class="lf-text-block lf-block">
-     <em>
-      “Your certificate has been flagged for possible fraud. The request is currently under review. If the certificate does not become usable within 24 hours, please contact Azure Support.”
-     </em>
-     <span class="lf-thread-btn">
-     </span>
-    </p>
-    <p class="lf-text-block lf-block">
-     As the message indicates, this fraud verification process might take up to 24 hours to complete. During this time, you'll continue to see the message. If the certificate is marked as Fraud and has not been resolved after 24 hours , then follow the steps below :
-    </p>
-    <ul>
-     <li>
-      Go to App Service certificate in Azure portal
-     </li>
-     <li>
-      Click on
-      <strong>
-       Certificate Configuration -&gt; Step 2 : Verify -&gt; Domain Verification
-      </strong>
-     </li>
-     <li>
-      Click on
-      <strong>
-       Email Instructions
-      </strong>
-      which will send an email to GoDaddy to resolve the issue .
-     </li>
-    </ul>
-    <h4 id="rekey-and-sync-app-service-certificate">
-     <span>
-      My App Service Certificate is still showing old secret value. How can I force a sync with the new secret in my Key Vault’ ?
-     </span>
-    </h4>
-    You can rekey your certificate using a new private key by following the details instructions in
-    <a href="https://docs.microsoft.com/en-us/azure/app-service-web/web-sites-purchase-ssl-web-site#rekey-and-sync-the-certificate">
-     this article
-    </a>
-    .
-    <h4 id="ev-ssl">
-     How do I buy EV SSL for using with Azure web app
-    </h4>
-    App Service certificate does not support purchasing EV SSL from Azure portal. But there are other options to use EV SSL with Web apps. For details , click
-    <a href="https://blogs.msdn.microsoft.com/appserviceteam/2018/04/12/using-ev-ssl-with-azure-web-app/">
-     here
-    </a>
-    <h4 id="export-app-service-certificate-for-azure">
-     <strong>
-      Can I export my App Service certificate for use with other Azure services such as Cloud Services and so forth?
-     </strong>
-    </h4>
-    We've gotten a lot of feedback from customers asking for this ability, so we now allow you to export your certificate as a PFX file so that you can use it across multiple subscriptions and Azure services. See
-    <span>
-    </span>
-    <a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/02/24/creating-a-local-pfx-copy-of-app-service-certificate/" rel="noopener" target="_blank">
-     this blog post
-    </a>
-    <span>
-    </span>
-    for more information.
-    <h4 id="export-app-service-certificate-outside-azure">
-     <strong>
-      Can I export my App Service certificate to be used outside of Azure, such as for a website hosted elsewhere?
-     </strong>
-    </h4>
-    App Service Certificates can be used for any Azure or non-Azure Services and is not limited to App Services. To do so , you need to create a local PFX copy of an App Service certificate that you can use it anywhere you want. For more information, read Creating a local PFX copy of an App Service Certificate.
-    <h4 id="move-app-service-certificate-different-subscription">
-     <strong>
-      Can I use my App Service certificate in a different subscription in Azure?
-     </strong>
-    </h4>
-    You can migrate your App Service Certificate within the Azure portal. You can also export it as a PFX file for use in another subscription. See
-    <span>
-    </span>
-    <a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/02/24/creating-a-local-pfx-copy-of-app-service-certificate/" rel="noopener" target="_blank">
-     this blog post
-    </a>
-    <span>
-    </span>
-    for more information.
-    <h4>
-     <strong>
-      I have a Free or a DreamSpark Azure subscription. Can I purchase an App Service certificate with my credits?
-     </strong>
-    </h4>
-    Because Free and DreamSpark Azure credits are free credits, they cannot be used to purchase App Service certificates.
-    <h4>
-     <strong>
-      Can I get a refund if I purchase an SSL certificate and then decide that I no longer need it?
-     </strong>
-    </h4>
-    Unfortunately, we cannot refund you on the purchase of an SSL certificate.
-    <h4 id="update-binding">
-     <strong>
-      How do I update an SNI or IP based SSL binding on web app ?
-     </strong>
-    </h4>
-    <em>
-     <strong>
-      Note :
-     </strong>
-     When the binding is updated , please wait for 24 hours for the change to reflect in the Azure portal . To avoid downtime with your web app  , make sure you updated the binding for SSL at least a week prior to the expiration of your current SSL certificate.
-    </em>
-    <span>
-     Login to the Azure portal and select your web app. To update and SSL binding :
-    </span>
-    <ul>
-     <li>
-      <span>
-       Upload a new certificate
-      </span>
-     </li>
-     <li>
-      <span>
-       Click "Add binding" in SSL certificates setting for your web app
-      </span>
-     </li>
-     <li>
-      <span>
-       Select your domain
-      </span>
-     </li>
-     <li>
-      Select your certificate
-     </li>
-     <li>
-      Click
-      <strong>
-       Add binding.
-      </strong>
-      Note that by adding an
-      <span class="highlight" id="0.49454705846578584">
-       SSL
-      </span>
-      binding with a hostname used in another binding will override the existing binding.
-      <a href="{{ site.baseurl }}/media/2017/07/binding.png">
-       <img alt="" class="alignnone wp-image-5317" height="508" src="{{ site.baseurl }}/media/2017/07/binding-1024x908.png" width="573"/>
-      </a>
-     </li>
-    </ul>
-    <h1>
-    </h1>
-   </div>
-  </div>
- </body>
- <script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript">
- </script>
- <script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript">
- </script>
+<ol>
+<li>Create an <strong>HTML file</strong>named {Domain Verification Token}.html.</li>
+<li>Content of this file <strong>should be the value of Domain Verification Token.</strong></li>
+<li><strong>Upload this file</strong>at the root of the web server hosting your domain</li>
+<li>Click on <strong>Refresh button to check the Certificate status</strong>. It might take few minutes for verification to complete.</li>
+</ol>
+<strong>For example</strong>, if you are buying a standard certificate for azure.com with Domain Verification Token ‘1234abcd’ then a web request made to <strong>http://azure.com/1234abcd.html</strong> should return 1234abcd.
+
+<em><strong> </strong><strong>Important notice :</strong> A certificate order has only 15 days to complete domain verification operation, after 15 days the certificate is denied by the certificate authority, you are not charged for the certificate. Please delete this certificate and try again.</em>
+<h4 id="auto-renew"><strong>My SSL certificate is not being auto-renewed ?</strong></h4>
+All App Service certificates issued prior to March 31st 2017 will receive an email to re-verify their domain at the time of renewal even if the auto-renewal is enabled for your certificate.This is a result of change in GoDaddy policy.  Please check your email and complete this one-time domain verification to continue to auto-renew the SSL certificate. Also , note that GoDaddy does require you to verify your domain once every three years and you will receive a email once every three years  to verify your domain.
+<h4 id="how-do-i-upload-and-configure-an-existing-ssl-certificate-for-my-web-app"><strong>Can I bring my own SSL certificate and how do I upload/configure it for my web app?</strong></h4>
+<p class="lf-text-block lf-block">Yes , you can bring your own SSL certificate. To learn how to upload and set up an existing custom SSL certificate, see<span> </span><a href="https://docs.microsoft.com/en-us/azure/app-service-web/app-service-web-tutorial-custom-ssl#upload">Bind an existing custom SSL certificate to an Azure web app</a>.</p>
+<h4 id="my-app-service-certificate-is-flagged-for-fraud-how-do-i-resolve-this"><strong>My App Service certificate is flagged for fraud. How do I resolve this?<strong></strong></strong></h4>
+<p class="lf-text-block lf-block">During the domain verification of an App Service certificate purchase, you might see the following message: <span class="lf-thread-btn"></span></p>
+<p class="lf-text-block lf-block"><em>“Your certificate has been flagged for possible fraud. The request is currently under review. If the certificate does not become usable within 24 hours, please contact Azure Support.”</em><span class="lf-thread-btn"></span></p>
+<p class="lf-text-block lf-block">As the message indicates, this fraud verification process might take up to 24 hours to complete. During this time, you'll continue to see the message. If the certificate is marked as Fraud and has not been resolved after 24 hours , then follow the steps below :</p>
+<ul>
+<li>Go to App Service certificate in Azure portal</li>
+<li>Click on <strong>Certificate Configuration -&gt; Step 2 : Verify -&gt; Domain Verification</strong></li>
+<li>Click on <strong>Email Instructions</strong> which will send an email to GoDaddy to resolve the issue .</li>
+</ul>
+<h4 id="rekey-and-sync-app-service-certificate"><span>My App Service Certificate is still showing old secret value. How can I force a sync with the new secret in my Key Vault’ ?</span></h4>
+You can rekey your certificate using a new private key by following the details instructions in <a href="https://docs.microsoft.com/en-us/azure/app-service-web/web-sites-purchase-ssl-web-site#rekey-and-sync-the-certificate">this article</a>.
+<h4 id="ev-ssl">How do I buy EV SSL for using with Azure web app</h4>
+App Service certificate does not support purchasing EV SSL from Azure portal. But there are other options to use EV SSL with Web apps. For details , click <a href="https://blogs.msdn.microsoft.com/appserviceteam/2018/04/12/using-ev-ssl-with-azure-web-app/">here</a>
+<h4 id="export-app-service-certificate-for-azure"><strong>Can I export my App Service certificate for use with other Azure services such as Cloud Services and so forth?</strong></h4>
+We've gotten a lot of feedback from customers asking for this ability, so we now allow you to export your certificate as a PFX file so that you can use it across multiple subscriptions and Azure services. See<span> </span><a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/02/24/creating-a-local-pfx-copy-of-app-service-certificate/" rel="noopener" target="_blank">this blog post</a><span> </span>for more information.
+<h4 id="export-app-service-certificate-outside-azure"><strong>Can I export my App Service certificate to be used outside of Azure, such as for a website hosted elsewhere?</strong></h4>
+App Service Certificates can be used for any Azure or non-Azure Services and is not limited to App Services. To do so , you need to create a local PFX copy of an App Service certificate that you can use it anywhere you want. For more information, read Creating a local PFX copy of an App Service Certificate.
+<h4 id="move-app-service-certificate-different-subscription"><strong>Can I use my App Service certificate in a different subscription in Azure?</strong></h4>
+You can migrate your App Service Certificate within the Azure portal. You can also export it as a PFX file for use in another subscription. See<span> </span><a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/02/24/creating-a-local-pfx-copy-of-app-service-certificate/" rel="noopener" target="_blank">this blog post</a><span> </span>for more information.
+<h4><strong>I have a Free or a DreamSpark Azure subscription. Can I purchase an App Service certificate with my credits?</strong></h4>
+Because Free and DreamSpark Azure credits are free credits, they cannot be used to purchase App Service certificates.
+<h4><strong>Can I get a refund if I purchase an SSL certificate and then decide that I no longer need it?</strong></h4>
+Unfortunately, we cannot refund you on the purchase of an SSL certificate.
+<h4 id="update-binding"><strong>How do I update an SNI or IP based SSL binding on web app ?</strong></h4>
+<em><strong>Note :</strong> When the binding is updated , please wait for 24 hours for the change to reflect in the Azure portal . To avoid downtime with your web app  , make sure you updated the binding for SSL at least a week prior to the expiration of your current SSL certificate.  </em>
+<span>Login to the Azure portal and select your web app. To update and SSL binding :</span>
+<ul>
+<li><span>Upload a new certificate</span></li>
+<li><span>Click "Add binding" in SSL certificates setting for your web app</span></li>
+<li><span>Select your domain</span></li>
+<li>Select your certificate</li>
+<li>Click <strong>Add binding. </strong>Note that by adding an <span class="highlight" id="0.49454705846578584">SSL</span> binding with a hostname used in another binding will override the existing binding. <a href="{{ site.baseurl }}/media/2017/07/binding.png"><img alt="" class="alignnone wp-image-5317" height="508" src="{{ site.baseurl }}/media/2017/07/binding-1024x908.png" width="573"/></a></li>
+</ul>
+ 
+<h1></h1></div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
 </html>

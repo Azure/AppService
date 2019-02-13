@@ -1,76 +1,26 @@
 ---
 layout: post
+hide_excerpt: true
 ---
-<html>
- <head>
-  <meta charset="utf-8"/>
- </head>
- <body>
-  <div id="page">
-   <a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/mksunitha" target="_blank">
-    mksunitha
-   </a>
-   <time>
-    6/7/2017 11:10:51 AM
-   </time>
-   <hr/>
-   <div id="content">
-    <p style="text-align: left">
-     MySQL in-app for Linux Web App is not the same as
-     <a href="https://blogs.msdn.microsoft.com/appserviceteam/2016/08/18/announcing-mysql-in-app-preview-for-web-apps/">
-      MySQL in-app feature for Windows Azure Web App
-     </a>
-     . This applies to WordPress , Drupal , Joomla and Mediawiki Templates on Linux Web App . For Linux web apps , we leverage the docker container to build MySQL as part of the image used to deploy in the Azure portal, for example
-     <a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/03/21/create-wordpress-using-web-apps-on-linux/">
-      WordPress on Linux
-     </a>
-     .
-    </p>
-    <p style="text-align: left">
-     These custom images are available on
-     <a href="https://github.com/Azure-App-Service/apps/tree/master/Wordpress">
-      github
-     </a>
-     . The image uses MariaDB 10.0+ server  with the default port 3306 and is installed ,  configured when the docker image runs on the Linux web app.
-    </p>
-    <h2>
-     Get Database connection
-    </h2>
-    You can get the database information from the Azure portal.
-    <span>
-     Select your web app , then select
-    </span>
-    <strong>
-     Application Settings -&gt; App settings.
-    </strong>
-    This will list out the database information needed for your web application.
-    <a href="{{ site.baseurl }}/media/2017/06/appsettingslinux.png">
-     <img alt="" class="alignnone size-large wp-image-5015" height="280" src="{{ site.baseurl }}/media/2017/06/appsettingslinux-1024x326.png" width="879"/>
-    </a>
-    <h2>
-     Manage your Local database
-    </h2>
-    <p style="text-align: left">
-     You can  access and manage the database using PHPmyadmin that is enabled and configured as part of deployment of the docker image. To view PHPmyadmin tool ,use the URL in this format
-     <a href="http://hostname[:port%5D/phpmyadmin">
-      http://hostname/phpmyadmin
-     </a>
-     and enter the credentials to connect.
-    </p>
-    <p style="text-align: left">
-     You can find the credentials for PHPmyadmin in the Azure portal . Select your web app , then select
-     <strong>
-      Application Settings -&gt; App settings
-     </strong>
-     <a href="{{ site.baseurl }}/media/2017/06/phmyadmincredentials.png">
-      <img alt="" class="alignnone size-large wp-image-5005" height="151" src="{{ site.baseurl }}/media/2017/06/phmyadmincredentials-1024x176.png" width="879"/>
-     </a>
-    </p>
-   </div>
-  </div>
- </body>
- <script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript">
- </script>
- <script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript">
- </script>
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/mksunitha" target="_blank">mksunitha</a>
+<time>    6/7/2017 11:10:51 AM</time>
+<hr/>
+<div id="content"><p style="text-align: left">MySQL in-app for Linux Web App is not the same as <a href="https://blogs.msdn.microsoft.com/appserviceteam/2016/08/18/announcing-mysql-in-app-preview-for-web-apps/">MySQL in-app feature for Windows Azure Web App </a>. This applies to WordPress , Drupal , Joomla and Mediawiki Templates on Linux Web App . For Linux web apps , we leverage the docker container to build MySQL as part of the image used to deploy in the Azure portal, for example <a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/03/21/create-wordpress-using-web-apps-on-linux/">WordPress on Linux</a>.</p>
+<p style="text-align: left">These custom images are available on <a href="https://github.com/Azure-App-Service/apps/tree/master/Wordpress">github</a>. The image uses MariaDB 10.0+ server  with the default port 3306 and is installed ,  configured when the docker image runs on the Linux web app.</p>
+<h2>Get Database connection</h2>
+You can get the database information from the Azure portal. <span>Select your web app , then select </span><strong>Application Settings -&gt; App settings. </strong>This will list out the database information needed for your web application.
+
+<a href="{{ site.baseurl }}/media/2017/06/appsettingslinux.png"><img alt="" class="alignnone size-large wp-image-5015" height="280" src="{{ site.baseurl }}/media/2017/06/appsettingslinux-1024x326.png" width="879"/></a>
+<h2>Manage your Local database</h2>
+<p style="text-align: left">You can  access and manage the database using PHPmyadmin that is enabled and configured as part of deployment of the docker image. To view PHPmyadmin tool ,use the URL in this format <a href="http://hostname[:port%5D/phpmyadmin">http://hostname/phpmyadmin</a> and enter the credentials to connect.</p>
+<p style="text-align: left">You can find the credentials for PHPmyadmin in the Azure portal . Select your web app , then select <strong>Application Settings -&gt; App settings</strong><a href="{{ site.baseurl }}/media/2017/06/phmyadmincredentials.png"><img alt="" class="alignnone size-large wp-image-5005" height="151" src="{{ site.baseurl }}/media/2017/06/phmyadmincredentials-1024x176.png" width="879"/></a></p></div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
 </html>

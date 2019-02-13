@@ -1,233 +1,79 @@
 ---
 layout: post
+hide_excerpt: true
 ---
-<html>
- <head>
-  <meta charset="utf-8"/>
- </head>
- <body>
-  <div id="page">
-   <a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Jennifer Lee (MSFT)" target="_blank">
-    Jennifer Lee (MSFT)
-   </a>
-   <time>
-    9/28/2017 7:00:55 AM
-   </time>
-   <hr/>
-   <div id="content">
-    <h3 style="text-align: center">
-     <strong>
-      “What’s wrong with my Web App? My Web App is down!”
-     </strong>
-    </h3>
-    These are tough questions that we know are frustrating for you. It is our priority to make sure that we figure out how to keep your Web App healthy with minimal downtime. However, in the cases where things do go wrong, the problem is that there could be many reasons why.
-    <p style="text-align: center">
-     <em>
-      How do you know which of these generic potential issues could be the reason why your Web App is down?
-     </em>
-    </p>
-    <p style="text-align: center">
-     <em>
-      Where do you start your troubleshooting process for your specific Web App?
-     </em>
-    </p>
-    Many of you may be familiar with the Diagnose and Solve Support Center, our self-serve diagnostic experience that allows you to get a glimpse of how your Web App is performing.
-    <a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/05/10/supportcenter/">
-     Since releasing that experience
-    </a>
-    , we’ve been able to add and improve the detectors that we use to analyze the health of your Web App to perform more precise pattern analyses in an effort to pinpoint Web App errors and provide troubleshooting advice.
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
 
-As a result, today we are excited to announce the release of our
-    <strong>
-     new Diagnose and Solve Support Center (Preview)
-    </strong>
-    to help point out what’s wrong with your Web App and guide you to the right information to troubleshoot and ideally resolve the issue
-    <strong>
-     easier and quicker than before.
-    </strong>
-    <h2>
-     Getting Started with the New App Service Support Center
-    </h2>
-    To open the new App Service Support Center, click on “
-    <strong>
-     Diagnose and Solve problems
-    </strong>
-    ” on the left-hand menu. Once in the new App Service Support Center homepage, there are several options.
-    <p style="text-align: center">
-     First, you should ask yourself this question:
-     <em>
-      Do you already know what’s wrong with your Web App?
-     </em>
-    </p>
-    <h3>
-     <a href="{{ site.baseurl }}/media/2017/09/App-Service-Genie-Blog-Post-1.png">
-      <img alt="" class="alignnone wp-image-6037 size-large" height="500" src="{{ site.baseurl }}/media/2017/09/App-Service-Genie-Blog-Post-1-1024x583.png" width="879"/>
-     </a>
-    </h3>
-    (Note: in this blog post, images will be expanded when clicked).
-    <h3>
-     Performing a Health Checkup (Highly Recommended)
-    </h3>
-    If you’re not sure what’s wrong with your Web App, run our new
-    <strong>
-     Health Checkup
-    </strong>
-    feature by selecting the blue “
-    <strong>
-     Yes
-    </strong>
-    ” button. Health Checkup will analyze your Web App to give you a quick, interactive overview that points out what’s healthy and what’s wrong, telling you where to look to investigate the issue.
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Jennifer Lee (MSFT)" target="_blank">Jennifer Lee (MSFT)</a>
+<time>    9/28/2017 7:00:55 AM</time>
+<hr/>
+<div id="content"><h3 style="text-align: center"><strong>“What’s wrong with my Web App? My Web App is down!”</strong></h3>
+ 
 
-Once the Health Checkup report is generated, you can get a quick overview of the status of four different problem categories:
-    <strong>
-     Requests and Errors, Performance, CPU Usage, Memory Usage.
-    </strong>
-    [video width="1912" height="1092" mp4="media/2017/09/2017-09-29_11h03_03-online-video-cutter.com_.mp4" poster="media/2017/09/App-Service-Genie-Blog-Post-2.png" loop="true" autoplay="true"][/video]
-    <strong>
-     Highlights
-    </strong>
-    :
-    <ul>
-     <li>
-      <strong>
-       Quick Overview
-      </strong>
-      : red, orange, and green icons appear on the left side of each problem category to indicate the healthiness of that area.
-      <strong>
-       You can click on each tab
-      </strong>
-      to open up a graph showing more details.
-     </li>
-     <li>
-      <strong>
-       View Full Report
-      </strong>
-      : this opens up more observations about the issue and suggested solutions as seen in the image below. You can investigate further by
-      <strong>
-       selecting the orange bars
-      </strong>
-      corresponding with periods of unhealthiness and expanding on observations by
-      <strong>
-       clicking "View Details"
-      </strong>
-      below.
-      <strong>
-       Suggested solutions would show up below
-      </strong>
-      the observations.
-     </li>
-    </ul>
-    <a href="{{ site.baseurl }}/media/2017/09/App-Service-Genie-Blog-Post-3.png">
-     <img alt="" class="alignnone wp-image-6065 size-large" height="502" src="{{ site.baseurl }}/media/2017/09/App-Service-Genie-Blog-Post-3-1024x585.png" width="879"/>
-    </a>
-    <h3>
-     Selecting Tile Shortcuts
-    </h3>
-    If you already know what’s wrong with your Web App, you can investigate further by
-    <strong>
-     selecting the tile shortcut that corresponds to the problem category
-    </strong>
-    that you’re interested in. Currently, we have five problem scenarios for our tile shortcuts. (Note: Web App Restarted is the only scenario not covered by Health Checkup at the moment):
-    <ul>
-     <li>
-      Web App Down
-     </li>
-     <li>
-      Web App Slow
-     </li>
-     <li>
-      High CPU Usage
-     </li>
-     <li>
-      High Memory Usage
-     </li>
-     <li>
-      Web App Restarted
-     </li>
-    </ul>
-    Let’s say you want to figure out why your Web App restarted. In the homepage, select the “
-    <strong>
-     Web App Restarted
-    </strong>
-    ” tile. This will open a new tab with our Web App Restarted analysis.
-    <a href="{{ site.baseurl }}/media/2017/09/App-Service-Genie-Blog-Post-8.png">
-     <img alt="" class="alignnone size-large wp-image-6076" height="254" src="{{ site.baseurl }}/media/2017/09/App-Service-Genie-Blog-Post-8-1024x296.png" width="879"/>
-    </a>
-    <h3>
-     One-Stop Shop for Additional Resources
-    </h3>
-    Now, on the right-hand column, we have compiled a list of help links to give you all easy access to variety of different resources with content that can help you troubleshoot your Web App. Just
-    <strong>
-     select the + sign next to each title
-    </strong>
-    to expand that selection.
-    <a href="{{ site.baseurl }}/media/2017/09/App-Service-Genie-Blog-Post-6.png">
-     <img alt="" class="alignnone wp-image-6066 size-large" height="501" src="{{ site.baseurl }}/media/2017/09/App-Service-Genie-Blog-Post-6-1024x584.png" width="879"/>
-    </a>
-    Here is a quick overview of the different Additional Resources categories:
-    <ul>
-     <li>
-      <strong>
-       Support Tools
-      </strong>
-      : additional troubleshooting tools
-     </li>
-     <li>
-      <strong>
-       Premium Tools
-      </strong>
-      : more additional troubleshooting tools
-     </li>
-     <li>
-      <strong>
-       FAQs
-      </strong>
-      : links to App Service articles that guide you through common troubleshooting scenarios
-     </li>
-     <li>
-      <strong>
-       Resource Center
-      </strong>
-      : links to how-to articles and video walkthroughs for those needing a quick-start for App Service
-     </li>
-     <li>
-      <strong>
-       Community
-      </strong>
-      : links to forums and other locations where you can get help from members of the App Service team and other community members
-     </li>
-     <li>
-      <strong>
-       Recent Updates
-      </strong>
-      : convenient links to updates to Microsoft Azure services as well as stack specific updates
-     </li>
-     <li>
-      <strong>
-       Contribute
-      </strong>
-      : link to our Github repository to assemble feedback for Support Center and allow for open source contributions
-     </li>
-    </ul>
-    <h2>
-     We need your feedback!
-    </h2>
-    In the coming months, we are planning on adding additional features with a goal that Support Center can guide you step-by-step for a holistic Web App troubleshooting experience. This means that the feedback that you leave is critical for us to determine which features are most relevant for you.
+These are tough questions that we know are frustrating for you. It is our priority to make sure that we figure out how to keep your Web App healthy with minimal downtime. However, in the cases where things do go wrong, the problem is that there could be many reasons why.
+<p style="text-align: center"><em>How do you know which of these generic potential issues could be the reason why your Web App is down? </em></p>
+<p style="text-align: center"><em>Where do you start your troubleshooting process for your specific Web App?</em></p>
+Many of you may be familiar with the Diagnose and Solve Support Center, our self-serve diagnostic experience that allows you to get a glimpse of how your Web App is performing. <a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/05/10/supportcenter/">Since releasing that experience</a>, we’ve been able to add and improve the detectors that we use to analyze the health of your Web App to perform more precise pattern analyses in an effort to pinpoint Web App errors and provide troubleshooting advice.
 
-Once Health Checkup is complete, you can
-    <strong>
-     leave your feedback in the inline textbox
-    </strong>
-    as seen below.
-    <a href="{{ site.baseurl }}/media/2017/09/App-Service-Genie-Blog-Post-7.png">
-     <img alt="" class="alignnone size-large wp-image-6075" height="500" src="{{ site.baseurl }}/media/2017/09/App-Service-Genie-Blog-Post-7-1024x583.png" width="879"/>
-    </a>
-    Note: currently, this experience is only for App Service on Windows. Stay tuned!
-   </div>
-  </div>
- </body>
- <script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript">
- </script>
- <script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript">
- </script>
+As a result, today we are excited to announce the release of our <strong>new Diagnose and Solve Support Center (Preview)</strong> to help point out what’s wrong with your Web App and guide you to the right information to troubleshoot and ideally resolve the issue <strong>easier and quicker than before.</strong>
+<h2>Getting Started with the New App Service Support Center</h2>
+To open the new App Service Support Center, click on “<strong>Diagnose and Solve problems</strong>” on the left-hand menu. Once in the new App Service Support Center homepage, there are several options.
+<p style="text-align: center">First, you should ask yourself this question: <em>Do you already know what’s wrong with your Web App?</em></p>
+<h3><a href="{{ site.baseurl }}/media/2017/09/App-Service-Genie-Blog-Post-1.png"><img alt="" class="alignnone wp-image-6037 size-large" height="500" src="{{ site.baseurl }}/media/2017/09/App-Service-Genie-Blog-Post-1-1024x583.png" width="879"/></a></h3>
+(Note: in this blog post, images will be expanded when clicked).
+<h3>Performing a Health Checkup (Highly Recommended)</h3>
+If you’re not sure what’s wrong with your Web App, run our new <strong>Health Checkup</strong> feature by selecting the blue “<strong>Yes</strong>” button. Health Checkup will analyze your Web App to give you a quick, interactive overview that points out what’s healthy and what’s wrong, telling you where to look to investigate the issue.
+
+Once the Health Checkup report is generated, you can get a quick overview of the status of four different problem categories:<strong> Requests and Errors, Performance, CPU Usage, Memory Usage.</strong>
+
+[video width="1912" height="1092" mp4="media/2017/09/2017-09-29_11h03_03-online-video-cutter.com_.mp4" poster="media/2017/09/App-Service-Genie-Blog-Post-2.png" loop="true" autoplay="true"][/video]
+
+<strong>Highlights</strong>:
+<ul>
+<li><strong>Quick Overview</strong>: red, orange, and green icons appear on the left side of each problem category to indicate the healthiness of that area. <strong>You can click on each tab</strong> to open up a graph showing more details.</li>
+<li><strong>View Full Report</strong>: this opens up more observations about the issue and suggested solutions as seen in the image below. You can investigate further by<strong> selecting the orange bars</strong> corresponding with periods of unhealthiness and expanding on observations by<strong> clicking "View Details"</strong> below. <strong>Suggested solutions would show up below</strong> the observations.</li>
+</ul>
+<a href="{{ site.baseurl }}/media/2017/09/App-Service-Genie-Blog-Post-3.png"><img alt="" class="alignnone wp-image-6065 size-large" height="502" src="{{ site.baseurl }}/media/2017/09/App-Service-Genie-Blog-Post-3-1024x585.png" width="879"/></a>
+<h3>Selecting Tile Shortcuts</h3>
+If you already know what’s wrong with your Web App, you can investigate further by<strong> selecting the tile shortcut that corresponds to the problem category</strong> that you’re interested in. Currently, we have five problem scenarios for our tile shortcuts. (Note: Web App Restarted is the only scenario not covered by Health Checkup at the moment):
+<ul>
+<li>Web App Down</li>
+<li>Web App Slow</li>
+<li>High CPU Usage</li>
+<li>High Memory Usage</li>
+<li>Web App Restarted</li>
+</ul>
+Let’s say you want to figure out why your Web App restarted. In the homepage, select the “<strong>Web App Restarted</strong>” tile. This will open a new tab with our Web App Restarted analysis.
+
+<a href="{{ site.baseurl }}/media/2017/09/App-Service-Genie-Blog-Post-8.png"><img alt="" class="alignnone size-large wp-image-6076" height="254" src="{{ site.baseurl }}/media/2017/09/App-Service-Genie-Blog-Post-8-1024x296.png" width="879"/></a>
+<h3>One-Stop Shop for Additional Resources</h3>
+Now, on the right-hand column, we have compiled a list of help links to give you all easy access to variety of different resources with content that can help you troubleshoot your Web App. Just <strong>select the + sign next to each title</strong> to expand that selection.
+
+<a href="{{ site.baseurl }}/media/2017/09/App-Service-Genie-Blog-Post-6.png"><img alt="" class="alignnone wp-image-6066 size-large" height="501" src="{{ site.baseurl }}/media/2017/09/App-Service-Genie-Blog-Post-6-1024x584.png" width="879"/></a>
+
+Here is a quick overview of the different Additional Resources categories:
+<ul>
+<li><strong>Support Tools</strong>: additional troubleshooting tools</li>
+<li><strong>Premium Tools</strong>: more additional troubleshooting tools</li>
+<li><strong>FAQs</strong>: links to App Service articles that guide you through common troubleshooting scenarios</li>
+<li><strong>Resource Center</strong>: links to how-to articles and video walkthroughs for those needing a quick-start for App Service</li>
+<li><strong>Community</strong>: links to forums and other locations where you can get help from members of the App Service team and other community members</li>
+<li><strong>Recent Updates</strong>: convenient links to updates to Microsoft Azure services as well as stack specific updates</li>
+<li><strong>Contribute</strong>: link to our Github repository to assemble feedback for Support Center and allow for open source contributions</li>
+</ul>
+<h2>We need your feedback!</h2>
+In the coming months, we are planning on adding additional features with a goal that Support Center can guide you step-by-step for a holistic Web App troubleshooting experience. This means that the feedback that you leave is critical for us to determine which features are most relevant for you.
+
+Once Health Checkup is complete, you can <strong>leave your feedback in the inline textbox</strong> as seen below.
+
+<a href="{{ site.baseurl }}/media/2017/09/App-Service-Genie-Blog-Post-7.png"><img alt="" class="alignnone size-large wp-image-6075" height="500" src="{{ site.baseurl }}/media/2017/09/App-Service-Genie-Blog-Post-7-1024x583.png" width="879"/></a>
+
+Note: currently, this experience is only for App Service on Windows. Stay tuned!</div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
 </html>

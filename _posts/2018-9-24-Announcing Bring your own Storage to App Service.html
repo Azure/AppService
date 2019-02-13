@@ -1,42 +1,26 @@
 ---
 layout: post
+hide_excerpt: true
 ---
-<html>
- <head>
-  <meta charset="utf-8"/>
- </head>
- <body>
-  <div id="page">
-   <a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Ranjith Ramachandra" target="_blank">
-    Ranjith Ramachandra
-   </a>
-   <time>
-    9/24/2018 12:34:40 PM
-   </time>
-   <hr/>
-   <div id="content">
-    <h1>
-     Bring your own Storage to App Service now in Public Preview
-    </h1>
-    We’re excited to announce the “Bring Your Own Storage” feature to App Service on Linux and Web App for Containers. Available in public preview, “Bring Your Own Storage” supports mounting Azure Blobs and Azure Files into your Azure App Service. You can configure up to five Azure storage accounts for a given App Service.
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Ranjith Ramachandra" target="_blank">Ranjith Ramachandra</a>
+<time>    9/24/2018 12:34:40 PM</time>
+<hr/>
+<div id="content"><h1>Bring your own Storage to App Service now in Public Preview</h1>
+We’re excited to announce the “Bring Your Own Storage” feature to App Service on Linux and Web App for Containers. Available in public preview, “Bring Your Own Storage” supports mounting Azure Blobs and Azure Files into your Azure App Service. You can configure up to five Azure storage accounts for a given App Service.
 
 “Bring your own storage” for example, enables the following scenarios:
-    <ol>
-     <li>
-      Bring your own content and have it readily available for your web application hosted on App Service. This avoids the need to copy the content which could take a lot of time depending on the number and size of the files.
-     </li>
-     <li>
-      Use the azure blob storage or azure files to write content or Log files which can be shared across different services you might have. For example, you can use any log management service like splunk with your app service writing logs to the azure files or blob storage and the log management service can consume the logs from the storage.
-     </li>
-    </ol>
-    <h2>
-     Configure azure storage account on App Service
-    </h2>
-    With this public preview annoucement,
-    <a href="https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest">
-     Azure CLI
-    </a>
-    will have support for “Bring your own storage”. The UX experience is coming soon.
+<ol>
+<li>Bring your own content and have it readily available for your web application hosted on App Service. This avoids the need to copy the content which could take a lot of time depending on the number and size of the files.</li>
+<li>Use the azure blob storage or azure files to write content or Log files which can be shared across different services you might have. For example, you can use any log management service like splunk with your app service writing logs to the azure files or blob storage and the log management service can consume the logs from the storage.</li>
+</ol>
+<h2>Configure azure storage account on App Service</h2>
+With this public preview annoucement, <a href="https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest">Azure CLI</a> will have support for “Bring your own storage”. The UX experience is coming soon.
 
 Login to the CLI and ensure you have selected the right subscription:
 
@@ -45,12 +29,10 @@ $ az account list
 $ az account set –subscription “YourSubscriptionName”
 
 To get help on the command to manage storage accounts on your app service, use the -h option:
-    <code>
-     <strong>
-      az webapp config storage-account -h
-     </strong>
-    </code>
-    Group
+
+<code><strong>az webapp config storage-account -h</strong></code>
+
+Group
 az webapp config storage-account : Manage a web app's Azure storage account configurations.
 
 Commands:
@@ -58,41 +40,28 @@ add    : Add an Azure storage account configuration to a web app.
 delete : Delete a web app's Azure storage account configuration.
 list   : Get a web app's Azure storage account configurations.
 update : Update an existing Azure storage account configuration on a web app.
-    <h3>
-     Add a storage account to your app service
-    </h3>
-    To add a new storage account, you will need an Azure Storage (blob or azure files). If you haven’t created one yet, please follow the steps mentioned
-    <a href="https://docs.microsoft.com/en-us/azure/storage/">
-     here
-    </a>
-    to create one.
+<h3>Add a storage account to your app service</h3>
+To add a new storage account, you will need an Azure Storage (blob or azure files). If you haven’t created one yet, please follow the steps mentioned <a href="https://docs.microsoft.com/en-us/azure/storage/">here</a> to create one.
 
-Also, to learn more about how to create App Service, please follow the steps
-    <a href="https://docs.microsoft.com/en-us/azure/app-service/containers/">
-     here
-    </a>
-    .
+Also, to learn more about how to create App Service, please follow the steps <a href="https://docs.microsoft.com/en-us/azure/app-service/containers/">here</a>.
 
 To link a storage account with your App Service (assumes you have already created the app service and the storage account), use the following command:
-    <code>
-     <strong>
-      $ az webapp config storage-account add
-     </strong>
-     -g RESOURCE_GROUP -n APP_NAME \
+<code>
+<strong>$ az webapp config storage-account add</strong> -g RESOURCE_GROUP -n APP_NAME \
 --custom-id CustomId [Unique identifier for this storage mapping] \
 --storage-type [Azure storage type: AzureFiles or AzureBlob]   \
 --account-name [Azure storage account name]   \
 --share-name   [Azure storage share/file name]   \
 --access-key   [storage access key]   \
---mount-path   [/path/to/mount within the container]
-    </code>
-    Sample:
+--mount-path   [/path/to/mount within the container]</code>
+
+Sample:
 
 $ az webapp config storage-account add -g AppSvcBYOSDemoSite -n AppSvcBYOSDemoSite --custom-id MediaVolume --storage-type AzureBlob --account-name appsvcbyosdemo --share-name mediablob --access-key &lt;youraccesskey&gt; --mount-path /var/media
 
 Output:
-    <code>
-     {
+<code>
+{
 "MediaVolume": {
 "accessKey": "youraccesskey",
 "accountName": "appsvcbyosdemo",
@@ -101,9 +70,9 @@ Output:
 "state": "Ok",
 "type": "AzureBlob"
 }
-}
-    </code>
-    At this point, your web application will have the storage mounted at /var/media and your web application has full access to this storage.
+}</code>
+
+At this point, your web application will have the storage mounted at /var/media and your web application has full access to this storage.
 If you want to use the mounted storage account in a Multi-container web app,  you need to specify the custom-id of your storage account in the volumes block of your container definition in the Docker-Compose or Kubernetes yaml file, for example:
 
 version: '3'
@@ -116,14 +85,10 @@ volumes:
 - &lt;custom-id&gt;:/var/media
 redis:
 image: "redis:alpine"
-    <h3>
-     List storage accounts associated with the App Service
-    </h3>
-    To list the storage accounts associated with your app service, use the list command:
-    <strong>
-     $ az webapp config storage-account list
-    </strong>
-    -g RESOURCE_GROUP -n NAME
+<h3>List storage accounts associated with the App Service</h3>
+To list the storage accounts associated with your app service, use the list command:
+
+<strong>$ az webapp config storage-account list</strong> -g RESOURCE_GROUP -n NAME
 
 Sample:
 
@@ -145,14 +110,10 @@ Output:
 }
 }
 ]
-    <h3>
-     Update storage account associated with the App Service
-    </h3>
-    To update the storage accounts associated with your app service, use the update command:
-    <strong>
-     $ az webapp config storage-account update
-    </strong>
-    -g RESOURCE_GROUP -n APP_NAME \
+<h3>Update storage account associated with the App Service</h3>
+To update the storage accounts associated with your app service, use the update command:
+
+<strong>$ az webapp config storage-account update </strong>-g RESOURCE_GROUP -n APP_NAME \
 --custom-id CustomId [Unique identifier for this storage mapping] \
 --storage-type [Azure storage type: AzureFiles or AzureBlob]   \
 --account-name [Azure storage account name]   \
@@ -176,14 +137,10 @@ Output:
 "type": "AzureBlob"
 }
 }
-    <h3>
-     Remove storage account associated with the App Service
-    </h3>
-    To remove the storage account from the Azure App Service, use the delete command.
-    <strong>
-     $ az webapp config storage-account delete
-    </strong>
-    -g RESOURCE_GROUP -n APP_NAME --custom-id CustomId
+<h3>Remove storage account associated with the App Service</h3>
+To remove the storage account from the Azure App Service, use the delete command.
+
+<strong>$ az webapp config storage-account delete </strong>-g RESOURCE_GROUP -n APP_NAME --custom-id CustomId
 
 Sample:
 
@@ -192,41 +149,19 @@ az webapp config storage-account delete -g AppSvcBYOSDemoSite -n AppSvcBYOSDemoS
 Output:
 
 {}
-    <h2>
-     Sample Web Application that uses external Azure Storage for static files
-    </h2>
-    Here is a sample
-    <a href="https://github.com/rramachand21/appsvcdemobyos">
-     dotnetcore web application
-    </a>
-    that shows how you easy it is to use an Azure Storage account to store your  content and reference it in your web application.
-    <strong>
-     Useful Links
-    </strong>
-    <ul>
-     <li>
-      <a href="https://docs.microsoft.com/en-us/azure/app-service/containers/">
-       Hosting Web Applications on Azure App Service
-      </a>
-     </li>
-     <li>
-      <a href="https://docs.microsoft.com/en-us/azure/storage/">
-       Creating Azure Storage Accounts and Azure Files
-      </a>
-     </li>
-     <li>
-      <a href="https://docs.microsoft.com/en-us/azure/app-service/app-service-continuous-deployment">
-       Deploying web applications to Azure App Services
-      </a>
-     </li>
-    </ul>
-    <strong>
-    </strong>
-   </div>
-  </div>
- </body>
- <script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript">
- </script>
- <script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript">
- </script>
+<h2>Sample Web Application that uses external Azure Storage for static files</h2>
+Here is a sample <a href="https://github.com/rramachand21/appsvcdemobyos">dotnetcore web application</a> that shows how you easy it is to use an Azure Storage account to store your  content and reference it in your web application.
+
+<strong>Useful Links</strong>
+<ul>
+<li><a href="https://docs.microsoft.com/en-us/azure/app-service/containers/">Hosting Web Applications on Azure App Service</a></li>
+<li><a href="https://docs.microsoft.com/en-us/azure/storage/">Creating Azure Storage Accounts and Azure Files</a></li>
+<li><a href="https://docs.microsoft.com/en-us/azure/app-service/app-service-continuous-deployment">Deploying web applications to Azure App Services</a></li>
+</ul>
+ 
+
+<strong> </strong></div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
 </html>

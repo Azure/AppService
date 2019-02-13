@@ -1,134 +1,44 @@
 ---
 layout: post
+hide_excerpt: true
 ---
-<html>
- <head>
-  <meta charset="utf-8"/>
- </head>
- <body>
-  <div id="page">
-   <a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/mksunitha" target="_blank">
-    mksunitha
-   </a>
-   <time>
-    11/29/2016 12:32:02 PM
-   </time>
-   <hr/>
-   <div id="content">
-    Cron is a time-based job scheduler and WordPress uses a file called
-    <strong>
-     wp-cron.php
-    </strong>
-    as a cron job to run scheduled tasks like publishing scheduled posts, managing updates to plugins and themes etc. WordPress is configured to
-    <strong>
-     wp-cron.php
-    </strong>
-    every time a user  visits your WordPress web app to check if a scheduled task is to be executed.
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
 
-If your web app does get hundreds of users or more simultaneously , this adds significant overhead to your web app slowly it down for the users visiting it. For such cases it would be beneficial to isolate the
-    <strong>
-     wp-cron.php
-    </strong>
-    execution from the request made to your web app.  Azure app service offers Web Jobs or Azure functions  to build make a call to
-    <strong>
-     wp-cron.php
-    </strong>
-    file when it needs to be executed.
-    <h4>
-     Advantages of Functions over Web Jobs for your WordPress app
-    </h4>
-    Few things to understand about your application before you make the choice :
-    <ul>
-     <li>
-      If the cron job is CPU intensive and takes a long time to execute , it may put a large burden on your existing resources on the App service plan causing overhead. In such cases it would be more beneficial to use
-      <a href="https://azure.microsoft.com/en-us/services/functions/">
-       Azure Functions
-      </a>
-      .
-     </li>
-     <li>
-      Cost is the second criteria .  With Azure functions you get
-      <span>
-       400,000 GB-s execution time for Free which might be sufficient for WordPress app. Even if the execution is higher than 400,000 GB-s , the cost is 0.20 cents for million executions. Functions is still cost effective and it does not add overhead on your web app compute resources.
-      </span>
-     </li>
-    </ul>
-    For this blog post I will show you how to use
-    <a href="https://azure.microsoft.com/en-us/services/functions/">
-     Azure Functions
-    </a>
-    so you can leverage server less architecture  and low cost since you pay for the number of times the code is executed due to the event based model.
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/mksunitha" target="_blank">mksunitha</a>
+<time>    11/29/2016 12:32:02 PM</time>
+<hr/>
+<div id="content">Cron is a time-based job scheduler and WordPress uses a file called <strong>wp-cron.php</strong> as a cron job to run scheduled tasks like publishing scheduled posts, managing updates to plugins and themes etc. WordPress is configured to <strong>wp-cron.php</strong> every time a user  visits your WordPress web app to check if a scheduled task is to be executed.
 
-You can use the same
-    <a href="https://github.com/SunBuild/WordPressCronFunction/blob/master/wpcronfunction/run.php">
-     sample script
-    </a>
-    for Web jobs if you intend to use the resources on your we app's app service plan. Click
-    <a href="https://docs.microsoft.com/en-us/azure/app-service-web/web-sites-create-web-jobs">
-     here
-    </a>
-    to learn more about Web Jobs.
+If your web app does get hundreds of users or more simultaneously , this adds significant overhead to your web app slowly it down for the users visiting it. For such cases it would be beneficial to isolate the <strong>wp-cron.php</strong> execution from the request made to your web app.  Azure app service offers Web Jobs or Azure functions  to build make a call to <strong>wp-cron.php</strong> file when it needs to be executed.
+<h4>Advantages of Functions over Web Jobs for your WordPress app</h4>
+Few things to understand about your application before you make the choice :
+<ul>
+<li>If the cron job is CPU intensive and takes a long time to execute , it may put a large burden on your existing resources on the App service plan causing overhead. In such cases it would be more beneficial to use <a href="https://azure.microsoft.com/en-us/services/functions/">Azure Functions</a>.</li>
+<li>Cost is the second criteria .  With Azure functions you get <span>400,000 GB-s execution time for Free which might be sufficient for WordPress app. Even if the execution is higher than 400,000 GB-s , the cost is 0.20 cents for million executions. Functions is still cost effective and it does not add overhead on your web app compute resources.</span></li>
+</ul>
+For this blog post I will show you how to use <a href="https://azure.microsoft.com/en-us/services/functions/">Azure Functions </a> so you can leverage server less architecture  and low cost since you pay for the number of times the code is executed due to the event based model.
 
-Follow the steps below to isolate
-    <strong>
-     wp-cron.php
-    </strong>
-    execution for your WordPress web app.
-    <h4>
-     STEP 1: Disable WordPress cron
-    </h4>
-    Update
-    <strong>
-     wp-config.php
-    </strong>
-    file   and add this setting shown below to disable
-    <strong>
-     wp-cron.php
-    </strong>
-    from being executed at every user request.
-    <pre>define('DISABLE_WP_CRON', 'true');</pre>
-    <h4>
-     STEP 2 : Create a Function App using Timer trigger
-    </h4>
-    Refer to instructions here to
-    <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-create-first-azure-function-azure-portal">
-     create a Function app
-    </a>
-    or use this
-    <a href="https://github.com/SunBuild/WordPressCronFunction">
-     sample function app to run WordPress cron
-    </a>
-    on Github . Azure function supports
-    <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-continuous-deployment">
-     continuous deployment with Github
-    </a>
-    .
+You can use the same <a href="https://github.com/SunBuild/WordPressCronFunction/blob/master/wpcronfunction/run.php">sample script </a>for Web jobs if you intend to use the resources on your we app's app service plan. Click <a href="https://docs.microsoft.com/en-us/azure/app-service-web/web-sites-create-web-jobs">here </a>to learn more about Web Jobs.
 
-Traditionally
-    <strong>
-     wp-cron.php
-    </strong>
-    executes at every request to check if a task is scheduled to run. You can alternatively use the timer triggers which calls the azure functions based on a schedule, one time or recurring.   For example if you want the
-    <a href="https://github.com/SunBuild/WordPressCronFunction/blob/master/wpcronfunction/function.json">
-     wp-cron.php
-    </a>
-    to run every 15 mins you can use the following schedule which is Unix Cron like expression.
-    <pre>"schedule": "0 */15 * * * *"</pre>
-    To learn more about Timer trigger binding , click
-    <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-timer">
-     here
-    </a>
-    .
+Follow the steps below to isolate <strong>wp-cron.php</strong> execution for your WordPress web app.
+<h4>STEP 1: Disable WordPress cron</h4>
+Update <strong>wp-config.php</strong> file   and add this setting shown below to disable <strong>wp-cron.php</strong> from being executed at every user request.
+<pre>define('DISABLE_WP_CRON', 'true');</pre>
+<h4>STEP 2 : Create a Function App using Timer trigger</h4>
+Refer to instructions here to <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-create-first-azure-function-azure-portal">create a Function app</a> or use this  <a href="https://github.com/SunBuild/WordPressCronFunction">sample function app to run WordPress cron</a>  on Github . Azure function supports <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-continuous-deployment">continuous deployment with Github</a> .
+
+Traditionally <strong>wp-cron.php</strong>  executes at every request to check if a task is scheduled to run. You can alternatively use the timer triggers which calls the azure functions based on a schedule, one time or recurring.   For example if you want the <a href="https://github.com/SunBuild/WordPressCronFunction/blob/master/wpcronfunction/function.json">wp-cron.php</a> to run every 15 mins you can use the following schedule which is Unix Cron like expression.
+<pre>"schedule": "0 */15 * * * *"</pre>
+To learn more about Timer trigger binding , click <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-timer">here</a>.
 
 There are two primary files :
-    <ul>
-     <li>
-      function.json: This  file specified the bindings for the function app. In this case its a timer trigger as seen below which is scheduled to run every 15 minutes. You can view the json file
-      <a href="https://github.com/SunBuild/WordPressCronFunction/blob/master/wpcronfunction/function.json">
-       here
-      </a>
-      .
-      <pre>{
+<ul>
+<li>function.json: This  file specified the bindings for the function app. In this case its a timer trigger as seen below which is scheduled to run every 15 minutes. You can view the json file <a href="https://github.com/SunBuild/WordPressCronFunction/blob/master/wpcronfunction/function.json">here</a>.
+<pre>{
     "bindings": [
         {
             "type": "timerTrigger",
@@ -140,48 +50,14 @@ There are two primary files :
     ]
 }
 </pre>
-     </li>
-     <li>
-      run.php : This script just make a HTTP call using PHP CURL and gets a response . Click
-      <a href="https://github.com/SunBuild/WordPressCronFunction/blob/master/wpcronfunction/run.php">
-       here
-      </a>
-      to view the script.  The logs will display the information of function starting , completing and the response received from the CURL call to wp-cron.php. In this example with the
-      <a href="https://github.com/SunBuild/WordPressCronFunction/">
-       sample function app
-      </a>
-      return a message
-      <em>
-       "Running WordPress CRON .."
-       <a href="{{ site.baseurl }}/media/2016/11/wpfunction1.png">
-        <img alt="wpfunction1" class="alignnone size-large wp-image-2205" height="539" src="{{ site.baseurl }}/media/2016/11/wpfunction1-1024x628.png" width="879"/>
-       </a>
-      </em>
-     </li>
-    </ul>
-    <div style="padding: 22px;background-color: #fcecad;line-height: 1.4">
-     Note: PHP support is still experiment for Azure Functions. You can use C# or Node.js or F# languages to make a HTTP call to the wordpress app wp-cron.php file , for example the URL would be like
-     <span>
-      <em>
-       http://wordpress3295.azurewebsites.net/wp-cron.php?doing_wp_cron.
-      </em>
-     </span>
-     This will trigger the cron to kickoff any scheduled tasks for WordPress app.
-    </div>
-    <h4>
-     References
-    </h4>
-    <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-reference">
-     Developer Reference for Azure Functions
-    </a>
-    <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-best-practices">
-     Best practices for Azure fuctions
-    </a>
-   </div>
-  </div>
- </body>
- <script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript">
- </script>
- <script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript">
- </script>
+</li>
+<li>run.php : This script just make a HTTP call using PHP CURL and gets a response . Click <a href="https://github.com/SunBuild/WordPressCronFunction/blob/master/wpcronfunction/run.php">here</a> to view the script.  The logs will display the information of function starting , completing and the response received from the CURL call to wp-cron.php. In this example with the <a href="https://github.com/SunBuild/WordPressCronFunction/">sample function app</a> return a message <em>"Running WordPress CRON .." <a href="{{ site.baseurl }}/media/2016/11/wpfunction1.png"><img alt="wpfunction1" class="alignnone size-large wp-image-2205" height="539" src="{{ site.baseurl }}/media/2016/11/wpfunction1-1024x628.png" width="879"/></a></em></li>
+</ul>
+<div style="padding: 22px;background-color: #fcecad;line-height: 1.4">Note: PHP support is still experiment for Azure Functions. You can use C# or Node.js or F# languages to make a HTTP call to the wordpress app wp-cron.php file , for example the URL would be like <span><em>http://wordpress3295.azurewebsites.net/wp-cron.php?doing_wp_cron. </em></span>This will trigger the cron to kickoff any scheduled tasks for WordPress app.</div>
+<h4>References</h4>
+<a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-reference">Developer Reference for Azure Functions</a>
+<a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-best-practices">Best practices for Azure fuctions</a></div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
 </html>

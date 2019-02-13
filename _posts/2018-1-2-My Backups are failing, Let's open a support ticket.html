@@ -1,159 +1,82 @@
 ---
 layout: post
+hide_excerpt: true
 ---
-<html>
- <head>
-  <meta charset="utf-8"/>
- </head>
- <body>
-  <div id="page">
-   <a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Ahmed Elnably" target="_blank">
-    Ahmed Elnably
-   </a>
-   <time>
-    1/2/2018 1:25:31 PM
-   </time>
-   <hr/>
-   <div id="content">
-    <h1>
-     Actually wait!
-    </h1>
-    A big percentage of the backup failures (More than 42%) can be fixed in minutes, and more importantly without even opening a support ticket.
-    <strong>
-     Step 1:
-    </strong>
-    Figure out what is the failure.
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
 
-From the backup blade, click on the failing backup and check the
-    <strong>
-     Log Details
-    </strong>
-    <a href="{{ site.baseurl }}/media/2018/01/backup-log-in-portal.png">
-     <img alt="" class="alignnone size-large wp-image-6725" height="596" src="{{ site.baseurl }}/media/2018/01/backup-log-in-portal-1024x694.png" width="879"/>
-    </a>
-    <strong>
-     Step 2:
-    </strong>
-    Check the following table.
-    <table width="642">
-     <tbody>
-      <tr>
-       <td width="306">
-        <strong>
-         Error
-        </strong>
-       </td>
-       <td width="325">
-        <strong>
-         Fix
-        </strong>
-       </td>
-      </tr>
-      <tr>
-       <td width="306">
-        Storage access failed. {0}
-       </td>
-       <td width="325">
-        Delete backup schedule and reconfigure it
-       </td>
-      </tr>
-      <tr>
-       <td width="306">
-        The website + database size exceeds the {0} GB limit for backups. Your content size is {1} GB.
-       </td>
-       <td width="325">
-        Use a backup.filter file to exclude some files from the backup, or remove the database portion of the backup and use externally offered backups instead
-        <a href="https://aka.ms/partial-backup">
-         https://aka.ms/partial-backup
-        </a>
-       </td>
-      </tr>
-      <tr>
-       <td width="306">
-        Error occurred while connecting to the database {0} on server {1}: Authentication to host '{1}' for user '&lt;username&gt;' using method 'mysql_native_password' failed with message: Unknown database '&lt;db name&gt;'
-       </td>
-       <td width="325">
-        Update database connection string
-       </td>
-      </tr>
-      <tr>
-       <td width="306">
-        Cannot resolve {0}. {1} (CannotResolveStorageAccount)
-       </td>
-       <td width="325">
-        Delete backup schedule and reconfigure it
-       </td>
-      </tr>
-      <tr>
-       <td width="306">
-        Login failed for user '{0}'.
-       </td>
-       <td width="325">
-        Update database connection string
-       </td>
-      </tr>
-      <tr>
-       <td width="306">
-        Create Database copy of {0} ({1}) threw an exception. Could not create Database copy
-       </td>
-       <td width="325">
-        Use admin user in connection string
-       </td>
-      </tr>
-      <tr>
-       <td width="306">
-        The server principal "&lt;name&gt;" is not able to access the database "master" under the current security context. Cannot open database "master" requested by the login. The login failed. Login failed for user '&lt;name&gt;'.
-       </td>
-       <td width="325">
-        Use admin user in connection string
-       </td>
-      </tr>
-      <tr>
-       <td width="306">
-        A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
-       </td>
-       <td width="325">
-        Check that the connection string is valid, whitelist site’s outbound IPs in database server settings
-       </td>
-      </tr>
-      <tr>
-       <td width="306">
-        Cannot open server "&lt;name&gt;" requested by the login. The login failed.
-       </td>
-       <td width="325">
-        Check that the connection string is valid
-       </td>
-      </tr>
-      <tr>
-       <td width="306">
-        Missing mandatory parameters for valid Shared Access Signature
-       </td>
-       <td width="325">
-        Delete backup schedule and reconfigure it
-       </td>
-      </tr>
-      <tr>
-       <td width="306">
-        SSL connection is required. Please specify SSL options and retry. when trying to connect
-       </td>
-       <td width="325">
-        Please use the built in backup feature in Azure MySQL or Azure Postgressql.
-       </td>
-      </tr>
-     </tbody>
-    </table>
-    <strong>
-     Step 3:
-    </strong>
-    The failure is not in the table
-    <strong>
-     Well ... Please open a support ticket.
-    </strong>
-   </div>
-  </div>
- </body>
- <script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript">
- </script>
- <script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript">
- </script>
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Ahmed Elnably" target="_blank">Ahmed Elnably</a>
+<time>    1/2/2018 1:25:31 PM</time>
+<hr/>
+<div id="content"><h1>Actually wait!</h1>
+A big percentage of the backup failures (More than 42%) can be fixed in minutes, and more importantly without even opening a support ticket.
+
+<strong>Step 1:</strong> Figure out what is the failure.
+
+From the backup blade, click on the failing backup and check the <strong>Log Details</strong>
+<a href="{{ site.baseurl }}/media/2018/01/backup-log-in-portal.png"><img alt="" class="alignnone size-large wp-image-6725" height="596" src="{{ site.baseurl }}/media/2018/01/backup-log-in-portal-1024x694.png" width="879"/></a>
+<strong>Step 2:</strong> Check the following table.
+<table width="642">
+<tbody>
+<tr>
+<td width="306"><strong>Error</strong></td>
+<td width="325"><strong>Fix</strong></td>
+</tr>
+<tr>
+<td width="306">Storage access failed. {0}</td>
+<td width="325">Delete backup schedule and reconfigure it</td>
+</tr>
+<tr>
+<td width="306">The website + database size exceeds the {0} GB limit for backups. Your content size is {1} GB.</td>
+<td width="325">Use a backup.filter file to exclude some files from the backup, or remove the database portion of the backup and use externally offered backups instead <a href="https://aka.ms/partial-backup">https://aka.ms/partial-backup</a></td>
+</tr>
+<tr>
+<td width="306">Error occurred while connecting to the database {0} on server {1}: Authentication to host '{1}' for user '&lt;username&gt;' using method 'mysql_native_password' failed with message: Unknown database '&lt;db name&gt;'</td>
+<td width="325">Update database connection string</td>
+</tr>
+<tr>
+<td width="306">Cannot resolve {0}. {1} (CannotResolveStorageAccount)</td>
+<td width="325">Delete backup schedule and reconfigure it</td>
+</tr>
+<tr>
+<td width="306">Login failed for user '{0}'.</td>
+<td width="325">Update database connection string</td>
+</tr>
+<tr>
+<td width="306">Create Database copy of {0} ({1}) threw an exception. Could not create Database copy</td>
+<td width="325">Use admin user in connection string</td>
+</tr>
+<tr>
+<td width="306">The server principal "&lt;name&gt;" is not able to access the database "master" under the current security context. Cannot open database "master" requested by the login. The login failed. Login failed for user '&lt;name&gt;'.</td>
+<td width="325">Use admin user in connection string</td>
+</tr>
+<tr>
+<td width="306">A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)</td>
+<td width="325">Check that the connection string is valid, whitelist site’s outbound IPs in database server settings</td>
+</tr>
+<tr>
+<td width="306">Cannot open server "&lt;name&gt;" requested by the login. The login failed.</td>
+<td width="325">Check that the connection string is valid</td>
+</tr>
+<tr>
+<td width="306">Missing mandatory parameters for valid Shared Access Signature</td>
+<td width="325">Delete backup schedule and reconfigure it</td>
+</tr>
+<tr>
+<td width="306">SSL connection is required. Please specify SSL options and retry. when trying to connect</td>
+<td width="325">Please use the built in backup feature in Azure MySQL or Azure Postgressql.</td>
+</tr>
+</tbody>
+</table>
+<strong>
+Step 3:</strong> The failure is not in the table
+
+<strong>
+Well ... Please open a support ticket.</strong></div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
 </html>

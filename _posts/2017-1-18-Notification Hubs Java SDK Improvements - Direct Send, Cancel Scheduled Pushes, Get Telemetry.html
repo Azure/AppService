@@ -1,75 +1,31 @@
 ---
 layout: post
+hide_excerpt: true
 ---
-<html>
- <head>
-  <meta charset="utf-8"/>
- </head>
- <body>
-  <div id="page">
-   <a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Mimi Xu (Azure)" target="_blank">
-    Mimi Xu (Azure)
-   </a>
-   <time>
-    1/18/2017 10:11:01 AM
-   </time>
-   <hr/>
-   <div id="content">
-    We are excited to share some of the recent updates the Notification Hubs team has made to its
-    <a href="https://github.com/Azure/azure-notificationhubs-java-backend">
-     Java Server SDK
-    </a>
-    .
-    <ol>
-     <li>
-      We have added a
-      <em>
-       cancelScheduledNotification
-      </em>
-      API that lets you delete scheduled notifications provided the scheduled notification ID.
-     </li>
-     <li>
-      We have added
-      <em>
-       sendDirectNotification
-      </em>
-      that can directly push any type of notifications (APNS, GCM, WNS, etc) to a list of device tokens without any device registrations needed with Notification Hubs service.
-     </li>
-     <li>
-      Lastly,
-      <em>
-       getNotificationTelemetry
-      </em>
-      is enabled for customers to easily see
-      <a href="https://msdn.microsoft.com/en-us/library/azure/mt608135.aspx">
-       telemetry details
-      </a>
-      around each send request.
-     </li>
-    </ol>
-    You will need the following dependencies with the correct versions:
-    <ul>
-     <li class="li1">
-      <a href="https://mvnrepository.com/artifact/org.apache.httpcomponents/httpmime/4.5.2">
-       <span class="s1">
-        Apache HttpClient Mime 4.5.2
-       </span>
-      </a>
-     </li>
-     <li class="li1">
-      <span class="s1">
-       <a href="https://mvnrepository.com/artifact/org.apache.httpcomponents/httpcore/4.4.5">
-        Apache HttpCore 4.4.5
-       </a>
-      </span>
-     </li>
-    </ul>
-    Give them a try and let us know what you think!
-   </div>
-  </div>
- </body>
- <script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript">
- </script>
- <script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript">
- </script>
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Mimi Xu (Azure)" target="_blank">Mimi Xu (Azure)</a>
+<time>    1/18/2017 10:11:01 AM</time>
+<hr/>
+<div id="content">We are excited to share some of the recent updates the Notification Hubs team has made to its <a href="https://github.com/Azure/azure-notificationhubs-java-backend">Java Server SDK</a>.
+<ol>
+<li>We have added a <em>cancelScheduledNotification</em> API that lets you delete scheduled notifications provided the scheduled notification ID.</li>
+<li>We have added <em>sendDirectNotification</em> that can directly push any type of notifications (APNS, GCM, WNS, etc) to a list of device tokens without any device registrations needed with Notification Hubs service.</li>
+<li>Lastly, <em>getNotificationTelemetry</em> is enabled for customers to easily see <a href="https://msdn.microsoft.com/en-us/library/azure/mt608135.aspx">telemetry details</a> around each send request.</li>
+</ol>
+You will need the following dependencies with the correct versions:
+<ul>
+<li class="li1"><a href="https://mvnrepository.com/artifact/org.apache.httpcomponents/httpmime/4.5.2"><span class="s1">Apache HttpClient Mime 4.5.2</span></a></li>
+<li class="li1"><span class="s1"><a href="https://mvnrepository.com/artifact/org.apache.httpcomponents/httpcore/4.4.5">Apache HttpCore 4.4.5</a></span></li>
+</ul>
+Give them a try and let us know what you think!
+
+ </div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
 </html>

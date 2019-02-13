@@ -1,471 +1,182 @@
 ---
 layout: post
+hide_excerpt: true
 ---
-<html>
- <head>
-  <meta charset="utf-8"/>
- </head>
- <body>
-  <div id="page">
-   <a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/mksunitha" target="_blank">
-    mksunitha
-   </a>
-   <time>
-    8/18/2016 4:26:30 PM
-   </time>
-   <hr/>
-   <div id="content">
-    Azure app service just launched a new feature, MySQL in-app to support MySQL natively. MySQL in-app is recommended for development and testing (DEV/TEST)  scenarios to quickly spin up PHP+ MYSQL applications on Azure to start developing and understanding the Azure app service platform. You can easily migrate this database when ready for production to
-    <ul>
-     <li>
-      <a href="https://azure.microsoft.com/en-us/marketplace/partners/cleardb/databases/">
-       ClearDB database
-      </a>
-     </li>
-     <li>
-      <a href="https://azure.microsoft.com/en-us/marketplace/partners/cleardb-clusters/cluster/">
-       ClearDB Clusters
-      </a>
-     </li>
-     <li>
-      MySQL on virtual machine on
-      <a href="https://azure.microsoft.com/en-us/documentation/articles/virtual-machines-linux-classic-mysql-on-opensuse/">
-       Linux
-      </a>
-      or
-      <a href="https://azure.microsoft.com/en-us/documentation/articles/virtual-machines-windows-classic-mysql-2008r2/">
-       Windows
-      </a>
-      OS
-     </li>
-    </ul>
-    We conducted a benchmarking experiment with MySQL in-app  to understand its performance compared to other MySQL solutions offered on Azure. We conducted two tests as described below:
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/mksunitha" target="_blank">mksunitha</a>
+<time>    8/18/2016 4:26:30 PM</time>
+<hr/>
+<div id="content">Azure app service just launched a new feature, MySQL in-app to support MySQL natively. MySQL in-app is recommended for development and testing (DEV/TEST)  scenarios to quickly spin up PHP+ MYSQL applications on Azure to start developing and understanding the Azure app service platform. You can easily migrate this database when ready for production to
+<ul>
+<li><a href="https://azure.microsoft.com/en-us/marketplace/partners/cleardb/databases/">ClearDB database</a></li>
+<li><a href="https://azure.microsoft.com/en-us/marketplace/partners/cleardb-clusters/cluster/">ClearDB Clusters</a></li>
+<li>MySQL on virtual machine on <a href="https://azure.microsoft.com/en-us/documentation/articles/virtual-machines-linux-classic-mysql-on-opensuse/">Linux</a> or <a href="https://azure.microsoft.com/en-us/documentation/articles/virtual-machines-windows-classic-mysql-2008r2/">Windows</a> OS</li>
+</ul>
+We conducted a benchmarking experiment with MySQL in-app  to understand its performance compared to other MySQL solutions offered on Azure. We conducted two tests as described below:
 
 We conducted a benchmarking experiment with MySQL in-app to understand its performance compared to other MySQL solutions offered on Azure. We conducted two tests as described below :
-    <h3>
-     Test Configuration
-    </h3>
-    We used simple testing methodology for both scenarios to understand the performance of the feature. The baseline configuration for both tests mentioned below are:
-    <ol>
-     <ol>
-      <li>
-       Two test clients (one is the same region as web app and one in a different region)
-      </li>
-      <li>
-       added application insights to web app  to gather telemetry data
-      </li>
-      <li>
-       using MySQL in-app database
-      </li>
-      <li>
-       constant user load on the web app
-      </li>
-     </ol>
-    </ol>
-    <h3>
-     Test Scenario with Vanilla WordPress :
-    </h3>
-    We deployed a vanilla word press web app on various pricing plans for Azure App service. No caching layer was used with the web app configuration.
-    <u>
-     <em>
-      Note: Keep in mind that Free and Shared hosting have quota limitations that impacted the result of the tests.
-     </em>
-    </u>
-    During this test , we set a limit on how many PHP FastCGI processes created on Free and Shared pricing plan. To learn more about limiting PHP FastCGI process , check out this
-    <a href="http://www.iis.net/learn/application-frameworks/running-php-applications-on-iis/best-practices-for-php-on-the-microsoft-web-platform#_Configure_PHP_Process">
-     article
-    </a>
-    .In Azure app service , this can be done by using enabling the app setting WEBSITE_FASTCGI_MAXINSTANCES . For this test the value was set to 3.
+<h3>Test Configuration</h3>
+We used simple testing methodology for both scenarios to understand the performance of the feature. The baseline configuration for both tests mentioned below are:
+<ol>
+<ol>
+<li>Two test clients (one is the same region as web app and one in a different region)</li>
+<li>added application insights to web app  to gather telemetry data</li>
+<li>using MySQL in-app database</li>
+<li>constant user load on the web app</li>
+</ol>
+</ol>
+<h3>Test Scenario with Vanilla WordPress :</h3>
+We deployed a vanilla word press web app on various pricing plans for Azure App service. No caching layer was used with the web app configuration. <u><em>Note: Keep in mind that Free and Shared hosting have quota limitations that impacted the result of the tests. </em></u>
 
-Try out the
-    <a href="https://wordpress3295.azurewebsites.net">
-     demo site
-    </a>
-    <table border="1" cellpadding="0" cellspacing="0">
-     <tbody>
-      <tr>
-       <td valign="top" width="107">
-        <b>
-         Web App SKu
-        </b>
-       </td>
-       <td valign="top" width="81">
-        <b>
-         User Load
-        </b>
-       </td>
-       <td valign="top" width="103">
-        <b>
-         Server Response Time
-        </b>
-       </td>
-       <td valign="top" width="89">
-        <b>
-         CPU Time
-        </b>
-       </td>
-       <td valign="top" width="110">
-        <b>
-         Requests
-        </b>
-       </td>
-       <td valign="top" width="86">
-        <b>
-         HTTP Server Errors
-        </b>
-       </td>
-       <td valign="top" width="113">
-        <b>
-         Average Memory Working Set
-        </b>
-       </td>
-      </tr>
-      <tr>
-       <td width="107">
-        Free
-       </td>
-       <td width="81">
-        10
-       </td>
-       <td width="103">
-        248.14 ms
-       </td>
-       <td width="89">
-        127.69
-       </td>
-       <td width="110">
-        440
-       </td>
-       <td width="86">
-        0
-       </td>
-       <td width="113">
-        524.12 MB
-       </td>
-      </tr>
-      <tr>
-       <td width="107">
-        Free
-       </td>
-       <td width="81">
-        25
-       </td>
-       <td width="103">
-        245.56 ms
-       </td>
-       <td width="89">
-        278.01
-       </td>
-       <td width="110">
-        903
-       </td>
-       <td width="86">
-        0
-       </td>
-       <td width="113">
-        597.17 MB
-       </td>
-      </tr>
-      <tr>
-       <td width="107">
-        Shared
-       </td>
-       <td width="81">
-        10
-       </td>
-       <td width="103">
-        269.19 ms
-       </td>
-       <td width="89">
-        166.53
-       </td>
-       <td width="110">
-        445
-       </td>
-       <td width="86">
-        0
-       </td>
-       <td width="113">
-        515.6 MB
-       </td>
-      </tr>
-      <tr>
-       <td width="107">
-        Shared
-       </td>
-       <td width="81">
-        20
-       </td>
-       <td width="103">
-        217.23 ms
-       </td>
-       <td width="89">
-        255.81
-       </td>
-       <td width="110">
-        960
-       </td>
-       <td width="86">
-        0
-       </td>
-       <td width="113">
-        537.05 MB
-       </td>
-      </tr>
-      <tr>
-       <td width="107">
-        Basic Small
-       </td>
-       <td width="81">
-        15
-       </td>
-       <td width="103">
-        369.8 ms
-       </td>
-       <td width="89">
-        675.81
-       </td>
-       <td width="110">
-        2.24 k
-       </td>
-       <td width="86">
-        0
-       </td>
-       <td width="113">
-        421.83 MB
-       </td>
-      </tr>
-      <tr>
-       <td width="107">
-        Basic Small
-       </td>
-       <td width="81">
-        30
-       </td>
-       <td width="103">
-        531.97 ms
-       </td>
-       <td width="89">
-        773.88
-       </td>
-       <td width="110">
-        2.51 k
-       </td>
-       <td width="86">
-        0
-       </td>
-       <td width="113">
-        285.67 MB
-       </td>
-      </tr>
-      <tr>
-       <td valign="bottom" width="107">
-        Basic Medium
-       </td>
-       <td valign="bottom" width="81">
-        25
-       </td>
-       <td valign="bottom" width="103">
-        270.54 ms
-       </td>
-       <td valign="bottom" width="89">
-        1.01 k
-       </td>
-       <td valign="bottom" width="110">
-        3.74 k
-       </td>
-       <td valign="bottom" width="86">
-        0
-       </td>
-       <td valign="bottom" width="113">
-        607.58 MB
-       </td>
-      </tr>
-      <tr>
-       <td valign="bottom" width="107">
-        Basic Medium
-       </td>
-       <td valign="bottom" width="81">
-        50
-       </td>
-       <td valign="bottom" width="103">
-        453.78 ms
-       </td>
-       <td valign="bottom" width="89">
-        1.59 k
-       </td>
-       <td valign="bottom" width="110">
-        5.47 k
-       </td>
-       <td valign="bottom" width="86">
-        0
-       </td>
-       <td valign="bottom" width="113">
-        444.87 MB
-       </td>
-      </tr>
-     </tbody>
-    </table>
-    <h3>
-     Test scenario with customized WordPress application with popularly used plugins
-    </h3>
-    After modifying the above vanilla WordPress with a few plugins to WordPress app as  listed below:
-    <ul>
-     <li>
-      MotoPress  Editor  lite
-     </li>
-     <li>
-      Jetpack
-     </li>
-     <li>
-      Yoast SEO
-     </li>
-    </ul>
-    This configuration is similar to a production web application and we did not include include any caching layer to understand the performance of MySQL server running locally on the azure app service instance.
-    <strong>
-     Demo site:
-    </strong>
-    <table border="1" cellpadding="0" cellspacing="0" width="768">
-     <tbody>
-      <tr>
-       <td valign="top" width="105">
-        <b>
-         Web App Sku
-        </b>
-       </td>
-       <td valign="top" width="96">
-        <b>
-         User Load
-        </b>
-       </td>
-       <td valign="top" width="71">
-        <b>
-         Server Response Time
-        </b>
-       </td>
-       <td valign="top" width="68">
-        <b>
-         CPU Time
-        </b>
-       </td>
-       <td valign="top" width="86">
-        <b>
-         Requests
-        </b>
-       </td>
-       <td valign="top" width="85">
-        <b>
-         HTTP Server Errors
-        </b>
-       </td>
-       <td valign="top" width="118">
-        <b>
-         Average Memory Working Set
-        </b>
-       </td>
-       <td valign="top" width="137">
-        <b>
-         Memory Working Set
-        </b>
-       </td>
-      </tr>
-      <tr>
-       <td valign="bottom" width="105">
-        Standard Small
-       </td>
-       <td valign="bottom" width="96">
-        30
-       </td>
-       <td valign="bottom" width="71">
-        1.87 s
-       </td>
-       <td valign="bottom" width="68">
-        751.76
-       </td>
-       <td valign="bottom" width="86">
-        1.29 k
-       </td>
-       <td valign="bottom" width="85">
-        0
-       </td>
-       <td valign="bottom" width="118">
-        490.03 MB
-       </td>
-       <td valign="bottom" width="137">
-        7.47 GB
-       </td>
-      </tr>
-      <tr>
-       <td valign="bottom" width="105">
-        Standard Small
-       </td>
-       <td valign="bottom" width="96">
-        50
-       </td>
-       <td valign="bottom" width="71">
-        2.23 s
-       </td>
-       <td valign="bottom" width="68">
-        762.9
-       </td>
-       <td valign="bottom" width="86">
-        1.23 k
-       </td>
-       <td valign="bottom" width="85">
-        0
-       </td>
-       <td valign="bottom" width="118">
-        489.14 MB
-       </td>
-       <td valign="bottom" width="137">
-        7.28 GB
-       </td>
-      </tr>
-     </tbody>
-    </table>
-    You can make the application load even more faster , by using one or more of the options below :
-    <ul>
-     <li>
-      Using
-      <a href="http://www.iis.net/downloads/microsoft/wincache-extension" target="_blank">
-       Wincache object cache
-      </a>
-      or using
-      <a href="https://azure.microsoft.com/en-us/documentation/services/redis-cache/" target="_blank">
-       Azure Redis cache
-      </a>
-     </li>
-     <li>
-      Caching static content using
-      <a href="https://www.iis.net/configreference/system.webserver/caching" target="_blank">
-       browser caching
-      </a>
-     </li>
-     <li>
-      Minify JS and CSS files as per your application framework documentation
-     </li>
-     <li>
-      Reducing HTTP requests per page
-     </li>
-     <li>
-      Compress images
-      <span>
-       as per your application framework documentation
-      </span>
-     </li>
-     <li>
-      Optimize your database and perform regular clean up of your content
-     </li>
-    </ul>
-    <h3>
-     Conclusion
-    </h3>
-    MySQL in-app feature is recommended for development and testing purposes. Based on the data above you can see that this feature improves the performance of your PHP application since both the Web server and MySQL server are co-located on the same instance.
-   </div>
-  </div>
- </body>
- <script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript">
- </script>
- <script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript">
- </script>
+During this test , we set a limit on how many PHP FastCGI processes created on Free and Shared pricing plan. To learn more about limiting PHP FastCGI process , check out this <a href="http://www.iis.net/learn/application-frameworks/running-php-applications-on-iis/best-practices-for-php-on-the-microsoft-web-platform#_Configure_PHP_Process">article</a>.In Azure app service , this can be done by using enabling the app setting WEBSITE_FASTCGI_MAXINSTANCES . For this test the value was set to 3.
+
+Try out the <a href="https://wordpress3295.azurewebsites.net">demo site</a>
+<table border="1" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td valign="top" width="107"><b>Web App SKu</b></td>
+<td valign="top" width="81"><b>User Load</b></td>
+<td valign="top" width="103"><b>Server Response Time</b></td>
+<td valign="top" width="89"><b>CPU Time</b></td>
+<td valign="top" width="110"><b>Requests</b></td>
+<td valign="top" width="86"><b>HTTP Server Errors</b></td>
+<td valign="top" width="113"><b>Average Memory Working Set</b></td>
+</tr>
+<tr>
+<td width="107">Free</td>
+<td width="81">10</td>
+<td width="103">248.14 ms</td>
+<td width="89">127.69</td>
+<td width="110">440</td>
+<td width="86">0</td>
+<td width="113">524.12 MB</td>
+</tr>
+<tr>
+<td width="107">Free</td>
+<td width="81">25</td>
+<td width="103">245.56 ms</td>
+<td width="89">278.01</td>
+<td width="110">903</td>
+<td width="86">0</td>
+<td width="113">597.17 MB</td>
+</tr>
+<tr>
+<td width="107">Shared</td>
+<td width="81">10</td>
+<td width="103">269.19 ms</td>
+<td width="89">166.53</td>
+<td width="110">445</td>
+<td width="86">0</td>
+<td width="113">515.6 MB</td>
+</tr>
+<tr>
+<td width="107">Shared</td>
+<td width="81">20</td>
+<td width="103">217.23 ms</td>
+<td width="89">255.81</td>
+<td width="110">960</td>
+<td width="86">0</td>
+<td width="113">537.05 MB</td>
+</tr>
+<tr>
+<td width="107">Basic Small</td>
+<td width="81">15</td>
+<td width="103">369.8 ms</td>
+<td width="89">675.81</td>
+<td width="110">2.24 k</td>
+<td width="86">0</td>
+<td width="113">421.83 MB</td>
+</tr>
+<tr>
+<td width="107">Basic Small</td>
+<td width="81">30</td>
+<td width="103">531.97 ms</td>
+<td width="89">773.88</td>
+<td width="110">2.51 k</td>
+<td width="86">0</td>
+<td width="113">285.67 MB</td>
+</tr>
+<tr>
+<td valign="bottom" width="107">Basic Medium</td>
+<td valign="bottom" width="81">25</td>
+<td valign="bottom" width="103">270.54 ms</td>
+<td valign="bottom" width="89">1.01 k</td>
+<td valign="bottom" width="110">3.74 k</td>
+<td valign="bottom" width="86">0</td>
+<td valign="bottom" width="113">607.58 MB</td>
+</tr>
+<tr>
+<td valign="bottom" width="107">Basic Medium</td>
+<td valign="bottom" width="81">50</td>
+<td valign="bottom" width="103">453.78 ms</td>
+<td valign="bottom" width="89">1.59 k</td>
+<td valign="bottom" width="110">5.47 k</td>
+<td valign="bottom" width="86">0</td>
+<td valign="bottom" width="113">444.87 MB</td>
+</tr>
+</tbody>
+</table>
+<h3>Test scenario with customized WordPress application with popularly used plugins</h3>
+After modifying the above vanilla WordPress with a few plugins to WordPress app as  listed below:
+<ul>
+<li>MotoPress  Editor  lite</li>
+<li>Jetpack</li>
+<li>Yoast SEO</li>
+</ul>
+This configuration is similar to a production web application and we did not include include any caching layer to understand the performance of MySQL server running locally on the azure app service instance.
+
+<strong>Demo site:</strong>
+<table border="1" cellpadding="0" cellspacing="0" width="768">
+<tbody>
+<tr>
+<td valign="top" width="105"><b>Web App Sku</b></td>
+<td valign="top" width="96"><b>User Load</b></td>
+<td valign="top" width="71"><b>Server Response Time</b></td>
+<td valign="top" width="68"><b>CPU Time</b></td>
+<td valign="top" width="86"><b>Requests</b></td>
+<td valign="top" width="85"><b>HTTP Server Errors</b></td>
+<td valign="top" width="118"><b>Average Memory Working Set</b></td>
+<td valign="top" width="137"><b>Memory Working Set</b></td>
+</tr>
+<tr>
+<td valign="bottom" width="105">Standard Small</td>
+<td valign="bottom" width="96">30</td>
+<td valign="bottom" width="71">1.87 s</td>
+<td valign="bottom" width="68">751.76</td>
+<td valign="bottom" width="86">1.29 k</td>
+<td valign="bottom" width="85">0</td>
+<td valign="bottom" width="118">490.03 MB</td>
+<td valign="bottom" width="137">7.47 GB</td>
+</tr>
+<tr>
+<td valign="bottom" width="105">Standard Small</td>
+<td valign="bottom" width="96">50</td>
+<td valign="bottom" width="71">2.23 s</td>
+<td valign="bottom" width="68">762.9</td>
+<td valign="bottom" width="86">1.23 k</td>
+<td valign="bottom" width="85">0</td>
+<td valign="bottom" width="118">489.14 MB</td>
+<td valign="bottom" width="137">7.28 GB</td>
+</tr>
+</tbody>
+</table>
+You can make the application load even more faster , by using one or more of the options below :
+<ul>
+<li>Using <a href="http://www.iis.net/downloads/microsoft/wincache-extension" target="_blank">Wincache object cache</a>  or using <a href="https://azure.microsoft.com/en-us/documentation/services/redis-cache/" target="_blank">Azure Redis cache</a></li>
+<li>Caching static content using <a href="https://www.iis.net/configreference/system.webserver/caching" target="_blank">browser caching</a></li>
+<li>Minify JS and CSS files as per your application framework documentation</li>
+<li>Reducing HTTP requests per page</li>
+<li>Compress images <span> as per your application framework documentation</span></li>
+<li>Optimize your database and perform regular clean up of your content</li>
+</ul>
+<h3>Conclusion</h3>
+MySQL in-app feature is recommended for development and testing purposes. Based on the data above you can see that this feature improves the performance of your PHP application since both the Web server and MySQL server are co-located on the same instance.</div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
 </html>

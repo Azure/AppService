@@ -1,490 +1,164 @@
 ---
 layout: post
+hide_excerpt: true
 ---
-<html>
- <head>
-  <meta charset="utf-8"/>
- </head>
- <body>
-  <div id="page">
-   <a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/mksunitha" target="_blank">
-    mksunitha
-   </a>
-   <time>
-    9/12/2017 3:36:04 PM
-   </time>
-   <hr/>
-   <div id="content">
-    With both App Service for Windows and Linux  today , setting up  and configuration of your WordPress app is different in some way based on whether you are using Linux vs Windows . The matrix below can help guide your the appropriate documentation and steps for your WordPress app
-    <table>
-     <tbody>
-      <tr>
-       <td width="155">
-       </td>
-       <td colspan="2" width="173">
-        <strong>
-         Web App on Windows
-        </strong>
-       </td>
-       <td width="164">
-        <strong>
-         Web App on Linux (Built-in)
-        </strong>
-       </td>
-       <td width="121">
-        <strong>
-         Web App for Containers
-        </strong>
-       </td>
-      </tr>
-      <tr>
-       <td width="155">
-        Overview
-       </td>
-       <td colspan="2" width="173">
-        <a href="https://docs.microsoft.com/en-us/azure/app-service-web/app-service-web-overview">
-         Web App on Windows
-        </a>
-       </td>
-       <td width="164">
-        <a href="https://docs.microsoft.com/en-us/azure/app-service/containers/app-service-linux-intro">
-         Web App on Linux (Built-in)
-        </a>
-       </td>
-       <td width="121">
-        <a href="https://azure.microsoft.com/en-us/services/app-service/containers/">
-         Web App for Containers
-        </a>
-       </td>
-      </tr>
-      <tr>
-       <td width="155">
-        How do I create New WordPress app
-       </td>
-       <td colspan="2" width="173">
-        Use the Azure Marketplace Template for
-        <a href="https://portal.azure.com/#create/WordPress.WordPress">
-         WordPress
-        </a>
-        This template also creates a database for your Web App based on your database provider choice
-       </td>
-       <td width="164">
-        Use
-        <a href="https://docs.microsoft.com/en-us/azure/app-service/containers/quickstart-php">
-         Web App on Linux with Built-in PHP runtime
-        </a>
-        You need to create a database if creating the app using this method.
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
 
-Read this
-        <a href="https://docs.microsoft.com/en-us/azure/app-service/containers/choose-deployment-type">
-         article
-        </a>
-        to know whether to use built-in or custom docker image
-       </td>
-       <td width="121">
-        Use the Azure Marketplace Template for
-        <a href="https://portal.azure.com/#create/WordPress.WordPressonlinux">
-         WordPress on Linux
-        </a>
-        This template also creates a database for your Web App based on your database provider choice.
-       </td>
-      </tr>
-      <tr>
-       <td width="155">
-        How do I modify PHP configuration
-       </td>
-       <td colspan="2" width="173">
-        Add a
-        <a href="https://docs.microsoft.com/en-us/iis/application-frameworks/install-and-configure-php-on-iis/enable-per-site-php-configuration-on-iis-60-and-iis-7-and-above#enable-the-user-defined-ini-files">
-         .user.ini
-        </a>
-        to site/wwwroot folder and update PHP configuration .
-       </td>
-       <td width="164">
-        Use
-        <a href="http://php.net/manual/en/configuration.changes.php">
-         .htaccess
-        </a>
-        to update PHP configuration if using PHP built-in image or custom image with Apache server
-       </td>
-       <td width="121">
-        Use
-        <a href="http://php.net/manual/en/configuration.changes.php">
-         .htaccess
-        </a>
-        to update PHP configuration if using PHP built-in image or custom image with Apache server
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/mksunitha" target="_blank">mksunitha</a>
+<time>    9/12/2017 3:36:04 PM</time>
+<hr/>
+<div id="content">With both App Service for Windows and Linux  today , setting up  and configuration of your WordPress app is different in some way based on whether you are using Linux vs Windows . The matrix below can help guide your the appropriate documentation and steps for your WordPress app
 
-If you are using your own docker image , make the appropriate changes based on your server for example ngnix
-       </td>
-      </tr>
-      <tr>
-       <td width="155">
-        How do I debug WordPress
-       </td>
-       <td colspan="4" width="462">
-        WordPress has debugging Capability . For more information ,
-        <a href="https://codex.wordpress.org/Debugging_in_WordPress">
-         click here
-        </a>
-       </td>
-      </tr>
-      <tr>
-       <td width="155">
-        How do I add a domain to WordPress app
-       </td>
-       <td colspan="4" width="462">
-        STEP 1 :
-        <a href="https://docs.microsoft.com/en-us/azure/app-service-web/custom-dns-web-site-buydomains-web-app">
-         Buy a custom domain from Azure and configure your web app
-        </a>
-        Or
-        <a href="https://docs.microsoft.com/en-us/azure/app-service-web/app-service-web-tutorial-custom-domain">
-         use an existing domain to configure your web app.
-        </a>
-        STEP 2 : WordPress needs additional changes to resolve to the new domain
-        <ul>
-         <li>
-          Login to Wordpress dashboard
-         </li>
-         <li>
-          Click
-          <strong>
-           Settings
-          </strong>
-          , and then click
-          <strong>
-           General
-          </strong>
-          .
-         </li>
-         <li>
-          In the
-          <strong>
-           WordPress address (URL)
-          </strong>
-          and
-          <strong>
-           Site address (URL)
-          </strong>
-          fields, enter the new domain name or URL you want to use, and then click
-          <strong>
-           Save Changes
-          </strong>
-          .
-         </li>
-         <li>
-          Now browse your site with the new domain
-         </li>
-         <li>
-          If you are using permalinks and its not resolving with new domain you might need to reset your WordPress site's permalinks. To do this
-          <ul>
-           <li>
-            From the
-            <strong>
-             Settings
-            </strong>
-            menu, click
-            <strong>
-             Permalinks
-            </strong>
-            .
-           </li>
-           <li>
-            Note which kind of Permalink you currently use.
-           </li>
-           <li>
-            Select any Permalink setting other than the one you currently use, and then click
-            <strong>
-             Save Changes
-            </strong>
-            .
-           </li>
-           <li>
-            Select your original Permalink setting, and then click
-            <strong>
-             Save Changes
-            </strong>
-            .
-           </li>
-          </ul>
-         </li>
-        </ul>
-       </td>
-      </tr>
-      <tr>
-       <td width="155">
-        How to add SSL certificate binding for my domain
-       </td>
-       <td colspan="4" width="462">
-        <a href="https://docs.microsoft.com/en-us/azure/app-service-web/app-service-web-tutorial-custom-ssl">
-         Bind an existing custom SSL certificate to Azure Web Apps
-        </a>
-        <a href="https://docs.microsoft.com/en-us/azure/app-service-web/web-sites-purchase-ssl-web-site">
-         Buy and Configure an SSL Certificate for your Azure App Service
-        </a>
-       </td>
-      </tr>
-      <tr>
-       <td width="155">
-        How do I connect WordPress app with a database using SSL
-       </td>
-       <td colspan="4" width="462">
-        For more information click this
-        <a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/05/10/connect-azure-app-service-to-azure-database-for-mysql-and-postgresql-via-ssl/">
-         link
-        </a>
-       </td>
-      </tr>
-      <tr>
-       <td width="155">
-        How do I migrate my database to Azure database for MySQL (Preview)
-       </td>
-       <td colspan="4" width="462">
-        For more information , click this
-        <a href="https://docs.microsoft.com/en-us/azure/mysql/concepts-migrate-import-export">
-         link
-        </a>
-       </td>
-      </tr>
-      <tr>
-       <td width="155">
-        Which database provider should I use with WordPress
-       </td>
-       <td colspan="4" width="462">
-        Click this
-        <a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/06/08/pick-the-right-data-solution-for-azure-app-service/">
-         link
-        </a>
-        to help choose the appropriate database provider
-       </td>
-      </tr>
-      <tr>
-       <td width="155">
-        How do I migrate existing WordPress app
-       </td>
-       <td colspan="4" width="462">
-        <ul>
-         <li>
-          Identify your app dependencies to understand whether Windows or Linux built-in or Web app for Containers is the right choice
-         </li>
-         <li>
-          Create a
-          <a href="https://portal.azure.com/#create/Microsoft.WebSite">
-           Empty Web App
-          </a>
-          on Azure
-          <ul>
-           <li>
-            Choose Windows OS for Windows App Service
-           </li>
-           <li>
-            Choose Linux if you are using built-in PHP . OR You can
-            <a href="https://docs.microsoft.com/en-us/azure/app-service/containers/tutorial-custom-docker-image">
-             bring your own custom image
-            </a>
-            using Web App for Containers
-           </li>
-          </ul>
-         </li>
-         <li>
-          Create a database for your app based on the database provider you have selected
-         </li>
-         <li>
-          Migrate your database , for more information click this
-          <a href="https://docs.microsoft.com/en-us/azure/mysql/concepts-migrate-import-export">
-           link
-          </a>
-         </li>
-         <li>
-          Copy all your files to  Azure web app using
-          <a href="https://docs.microsoft.com/en-us/azure/app-service-web/app-service-deploy-ftp">
-           FTP
-          </a>
-          or
-          <a href="https://docs.microsoft.com/en-us/azure/app-service-web/app-service-deploy-local-git">
-           Git
-          </a>
-         </li>
-         <li>
-          Update wp-config.php to point to the desired database for the azure web app
-         </li>
-         <li>
-          If your wp-config.php files has any
-          <u>
-           hard-coded paths
-          </u>
-          please remove them or update them to use
-          <ul>
-           <li>
-            /home/site/wwwroot (Linux)
-           </li>
-           <li>
-            D:\home\site\wwwroot ( Windows)
-           </li>
-          </ul>
-         </li>
-         <li>
-          WordPress stored the URL of your web app in the database. Make sure you update the database to use your-site-name.azurewebsites.net or configure the appropriate domain to your app
-         </li>
-        </ul>
-       </td>
-      </tr>
-      <tr>
-       <td width="155">
-        Continuous Integration (CI)/Continuous Deployment(CD)
-       </td>
-       <td colspan="3" width="339">
-        For more information , click this
-        <a href="https://docs.microsoft.com/en-us/azure/app-service-web/app-service-continuous-deployment?toc=%2fazure%2fapp-service%2fcontainers%2ftoc.json">
-         link
-        </a>
-        . Here the continuous integration refers to only you application code.
-       </td>
-       <td width="121">
-        For more information , click this
-        <a href="https://docs.microsoft.com/en-us/azure/app-service/containers/app-service-linux-ci-cd">
-         link
-        </a>
-        . This depends on how you image is built :
-        <ol>
-         <li>
-          If your image has your application code included , then CI/CD refers to updates to your docker image
-         </li>
-         <li>
-          If your image has only server components like apache , php etc and application code is on VSTS/Github ; then there are two deployments that need to configured for CI/CD : one for your application code and one for your docker image. Refer to this
-          <a href="https://blogs.msdn.microsoft.com/devops/2017/05/10/use-azure-portal-to-setup-continuous-delivery-for-web-app-on-linux/">
-           article
-          </a>
-         </li>
-        </ol>
-       </td>
-      </tr>
-      <tr>
-       <td width="155">
-        Troubleshooting Platform Issues
-       </td>
-       <td width="168">
-        For more information , click this
-        <a href="https://docs.microsoft.com/en-us/azure/app-service-web/web-sites-enable-diagnostic-log">
-         link
-        </a>
-       </td>
-       <td colspan="3" width="292">
-        For more information click this
-        <a href="https://docs.microsoft.com/en-us/azure/app-service/containers/app-service-linux-intro#troubleshooting">
-         link
-        </a>
-        .
-        <span>
-         Checkout the
-        </span>
-        <a href="https://blogs.msdn.microsoft.com/waws/2017/09/08/things-you-should-know-web-apps-and-linux/">
-         FAQ
-        </a>
-        as well.
-       </td>
-      </tr>
-      <tr>
-       <td width="155">
-        Scaling Application
-       </td>
-       <td colspan="2" width="173">
-        For more information click this
-        <a href="https://docs.microsoft.com/en-us/azure/monitoring-and-diagnostics/insights-how-to-scale?toc=%2fazure%2fapp-service-web%2ftoc.json">
-         link
-        </a>
-       </td>
-       <td width="164">
-        For more information click this
-        <a href="https://docs.microsoft.com/en-us/azure/monitoring-and-diagnostics/insights-how-to-scale?toc=%2fazure%2fapp-service-web%2ftoc.json">
-         link
-        </a>
-       </td>
-       <td width="121">
-        For more information click this
-        <a href="https://docs.microsoft.com/en-us/azure/monitoring-and-diagnostics/insights-how-to-scale?toc=%2fazure%2fapp-service-web%2ftoc.json">
-         link
-        </a>
-        <strong>
-         Note:
-        </strong>
-        <em>
-         When using Web App for containers you must use the App Settings WEBSITES_ENABLE_APP_SERVICE_STORAGE = true in order to use App Service storage which will allows file changes to persists and be shared by all the instances
-        </em>
-       </td>
-      </tr>
-      <tr>
-       <td width="155">
-        Performance Enhancements
-       </td>
-       <td colspan="4">
-        <ul>
-         <li>
-          <a href="https://wordpress.org/plugins/wp-super-cache/">
-           WP Super cache
-          </a>
-          <span>
-          </span>
-          :It significantly improves site throughput and correctly handles comments submissions and other visitors’ actions.
-         </li>
-         <li id="wincache">
-          Azure Redis cache :
-          <span>
-          </span>
-          <a href="https://azure.microsoft.com/en-us/services/cache/">
-           Azure redis cache
-          </a>
-          <span>
-          </span>
-          can also be integrated with WordPress with the help of
-          <span>
-          </span>
-          <a href="https://wordpress.org/plugins/wp-redis/">
-           WP redis plugin
-          </a>
-          <span>
-          </span>
-          to get better performance.
-         </li>
-         <li>
-          Static content Caching : Cache JS, CSS files
-         </li>
-         <li>
-          Server level caching :
-          <ul>
-           <li>
-            For Windows App Service , you can use
-            <span>
-             IIS output caching, click
-            </span>
-            <a href="http://www.microsoft.com/web/post/performance-tuning-php-apps-on-windowsiis-with-output-caching">
-             here
-            </a>
-            <span>
-             .
-            </span>
-           </li>
-           <li>
-            For App Service on Linux , use caching on Apache . Click
-            <a href="http://httpd.apache.org/docs/current/caching.html">
-             here
-            </a>
-           </li>
-           <li>
-            For Web App for Containers , you can include different types of caching within your custom image from local redis to APC or additional caching based on the server you use ( Nginx, Apache etc )
-           </li>
-          </ul>
-         </li>
-        </ul>
-       </td>
-      </tr>
-     </tbody>
-    </table>
-   </div>
-  </div>
- </body>
- <script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript">
- </script>
- <script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript">
- </script>
+ 
+<table>
+<tbody>
+<tr>
+<td width="155"></td>
+<td colspan="2" width="173"><strong>Web App on Windows </strong></td>
+<td width="164"><strong>Web App on Linux (Built-in)</strong></td>
+<td width="121"><strong>Web App for Containers</strong></td>
+</tr>
+<tr>
+<td width="155">Overview</td>
+<td colspan="2" width="173"><a href="https://docs.microsoft.com/en-us/azure/app-service-web/app-service-web-overview">Web App on Windows</a></td>
+<td width="164"><a href="https://docs.microsoft.com/en-us/azure/app-service/containers/app-service-linux-intro">Web App on Linux (Built-in)</a></td>
+<td width="121"><a href="https://azure.microsoft.com/en-us/services/app-service/containers/">Web App for Containers</a></td>
+</tr>
+<tr>
+<td width="155">How do I create New WordPress app</td>
+<td colspan="2" width="173">Use the Azure Marketplace Template for <a href="https://portal.azure.com/#create/WordPress.WordPress">WordPress</a>
+
+This template also creates a database for your Web App based on your database provider choice</td>
+<td width="164">Use <a href="https://docs.microsoft.com/en-us/azure/app-service/containers/quickstart-php">Web App on Linux with Built-in PHP runtime </a>
+
+You need to create a database if creating the app using this method.
+
+Read this <a href="https://docs.microsoft.com/en-us/azure/app-service/containers/choose-deployment-type">article</a> to know whether to use built-in or custom docker image</td>
+<td width="121">Use the Azure Marketplace Template for <a href="https://portal.azure.com/#create/WordPress.WordPressonlinux">WordPress on Linux</a>
+
+This template also creates a database for your Web App based on your database provider choice.</td>
+</tr>
+<tr>
+<td width="155">How do I modify PHP configuration</td>
+<td colspan="2" width="173">Add a  <a href="https://docs.microsoft.com/en-us/iis/application-frameworks/install-and-configure-php-on-iis/enable-per-site-php-configuration-on-iis-60-and-iis-7-and-above#enable-the-user-defined-ini-files">.user.ini</a> to site/wwwroot folder and update PHP configuration .</td>
+<td width="164">Use <a href="http://php.net/manual/en/configuration.changes.php">.htaccess</a> to update PHP configuration if using PHP built-in image or custom image with Apache server</td>
+<td width="121">Use <a href="http://php.net/manual/en/configuration.changes.php">.htaccess</a> to update PHP configuration if using PHP built-in image or custom image with Apache server
+
+If you are using your own docker image , make the appropriate changes based on your server for example ngnix</td>
+</tr>
+<tr>
+<td width="155">How do I debug WordPress</td>
+<td colspan="4" width="462">WordPress has debugging Capability . For more information , <a href="https://codex.wordpress.org/Debugging_in_WordPress">click here</a></td>
+</tr>
+<tr>
+<td width="155">How do I add a domain to WordPress app</td>
+<td colspan="4" width="462">STEP 1 : <a href="https://docs.microsoft.com/en-us/azure/app-service-web/custom-dns-web-site-buydomains-web-app">Buy a custom domain from Azure and configure your web app</a> Or  <a href="https://docs.microsoft.com/en-us/azure/app-service-web/app-service-web-tutorial-custom-domain">use an existing domain to configure your web app.</a>
+
+STEP 2 : WordPress needs additional changes to resolve to the new domain
+<ul>
+<li>Login to Wordpress dashboard</li>
+<li>Click <strong>Settings</strong>, and then click <strong>General</strong>.</li>
+<li>In the <strong>WordPress address (URL)</strong> and <strong>Site address (URL)</strong> fields, enter the new domain name or URL you want to use, and then click <strong>Save Changes</strong>.</li>
+<li>Now browse your site with the new domain</li>
+<li>If you are using permalinks and its not resolving with new domain you might need to reset your WordPress site's permalinks. To do this
+<ul>
+<li>From the <strong>Settings</strong> menu, click <strong>Permalinks</strong>.</li>
+<li>Note which kind of Permalink you currently use.</li>
+<li>Select any Permalink setting other than the one you currently use, and then click <strong>Save Changes</strong>.</li>
+<li>Select your original Permalink setting, and then click <strong>Save Changes</strong>.</li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td width="155">How to add SSL certificate binding for my domain</td>
+<td colspan="4" width="462"><a href="https://docs.microsoft.com/en-us/azure/app-service-web/app-service-web-tutorial-custom-ssl">Bind an existing custom SSL certificate to Azure Web Apps</a>
+<a href="https://docs.microsoft.com/en-us/azure/app-service-web/web-sites-purchase-ssl-web-site">Buy and Configure an SSL Certificate for your Azure App Service</a></td>
+</tr>
+<tr>
+<td width="155">How do I connect WordPress app with a database using SSL</td>
+<td colspan="4" width="462">For more information click this  <a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/05/10/connect-azure-app-service-to-azure-database-for-mysql-and-postgresql-via-ssl/">link</a></td>
+</tr>
+<tr>
+<td width="155">How do I migrate my database to Azure database for MySQL (Preview)</td>
+<td colspan="4" width="462">For more information , click this <a href="https://docs.microsoft.com/en-us/azure/mysql/concepts-migrate-import-export">link</a></td>
+</tr>
+<tr>
+<td width="155">Which database provider should I use with WordPress</td>
+<td colspan="4" width="462">Click this <a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/06/08/pick-the-right-data-solution-for-azure-app-service/">link</a> to help choose the appropriate database provider</td>
+</tr>
+<tr>
+<td width="155">How do I migrate existing WordPress app</td>
+<td colspan="4" width="462">
+<ul>
+<li>Identify your app dependencies to understand whether Windows or Linux built-in or Web app for Containers is the right choice</li>
+<li>Create a <a href="https://portal.azure.com/#create/Microsoft.WebSite">Empty Web App</a> on Azure
+<ul>
+<li>Choose Windows OS for Windows App Service</li>
+<li>Choose Linux if you are using built-in PHP . OR You can <a href="https://docs.microsoft.com/en-us/azure/app-service/containers/tutorial-custom-docker-image">bring your own custom image</a>  using Web App for Containers</li>
+</ul>
+</li>
+<li>Create a database for your app based on the database provider you have selected</li>
+<li>Migrate your database , for more information click this <a href="https://docs.microsoft.com/en-us/azure/mysql/concepts-migrate-import-export">link</a></li>
+<li>Copy all your files to  Azure web app using <a href="https://docs.microsoft.com/en-us/azure/app-service-web/app-service-deploy-ftp">FTP</a> or<a href="https://docs.microsoft.com/en-us/azure/app-service-web/app-service-deploy-local-git"> Git</a></li>
+<li>Update wp-config.php to point to the desired database for the azure web app</li>
+<li>If your wp-config.php files has any <u>hard-coded paths </u>please remove them or update them to use
+<ul>
+<li>/home/site/wwwroot (Linux)</li>
+<li>D:\home\site\wwwroot ( Windows)</li>
+</ul>
+</li>
+<li>WordPress stored the URL of your web app in the database. Make sure you update the database to use your-site-name.azurewebsites.net or configure the appropriate domain to your app</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td width="155">Continuous Integration (CI)/Continuous Deployment(CD)</td>
+<td colspan="3" width="339">For more information , click this <a href="https://docs.microsoft.com/en-us/azure/app-service-web/app-service-continuous-deployment?toc=%2fazure%2fapp-service%2fcontainers%2ftoc.json">link</a> . Here the continuous integration refers to only you application code.</td>
+<td width="121">For more information , click this <a href="https://docs.microsoft.com/en-us/azure/app-service/containers/app-service-linux-ci-cd">link</a>. This depends on how you image is built :
+<ol>
+<li>If your image has your application code included , then CI/CD refers to updates to your docker image</li>
+<li>If your image has only server components like apache , php etc and application code is on VSTS/Github ; then there are two deployments that need to configured for CI/CD : one for your application code and one for your docker image. Refer to this <a href="https://blogs.msdn.microsoft.com/devops/2017/05/10/use-azure-portal-to-setup-continuous-delivery-for-web-app-on-linux/">article</a></li>
+</ol>
+</td>
+</tr>
+<tr>
+<td width="155">Troubleshooting Platform Issues</td>
+<td width="168">For more information , click this <a href="https://docs.microsoft.com/en-us/azure/app-service-web/web-sites-enable-diagnostic-log">link</a></td>
+<td colspan="3" width="292">For more information click this <a href="https://docs.microsoft.com/en-us/azure/app-service/containers/app-service-linux-intro#troubleshooting">link</a>. <span>Checkout the </span><a href="https://blogs.msdn.microsoft.com/waws/2017/09/08/things-you-should-know-web-apps-and-linux/">FAQ</a> as well.</td>
+</tr>
+<tr>
+<td width="155">Scaling Application</td>
+<td colspan="2" width="173">For more information click this <a href="https://docs.microsoft.com/en-us/azure/monitoring-and-diagnostics/insights-how-to-scale?toc=%2fazure%2fapp-service-web%2ftoc.json">link</a></td>
+<td width="164">For more information click this <a href="https://docs.microsoft.com/en-us/azure/monitoring-and-diagnostics/insights-how-to-scale?toc=%2fazure%2fapp-service-web%2ftoc.json">link</a></td>
+<td width="121">For more information click this <a href="https://docs.microsoft.com/en-us/azure/monitoring-and-diagnostics/insights-how-to-scale?toc=%2fazure%2fapp-service-web%2ftoc.json">link</a>
+<strong>Note:</strong> <em>When using Web App for containers you must use the App Settings WEBSITES_ENABLE_APP_SERVICE_STORAGE = true in order to use App Service storage which will allows file changes to persists and be shared by all the instances</em></td>
+</tr>
+<tr>
+<td width="155">Performance Enhancements</td>
+<td colspan="4">
+<ul>
+<li><a href="https://wordpress.org/plugins/wp-super-cache/">WP Super cache</a><span> </span>:It significantly improves site throughput and correctly handles comments submissions and other visitors’ actions.</li>
+<li id="wincache">Azure Redis cache :<span> </span><a href="https://azure.microsoft.com/en-us/services/cache/">Azure redis cache</a><span> </span>can also be integrated with WordPress with the help of<span> </span><a href="https://wordpress.org/plugins/wp-redis/">WP redis plugin</a><span> </span>to get better performance.</li>
+<li>Static content Caching : Cache JS, CSS files</li>
+<li>Server level caching :
+<ul>
+<li>For Windows App Service , you can use<span> IIS output caching, click </span><a href="http://www.microsoft.com/web/post/performance-tuning-php-apps-on-windowsiis-with-output-caching">here</a><span>. </span></li>
+<li>For App Service on Linux , use caching on Apache . Click <a href="http://httpd.apache.org/docs/current/caching.html">here</a></li>
+<li>For Web App for Containers , you can include different types of caching within your custom image from local redis to APC or additional caching based on the server you use ( Nginx, Apache etc )</li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
 </html>

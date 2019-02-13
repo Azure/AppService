@@ -1,103 +1,71 @@
 ---
 layout: post
+hide_excerpt: true
 ---
-<html>
- <head>
-  <meta charset="utf-8"/>
- </head>
- <body>
-  <div id="page">
-   <a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Yi Liao MSFT" target="_blank">
-    Yi Liao MSFT
-   </a>
-   <time>
-    5/7/2018 8:27:27 AM
-   </time>
-   <hr/>
-   <div id="content">
-    The App Service team is happy to announce the Public Preview of a new SSH experience and the remote debugging capability for Linux app developers. In this release, we're also enabling SFTP (Secure File Transfer Protocol) for Linux web app content management.
-    <h1>
-     <strong>
-      What’s new?
-     </strong>
-    </h1>
-    We’re introducing a new TCP tunneling technology for Azure App Service, which enables SSH/SFTP access and remote debugging for Linux Web Apps.
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Yi Liao MSFT" target="_blank">Yi Liao MSFT</a>
+<time>    5/7/2018 8:27:27 AM</time>
+<hr/>
+<div id="content">The App Service team is happy to announce the Public Preview of a new SSH experience and the remote debugging capability for Linux app developers. In this release, we're also enabling SFTP (Secure File Transfer Protocol) for Linux web app content management.
+<h1><strong>What’s new?</strong></h1>
+We’re introducing a new TCP tunneling technology for Azure App Service, which enables SSH/SFTP access and remote debugging for Linux Web Apps.
 
 We’re enabling Linux app developers to SSH into an app container using any SSH client at your choice. Previously we only enabled the SSH access through a Kudu web client. Based on Linux customer’s feedbacks, we’re adding support for any SSH clients to connect to app container.
 
 We’re also enabling SFTP for managing web app content and downloading logs, in addition to the already supported FTP and FTPS protocols.
 
 With the new remote debugging capability for Linux Web Apps, developers can now set break points in a code editor and live debug an web app running in App Service on Linux or Web App for Containers. We will publish additional blogs for know-how on remote debugging in the next several weeks.
-    <h1>
-     <strong>
-      How do I configure my dev machine for SSH/SFTP and remote debugging?
-     </strong>
-    </h1>
-    We use TCP tunneling technology to create a network connection between your dev machine and App Service over an authenticated WebSocket connection. We included the TCP tunneling technology in Azure CLI.  First, make sure you have the latest
-    <a href="https://docs.microsoft.com/en-us/cli/azure/?view=azure-cli-latest">
-     Azure CLI
-    </a>
-    installed. To enable the tunneling from your dev machine, you need to install Azure CLI "webapp" extension. If you install the extension for the first time, use this command:
-    <pre>az extension add --name webapp.</pre>
-    If you have an existing webapp extension, use this command to upgrade:
-    <pre>az extension update --name webapp.</pre>
-    Once the extension is installed, run the following CLI command to create a TCP tunnel to App Service:
-    <pre>az webapp remote-connection create –g [resource group] -n [app name] -p [local port to open]</pre>
-    The command line output on a Linux terminal will be something like this:
-    <pre>Port [number] is open
+<h1><strong>How do I configure my dev machine for SSH/SFTP and remote debugging?</strong></h1>
+We use TCP tunneling technology to create a network connection between your dev machine and App Service over an authenticated WebSocket connection. We included the TCP tunneling technology in Azure CLI.  First, make sure you have the latest <a href="https://docs.microsoft.com/en-us/cli/azure/?view=azure-cli-latest">Azure CLI</a> installed. To enable the tunneling from your dev machine, you need to install Azure CLI "webapp" extension. If you install the extension for the first time, use this command:
+<pre>az extension add --name webapp.</pre>
+If you have an existing webapp extension, use this command to upgrade:
+<pre>az extension update --name webapp.</pre>
+Once the extension is installed, run the following CLI command to create a TCP tunnel to App Service:
+<pre>az webapp remote-connection create –g [resource group] -n [app name] -p [local port to open]</pre>
+The command line output on a Linux terminal will be something like this:
+<pre>Port [number] is open
 Tunnel is ready! Creating on port [number]
 Starting local server...</pre>
-    Now, your dev machine is configured for any general purposed remote debugging and SSH/SFTP access for the web app as you specified in the remote-connection create command.
+Now, your dev machine is configured for any general purposed remote debugging and SSH/SFTP access for the web app as you specified in the remote-connection create command.
 
 Please note: in the Public Preview, for a given app we only support a single TCP tunnel at any given time. We plan to remove this limitation in future releases after Public Preview.
-    <strong>
-     How do I SSH into app container from a Linux terminal?
-    </strong>
-    First, please make sure your web app is enabled for SSH. If you use App Service on Linux (blessed images), the SSH is enabled by default. If you use Web App for Containers (custom images), please follow the instructions
-    <a href="https://docs.microsoft.com/en-us/azure/app-service/containers/app-service-linux-ssh-support">
-     here
-    </a>
-    to enable SSH access in app container.
+
+<strong>How do I SSH into app container from a Linux terminal?</strong>
+
+First, please make sure your web app is enabled for SSH. If you use App Service on Linux (blessed images), the SSH is enabled by default. If you use Web App for Containers (custom images), please follow the instructions <a href="https://docs.microsoft.com/en-us/azure/app-service/containers/app-service-linux-ssh-support">here</a> to enable SSH access in app container.
 
 Tips for SSH to work correctly in your container:
-    <ul>
-     <li>
-      Make sure you remember the pre-defined SSH password that is set in your Dockerfile. We recommend that you install SSH server and set the user/password in Dockerfile as follows:
-     </li>
-    </ul>
-    <blockquote>
-     <pre># ------------------------
+<ul>
+<li>Make sure you remember the pre-defined SSH password that is set in your Dockerfile. We recommend that you install SSH server and set the user/password in Dockerfile as follows:</li>
+</ul>
+<blockquote>
+<pre># ------------------------
 # SSH Server support
 # ------------------------
 RUN apt-get update \
 &amp;&amp; apt-get install -y --no-install-recommends openssh-server \
 &amp;&amp; echo "root:Docker!" | chpasswd</pre>
-    </blockquote>
-    <ul>
-     <li>
-      Please remember to start the SSH service in your container startup script.
-     </li>
-    </ul>
-    Second, make sure you create a TCP tunnel to the remote web app, if not, please run the CLI command provided in “configure my dev machine” section.
+</blockquote>
+<ul>
+<li>Please remember to start the SSH service in your container startup script.</li>
+</ul>
+Second, make sure you create a TCP tunnel to the remote web app, if not, please run the CLI command provided in “configure my dev machine” section.
 
 Once the TCP tunnel is established, you can simply run the following command in Linux terminal:
-    <pre>$ ssh root@127.0.0.1 -p [local port created for TCP tunnel]</pre>
-    Similarly, you can SSH to app container from a Mac or Windows machine.
+<pre>$ ssh root@127.0.0.1 -p [local port created for TCP tunnel]</pre>
+Similarly, you can SSH to app container from a Mac or Windows machine.
 
 Now, you can go party with SSH!
-    <h1>
-     <strong>
-      How do I use SFTP to manage web app content?
-     </strong>
-    </h1>
-    Like SSH, please make sure your app container is enabled for SSH access, refer to the SSH section above for instructions. And run the same remote-connection create command to establish a TCP tunnel.
+<h1><strong>How do I use SFTP to manage web app content? </strong></h1>
+Like SSH, please make sure your app container is enabled for SSH access, refer to the SSH section above for instructions. And run the same remote-connection create command to establish a TCP tunnel.
 
-If you don’t have one, install a SFTP client such as WinSCP, connect the client to localhost at 127.0.0.1 and a port number that is created for TCP tunnel, use the SSH user name and password to login. Now you can manage the site content stored in /home/site/wwwroot using the SFTP client.
-   </div>
-  </div>
- </body>
- <script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript">
- </script>
- <script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript">
- </script>
+If you don’t have one, install a SFTP client such as WinSCP, connect the client to localhost at 127.0.0.1 and a port number that is created for TCP tunnel, use the SSH user name and password to login. Now you can manage the site content stored in /home/site/wwwroot using the SFTP client.</div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
 </html>

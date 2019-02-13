@@ -1,277 +1,73 @@
 ---
 layout: post
+hide_excerpt: true
 ---
-<html>
- <head>
-  <meta charset="utf-8"/>
- </head>
- <body>
-  <div id="page">
-   <a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Apurva Joshi (AJ)" target="_blank">
-    Apurva Joshi (AJ)
-   </a>
-   <time>
-    6/2/2016 2:36:18 PM
-   </time>
-   <hr/>
-   <div id="content">
-    <strong>
-     Why was my Web App down?”
-    </strong>
-    is the million-dollar question that usually follows with more questions than answer, for example:
-    <strong>
-     “Was it cloud provider issue?”
-    </strong>
-    <strong>
-     “Was it a deployment I rolled out?”
-    </strong>
-    “
-    <strong>
-     Was it just abnormal increase in traffic?”
-    </strong>
-    etc. Getting to the bottom of the issue requires tedious activities like pulling off few logs, aligning them with correct times or even calling Support for help, and this is just first layer of investigation a.k.a “
-    <u>
-     Isolation
-    </u>
-    ” or “
-    <u>
-     Peeling the onion
-    </u>
-    ”.
-    <span style="text-decoration: underline">
-     This process should not take hours and we agree!
-    </span>
-    <strong>
-     Introducing Failure History (appLens) for Azure App Service Web App: A tool to visualize various data points in few seconds!
-    </strong>
-    <h3>
-     What is Failure History (appLens)?
-    </h3>
-    Let me start with little background on the project. Project’s code name is MDH (
-    <u>
-     <strong>
-      M
-     </strong>
-    </u>
-    ake
-    <strong>
-     <u>
-      D
-     </u>
-    </strong>
-    avid
-    <strong>
-     <u>
-      H
-     </u>
-    </strong>
-    appy).
-    <a href="https://twitter.com/LamboIn" target="_blank">
-     David is our rock star engineer
-    </a>
-    (@Lamboin) who spends his day working on customer reported issues. He is the one who tries to answer the million-dollar question for our customers (
-    <strong>
-     “Why was my Web App down?”
-    </strong>
-    ). We watched him pull variety of logs, overlay them and then align the time frames to get the 1st level of isolation. This process was MDS (
-    <u>
-     <strong>
-      M
-     </strong>
-    </u>
-    aking
-    <strong>
-     <u>
-      D
-     </u>
-    </strong>
-    avid
-    <strong>
-     <u>
-      S
-     </u>
-    </strong>
-    ad), and that was one of the inspirations to kick start this project.
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Apurva Joshi (AJ)" target="_blank">Apurva Joshi (AJ)</a>
+<time>    6/2/2016 2:36:18 PM</time>
+<hr/>
+<div id="content"><strong>Why was my Web App down?”</strong> is the million-dollar question that usually follows with more questions than answer, for example: <strong>“Was it cloud provider issue?”</strong> <strong>“Was it a deployment I rolled out?”</strong> “<strong>Was it just abnormal increase in traffic?” </strong>etc. Getting to the bottom of the issue requires tedious activities like pulling off few logs, aligning them with correct times or even calling Support for help, and this is just first layer of investigation a.k.a “<u>Isolation</u>” or “<u>Peeling the onion</u>”.
+
+<span style="text-decoration: underline">This process should not take hours and we agree!</span>
+<strong>Introducing Failure History (appLens) for Azure App Service Web App: A tool to visualize various data points in few seconds! </strong>
+<h3>What is Failure History (appLens)?</h3>
+Let me start with little background on the project. Project’s code name is MDH (<u><strong>M</strong></u>ake <strong><u>D</u></strong>avid <strong><u>H</u></strong>appy). <a href="https://twitter.com/LamboIn" target="_blank">David is our rock star engineer</a> (@Lamboin) who spends his day working on customer reported issues. He is the one who tries to answer the million-dollar question for our customers (<strong>“Why was my Web App down?”</strong>). We watched him pull variety of logs, overlay them and then align the time frames to get the 1st level of isolation. This process was MDS (<u><strong>M</strong></u>aking <strong><u>D</u></strong>avid <strong><u>S</u></strong>ad), and that was one of the inspirations to kick start this project.
 
 Failure History (appLens) is an attempt to solve problem described above. It is self-service RCA tool that helps you visualize variety of data points in your web app life cycle in matter of seconds. This visualization helps answer the questions that usually follow our million-dollar question.
-    <h4>
-     <strong>
-      <u>
-       Let’s see how it works
-      </u>
-     </strong>
-    </h4>
-    Failure History (appLens) can be accessed from “Settings” blade for your Web App.
-    <a href="{{ site.baseurl }}/media/2016/06/failurehistory.png">
-     <img alt="failurehistory" class="aligncenter wp-image-2875 size-full" height="281" src="{{ site.baseurl }}/media/2016/06/failurehistory.png" width="211"/>
-    </a>
-    <a href="https://azurecomcdn.azureedge.net/mediahandler/acomblog/media/Default/blog/ac60573b-a3b6-4507-b348-735939bcdb5d.png">
-    </a>
-    With current release Failure History (appLens) focus on 3 core data points, which are,
-    <ul>
-     <li>
-      <strong>
-       Availability
-      </strong>
-     </li>
-     <li>
-      <strong>
-       Requests/Failures
-      </strong>
-     </li>
-     <li>
-      <strong>
-       Deployments
-      </strong>
-     </li>
-    </ul>
-    <p align="left">
-     Let’s drill down on each of them with a real life examples,
-    </p>
-    <h3 align="left">
-     Availability
-    </h3>
-    <p align="left">
-     This an overlay chart of 2 distinct data points,
-     <strong>
-      Organic availability
-     </strong>
-     and
-     <strong>
-      Container Health (Canary Web App).
-     </strong>
-    </p>
-    <p align="left">
-     <strong>
-      Organic availability
-     </strong>
-     is an aggregated data points of successful HTTP requests vs. Failed HTTP requests to your web app. On the other hand
-     <strong>
-      Container Health (Canary Web App)
-     </strong>
-     is an aggregated data points of successful HTTP requests vs. Failed HTTP requests to a static page that resides inside same VM (container) as your web app. Both of them are weighted number in percentage. To learn more about the Canary Web App, please read
-     <a href="https://blogs.msdn.microsoft.com/appserviceteam/2016/05/18/web-app-troubleshooting-blade/" target="_blank">
-      “Resource Health Check” section of my previous blog.
-     </a>
-    </p>
-    I call this chart “
-    <strong>
-     Is it me? vs. Is it you?”
-    </strong>
-    chart. This literally is best way to isolate application issues vs. platform issues. This chart tries to answer
-    <strong>
-     “Was it cloud provider issue?”
-    </strong>
-    question.
-    <ol>
-     <li>
-      If you see Organic availability chart taking a dip while Container Health chart is at 100% then it surely is an application issue.
-     </li>
-     <li>
-      If you see Organic availability chart taking a dip as well as Container Health chart taking a dip then it is most likely platform issue (App Service issue). The reason I say “most likely” is because, a bad web app in app service plan can potentially freeze the container and cause Container health chart to take a dive.
-     </li>
-    </ol>
-    <strong>
-     NOTE
-    </strong>
-    : To see individual charts at appropriate scale I recommend you filter out an individual graphs by selecting them using radio buttons.
+<h4><strong><u>Let’s see how it works</u></strong></h4>
+Failure History (appLens) can be accessed from “Settings” blade for your Web App.
 
-Canary Web App concept is
-    <u>
-     NOT
-    </u>
-    applicable to FREE and SHARED web apps and hence that data will be missing for them.
-    <h5>
-     <u>
-      Example Scenario 1: Organic availability and Canary Health taking dip due to platform issue
-     </u>
-    </h5>
-    <a href="https://azurecomcdn.azureedge.net/mediahandler/acomblog/media/Default/blog/633f4e32-4723-4e13-ad6e-c25895e39ca7.png">
-     <img alt="PlatformIssue_thumb" border="0" class="aligncenter" height="288" src="https://azurecomcdn.azureedge.net/mediahandler/acomblog/media/Default/blog/0fc9f8bb-9f83-4d0f-85f7-29dc78412ace.png" title="PlatformIssue_thumb" width="610"/>
-    </a>
-    <h5>
-     <u>
-      Example Scenario 2: Organic availability and Canary Health taking dip due to high load freezing VM
-     </u>
-    </h5>
-    <a href="https://azurecomcdn.azureedge.net/mediahandler/acomblog/media/Default/blog/9da55a01-b434-44c5-b913-985f39877691.jpg">
-     <img alt="ContainerHealthVMFreeze_thumb" border="0" class="aligncenter" height="462" src="https://azurecomcdn.azureedge.net/mediahandler/acomblog/media/Default/blog/92606568-debd-4aa4-9142-1a4db3bc3bba.jpg" title="ContainerHealthVMFreeze_thumb" width="610"/>
-    </a>
-    <h3>
-     Requests/Failures
-    </h3>
-    This is an aggregated data points of total incoming HTTP requests vs. Failed HTTP requests to your web app. This chart can be used to answer “
-    <strong>
-     Was it just abnormal increase in traffic?”
-    </strong>
-    question. If you see drop in
-    <strong>
-     Organic availability
-    </strong>
-    chart (right above this chart) following large increase in Total incoming HTTP requests (HTTP Requests counter) then you can conclude that downtime could be related to increase in traffic and maybe I should consider turning on Auto Scale. You can also use this chart to answer
-    <strong>
-     “What % of my traffic was failing?”
-    </strong>
-    question.
-    <strong>
-     NOTE
-    </strong>
-    : To see individual charts at appropriate scale I recommend you filter out an individual graphs by selecting them using radio buttons
-    <h5>
-     <u>
-      Example Scenario 3: Organic availability taking dip due to increased traffic (need to scale out)
-     </u>
-    </h5>
-    <h3>
-     <a href="https://azurecomcdn.azureedge.net/mediahandler/acomblog/media/Default/blog/a85cccc2-c58a-4bd4-bc8a-2c40b175f47d.jpg">
-      <img alt="traffic_Increase_thumb[1]" border="0" class="aligncenter" height="441" src="https://azurecomcdn.azureedge.net/mediahandler/acomblog/media/Default/blog/a14249d7-a391-4be3-9ba3-33b51b45f348.jpg" title="traffic_Increase_thumb[1]" width="610"/>
-     </a>
-    </h3>
-    <h3>
-     Deployments
-    </h3>
-    This is simple data point indicating time frames when you or someone in your organization did deployment to your web app. This chart tries to answer
-    <strong>
-     “Was it a deployment I rolled out?”
-    </strong>
-    question.
-    <strong>
-     NOTE
-    </strong>
-    : This only shows deployments done via web deploy or Kudu endpoint. It does not cover deployments done using FTP.
+<a href="{{ site.baseurl }}/media/2016/06/failurehistory.png"><img alt="failurehistory" class="aligncenter wp-image-2875 size-full" height="281" src="{{ site.baseurl }}/media/2016/06/failurehistory.png" width="211"/></a><a href="https://azurecomcdn.azureedge.net/mediahandler/acomblog/media/Default/blog/ac60573b-a3b6-4507-b348-735939bcdb5d.png"></a>
+
+With current release Failure History (appLens) focus on 3 core data points, which are,
+<ul>
+<li><strong>Availability</strong></li>
+<li><strong>Requests/Failures</strong></li>
+<li><strong>Deployments</strong></li>
+</ul>
+<p align="left">Let’s drill down on each of them with a real life examples,</p>
+<h3 align="left">Availability</h3>
+<p align="left">This an overlay chart of 2 distinct data points, <strong>Organic availability</strong> and <strong>Container Health (Canary Web App).</strong></p>
+<p align="left"><strong>Organic availability</strong> is an aggregated data points of successful HTTP requests vs. Failed HTTP requests to your web app. On the other hand <strong>Container Health (Canary Web App) </strong>is an aggregated data points of successful HTTP requests vs. Failed HTTP requests to a static page that resides inside same VM (container) as your web app. Both of them are weighted number in percentage. To learn more about the Canary Web App, please read <a href="https://blogs.msdn.microsoft.com/appserviceteam/2016/05/18/web-app-troubleshooting-blade/" target="_blank">“Resource Health Check” section of my previous blog.</a></p>
+I call this chart “<strong>Is it me? vs. Is it you?”</strong> chart. This literally is best way to isolate application issues vs. platform issues. This chart tries to answer <strong>“Was it cloud provider issue?” </strong>question.
+<ol>
+<li>If you see Organic availability chart taking a dip while Container Health chart is at 100% then it surely is an application issue.</li>
+<li>If you see Organic availability chart taking a dip as well as Container Health chart taking a dip then it is most likely platform issue (App Service issue). The reason I say “most likely” is because, a bad web app in app service plan can potentially freeze the container and cause Container health chart to take a dive.</li>
+</ol>
+<strong>NOTE</strong>: To see individual charts at appropriate scale I recommend you filter out an individual graphs by selecting them using radio buttons.
+
+Canary Web App concept is <u>NOT</u> applicable to FREE and SHARED web apps and hence that data will be missing for them.
+<h5><u>Example Scenario 1: Organic availability and Canary Health taking dip due to platform issue</u></h5>
+<a href="https://azurecomcdn.azureedge.net/mediahandler/acomblog/media/Default/blog/633f4e32-4723-4e13-ad6e-c25895e39ca7.png"><img alt="PlatformIssue_thumb" border="0" class="aligncenter" height="288" src="https://azurecomcdn.azureedge.net/mediahandler/acomblog/media/Default/blog/0fc9f8bb-9f83-4d0f-85f7-29dc78412ace.png" title="PlatformIssue_thumb" width="610"/></a>
+<h5><u>Example Scenario 2: Organic availability and Canary Health taking dip due to high load freezing VM</u></h5>
+<a href="https://azurecomcdn.azureedge.net/mediahandler/acomblog/media/Default/blog/9da55a01-b434-44c5-b913-985f39877691.jpg"><img alt="ContainerHealthVMFreeze_thumb" border="0" class="aligncenter" height="462" src="https://azurecomcdn.azureedge.net/mediahandler/acomblog/media/Default/blog/92606568-debd-4aa4-9142-1a4db3bc3bba.jpg" title="ContainerHealthVMFreeze_thumb" width="610"/></a>
+<h3>Requests/Failures</h3>
+This is an aggregated data points of total incoming HTTP requests vs. Failed HTTP requests to your web app. This chart can be used to answer “<strong>Was it just abnormal increase in traffic?” </strong>question. If you see drop in <strong>Organic availability </strong>chart (right above this chart) following large increase in Total incoming HTTP requests (HTTP Requests counter) then you can conclude that downtime could be related to increase in traffic and maybe I should consider turning on Auto Scale. You can also use this chart to answer <strong>“What % of my traffic was failing?”</strong> question.
+
+<strong>NOTE</strong>: To see individual charts at appropriate scale I recommend you filter out an individual graphs by selecting them using radio buttons
+<h5><u>Example Scenario 3: Organic availability taking dip due to increased traffic (need to scale out)</u></h5>
+<h3><a href="https://azurecomcdn.azureedge.net/mediahandler/acomblog/media/Default/blog/a85cccc2-c58a-4bd4-bc8a-2c40b175f47d.jpg"><img alt="traffic_Increase_thumb[1]" border="0" class="aligncenter" height="441" src="https://azurecomcdn.azureedge.net/mediahandler/acomblog/media/Default/blog/a14249d7-a391-4be3-9ba3-33b51b45f348.jpg" title="traffic_Increase_thumb[1]" width="610"/></a></h3>
+<h3>Deployments</h3>
+This is simple data point indicating time frames when you or someone in your organization did deployment to your web app. This chart tries to answer <strong>“Was it a deployment I rolled out?” </strong>question.
+
+<strong>NOTE</strong>: This only shows deployments done via web deploy or Kudu endpoint. It does not cover deployments done using FTP.
 
 This is a great data point to co-relate with availability charts and see if Organic availability tanked right after the deployment? This way you can be sure if availability drop is related to your deployment or not.
-    <h5>
-     <u>
-      Example Scenario 4: Organic availability taking dip due to bad deployment
-     </u>
-    </h5>
-    <a href="https://azurecomcdn.azureedge.net/mediahandler/acomblog/media/Default/blog/e3bb84d2-c161-443d-8ba5-2c4e11d52be4.jpg">
-     <img alt="deployment_thumb" border="0" class="aligncenter" height="468" src="https://azurecomcdn.azureedge.net/mediahandler/acomblog/media/Default/blog/948c0f21-108a-4a54-949a-21038f7c41b0.jpg" title="deployment_thumb" width="610"/>
-    </a>
-    Finally, few disclaimers for this version of Failure History (appLens)
-    <ol>
-     <li>
-      Failure History (appLens) data is at least 15 minutes behind. For issues that are currently happening and you need help then please use our
-      <a href="https://blogs.msdn.microsoft.com/appserviceteam/2016/05/18/web-app-troubleshooting-blade/" target="_blank">
-       <strong>
-        troubleshoot blade
-       </strong>
-      </a>
-      .
-     </li>
-     <li>
-      Failure History (appLens) data can go back 7 days to RCA (root cause analysis) issues that happened in past
-     </li>
-     <li>
-      Failure History (appLens) defaults to UTC time
-     </li>
-    </ol>
-   </div>
-  </div>
- </body>
- <script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript">
- </script>
- <script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript">
- </script>
+<h5><u>Example Scenario 4: Organic availability taking dip due to bad deployment</u></h5>
+<a href="https://azurecomcdn.azureedge.net/mediahandler/acomblog/media/Default/blog/e3bb84d2-c161-443d-8ba5-2c4e11d52be4.jpg"><img alt="deployment_thumb" border="0" class="aligncenter" height="468" src="https://azurecomcdn.azureedge.net/mediahandler/acomblog/media/Default/blog/948c0f21-108a-4a54-949a-21038f7c41b0.jpg" title="deployment_thumb" width="610"/></a>
+
+Finally, few disclaimers for this version of Failure History (appLens)
+<ol>
+<li>Failure History (appLens) data is at least 15 minutes behind. For issues that are currently happening and you need help then please use our <a href="https://blogs.msdn.microsoft.com/appserviceteam/2016/05/18/web-app-troubleshooting-blade/" target="_blank"><strong>troubleshoot blade</strong></a>.</li>
+<li>Failure History (appLens) data can go back 7 days to RCA (root cause analysis) issues that happened in past</li>
+<li>Failure History (appLens) defaults to UTC time</li>
+</ol></div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
 </html>

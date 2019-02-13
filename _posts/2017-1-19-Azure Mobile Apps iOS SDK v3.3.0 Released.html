@@ -1,77 +1,37 @@
 ---
 layout: post
+hide_excerpt: true
 ---
-<html>
- <head>
-  <meta charset="utf-8"/>
- </head>
- <body>
-  <div id="page">
-   <a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Adrian Hall (MSFT)" target="_blank">
-    Adrian Hall (MSFT)
-   </a>
-   <time>
-    1/19/2017 3:19:29 PM
-   </time>
-   <hr/>
-   <div id="content">
-    Today we are releasing the Azure Mobile Apps iOS SDK to
-    <a href="https://cocoapods.org/pods/MicrosoftAzureMobile" target="_blank">
-     CocoaPods
-    </a>
-    and
-    <a href="https://go.microsoft.com/fwLink/?LinkID=529823&amp;clcid=0x409" target="_blank">
-     other online properties
-    </a>
-    .  This is a drop-in replacement for the existing SDK.  We only have one feature fix in this release.  We updated the authentication code to support the
-    <a href="https://developer.apple.com/reference/safariservices/sfsafariviewcontroller" target="_blank">
-     SFSafariViewController
-    </a>
-    . 
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Adrian Hall (MSFT)" target="_blank">Adrian Hall (MSFT)</a>
+<time>    1/19/2017 3:19:29 PM</time>
+<hr/>
+<div id="content">Today we are releasing the Azure Mobile Apps iOS SDK to <a href="https://cocoapods.org/pods/MicrosoftAzureMobile" target="_blank">CocoaPods</a> and <a href="https://go.microsoft.com/fwLink/?LinkID=529823&amp;clcid=0x409" target="_blank">other online properties</a>.  This is a drop-in replacement for the existing SDK.  We only have one feature fix in this release.  We updated the authentication code to support the <a href="https://developer.apple.com/reference/safariservices/sfsafariviewcontroller" target="_blank">SFSafariViewController</a>. 
 
 This release affects you if you use Google Authentication and a server-flow.  If your code looks like this (Objective-C):
-    <code>
-     <pre>[client loginWithProvider:@"google" controller:self animated:YES completion:^(MSUser *user, NSError *error) {
+
+<code><pre>[client loginWithProvider:@"google" controller:self animated:YES completion:^(MSUser *user, NSError *error) {
     [self refresh];
-}];</pre>
-    </code>
-    Or the Swift equivalent:
-    <code>
-     <pre>client.loginWithProvider("google", controller: self, animated: true) { (user, error) in
+}];</pre></code>
+
+Or the Swift equivalent:
+
+<code><pre>client.loginWithProvider("google", controller: self, animated: true) { (user, error) in
     self.refreshControl?.beginRefreshing()
     self.onRefresh(self.refreshControl)
-}</pre>
-    </code>
-    Then you are affected by this change.  Late last year, Google
-    <a href="https://developers.googleblog.com/2016/08/modernizing-oauth-interactions-in-native-apps.html" target="_blank">
-     made changes to their OAuth authentication
-    </a>
-    scheme.  The net effect was that a mobile client could no longer use a WebView to deliver the authentication flow to the user.  A secure web flow would be needed.  The supported method on iOS is the SFSafariViewController and this release changes the underlying web view capabilities for authentication to this new mechanism.  This wasn't just a client-side code change.  It involved changing the server-side authentication code worldwide in Azure App Service.  
+}</pre></code>
+
+Then you are affected by this change.  Late last year, Google <a href="https://developers.googleblog.com/2016/08/modernizing-oauth-interactions-in-native-apps.html" target="_blank">made changes to their OAuth authentication</a> scheme.  The net effect was that a mobile client could no longer use a WebView to deliver the authentication flow to the user.  A secure web flow would be needed.  The supported method on iOS is the SFSafariViewController and this release changes the underlying web view capabilities for authentication to this new mechanism.  This wasn't just a client-side code change.  It involved changing the server-side authentication code worldwide in Azure App Service.  
 
 As with any release, we have done numerous small changes to make the experience for the developer better, particularly as it pertains to warnings that are delivered during the development process.  We are also in the process of moving all our examples to Swift 3.0.  The new SDK fully supports Swift 3.0 and XCode 8.2.  We will be deprecating the support for Swift 2.x in the next release.  Although we support XCode 7.0 for Objective-C usage, you will need XCode 8.2 for Swift support.
 
-You can download the SDK from
-    <a href="https://cocoapods.org/pods/MicrosoftAzureMobile" target="_blank">
-     Cocoapods
-    </a>
-    , take a look at
-    <a href="http://cocoadocs.org/docsets/MicrosoftAzureMobile/3.3.0/" target="_blank">
-     the API directly
-    </a>
-    or reference
-    <a href="https://docs.microsoft.com/en-us/azure/app-service-mobile/app-service-mobile-ios-get-started" target="_blank">
-     our tutorials
-    </a>
-    and
-    <a href="https://docs.microsoft.com/en-us/azure/app-service-mobile/app-service-mobile-ios-how-to-use-client-library" target="_blank">
-     HOWTO documentation
-    </a>
-    .  We're also active on Azure Forums and Stack Overflow.
-   </div>
-  </div>
- </body>
- <script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript">
- </script>
- <script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript">
- </script>
+You can download the SDK from <a href="https://cocoapods.org/pods/MicrosoftAzureMobile" target="_blank">Cocoapods</a>, take a look at <a href="http://cocoadocs.org/docsets/MicrosoftAzureMobile/3.3.0/" target="_blank">the API directly</a> or reference <a href="https://docs.microsoft.com/en-us/azure/app-service-mobile/app-service-mobile-ios-get-started" target="_blank">our tutorials</a> and <a href="https://docs.microsoft.com/en-us/azure/app-service-mobile/app-service-mobile-ios-how-to-use-client-library" target="_blank">HOWTO documentation</a>.  We're also active on Azure Forums and Stack Overflow.</div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
 </html>

@@ -1,1469 +1,510 @@
 ---
 layout: post
+hide_excerpt: true
 ---
-<html>
- <head>
-  <meta charset="utf-8"/>
- </head>
- <body>
-  <div id="page">
-   <a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Cory Fowler (MSFT)" target="_blank">
-    Cory Fowler (MSFT)
-   </a>
-   <time>
-    3/23/2017 6:27:19 PM
-   </time>
-   <hr/>
-   <div id="content">
-    <p>
-     App Service has come a very long way in the nearly 5 years it has been a service in Azure. Along the way, we've added a number of features, changed the pricing model, we've even gone as far as to make App Service available in an isolated capacity with App Service Environment and with the recent addition of Azure Functions a new type of hosting plan.
-    </p>
-    <p>
-     With all of these changes it's become clear to us that we need to provide a clear breakdown as to which features are available in which tiers because that enables you, our beloved customers, to be successful on our platform.
-    </p>
-    <p>
-     In an attempt to clarify which features are available where, we have created the below matrix. We are posting this to our blog first, as we would like to hear your feedback if this is effective way of relaying this information to you. For Example, should we merge the below matrix with the
-     <a href="https://azure.microsoft.com/en-us/pricing/details/app-service/plans/">
-      App Service Plan limits
-     </a>
-     page.
-    </p>
-    <p>
-     Please leave your feedback in the comments below and we will work on getting a more formal piece of documentation together that will provide you with all of the details you need to get to market in the quickest way possible using Azure App Service.
-    </p>
-    <p>
-    </p>
-    <table>
-     <thead>
-      <tr>
-       <th>
-        Features
-       </th>
-       <th>
-        SKU
-       </th>
-       <th>
-       </th>
-       <th>
-       </th>
-       <th>
-       </th>
-       <th>
-       </th>
-       <th>
-       </th>
-       <th>
-       </th>
-       <th>
-       </th>
-       <th>
-       </th>
-      </tr>
-     </thead>
-     <tbody>
-      <tr>
-       <td>
-        <strong>
-         App Deployment
-        </strong>
-       </td>
-       <td>
-        Free
-       </td>
-       <td>
-        Shared
-       </td>
-       <td>
-        Basic
-       </td>
-       <td>
-        Standard
-       </td>
-       <td>
-        Premium
-       </td>
-       <td>
-        <abbr title="App Service Environment">
-         ASE
-        </abbr>
-       </td>
-       <td>
-        <abbr title="Internal Load Balanced App Service Environment">
-         ILB ASE
-        </abbr>
-       </td>
-       <td>
-        App Service Linux
-       </td>
-       <td>
-        Consumption Plan (Functions)
-       </td>
-      </tr>
-      <tr>
-       <td>
-        Continuous Delivery
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-      </tr>
-      <tr>
-       <td>
-        Continuous Deployment
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-       </td>
-       <td>
-        ✓
-       </td>
-      </tr>
-      <tr>
-       <td>
-        Deployment Slots
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-      </tr>
-      <tr>
-       <td>
-        Docker (Containers)
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-       <td>
-        ✓
-        <sup>
-         1
-        </sup>
-       </td>
-       <td>
-       </td>
-      </tr>
-      <tr>
-       <td>
-        <strong>
-         Development Tools
-        </strong>
-       </td>
-       <td>
-        Free
-       </td>
-       <td>
-        Shared
-       </td>
-       <td>
-        Basic
-       </td>
-       <td>
-        Standard
-       </td>
-       <td>
-        Premium
-       </td>
-       <td>
-        <abbr title="App Service Environment">
-         ASE
-        </abbr>
-       </td>
-       <td>
-        <abbr title="Internal Load Balanced App Service Environment">
-         ILB ASE
-        </abbr>
-       </td>
-       <td>
-        App Service Linux
-       </td>
-       <td>
-        Consumption Plan (Functions)
-       </td>
-      </tr>
-      <tr>
-       <td>
-        Clone App
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-      </tr>
-      <tr>
-       <td>
-        Kudu
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-        <sup>
-         2
-        </sup>
-       </td>
-       <td>
-        ✓
-       </td>
-      </tr>
-      <tr>
-       <td>
-        PHP Debugging
-        <sup>
-         3
-        </sup>
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-      </tr>
-      <tr>
-       <td>
-        Site Extensions
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-      </tr>
-      <tr>
-       <td>
-        Testing in Production
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-      </tr>
-      <tr>
-       <td>
-        <strong>
-         Monitoring
-        </strong>
-       </td>
-       <td>
-        Free
-       </td>
-       <td>
-        Shared
-       </td>
-       <td>
-        Basic
-       </td>
-       <td>
-        Standard
-       </td>
-       <td>
-        Premium
-       </td>
-       <td>
-        <abbr title="App Service Environment">
-         ASE
-        </abbr>
-       </td>
-       <td>
-        <abbr title="Internal Load Balanced App Service Environment">
-         ILB ASE
-        </abbr>
-       </td>
-       <td>
-        App Service Linux
-       </td>
-       <td>
-        Consumption Plan (Functions)
-       </td>
-      </tr>
-      <tr>
-       <td>
-        Log Stream
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-        <sup>
-         4
-        </sup>
-       </td>
-       <td>
-       </td>
-       <td>
-        ✓
-       </td>
-      </tr>
-      <tr>
-       <td>
-        Process Explorer
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-       </td>
-       <td>
-        ✓
-       </td>
-      </tr>
-      <tr>
-       <td>
-        <strong>
-         Networking
-        </strong>
-       </td>
-       <td>
-        Free
-       </td>
-       <td>
-        Shared
-       </td>
-       <td>
-        Basic
-       </td>
-       <td>
-        Standard
-       </td>
-       <td>
-        Premium
-       </td>
-       <td>
-        <abbr title="App Service Environment">
-         ASE
-        </abbr>
-       </td>
-       <td>
-        <abbr title="Internal Load Balanced App Service Environment">
-         ILB ASE
-        </abbr>
-       </td>
-       <td>
-        App Service Linux
-       </td>
-       <td>
-        Consumption Plan (Functions)
-       </td>
-      </tr>
-      <tr>
-       <td>
-        Hybrid Connections
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-      </tr>
-      <tr>
-       <td>
-        <abbr title="Virtual Network">
-         VNET
-        </abbr>
-        Integration
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-      </tr>
-      <tr>
-       <td>
-        <strong>
-         Programming Languages
-        </strong>
-       </td>
-       <td>
-        Free
-       </td>
-       <td>
-        Shared
-       </td>
-       <td>
-        Basic
-       </td>
-       <td>
-        Standard
-       </td>
-       <td>
-        Premium
-       </td>
-       <td>
-        <abbr title="App Service Environment">
-         ASE
-        </abbr>
-       </td>
-       <td>
-        <abbr title="Internal Load Balanced App Service Environment">
-         ILB ASE
-        </abbr>
-       </td>
-       <td>
-        App Service Linux
-       </td>
-       <td>
-        Consumption Plan (Functions)
-       </td>
-      </tr>
-      <tr>
-       <td>
-        .NET
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-       </td>
-       <td>
-        ✓
-       </td>
-      </tr>
-      <tr>
-       <td>
-        .NET Core
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-       </td>
-      </tr>
-      <tr>
-       <td>
-        Java
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-       </td>
-       <td>
-        alpha
-       </td>
-      </tr>
-      <tr>
-       <td>
-        Node.js
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-      </tr>
-      <tr>
-       <td>
-        PHP
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        alpha
-       </td>
-      </tr>
-      <tr>
-       <td>
-        Python
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-       </td>
-       <td>
-        alpha
-       </td>
-      </tr>
-      <tr>
-       <td>
-        Ruby
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-       </td>
-      </tr>
-      <tr>
-       <td>
-        <strong>
-         Scale
-        </strong>
-       </td>
-       <td>
-        Free
-       </td>
-       <td>
-        Shared
-       </td>
-       <td>
-        Basic
-       </td>
-       <td>
-        Standard
-       </td>
-       <td>
-        Premium
-       </td>
-       <td>
-        <abbr title="App Service Environment">
-         ASE
-        </abbr>
-       </td>
-       <td>
-        <abbr title="Internal Load Balanced App Service Environment">
-         ILB ASE
-        </abbr>
-       </td>
-       <td>
-        App Service Linux
-       </td>
-       <td>
-        Consumption Plan (Functions)
-       </td>
-      </tr>
-      <tr>
-       <td>
-        Auto-scale
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-       </td>
-       <td>
-        ✓
-       </td>
-      </tr>
-      <tr>
-       <td>
-        Integrated Load Balancer
-       </td>
-       <td>
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-      </tr>
-      <tr>
-       <td>
-        <a href="https://docs.microsoft.com/azure/traffic-manager/traffic-manager-overview">
-         Traffic Manager
-        </a>
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-      </tr>
-      <tr>
-       <td>
-        <strong>
-         Settings
-        </strong>
-       </td>
-       <td>
-        Free
-       </td>
-       <td>
-        Shared
-       </td>
-       <td>
-        Basic
-       </td>
-       <td>
-        Standard
-       </td>
-       <td>
-        Premium
-       </td>
-       <td>
-        <abbr title="App Service Environment">
-         ASE
-        </abbr>
-       </td>
-       <td>
-        <abbr title="Internal Load Balanced App Service Environment">
-         ILB ASE
-        </abbr>
-       </td>
-       <td>
-        App Service Linux
-       </td>
-       <td>
-        Consumption Plan (Functions)
-       </td>
-      </tr>
-      <tr>
-       <td>
-        64-bit
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-      </tr>
-      <tr>
-       <td>
-        Always On
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-      </tr>
-      <tr>
-       <td>
-        Session Affinity
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-      </tr>
-      <tr>
-       <td>
-        Authentication &amp;Authorization
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-       </td>
-       <td>
-        ✓
-       </td>
-      </tr>
-      <tr>
-       <td>
-        Backup/Restore
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-       </td>
-      </tr>
-      <tr>
-       <td>
-        Custom Domains
-       </td>
-       <td>
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-      </tr>
-      <tr>
-       <td>
-        FTP/FTPS
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-      </tr>
-      <tr>
-       <td>
-        Local Cache
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-      </tr>
-      <tr>
-       <td>
-        MySQL in App
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-        <sup>
-         4
-        </sup>
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-      </tr>
-      <tr>
-       <td>
-        Remote Debugging (.NET)
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-       <td>
-        ✓
-       </td>
-      </tr>
-      <tr>
-       <td>
-        Security Scanning
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-      </tr>
-      <tr>
-       <td>
-        SSL (IP/SNI)
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        SNI SSL
-       </td>
-      </tr>
-      <tr>
-       <td>
-        Web Sockets
-        <sup>
-         5
-        </sup>
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-        ✓
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-      </tr>
-     </tbody>
-    </table>
-    <p>
-     <small>
-      <sup>
-       1
-      </sup>
-      Supports a one-time pull model from Docker Hub, Azure Container Registry or a private Docker Registry.
-     </small>
-     <br/>
-     <br/>
-     <small>
-      <sup>
-       2
-      </sup>
-      Kudu on Linux doesn’t have the same feature set as Kudu on Windows.
-     </small>
-     <br/>
-     <br/>
-     <small>
-      <sup>
-       3
-      </sup>
-      PHP Debugging is currently only supported on Windows. PHP Debugging for version 7.x is unavailable.
-     </small>
-     <br/>
-     <br/>
-     <small>
-      <sup>
-       4
-      </sup>
-      <abbr title="Internal Load Balanced App Service Environment">
-       ILB ASE
-      </abbr>
-      has no public connectivity to the internet. Management actions on ILB ASE must be performed using the Kudu Console.
-     </small>
-     <br/>
-     <br/>
-     <small>
-      <sup>
-       5
-      </sup>
-      The number of Web Socket ports are limited by the sku, review the
-      <a href="https://docs.microsoft.com/en-us/azure/azure-subscription-service-limits#app-service-limits">
-       App Service Constraints, Service Limits and Quotas
-      </a>
-      .
-     </small>
-     <br/>
-    </p>
-   </div>
-  </div>
- </body>
- <script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript">
- </script>
- <script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript">
- </script>
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Cory Fowler (MSFT)" target="_blank">Cory Fowler (MSFT)</a>
+<time>    3/23/2017 6:27:19 PM</time>
+<hr/>
+<div id="content"><p>App Service has come a very long way in the nearly 5 years it has been a service in Azure. Along the way, we've added a number of features, changed the pricing model, we've even gone as far as to make App Service available in an isolated capacity with App Service Environment and with the recent addition of Azure Functions a new type of hosting plan.</p>
+<p>With all of these changes it's become clear to us that we need to provide a clear breakdown as to which features are available in which tiers because that enables you, our beloved customers, to be successful on our platform.</p>
+<p>In an attempt to clarify which features are available where, we have created the below matrix. We are posting this to our blog first, as we would like to hear your feedback if this is effective way of relaying this information to you. For Example, should we merge the below matrix with the <a href="https://azure.microsoft.com/en-us/pricing/details/app-service/plans/">App Service Plan limits</a> page.</p>
+<p>Please leave your feedback in the comments below and we will work on getting a more formal piece of documentation together that will provide you with all of the details you need to get to market in the quickest way possible using Azure App Service.</p>
+<p> </p>
+<table>
+<thead>
+<tr>
+<th>Features</th>
+<th>SKU</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th></tr></thead>
+<tbody>
+<tr>
+<td><strong>App Deployment</strong></td>
+<td>Free</td>
+<td>Shared</td>
+<td>Basic</td>
+<td>Standard</td>
+<td>Premium</td>
+<td><abbr title="App Service Environment">ASE</abbr></td>
+<td><abbr title="Internal Load Balanced App Service Environment">ILB ASE</abbr></td>
+<td>App Service Linux</td>
+<td>Consumption Plan (Functions)</td></tr>
+<tr>
+<td>Continuous Delivery</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td> </td>
+<td> </td></tr>
+<tr>
+<td>Continuous Deployment</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td> </td>
+<td>✓</td></tr>
+<tr>
+<td>Deployment Slots</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td> </td>
+<td> </td></tr>
+<tr>
+<td>Docker (Containers)</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>✓ <sup>1</sup></td>
+<td> </td></tr>
+<tr>
+<td><strong>Development Tools</strong></td>
+<td>Free</td>
+<td>Shared</td>
+<td>Basic</td>
+<td>Standard</td>
+<td>Premium</td>
+<td><abbr title="App Service Environment">ASE</abbr></td>
+<td><abbr title="Internal Load Balanced App Service Environment">ILB ASE</abbr></td>
+<td>App Service Linux</td>
+<td>Consumption Plan (Functions)</td></tr>
+<tr>
+<td>Clone App</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td> </td>
+<td> </td></tr>
+<tr>
+<td>Kudu</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓ <sup>2</sup></td>
+<td>✓</td></tr>
+<tr>
+<td>PHP Debugging <sup>3</sup></td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td> </td>
+<td> </td>
+<td> </td></tr>
+<tr>
+<td>Site Extensions</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td> </td>
+<td> </td></tr>
+<tr>
+<td>Testing in Production</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td> </td>
+<td> </td></tr>
+<tr>
+<td><strong>Monitoring</strong></td>
+<td>Free</td>
+<td>Shared</td>
+<td>Basic</td>
+<td>Standard</td>
+<td>Premium</td>
+<td><abbr title="App Service Environment">ASE</abbr></td>
+<td><abbr title="Internal Load Balanced App Service Environment">ILB ASE</abbr></td>
+<td>App Service Linux</td>
+<td>Consumption Plan (Functions)</td></tr>
+<tr>
+<td>Log Stream</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓ <sup>4</sup></td>
+<td> </td>
+<td>✓</td></tr>
+<tr>
+<td>Process Explorer</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td> </td>
+<td>✓</td></tr>
+<tr>
+<td><strong>Networking</strong></td>
+<td>Free</td>
+<td>Shared</td>
+<td>Basic</td>
+<td>Standard</td>
+<td>Premium</td>
+<td><abbr title="App Service Environment">ASE</abbr></td>
+<td><abbr title="Internal Load Balanced App Service Environment">ILB ASE</abbr></td>
+<td>App Service Linux</td>
+<td>Consumption Plan (Functions)</td></tr>
+<tr>
+<td>Hybrid Connections</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td> </td>
+<td> </td></tr>
+<tr>
+<td><abbr title="Virtual Network">VNET</abbr> Integration</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td> </td>
+<td> </td></tr>
+<tr>
+<td><strong>Programming Languages</strong></td>
+<td>Free</td>
+<td>Shared</td>
+<td>Basic</td>
+<td>Standard</td>
+<td>Premium</td>
+<td><abbr title="App Service Environment">ASE</abbr></td>
+<td><abbr title="Internal Load Balanced App Service Environment">ILB ASE</abbr></td>
+<td>App Service Linux</td>
+<td>Consumption Plan (Functions)</td></tr>
+<tr>
+<td>.NET</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td> </td>
+<td>✓</td></tr>
+<tr>
+<td>.NET Core</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td> </td></tr>
+<tr>
+<td>Java</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td> </td>
+<td>alpha</td></tr>
+<tr>
+<td>Node.js</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td></tr>
+<tr>
+<td>PHP</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>alpha</td></tr>
+<tr>
+<td>Python</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td> </td>
+<td>alpha</td></tr>
+<tr>
+<td>Ruby</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>✓</td>
+<td> </td></tr>
+<tr>
+<td><strong>Scale</strong></td>
+<td>Free</td>
+<td>Shared</td>
+<td>Basic</td>
+<td>Standard</td>
+<td>Premium</td>
+<td><abbr title="App Service Environment">ASE</abbr></td>
+<td><abbr title="Internal Load Balanced App Service Environment">ILB ASE</abbr></td>
+<td>App Service Linux</td>
+<td>Consumption Plan (Functions)</td></tr>
+<tr>
+<td>Auto-scale</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td> </td>
+<td>✓</td></tr>
+<tr>
+<td>Integrated Load Balancer</td>
+<td> </td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td></tr>
+<tr>
+<td><a href="https://docs.microsoft.com/azure/traffic-manager/traffic-manager-overview">Traffic Manager</a></td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td> </td>
+<td> </td></tr>
+<tr>
+<td><strong>Settings</strong></td>
+<td>Free</td>
+<td>Shared</td>
+<td>Basic</td>
+<td>Standard</td>
+<td>Premium</td>
+<td><abbr title="App Service Environment">ASE</abbr></td>
+<td><abbr title="Internal Load Balanced App Service Environment">ILB ASE</abbr></td>
+<td>App Service Linux</td>
+<td>Consumption Plan (Functions)</td></tr>
+<tr>
+<td>64-bit</td>
+<td> </td>
+<td> </td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td></tr>
+<tr>
+<td>Always On</td>
+<td> </td>
+<td> </td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td> </td>
+<td> </td></tr>
+<tr>
+<td>Session Affinity</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td> </td>
+<td> </td></tr>
+<tr>
+<td>Authentication &amp;Authorization</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td> </td>
+<td>✓</td></tr>
+<tr>
+<td>Backup/Restore</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td> </td></tr>
+<tr>
+<td>Custom Domains</td>
+<td> </td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td></tr>
+<tr>
+<td>FTP/FTPS</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td></tr>
+<tr>
+<td>Local Cache</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td> </td>
+<td> </td></tr>
+<tr>
+<td>MySQL in App</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓ <sup>4</sup></td>
+<td> </td>
+<td> </td></tr>
+<tr>
+<td>Remote Debugging (.NET)</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td> </td>
+<td> </td>
+<td>✓</td></tr>
+<tr>
+<td>Security Scanning</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td> </td>
+<td> </td>
+<td> </td></tr>
+<tr>
+<td>SSL (IP/SNI)</td>
+<td> </td>
+<td> </td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>SNI SSL</td></tr>
+<tr>
+<td>Web Sockets <sup>5</sup></td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td> </td>
+<td> </td></tr></tbody></table>
+<p><small><sup>1</sup> Supports a one-time pull model from Docker Hub, Azure Container Registry or a private Docker Registry.</small><br/><br/><small><sup>2</sup> Kudu on Linux doesn’t have the same feature set as Kudu on Windows.</small><br/><br/><small><sup>3</sup> PHP Debugging is currently only supported on Windows. PHP Debugging for version 7.x is unavailable.</small><br/><br/><small><sup>4</sup> <abbr title="Internal Load Balanced App Service Environment">ILB ASE</abbr> has no public connectivity to the internet. Management actions on ILB ASE must be performed using the Kudu Console.</small><br/><br/><small><sup>5</sup> The number of Web Socket ports are limited by the sku, review the <a href="https://docs.microsoft.com/en-us/azure/azure-subscription-service-limits#app-service-limits">App Service Constraints, Service Limits and Quotas</a>.</small><br/></p></div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
 </html>

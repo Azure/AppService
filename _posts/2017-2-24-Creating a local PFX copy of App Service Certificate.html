@@ -1,47 +1,29 @@
 ---
 layout: post
+hide_excerpt: true
 ---
-<html>
- <head>
-  <meta charset="utf-8"/>
- </head>
- <body>
-  <div id="page">
-   <a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/akurmi" target="_blank">
-    akurmi
-   </a>
-   <time>
-    2/24/2017 3:04:03 PM
-   </time>
-   <hr/>
-   <div id="content">
-    <h1>
-     Introduction
-    </h1>
-    Last year, we introduced ‘App Service Certificate’, a certificate lifecycle management offering. Azure portal provides a user-friendly experience for creating App Service Certificates and using them with App Service Apps. You can read more about this service
-    <a href="https://docs.microsoft.com/en-us/azure/app-service-web/web-sites-purchase-ssl-web-site">
-     here
-    </a>
-    . While the portal provides first class experience for deploying App Service Certificate through Key Vault to App Service Apps, we have been receiving customer requests where they would like to use these certificates outside of App Service platform, say with Azure Virtual Machines. In this blogpost, I am going to describe how to create a local PFX copy of App Service Certificate so that you can use it anywhere you want.
-    <h2>
-     Prerequisites
-    </h2>
-    Before making a local copy, make sure that:
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/akurmi" target="_blank">akurmi</a>
+<time>    2/24/2017 3:04:03 PM</time>
+<hr/>
+<div id="content"><h1>Introduction</h1>
+Last year, we introduced ‘App Service Certificate’, a certificate lifecycle management offering. Azure portal provides a user-friendly experience for creating App Service Certificates and using them with App Service Apps. You can read more about this service <a href="https://docs.microsoft.com/en-us/azure/app-service-web/web-sites-purchase-ssl-web-site">here</a>. While the portal provides first class experience for deploying App Service Certificate through Key Vault to App Service Apps, we have been receiving customer requests where they would like to use these certificates outside of App Service platform, say with Azure Virtual Machines. In this blogpost, I am going to describe how to create a local PFX copy of App Service Certificate so that you can use it anywhere you want.
+<h2>Prerequisites</h2>
+Before making a local copy, make sure that:
 1. The App Service Certificate is in ‘Issued’ state
 2. It’s assigned to a Key Vault (Step 1 in the link shared above).
-    <h2>
-     Creating a local copy of the issued SSL certificate using PowerShell
-    </h2>
-    You can use the following PowerShell script to create a local PFX copy.
-    <strong>
-     You need to first install Azure PowerShell and have the required modules installed. Follow this
-     <a href="https://docs.microsoft.com/en-us/powershell/azure/install-azurerm-ps?view=azurermps-6.2.0">
-      blog
-     </a>
-     to install the Azure PowerShell commandlets.
-    </strong>
-    To use the script, open a PowerShell window, copy the entire script below (uncomment Remove-AzureRmKeyVaultAccessPolicy line if you want to remove Access policies after export, check your permissions to see if you want to remove the policy) and paste it on the PowerShell window and hit enter.
-    <pre>Function Export-AppServiceCertificate
+<h2>Creating a local copy of the issued SSL certificate using PowerShell</h2>
+You can use the following PowerShell script to create a local PFX copy.
+
+<strong>You need to first install Azure PowerShell and have the required modules installed. Follow this <a href="https://docs.microsoft.com/en-us/powershell/azure/install-azurerm-ps?view=azurermps-6.2.0">blog </a>to install the Azure PowerShell commandlets.</strong>
+
+To use the script, open a PowerShell window, copy the entire script below (uncomment Remove-AzureRmKeyVaultAccessPolicy line if you want to remove Access policies after export, check your permissions to see if you want to remove the policy) and paste it on the PowerShell window and hit enter.
+<pre>Function Export-AppServiceCertificate
 {
 ###########################################################
 
@@ -101,178 +83,99 @@ Write-Host "Created an App Service Certificate copy at: $currentDirectory\apps
 Write-Warning "For security reasons, do not store the PFX password. Use it directly from the console as required."
 Write-Host "PFX password: $pfxPassword"
 }</pre>
-    Now you will have a new command called
-    <strong>
-     Export-AppServiceCertificate, use the command as follows
-    </strong>
-    <pre>Export-AppServiceCertificate -loginId yourarmemail@domain.com -subscriptionId yoursubid -resourceGroupName resourceGroupNameOfYourAppServiceCertificate -name appServiceCertificateName</pre>
-    Once the command is executed, you would see a new file in the current directory called ‘appservicecertificate.pfx’. This is a password protected PFX, the PowerShell console would display the corresponding password. For security reasons, do not store this password in a text file. You can use the password directly from the console as required. Also, don’t forget to delete the local PFX file once you no longer need it.
-    <h2>
-     Exporting the certificate with the chain included for App Service Web App consumption.
-    </h2>
-    The pfx created by the above commands will not include certificates from the chain. Services like Azure App Services expect the certificates that are being uploaded to have all the certificates in the chain included as part of the pfx file.
+Now you will have a new command called <strong>Export-AppServiceCertificate, use the command as follows </strong>
+<pre>Export-AppServiceCertificate -loginId yourarmemail@domain.com -subscriptionId yoursubid -resourceGroupName resourceGroupNameOfYourAppServiceCertificate -name appServiceCertificateName</pre>
+Once the command is executed, you would see a new file in the current directory called ‘appservicecertificate.pfx’. This is a password protected PFX, the PowerShell console would display the corresponding password. For security reasons, do not store this password in a text file. You can use the password directly from the console as required. Also, don’t forget to delete the local PFX file once you no longer need it.
+<h2>Exporting the certificate with the chain included for App Service Web App consumption.</h2>
+The pfx created by the above commands will not include certificates from the chain. Services like Azure App Services expect the certificates that are being uploaded to have all the certificates in the chain included as part of the pfx file.
 
-To get the certificates of the chain to be part of the pfx, you will need to install the exported certificate on your machine first using the password that is provided by the script,
-    <strong>
-     make sure you mark the certificate as exportable
-    </strong>
-    .
-    <a href="{{ site.baseurl }}/media/2017/02/Exportable.png">
-     <img alt="" class="alignnone size-full wp-image-8895" height="555" src="{{ site.baseurl }}/media/2017/02/Exportable.png" width="577"/>
-    </a>
-    Once you have installed the exported certificate open the certificate from your certificate store and navigate to the Certification Path tab, it would look something like below,
-    <a href="{{ site.baseurl }}/media/2017/02/CertificationPath.png">
-     <img alt="" class="alignnone size-full wp-image-8885" height="463" src="{{ site.baseurl }}/media/2017/02/CertificationPath.png" width="403"/>
-    </a>
-    Now go to
-    <a href="https://certs.godaddy.com/repository">
-     https://certs.godaddy.com/repository
-    </a>
-    and download the intermediate certificates and the root certificate. Install all of the certificates downloaded to the same store as your certificate. Once you confirmed that all the certificates in the chain have been installed we can export the certificate with the chain by going to the certificate store, right clicking on the SSL certificate we exported and installed and clicking of
-    <strong>
-     All Tasks -&gt; Export ...
-    </strong>
-    In the wizard, make sure you select the option,
-    <strong>
-     "Yes, export the private key"
-    </strong>
-    And then under the Personal Information Exchange property, make sure the option
-    <strong>
-     "Include all certificates in the certification path if possible"
-    </strong>
-    is checked.
-    <a href="{{ site.baseurl }}/media/2017/02/Export.png">
-     <img alt="" class="alignnone size-full wp-image-8905" height="563" src="{{ site.baseurl }}/media/2017/02/Export.png" width="644"/>
-    </a>
-    Once exported into a new pfx file we can check if the new pfx has the certificate chain included in it by running the command,
-    <pre>certutil -dump &lt;path of the certificate file&gt;</pre>
-    You will see the list of the certificates that are part of the pfx from the root to your certificate. A pfx file created with the above steps with all the certificates of the chain contained is well formed and can be uploaded to App Service Web Apps with confidence.
-    <em>
-     Note the CA part of the uploaded pfx file will be discarded when we process the uploaded certificate, we store all the intermediate certificates associated with the certificate to enable the chain to be remade properly in the runtime.
-    </em>
-    <strong>
-     Once all the export operation is complete and you have successfully uploaded your certificate clean your machine of any trace of the SSL certificate by deleting the certificate from the store to secure your certificate.
-    </strong>
-    <h2>
-     Things to note
-    </h2>
-    If you create a copy of App Service Certificate this way, it won’t have any impact on existing App Service SSL bindings that were created using the portal experience. It also won’t affect any such SSL bindings you may create in the future. You can still Rekey and Renew an App Service Certificate with one click even after making a copy but you would be responsible for creating a new local copy with the new certificate and updating all services that are using the old certificate.
-    <h2>
-     Tips
-    </h2>
-    This section compares this method of certificate deployment with the built-in Azure portal experience for Web Apps. It also contains recommendations you should follow when you use the PFX copy elsewhere.
-    <table border="1" cellpadding="0" cellspacing="0" class="MsoTableGrid" style="border-collapse: collapse;border: none">
-     <tbody>
-      <tr>
-       <td style="width: 116.85pt;border: solid windowtext 1.0pt;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
-        <p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal">
-         <strong>
-          Title
-         </strong>
-        </p>
-       </td>
-       <td style="width: 116.85pt;border: solid windowtext 1.0pt;border-left: none;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
-        <p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal">
-         <strong>
-          Azure portal Deployment
-         </strong>
-        </p>
-       </td>
-       <td style="width: 116.9pt;border: solid windowtext 1.0pt;border-left: none;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
-        <p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal">
-         <strong>
-          Deploying local PFX copy
-         </strong>
-        </p>
-       </td>
-       <td style="width: 116.9pt;border: solid windowtext 1.0pt;border-left: none;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
-        <p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal">
-         <strong>
-          Recommendations
-         </strong>
-        </p>
-       </td>
-      </tr>
-      <tr>
-       <td style="width: 116.85pt;border: solid windowtext 1.0pt;border-top: none;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
-        <p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal">
-         Auto/Manual Renew
-        </p>
-       </td>
-       <td style="width: 116.85pt;border-top: none;border-left: none;border-bottom: solid windowtext 1.0pt;border-right: solid windowtext 1.0pt;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
-        <p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal">
-         When an App Service Certificate is renewed, all the corresponding App Service SSL bindings are updated automatically
-        </p>
-       </td>
-       <td style="width: 116.9pt;border-top: none;border-left: none;border-bottom: solid windowtext 1.0pt;border-right: solid windowtext 1.0pt;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
-        <p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal">
-         When a certificate is renewed, you would need to manually update all the services that are using a local copy.
-        </p>
-       </td>
-       <td style="width: 116.9pt;border-top: none;border-left: none;border-bottom: solid windowtext 1.0pt;border-right: solid windowtext 1.0pt;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
-        <p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal">
-         Turn off Auto renew as you won’t know when exactly an App Service Certificate gets renewed with Auto renew and this would end up breaking your SSL endpoints. Manually renew such App Service Certificates before they expire
-        </p>
-       </td>
-      </tr>
-      <tr>
-       <td style="width: 116.85pt;border: solid windowtext 1.0pt;border-top: none;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
-        <p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal">
-         Rekey
-        </p>
-       </td>
-       <td style="width: 116.85pt;border-top: none;border-left: none;border-bottom: solid windowtext 1.0pt;border-right: solid windowtext 1.0pt;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
-        <p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal">
-         Just like renewal, the corresponding SSL bindings are updated automatically
-        </p>
-       </td>
-       <td style="width: 116.9pt;border-top: none;border-left: none;border-bottom: solid windowtext 1.0pt;border-right: solid windowtext 1.0pt;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
-        <p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal">
-         Just like renewal, you would need to manually update all such services.
-        </p>
-       </td>
-       <td style="width: 116.9pt;border-top: none;border-left: none;border-bottom: solid windowtext 1.0pt;border-right: solid windowtext 1.0pt;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
-        <p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal">
-        </p>
-       </td>
-      </tr>
-      <tr>
-       <td style="width: 116.85pt;border: solid windowtext 1.0pt;border-top: none;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
-        <p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal">
-         Deployment
-        </p>
-       </td>
-       <td style="width: 116.85pt;border-top: none;border-left: none;border-bottom: solid windowtext 1.0pt;border-right: solid windowtext 1.0pt;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
-        <p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal">
-         When deploying certificate this way, you don’t need any file locally and there won’t be any secrets to clean up
-        </p>
-       </td>
-       <td style="width: 116.9pt;border-top: none;border-left: none;border-bottom: solid windowtext 1.0pt;border-right: solid windowtext 1.0pt;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
-        <p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal">
-         When deploying certificate this way, you would have the PFX certificate on local disk.
-        </p>
-       </td>
-       <td style="width: 116.9pt;border-top: none;border-left: none;border-bottom: solid windowtext 1.0pt;border-right: solid windowtext 1.0pt;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
-        <p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal">
-         Always delete the local copy once you no longer need it as you can create a PFX copy as many times as you want. Also, never store the password shown in PowerShell console locally. This way, even if somehow an adversary gets hold of your local disk, he still won’t be able to use the PFX certificate as it’s protected by a strong password
-        </p>
-       </td>
-      </tr>
-     </tbody>
-    </table>
-    <h2>
-     Getting in touch
-    </h2>
-    If you have an App Service Certificate that you would like to use outside of App Service ecosystem, then give this a try and let us know how it goes. If you run into any issues, please let us know on the
-    <a href="https://social.msdn.microsoft.com/Forums/en-US/home?forum=windowsazurewebsitespreview">
-     App Service forum
-    </a>
-    .
-   </div>
-  </div>
- </body>
- <script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript">
- </script>
- <script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript">
- </script>
+To get the certificates of the chain to be part of the pfx, you will need to install the exported certificate on your machine first using the password that is provided by the script, <strong>make sure you mark the certificate as exportable</strong>.
+
+<a href="{{ site.baseurl }}/media/2017/02/Exportable.png"><img alt="" class="alignnone size-full wp-image-8895" height="555" src="{{ site.baseurl }}/media/2017/02/Exportable.png" width="577"/></a>
+
+Once you have installed the exported certificate open the certificate from your certificate store and navigate to the Certification Path tab, it would look something like below,
+
+<a href="{{ site.baseurl }}/media/2017/02/CertificationPath.png"><img alt="" class="alignnone size-full wp-image-8885" height="463" src="{{ site.baseurl }}/media/2017/02/CertificationPath.png" width="403"/></a>
+
+Now go to <a href="https://certs.godaddy.com/repository">https://certs.godaddy.com/repository</a> and download the intermediate certificates and the root certificate. Install all of the certificates downloaded to the same store as your certificate. Once you confirmed that all the certificates in the chain have been installed we can export the certificate with the chain by going to the certificate store, right clicking on the SSL certificate we exported and installed and clicking of<strong> All Tasks -&gt; Export ...</strong>
+
+In the wizard, make sure you select the option,<strong> "Yes, export the private key"</strong>
+
+And then under the Personal Information Exchange property, make sure the option <strong>"Include all certificates in the certification path if possible"</strong> is checked.
+
+<a href="{{ site.baseurl }}/media/2017/02/Export.png"><img alt="" class="alignnone size-full wp-image-8905" height="563" src="{{ site.baseurl }}/media/2017/02/Export.png" width="644"/></a>
+
+Once exported into a new pfx file we can check if the new pfx has the certificate chain included in it by running the command,
+<pre>certutil -dump &lt;path of the certificate file&gt;</pre>
+You will see the list of the certificates that are part of the pfx from the root to your certificate. A pfx file created with the above steps with all the certificates of the chain contained is well formed and can be uploaded to App Service Web Apps with confidence. <em>Note the CA part of the uploaded pfx file will be discarded when we process the uploaded certificate, we store all the intermediate certificates associated with the certificate to enable the chain to be remade properly in the runtime.</em>
+<strong>Once all the export operation is complete and you have successfully uploaded your certificate clean your machine of any trace of the SSL certificate by deleting the certificate from the store to secure your certificate.</strong>
+<h2>Things to note</h2>
+If you create a copy of App Service Certificate this way, it won’t have any impact on existing App Service SSL bindings that were created using the portal experience. It also won’t affect any such SSL bindings you may create in the future. You can still Rekey and Renew an App Service Certificate with one click even after making a copy but you would be responsible for creating a new local copy with the new certificate and updating all services that are using the old certificate.
+<h2>Tips</h2>
+This section compares this method of certificate deployment with the built-in Azure portal experience for Web Apps. It also contains recommendations you should follow when you use the PFX copy elsewhere.
+<table border="1" cellpadding="0" cellspacing="0" class="MsoTableGrid" style="border-collapse: collapse;border: none">
+<tbody>
+<tr>
+<td style="width: 116.85pt;border: solid windowtext 1.0pt;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
+<p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal"><strong>Title</strong></p>
+</td>
+<td style="width: 116.85pt;border: solid windowtext 1.0pt;border-left: none;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
+<p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal"><strong>Azure portal Deployment</strong></p>
+</td>
+<td style="width: 116.9pt;border: solid windowtext 1.0pt;border-left: none;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
+<p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal"><strong>Deploying local PFX copy</strong></p>
+</td>
+<td style="width: 116.9pt;border: solid windowtext 1.0pt;border-left: none;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
+<p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal"><strong>Recommendations</strong></p>
+</td>
+</tr>
+<tr>
+<td style="width: 116.85pt;border: solid windowtext 1.0pt;border-top: none;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
+<p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal">Auto/Manual Renew</p>
+</td>
+<td style="width: 116.85pt;border-top: none;border-left: none;border-bottom: solid windowtext 1.0pt;border-right: solid windowtext 1.0pt;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
+<p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal">When an App Service Certificate is renewed, all the corresponding App Service SSL bindings are updated automatically</p>
+</td>
+<td style="width: 116.9pt;border-top: none;border-left: none;border-bottom: solid windowtext 1.0pt;border-right: solid windowtext 1.0pt;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
+<p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal">When a certificate is renewed, you would need to manually update all the services that are using a local copy.</p>
+</td>
+<td style="width: 116.9pt;border-top: none;border-left: none;border-bottom: solid windowtext 1.0pt;border-right: solid windowtext 1.0pt;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
+<p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal">Turn off Auto renew as you won’t know when exactly an App Service Certificate gets renewed with Auto renew and this would end up breaking your SSL endpoints. Manually renew such App Service Certificates before they expire</p>
+</td>
+</tr>
+<tr>
+<td style="width: 116.85pt;border: solid windowtext 1.0pt;border-top: none;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
+<p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal">Rekey</p>
+</td>
+<td style="width: 116.85pt;border-top: none;border-left: none;border-bottom: solid windowtext 1.0pt;border-right: solid windowtext 1.0pt;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
+<p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal">Just like renewal, the corresponding SSL bindings are updated automatically</p>
+</td>
+<td style="width: 116.9pt;border-top: none;border-left: none;border-bottom: solid windowtext 1.0pt;border-right: solid windowtext 1.0pt;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
+<p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal">Just like renewal, you would need to manually update all such services.</p>
+</td>
+<td style="width: 116.9pt;border-top: none;border-left: none;border-bottom: solid windowtext 1.0pt;border-right: solid windowtext 1.0pt;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
+<p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal"></p>
+</td>
+</tr>
+<tr>
+<td style="width: 116.85pt;border: solid windowtext 1.0pt;border-top: none;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
+<p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal">Deployment</p>
+</td>
+<td style="width: 116.85pt;border-top: none;border-left: none;border-bottom: solid windowtext 1.0pt;border-right: solid windowtext 1.0pt;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
+<p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal">When deploying certificate this way, you don’t need any file locally and there won’t be any secrets to clean up</p>
+</td>
+<td style="width: 116.9pt;border-top: none;border-left: none;border-bottom: solid windowtext 1.0pt;border-right: solid windowtext 1.0pt;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
+<p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal">When deploying certificate this way, you would have the PFX certificate on local disk.</p>
+</td>
+<td style="width: 116.9pt;border-top: none;border-left: none;border-bottom: solid windowtext 1.0pt;border-right: solid windowtext 1.0pt;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
+<p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal">Always delete the local copy once you no longer need it as you can create a PFX copy as many times as you want. Also, never store the password shown in PowerShell console locally. This way, even if somehow an adversary gets hold of your local disk, he still won’t be able to use the PFX certificate as it’s protected by a strong password</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h2>Getting in touch</h2>
+If you have an App Service Certificate that you would like to use outside of App Service ecosystem, then give this a try and let us know how it goes. If you run into any issues, please let us know on the <a href="https://social.msdn.microsoft.com/Forums/en-US/home?forum=windowsazurewebsitespreview">App Service forum</a>.</div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
 </html>

@@ -1,62 +1,33 @@
 ---
 layout: post
+hide_excerpt: true
 ---
-<html>
- <head>
-  <meta charset="utf-8"/>
- </head>
- <body>
-  <div id="page">
-   <a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Chris Anderson (Azure)" target="_blank">
-    Chris Anderson (Azure)
-   </a>
-   <time>
-    10/10/2017 7:01:45 AM
-   </time>
-   <hr/>
-   <div id="content">
-    We’re excited to announce two new preview features in Azure Functions:
-    <ul>
-     <li>
-      Durable Functions: A framework that makes it easy to orchestrate multiple functions and manage state for your
-      <a href="http://azure.com/serverless">
-       serverless apps
-      </a>
-      .
-     </li>
-     <li>
-      Binding extensibility: A capability that allows you to create your own reusable serverless components that can be used from any supported language.
-     </li>
-    </ul>
-    <h2 id="durable-functions">
-     Durable Functions
-    </h2>
-    In serverless functions, as with many application frameworks, it’s commonly recommended to write your code to be stateless, and this is the best practice. What is often not discussed in detail, though, is how one should manage that state. For trivial scenarios like just standard user data, databases are an obvious option, or for messaging between applications, a queue service is sufficient. However, what if your application has need for a more complex, stateful orchestration of multiple components? Without better tools, you’re left to figure out the right way to combine those pieces. This is the problem that the Durable Functions feature seeks to solve; letting developers abstract away the management of state for complex, stateful orchestration. Today, we’re happy to announce that Durable Functions is now in preview.
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
 
-Durable Functions builds on the
-    <a href="https://github.com/Azure/durabletask">
-     Durable Task Framework
-    </a>
-    , which was designed to allow developers to write code based orchestrations using async/await pattern in C#. This enabled the following:
-    <ul>
-     <li>
-      Expression of tasks in simple C# code
-     </li>
-     <li>
-      Automatic persistence and check-pointing of program state
-     </li>
-     <li>
-      Versioning of orchestrations and activities
-     </li>
-     <li>
-      Async timers, orchestration composition
-     </li>
-    </ul>
-    <a href="https://docs.microsoft.com/en-us/azure/azure-functions/durable-functions-overview">
-     With Durable Functions
-    </a>
-    , we let you write orchestrators and activities as Functions. Orchestrators can call Activity Functions, other sub-orchestrations, and wait for an external event. Combined, this functionality allows a lot of complex patterns to be expressed via code. For instance, the code below will fan out and call various Activity Functions, wait for them all to complete, and then allow you to sum the results (fan in). This pattern was possible before but involved a lot more setup and management code that was unrelated to the business logic.
-    <pre><code class="lang-csharp">
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Chris Anderson (Azure)" target="_blank">Chris Anderson (Azure)</a>
+<time>    10/10/2017 7:01:45 AM</time>
+<hr/>
+<div id="content">We’re excited to announce two new preview features in Azure Functions:
+<ul>
+<li>Durable Functions: A framework that makes it easy to orchestrate multiple functions and manage state for your <a href="http://azure.com/serverless">serverless apps</a>.</li>
+<li>Binding extensibility: A capability that allows you to create your own reusable serverless components that can be used from any supported language.</li>
+</ul>
+<h2 id="durable-functions">Durable Functions</h2>
+In serverless functions, as with many application frameworks, it’s commonly recommended to write your code to be stateless, and this is the best practice. What is often not discussed in detail, though, is how one should manage that state. For trivial scenarios like just standard user data, databases are an obvious option, or for messaging between applications, a queue service is sufficient. However, what if your application has need for a more complex, stateful orchestration of multiple components? Without better tools, you’re left to figure out the right way to combine those pieces. This is the problem that the Durable Functions feature seeks to solve; letting developers abstract away the management of state for complex, stateful orchestration. Today, we’re happy to announce that Durable Functions is now in preview.
+
+Durable Functions builds on the <a href="https://github.com/Azure/durabletask">Durable Task Framework</a>, which was designed to allow developers to write code based orchestrations using async/await pattern in C#. This enabled the following:
+<ul>
+<li>Expression of tasks in simple C# code</li>
+<li>Automatic persistence and check-pointing of program state</li>
+<li>Versioning of orchestrations and activities</li>
+<li>Async timers, orchestration composition</li>
+</ul>
+<a href="https://docs.microsoft.com/en-us/azure/azure-functions/durable-functions-overview">With Durable Functions</a>, we let you write orchestrators and activities as Functions. Orchestrators can call Activity Functions, other sub-orchestrations, and wait for an external event. Combined, this functionality allows a lot of complex patterns to be expressed via code. For instance, the code below will fan out and call various Activity Functions, wait for them all to complete, and then allow you to sum the results (fan in). This pattern was possible before but involved a lot more setup and management code that was unrelated to the business logic.
+<pre><code class="lang-csharp">
 #r "Microsoft.Azure.WebJobs.Extensions.DurableTask"
 
 public static async Task&lt;long&gt; Run(DurableOrchestrationContext backupContext)
@@ -85,96 +56,35 @@ public static async Task&lt;long&gt; Run(DurableOrchestrationContext backupConte
     return totalBytes;
 }
 </code></pre>
-    In the above code, you can see the first set of bold code fanning out and calling many Functions, and then the later bold line waiting for them all to complete.
-    <h3 id="what-s-happened-since-alpha-">
-     What’s happened since alpha?
-    </h3>
-    Since we initially released the
-    <a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/07/06/alpha-preview-for-durable-functions/">
-     alpha preview
-    </a>
-    we’ve seen lots of great community interest and folks experimenting with Durable Functions. In addition to all that feedback, we’ve also been working on a few important enhancements. You can see all the work highlighted on the
-    <a href="https://github.com/Azure/azure-functions-durable-extension">
-     GitHub repo for Durable Functions extension
-    </a>
-    . Here are some highlights:
-    <ul>
-     <li>
-      Elastic scaling support for
-      <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-scale">
-       consumption plan
-      </a>
-     </li>
-     <li>
-      <a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/09/25/develop-azure-functions-on-any-platform/">
-       Cross platform support
-      </a>
-      by porting to netcore2.0
-     </li>
-     <li>
-      Better traces and
-      <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-monitoring">
-       integration with Application Insights
-      </a>
-     </li>
-     <li>
-      Retry support for Activities
-     </li>
-     <li>
-      Improved error handling with timers
-     </li>
-     <li>
-      Portal support and templates
-     </li>
-     <li>
-      Moved to have support only on 2.x version of Azure Functions runtime
-     </li>
-    </ul>
-    <h3 id="roadmap">
-     Roadmap
-    </h3>
-    In the coming months, we’ll be working towards a GA of the current functionality and investigate the following enhancements:
-    <ul>
-     <li>
-      Support for other languages
-     </li>
-     <li>
-      Improved monitoring and management of orchestrations
-     </li>
-     <li>
-      Improve the underlying messaging/data layer to improve the maximum throughput
-     </li>
-     <li>
-      Dynamic repartitioning of orchestrations
-     </li>
-    </ul>
-    <h2 id="binding-extensibility-goodbye-sdks-hello-bindings">
-     Binding extensibility: goodbye SDKs, hello bindings
-    </h2>
-    Developers are building increasingly complex serverless applications and need better mechanisms for code reuse.
-    <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-triggers-bindings">
-     Triggers and bindings
-    </a>
-    allow developers to focus on their code and let Azure Functions handle all the logistics of connecting to other services, in a way “reusing” the glue code that we have already written for you. We are now providing a mechanism using which you can author your own custom bindings for Azure Functions, providing more avenues for reuse.  This mechanism (binding extensibility) is a feature of the
-    <a href="https://aka.ms/func-xplat">
-     2.0 Functions runtime
-    </a>
-    . In fact, Durable Functions is authored as a custom binding for Azure Functions.
+In the above code, you can see the first set of bold code fanning out and calling many Functions, and then the later bold line waiting for them all to complete.
+<h3 id="what-s-happened-since-alpha-">What’s happened since alpha?</h3>
+Since we initially released the <a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/07/06/alpha-preview-for-durable-functions/">alpha preview</a> we’ve seen lots of great community interest and folks experimenting with Durable Functions. In addition to all that feedback, we’ve also been working on a few important enhancements. You can see all the work highlighted on the <a href="https://github.com/Azure/azure-functions-durable-extension">GitHub repo for Durable Functions extension</a>. Here are some highlights:
+<ul>
+<li>Elastic scaling support for <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-scale">consumption plan</a></li>
+<li><a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/09/25/develop-azure-functions-on-any-platform/">Cross platform support</a> by porting to netcore2.0</li>
+<li>Better traces and <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-monitoring">integration with Application Insights</a></li>
+<li>Retry support for Activities</li>
+<li>Improved error handling with timers</li>
+<li>Portal support and templates</li>
+<li>Moved to have support only on 2.x version of Azure Functions runtime</li>
+</ul>
+<h3 id="roadmap">Roadmap</h3>
+In the coming months, we’ll be working towards a GA of the current functionality and investigate the following enhancements:
+<ul>
+<li>Support for other languages</li>
+<li>Improved monitoring and management of orchestrations</li>
+<li>Improve the underlying messaging/data layer to improve the maximum throughput</li>
+<li>Dynamic repartitioning of orchestrations</li>
+</ul>
+<h2 id="binding-extensibility-goodbye-sdks-hello-bindings">Binding extensibility: goodbye SDKs, hello bindings</h2>
+Developers are building increasingly complex serverless applications and need better mechanisms for code reuse. <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-triggers-bindings">Triggers and bindings</a> allow developers to focus on their code and let Azure Functions handle all the logistics of connecting to other services, in a way “reusing” the glue code that we have already written for you. We are now providing a mechanism using which you can author your own custom bindings for Azure Functions, providing more avenues for reuse.  This mechanism (binding extensibility) is a feature of the <a href="https://aka.ms/func-xplat">2.0 Functions runtime</a>. In fact, Durable Functions is authored as a custom binding for Azure Functions.
 
 Bindings allow you to create reusable serverless components that can be used from any supported language. If you host a developer service, bindings will make it easy for Functions developers to use your product. Developers can also create reusable packages and host them in a central repository, just like a library or SDK.
 
-Binding extensibility allows you to provide a declarative interface for an SDK. For instance, we have a sample
-    <a href="https://github.com/lindydonna/SlackOutputBinding">
-     Slack output binding
-    </a>
-    that sends a slack message when a customer uses a
-    <code>
-     [Slack]
-    </code>
-    attribute (or the equivalent in function.json):
+Binding extensibility allows you to provide a declarative interface for an SDK. For instance, we have a sample <a href="https://github.com/lindydonna/SlackOutputBinding">Slack output binding</a> that sends a slack message when a customer uses a <code>[Slack]</code> attribute (or the equivalent in function.json):
 
 C#
-    <pre><code class="lang-csharp">using System.Net;
+<pre><code class="lang-csharp">using System.Net;
 using System.Net.Http;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Host;
@@ -197,69 +107,23 @@ namespace SampleFunctionApp
     }
 }
 </code></pre>
-    JavaScript
-    <pre><code class="lang-javascript">module.exports = function (context, req) {
+JavaScript
+<pre><code class="lang-javascript">module.exports = function (context, req) {
     context.log('JS HTTP function processed a request: ' + req.body.text);
 
     context.bindings.slackMessage = req.body;
     context.done();
 };
 </code></pre>
-    <h3 id="creating-a-custom-binding">
-     Creating a custom binding
-    </h3>
-    Currently, extensions can only be authored in C# but can be consumed from any supported language. To get started, please check out the sample
-    <a href="https://github.com/Azure/WebJobsExtensionSamples">
-     WebJobsExtensionSamples
-    </a>
-    , which has a detailed readme on how to get started. There is also a
-    <a href="https://github.com/lindydonna/SlackOutputBinding">
-     Slack output binding
-    </a>
-    sample.
+<h3 id="creating-a-custom-binding">Creating a custom binding</h3>
+Currently, extensions can only be authored in C# but can be consumed from any supported language. To get started, please check out the sample <a href="https://github.com/Azure/WebJobsExtensionSamples">WebJobsExtensionSamples</a>, which has a detailed readme on how to get started. There is also a <a href="https://github.com/lindydonna/SlackOutputBinding">Slack output binding</a> sample.
 
-Reference documentation is available on our wiki:
-    <a href="https://github.com/Azure/azure-webjobs-sdk/wiki/Creating-custom-input-and-output-bindings">
-     Creating custom input and output bindings
-    </a>
-    .
-    <h3 id="custom-triggers">
-     Custom triggers
-    </h3>
-    For custom triggers, we plan to offer integration with
-    <a href="https://azure.microsoft.com/en-us/services/event-grid/">
-     Azure Event Grid
-    </a>
-    . Stay tuned for more details on this.
-    <h2 id="next-steps">
-     Next steps
-    </h2>
-    Please try out
-    <a href="https://docs.microsoft.com/en-us/azure/azure-functions/durable-functions-overview">
-     Durable Functions
-    </a>
-    and
-    <a href="https://github.com/Azure/azure-webjobs-sdk/wiki/Creating-custom-input-and-output-bindings">
-     binding extensibility
-    </a>
-    and provide feedback on the experience. We encourage you to try these features in all kinds of interesting ways and help us make them work even better when we GA. As always, we look forward to hearing from you through our
-    <a href="https://social.msdn.microsoft.com/Forums/en-US/home?forum=AzureFunctions">
-     Forums
-    </a>
-    ,
-    <a href="http://stackoverflow.com/questions/tagged/azure-functions">
-     StackOverFlow
-    </a>
-    , or
-    <a href="https://feedback.azure.com/forums/355860-azure-functions/filters/top">
-     Uservoice
-    </a>
-    .
-   </div>
-  </div>
- </body>
- <script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript">
- </script>
- <script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript">
- </script>
+Reference documentation is available on our wiki: <a href="https://github.com/Azure/azure-webjobs-sdk/wiki/Creating-custom-input-and-output-bindings">Creating custom input and output bindings</a>.
+<h3 id="custom-triggers">Custom triggers</h3>
+For custom triggers, we plan to offer integration with <a href="https://azure.microsoft.com/en-us/services/event-grid/">Azure Event Grid</a>. Stay tuned for more details on this.
+<h2 id="next-steps">Next steps</h2>
+Please try out <a href="https://docs.microsoft.com/en-us/azure/azure-functions/durable-functions-overview">Durable Functions</a> and <a href="https://github.com/Azure/azure-webjobs-sdk/wiki/Creating-custom-input-and-output-bindings">binding extensibility</a> and provide feedback on the experience. We encourage you to try these features in all kinds of interesting ways and help us make them work even better when we GA. As always, we look forward to hearing from you through our <a href="https://social.msdn.microsoft.com/Forums/en-US/home?forum=AzureFunctions">Forums</a>, <a href="http://stackoverflow.com/questions/tagged/azure-functions">StackOverFlow</a>, or <a href="https://feedback.azure.com/forums/355860-azure-functions/filters/top">Uservoice</a>.</div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
 </html>

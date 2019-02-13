@@ -1,298 +1,61 @@
 ---
 layout: post
+hide_excerpt: true
 ---
-<html>
- <head>
-  <meta charset="utf-8"/>
- </head>
- <body>
-  <div id="page">
-   <a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Andrew Westgarth" target="_blank">
-    Andrew Westgarth
-   </a>
-   <time>
-    8/8/2018 11:55:52 AM
-   </time>
-   <hr/>
-   <div id="content">
-    This morning we announced the public preview of Windows Container support on Azure App Service Web App for Containers.  You can read the announcement blog, which covers the new capabilities and Dv3 powered SKUs, here -
-    <a href="https://azure.microsoft.com/blog/announcing-the-public-preview-of-windows-container-support-in-azure-app-service/">
-     https://azure.microsoft.com/blog/announcing-the-public-preview-of-windows-container-support-in-azure-app-service/
-    </a>
-    This public preview will enable new opportunities for customers looking to modernize their existing applications.  For example here are the steps required to take an existing .Net Framework Web Forms application, containerise it, publish to Docker Hub and then deploy to App Service.
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Andrew Westgarth" target="_blank">Andrew Westgarth</a>
+<time>    8/8/2018 11:55:52 AM</time>
+<hr/>
+<div id="content">This morning we announced the public preview of Windows Container support on Azure App Service Web App for Containers.  You can read the announcement blog, which covers the new capabilities and Dv3 powered SKUs, here - <a href="https://azure.microsoft.com/blog/announcing-the-public-preview-of-windows-container-support-in-azure-app-service/">https://azure.microsoft.com/blog/announcing-the-public-preview-of-windows-container-support-in-azure-app-service/</a>
+
+This public preview will enable new opportunities for customers looking to modernize their existing applications.  For example here are the steps required to take an existing .Net Framework Web Forms application, containerise it, publish to Docker Hub and then deploy to App Service.
 
 Pre-Requisites:
-    <a href="https://visualstudio.microsoft.com/vs/">
-     Visual Studio 2017 with .Net Core and Azure workloads installed
-    </a>
-    <a href="https://www.docker.com/products/docker">
-     Docker for Windows
-    </a>
-    <a href="https://hub.docker.com/?next=https%3A%2F%2Fhub.docker.com%2F">
-     Docker Hub Account
-    </a>
-    or an
-    <a href="https://docs.microsoft.com/azure/container-registry/">
-     Azure Container Registry
-    </a>
-    <ol>
-     <li>
-      Create a new or open an existing ASP.Net Web Forms application in Visual Studio 2017
-     </li>
-     <li>
-      Select the
-      <strong>
-       Web Forms project
-      </strong>
-      , go to the
-      <strong>
-       Project Menu
-      </strong>
-      and select
-      <strong>
-       "Docker Support"
-      </strong>
-      .  If you do not see this option check that you have the .Net Core workload installed with the Visual Studio Installer
 
-[caption id="attachment_9135" align="aligncenter" width="300"]
-      <a href="{{ site.baseurl }}/media/2018/08/docker-support.png">
-       <img alt="Add Docker Support to existing project" class="wp-image-9135 size-medium" height="194" src="{{ site.baseurl }}/media/2018/08/docker-support-300x194.png" width="300"/>
-      </a>
-      Add Docker Support to existing project[/caption]
-     </li>
-     <li>
-      Visual Studio will have created a new docker-compose project and added a
-      <strong>
-       <a href="https://docs.microsoft.com/virtualization/windowscontainers/manage-docker/manage-windows-dockerfile">
-        Dockerfile
-       </a>
-      </strong>
-      to the Web Forms Project.  Open the
-      <strong>
-       Dockerfile
-      </strong>
-      :
-      <pre>FROM microsoft/aspnet:4.7.1-windowsservercore-1709
+<a href="https://visualstudio.microsoft.com/vs/">Visual Studio 2017 with .Net Core and Azure workloads installed</a>
+<a href="https://www.docker.com/products/docker">Docker for Windows</a>
+<a href="https://hub.docker.com/?next=https%3A%2F%2Fhub.docker.com%2F">Docker Hub Account</a> or an <a href="https://docs.microsoft.com/azure/container-registry/">Azure Container Registry</a>
+<ol>
+<li>Create a new or open an existing ASP.Net Web Forms application in Visual Studio 2017</li>
+<li>Select the <strong>Web Forms project</strong>, go to the <strong>Project Menu</strong> and select <strong>"Docker Support"</strong>.  If you do not see this option check that you have the .Net Core workload installed with the Visual Studio Installer
+
+[caption id="attachment_9135" align="aligncenter" width="300"]<a href="{{ site.baseurl }}/media/2018/08/docker-support.png"><img alt="Add Docker Support to existing project" class="wp-image-9135 size-medium" height="194" src="{{ site.baseurl }}/media/2018/08/docker-support-300x194.png" width="300"/></a> Add Docker Support to existing project[/caption]</li>
+<li>Visual Studio will have created a new docker-compose project and added a <strong><a href="https://docs.microsoft.com/virtualization/windowscontainers/manage-docker/manage-windows-dockerfile">Dockerfile</a></strong> to the Web Forms Project.  Open the <strong>Dockerfile</strong>:
+<pre>FROM microsoft/aspnet:4.7.1-windowsservercore-1709
 ARG source
 WORKDIR /inetpub/wwwroot
 COPY ${source:-obj/Docker/publish} .</pre>
-     </li>
-     <li>
-      Change the
-      <strong>
-       FROM
-      </strong>
-      argument in the Dockerfile to point to a Windows Server 2016 Core base image from the
-      <a href="https://docs.microsoft.com/en-us/windows-server/get-started/semi-annual-channel-overview#long-term-servicing-channel-ltsc">
-       Long Term Servicing Channel
-      </a>
-      .  Should you wish to publish a .Net Core application in a Windows Container, use a Windows Server 2016 Nano base image from the Long Term Servicing Channel.  We cache certain images as listed in the announcement blog post to enable faster container deployment, for example here specify
-      <strong>
-       microsoft/aspnet:4.7.2-windowsservercore-ltsc2016
-      </strong>
-      :
-      <pre>FROM microsoft/aspnet:4.7.2-windowsservercore-ltsc2016
+</li>
+<li>Change the <strong>FROM</strong> argument in the Dockerfile to point to a Windows Server 2016 Core base image from the <a href="https://docs.microsoft.com/en-us/windows-server/get-started/semi-annual-channel-overview#long-term-servicing-channel-ltsc">Long Term Servicing Channel</a>.  Should you wish to publish a .Net Core application in a Windows Container, use a Windows Server 2016 Nano base image from the Long Term Servicing Channel.  We cache certain images as listed in the announcement blog post to enable faster container deployment, for example here specify <strong>microsoft/aspnet:4.7.2-windowsservercore-ltsc2016</strong>:
+<pre>FROM microsoft/aspnet:4.7.2-windowsservercore-ltsc2016
 ARG source
 WORKDIR /inetpub/wwwroot
 COPY ${source:-obj/Docker/publish} .</pre>
-     </li>
-     <li>
-      <strong>
-       Build
-      </strong>
-      the project.
-     </li>
-     <li>
-      Select the Web Application and right click
-      <strong>
-       Publish
-      </strong>
-      .
-     </li>
-     <li>
-      As we are publishing the application in a container we need to publish to a Container Registry.  Visual Studio 2017 enables the publishing of containers to an Azure Container Registry, a private registry or Docker Hub.  In this example we're going to publish to Docker Hub, so select
-      <strong>
-       Container Registry
-      </strong>
-      , then choose
-      <strong>
-       Docker Hub
-      </strong>
-      and click
-      <strong>
-       Publish
-      </strong>
-      :
-      <a href="{{ site.baseurl }}/media/2018/08/publish.png">
-      </a>
-      <a href="{{ site.baseurl }}/media/2018/08/publish.png">
-       <img alt="" class="aligncenter wp-image-9155 size-mediumlarge" height="350" src="{{ site.baseurl }}/media/2018/08/publish-466x350.png" width="466"/>
-      </a>
-      <a href="{{ site.baseurl }}/media/2018/08/publish.png">
-      </a>
-      <a href="{{ site.baseurl }}/media/2018/08/publish.png">
-      </a>
-     </li>
-     <li>
-      When prompted enter your
-      <strong>
-       Docker Hub account username and password
-      </strong>
-      and click
-      <strong>
-       Save
-      </strong>
-     </li>
-     <li>
-      Once published take a note of the container image name and tag from the Output window.
-      <a href="{{ site.baseurl }}/media/2018/08/publishoutput.png">
-       <img alt="Output of Publish Operation" class="aligncenter wp-image-9165 size-large" height="118" src="{{ site.baseurl }}/media/2018/08/publishoutput-1024x137.png" width="879"/>
-      </a>
-     </li>
-     <li>
-      Go to the
-      <a href="http://https;//portal.azure.com">
-       <strong>
-        Azure portal
-       </strong>
-      </a>
-      and sign in with your Azure subscription credentials
-     </li>
-     <li>
-      Choose
-      <span>
-       to
-      </span>
-      <strong>
-       Create a resource
-      </strong>
-      <span>
-      </span>
-      in the upper left-hand corner of the Azure portal.
-     </li>
-     <li>
-      In the search box above the list of Azure Marketplace resources, search for and select
-      <span>
-      </span>
-      <strong>
-       Web App for Containers
-      </strong>
-      .
-     </li>
-     <li>
-      Provide an app name, such as
-      <span>
-       WindowsContainerHelloWorld
-      </span>
-      , accept the defaults to create a new resource group, and click
-      <span>
-      </span>
-      <strong>
-       Windows (Preview)
-      </strong>
-      <span>
-      </span>
-      in the
-      <span>
-      </span>
-      <strong>
-       OS
-      </strong>
-      <span>
-      </span>
-      box.
-      <a href="{{ site.baseurl }}/media/2018/08/webappforcontainerscreate.png">
-       <img alt="Create Web App For Windows Containers application" class="aligncenter wp-image-9185 size-mediumlarge" height="350" src="{{ site.baseurl }}/media/2018/08/webappforcontainerscreate-123x350.png" width="123"/>
-      </a>
-     </li>
-     <li>
-      <span>
-       Create an App Service plan by clicking
-      </span>
-      <strong>
-       App Service plan/Location
-      </strong>
-      <span>
-       &gt;
-      </span>
-      <strong>
-       Create new
-      </strong>
-      <span>
-       . Give the new plan a name, accept the defaults, and click
-      </span>
-      <strong>
-       OK
-       <a href="{{ site.baseurl }}/media/2018/08/WebAppForContainersNewASP.png">
-        <img alt="Create Windows Container App Service Plan" class="aligncenter wp-image-9195 size-mediumlarge" height="350" src="{{ site.baseurl }}/media/2018/08/WebAppForContainersNewASP-467x350.png" width="467"/>
-       </a>
-      </strong>
-     </li>
-     <li>
-      Click
-      <strong>
-       Configure container
-      </strong>
-      , type the username/image:tag that you noted in the output window earlier, for example, mydockerhub/myimage:latest in
-      <strong>
-       Image and optional tag
-      </strong>
-      , and click
-      <strong>
-       OK
-      </strong>
-      .
-     </li>
-     <li>
-      <span>
-       Click
-      </span>
-      <strong>
-       Create
-      </strong>
-      <span>
-       and wait for Azure to create the required resources, you will be notified when the operation completes.  Click
-       <strong>
-        Go to
-       </strong>
-       resource in the notification box.
-      </span>
-     </li>
-     <li>
-      In the application overview click
-      <strong>
-       Browse,
-      </strong>
-      you will see a page showing the container is starting up
-      <a href="{{ site.baseurl }}/media/2018/08/app-starting-new.png">
-       <img alt="" class="aligncenter size-medium wp-image-9255" height="192" src="{{ site.baseurl }}/media/2018/08/app-starting-new-300x192.png" width="300"/>
-      </a>
-     </li>
-     <li>
-      <strong>
-       Refresh
-      </strong>
-      the page after a few minutes and you will see your ASP.Net Web Forms application running!
-      <a href="{{ site.baseurl }}/media/2018/08/Helloworldsite.png">
-       <img alt="" class="aligncenter size-medium wp-image-9215" height="233" src="{{ site.baseurl }}/media/2018/08/Helloworldsite-300x233.png" width="300"/>
-      </a>
-     </li>
-    </ol>
-    <h2>
-     <strong>
-      We want to hear from you!
-     </strong>
-    </h2>
-    Windows Container support for Azure App Service provides you with even more ways to build, migrate, deploy, and scale enterprise grade web and API applications running on the Windows platform. We are planning to add even more capabilities during the public preview and we are very interested in your
-    <a href="https://social.msdn.microsoft.com/Forums/home? forum=windowsazurewebsitespreview&amp;filter=alltypes&amp;sort=lastpostdesc">
-     feedback
-    </a>
-    as we move towards general availability.
-   </div>
-  </div>
- </body>
- <script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript">
- </script>
- <script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript">
- </script>
+</li>
+<li><strong>Build</strong> the project.</li>
+<li>Select the Web Application and right click <strong>Publish</strong>.</li>
+<li>As we are publishing the application in a container we need to publish to a Container Registry.  Visual Studio 2017 enables the publishing of containers to an Azure Container Registry, a private registry or Docker Hub.  In this example we're going to publish to Docker Hub, so select <strong>Container Registry</strong>, then choose <strong>Docker Hub</strong> and click <strong>Publish</strong>:<a href="{{ site.baseurl }}/media/2018/08/publish.png">
+</a><a href="{{ site.baseurl }}/media/2018/08/publish.png"><img alt="" class="aligncenter wp-image-9155 size-mediumlarge" height="350" src="{{ site.baseurl }}/media/2018/08/publish-466x350.png" width="466"/></a><a href="{{ site.baseurl }}/media/2018/08/publish.png"></a><a href="{{ site.baseurl }}/media/2018/08/publish.png"></a></li>
+<li>When prompted enter your <strong>Docker Hub account username and password</strong> and click <strong>Save</strong></li>
+<li>Once published take a note of the container image name and tag from the Output window. <a href="{{ site.baseurl }}/media/2018/08/publishoutput.png"><img alt="Output of Publish Operation" class="aligncenter wp-image-9165 size-large" height="118" src="{{ site.baseurl }}/media/2018/08/publishoutput-1024x137.png" width="879"/></a></li>
+<li>Go to the <a href="http://https;//portal.azure.com"><strong>Azure portal</strong></a> and sign in with your Azure subscription credentials</li>
+<li>Choose<span> to </span><strong>Create a resource</strong><span> </span>in the upper left-hand corner of the Azure portal.</li>
+<li>In the search box above the list of Azure Marketplace resources, search for and select<span> </span><strong>Web App for Containers</strong>.</li>
+<li>Provide an app name, such as<span> WindowsContainerHelloWorld</span>, accept the defaults to create a new resource group, and click<span> </span><strong>Windows (Preview)</strong><span> </span>in the<span> </span><strong>OS</strong><span> </span>box.<a href="{{ site.baseurl }}/media/2018/08/webappforcontainerscreate.png"><img alt="Create Web App For Windows Containers application" class="aligncenter wp-image-9185 size-mediumlarge" height="350" src="{{ site.baseurl }}/media/2018/08/webappforcontainerscreate-123x350.png" width="123"/></a></li>
+<li><span>Create an App Service plan by clicking </span><strong>App Service plan/Location</strong><span> &gt; </span><strong>Create new</strong><span>. Give the new plan a name, accept the defaults, and click </span><strong>OK<a href="{{ site.baseurl }}/media/2018/08/WebAppForContainersNewASP.png"><img alt="Create Windows Container App Service Plan" class="aligncenter wp-image-9195 size-mediumlarge" height="350" src="{{ site.baseurl }}/media/2018/08/WebAppForContainersNewASP-467x350.png" width="467"/></a></strong></li>
+<li>Click <strong>Configure container</strong>, type the username/image:tag that you noted in the output window earlier, for example, mydockerhub/myimage:latest in <strong>Image and optional tag</strong>, and click <strong>OK</strong>.</li>
+<li><span>Click </span><strong>Create</strong><span> and wait for Azure to create the required resources, you will be notified when the operation completes.  Click <strong>Go to </strong>resource in the notification box.</span></li>
+<li>In the application overview click <strong>Browse, </strong>you will see a page showing the container is starting up<a href="{{ site.baseurl }}/media/2018/08/app-starting-new.png"><img alt="" class="aligncenter size-medium wp-image-9255" height="192" src="{{ site.baseurl }}/media/2018/08/app-starting-new-300x192.png" width="300"/></a></li>
+<li><strong>Refresh</strong> the page after a few minutes and you will see your ASP.Net Web Forms application running!<a href="{{ site.baseurl }}/media/2018/08/Helloworldsite.png"><img alt="" class="aligncenter size-medium wp-image-9215" height="233" src="{{ site.baseurl }}/media/2018/08/Helloworldsite-300x233.png" width="300"/></a></li>
+</ol>
+<h2><strong>We want to hear from you!</strong></h2>
+Windows Container support for Azure App Service provides you with even more ways to build, migrate, deploy, and scale enterprise grade web and API applications running on the Windows platform. We are planning to add even more capabilities during the public preview and we are very interested in your <a href="https://social.msdn.microsoft.com/Forums/home? forum=windowsazurewebsitespreview&amp;filter=alltypes&amp;sort=lastpostdesc">feedback</a> as we move towards general availability.</div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
 </html>
