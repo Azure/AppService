@@ -41,10 +41,13 @@
     ---
     layout: post
     title:  "<Insert your post title>"
-    categories: jekyll update
+    categories: update
+    tags: java linux databases
     ---
     ```
-    The `categories` section is optional.
+    The `categories` and `tags` sections are optional.
+
+1. At the end of your post, invite readers to post questions on the [MSDN Forums](https://social.msdn.microsoft.com/forums/azure/en-US/home?forum=windowsazurewebsitespreview). Please provide a hyperlink to the forums.
 
 1. Now you can author your markdown-formatted post. When you save the file, the local server will update the file in the browser.
 
