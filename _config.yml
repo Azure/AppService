@@ -28,10 +28,13 @@ plugins:
 paginate: 5
 paginate_path: /page:num/ 
 
-social_links:
-  github: azure/appservice
-  twitter: AzureSupport
-  
+# Theme settings
+minima:
+  social_links:
+    github: "azure/appservice"
+    twitter: AzureSupport
+    rss: rss
+
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
 # to override the default setting.
