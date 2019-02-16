@@ -7,8 +7,9 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 title: App Service Blog
+author: The App Service Product Team
 #email: 
-description: >- # this means to ignore newlines until "baseurl:"
+description: >- # this means to ignore newlines
   Azure App Service Blog archives.
 url: https://azure.github.io # hostname & protocol for your site, e.g. http://example.com
 baseurl: /AppService # the subpath of your site, e.g. /blog
@@ -27,6 +28,10 @@ plugins:
 paginate: 5
 paginate_path: /page:num/ 
 
+social_links:
+  github: azure/appservice
+  twitter: AzureSupport
+  
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
 # to override the default setting.
