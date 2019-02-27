@@ -5,36 +5,26 @@ categories: update
 hide_excerpt: true
 ---
 
-## What does Data Connections do?
+Data connections provides a guided experience to easily add a connection string to a new or existing **SQL Azure Database** or **Azure Storage Account**.
 
-Data connections provides a guided experience to easily add a connection string to a new or existing **SQL Azure Database** or **Azure Storage Account** for use with some of the mobile back-end features provided by **Azure App Service**.
+To simplify the user experience, the data connections feature will be removed from the Web Apps menu on April 15, 2019. The feature has a limited audience, and you can easily create connection strings manually, as we describe below.
 
-This UX walks you through the steps of:
+## How can I add a connection string manually?
 
-   1. Selecting an existing data store (SQL Azure or Azure Storage).
-   1. Crafting the connection string.
-   1. Adding the connection string for use with your app.
+### Use a new or existing data source
 
-All of the above steps can be achieved by using the Azure Portal, through ARM templates or through Azure CLI / Azure Powershell.
+First determine whether you’ll create a data store or use an existing one.
 
-Data connections is not a generic experience to add connections to other Azure resource types and as such has a very limited and niche audience. In an effort to simplify the list of items in the App Service menu we have decided to remove this feature on April 15, 2019.
-
-## How can I do this manually?
-
-### New or Existing Data store
-
-The first decision point if to determine if you are going to create a new Azure SQL database or Azure Storage account, or use an existing one.
-
-If you are going to create a new data store, you can follow the **quickstart guide** provided by the Azure Storage and Azure SQL teams:
+If you’re going to create a data store, use one of the following quickstarts:
 
 - [Quickstart: Create a storage account](https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal)
 - [Quickstart: Getting started with single databases in Azure SQL Database](https://docs.microsoft.com/azure/sql-database/sql-database-single-database-quickstart-guide)
 
-If you are using an existing data store, you can skip over to  **Crafting the connection string** section below.
+If you are using an existing data source, then your next step is to create the connection string.
 
-### Crafting the connection string
+### Create the connection string
 
-Depending on what data store you use, the connection strings can have different formats:
+Depending on what data store you use, the connection string will have a different format:
 
 #### SQL Database Connection String format
 
@@ -63,24 +53,25 @@ DefaultEndpointsProtocol=https;AccountName={your_storageAccount};AccountKey={you
 
 ___
 
-### Adding the connection string to your Web App
+### Add the connection string to your Web App
 
-In App Service, Connection Strings for your application can be managed using the **Configuration** option in the menu.
+In App Service, you can manage connection strings for your application by using the **Configuration** option in the menu.
 
 To add a connection string:
 
 1. Click on the **Application settings** tab.
-1. Click on **[+]New connection string**.
+
+1. Click on **[+] New connection string**.
 
 1. You will need to provide **Name**, **Value** and **Type** for your connection string.
 
-   - If your are adding a connection string to a SQL Azure Database choose **SQLAzure** in the type dropdown.
+   - If your are adding a connection string to a SQL Azure database choose **SQLAzure** under **type**.
 
-   - If your are adding a connection to an Azure Storage account, chose **Custom** in the type dropdown.
+   - If your are adding a connection to an Azure Storage account, chose **Custom** under **type**.
 
 ___
 
-> **NOTE** If you are adding a connection string because you are planning on using the Easy API or Easy Table features of App Service, then the connection strings used by this features expect some specific names:
+> **NOTE** If you are adding a connection string because you are planning on using the Easy API or Easy Table features, then the connection strings used by this features expect the following specific names:
 >
->- **SQL Azure:** MS_TableConnectionString
->- **Azure Storage Account:** MS_AzureStorageAccountConnectionString
+>- **Azure SQL database:** MS_TableConnectionString
+>- **Azure Storage account:** MS_AzureStorageAccountConnectionString
