@@ -28,7 +28,7 @@ Depending on what data store you use, the connection string will have a differen
 
 #### SQL Database Connection String format
 
-```Connection String
+```bash
 Data Source=tcp:{your_SQLServer},{port};Initial Catalog={your_catalogue};User ID={your_username};Password={your_password}
 ```
 
@@ -42,7 +42,7 @@ Data Source=tcp:{your_SQLServer},{port};Initial Catalog={your_catalogue};User ID
 
 #### Azure Storage Connection String format
 
-```Connection String
+```bash
 DefaultEndpointsProtocol=https;AccountName={your_storageAccount};AccountKey={your_storageAccountKey}
 ```
 
