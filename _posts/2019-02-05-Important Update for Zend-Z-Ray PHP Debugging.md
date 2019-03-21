@@ -2,6 +2,7 @@
 layout: post
 title:  "The Zend Z-Ray debugging feature will be discontinued in Azure App Service on June 7, 2019"
 categories: update
+author: "Byron Tardif"
 ---
 
 The **Z-Ray PHP debugging** feature will soon be discontinued in App Service. This shouldn’t affect the App Service service-level agreement (SLA) or the runtime behavior of your applications.

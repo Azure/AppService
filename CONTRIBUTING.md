@@ -13,6 +13,7 @@
     ```bash
     git clone https://github.com/Azure/AppService.git
     ```
+
 1. Install any missing Ruby gems:
 
     ```bash
@@ -32,20 +33,20 @@
 ## Authoring new posts
 
 1. All posts go under the `_posts` directory with the following file name format: `YYYY-MM-DD-Your Article Title.md`
-    - All new posts should be in Markdown format.
-    - Only the migrated posts are in html.
+    - All new posts should be in Markdown format. (Only  migrated posts are in html.
 
 1. Add the following to the top of your posts:
 
-    ```text
+    ```yaml
     ---
     layout: post
     title:  "<Insert your post title>"
-    categories: update
-    tags: java linux databases
+    author: "<insert your name>"
+    tags: <space-delimited tags>
     ---
     ```
-    The `categories` and `tags` sections are optional.
+
+    The `tags` section is optional.
 
 1. At the end of your post, invite readers to post questions on the [MSDN Forums](https://social.msdn.microsoft.com/forums/azure/en-US/home?forum=windowsazurewebsitespreview). Please provide a hyperlink to the forums.
 
@@ -67,6 +68,7 @@ To add images, GIFs, or other digital content to your post...
     ```text
     {{ site.baseurl }}/media/YEAR/MONTH/your_file_name.jpg
     ```
+
     For more information on `baseurl`, please see [this post](https://byparker.com/blog/2014/clearing-up-confusion-around-baseurl/).
 
 ## Publishing
@@ -78,6 +80,7 @@ To add images, GIFs, or other digital content to your post...
     git commit -m "your commit message"
     git push
     ```
+
  It takes about 60 seconds for posts to go live
 
 **Contact Jason if you have any questions.**
