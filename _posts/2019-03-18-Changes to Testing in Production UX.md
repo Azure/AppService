@@ -39,6 +39,6 @@ Until July 21st, you can remove your staging slot rules through the Resource Exp
 
     ![Click edit]({{site.baseurl}}/media/2019/03/remove-staging-rules3.PNG)
 1. Scroll down to the `routingRules` attribute and set the child `reroutePercentage`'s to `0` for any other slots
-    ![Set to zero]({{site.baseurl}}/media/2019/03/remove-staging-rules4.PNG)
+    ![Set to zero]({{site.baseurl}}/media/2019/03/remove-staging-rules4.png)
 1. Set the `reroutePercentage` to `100` for the slot current slot
 1. Scroll back up and click "Put".
