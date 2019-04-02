@@ -5,7 +5,7 @@ categories: "update"
 author: "Jason Freeberg"
 ---
 
-We will soon be rolling out a series of UX and ARM API changes that will alter the behavior of routing rules for testing in production. After May 22nd, you will no longer be able to create routing rules in staging slots from the Portal, and <u>on August 21st we will remove routing rules from all non-production slots</u>. You will still be able to route traffic from your *production* slot to your staging slots to do [testing in production](https://blogs.msdn.microsoft.com/seliot/2011/06/07/testing-in-production-tip-it-really-happensexamples-from-facebook-amazon-google-and-microsoft/). Please follow the instructions below to remove the routing rules from your staging slots.
+We will soon be rolling out a series of UX and ARM API changes that will alter the behavior of routing rules for testing in production. After May 22nd, you will no longer be able to create routing rules in staging slots from the Portal, and <u>on August 21st we will remove routing rules from all non-production slots</u>. You will still be able to route traffic from your *production* slot to your staging slots to do [testing in production](https://www.neotys.com/blog/tips-for-testing-in-production/). Please follow the instructions below to remove the routing rules from your staging slots.
 
 <!-- Add link to new docs after the changes are rolled out -->
 
