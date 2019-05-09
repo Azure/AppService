@@ -13,13 +13,42 @@ Change Analysis is embedded in App Service Diagnostics' tiles such as **Applicat
 
 ## How to enable Change Analysis
 
-Upon opening a diagnostic report page, you will see a message to enable Change Analysis. You can access the Change Analysis Settings by clicking on the **Enable Now** button.
+Upon opening a diagnostic report, you will see a message to enable Change Analysis. You can access the Change Analysis Settings by clicking on the **Enable Now** button.
 
 ![Enable Now]({{site.baseurl}}/media/2019/05/enablenow10.png)
 
-Enable Change Analysis for your main web app by toggling on the Change Analysis. This setting will enable you to get property changes. Once Change Analysis is enabled, turn on **Scan code for changes**, which will enable you to get code changes. By enabling **Scan code for changes**, your app’s Kudu will trigger a snapshot every 4 hours to capture the changes made between those time intervals. It’s best practice to enable **Always on** along with **Scan code for changes** to prevent waking up Kudu for snapshots and to minimize the impact on your application. To disable Change Analysis, you can access the **Change Analysis Settings** in the Change Analysis information in the diagnostic report page.
+Enable Change Analysis for your main web app by toggling on the Change Analysis. This setting will enable you to get property changes. Once Change Analysis is enabled, turn on **Scan code for changes**, which will enable you to get code changes. By enabling **Scan code for changes**, your app’s Kudu will trigger a snapshot every 4 hours to capture the changes made between those time intervals. It’s best practice to enable **Always on** along with **Scan code for changes** to prevent waking up Kudu for snapshots and to minimize the impact on your application.
 
 ![Change Analysis Settings]({{site.baseurl}}/media/2019/05/changeanalysissettings11.png)
+
+If you are experiencing issues with the current onboarding experience, try setting a hidden tag on your web app and refreshing the page. First, open Azure Cloud Shell in the Azure Portal.
+
+![Azure Cloud Shell]({{site.baseurl}}/media/2019/05/azurecloudshell.png)
+
+Change the shell type to PowerShell.
+
+![Powershell]({{site.baseurl}}/media/2019/05/powershell.png)
+
+Run the following command:
+
+```
+$webapp = Get-AzWebApp -Name <name_of_your_webapp>
+$tags = $webapp.Tags
+$tags[“hidden-related:diagnostics/changeAnalysisScanEnabled”]=$true
+Set-AzResource -ResourceId <your_webapp_resourceid> -Tag $tag
+```
+
+To check if your tag is added, run the following command and refresh the page:
+
+```
+$webapp = Get-AzWebApp -Name <name_of_your_webapp>
+$tags = $webapp.Tags
+$tags
+```
+
+![Checking tag]({{site.baseurl}}/media/2019/05/checkingtag.png)
+
+To disable Change Analysis, click on **Go to Change Analysis Settings** in the upper right corner of Change Analysis in the diagnostic report.
 
 ## Navigating through the change group timeline
 
@@ -41,7 +70,7 @@ After scanning is complete, you can update the timeline by clicking on **View ch
 
 ## Change Analysis in Practice
 
-Now, let’s walk you through a scenario where Change Analysis can come in very handy. For example, suppose you have noticed some downtime in your app caused by a change in app setting but you don't know what has caused the issue. First, open a diagnostic report page with Change Analysis like **Application Crashes**. Browse through the change group timeline to see if there were any changes made before the app started crashing. If you don’t find any changes on the timeline that could be related to the issue, click **Scan changes now** to update the timeline with the most recent changes. After the scanning completes, click **View changes now** to populate the timeline with the new change groups. You notice there is one change group that occurred right before the app started crashing. You can click on the change group to look at the change details. Expand the changes to view the differences. You may find that you accidentally deleted the connection string when you last made your code changes.  
+Now, let’s walk you through a scenario where Change Analysis can come in very handy. For example, suppose you have noticed some downtime in your app caused by a change in app setting but you don't know what has caused the issue. First, open a diagnostic report with Change Analysis like **Application Crashes**. Browse through the change group timeline to see if there were any changes made before the app started crashing. If you don’t find any changes on the timeline that could be related to the issue, click **Scan changes now** to update the timeline with the most recent changes. After the scanning completes, click **View changes now** to populate the timeline with the new change groups. You notice there is one change group that occurred right before the app started crashing. You can click on the change group to look at the change details. Expand the changes to view the differences. You may find that you accidentally deleted the connection string when you last made your code changes.  
 
 Used in tandem with other information, Change Analysis can serve as a powerful tool for diagnosing and solving the problems of your web app.
 
