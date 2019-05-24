@@ -21,7 +21,7 @@ You will see one of the following notifications.
 
 - Your plan is within the recommended value
 
-    ![green]({{site.baseurl}}/media/2019/05/green.JPG)
+    ![green]({{site.baseurl}}/media/2019/05/Green.JPG)
 
 - Your plan is nearing exhaustion
 
