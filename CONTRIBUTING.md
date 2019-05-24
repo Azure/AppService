@@ -32,6 +32,8 @@
 
 ## Authoring new posts
 
+1. Create a new branch for your article(s).
+    1. If you are not comfortable on the command line, check out [GitHub Desktop](https://desktop.github.com/)!
 1. All posts go under the `_posts` directory with the following file name format: `YYYY-MM-DD-Your Article Title.md`
     - All new posts should be in Markdown format. (Only  migrated posts are in html.
 
@@ -73,14 +75,7 @@ To add images, GIFs, or other digital content to your post...
 
 ## Publishing
 
-1. After you have proofread your post, you can publish to the GitHub Pages site using the following commands:
-
-    ```bash
-    git add -A
-    git commit -m "your commit message"
-    git push
-    ```
-
- It takes about 60 seconds for posts to go live
+1. After you have proofread your post, submit a pull request
+1. Tag `@jasonfreeberg` in your pull request
 
 **Contact Jason if you have any questions.**
