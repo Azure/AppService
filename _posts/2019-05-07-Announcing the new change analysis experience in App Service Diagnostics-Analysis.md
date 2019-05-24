@@ -9,7 +9,7 @@ In a fast-paced development environment, sometimes it may be difficult to keep t
 
 ## Finding Change Analysis
 
-Change Analysis is embedded in App Service Diagnostics' tiles such as **Application Crashes** so you can use it concurrently with information from other tiles. For more information on how to navigate to App Service Diagnostics, please visit [Azure App Service diagnostics overview](https://docs.microsoft.com/en-us/azure/app-service/overview-diagnostics).
+Change Analysis is embedded in App Service Diagnostics' tiles such as **Application Changes** and **Application Crashes** so you can use it concurrently with information from other tiles. For more information on how to navigate to App Service Diagnostics, please visit [Azure App Service diagnostics overview](https://docs.microsoft.com/en-us/azure/app-service/overview-diagnostics).
 
 ## How to enable Change Analysis
 
@@ -17,36 +17,9 @@ Upon opening a diagnostic report, you will see a message to enable Change Analys
 
 ![Enable Now]({{site.baseurl}}/media/2019/05/enablenow10.png)
 
-Enable Change Analysis for your main web app by toggling on the Change Analysis. This setting will enable you to get property changes. Once Change Analysis is enabled, turn on **Scan code for changes**, which will enable you to get code changes. By enabling **Scan code for changes**, your app’s Kudu will trigger a snapshot every 4 hours to capture the changes made between those time intervals. It’s best practice to enable **Always on** along with **Scan code for changes** to prevent waking up Kudu for snapshots and to minimize the impact on your application.
+Enable Change Analysis to get property changes. [Note: This setting is effective across all web apps in your subscription.] Once Change Analysis is enabled for your subscription, turn on **Scan for code changes** to get code changes for your main web app. [Note: This setting is effective per web app.] By enabling **Scan for code changes**, your app’s Kudu will trigger a snapshot every 4 hours to capture the changes made between those time intervals. It’s best practice to enable **Always on** along with **Scan for code changes** to prevent waking up Kudu for snapshots and to minimize the impact on your application.
 
 ![Change Analysis Settings]({{site.baseurl}}/media/2019/05/changeanalysissettings11.png)
-
-If you are experiencing issues with the current onboarding experience, try setting a hidden tag on your web app and refreshing the page. First, open Azure Cloud Shell in the Azure Portal.
-
-![Azure Cloud Shell]({{site.baseurl}}/media/2019/05/azurecloudshell.png)
-
-Change the shell type to PowerShell.
-
-![Powershell]({{site.baseurl}}/media/2019/05/powershell.png)
-
-Run the following command:
-
-```
-$webapp = Get-AzWebApp -Name <name_of_your_webapp>
-$tags = $webapp.Tags
-$tags[“hidden-related:diagnostics/changeAnalysisScanEnabled”]=$true
-Set-AzResource -ResourceId <your_webapp_resourceid> -Tag $tag
-```
-
-To check if your tag is added, run the following command and refresh the page:
-
-```
-$webapp = Get-AzWebApp -Name <name_of_your_webapp>
-$tags = $webapp.Tags
-$tags
-```
-
-![Checking tag]({{site.baseurl}}/media/2019/05/checkingtag.png)
 
 To disable Change Analysis, click on **Go to Change Analysis Settings** in the upper right corner of Change Analysis in the diagnostic report.
 
