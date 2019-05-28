@@ -13,6 +13,8 @@ This afternoon we released the sixth update to Azure App Service on Azure Stack.
 - Updates to core service to improve reliability and error messaging enabling easier diagnosis of common issues.
 - All other fixes and updates are detailed in the [App Service on Azure Stack Update Six Release Notes](https://docs.microsoft.com/azure/azure-stack/azure-stack-app-service-release-notes-update-six)
 
+The App Service on Azure Stack Update 6 build number is **82.0.1.50**
+
 You can download the new installer and helper scripts:
 
 - [Installer](https://aka.ms/appsvcupdate6installer)
