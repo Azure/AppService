@@ -5,7 +5,7 @@ author: "Yun Jung Choi"
 tags: app service, azure app service, diagnostics, support, web app, troubleshooting, self-help
 ---
 
-In a fast-paced development environment, sometimes it may be difficult to keep track of all the changes made to your app and let alone pinpoint on a change that caused an unhealthy behavior. Change Analysis can help you narrow down on the changes made to your app to facilitate trouble-shooting experience.
+In a fast-paced development environment, sometimes it is difficult to keep track of all the changes made to your app... let alone pinpoint a change that caused an unhealthy behavior. Change Analysis can help you narrow down on changes made to your app to facilitate the trouble-shooting experience.
 
 ## Finding Change Analysis
 
@@ -25,7 +25,7 @@ To disable Change Analysis on your web app, click on **Go to Change Analysis Set
 
 ## Navigating through the change group timeline
 
-Once Change Analysis is enabled, you will be able to see a **change group timeline** embedded in diagnostic reports. A change group is a group of changes captured at the same time stamp and is represented by a square box on the timeline. You can click on each change group to view individual changes in the **change chart** below. You can also use the search bar to filter for changes that have your search term.
+Once Change Analysis is enabled, you will see a **change group timeline** embedded in the diagnostic reports. A change group is a group of changes captured at the same time stamp and is represented by a square box on the timeline. You can click on each change group to view individual changes in the **change chart** below. You can also use the search bar to filter for changes that have your search term.
 
 ![Change group timeline and chart]({{site.baseurl}}/media/2019/05/changegrouptimelineandchart12.png)
 
@@ -43,8 +43,8 @@ After scanning is complete, you can update the timeline by clicking on **View ch
 
 ## Change Analysis in Practice
 
-Now, let’s walk you through a scenario where Change Analysis can come in very handy. For example, suppose you have noticed some downtime in your app caused by a change in app setting but you don't know what has caused the issue. First, open a diagnostic report with Change Analysis like **Application Crashes**. Browse through the change group timeline to see if there were any changes made before the app started crashing. If you don’t find any changes on the timeline that could be related to the issue, click **Scan changes now** to update the timeline with the most recent changes. After the scanning completes, click **View changes now** to populate the timeline with the new change groups. You notice there is one change group that occurred right before the app started crashing. You can click on the change group to look at the change details. Expand the changes to view the differences. You may find that you accidentally deleted the connection string when you last made your code changes.  
+Now, let’s walk through a scenario where Change Analysis can be helpful. Suppose you have noticed some downtime in your app caused by a changed App Setting, but you do not know what has caused the issue. First, open a diagnostic report with Change Analysis like **Application Crashes**. Browse through the change group timeline to see if there were any changes made before the app started crashing. If you do not find any changes on the timeline that could be related to the issue, click **Scan changes now** to update the timeline with the most recent changes. After the scanning completes, click **View changes now** to populate the timeline with the new change groups. You notice there is one change group that occurred right before the app started crashing. You can click on the change group to look at the change details. Expand the changes to view the differences. You may find that you accidentally deleted the connection string when you last made your code changes.  
 
-Used in tandem with other information, Change Analysis can serve as a powerful tool for diagnosing and solving the problems of your web app.
+Used in tandem with other information, Change Analysis can serve as a powerful tool for diagnosing and solving problems with your web app.
 
 Feel free to post any questions about Change Analysis on the [MSDN Forum](https://social.msdn.microsoft.com/forums/azure/en-US/home?forum=windowsazurewebsitespreview).
