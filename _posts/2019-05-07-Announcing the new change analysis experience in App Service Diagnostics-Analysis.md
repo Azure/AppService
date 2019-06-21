@@ -17,11 +17,11 @@ Upon opening a diagnostic report, you will see a message to enable Change Analys
 
 ![Enable Now]({{site.baseurl}}/media/2019/05/enablenow10.png)
 
-Enable Change Analysis to get property changes. [Note: This setting is effective across all web apps in your subscription.] Once Change Analysis is enabled for your subscription, turn on **Scan for code changes** to get code changes for your main web app. [Note: This setting is effective per web app.] By enabling **Scan for code changes**, your app’s Kudu will trigger a snapshot every 4 hours to capture the changes made between those time intervals. It’s best practice to enable **Always on** along with **Scan for code changes** to prevent waking up Kudu for snapshots and to minimize the impact on your application.
+Turn on **Change Analysis** and click **Save** to get property changes and code changes for your main web app. [Note: If you are using Change Analysis for the first time, enabling this setting will register Change Analysis Resource Provider on your subscription.] By enabling **Change Analysis**, your app’s Kudu will trigger a snapshot every 4 hours to capture the changes made between those time intervals.
 
 ![Change Analysis Settings]({{site.baseurl}}/media/2019/05/changeanalysissettings11.png)
 
-To disable Change Analysis, click on **Go to Change Analysis Settings** in the upper right corner of Change Analysis in the diagnostic report.
+To disable Change Analysis on your web app, click on **Go to Change Analysis Settings** in the upper right corner of Change Analysis in the diagnostic report. [Note: Change Analysis Resource Provider is still registered on the subscription of your web app.] To unregister Change Analysis Resource Provider from your subscription, navigate to your subscription, click **Resource providers** in the left navigation, select **Microsoft.ChangeAnalysis**, and click **Unregister**.
 
 ## Navigating through the change group timeline
 
