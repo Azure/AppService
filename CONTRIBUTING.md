@@ -1,6 +1,6 @@
 # Instructions for posting content
 
-> For **Antares team** members only
+> For **Antares team** members only. Email Jason Freeberg if you have any questions.
 >
 > **Note:** You must have contributor access to the repository to publish.
 
@@ -8,7 +8,7 @@
 
 1. Download and install the [Ruby development kit](https://jekyllrb.com/docs/installation/)
 
-1. Clone the Jekyll project
+1. Clone the project
 
     ```bash
     git clone https://github.com/Azure/AppService.git
@@ -26,45 +26,44 @@
     bundle exec jekyll serve
     ```
 
-    The blog will now be running at <http://127.0.0.1:4000/AppService/>
+    The blog will be running at <http://127.0.0.1:4000/>
 
-> **VSCODE** If you are using VSCode to author blog post please install [Markdown Linting extension](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint)
+> **VSCODE**: If you are using VSCode to author your blog post, please install [Markdown Linting extension](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint)
 
-## Authoring new posts
+## Authoring your post
 
 1. Create a new branch for your article(s).
-    1. If you are not comfortable on the command line, check out [GitHub Desktop](https://desktop.github.com/)!
-1. All posts go under the `_posts` directory with the following file name format: `YYYY-MM-DD-Your Article Title.md`
-    - All new posts should be in Markdown format. (Only  migrated posts are in html.
+    - If you are not comfortable on the command line, download [GitHub Desktop](https://desktop.github.com/).
+
+1. Create a markdown file under the `_posts` directory with the following file name format: `YYYY-MM-DD-Your Article Title.md`
 
 1. Add the following to the top of your posts:
 
     ```yaml
     ---
-    layout: post
-    title:  "<Insert your post title>"
-    author: "<insert your name>"
-    tags: <space-delimited tags>
+    title: "Title should be the same (or similar to) your filename"
+    author: "Your Name"
+    layout: single
+    tags:
+        - example
+        - multiple words
+        - no more than 3 tags
     ---
     ```
 
     The `tags` section is optional.
 
-1. At the end of your post, invite readers to post questions on the [MSDN Forums](https://social.msdn.microsoft.com/forums/azure/en-US/home?forum=windowsazurewebsitespreview). Please provide a hyperlink to the forums.
-
-1. Now you can author your markdown-formatted post. When you save the file, the local server will update the file in the browser.
-
-1. For Markdown syntax, please see the [Markdown cheat-sheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet).
-
-1. For Jekyll-related formatting, please see these [Jekyll Docs](https://jekyllrb.com/docs/posts/).
+1. Now you can author your markdown-formatted post. When you save the file, the local server will update the file in the browser (~30 second lag time).
+    - For Markdown syntax, please see the [Markdown cheat-sheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet).
+    - For Jekyll-related formatting, please see these [Jekyll Docs](https://jekyllrb.com/docs/posts/).
+    - Our blog uses the popular [Minimal Mistakes](https://github.com/mmistakes) theme. If you would like to do advanced markup for your post, please see the theme [configuration guide](https://mmistakes.github.io/minimal-mistakes/docs/posts/).
 
 ## Digital Content
 
 To add images, GIFs, or other digital content to your post...
 
-1. Add the content file under the `/media/YEAR/MONTH/` directory.
-    - Where `YEAR` is the current year. If the directory does not yet exist, please create one.
-    - Where `MONTH` is the current year. If the directory does not yet exist, please create one.
+1. Add the file under the `/media/YEAR/MONTH/` directory.
+    - Where `YEAR` and `MONTH` are the current year and month. If the directory for the year or month does not yet exist, please create one.
 1. Once the file is added, you can link to the file in your markdown using the path:
 
     ```text
@@ -75,7 +74,8 @@ To add images, GIFs, or other digital content to your post...
 
 ## Publishing
 
-1. After you have proofread your post, submit a pull request
+1. Proofread your post for spelling and grammar
+    - **Pro-Tips**: Copy/paste your content into Word and install the VSCode [Markdown Linting extension](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint).
+1. Submit a pull request
 1. Tag `@jasonfreeberg` in your pull request
-
-**Contact Jason if you have any questions.**
+    - Send an email if it is high priority

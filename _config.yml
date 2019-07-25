@@ -21,11 +21,11 @@ title_separator          : "-"
 subtitle                 : "" # site tagline that appears below site title in masthead
 name                     : "Azure App Service"
 description              : "Azure App Service team blog archives."
-url                      : "https://azure.github.io/AppService/" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
+url                      : "https://azure.github.io/AppService" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : "Azure/AppService" # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
-teaser                   : # path of fallback teaser image, e.g. "/assets/images/500x300.png"
-logo                     : # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
+teaser                   : "media/pages/og-wide-image.png" # path of fallback teaser image, e.g. "/assets/images/500x300.png"
+logo                     : "media/pages/icon.png" # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
 masthead_title           : # overrides the website title displayed in the masthead, use " " for no title
 # breadcrumbs            : false # true, false (default)
 words_per_minute         : 200
@@ -81,6 +81,7 @@ google_site_verification :
 bing_site_verification   :
 yandex_site_verification :
 naver_site_verification  :
+lang: "en_US"
 
 # Social Sharing
 twitter:
@@ -89,19 +90,19 @@ facebook:
   username               :
   app_id                 :
   publisher              :
-og_image                 : # Open Graph/Twitter default site image
+og_image                 : "media/pages/og-wide-image.png" # Open Graph/Twitter default site image
 # For specifying social profiles
 # - https://developers.google.com/structured-data/customize/social-profiles
 social:
-  type                   : # Person or Organization (defaults to Person)
+  type                   : "Organization" # Person or Organization (defaults to Person)
   name                   : # If the user or organization name differs from the site's name
   links: # An array of links to social media profiles
 
 # Analytics
 analytics:
-  provider               : false # false (default), "google", "google-universal", "custom"
+  provider               : "google" # false (default), "google", "google-universal", "custom"
   google:
-    tracking_id          :
+    tracking_id          : UA-112478220-2
     anonymize_ip         : # true, false (default)
 
 
@@ -119,18 +120,16 @@ author:
     - label: "Website"
       icon: "fas fa-fw fa-link"
       url: "https://azure.microsoft.com/en-us/services/app-service/"
+    - label: Subscribe
+      icon: "fa fa-rss"
+      url: "/feed.xml"
     - label: "Twitter"
       icon: "fab fa-fw fa-twitter-square"
       # url: "https://twitter.com/"
-    - label: "Facebook"
-      icon: "fab fa-fw fa-facebook-square"
-      # url: "https://facebook.com/"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       # url: "https://github.com/"
-    - label: "Instagram"
-      icon: "fab fa-fw fa-instagram"
-      # url: "https://instagram.com/"
+
 
 # Site Footer
 footer:
@@ -138,20 +137,20 @@ footer:
     - label: "Twitter"
       icon: "fab fa-fw fa-twitter-square"
       url: "https://twitter.com/Azure"
-    - label: "Facebook"
-      icon: "fab fa-fw fa-facebook-square"
+      # - label: "Facebook"
+      #   icon: "fab fa-fw fa-facebook-square"
       # url:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/Azure/AppService"
-    - label: "GitLab"
-      icon: "fab fa-fw fa-gitlab"
+      # - label: "GitLab"
+      #   icon: "fab fa-fw fa-gitlab"
       # url:
-    - label: "Bitbucket"
-      icon: "fab fa-fw fa-bitbucket"
-      # url:
-    - label: "Instagram"
-      icon: "fab fa-fw fa-instagram"
+      # - label: "Bitbucket"
+      #   icon: "fab fa-fw fa-bitbucket"
+      #   # url:
+      # - label: "Instagram"
+      #   icon: "fab fa-fw fa-instagram"
       # url:
 
 

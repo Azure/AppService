@@ -1,5 +1,4 @@
 ---
-title: "Important Update for Zend-Z-Ray PHP Debugging" 
 title:  "The Zend Z-Ray debugging feature will be discontinued in Azure App Service on June 7, 2019"
 author: "Byron Tardif"
 ---

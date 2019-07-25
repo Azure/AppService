@@ -1,6 +1,5 @@
 ---
 title: "App Service Plan Density Check" 
-title: "App Service Plan Density Check"
 author: "Khaled Zayed"
 tags: 
     - app service plan

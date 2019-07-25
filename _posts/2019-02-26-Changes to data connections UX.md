@@ -1,5 +1,4 @@
 ---
-title: "Changes to data connections UX" 
 title:  "The Data Connections will be removed from Web App menu"
 tags:
     - Azure Portal
