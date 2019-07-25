@@ -1,0 +1,132 @@
+---
+layout: post
+hide_excerpt: true
+---
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Chris Gillum (MSFT)" target="_blank">Chris Gillum (MSFT)</a>
+<time>    9/25/2017 3:42:46 PM</time>
+<hr/>
+<div id="content"><em>The following is a blog post written by one of our many amazing summer interns, Glenna. I had the pleasure of mentoring Glenna this past summer as she worked on a very exciting internship project: The Microsoft Graph bindings for Azure Functions, which was recently announced at Microsoft Ignite 2017. Glenna worked tirelessly on this project and was responsible for large parts of the implementation as well as presenting the project to her peers and local executives (and she did an excellent job at both). Unfortunately she had to head back to school before we could publish this post, but now that it's been productized and announced we are finally free to unleash it. :)</em>
+<em>Thank you Glenna for your awesome contributions to our team and to our customers. We can't wait to have you come back and join us full-time after your graduation!</em>
+<em>As an aside, it's very important to us on the Azure App Service team that our interns get to work on projects that are fun, challenging, have a legitimate business impact, and actually ship to production. The Microsoft Graph bindings and associated Azure Functions portal work is just one example among many others, and we're really excited to be able to finally showcase it.</em>
+<em>Here is Glenna in her own words (with a few edits from the team based on some changes that were made after she returned to school). Consider the content of this post as supplementary to our <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-microsoft-graph">official documentation</a>.</em>
+<h2>Personal Introduction</h2>
+<img class="alignleft" height="179" src="https://avatars2.githubusercontent.com/u/10789958?v=4&amp;s=460" width="179"/>
+
+My name is Glenna and I am a software engineering intern on the Azure Functions team in Redmond, WA. As I write this, I am finishing up my last day on my twelfth and final week at Microsoft. My internship was a truly incredible experience. I learned a great deal not just about specific programming languages, but also about good engineering design practices. I got to work on both the nuts and bolts of my features as well as the Azure Functions Portal UX and UI.
+
+I attend the University of Virginia in Charlottesville, Virginia. In May of 2018, I will graduate with a Bachelor of Science in Computer Science.
+<h2>Introduction</h2>
+Microsoft Graph bindings extend the existing Microsoft Graph SDK and WebJobs framework to allow users easy access to Microsoft Graph data (emails, OneDrive files, events, etc.) from Azure Functions.
+
+By using the Office input, output, and trigger bindings, users can bind to user-defined types, primitives, or directly to Microsoft Graph SDK objects like <strong>WorkbookTables</strong> and <strong>Messages</strong>. These bindings handle Azure AD authentication, Azure AD token exchange, and token refresh, allowing users to focus on writing code that utilizes Microsoft Graph data.
+<h2>Features</h2>
+Currently, the bindings can be grouped into four main categories:<span> </span><strong>Excel, Outlook, OneDrive, and Webhooks</strong>.
+<h4>Excel [Input + Output]</h4>
+The Excel binding allows users to read/write Excel workbooks and tables using different data types, like lists of user-defined types or 2D string arrays.
+<h4>Outlook [Output]</h4>
+The Outlook binding is an output only binding, and allows users to send emails from their Office 365 email accounts.
+<h4>OneDrive [Input + Output]</h4>
+The OneDrive binding allows users to read/write files stored in their OneDrive using several different data types (e.g. DriveItems and Streams).
+<h4>Graph Webhooks [Trigger + Input + Output]</h4>
+There are two bindings associated with Graph webhooks: <strong>GraphWebhookTrigger</strong> and <strong>GraphWebhookSubscription</strong>.
+<h4>GraphWebhookSubscription [Input + Output]</h4>
+The <strong>GraphWebhookSubscription</strong> <em>input binding</em> allows the retrieval of Microsoft Graph webhook subscriptions that the function app has created. The <strong>GraphWebhookSubscription</strong> <em>output binding</em> handles webhook subscription creation, as well as renewal and deletion. Without renewal, most Microsoft Graph webhooks expire in <a href="https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/resources/subscription">3 days</a>. Deleting a webhook subscription removes the subscription from the Microsoft Graph account, as well as all references to that subscription in your Function app. Both the refresh and delete output bindings are best used in conjunction with the input binding, as they operate on current webhook subscription ids.
+<h4>GraphWebhookTrigger [Trigger]</h4>
+The GraphWebhookTrigger binding allows users to subscribe to notifications about supported Microsoft Graph resources, including email messages, OneDrive root, contacts, and events.
+
+If you examine the wire protocol, the notification payload from Microsoft Graph is very lightweight; it only contains a webhook subscription ID and the subscribed resource. In order to provide detailed information to the function code, the webhook trigger internally uses a local store of webhook subscription data (stored by the GraphWebhookSubscription binding at subscription creation), maps the webhook subscription ID to a user, performs a silent GET request for the specified resource and transforms that payload into either a JSON object or a Microsoft Graph SDK type (e.g. Message, Contact) which can then be accessed directly by the function code.
+<h2>Identity</h2>
+Actions mentioned can be performed using the current Office 365 user's identity, or using the Azure AD service principal identity of the function app. Which identity is used is up to the Function author. In order to authenticate against the Microsoft Graph <em>as a specific user</em>, either an ID token or an Azure AD Principal ID must be given to the binding. This identifier can come from a number of different sources. Examples of these sources include the currently authenticated Azure AD user (which can be captured from a session cookie or a bearer token), the content of an HTTP request, a queue, or an app setting.
+<h2>Examples</h2>
+An easily imagined scenario for these bindings is a business owner with customers who subscribe to their monthly newsletter. Customers provide their names and email addresses, which then must be added to an Excel file of customers.
+
+Using the Excel output binding, the business owner can select which Excel table to modify.<span> </span>
+
+[caption id="attachment_5996" align="alignnone" width="997"]<a href="{{ site.baseurl }}/media/2017/09/Excel-output.png"><img alt="" class="size-full wp-image-5996" height="662" src="{{ site.baseurl }}/media/2017/09/Excel-output.png" width="997"/></a> Excel output binding[/caption]
+
+The function code to append the Excel row is only a few lines long. In this example, the function receives a POST request with a user's name and email address and converts it into a custom <code>EmailRow</code> (POCO) type using the runtime's dynamic binding capabilities to remove the need for JSON manipulation.
+<div class="highlight highlight-source-cs">
+<pre><span class="pl-k">using</span> <span class="pl-en">System.Net</span>;
+
+<span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">async</span> <span class="pl-en">Task</span> <span class="pl-en">Run</span>(
+<span class="pl-en">    HttpRequestMessage</span> <span class="pl-smi">req</span>,
+<span class="pl-en">    IAsyncCollector</span>&lt;<span class="pl-en">EmailRow</span>&gt; <span class="pl-smi">outputTable</span>)
+{
+    <span class="pl-c">// Get request body</span>
+    <span class="pl-k">dynamic</span> <span class="pl-en">data</span> = <span class="pl-k">await</span> req.Content.ReadAsAsync&lt;<span class="pl-k">object</span>&gt;();
+
+    <span class="pl-c">// Use body data to set row data</span>
+    <span class="pl-k">var</span> <span class="pl-en">output </span>= <span class="pl-k">new</span> <span class="pl-en">EmailRow</span> {
+        Name = data?.name,
+        Email = data?.email
+    };
+    <span class="pl-k">await</span> outputTable.AddAsync(output);
+}
+
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">EmailRow</span> {
+    <span class="pl-k">public </span><span class="pl-k">string</span> <span class="pl-en">Name</span> {<span class="pl-k">get</span>; <span class="pl-k">set</span>;}
+    <span class="pl-k">public </span><span class="pl-k">string</span> <span class="pl-en">Email</span> {<span class="pl-k">get</span>; <span class="pl-k">set</span>;}
+}</pre>
+</div>
+Every month, a timer trigger (or some other trigger type) fires and an email, the contents of which are determined by a OneDrive file, is sent out to each customer.
+
+The business owner can select the same Customers Excel file (Excel input binding)...
+
+[caption id="attachment_5995" align="alignnone" width="984"]<a href="{{ site.baseurl }}/media/2017/09/Excel-Input.png"><img alt="" class="size-full wp-image-5995" height="617" src="{{ site.baseurl }}/media/2017/09/Excel-Input.png" width="984"/></a> Excel input binding[/caption]
+
+...determine which OneDrive file to get the email contents from (OneDrive input binding)...
+
+[caption id="attachment_6015" align="alignnone" width="978"]<a href="{{ site.baseurl }}/media/2017/09/OneDrive-input-binding.png"><img alt="" class="size-full wp-image-6015" height="533" src="{{ site.baseurl }}/media/2017/09/OneDrive-input-binding.png" width="978"/></a> OneDrive input binding[/caption]
+
+...and indicate that they would like to send emails via the Outlook output binding.<span> </span>
+
+[caption id="attachment_6026" align="alignnone" width="993"]<a href="{{ site.baseurl }}/media/2017/09/Email-output-binding.png"><img alt="" class="size-full wp-image-6026" height="486" src="{{ site.baseurl }}/media/2017/09/Email-output-binding.png" width="993"/></a> Outlook mail output binding[/caption]
+
+The code below quickly scans the Excel table and sends out one email per row (customer).
+<div class="highlight highlight-source-cs">
+<pre>#<span class="pl-en">r</span> "Microsoft.Graph"
+
+using System;
+<span class="pl-k">using</span> <span class="pl-en">Microsoft.Graph</span>;
+
+<span class="pl-c">// Send one email per customer</span>
+<span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">void</span> <span class="pl-en">Run</span>(<span class="pl-en">TimerInfo</span> <span class="pl-smi">myTimer</span>, <span class="pl-en">TraceWriter</span> <span class="pl-smi">log</span>, 
+    <span class="pl-en">List</span>&lt;<span class="pl-en">EmailRow</span>&gt; <span class="pl-smi">inputTable</span>, <span class="pl-k">string</span> <span class="pl-smi">file</span>, <span class="pl-en">ICollector</span>&lt;<span class="pl-en">Message</span>&gt; <span class="pl-smi">emails</span>)
+{
+<span class="pl-c">    // Iterate over the rows of customers</span>
+    <span class="pl-k">foreach</span>(var row <span class="pl-k">in</span> inputTable) {
+        <span class="pl-k">var</span> <span class="pl-en">email </span>= <span class="pl-k">new</span> <span class="pl-en">Message</span> {
+            Subject = <span class="pl-s"><span class="pl-pds">"</span>Monthly newsletter<span class="pl-pds">"</span></span>,
+            Body = <span class="pl-k">new</span> <span class="pl-en">ItemBody</span> {
+                Content = file, <span class="pl-c">//contents of email determined by OneDrive file</span>
+                ContentType = BodyType.Html
+            },
+            ToRecipients = <span class="pl-k">new</span> <span class="pl-en">Recipient</span>[] {
+                <span class="pl-k">new</span> <span class="pl-en">Recipient</span> {
+                    EmailAddress = <span class="pl-k">new</span> <span class="pl-en">EmailAddress</span> {
+                        Address = row.Email,
+                        Name = row.Name
+                    }
+                }
+            }
+        };
+        emails.Add(email);
+    }
+}
+
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">EmailRow</span> {
+    <span class="pl-k">public </span><span class="pl-k">string</span> <span class="pl-en">Name</span> { <span class="pl-k">get</span>; <span class="pl-k">set</span>; }
+    <span class="pl-k">public </span><span class="pl-k">string</span> <span class="pl-en">Email</span> { <span class="pl-k">get</span>; <span class="pl-k">set</span>; }
+}</pre>
+</div>
+The aforementioned goals can be accomplished using just a few lines of code.<span> </span><strong>No manual data entry, no hardwiring, and no additional services.</strong></div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
+</html>

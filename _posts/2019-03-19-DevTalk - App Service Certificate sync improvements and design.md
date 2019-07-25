@@ -1,7 +1,8 @@
 ---
-layout: post
+title: "DevTalk - App Service Certificate sync improvements and design" 
 title:  "//DevTalk - App Service Certificate - New Sync and Export experiences"
-categories: "appservicecertificate"
+tags: 
+    - certificates
 author: "Chibi Vikramathithan"
 ---
 

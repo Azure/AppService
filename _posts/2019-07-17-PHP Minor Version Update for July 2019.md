@@ -1,4 +1,5 @@
 ---
+title: "PHP Minor Version Update for July 2019" 
 title:  "PHP Minor Version Update for July 2019"
 author: "Eric Stenson"
 tags: PHP

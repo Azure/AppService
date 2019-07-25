@@ -1,0 +1,54 @@
+---
+layout: post
+hide_excerpt: true
+---
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Chris Anderson (Azure)" target="_blank">Chris Anderson (Azure)</a>
+<time>    9/1/2016 11:20:33 AM</time>
+<hr/>
+<div id="content"><p>We're happy to announce we've officially released Azure Functions host version 0.5 into our Public Preview, as well as some updates to our Portal experience. The host version does include several breaking changes, so please read the release notes before upgrading. We will also be updating our default version in create to ~0.5 as well, so new deployments that don't specify a version will be on the latest.</p>
+<h2 id="f-support-now-in-preview">F# support now in preview</h2>
+<p>Thanks to the excellent work by the F# team including <a href="https://github.com/dsyme">Don Syme</a> and <a href="https://github.com/tpetricek">Tomas Petricek</a>, we're happy to announce we finally support F# in a first-class fashion in Azure Functions. Previously, we just invoked your F# script via fsi. Today, it now running hot in our runtime, with support for input and output bindings. Note that this new F# experience is incompatible with the previous versions.</p>
+<p>Here's a quick sample that would work off of a Queue trigger.</p>
+<pre><code class="lang-fsharp">let Run (input: string, log: TraceWriter) =  
+    log.Info(sprintf "F# script processed queue message '%s'" input)
+</code></pre>
+<p>If you are familiar with the C# experience, you'll remember the <code>TraceWriter</code>. This is because we support all the same types that C# supports. We haven't finished updating the documentation yet, but we'll be soon updating the <a href="https://azure.microsoft.com/en-us/documentation/articles/functions-reference-csharp/">C# docs to be the .NET docs</a>. </p>
+<p>For those curious in how it was built, feel free to check out <a href="https://github.com/Azure/azure-webjobs-sdk-script/pull/577">PR #577</a>.</p>
+<h2 id="other-breaking-changes-improvements">Other breaking changes &amp; improvements</h2>
+<p>In addition to F# support, we have a few other breaking changes and notable improvements. You can read our full release notes on <a href="https://github.com/Azure/azure-webjobs-sdk-script/releases/tag/v1.0.0-beta1-10398">0.5 release on GitHub</a>.</p>
+<ul>
+<li>Now using Node <code>v6.4.0</code> (previously <code>v5.9.1</code>) - next update will be to <a href="https://github.com/nodejs/LTS">Node v6 LTS sometime October</a>.</li>
+<li>HTTP Trigger now supports <a href="https://github.com/Azure/azure-webjobs-sdk-script/blob/dev/sample/HttpTrigger-CSharp-Poco/run.csx">binding to body/querystring properties</a>.</li>
+<li>Event Hub trigger can now configure <code>maxBatchSize</code> and <code>prefetchCount</code> for advanced scenarios.</li>
+<li>C# Package Restore automatic restore improvements</li>
+<li>Logging improvements for performance and usability</li>
+<li>File Watcher can now be configured for where to look for changes.</li>
+<li><code>context.bindingData</code> property casing is now lower camel cased (previously upper camel cased)</li>
+<li>Twilio is now supported as a binding by the host.</li>
+</ul>
+<h2 id="portal-updates">Portal updates</h2>
+<p>We also have some large updates to the portal experience rolling out today. Below are some highlights:</p>
+<ul>
+<li>Localization is now available for many languages</li>
+<li>Tabs have all been moved to the left nav, rather than left and top. This change happened to improve usability in understanding Functions vs Function Apps.</li>
+<li>Actions for certain output bindings on Integrate tab. We found it was common to copy+paste settings from an output binding to a new trigger, so we added a button to do it for you.</li>
+<li>Dropdown pickers for connections - if you have an existing connection to Storage/etc., we'll show you those in a dropdown menu, rather than always having to choose from the picker blade (which can have LOTS of choices for large, shared subscriptions).</li>
+<li>Documentation is now available in the Integrate tab. This will hopefully make it more obvious how to use the bindings when you add them/modify them, rather than knowing where in the main docs site to look.</li>
+<li>You can now delete/rename files from the file explorer menu on the Develop Tab.</li>
+<li>Better whitespace usage on Integrate tab</li>
+<li>App Settings, Kudu, and Console now available from the Function App Settings menu, rather than having to jump through Advanced Settings.</li>
+</ul>
+<h2 id="what-comes-next-">What comes next?</h2>
+<p>With this release complete, we'll be starting our next wave of planning. We need and look forward to your feedback. You can submit general feedback on <a href="https://feedback.azure.com/forums/355860-azure-functions">feedback.azure.com</a> or, if you feel familiar with our host or portal, you can submit issues directly on GitHub (<a href="https://github.com/Azure/azure-webjobs-sdk-script">Host GitHub</a> &amp; <a href="https://github.com/projectkudu/AzureFunctionsPortal">Portal GitHub</a>). Most of our planning happens on GitHub, so you can see things coming as they are in progress. </p>
+<p>Feel free to ask questions below or reach out to us on Twitter via <a href="https://twitter.com/azurefunctions">@AzureFunctions</a>. We hope you have fun with the new changes. We're looking forward to seeing what you do!</p>
+</div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
+</html>

@@ -1,0 +1,77 @@
+---
+layout: post
+hide_excerpt: true
+---
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/mksunitha" target="_blank">mksunitha</a>
+<time>    5/9/2016 2:06:05 PM</time>
+<hr/>
+<div id="content">Every website for a company or personal wants to engage their customers , but if your website takes too long to load then you lose your users. For different types of applications, there are different options to prevent this from happening . In the blog post below we are going to discuss how we can improve Joomla web app fast and respond to users quickly by just making some or all the tweaks mentioned below.
+<h2>Enable Joomla Caching</h2>
+Caching is not enabled by default when you set up Joomla web app. Joomla does the following when displaying a page:
+<ul>
+<li>get the content from its database</li>
+<li>loads all the plugins, components and/or modules</li>
+<li>loads your template file</li>
+<li>finally brings this all together in a single page rendered in visitor's browser</li>
+</ul>
+This workflow of tasks can take time. Joomla has built-in caching mechanism that can help to load the page faster. Joomla supports two types of caching well explained<span class="Apple-converted-space"> </span><a href="http://stackoverflow.com/questions/12739297/what-is-difference-between-conservative-caching-and-progressive-caching-in-jooml">here</a>
+<strong>Conservative caching</strong><span class="Apple-converted-space"> </span>is the standard type of caching. The caching process work as described below:
+
+<em>When a page is requested by a user, Joomla checks if there is a version of that page requested that is in its cache directory. If the page exists and hasn't expired , Joomla will serve it to the visitor. Otherwise, a cached version of the page is created, and that cached version will be served to the visitor, and to every other consequent visitor, as long as the page is not expired.</em>
+<strong>Progressive caching</strong><span class="Apple-converted-space"> </span>process is different from conservation caching .The caching process works as described below:
+
+<em>When a page is requested by a user , Joomla checks if a cached version of that page exists for that visitor . If its exists and hasn't  expired then it’ll be served to the visitor, otherwise, Joomla will create the cached page for that specific visitor and then will serve it to the user.  If another visitor  who had visited that same page previously and visits that page the second time, then Joomla will not serve the cached page of the previous visitor, instead, it will create a cached version of that page specifically for that user, and then serves it to him.</em>
+
+To enable the Joomla caching, go to <strong>System -&gt; Global Configuration</strong>.Next, you need to click on the <strong>System</strong> tab and find  the <strong>Cache Settings</strong>. Select<span class="Apple-converted-space"> </span><strong>ON - Conservative caching</strong> option with cache handle being<span class="Apple-converted-space"> </span><strong>Windows Cache</strong><span class="Apple-converted-space"> </span>( Wincache) and Click on<span class="Apple-converted-space"> </span><strong>Save</strong>
+<a href="https://sunithamk.files.wordpress.com/2016/05/cache-on.png"><img alt="cache-on" class="alignnone wp-image-1011 size-medium" height="147" src="https://sunithamk.files.wordpress.com/2016/05/cache-on.png?w=300" width="300"/></a>
+
+Go to<span class="Apple-converted-space"> </span><strong>Extensions -&gt; Plugin Manager</strong><span class="Apple-converted-space"> </span>and Enable the <strong>System - Page Cache</strong> core plugin. Note if this plugin is not enabled, caching will not work even though Global configuration settings is set to use Conservative caching
+
+<a href="https://sunithamk.files.wordpress.com/2016/05/system-cache.png"><img alt="system-cache" class="alignnone size-full wp-image-1012" height="194" src="https://sunithamk.files.wordpress.com/2016/05/system-cache.png" width="920"/></a>
+
+You can use additional caching extensions to improve the caching capability of Joomla such as <a href="http://extensions.joomla.org/extensions/core-enhancements/performance/cache/13155">JotCache</a> and <a href="http://www.nonumber.nl/extensions/cachecleaner">Cache Cleaner</a>.
+<h2>Use Joomla Memcache caching</h2>
+You can opt for using Joomla Memcache caching mechanism instead of built-in caching feature.  Azure web app supports Memcache protocol with Azure Redis cache. To lean more , read this<span class="Apple-converted-space"> </span><a href="https://azure.microsoft.com/en-us/documentation/articles/web-sites-connect-to-redis-using-memcache-protocol/">article</a>.
+<h2>Enable Joomla Compression</h2>
+Gzip Compression is enabled by default on web app at the server level. But for the application to use the GZip compression , you need to enable it within Joomla configuration.
+
+Login to the Joomla web app admin dashboard and go to <strong>System -&gt; Global Configuration</strong>. Click on the <strong>Server</strong> tab and enable GZip page compression. Click on Save to save your changes.
+
+<a href="https://sunithamk.files.wordpress.com/2016/05/gzip-enable.png"><img alt="gzip-enable" class="alignnone size-full wp-image-1009" height="323" src="https://sunithamk.files.wordpress.com/2016/05/gzip-enable.png" width="920"/></a>
+<h2>Use IIS output caching</h2>
+The IIS Output Caching feature targets semi-dynamic content. It allows you to cache static responses for dynamic requests and to gain tremendous scalability.
+Update your<span class="Apple-converted-space"> </span><span style="text-decoration: underline"><em>web.config</em></span><span class="Apple-converted-space"> </span>and add the following section to cache your content.
+<pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;configuration&gt;
+   &lt;system.webServer&gt;
+     &lt;caching&gt;
+       &lt;profiles&gt;
+         &lt;add extension=".php"  policy="CacheUntilChange" /&gt;
+      &lt;/profiles&gt;
+     &lt;/caching&gt;
+   &lt;/system.webServer&gt;
+&lt;/configuration&gt;</pre>
+To learn more , check out this<span class="Apple-converted-space"> </span><a href="https://blogs.msdn.microsoft.com/brian_swan/2011/06/08/performance-tuning-php-apps-on-windowsiis-with-output-caching/">article</a>.
+<h2>Remove  extensions not in use</h2>
+Since Joomla would need to identify which extensions to use it has to scan through all the extensions. This can cause your page to take longer to load. If you have any extensions not in use , please remove them from your production app.Note You can have those extensions in your development or testing environment sites to identify the best extension that fits your needs.
+<h2>Minify CSS and JS</h2>
+Use extensions like<span class="Apple-converted-space"> </span><a href="http://extensions.joomla.org/extensions/core-enhancements/performance/site-performance/12088">JCH Optimize</a> which minifies , compresses Javascript to improve page response time.
+<h2>Use CDN</h2>
+Enable Azure CDN with your Azure web app to improve performance. For details , check out this<span class="Apple-converted-space"> </span><a href="https://channel9.msdn.com/Shows/Azure-Friday/Azure-Websites-CDN-Content-Distribution-Network-Support-with-Yochay-Kiriaty">video</a>.
+<h2>Stay up-to-date</h2>
+Joomla  and its extensions may have updates that can impact the performance of your web application. Make sure you have the latest bits of Joomla CMS , Latest PHP version and the Joomla extensions you have installed within your Joomla app.
+<h2>Optimize your tables</h2>
+Optimize your Joomla app database using phpMyAdmin .  If you have never used PHPMyadmin with Azure web apps , check out this<span class="Apple-converted-space"> </span><a href="https://sunithamk.wordpress.com/2016/01/04/how-to-use-phpmyadmin-for-your-azure-web-app/">article<span class="Apple-converted-space"> </span></a>first. Select all  or some of the tables and Select<span class="Apple-converted-space"> </span><strong>Optimize Table</strong><span class="Apple-converted-space"> </span>operation to execute.
+
+<a href="https://sunithamk.files.wordpress.com/2016/05/optimize.png"><img alt="optimize" class="alignnone size-full wp-image-1014" height="539" src="https://sunithamk.files.wordpress.com/2016/05/optimize.png" width="920"/></a>
+<em>This post also appears on <a href="https://sunithamk.wordpress.com/2016/05/09/how-to-speed-up-joomla-web-app-on-azure-app-services/" target="_blank" title="Sunitha's Blog">Sunitha Muthukrishna Blog.</a></em></div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
+</html>

@@ -1,8 +1,12 @@
 ---
-layout: post
+title: "App Service Plan Density Check" 
 title: "App Service Plan Density Check"
 author: "Khaled Zayed"
-tags: app service, azure app service, app service plan, high cpu, web app, high memory, self-help, troubleshooting
+tags: 
+    - app service plan
+    - troubleshooting
+    - diagnostics
+    - best practice
 ---
 
 App Service Plans define the compute resource assigned to run your App Service. The pricing tier of your App Service Plan determines the compute power and features you get... the higher the tier, the more features and compute power are available. To find out which features are supported in each pricing tier, see [App Service Plan details](https://azure.microsoft.com/en-us/pricing/details/app-service/plans/).

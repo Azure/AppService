@@ -1,7 +1,8 @@
 ---
-layout: post
+title: "Changes to data connections UX" 
 title:  "The Data Connections will be removed from Web App menu"
-categories: update
+tags:
+    - Azure Portal
 author: "Byron Tardif"
 ---
 

@@ -1,0 +1,70 @@
+---
+layout: post
+hide_excerpt: true
+---
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/mksunitha" target="_blank">mksunitha</a>
+<time>    10/26/2017 2:34:38 PM</time>
+<hr/>
+<div id="content"><p class="lf-text-block lf-block">App Service Certificate can be used for other Azure service and not just App Service Web App. This tutorial shows you how to secure your web app by purchasing an SSL certificate using App Service Certificates ,  securely storing it in<span> </span><a href="https://docs.microsoft.com/en-us/azure/key-vault/key-vault-whatis">Azure Key Vault</a>  , domain verification and configuring it your virtual machine . Before your begin log in to the Azure portal at<span> </span><a href="http://portal.azure.com/">https://portal.azure.com</a><span class="lf-thread-btn"></span></p>
+<h2>Step 1 : Create an Azure Virtual machine with IIS web server</h2>
+Create an Azure virtual machine with IIS from <a href="https://docs.microsoft.com/en-us/azure/virtual-machines/windows/tutorial-secure-web-server#create-a-virtual-machine">Azure marketplace</a> or <a href="https://docs.microsoft.com/en-us/azure/virtual-machines/windows/tutorial-secure-web-server#create-a-virtual-machine">with Azure CLI </a> .
+<h2>Step 2 : Add a Custom domain to your virtual machine</h2>
+Purchase a new domain and assign it your Azure virtual machine. For more details , click <a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/07/31/assign-app-service-domain-to-azure-vm-or-azure-storage/">here</a> .
+<h2 id="step-2---place-an-ssl-certificate-order">Step 3 : Place an SSL Certificate order</h2>
+<p class="lf-text-block lf-block">You can place an SSL Certificate order by creating a new<span> </span><a href="https://portal.azure.com/#create/Microsoft.SSL">App Service Certificate</a><span> </span>In the Azure portal. Enter a friendly Name for your SSL certificate and enter the Domain Name in Step 1 . <strong>DO NOT </strong><span>append the Host name with WWW.</span></p>
+<img alt="Certificate Creation" src="https://docs.microsoft.com/en-us/azure/app-service/media/app-service-web-purchase-ssl-web-site/createssl.png"/>
+<h2 id="step-3---store-the-certificate-in-azure-key-vault">Step 4 - Store the certificate in Azure Key Vault</h2>
+<div class="NOTE alert">
+<p class="lf-text-block lf-block"><a href="https://docs.microsoft.com/en-us/azure/key-vault/key-vault-whatis">Key Vault</a><span> </span>is an Azure service that helps safeguard cryptographic keys and secrets used by cloud applications and services. Once the SSL Certificate purchase is complete, you need to open the<span> </span><a href="https://portal.azure.com/#blade/HubsExtension/Resources/resourceType/Microsoft.CertificateRegistration%2FcertificateOrders">App Service Certificates</a> page.  The current status of the certificate  is<span> </span><strong>“Pending Issuance”</strong><span> . Complete the steps below to have an active certificate ready to use. </span></p>
+<p class="lf-text-block lf-block">Click<span> </span><strong>Certificate Configuration</strong><span> </span>inside the Certificate Properties page and Click on<span> </span><strong>Step 1: Store </strong>to store this certificate in Azure Key Vault.</p>
+</div>
+<p class="lf-text-block lf-block"><span class="lf-thread-btn"></span></p>
+<p class="lf-text-block lf-block"><img alt="insert image of ready to store in KV" src="https://docs.microsoft.com/en-us/azure/app-service/media/app-service-web-purchase-ssl-web-site/readykv.png"/><span class="lf-thread-btn"></span></p>
+From the<span> </span><strong>Key Vault Status</strong><span> </span>page, click<span> </span><strong>Key Vault Repository</strong><span> </span>to choose an existing Key Vault to store this certificate<span> </span><strong>OR Create New Key Vault</strong><span> </span>to create new Key Vault inside same subscription and resource group.
+<div class="NOTE alert">
+<p class="lf-text-block lf-block"><em>Note :  Azure Key Vault has minimal charges for storing this certificate. For more information, see <a href="https://azure.microsoft.com/pricing/details/key-vault/">Azure Key Vault Pricing Details</a>.</em><span class="lf-thread-btn"></span></p>
+</div>
+<p class="lf-text-block lf-block">Once you have selected the Key Vault Repository to store this certificate in, the<span> </span><strong>Store</strong><span> </span>option should show success.<span class="lf-thread-btn"></span></p>
+<img alt="insert image of store success in KV" src="https://docs.microsoft.com/en-us/azure/app-service/media/app-service-web-purchase-ssl-web-site/kvstoresuccess.png"/>
+
+ 
+<h2 id="add-a-certificate-to-vm-from-key-vault">Step 5 : Verify the domain ownership</h2>
+<p class="lf-text-block lf-block">From the same<span> </span><strong>Certificate Configuration</strong><span> </span>page you used in Step 3, click<span> </span><strong>Step 2: Verify</strong>. <span class="lf-thread-btn"></span>Choose the preferred domain verification method.<span class="lf-thread-btn"></span></p>
+<p class="lf-text-block lf-block">There are four types of domain verification supported by App Service Certificates: App Service, Domain, Mail, and Manual Verification. These verification types are explained in more details in the<span> </span><a href="https://docs.microsoft.com/en-us/azure/app-service/web-sites-purchase-ssl-web-site#advanced">Advanced section</a>.</p>
+<h2>Step 6 : Assign certificate to Virtual machine</h2>
+<p class="lf-text-block lf-block">Before performing the steps in this section dedicated for Virtual machine , you must have :</p>
+<ol>
+<li class="lf-text-block lf-block">associated a custom domain name with your app on the virtual machine. For more information, see<span> </span><strong><a href="https://docs.microsoft.com/en-us/azure/app-service/app-service-web-tutorial-custom-domain">Configuring a custom domain name for a web app.</a></strong></li>
+<li>Make sure Key Vault has appropriate permissions to be used with Virtual machine . For more information , see <a href="https://docs.microsoft.com/en-us/azure/active-directory/msi-tutorial-windows-vm-access-nonaad">Using MSI with Key Vault on Virtual machine</a></li>
+</ol>
+<h4>Here are the instructions to assign the certificate to the virtual machine</h4>
+<div class="msportalfx-text-header-regular">An issued App Service certificate may be used on any App Service Web App. Follow the steps below to assign the certificate to an App Service App.</div>
+<ol>
+<li style="list-style-type: none">
+<ol>
+<li>
+<div class="msportalfx-text-header-regular">Get the Key Vault information for your SSL certificate resource under certificate configuration.</div></li>
+<li>
+<div class="msportalfx-text-header-regular">Prepare and Configure the virtual machine to add the Certificate.</div></li>
+</ol>
+</li>
+</ol>
+<ol></ol>
+<div class="msportalfx-text-header-regular">An App Service Certificate can be used on multiple Azure Virtual Machines.<span><a href="https://docs.microsoft.com/en-us/azure/azure-stack/user/azure-stack-kv-push-secret-into-vm" rel="noopener" target="_blank">Learn more</a></span></div>
+<a href="{{ site.baseurl }}/media/2017/10/ASC-virtualmachine.png"><img alt="" class="alignnone size-large wp-image-6945" height="363" src="{{ site.baseurl }}/media/2017/10/ASC-virtualmachine-1024x423.png" width="879"/></a>
+<a href="{{ site.baseurl }}/media/2017/10/get-keyvault2.png"></a>
+
+References
+<h2></h2>
+<a href="https://azure.microsoft.com/en-us/blog/internals-of-app-service-certificate/">Internals of App Service Certificates</a>
+<a href="https://docs.microsoft.com/en-us/azure/key-vault/">Get started with Azure Key Vault</a></div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
+</html>

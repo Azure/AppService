@@ -1,8 +1,7 @@
 ---
-layout: post
+title: "Azure App Service on Azure Stack Update 5 Released" 
 title: "Azure App Service on Azure Stack Update 5 Released"
-categories: "Azure Stack"
-tags: "Azure Stack"
+tags: Azure Stack
 author: "Andrew Westgarth"
 ---
 
