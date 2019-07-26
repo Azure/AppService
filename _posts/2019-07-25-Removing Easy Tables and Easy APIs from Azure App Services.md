@@ -1,7 +1,6 @@
 ---
-layout: post
 title: "Removing Easy Tables and Easy APIs from Azure App Services"
-author: "Ela Malani"
+author_name: "Ela Malani"
 tags: 
     - mobile apps
 ---
