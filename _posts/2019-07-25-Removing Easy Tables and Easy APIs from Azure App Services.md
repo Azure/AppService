@@ -5,9 +5,9 @@ author: "Ela Malani"
 tags: app service, azure app service, mobile apps
 ---
 
-Mobile App Services provides specific features for Node developers to easily get started with mobile backend services by leveraging Easy Tables and Easy APIs in the Azure portal. Easy Tables provides a portal experience for Node developers to create and manage their tables, their schema, and appropriate permissions. Easy APIs lets them build and consume custom APIs in the backend. 
+Azure App Services provides specific features for Node developers to easily get started with mobile backend services by leveraging Easy Tables and Easy APIs in the Azure portal. Easy Tables provides a portal experience for Node developers to create and manage their tables, their schema, and appropriate permissions. Easy APIs lets them build and consume custom APIs in the backend. 
 
-Easy Tables and Easy APIs along with the Mobile menu in the Azure portal will be removed on **November 11, 2019** as these features have a limited audience and the existing functionality can be leveraged in alternate ways. This feature doesn’t affect developers with mobile apps in .NET backend. 
+Easy Tables and Easy APIs along with the Mobile menu in the Azure portal will be removed on **November 11, 2019** as these features have a limited audience and the existing functionality can be leveraged in alternate ways. 
 
 Developers that have mobile apps with Node.js backend can leverage the existing functionality from Easy API and Easy Tables in the following ways: 
 
