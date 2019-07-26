@@ -35,28 +35,30 @@ For the existing portal features, below are the alternatives:
 
 - **Add Table** – The “+ Add” button lets you add tables to the database. You can create new tables by: 
 
-    1. Creating a new table in SQL Server - This tutorial explains how to [create tables in your database](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-design-first-database#create-tables-in-your-database). 
-
-    2. Modify the backend code – In App Service Editor or locally, click on WWWROOT/tables directly to create new files, {tablename}.js and {tablename}.json where {tablename} refers to the name of the table you  created in Step 1. Sample code can be found at [todoitem.js](https://github.com/Azure/azure-mobile-apps-quickstarts/blob/master/backend/node/TodoSample/tables/todoitem.js) and [todoitem.json](https://github.com/Azure/azure-mobile-apps-quickstarts/blob/master/backend/node/TodoSample/tables/todoitem.json). 
-
-    3. Deploy the local code to Azure App Service.
+    - Creating a new table in SQL Server - This tutorial explains how to [create tables in your database](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-design-first-database#create-tables-in-your-database).
     
+    From the SQL database in Azure portal, you can run the following query to add a table named `TodoItems` from **Query editor (preview)** -
+    
+        CREATE TABLE TodoItems
+        (
+            id NVARCHAR(36) PRIMARY KEY,
+            createdAt DATETIMEOFFSET NOT NULL,
+            updatedAt DATETIMEOFFSET,
+            version TIMESTAMP NOT NULL,
+            deleted BIT NOT NULL,
+            complete BIT NOT NULL,
+            text NVARCHAR(256)
+        );
+    
+    - Modify the backend code – In App Service Editor or locally, click on WWWROOT/tables directly to create new files, {tablename}.js and {tablename}.json where {tablename} refers to the name of the table you  created in Step 1. Sample code can be found at [todoitem.js](https://github.com/Azure/azure-mobile-apps-quickstarts/blob/master/backend/node/TodoSample/tables/todoitem.js) and [todoitem.json](https://github.com/Azure/azure-mobile-apps-quickstarts/blob/master/backend/node/TodoSample/tables/todoitem.json). 
 
+    - Deploy the local code to Azure App Service.
+    
 - **Change permission** - In order to change access permissions on tables, you can either use the portal to change the code or modify it locally in your development environment. Click on the **App Service Editor (Preview)** under **Development Tools** menu which provides an in-browser editing experience for your app code.  
 
     Assuming you have already installed express and azure-mobile-apps package with npm install command, click on Go -> and once the App Service Editor opens, click on the **tables** folder under WWWROOT and open the json file for the table that you want the permissions to change. This will let you modify the access permissions for insert, update, delete, read and undelete operations for that table. You can also do this locally in the app code and deploy back to App Services. 
  
 - **Edit script** – You can edit your table script by either using the **App Service Editor** or modifying the code locally and deploying it back to App Services.  
-
-- **Manage schema** – You can manage schema and add columns to your tables in the SQL Database. It is a requirement to add the following columns whenever you create a new table: 
-
-| Name  | Type   | Is Index |
-|-------|--------|----------|
-| id    | String | true     |
-| createdAt  | Date | true |
-| updatedAt  | Date | false |
-| version  | String | false |
-| deleted  | Boolean | false |
 
 - **Delete table** – You can delete the table as you have access to the SQL database. 
 
