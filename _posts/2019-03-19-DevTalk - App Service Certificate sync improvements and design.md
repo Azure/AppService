@@ -3,6 +3,7 @@ title:  "//DevTalk - App Service Certificate - New Sync and Export experiences"
 tags: 
     - certificates
 author: "Chibi Vikramathithan"
+author_profile: true
 ---
 
 App Service Certificates have been a very popular feature among App Service customers. However, our customers often get confused about the sync scenarios between App Service Certificates and Linked Private certificates. Specifically during the Manual Renew, Manual Rekey, and Auto Renew operations. This blog will showcase recent UX improvements to give you control over the sync scenarios. We will also talk about the internals of the automatic sync tasks running in the background to keep your certificates and SSL bindings synced up automatically.

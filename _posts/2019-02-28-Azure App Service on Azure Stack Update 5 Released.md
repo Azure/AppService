@@ -3,6 +3,7 @@ title: "Azure App Service on Azure Stack Update 5 Released"
 tags: 
     - Azure Stack
 author: "Andrew Westgarth"
+author_profile: true
 ---
 
 This morning we released the fifth update to Azure App Service on Azure Stack.  This release updates the resource provider and brings the following key capabilities and fixes:
