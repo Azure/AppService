@@ -5,6 +5,7 @@ tags:
     - diagnostics
     - troubleshooting
     - self-help
+author_profile: true
 ---
 
 In a fast-paced development environment, sometimes it is difficult to keep track of all the changes made to your app... let alone pinpoint a change that caused an unhealthy behavior. Change Analysis can help you narrow down on changes made to your app to facilitate the trouble-shooting experience.
