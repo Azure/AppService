@@ -1,0 +1,33 @@
+---
+layout: post
+hide_excerpt: true
+---
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/mksunitha" target="_blank">mksunitha</a>
+<time>    1/25/2017 9:01:25 AM</time>
+<hr/>
+<div id="content">We are conducting an assessment on ClearDB MySQL databases associated with Azure customers. We have found several instances where subscriptions are deployed in ClearDB but have no corresponding Azure account associated with them.
+
+To synchronize the ClearDB and Azure services, any MySQL database that does not have a valid Azure account will be frozen on January 25. This may impact some Azure users.
+
+If your account is frozen and you wish to sustain the ClearDB MySQL database services from Azure, please take the following steps:
+<ul>
+<li>Provision a new, empty ClearDB database in Azure to restore your data into.</li>
+<li>Once created, please open a Support ticket with <a href="https://azure.microsoft.com/en-us/support/options/">Azure Support </a>or <a href="https://www.cleardb.com/developers/help/support">ClearDB support</a> with the following infromation:
+<ul>
+<li>The database name that was  newly created with Azure subscription ID</li>
+<li>Old database name  , ClearDB database hostname and the associated Azure subscription ID</li>
+<li>Our support teams will work will provide you a back up of your database. Please import the database content using <a href="https://dev.mysql.com/doc/workbench/en/wb-admin-export-import.html">MySQL workbench</a> into the newly created database .</li>
+</ul>
+</li>
+</ul>
+The reason behind these steps being taken is due to inconsistency in purchase order records for these databases and their subscriptions. The steps above will help resolve this. We apologize for any inconvenience you have incurred.</div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
+</html>

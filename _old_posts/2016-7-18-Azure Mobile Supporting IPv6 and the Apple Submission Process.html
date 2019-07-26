@@ -1,0 +1,36 @@
+---
+layout: post
+hide_excerpt: true
+---
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Adrian Hall (MSFT)" target="_blank">Adrian Hall (MSFT)</a>
+<time>    7/18/2016 9:00:26 AM</time>
+<hr/>
+<div id="content">Apple announced in September 2015 that from the 1st of June, all apps submitted to the iOS App Store for review must <a href="https://developer.apple.com/news/?id=05042016a" target="_blank">support IPv6 only networks</a>.  <strong>TL;DR</strong> – your app submissions will likely work just fine as long as you are not embedding IPv4 addresses or using IPv4 specific communication methods in your apps.  For more information, keep reading.     
+
+<h3>Why IPv6</h3>
+IPv4 address are exhausted, and carriers are deploying IPv6 only which make it critical that our apps continue to work on IPv6 only networks. Fortunately for us, most apps will continue to work on an IPv6 only network without modification.  
+
+To ensure your apps continue to work on an IPv6 only work, you'll want to make sure you're using a network library (for example <a href="https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSURLSession_class/index.html" target="_blank">NSUrlSession</a> or <a href="https://developer.apple.com/library/mac/documentation/Networking/Conceptual/CFNetwork/Introduction/Introduction.html" target="_blank">CFNetwork</a>). You'll also want to avoid the use of IPv4 APIs and hard-coded IP addresses. Essentially if your app is using a higher level API and framework for the network rather than the IP layer, your app should continue to work on top of either IPv4 or IPv6.  For more information, check out the <a href="https://developer.apple.com/library/ios/documentation/NetworkingInternetWeb/Conceptual/NetworkingOverview/UnderstandingandPreparingfortheIPv6Transition/UnderstandingandPreparingfortheIPv6Transition.html" target="_blank">Apple Documentation</a>.
+
+<a href="{{ site.baseurl }}/media/2016/07/ipv6.jpg" rel="attachment wp-att-875"><img alt="ipv6" class="aligncenter size-mediumlarge wp-image-875" height="272" src="{{ site.baseurl }}/media/2016/07/ipv6-500x272.jpg" width="500"/></a>
+
+As part of the carriers upgrade to IPv6, they have deployed both <a href="https://en.wikipedia.org/wiki/IPv6_transition_mechanism" target="_blank">DNS64 and NAT64</a> on their network which allows IPv6 clients (your app) to communicate with existing IPv4 infrastructure. If we take an App Service running in Azure as an example, it currently supports IPv4, but we still wish to communicate with it on the IPv6 carrier network. When our iOS app attempts to contact the REST endpoint we have set up, it will use a host name rather than a hard-coded IPv4 address. The DNS64 server will synthesize an IPv6 address and pass this back to the client. Any packets get routed to the NAT64 engine, which will then translate IPv6 traffic to IPv4 and vice versa. Through using DNS64 and NAT64, our IPv4 only App Service now appears (to our connecting client) to be an IPv6 service. 
+
+<h3>Testing</h3>
+
+If you wish to test if your app supports IPv6 only networks without submitting your app for review, you can use <a href="https://developer.apple.com/library/ios/documentation/NetworkingInternetWeb/Conceptual/NetworkingOverview/UnderstandingandPreparingfortheIPv6Transition/UnderstandingandPreparingfortheIPv6Transition.html#//apple_ref/doc/uid/TP40010220-CH213-SW16" target="_blank">a handy addition to MacOS network settings</a>. Apple have provided a DNS64 and NAT64 implementation in MacOS 10.11. This can be enabled by option clicking on the <strong>Share</strong> pane in <strong>System Preferences</strong> and then option-clicking the Internet Sharing service. After that, you'll see the Create NAT64 Network option appears. 
+
+<a href="{{ site.baseurl }}/media/2016/07/sysprefs.png" rel="attachment wp-att-885"><img alt="sysprefs" class="aligncenter size-mediumlarge wp-image-885" height="350" src="{{ site.baseurl }}/media/2016/07/sysprefs-425x350.png" width="425"/></a>
+<h3>Find out More</h3>
+
+iOS developers should take the time to watch <a href="https://developer.apple.com/videos/play/wwdc2015/719/" target="_blank">Apple's video from WWDC</a> in order to learn more about the new app store requirement to support IPv6. Most developers will not experience any issues with the new requirement as long as they've followed best practices; even if their existing infrastructure has no support for IPv6. </div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
+</html>

@@ -1,0 +1,30 @@
+---
+layout: post
+hide_excerpt: true
+---
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Adrian Hall (MSFT)" target="_blank">Adrian Hall (MSFT)</a>
+<time>    10/11/2016 1:42:04 PM</time>
+<hr/>
+<div id="content">Today, we released a patch version of the Azure Mobile Apps .NET SDK.  If you have already <a href="https://blogs.msdn.microsoft.com/appserviceteam/2016/10/06/app-service-mobile-apps-net-client-sdk-3-0-1-release/" target="_blank">adjusted your clients to use v3.0.1</a>, then this update does not provide any benefit.  However, if you are upgrading from v2.x to get support for Android Nougat, you should use v3.0.2.  
+
+Here are the improvements:
+
+<ul>
+<li>(<a href="https://github.com/Azure/azure-mobile-apps-net-client/issues/233" target="_blank">#233</a>, <a href="https://github.com/Azure/azure-mobile-apps-net-client/issues/235" target="_blank">#235</a>, <a href="https://github.com/Azure/azure-mobile-apps-net-client/issues/240" target="_blank">#240</a>) The .NET SDK v3.0.1 required iOS and Android developers to create the offline database file prior to its use.  This is no longer a requirement.</li>
+<li>(<a href="https://github.com/Azure/azure-mobile-apps-net-client/issues/236" target="_blank">#236</a>) The <code>SQLitePCL.Batteries.Init()</code> initialization code was called multiple times.  We also suggested that you call it yourself.  You no longer have to call it yourself, and it is only called once.</li>
+<li>(<a href="https://github.com/Azure/azure-mobile-apps-net-client/issues/231" target="_blank">#231</a>, <a href="https://github.com/Azure/azure-mobile-apps-net-client/issues/232" target="_blank">#232</a>) We have updated documentation.  The documentation now clarifies our supported platforms, and the HOWTO includes the new instructions for working with offline data.</li>
+</ul>
+
+In addition, we've updated the quick start projects that you can download from the Azure portal to use the new SDK.
+
+As always, we encourage you to post on <a href="http://stackoverflow.com/questions/tagged/azure-mobile-services" target="_blank">Stack Overflow</a> if you are running into problems.  If you find a bug or want a feature, please <a href="https://github.com/azure/azure-mobile-apps-net-client/issues" target="_blank">file an issue</a> on <a href="https://github.com/Azure/azure-mobile-apps-net-client" target="_blank">our GitHub repository</a>.</div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
+</html>

@@ -1,5 +1,5 @@
 ---
-layout: post
+title: "Upgrading Python on Azure App Service" 
 title: "Upgrading Python on Azure App Service"
 author: Steve Dower
 ---

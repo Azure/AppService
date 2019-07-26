@@ -1,0 +1,65 @@
+---
+layout: post
+hide_excerpt: true
+---
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Alex Karcher" target="_blank">Alex Karcher</a>
+<time>    1/18/2017 10:46:13 AM</time>
+<hr/>
+<div id="content">Affected Product: <strong>Azure Preview API Apps (v1)</strong>
+Deprecation Date: <strong>January 18th, 2017</strong>
+Removal Date: <strong>March 14th, 2017</strong>
+Mitigation: <strong>Redeploy workload to App Service API Apps (v2)</strong>
+
+Today we are announcing the deprecation of Preview API Apps, referred to as v1 API Apps for this article. v1 API Apps are deprecated immediately and will be removed from Azure on March 14th. App Service API Apps, referred to as v2 API Apps for this article, are a GA product and still under active development. Redeploy all v1 API App workloads to v2 API Apps by March 14th to avoid a service interruption.
+
+We are excited at the growth we have seen since upgrading v1 API Apps to the App Service infrastructure and announcing general availability of v2 API Apps over a year and a half ago. Read the <a href="https://docs.microsoft.com/en-us/azure/app-service-api/app-service-api-whats-changed">original announcement</a> for all the improvements introduced in v2 API Apps.
+
+<strong>Logic App Impact</strong>
+Logic Apps had moved away from using the preview API Apps v1 based connectors almost 1 year ago and has since become generally available with over <a href="https://docs.microsoft.com/en-us/azure/connectors/apis-list?toc=%2fazure%2flogic-apps%2ftoc.json">100 managed connectors</a>.
+
+Please migrate your preview Logic Apps to our GA schema and discontinue use of the preview API APP v1 based connectors, as those connectors will be removed on March 14th, 2017.
+
+<strong>API Gateway</strong>
+API Gateway resources are also deprecated and will also be removed following the API App removal timeline. API Gateway resources are created in each resource group that contains a v1 API App and have the resource type "Gateway" in the portal.
+
+<strong>Identifying Preview API Apps (v1)</strong>
+v1 API Apps are only visible in the "All Resources" page of the Azure Portal, and on the page of the resource group they belong to. They are not visible in the "App Services" page of the Azure Portal by design.
+v1 API Apps have the App Type "API App" and the Resource Type "Microsoft.AppService/apiapps" in the Azure portal
+<a href="{{ site.baseurl }}/media/2017/01/v1-resource-highlighted.png"><img alt="v1-resource-highlighted" class="alignnone wp-image-2775 size-full" height="255" src="{{ site.baseurl }}/media/2017/01/v1-resource-highlighted.png" width="808"/></a>
+
+Opening the App settings blade on a v1 API App will show an upgrade notice as well.
+<a href="{{ site.baseurl }}/media/2017/01/api-app-warning.png"><img alt="api-app-warning" class="alignnone wp-image-2785 size-full" height="176" src="{{ site.baseurl }}/media/2017/01/api-app-warning.png" width="587"/></a>
+<strong>Identifying App Service API Apps (v2)</strong>
+v2 API Apps have the App Type "App Service" and the Resource Type "Microsoft.Web/sites" in the Azure portal, and are still under active support and development.
+<a href="{{ site.baseurl }}/media/2017/01/v2-resource-highlighted.png"><img alt="v2-resource-highlighted" class="alignnone size-full wp-image-2795" height="254" src="{{ site.baseurl }}/media/2017/01/v2-resource-highlighted.png" width="815"/></a>
+<strong>Upgrading Preview API Apps (v1)</strong>
+Follow <a href="https://docs.microsoft.com/en-us/azure/app-service-api/app-service-api-whats-changed#migrating-existing-api-apps">this guide</a> to redeploy your v1 API App workload to a v2 API App.
+
+<strong>Upgrading Logic Apps v1 Connectors</strong>
+Use the GA release of Logic Apps with equivalent managed connectors in place of the v1 preview Connectors.
+
+To check that you are no longer consuming a v1 connector, stop all of your v1 API Apps from the portal and check that your logic apps run successfully.
+
+All v1 connectors will be classified as preview API Apps in the portal, shown above.
+
+<strong>Preview (v1) API App Not Accessible in Portal</strong>
+The portal experience for some v1 API Apps and connectors may be unavailable. We recommend you use <a href="https://resources.azure.com">Azure Resource Explorer</a> or the <a href="{{ site.baseurl }}///msdn.microsoft.com/en-us/library/azure/mt420159.aspx">Azure Resource Manager REST APIs</a> directly to manage these v1 API Apps.
+
+In the <a href="https://resources.azure.com">Azure Resource Explorer</a> navigate to your subscription, then your resource group. Note that your v1 sites will have both a core site, under Microsoft.AppService, as well as a container site under Microsoft.Web &gt; Sites. The core site contains your business logic, and the container contains your Azure configuration, such as deployment slots and networking settings.
+
+<strong>Deprecation Timeline</strong>
+March 14th: v1 API Apps stop running on Azure
+March 28th: v1 API App data deleted from Azure
+
+<strong>Additional Support</strong>
+If you have any issues moving to v2 API Apps please check our <a href="https://social.msdn.microsoft.com/Forums/en-US/home?forum=AzureAPIApps">MSDN forums</a>, or <a href="https://portal.azure.com/?#blade/Microsoft_Azure_Support/HelpAndSupportBlade">contact support directly</a></div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
+</html>

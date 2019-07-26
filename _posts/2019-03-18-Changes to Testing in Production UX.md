@@ -1,7 +1,8 @@
 ---
-layout: post
 title:  "Changes to Routing Rules UX"
-categories: "update"
+tags:
+    - Azure Portal
+    - deployment slots
 author: "Jason Freeberg"
 ---
 

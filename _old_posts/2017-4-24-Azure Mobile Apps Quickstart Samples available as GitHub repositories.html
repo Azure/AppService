@@ -1,0 +1,47 @@
+---
+layout: post
+hide_excerpt: true
+---
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Adrian Hall (MSFT)" target="_blank">Adrian Hall (MSFT)</a>
+<time>    4/24/2017 8:57:35 AM</time>
+<hr/>
+<div id="content">We recently made a change to the way that we manage the Azure Mobile Apps quickstarts.  In the past, when you created a Mobile App, you could go to the Quickstart blade and download a client.  This mechanism is still available to you.  However, we have also made these quickstart projects available as GitHub repositories.  This allows you to fork the repository and start developing without going to the Quickstart blade first.  The project that you download from the Quickstart blade is almost the same as the project you can retrieve from the GitHub repository.  In the case of the GitHub repository version, you will need to set the URI of your Azure Mobile App backend.
+
+The repositories are:
+
+<ul>
+<li><a href="https://github.com/Azure-Samples/azure-mobile-apps-android-quickstart" target="_blank">Android</a></li>
+<li><a href="https://github.com/Azure-Samples/azure-mobile-apps-cordova-quickstart" target="_blank">Apache Cordova</a></li>
+<li><a href="https://github.com/Azure-Samples/azure-mobile-apps-ios-swift-quickstart" target="_blank">iOS (Swift)</a></li>
+<li><a href="https://github.com/Azure-Samples/azure-mobile-apps-ios-objc-quickstart" target="_blank">iOS (Objective-C)</a></li>
+<li><a href="https://github.com/Azure-Samples/azure-mobile-apps-uwp-quickstart" target="_blank">Universal Windows (UWP)</a></li>
+<li><a href="https://github.com/Azure-Samples/azure-mobile-apps-xamarin-android-quickstart" target="_blank">Xamarin Android</a></li>
+<li><a href="https://github.com/Azure-Samples/azure-mobile-apps-xamarin-forms-quickstart" target="_blank">Xamarin Forms</a></li>
+<li><a href="https://github.com/Azure-Samples/azure-mobile-apps-xamarin-ios-quickstart" target="_blank">Xamarin iOS</a></li>
+</ul>
+
+In each case, look for the <code>ZUMOAPPURL</code> string in the code and replace it with the name of your Mobile App backend.  For the C# projects, this has been placed in a file called `Locations.cs`.  In the other projects, it is embedded in the service handler file, so search for the string.  There will be one match.
+
+There are <a href="https://github.com/Azure-Samples?utf8=%E2%9C%93&amp;q=azure-mobile-apps&amp;type=&amp;language=" target="_blank">other great samples</a> using Azure Mobile Apps for you to check out as well:
+
+<ul>
+<li><a href="https://github.com/Azure-Samples/app-service-mobile-dotnet-fieldengineer" target="_blank">FieldEngineer</a> is a project for handling field-workers logistics.</li>
+<li><a href="https://github.com/Azure-Samples/MyDriving" target="_blank">MyDriving</a> brings together IoT and Mobile to analyze car telemetry.</li>
+<li><a href="https://github.com/Azure-Samples/ContosoInsurance" target="_blank">ContosoInsurance</a> demonstrates an example customer-side insurance car claim service.</li>
+</ul>
+
+We are always expanding the samples we offer, so check back often!
+
+
+
+</div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
+</html>
