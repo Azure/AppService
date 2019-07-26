@@ -2,7 +2,7 @@
 title: "Azure App Service on Azure Stack Update 6 Released"
 tags: 
     - Azure Stack
-author: "Andrew Westgarth"
+author_name: "Andrew Westgarth"
 author_profile: true
 ---
 

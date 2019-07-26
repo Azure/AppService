@@ -2,7 +2,7 @@
 title:  "The Data Connections will be removed from Web App menu"
 tags:
     - Azure Portal
-author: "Byron Tardif"
+author_name: "Byron Tardif"
 author_profile: true
 ---
 

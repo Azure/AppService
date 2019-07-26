@@ -42,8 +42,7 @@
     ```yaml
     ---
     title: "Title should be the same (or similar to) your filename"
-    author: "Your Name"
-    layout: single
+    author_name: "Your Name"
     tags:
         - example
         - multiple words

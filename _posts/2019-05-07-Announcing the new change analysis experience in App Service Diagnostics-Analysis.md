@@ -1,6 +1,6 @@
 ---
 title: "Announcing the new change analysis experience in App Service Diagnostics"
-author: "Yun Jung Choi"
+author_name: "Yun Jung Choi"
 tags: 
     - diagnostics
     - troubleshooting

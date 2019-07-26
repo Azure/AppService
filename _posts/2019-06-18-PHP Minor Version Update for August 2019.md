@@ -1,6 +1,6 @@
 ---
 title: "PHP Minor Version Update for August 2019" 
-author: "Eric Stenson"
+author_name: "Eric Stenson"
 tags: PHP
 author_profile: true
 ---

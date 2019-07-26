@@ -1,6 +1,6 @@
 ---
 title: "App Service Plan Density Check" 
-author: "Khaled Zayed"
+author_name: "Khaled Zayed"
 tags: 
     - app service plan
     - troubleshooting

@@ -2,7 +2,7 @@
 title:  "//DevTalk - App Service Certificate - New Sync and Export experiences"
 tags: 
     - certificates
-author: "Chibi Vikramathithan"
+author_name: "Chibi Vikramathithan"
 author_profile: true
 ---
 
