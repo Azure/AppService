@@ -2,6 +2,7 @@
 title:  "The Data Connections will be removed from Web App menu"
 tags:
     - Azure Portal
+category: update # Remove this once the post is out of date. We do not want categories. The URL is bound to it in the meantime.
 author_name: "Byron Tardif"
 author_profile: true
 ---
