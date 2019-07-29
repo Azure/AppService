@@ -21,8 +21,8 @@ title_separator          : "-"
 subtitle                 : "" # site tagline that appears below site title in masthead
 name                     : "Azure App Service"
 description              : "Azure App Service team blog archives."
-url                      : "https://azure.github.io/AppService" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
-baseurl                  : # the subpath of your site, e.g. "/blog"
+url                      : "https://azure.github.io/" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
+baseurl                  : "/AppService" # the subpath of your site, e.g. "/blog"
 repository               : "Azure/AppService" # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
 teaser                   : "media/pages/logo.svg" # path of fallback teaser image, e.g. "/assets/images/500x300.png"
 logo                     : "media/pages/logo.svg" # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
@@ -83,6 +83,7 @@ yandex_site_verification :
 naver_site_verification  :
 lang: "en_US"
 
+
 # Social Sharing
 twitter:
   username               :
@@ -90,7 +91,7 @@ facebook:
   username               :
   app_id                 :
   publisher              :
-og_image                 : "media/pages/logo.png" # Open Graph/Twitter default site image
+og_image                 : "assets/images/icon.png" # Open Graph/Twitter default site image
 # For specifying social profiles
 # - https://developers.google.com/structured-data/customize/social-profiles
 social:
@@ -156,6 +157,7 @@ include:
   - .htaccess
   - _pages
 exclude:
+  - old_posts/  # Pre-migration files
   - "*.sublime-project"
   - "*.sublime-workspace"
   - vendor

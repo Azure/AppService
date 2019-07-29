@@ -19,29 +19,31 @@ Currently ILB ASEs can be deployed into AZs in the Central US region.  The set 
 
 Customers can deploy an ASE into an availability zone using ARM templates.  The ARM template snippet below shows the new properties and values in <strong>bold</strong> that tell the platform to deploy the ASE into an availability zone:
 
-<span>"resources": [
-  {</span>
-     "type": "Microsoft.Web/hostingEnvironments",
-     "kind": "ASEV2",
-     "name": "yourASENameHere",
-     "apiVersion": "<strong>2018-05-01-preview</strong>",
-     "location": "Central US",
-     <strong>"zones": [
-        "2"
-     ]</strong>,
-     "properties": {
-        "name": "yourASENameHere",
-        "location": "Central US",
-        "ipSslAddressCount": 0,
-        "internalLoadBalancingMode": "3",
-        "dnsSuffix": "contoso-internal.com",
-        "virtualNetwork": {
-           "Id": "/subscriptions/your-subscription-id-here/resourceGroups/your-resource-group-here/providers/Microsoft.Network/virtualNetworks/your-vnet-name-here",
-           "Subnet": "yourSubnetNameHere"
-        }
-     }
-  }
-]
+<pre>
+    "resources": [
+      {
+         "type": "Microsoft.Web/hostingEnvironments",
+         "kind": "ASEV2",
+         "name": "yourASENameHere",
+         "apiVersion": "2018-05-01-preview",
+         "location": "Central US",
+         "zones": [
+            "2"
+         ],
+         "properties": {
+            "name": "yourASENameHere",
+            "location": "Central US",
+            "ipSslAddressCount": 0,
+            "internalLoadBalancingMode": "3",
+            "dnsSuffix": "contoso-internal.com",
+            "virtualNetwork": {
+               "Id": "/subscriptions/your-subscription-id-here/resourceGroups/your-resource-group-here/providers/Microsoft.Network/virtualNetworks/your-vnet-name-here",
+               "Subnet": "yourSubnetNameHere"
+            }
+         }
+      }
+    ]
+</pre>
 
 There are only two minor changes needed in an ILB ASE ARM template to enable zonal deployment.  The <em>apiVersion</em> property must be set to <em>2018-05-01-preview</em> in order for the <em>zones</em> property to be processed.  The <em>zones </em>property can be set as shown above with a value of 1, 2 or 3 depending on which zone you want to deploy the ASE into.
 
