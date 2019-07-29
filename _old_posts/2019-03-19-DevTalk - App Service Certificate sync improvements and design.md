@@ -2,6 +2,7 @@
 layout: post
 title:  "//DevTalk - App Service Certificate - New Sync and Export experiences"
 categories: "appservicecertificate"
+permalink: "/appservicecertificate/2019/03/19/DevTalk-App-Service-Certificate-sync-improvements-and-design.html"
 author: "Chibi Vikramathithan"
 ---
 

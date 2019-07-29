@@ -3,6 +3,7 @@ title:  "Changes to Routing Rules UX"
 tags:
     - Azure Portal
     - deployment slots
+permalink: "/update/2019/03/18/Changes-to-Testing-in-Production-UX.html"
 author_name: "Jason Freeberg"
 author_profile: true
 ---
