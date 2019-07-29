@@ -3,7 +3,6 @@ title:  "Changes to Routing Rules UX"
 tags:
     - Azure Portal
     - deployment slots
-category: update # Remove this once the post is out of date. We do not want categories. The URL is bound to it in the meantime.
 author_name: "Jason Freeberg"
 author_profile: true
 ---
