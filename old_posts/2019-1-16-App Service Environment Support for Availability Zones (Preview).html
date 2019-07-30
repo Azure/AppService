@@ -1,0 +1,56 @@
+---
+layout: post
+hide_excerpt: false
+author: Stefan Schackow
+---
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+<!-- <a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Stefan Schackow (MSFT)" target="_blank">Stefan Schackow (MSFT)</a>
+<time>    1/16/2019 4:02:06 PM</time>
+<hr/> -->
+<div id="content">App Service Environment (ASE) support for <a href="https://docs.microsoft.com/en-us/azure/availability-zones/az-overview">Availability Zones</a> (AZ) is now in preview.  Customers can deploy internal load balancer (ILB) ASEs into a specific AZ (Zone 1, 2 or 3) within an Azure region, and the runtime resources used by that ILB ASE will be deployed into the specified AZ.  
+
+An ILB ASE is deployed in a <strong>zonal</strong> manner which means the ILB ASE is pinned to a specific zone.  This means all of the following runtime ILB ASE resources will be located in the specified zone:  the internal load balancer IP address of the ASE,  the compute resources used by the ASE to run web applications, and the underlying file content storage for all of the web applications deployed on the ASE.  
+
+Currently ILB ASEs can be deployed into AZs in the Central US region.  The set of available regions for the ASE AZ preview will be expanded over the course of January and February to include all AZ enabled Azure regions.  Note that only ILB ASEs support availability zones - there are no plans at this time to enable AZ support for external facing ASEs (i.e. ASEs that have a public IP address for accepting website traffic).
+
+Customers can deploy an ASE into an availability zone using ARM templates.  The ARM template snippet below shows the new properties and values in <strong>bold</strong> that tell the platform to deploy the ASE into an availability zone:
+
+<span>"resources": [
+  {</span>
+     "type": "Microsoft.Web/hostingEnvironments",
+     "kind": "ASEV2",
+     "name": "yourASENameHere",
+     "apiVersion": "<strong>2018-05-01-preview</strong>",
+     "location": "Central US",
+     <strong>"zones": [
+        "2"
+     ]</strong>,
+     "properties": {
+        "name": "yourASENameHere",
+        "location": "Central US",
+        "ipSslAddressCount": 0,
+        "internalLoadBalancingMode": "3",
+        "dnsSuffix": "contoso-internal.com",
+        "virtualNetwork": {
+           "Id": "/subscriptions/your-subscription-id-here/resourceGroups/your-resource-group-here/providers/Microsoft.Network/virtualNetworks/your-vnet-name-here",
+           "Subnet": "yourSubnetNameHere"
+        }
+     }
+  }
+]
+
+There are only two minor changes needed in an ILB ASE ARM template to enable zonal deployment.  The <em>apiVersion</em> property must be set to <em>2018-05-01-preview</em> in order for the <em>zones</em> property to be processed.  The <em>zones </em>property can be set as shown above with a value of 1, 2 or 3 depending on which zone you want to deploy the ASE into.
+
+In order to attain zone resiliency for apps created on AZ deployed ILB ASEs, customers will need to deploy at least two ILB ASEs - one per zone.  Customers should then create and publish copies of their application onto each of the AZ deployed ASEs.
+
+Customers will additionally need to deploy a load balancing solution upstream of the AZ deployed ASEs so that traffic bound for an application is distributed across all instances of the ASEs.  For example a zone-redundant Application Gateway could be deployed upstream, and then configured to route requests for a given application across all of the application instances created on the AZ deployed ASEs.  More details on zone-redundant Application Gateway are available here:  <a href="https://docs.microsoft.com/en-us/azure/application-gateway/application-gateway-autoscaling-zone-redundant">Autoscaling and Zone-redundant Application Gateway (Public Preview)</a>.
+
+Once an ASE and its applications are running inside of a specific zone, the applications will continue to run and serve traffic on that ASE even if other zones in the same region suffer an outage.  However it is possible that non-runtime behavior including application service plan scaling as well as application creation/configuration/publishing may be impacted in the event of a region outage.  Future investments into availability zone support for App Service will eventually extend zone resiliency to these non-runtime behaviors.</div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
+</html>

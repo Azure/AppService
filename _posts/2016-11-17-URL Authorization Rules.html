@@ -1,5 +1,5 @@
 ---
-layout: post
+title: "URL Authorization Rules" 
 hide_excerpt: true
 ---
 <html><head>
@@ -16,7 +16,7 @@ hide_excerpt: true
 In the initial preview, URL Authorization Rules are defined in an <strong>authorization.json</strong> file (if you prefer, we also support the YAML syntax inside an <strong>authorization.yaml</strong> file).  The feature is enabled automatically when you configure Easy Auth in the management portal and place either an authorization.json file or an authorization.yaml file in the <em>D:\home\site\wwwroot</em> directory of your App Service app. This means you can include the file in your app's source and easily deploy it via Git, Web Deploy, FTP, or any of the <a href="https://azure.microsoft.com/en-us/documentation/articles/app-service-continuous-deployment/">continuous deployment</a> mechanisms supported by App Service.
 
 Here is the basic schema of the configuration file in the JSON syntax:
-<pre style="background-color: #ebece4">{
+<pre style=" ">{
   "routes": [
     {
       "http_methods": [ "GET", "POST", "PUT", ... ],
@@ -52,7 +52,7 @@ Now let's talk about what these properties are for:
 As you can see, there are quite a few ways in which you can configure URL-based authorization policies for your app.
 <h1 id="">Route Evaluation Order and Wildcards</h1>
 In the simplest case, your <em>authorization.json</em> (or <em>authorization.yaml</em>) file will contain one or more static routes. For example, consider the following <em>authorization.json</em> file contents, which represent authorization rules for an Azure Functions app with two HTTP triggers:
-<pre style="background-color: #ebece4">{
+<pre style=" ">{
   "routes": [{
       "path_prefix": "/api/AnonymousHttpFunction",
       "policies": { "unauthenticated_action": "AllowAnonymous" }
@@ -63,7 +63,7 @@ In the simplest case, your <em>authorization.json</em> (or <em>authorization.yam
 }
 </pre>
 All HTTP requests to <strong>/api/AnonymousHttpFunction</strong> will be allowed, but requests to <strong>/api/ProtectedHttpFunction</strong> will require a client to be authenticated (e.g. using an access token).  This works well for simple, static APIs but many modern REST-ful APIs will have parameterized URL segments. In those cases, you'll want to take advantage of wildcard segments for your authorization routes. For example, consider a REST-ful API for viewing chapters of books. The name of the book and the chapter may be embedded in the URL:
-<pre style="background-color: #ebece4">{
+<pre style=" ">{
   "routes": [{
       "http_methods": [ "GET", "HEAD" ],
       "path_prefix": "/api/book/*/chapter/*/content",
@@ -74,7 +74,7 @@ All HTTP requests to <strong>/api/AnonymousHttpFunction</strong> will be allowe
 In the above example there is a wildcard * for both the name of the book and the chapter number. The * will match any single value within that segment.
 
 If your routes represent a resource hierarchy, you will likely need to configure separate policies for parent and child resources. Consider then the following example:
-<pre style="background-color: #ebece4">{
+<pre style=" ">{
   "routes": [{
       "path_prefix": "/",
       "policies": { "unauthenticated_action": "AllowAnonymous" }
@@ -93,7 +93,7 @@ The first thing you'll want to do is create a web app and configure Easy Auth w
 [caption id="attachment_2095" align="alignnone" width="851"]<a href="{{ site.baseurl }}/media/2016/11/Files-EasyAuthSetup.png"><img alt="Setting up Easy Auth with Azure AD authentication." class="size-full wp-image-2095" height="453" src="{{ site.baseurl }}/media/2016/11/Files-EasyAuthSetup.png" width="851"/></a> Setting up Easy Auth with Azure AD authentication.[/caption]
 
 Now that your AAD setup is ready, it's time to create the app. Because we're only dealing with file contents, this is easy to setup manually using the Kudu console, which can be found under <strong>Settings -&gt; Advanced Tools</strong>. Or, you can navigate to it directly at <strong>https://{web-app-name}.scm.azurewebsites.net/DebugConsole</strong>. Use the following commands to create the necessary files.
-<pre style="background-color: #ebece4"> cd site\wwwroot
+<pre style=" "> cd site\wwwroot
  del hostingstart.html
  mkdir public
  echo "hello, public!" &gt; public\file1.txt
@@ -101,7 +101,7 @@ Now that your AAD setup is ready, it's time to create the app. Because we're onl
  echo "hello, admin!" &gt; admin\file2.txt
 </pre>
 This will set up your file system structure with some folders and files.  Next we want to enable directory browsing, which is disabled by default. We do this by creating a web.config file in the <em>wwwroot</em> directory. You can create it using the <strong>touch web.config</strong> command and edit by clicking the edit button and populating it with the following configuration:
-<pre style="background-color: #ebece4">&lt;!--?xml version="1.0"?--&gt;
+<pre style=" ">&lt;!--?xml version="1.0"?--&gt;
 &lt;configuration&gt;
   &lt;system.webserver&gt;
     &lt;directoryBrowse enabled="true"/&gt;
@@ -109,7 +109,7 @@ This will set up your file system structure with some folders and files.  Next 
 &lt;/configuration&gt;
 </pre>
 Lastly, we need to create the authorization.json file.  You can use the command <strong>touch authorization.json</strong> to create the file. Then, click the edit button and add the following file contents:
-<pre style="background-color: #ebece4">{
+<pre style=" ">{
     "routes":[{
         "path_prefix" : "/public",
         "policies" : { "unauthenticated_action" : "AllowAnonymous" }

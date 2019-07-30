@@ -1,0 +1,37 @@
+---
+layout: post
+hide_excerpt: true
+---
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/mksunitha" target="_blank">mksunitha</a>
+<time>    11/1/2017 3:11:17 PM</time>
+<hr/>
+<div id="content">App Service certificates now enables you to upload  public certificate . Previously you had to use <a href="https://github.com/Azure/azure-quickstart-templates/tree/master/201-web-app-public-certificate">Azure resource manage template</a> to upload a public certificate or use ARM client to do the same as described in <a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/06/27/installing-public-certificates-in-app-service/">this article</a>. Today , we have made this experience more user friendly  to allows user to install their public certificates in the personal certificate store.
+
+You can easily add a p<span>ublic Certificate for your App service web app using the Azure Portal. Follow the steps below to upload a public certificate : </span>
+<ul>
+<li><span>Login to the <a href="https://portal.azure.com">Azure portal </a>and select your web app</span></li>
+<li>Click on  <strong>SSL Certificates</strong> setting -&gt; <strong>Upload Certificate.</strong> <strong></strong>Select <strong>Public</strong> and upload your public certificate . The .CER file contains information about the certificate ownership and public key.</li>
+</ul>
+<a href="{{ site.baseurl }}/media/2017/11/public-cert-img5.png"><img alt="" class="alignnone wp-image-6396" height="529" src="{{ site.baseurl }}/media/2017/11/public-cert-img5-975x1024.png" width="504"/></a>
+
+If you are using an App Service Environment you will be given the option to store either in Current User or Local Machine Store .
+<ul>
+<li>Once upload you can see your public certificate installed on your app as shown below <a href="{{ site.baseurl }}/media/2017/11/public-cert-img4.png"><img alt="" class="alignnone size-large wp-image-6345" height="622" src="{{ site.baseurl }}/media/2017/11/public-cert-img4-1024x725.png" width="879"/></a></li>
+</ul>
+<span>Note SSL certificates is supported only on dedicated App Service Plans and App Service Environments.</span>
+<h2>Things to remember</h2>
+<ul>
+<li><span>If your App Service is hosted on a public scale unit then you can only install certificates in <strong>CurrentUser Personal Store </strong>certificate.</span></li>
+<li><span>If your web app is hosted on an App Service Environments, <strong>CurrentUser or LocalMachine-Personal certificate</strong> store is only supported. </span></li>
+<li>When using Deployment slots with your application  , keep in mind that the certificates are not sticky and will also get swapped  when you perform a slot swap operation.  Either user your application code to check for multiple public certificates or make sure the correct certificate is upload for slot as well before you swap a slot with production app.</li>
+</ul></div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
+</html>

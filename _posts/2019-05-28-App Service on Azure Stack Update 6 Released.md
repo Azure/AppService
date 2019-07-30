@@ -1,9 +1,9 @@
 ---
-layout: post
 title: "Azure App Service on Azure Stack Update 6 Released"
-categories: "Azure Stack"
-tags: "Azure Stack"
-author: "Andrew Westgarth"
+tags: 
+    - Azure Stack
+author_name: "Andrew Westgarth"
+author_profile: true
 ---
 
 This afternoon we released the sixth update to Azure App Service on Azure Stack.  This release updates the resource provider and brings the following key capabilities and fixes:

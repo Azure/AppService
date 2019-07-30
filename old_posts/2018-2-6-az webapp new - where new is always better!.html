@@ -1,0 +1,64 @@
+---
+layout: post
+hide_excerpt: true
+---
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Ahmed Elnably" target="_blank">Ahmed Elnably</a>
+<time>    2/6/2018 2:31:20 PM</time>
+<hr/>
+<div id="content"><h3>This blog post has old info, the new version is <a href="http://blogs.msdn.microsoft.com/appserviceteam/2018/03/22/renaming-our-new-command-to-up/">here</a>.</h3>
+The App Service team have been hard at work creating a new experimental create and deploy experience for <a href="https://azure.microsoft.com/en-us/services/app-service/">Azure App Service.</a>
+
+We released a new <a href="https://docs.microsoft.com/en-us/cli/azure/azure-cli-extensions-overview?view=azure-cli-latest">Azure CLI extension</a> that adds a new command called <strong>new </strong>(have you seen what we did there!?).
+
+The new command (<strong>Which is currently in Preview</strong>) enables the user to create and deploy their Node.js or .NET Core app using a single command. For Node.js we check for the existence of a <strong>package.json</strong> file in the code root path to indicate it is a Node.js app. For .NET Core we check for the existence of a <strong>*.csproj</strong> file with <strong>netcoreapp </strong>as the<strong> TargetFramework</strong>
+
+[caption id="attachment_7095" align="alignnone" width="586"]<a href="{{ site.baseurl }}/media/2018/02/newCLI.gif"><img alt="" class="wp-image-7095" height="383" src="{{ site.baseurl }}/media/2018/02/newCLI-1024x669.gif" width="586"/></a> Click on the gif to see the command in action[/caption]
+
+In the case of Node.js app the command does the following:
+<ol>
+<li>Create a new resource group (in Central US, you can use the --location to change the region)</li>
+<li>Create a new Linux single VM small App Service plan in the Standard SKU (in Central US)</li>
+<li>Create a Linux webapp</li>
+<li>Deploy the content of the current working directory to the webapp using <a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/10/16/zip-push-deployment-for-web-apps-functions-and-webjobs/">Zip Deployment</a></li>
+</ol>
+In the case of .NET Core app the command does the following:
+<ol>
+<li>Create a new resource group (in Central US, you can use the --location to change the region)</li>
+<li>Create a new free Windows App Service plan (in Central US)</li>
+<li>Create a Windows webapp</li>
+<li>Deploy the content of the current working directory to the webapp using <a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/10/16/zip-push-deployment-for-web-apps-functions-and-webjobs/">Zip Deployment</a></li>
+</ol>
+To Install the Azure CLI tools refer to their <a href="https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest">documentation</a>.
+
+To Install the extension:
+<pre>az extension add --name webapp</pre>
+To update the extension with the latest fixes and new languages support (Current version is 0.1.0):
+<pre>az extension update --name webapp</pre>
+To know what the command will do without creating anything:
+<pre>az webapp new --name [app name] --location [optional Azure region name] --dryrun</pre>
+[caption id="attachment_7115" align="alignnone" width="626"]<a href="{{ site.baseurl }}/media/2018/02/dryrun.gif"><img alt="" class="wp-image-7115" height="362" src="{{ site.baseurl }}/media/2018/02/dryrun-1024x592.gif" width="626"/></a> Click to see --dryrun in action[/caption]
+
+To use the new command:
+<pre>az webapp new --name [app name] --location [optional Azure region name]</pre>
+To update your app content - Just rerun the command you used to create the app (including the --location argument):
+<pre>az webapp new --name [app name] --location [optional Azure region name]</pre>
+To submit feedback or submit an issue please open an issue in the <a href="https://aka.ms/webapp-extension-issues">Azure CLI extensions Github Project page</a>.
+
+Road Map - also tracked <a href="https://aka.ms/webapp-extension-issues">here</a>:
+<ol>
+<li>Add better support to update the app with new changes</li>
+<li>Add more languages to the supported list</li>
+<li>Add support to <a href="https://azure.microsoft.com/en-us/services/functions/">Azure Functions</a></li>
+</ol>
+<pre style="padding-left: 30px"></pre>
+<pre></pre></div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
+</html>

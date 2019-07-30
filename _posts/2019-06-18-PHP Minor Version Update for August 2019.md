@@ -1,8 +1,8 @@
 ---
-layout: post
-title:  "PHP Minor Version Update for August 2019"
-author: "Eric Stenson"
+title: "PHP Minor Version Update for August 2019" 
+author_name: "Eric Stenson"
 tags: PHP
+author_profile: true
 ---
 Latest version updates to PHP
 
