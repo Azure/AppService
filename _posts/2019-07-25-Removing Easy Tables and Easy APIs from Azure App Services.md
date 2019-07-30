@@ -22,11 +22,11 @@ Your existing APIs will continue to work as the backend is already deployed on A
 
 You can either make changes right in the Azure portal or modify the code locally in your development environment and then publish to Azure. Click on the **App Service Editor (Preview)** under **Development Tools** menu which provides an in-browser editing experience for your app code.
 
-![Resource explorer navigation]({{site.baseurl}}/media/2019/07/AppServiceEditor.PNG) 
+![Resource explorer navigation]({{site.baseurl}}/media/2019/07/AppServiceEditor.png) 
 
 Click on **Go** and once the App Service Editor opens, you have full control over the source code. Assuming you have already installed express and azure-mobile-apps package with npm install command, click on the **api** folder under WWWROOT to create or edit custom API. Make your changes to the code file and the changes are saved automatically.
 
-![Resource explorer navigation]({{site.baseurl}}/media/2019/07/Api.PNG)
+![Resource explorer navigation]({{site.baseurl}}/media/2019/07/Api.png)
 
 ## Easy Tables  
 
