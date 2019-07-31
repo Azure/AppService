@@ -65,7 +65,7 @@ In the console output, save the `principalId` for later.
 
 ## Configuring our App
 
-The following instructions assume you have completed the [previous tutorial]({{ site.baseurl }}{% post_url 2019-07-07-Data-Sources-with-Spring %}).
+The following instructions assume you have completed the [previous tutorial](https://jasonfreeberg.com/Data-Sources-with-Spring/).
 
 ### Key Vault References
 
