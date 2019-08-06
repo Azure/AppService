@@ -3,9 +3,8 @@ title: "Bring visibility to your app and its dependencies with Navigator"
 author_name: "Yun Jung Choi"
 tags: 
     - diagnostics
-    - support
     - troubleshooting
-    - self help
+    - self-help
 ---
 
 Application downtime can be dreadful, especially when the app is handling mission-critical load. There could be countless causes for your app’s downtime ranging from the app’s code to the misconfiguration of its dependencies. Fast troubleshooting is the key to minimizing the production impact. However, the complex nature of today’s applications makes narrowing down the cause a lengthy and difficult process. Sometimes it requires thorough investigation of changes made to each dependent resource.
