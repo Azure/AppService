@@ -1,8 +1,6 @@
 # Instructions for posting content
 
 > For **Antares team** members only. Email Jason Freeberg if you have any questions.
->
-> **Note:** You must have contributor access to the repository to publish.
 
 ## Environment Setup
 
@@ -62,11 +60,11 @@
 To add images, GIFs, or other digital content to your post...
 
 1. Add the file under the `/media/YEAR/MONTH/` directory.
-    - Where `YEAR` and `MONTH` are the current year and month. If the directory for the year or month does not yet exist, please create one.
-1. Once the file is added, you can link to the file in your markdown using the path:
+    - Where `YEAR` and `MONTH` are the year and month in your article's filename. If the directory for the year or month does not yet exist, please create them.
+1. Once the file is added, you can link to the file in your markdown using the path `{{ site.baseurl }}/media/YEAR/MONTH/your_file_name.jpg`. For example, to insert an image in Markdown you would use the following syntax
 
     ```text
-    {{ site.baseurl }}/media/YEAR/MONTH/your_file_name.jpg
+    ![Required description of the image]({{ site.baseurl }}/media/2019/04/portal-picture.jpg)
     ```
 
     For more information on `baseurl`, please see [this post](https://byparker.com/blog/2014/clearing-up-confusion-around-baseurl/).
@@ -74,7 +72,7 @@ To add images, GIFs, or other digital content to your post...
 ## Publishing
 
 1. Proofread your post for spelling and grammar
-    - **Pro-Tips**: Copy/paste your content into Word and install the VSCode [Markdown Linting extension](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint).
+    - **Pro-Tips**: Copy/paste your content into Word to check spelling. Also, install the VSCode [Markdown Linting extension](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint).
 1. Submit a pull request
 1. Tag `@jasonfreeberg` in your pull request
     - Send an email if it is high priority
