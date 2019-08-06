@@ -1,6 +1,6 @@
 # Instructions for posting content
 
-> For **Antares team** members only. Email Jason Freeberg if you have any questions.
+> For **Antares team** members only. You will need write access to create pull request. Email Jason Freeberg with any questions or to request access.
 
 ## Environment Setup
 
