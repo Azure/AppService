@@ -1,5 +1,5 @@
 ---
-title: "How to restore soft delete App Service domains"
+title: "How to restore App Service domains within 30 days after deletion"
 author_name: Elle Tojaroon
 excerpt: "If the domain was deleted within the past 30 days, restore by re-creating the resource under the same subscription and resource group."
 tags:
