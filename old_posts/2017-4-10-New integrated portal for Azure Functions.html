@@ -1,0 +1,89 @@
+---
+layout: post
+hide_excerpt: true
+---
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Donna Malayeri" target="_blank">Donna Malayeri</a>
+<time>    4/10/2017 10:30:44 AM</time>
+<hr/>
+<div id="content">I’m excited to announce a new integrated portal experience for Azure Functions. Previously, there was somewhat disjoint experience between Function Apps and App Service. For many management operations, customers had to navigate to the App Service resource blade, and we heard feedback that customers wanted a more integrated and streamlined experience. In addition, we want to provide an easier way to manage multiple Function Apps from within one view.
+
+We’ve made several enhancements to the experience, including:
+<ul>
+<li>A dedicated browse blade for Function Apps. Function Apps are still listed in the App Service blade, but that’s no longer the only way to find Function Apps</li>
+<li>A tree view that allows viewing and managing multiple Function Apps</li>
+<li>Filters on subscription and app name, as well as an option to scope the view to just one app</li>
+<li>One-click access to all App Service platform features</li>
+<li>A convenient way to manage features that have already been configured</li>
+<li>Overall UI enhancements to be more consistent with the rest of the Azure portal</li>
+</ul>
+For a visual introduction, the short video below walks through the main features. <a href="https://www.youtube.com/watch?v=t3Umy4WKGy0" target="_blank">The video is also available on YouTube</a>.
+
+[video width="1920" height="866" mp4="media/2017/04/function-navigation-full.mp4"][/video]
+<h2>Function App browse and management</h2>
+There is now a new browse blade for Function Apps that you can pin to the left-hand service menu. Under <strong>More services</strong>, search for <strong>Functions</strong>.
+
+<a href="{{ site.baseurl }}/media/2017/04/service-menu2.png"><img alt="service-menu" class="alignnone size-full wp-image-4096" height="316" src="{{ site.baseurl }}/media/2017/04/service-menu2.png" width="550"/></a>
+
+Once you’re on the browse blade, you’ll see all Function Apps in your active subscription in a tree view on the left. You can filter on one or more subscriptions or search for an app name. In the list view on the right, apps are listed in a grid view that includes the subscription, resource group, and location.
+
+If you select an app in the grid view, you’ll see a scoped view for just that Function App. Clearing the search box at the top will show all Function Apps in the selected subscriptions. See animated gif below.
+
+<a href="{{ site.baseurl }}/media/2017/04/function-navigation-filter-and-scope.gif"><img alt="function-navigation-filter-and-scope" class="alignnone wp-image-4036" height="271" src="{{ site.baseurl }}/media/2017/04/function-navigation-filter-and-scope-1024x462.gif" width="601"/></a>
+
+You can also scope to a particular Function App by selecting the chevron to the right of the app name. The refresh button will update the function and proxies list. On a Consumption plan, the refresh button also synchronizes triggers with the central listener. (This is required if you FTP or Kudu to modify your <strong>function.json</strong> files.)
+<h2>Function App management</h2>
+Once you’ve selected a Function App, the Overview tab on the right displays information about your app and is similar to the App Service resource blade. From here, you can stop, restart and delete your app, download the publish profile, and reset publish credentials.
+
+The <strong>Configured features</strong> section lists any platform features that you’ve customized. For instance, if you have configured a deployment option, you can navigate to the settings directly from the overview page.
+
+<a href="{{ site.baseurl }}/media/2017/04/configured-features.png"><img alt="configured-features" class="alignnone size-mediumlarge wp-image-4025" height="278" src="{{ site.baseurl }}/media/2017/04/configured-features-500x278.png" width="500"/></a>
+
+The <strong>Settings </strong>tab includes Function App level settings, such as the runtime version, proxies configuration, and host keys. The <strong>Platform features</strong> tab lists all relevant App Service settings. If you miss the App Service resource blade, you can still get to it from <strong>General Settings -&gt; All settings</strong>. Features that are not available for your app are still displayed, but include a tooltip on why they are not available. You can also search settings based on either exact name or a descriptive tag. For instance, searching on “git” will highlight the option <strong>Deployment source</strong>.
+
+<a href="{{ site.baseurl }}/media/2017/04/search-platform-features.png"><img alt="search-platform-features" class="alignnone size-mediumlarge wp-image-4057" height="350" src="{{ site.baseurl }}/media/2017/04/search-platform-features-411x350.png" width="411"/></a>
+
+The <strong>API definition</strong> tab allows you to configure a Swagger API definition. For more information on the feature, see the blog post <a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/03/30/announcing-functions-swagger-support/">Announcing Azure Functions OpenAPI (Swagger) support preview</a>.
+<h2>Function navigation</h2>
+Navigating to an individual function is also much easier. If you select the <strong>Functions </strong>or <strong>Proxies </strong>node within a Function App, you’ll see a list of items you can use to navigate. We’ll be making more improvements to the <strong>Functions</strong> list, including the ability to search functions, change the enabled state, and delete functions. (For more details, see the GitHub issue <a href="https://github.com/projectkudu/AzureFunctionsPortal/issues/1062">AzureFunctionsPortal #1062</a>.)
+
+<a href="{{ site.baseurl }}/media/2017/04/functions-node.png"><img alt="functions-node" class="alignnone size-full wp-image-4116" height="246" src="{{ site.baseurl }}/media/2017/04/functions-node.png" width="600"/></a>
+
+See animated gif below.
+
+<a href="{{ site.baseurl }}/media/2017/04/functions-and-proxies-list1.gif"><img alt="functions-and-proxies-list" class="alignnone wp-image-4045 size-large" height="397" src="{{ site.baseurl }}/media/2017/04/functions-and-proxies-list1-1024x462.gif" width="879"/></a>
+<h2>New Function page</h2>
+The New Function page has a few changes. Since the main Function App page now shows the <strong>Overview</strong> tab, that displaced the Quickstart experience. We’ve incorporated it as part of the <strong>New Function</strong> page. If a Function App has no functions, you’ll see the quickstart below. To get to the full template view, select <strong>Create custom function</strong> at the bottom of the page. To get to the quickstart view below from the template view, select “go to the quickstart.”
+
+<a href="{{ site.baseurl }}/media/2017/04/quickstart-page.png"><img alt="quickstart-page" class="alignnone size-mediumlarge wp-image-4055" height="350" src="{{ site.baseurl }}/media/2017/04/quickstart-page-356x350.png" width="356"/></a>
+<a href="{{ site.baseurl }}/media/2017/04/template-page.png"><img alt="template-page" class="alignnone wp-image-4075" height="276" src="{{ site.baseurl }}/media/2017/04/template-page.png" width="400"/></a>
+<h2>Upcoming improvements</h2>
+Today’s release is just the start of the improvements to the Functions portal. Here’s a list of some of the other improvements we have planned:
+<ul>
+<li>Option to create a new Function App from the navigation blade. Currently, you have to go to the top-level +New option to create a Function App (<a href="https://github.com/projectkudu/AzureFunctionsPortal/issues/986">AzureFunctionsPortal #986</a>)</li>
+<li>On Functions grid page, add options for search, enable/disable, and delete (<a href="https://github.com/projectkudu/AzureFunctionsPortal/issues/1062">AzureFunctionsPortal #1062</a>)</li>
+<li>Include pricing tier in Function App list (<a href="https://github.com/projectkudu/AzureFunctionsPortal/issues/1030">AzureFunctionsPortal #1030</a>)</li>
+<li>Add list of keys to Get Function URL dialog (<a href="https://github.com/projectkudu/AzureFunctionsPortal/issues/850">AzureFunctionsPortal #850</a>)</li>
+<li>Sort templates by scenario, rather than alphabetical (<a href="https://github.com/projectkudu/AzureFunctionsPortal/issues/405">AzureFunctionsPortal #405</a>)</li>
+</ul>
+<h2>Feedback survey</h2>
+As this is a big change to the Azure Functions portal, we’d love to hear your feedback. <strong>Help improve the product by filling out a 2-minute survey: <a href="https://aka.ms/functions-portal-survey">https://aka.ms/functions-portal-survey</a></strong>.
+<h2>Provide feedback</h2>
+Ask questions in the comments section below or reach out to me on Twitter <a href="https://twitter.com/lindydonna">@lindydonna</a>. For general feedback and questions about Azure Functions:
+<ul>
+<li>Ask product questions on the <a href="https://social.msdn.microsoft.com/Forums/azure/en-US/home?forum=AzureFunctions">Azure Functions MSDN forum</a> and <a href="http://stackoverflow.com/questions/tagged/azure-functions">StackOverflow</a>, where you’ll get answers directly from the engineering team.</li>
+<li>Submit feature requests on the <a href="https://github.com/Azure/Azure-Functions">Azure Functions GitHub repo</a> or <a href="https://feedback.azure.com/forums/355860-azure-functions">feedback.azure.com</a>. For portal bugs and feature requests, post in <a href="https://github.com/projectkudu/AzureFunctionsPortal">AzureFunctionsPortal</a>.</li>
+<li>Reach out to us on Twitter via <a href="https://twitter.com/azurefunctions">@AzureFunctions</a> or use the the hashtag <a href="https://twitter.com/search?q=%23azurefunctions">#AzureFunctions</a>.</li>
+</ul>
+<strong>Acknowledgements</strong>
+
+We’d like to thank our Azure MVPs and Azure Advisors for trying out an early version of the portal and providing feedback. Functions team members <a href="https://twitter.com/bktv99">@bktv99</a>, <a href="https://twitter.com/crandycodes">@crandycodes</a>, and <a href="https://twitter.com/phaseshake">@phaseshake</a> filed the most bugs during the bug bash.</div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
+</html>

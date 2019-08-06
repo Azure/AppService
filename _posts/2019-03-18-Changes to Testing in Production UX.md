@@ -1,8 +1,11 @@
 ---
-layout: post
 title:  "Changes to Routing Rules UX"
-categories: "update"
-author: "Jason Freeberg"
+tags:
+    - Azure Portal
+    - deployment slots
+permalink: "/update/2019/03/18/Changes-to-Testing-in-Production-UX.html"
+author_name: "Jason Freeberg"
+author_profile: true
 ---
 
 We will soon be rolling out a series of UX and ARM API changes that will alter the behavior of routing rules for testing in production. After May 22nd, you will no longer be able to create routing rules in staging slots from the Portal, and <u>on August 21st we will remove routing rules from all non-production slots</u>. You will still be able to route traffic from your *production* slot to your staging slots to do [testing in production](https://www.neotys.com/blog/tips-for-testing-in-production/). Please follow the instructions below to remove the routing rules from your staging slots.
@@ -13,7 +16,7 @@ We will soon be rolling out a series of UX and ARM API changes that will alter t
 
 We originally allowed traffic routing from staging slots to enable advanced testing scenarios. However, we later learned that our customers were often routing traffic incorrectly and running into circular routing loops and other problems. Testing in production quickly gets complicated when routing rules are applied to non-production slots.  
 
-On July 21st we will remove all routing rules from staging slots. **Rules on your production slot will not be changed.**
+On August 21st we will remove all routing rules from staging slots. **Rules on your production slot will not be changed.**
 
 ## How to remove rules on staging sites
 
@@ -28,7 +31,7 @@ Until May 22nd, you can remove your staging slot rules through the Azure portal.
 
 ### Using ARM
 
-Until July 21st, you can remove your staging slot rules through the Resource Explorer.
+Until August 21st, you can remove your staging slot rules through the Resource Explorer. On August 21st we will remove all routing rules from staging slots.
 
 1. Go to your staging slot in the Portal and click **Resource Explorer**
     In the panel, click **Go**. This should open a new tab in your browser. The navigation menu will open to your staging slot.

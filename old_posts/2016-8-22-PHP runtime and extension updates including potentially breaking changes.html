@@ -1,0 +1,59 @@
+---
+layout: post
+hide_excerpt: true
+---
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Cory Fowler (MSFT)" target="_blank">Cory Fowler (MSFT)</a>
+<time>    8/22/2016 10:04:49 AM</time>
+<hr/>
+<div id="content">In an upcoming release, we are making some changes to the available runtimes and PHP extensions on the Azure App Service workers. We suggest that you review your sites to ensure that these changes do not cause any downtime of your applications or tooling.
+<h2>PHP Runtime Updates</h2>
+Due to some recent high priority security updates, we are adjusting the runtimes that are available on Azure App Service workers. For more details on the changes, please review the links to the specific version changelogs available in the After Update column of the table below.
+<blockquote><strong>Note: </strong>PHP 5.4 will soon be retired on Azure App Service as it is no longer receiving security updates. See <a href="https://azure.microsoft.com/en-us/blog/announcing-support-for-php-7-0-in-azure-app-service-and-notice-of-php-5-4-retirement/">more details</a> about the retirement on the Azure Blog.</blockquote>
+<table width="50%">
+<thead>
+<tr>
+<th>Runtime Version</th>
+<th>Currently Supported</th>
+<th>After Update</th>
+</tr>
+</thead>
+<tbody align="center">
+<tr>
+<td>5.4</td>
+<td>5.4.45</td>
+<td>5.4.45</td>
+</tr>
+<tr>
+<td>5.5</td>
+<td>5.5.36</td>
+<td><a href="http://php.net/ChangeLog-5.php#5.5.38">5.5.38</a></td>
+</tr>
+<tr>
+<td>5.6</td>
+<td>5.6.22</td>
+<td><a href="http://php.net/ChangeLog-5.php#5.6.24">5.6.24</a></td>
+</tr>
+<tr>
+<td>7.0</td>
+<td>7.0.7</td>
+<td><a href="http://php.net/ChangeLog-7.php#7.0.9">7.0.9</a></td>
+</tr>
+</tbody>
+</table>
+<h2>PHP Extension Updates</h2>
+<h3>SQL Server Driver for PHP 7</h3>
+Recently the SQL Server team released the <a href="https://blogs.technet.microsoft.com/dataplatforminsider/2016/07/20/microsoft-drivers-4-0-for-php-for-sql-server-with-php-7-0-support-released/">Microsoft drivers 4.0 for PHP</a>,which includes support for PHP 7. Now that this driver is no longer in preview, we are including the driver on the workers by default. If you have been loading your own version of this driver, you will need to remove the statements which are loading the driver as having a duplicate reference will cause errors.
+<h3>XDebug</h3>
+We are updating the version of XDebug which is available on the workers by default. Currently, we have version 2.2.4 available in <code>d:\devtools\xdebug</code> which is being replaced by version 2.4.0. If you are referencing XDebug for profiling or remote debugging purposes, the extension will no longer be available on the workers and the references will need to be updated to point to 2.4.0.
+
+The good news is that XDebug version 2.4.0 supports PHP 5.5, 5.6 &amp; 7.0, which means all supported runtimes now have the ability to take advantage of XDebug for debugging and profiling purposes.</div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
+</html>

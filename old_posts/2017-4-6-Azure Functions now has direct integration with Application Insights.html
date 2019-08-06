@@ -1,0 +1,69 @@
+---
+layout: post
+hide_excerpt: true
+---
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Donna Malayeri" target="_blank">Donna Malayeri</a>
+<time>    4/6/2017 12:56:15 PM</time>
+<hr/>
+<div id="content">Today we're encouraging everyone to go give Azure Functions' Application Insights integration a try. You can find full instructions and notes on how it works at <a href="https://aka.ms/func-ai">https://aka.ms/func-ai</a>. Now it takes (nearly) zero effort to add Application Insights to your Azure Functions and immediately unlock a powerful tool for monitoring your applications.
+
+Application Insights is now available for all Functions users on "~1". If you're on "beta" now, please switch back to "~1" which has the latest version. If you stay on "beta", it's very likely you'll be broken by something at some point.
+<h2 id="getting-started">Getting Started</h2>
+It’s fairly simple to get started – there is just two steps.
+<ol>
+<li>Create an Application Insights instance.
+<ol>
+<li>Application type should be set to General</li>
+<li>Grab the instrumentation key</li>
+</ol>
+</li>
+<li>Update your Function App’s settings
+<ol>
+<li>Add App Setting – <code>APPINSIGHTS_INSTRUMENTATIONKEY</code> = <code>{Instrumentation Key}</code></li>
+</ol>
+</li>
+</ol>
+Once you’ve done this, your App should start automatically sending information on your Function App to Application Insights, without any code changes.
+<h2 id="using-application-insights-to-the-fullest">Using Application Insights to the fullest</h2>
+Now that your Function Apps are hooked up to Application Insights, let's take a quick look at some of the key things you'll want to try.
+<h3 id="live-stream">Live Stream</h3>
+If you open your Application Insights resource in the portal, you should see the option for <a href="https://docs.microsoft.com/en-us/azure/application-insights/app-insights-live-stream">“Live Metrics Stream”</a> in the menu. Click on it and you’ll see a near-live view of what’s coming from your Function App. For executions, it has info on #/second, average duration, and failures/second. It also has information on resource consumption. You can pivot all of these by the “instance” your functions are on; providing you insight on whether a specific instance might be having an issue or all of your Functions.
+
+<a href="{{ site.baseurl }}/media/2017/04/2017-04-06_09h28_07.png"><img alt="Live stream graphs" class="aligncenter size-large wp-image-3915" height="676" src="{{ site.baseurl }}/media/2017/04/2017-04-06_09h28_07-1024x788.png" width="879"/></a>
+<h3 id="analytics">Analytics</h3>
+The <a href="https://docs.microsoft.com/en-us/azure/application-insights/app-insights-analytics">analytics portal</a> provides you the ability to write custom queries against your data. This is one of the most powerful tools in your tool box. Currently, the following tables are full of data from the Functions runtime:
+<ul>
+<li>Requests – one of these is logged for each execution</li>
+<li>Exceptions – tracks any exceptions thrown by the runtime</li>
+<li>Traces – any traces written to context.log or ILogger show up here</li>
+<li>PerformanceMetrics – Auto collected info about the performance of the servers the functions are running on</li>
+<li>CustomEvents – Custom events from your functions and anything that the host sees that may or may not be tied to a specific request</li>
+<li>CustomMetrics – Custom metrics from your functions and general performance and throughput info on your Functions. This is very helpful for high throughput scenarios where you might not capture every request message to save costs, but you still want a full picture of your throughput/etc. as the host will attempt to aggregate these client side, before sending to Application Insights</li>
+</ul>
+The other tables are from availability tests and client/browser telemetry, which you can also add. The only thing that’s currently missing is dependencies. There is also more metrics/events we’ll add over the course of the preview (based off your generous feedback on what you need to see).
+
+Example:
+
+This will show us the median, p95, and p99 over the last 30 minutes graphed in a timeplot.
+
+<script src="https://gist.github.com/christopheranderson/84a9ec7c26f76964fc5a03fbe050dc14.js"></script>
+
+While you can copy+paste this query, I'd recommend trying to type it out yourself to get a sense of the amazing intellisense features that the editor has. You can learn about all the language features with some amazing examples from the <a href="https://docs.microsoft.com/en-us/azure/application-insights/app-insights-analytics-reference">Analytics reference page</a>.
+
+You can also pin these graphs to your dashboard, which makes for a really powerful tool for having a way to know how your application is behaving at a glance.
+
+<a href="{{ site.baseurl }}/media/2017/04/2017-04-06_09h31_17.png"><img alt="Highlighting the pin to dashboard" class="aligncenter size-large wp-image-3925" height="445" src="{{ site.baseurl }}/media/2017/04/2017-04-06_09h31_17-1024x518.png" width="879"/></a>
+<h3 id="alerts">Alerts</h3>
+While it's great that I can see what's happening and what happened, what's even better is being told what's happening. That's where alerts come into play. From the main Application Insights blade, you can click on the alerts section and define alerts based on a variety of metrics. For example, you could have an alert fire when you've had more than 5 errors in 5 minutes, which sends you an email. You can then create another one which detects more than 50 errors in 5 minutes, and triggers a Logic App to send you a text message or PagerDuty alert.
+<h2 id="next-steps">Next steps</h2>
+Application Insights is now GA'd and ready for production workloads. We're also listening for any feedback you have. Please file it on our <a href="https://github.com/Azure/azure-webjobs-sdk-script/issues/new">GitHub</a>. We'll be adding some new features like better sampling controls and automatic dependency tracking soon. We hope you'll give it a try and start to gain more insight into how your Functions are behaving. You can read more about how it works at <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-monitoring">docs.microsoft.com</a></div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
+</html>

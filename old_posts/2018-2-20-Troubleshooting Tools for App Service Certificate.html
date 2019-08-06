@@ -1,0 +1,47 @@
+---
+layout: post
+hide_excerpt: true
+---
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/mksunitha" target="_blank">mksunitha</a>
+<time>    2/20/2018 11:26:25 AM</time>
+<hr/>
+<div id="content">This blog post describes the various tools available to you to debug any issues with App Service Certificates  resources that you may be using with Web App or other Azure Services.  SSL is a critical part of your application and when configuring the certificate or renewing the certificate there can be a few issues you might run into . These tools listed below can help provide you information to self-debug the issue in most cases.
+<ol>
+<li style="list-style-type: none">
+<ol>
+<li><strong>Verify Status of your Certificate : </strong>Check if the Status of your certificate is ready for use. Sometimes the certificate might have Domain verification step pending and this status tile can help provide information on what steps you need to take <a href="{{ site.baseurl }}/media/2018/02/status-asc.png"><img alt="" class="alignnone size-large wp-image-7286" height="497" src="{{ site.baseurl }}/media/2018/02/status-asc-1024x579.png" width="879"/></a></li>
+</ol>
+</li>
+</ol>
+There are many different states the certificate can be in :
+<ol>
+<li style="list-style-type: none">
+<ul>
+<li>Certificate Denied : Domain verification was not completed in  15 days causing the certificate to be in denied state. Certificate will not be billed. Purchase a new certificate with same domain to resolve this . Certificate cannot be restored.</li>
+<li>Certificate Expired : Certificate has expired . If auto renew was enabled and the certificate still expired , then credit card payment may have failed for the subscription. In this case , you need purchase a new certificate with the desired domain to resolve the issue.Certificate cannot be restored.</li>
+<li>Domain verification required : Domain verification is pending . Click on "Certificate Configuration" and complete STEP 2 for domain verification. If Domain verification option is not working , select Manual verification to complete this step.  If Domain verification is not completed in 15 days , certificate will be in denied state</li>
+<li>Key Vault out of sync: Key vault can be out of sync if it was deleted , moved to another subscription or if the subscription was in suspended/canceled  state.  Choose your app service certificate in the Azure portal , click on <strong>Certificate Configuration </strong>and complete STEP 1 to assign a new Key Vault resource to app service certificate.  Note if you are bringing you external certificate via Key Vault using this <a href="https://blogs.msdn.microsoft.com/appserviceteam/2016/05/24/deploying-azure-web-app-certificate-through-key-vault/">blog post </a>, you must reconfigured to use the correct secret with the app service certificate. App service certificate looks for secret name and does not support using "certificate object" in key vault. This is a limitation and we are working in fixing it</li>
+</ul>
+</li>
+<li><strong>Debug using Resource Explorer : </strong>You can look at the certificate order state in resource explorer https://resources.azure.com . Select<strong> your subscription -&gt; Providers -&gt; Microsoft.CertificateRegistration-&gt;Certificateorders . </strong> This lists all the certificate orders within the subscription.
+<ul>
+<li>Search for a given  certificate and look at the  "provisioingstate" property . If Succeeded , it will be ready to use state. If not , resolve the issues based on the states mentioned earlier in this post. <strong><a href="{{ site.baseurl }}/media/2018/02/cert-kv-issue.png"><img alt="" class="alignnone size-large wp-image-7855" height="270" src="{{ site.baseurl }}/media/2018/02/cert-kv-issue-1024x315.png" width="879"/></a></strong></li>
+</ul>
+</li>
+<li><b>Debug using Timeline : </b>View the list of historical activities or operations that have occurred on App Service Certificate resource using the Timeline feature to help debug the issue <a href="{{ site.baseurl }}/media/2018/02/timeline-asc.png"><img alt="" class="alignnone size-large wp-image-7285" height="395" src="{{ site.baseurl }}/media/2018/02/timeline-asc-1024x460.png" width="879"/></a></li>
+<li><strong>Sync a Certificate :</strong> <span>The Web App service runs a background job that periodically (once a day ) that syncs all App Service certificate. Hence when you rotate or update a certificate, s</span>ometimes the application is still retrieving the old certificate and not the newly updated certificate.  This  is because the job has not run to sync the certificate resource.   To force a sync of the certificate , you can click on <strong>Rekey and Sync </strong>setting and then click on <strong>Sync </strong>button .<a href="{{ site.baseurl }}/media/2018/02/sync-asc.png"><img alt="" class="alignnone size-large wp-image-7295" height="436" src="{{ site.baseurl }}/media/2018/02/sync-asc-1024x508.png" width="879"/></a></li>
+<li><strong>Refer to FAQs   documentation  :</strong> Get access to appropriate documentation to App Service certificates to help resolve the issue with Configuration , Rekey and Sync , Renewal etc  .<a href="{{ site.baseurl }}/media/2018/02/faq-asc.png"><img alt="" class="alignnone size-large wp-image-7276" height="557" src="{{ site.baseurl }}/media/2018/02/faq-asc-1024x649.png" width="879"/></a></li>
+</ol>
+ 
+
+If the above tools dont help you resolve the certificate related issues , then please contact <a href="https://portal.azure.com/blade/Microsoft_Azure_Support/HelpAndSupportBlade/overview">Microsoft Azure Support</a>.</div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
+</html>
