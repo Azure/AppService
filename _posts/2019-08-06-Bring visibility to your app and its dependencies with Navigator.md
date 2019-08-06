@@ -1,13 +1,16 @@
 ---
-layout: post
 title: "Bring visibility to your app and its dependencies with Navigator"
-author: "Yun Jung Choi"
-tags: app service, azure app service, diagnostics, support, web app, troubleshooting, self-help
+author_name: "Yun Jung Choi"
+tags: 
+    - diagnostics
+    - support
+    - troubleshooting
+    - self help
 ---
 
-Application downtime can be dreadful, especially when the app is handling mission-critical load. There could be countless causes for your app’s downtime ranging from the app’s code to the misconfiguration of its dependencies. Fast troubleshooting is the key to minimizing the production impact, however the complex nature of today’s application makes narrowing down the cause often a lengthy and difficult process. We understand fixing a problem of an app is not as simple as just looking at the app and sometimes it requires thorough investigation of changes made to each dependent resource.
+Application downtime can be dreadful, especially when the app is handling mission-critical load. There could be countless causes for your app’s downtime ranging from the app’s code to the misconfiguration of its dependencies. Fast troubleshooting is the key to minimizing the production impact. However, the complex nature of today’s applications makes narrowing down the cause a lengthy and difficult process. Sometimes it requires thorough investigation of changes made to each dependent resource.
 
-We are excited to announce **Navigator**, a new feature offering for Windows app in App Service Diagnostics, an intelligent and guided experience that helps you troubleshoot your App Service web app with little to no configuration. **Navigator** is a new diagnostic feature that provides a centralized view of a web app and its dependencies as well as the changes made to those dependencies. The feature can automatically render dependencies in the same subscription as a dependency map and display the changes made to each resource, leveraging Change Analysis service. With the new experience offered by App Service Diagnostics, you can easily identify the dependencies of your web app and explore the changes as part of your troubleshooting experience.
+We are excited to announce **Navigator**, a new feature offering for Windows apps in App Service Diagnostics, an intelligent and guided experience that helps you troubleshoot your web app with little to no configuration. **Navigator** is a new diagnostic feature that provides a centralized view of a web app and its dependencies as well as the changes made to those dependencies. The feature can automatically render dependencies in the same subscription as a dependency map and display the changes made to each resource, leveraging [Change Analysis]({{ site.baseurl }}{% post_url 2019-05-07-Announcing the new change analysis experience in App Service Diagnostics-Analysis %}). With the new experience, you can easily identify the dependencies of your web app and explore the changes as part of your troubleshooting experience.
 
 Paired with information from existing diagnostics information in App Service Diagnostics, **Navigator** can supplement your troubleshooting experience by providing a timeline of the change groups made by your web app and its dependencies. Correlating this information with other information offered in App Service Diagnostics can help you further understand the changes and narrow down on potential causes for unhealthy behavior.
 
@@ -23,7 +26,7 @@ Upon opening the tool, you will see a message to enable Change Analysis. You can
 
 ![Enable Now]({{site.baseurl}}/media/2019/08/enable-now-banner.png)
 
-Turn on **Change Analysis** and click **Save** to get property changes and code changes for your main web app as well as property changes for your dependent resources. [Note: If you are using Change Analysis for the first time, enabling this setting will register Change Analysis Resource Provider on your subscription.] By enabling **Change Analysis**, your app’s Kudu will trigger a snapshot every 4 hours to capture the changes made between those time intervals.
+Turn on **Change Analysis** and click **Save** to get property changes and code changes for your main web app as well as property changes for your dependent resources. [Note: If you are using Change Analysis for the first time, enabling this setting will register Change Analysis Resource Provider on your subscription.] By enabling **Change Analysis**, your app’s [Kudu](https://github.com/projectkudu/kudu/wiki) will trigger a snapshot every 4 hours to capture the changes made between those time intervals.
 
 ![Change Analysis Settings]({{site.baseurl}}/media/2019/08/change-analysis-settings.png)
 
