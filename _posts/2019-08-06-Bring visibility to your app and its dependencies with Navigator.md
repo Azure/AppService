@@ -1,5 +1,5 @@
 ---
-title: "Bring visibility to your app and its dependencies with Navigator"
+title: "Get visibility into your app's dependencies with Navigator"
 author_name: "Yun Jung Choi"
 tags: 
     - diagnostics
