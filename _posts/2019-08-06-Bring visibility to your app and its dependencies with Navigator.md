@@ -33,7 +33,7 @@ To disable Change Analysis on your web app, click on **Go to Change Analysis Set
 
 ## Navigating through the change group timeline
 
-Once Change Analysis is enabled, you will see a dependency map of your web app and its dependencies in the same subscription. You can check the inner workings of your app using this view. Also, if you click on a resource supported by Change Analysis, you can view the recent changes made to the selected resource. See [Change Analysis service](https://azure.microsoft.com/updates/application-change-analysis-for-azure-monitor-is-now-in-public-preview/) to view the list of dependencies supported by Change Analysis service.
+Once Change Analysis is enabled, you will see a dependency map of your web app and its dependencies in the same subscription. You can check the inner workings of your app using this view. Also, if you click on a resource supported by Change Analysis, you can view the recent changes made to the selected resource. See [Change Analysis service](https://docs.microsoft.com/azure/azure-monitor/app/change-analysis) to view the list of dependencies supported by Change Analysis service.
 
 ![Navigator Dependency Map]({{site.baseurl}}/media/2019/08/navigator-dependency-map.png)
 
