@@ -84,6 +84,10 @@ After your build action, add the App Service action with `uses: azure/appservice
 
 The App Service Action deploys to the production slot by default. To deploy to a staging slot, redo the [publish profile steps](#Configure-the-repository) with the publish profile from your desired staging slot.
 
+### Other Azure Actions
+
+In addition to this action, there are actions for [other common Azure scenarios](https://azure.microsoft.com/en-us/blog/announcing-the-preview-of-azure-actions-for-github/) such as deploying to Azure Kubernetes Service, logging into Azure with a service principal, or signing into Docker. See the [links below](#Helpful-Resources).
+
 ## Examples
 
 ### Containers
@@ -100,10 +104,6 @@ jobs:
     steps:
 
     - uses: actions/checkout@master
-
-    - uses: azure/actions/login@master
-      with:
-        creds: ${{ secrets.RNAzureCreds }}
 
     - uses: azure/container-actions/docker-login@master
       with:
@@ -189,13 +189,17 @@ jobs:
     steps:
     - uses: actions/checkout@master
 
-    - name: install dependencies
-      run: pip install -r requirements.txt
+    - name: install dependencies, and zip the app to use ZipDeploy
+      run: |
+        pip install -r requirements.txt
+        zip -r myapp.zip
 
     - uses: azure/appservice-actions/webapp@master
       with:
         app-name: <your-app-name>
         publish-profile: ${{ secrets.<publish-profile> }}
+        package: './myapp.zip'
+        
 ```
 {% endraw %}
 
