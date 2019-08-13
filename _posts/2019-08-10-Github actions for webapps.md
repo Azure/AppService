@@ -11,7 +11,7 @@ tags:
 
 Last week GitHub announced the preview of [GitHub Actions](https://github.com/features/actions) with built-in CI/CD; watch the announcement [here](https://youtu.be/E1OunoCyuhY?t=2150). These actions, defined in YAML files, allow you to trigger an automated workflow process on any GitHub event. Today the App Service team is happy to share our own action, allowing you to deploy to App Service following a push or pull request.
 
-With the App Service Action, you can deploy your code to any of our managed language stacks. Simply specify your source code folder, ZIP file, JAR or WAR. If you prefer to deploy a Docker container instead, there's an action for that!
+With the App Service Action, you can deploy your code to any of our managed language stacks. Simply specify your source code folder, zip file, JAR or WAR. If you prefer to deploy a Docker container instead, there's an action for that!
 
 {% comment %}
 For some reason this photo doesn't render when deployed. It shows locally.
