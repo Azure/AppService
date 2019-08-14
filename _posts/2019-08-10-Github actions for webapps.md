@@ -92,39 +92,63 @@ In addition to this action, there are actions for [other common Azure scenarios]
 
 ### Containers
 
+To deploy a container, you will need to create an Azure Service Principal via the Azure CLI, then paste the details of the principal as a GitHub Secret.
+
+1. Install the Azure CLI
+1. Run the following command, replacing `{subscription}` and `{resource-group}` with the subscription and resource group of your application
+
+    ```bash
+    az ad sp create-for-rbac --name "myServicePrincipal" --role contributor \
+      --scopes /subscriptions/{subscription}/resourceGroups/{resource-group} \
+      --sdk-auth
+    ```
+
+1. Open GitHub and navigate to your repository
+1. Select **Settings** > **Secrets**. On the Secrets page, select **Add a new secret** and paste the JSON output from the earlier `az ad sp` command.
+    ![Add a secret on GitHub]({{site.baseurl}}/media/2019/08/GitHubActions-Secrets.png)
+1. Finally, add your Docker username and password as GitHub Secrets
+
+Here is a full example: 
+
 {% raw %}
 ```yaml
 on: push
 
 jobs:
-
-  build-and-deploy:
-    name: Build
+  deploy-container:
     runs-on: ubuntu-latest
     steps:
-
     - uses: actions/checkout@master
 
+    # Unlike code deployment, you will authenticate using a Service Principal
+    - uses: azure/actions/login@master
+      with:
+        creds: ${{ secrets.AZURE_SP }}
+
+    # These creds are used to push your new image
     - uses: azure/container-actions/docker-login@master
       with:
-        username: '<username>'
-        password: '<password>'
-        loginServer: '<login server>' # default: index.docker.io
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        #loginServer: '<login server>' # default: index.docker.io
 
+    # Tag the image with the git commit hash
     - run: |
-        docker build . -t contoso.azurecr.io/demo:${{ github.sha }}
-        docker push contoso.azurecr.io/demo:${{ github.sha }}
+        docker build . -t contoso/demo:${{ github.sha }}
+        docker push contoso/demo:${{ github.sha }}
 
     - uses: azure/appservice-actions/webapp-container@master
       with:
-        app-name: '<your-app-name>'
-        images: 'contoso.azurecr.io/demo:${{ github.sha }}'
-        configuration-file: 'Optional path to a docker compose file'
-        container-command: 'Optional startup command for the app (dotnet run, java -jar app.jar)'
+        app-name: '<your app name>'
+        images: 'contoso/demo:${{ github.sha }}'
+        #configuration-file: 'Optional path to a docker compose file'
+        #container-command: 'Optional startup command for the app (dotnet run, java -jar app.jar)'
 ```
 {% endraw %}
 
 ### Java
+
+When deploying Java apps, make sure you specify the package name relative from the root directory. Most likely, your deployment artifact will be in the `target/` directory.
 
 {% raw %}
 ```yaml
