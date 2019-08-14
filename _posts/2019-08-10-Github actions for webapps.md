@@ -223,7 +223,6 @@ jobs:
         app-name: <your-app-name>
         publish-profile: ${{ secrets.<publish-profile> }}
         package: './myapp.zip'
-        
 ```
 {% endraw %}
 
