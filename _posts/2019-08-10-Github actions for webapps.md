@@ -58,7 +58,7 @@ jobs:
         npm run test --if-present
 ```
 
-See the [examples](#Examples) at the end of this article for specific language examples.
+See the [examples](#examples) at the end of this article for specific language examples.
 
 ### Add the App Service Action
 
@@ -82,11 +82,11 @@ After your build action, add the App Service action with `uses: azure/appservice
 
 ### Deploy to a slot
 
-The App Service Action deploys to the production slot by default. To deploy to a staging slot, redo the [publish profile steps](#Configure-the-repository) with the publish profile from your desired staging slot.
+The App Service Action deploys to the production slot by default. To deploy to a staging slot, redo the [publish profile steps](#configure-the-repository) with the publish profile from your desired staging slot.
 
 ### Other Azure Actions
 
-In addition to this action, there are actions for [other common Azure scenarios](https://azure.microsoft.com/en-us/blog/announcing-the-preview-of-azure-actions-for-github/) such as deploying to Azure Kubernetes Service, logging into Azure with a service principal, or signing into Docker. See the [links below](#Helpful-Resources).
+In addition to this action, there are actions for [other common Azure scenarios](https://azure.microsoft.com/en-us/blog/announcing-the-preview-of-azure-actions-for-github/) such as deploying to Azure Kubernetes Service, logging into Azure with a service principal, or signing into Docker. See the [links below](#helpful-Resources).
 
 ## Examples
 
