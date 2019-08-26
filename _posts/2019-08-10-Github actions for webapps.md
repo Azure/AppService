@@ -73,10 +73,10 @@ After your build action, add the App Service action with `uses: azure/appservice
 # Deploy to App Service
 - uses: azure/appservice-actions/webapp@master
 - name: Deploy to app service  # Name is optional
-    with:
-        app-name: <the app name>  # Replace with your app name
-        package: <path to deployment source>  # Specify the folder or file to deploy
-        publish-profile: ${{ secrets.<your-publish-profile-name> }}  # Replace with the name of your publish profile
+  with:
+    app-name: <the app name>  # Replace with your app name
+    package: <path to deployment source>  # Specify the folder or file to deploy
+    publish-profile: ${{ secrets.<your-publish-profile-name> }}  # Replace with the name of your publish profile
 ```
 {% endraw %}
 
@@ -194,10 +194,10 @@ jobs:
         npm run test --if-present
 
    - uses: azure/appservice-actions/webapp@master
-      with:
-        app-name: <your-app-name>
-        publish-profile: ${{ secrets.<publish-profile> }}
-        package: '.'
+     with:
+       app-name: <your-app-name>
+       publish-profile: ${{ secrets.<publish-profile> }}
+       package: '.'
 ```
 {% endraw %}
 
