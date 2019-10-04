@@ -6,8 +6,9 @@ tags:
 toc: true
 ---
 
-## Looking to integrate mobile services in your application? Sign up with [App Center](https://appcenter.ms/signup?utm_source=App%20Service%20Blog&utm_medium=Azure&utm_campaign=Remove%20Easy%20Tables%20and%20Easy%20API).
-[Visual Studio App Center](https://appcenter.ms) is the next generation solution for mobile application developers. It offers  integrated and end to end services central to mobile development. If you are looking to Microsoft cloud services in your mobile application, sign up with [App Center](https://appcenter.ms/signup?utm_source=App%20Service%20Blog&utm_medium=Azure&utm_campaign=Remove%20Easy%20Tables%20and%20Easy%20API) today.
+> Integrating mobile services in your application? Sign up with [App Center](https://appcenter.ms/signup?utm_source=App%20Service%20Blog&utm_medium=Azure&utm_campaign=Remove%20Easy%20Tables%20and%20Easy%20API)
+
+[Visual Studio App Center](https://appcenter.ms) is the next generation solution for mobile application developers. It offers  integrated end-to-end services central to mobile development. If you are integrating Microsoft cloud services in your mobile application, sign up with [App Center](https://appcenter.ms/signup?utm_source=App%20Service%20Blog&utm_medium=Azure&utm_campaign=Remove%20Easy%20Tables%20and%20Easy%20API) today.
 
 ## Removing Easy Tables and Easy APIs from Azure App Service
 Azure App Service provides specific features for Node developers to easily get started with mobile backend services by leveraging Easy Tables and Easy APIs in the Azure portal. Easy Tables provides a portal experience for Node developers to create and manage their tables, their schema, and appropriate permissions. Easy APIs lets developers build and consume custom APIs in the backend. 
