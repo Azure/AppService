@@ -57,3 +57,5 @@ Once the conditions are met, your selected action is triggered. Proactive CPU Mo
 Once you set the rule that best suits your app's need, you can get ahead of your CPU issues, automatically mitigate CPU spikes, and save yourself from a dreadful 2:00am call.
 
 Feel free to share your feedback or questions about **Proactive CPU Monitoring** by emailing [diagnostics@microsoft.com](mailto:diagnostics@microsoft.com) or posting on [UserVoice](https://feedback.azure.com/forums/169385-web-apps​​​​​​​​​​​​​​) with "[Diag]" in the title.
+
+For more information on other diagnostic tools, please visit [Azure App Service diagnostics overview](https://docs.microsoft.com/en-us/azure/app-service/overview-diagnostics).
