@@ -58,3 +58,5 @@ To prevent CPU overhead, only one dump is analyzed by the instance at a time. Fo
 Once you set the rule that best suits your app's need, you can get ahead of your CPU issues, automatically mitigate CPU spikes, and save yourself form a dreadful 2am calls.
 
 Feel free to share your feedback or questions about **Proactive CPU Monitoring** by emailing [diagnostics@microsoft.com](mailto:diagnostics@microsoft.com) or posting on [UserVoice](https://feedback.azure.com/forums/169385-web-apps​​​​​​​​​​​​​​) with "[Diag]" in the title.
+
+For more information on other diagnostic tools, please visit [Azure App Service diagnostics overview](https://docs.microsoft.com/en-us/azure/app-service/overview-diagnostics).
