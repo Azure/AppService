@@ -18,6 +18,7 @@ jobs:
       run: |
         gem install bundler
         bundle install --jobs 4 --retry 3
+        chmod 777 deployment-script.sh
         ./deployment-script.sh
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
