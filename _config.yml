@@ -24,8 +24,8 @@ description              : "Azure App Service team blog archives."
 url                      : "https://azure.github.io" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : "/AppService" # the subpath of your site, e.g. "/blog"
 repository               : "Azure/AppService" # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
-teaser                   : "media/pages/logo.svg" # path of fallback teaser image, e.g. "/assets/images/500x300.png"
-logo                     : "media/pages/logo.svg" # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
+teaser                   : "media/pages/new_app_service_logo_64.svg" # path of fallback teaser image
+logo                     : "media/pages/new_app_service_logo_16.svg" # path of logo image to display in the masthead
 masthead_title           : # overrides the website title displayed in the masthead, use " " for no title
 # breadcrumbs            : false # true, false (default)
 words_per_minute         : 200
@@ -76,6 +76,7 @@ algolia:
 google:
   search_engine_id       : # YOUR_SEARCH_ENGINE_ID
   instant_search         : # false (default), true
+
 # SEO Related
 google_site_verification :
 bing_site_verification   :
@@ -83,6 +84,17 @@ yandex_site_verification :
 naver_site_verification  :
 lang: "en_US"
 
+# Config for Jekyll archives
+jekyll-archives:
+  enabled: all
+  layouts:
+    year: archive-year
+    month: archive-month
+    day: archive-day
+  permalinks:
+    year: '/:year/'
+    month: '/:year/:month/'
+    day: '/:year/:month/:day/'
 
 # Social Sharing
 twitter:
@@ -110,7 +122,7 @@ analytics:
 # Site Author
 author:
   name             : "Azure App Service"
-  avatar           : "/media/pages/logo.svg" # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
+  avatar           : "/media/pages/new_app_service_logo_64.svg" # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
   bio              : "An excellent hosting platform for web and API applications."
   location         : "Redmond, WA"
   email            :
