@@ -1,4 +1,4 @@
-name: Build site and deploy to GH Pages branch
+name: Build site and deploy to gh-pages branch
 
 on: [push]
 
@@ -8,16 +8,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
+    - name: Check out repo
+      uses: actions/checkout@v1
+
     - name: Set up Ruby 2.6
       uses: actions/setup-ruby@v1
       with:
         ruby-version: 2.6.x
-        
-    - name: Build Jekyll site
+
+    - name: Install Ruby dependencies
       run: |
         gem install bundler
         bundle install --jobs 4 --retry 3
+
+    - name: Build and deploy to gh-pages branch
+      run: |
         chmod 777 deployment-script.sh
         ./deployment-script.sh
       env:
