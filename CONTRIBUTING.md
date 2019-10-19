@@ -76,3 +76,7 @@ To add images, GIFs, or other digital content to your post...
 1. Submit a pull request
 1. Tag `@jasonfreeberg` in your pull request
     - Send an email if it is high priority
+
+### Notes:
+- [/media](/media): All images and digital content from the old MSDN blog
+- [/resource](/resource): All the CSS and JS content from the old MSDN blog
