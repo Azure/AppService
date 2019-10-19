@@ -13,12 +13,11 @@ jobs:
       uses: actions/setup-ruby@v1
       with:
         ruby-version: 2.6.x
-      
-      env:
-        GITHUB_TOKEN:${{ secrets.GITHUB_ACCESS_TOKEN }}
         
     - name: Build Jekyll site
       run: |
         gem install bundler
         bundle install --jobs 4 --retry 3
         ./workflows/deployment-script.sh
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
