@@ -27,3 +27,9 @@ jobs:
         ./deployment-script.sh
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+
+    # TODO: Make this step depend on the deploy action
+    - name: Update Algolia search index
+      run: bundle exec jekyll algolia
+      env:
+        ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}

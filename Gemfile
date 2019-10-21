@@ -34,5 +34,5 @@ group :jekyll_plugins do
     gem "jekyll-include-cache"
     gem "jemoji"
     gem "jekyll-algolia"
-    gem "jekyll-archives"
+    gem "jekyll-archives", git: "https://github.com/jekyll/jekyll-archives.git", branch: "master"
   end

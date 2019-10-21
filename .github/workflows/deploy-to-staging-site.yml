@@ -26,7 +26,9 @@ jobs:
         bundle install --jobs 4 --retry 3
 
     - name: Build site
-      run: bundle exec jekyll build
+      run: |
+        echo "Building site for PR ${GITHUB_ACTOR}"
+        bundle exec jekyll build
 
     - name: Deploy to staging
       uses: azure/webapps-deploy@v1

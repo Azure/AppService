@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/jekyll/jekyll-archives.git
+  revision: 74a66073ca1fe180743c728e87eb6c0655e638ce
+  branch: master
+  specs:
+    jekyll-archives (2.2.1)
+      jekyll (>= 3.6, < 5.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -56,8 +64,6 @@ GEM
       json (~> 2.0)
       nokogiri (~> 1.6)
       verbal_expressions (~> 0.1.5)
-    jekyll-archives (2.2.1)
-      jekyll (>= 3.6, < 5.0)
     jekyll-data (1.0.0)
       jekyll (~> 3.3)
     jekyll-feed (0.12.1)
@@ -131,7 +137,7 @@ PLATFORMS
 DEPENDENCIES
   jekyll
   jekyll-algolia
-  jekyll-archives
+  jekyll-archives!
   jekyll-feed
   jekyll-include-cache
   jekyll-paginate
