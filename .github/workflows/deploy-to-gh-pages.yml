@@ -27,6 +27,7 @@ jobs:
         ./deployment-script.sh
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+        JEKYLL_ENV: production
 
     # TODO: Make this step depend on the deploy action
     - name: Update Algolia search index
