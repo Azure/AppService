@@ -1,0 +1,9 @@
+---
+author_name: Anthony Chu - MSFT
+layout: post
+hide_excerpt: true
+---
+      [Anthony Chu - MSFT](https://social.msdn.microsoft.com/profile/Anthony Chu - MSFT)  5/3/2018 7:37:31 AM  Recently, we released a collection of over 50 tips and tricks for Azure Functions that we're calling "[Functions Recipes](https://docs.microsoft.com/sandbox/functions-recipes/?WT.mc_id=recipes-appsvcblog-antchu)". Each recipe demonstrates a single, useful concept for working with Azure Functions. They include patterns and practices, integrations with other services, and tips that you may have overlooked when reading the documentation. With every recipe, you get a short code sample, key takeaways, and links to detailed documentation to learn more. Our goal is to create a comprehensive collection of recipes that you can quickly reference when you're working on your serverless projects with Azure Functions. If you want to see how triggers and bindings work, set up proxies, integrate with Cosmos DB, or even collect telemetry with Application insights, we want to be a resource that adds value to your workflow. [![]({{ site.baseurl }}/media/2018/04/recipes-screenshot1.png)]({{ site.baseurl }}/media/2018/04/recipes-screenshot1.png) We're only getting started. We'll be expanding the collection with even more recipes (we just added 11 new ones on [Durable Functions](https://docs.microsoft.com/sandbox/functions-recipes/durable-functions?WT.mc_id=recipes-appsvcblog-antchu)). We launched with recipes in C#, but we are starting to add other languages such as JavaScript, Java, F#, Python, and more.  We need your help!
+------------------
+
+ If you have a recipe idea or updates to suggest, create an issue or submit a pull request at the [Microsoft Docs Sandbox](https://github.com/microsoftdocs/sandbox) repository on GitHub. Contributing is as easy as clicking the "edit" button on any of the pages.     

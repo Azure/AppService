@@ -1,0 +1,16 @@
+---
+author_name: Christina Compy (MSFT)
+layout: post
+hide_excerpt: true
+---
+      [Christina Compy (MSFT)](https://social.msdn.microsoft.com/profile/Christina Compy (MSFT))  10/17/2018 11:47:30 AM  We are happy to announce a new version of the VNet Integration capability that enables access to resources across Service Endpoints or ExpressRoute connections. Like the pre-existing VNet Integration feature, this only enables your app to make calls into your VNet. It does not affect inbound traffic to your app. This feature is in Preview in all public regions. The new VNet Integration capability has the following characteristics.  - No gateway is required to use the new VNet Integration feature
+ - You can access resources across ExpressRoute connections without any additional configuration beyond integrating with the ExpressRoute connected VNet.
+ - The app and the VNet must be in the same region
+ - The new feature requires an unused subnet in your Resource Manager VNet.
+ - Your App Service plan must be a Standard, Premium or PremiumV2 plan
+ - The new capability is only available from newer Azure App Service scale units. The VNet Integration UI in the portal will tell you if your app can use the new VNet Integration feature.
+ - Production workloads are not supported on the new feature while it is in Preview
+ - Your app must be in an Azure App Service deployment that is capable of scaling up to Premium v2.
+ - The new VNet Integration feature does not work for apps in an App Service Environment.
+ - The new VNet Integration feature currently works just with Windows apps.
+  One address is used for each App Service plan instance. Since subnet size cannot be changed after assignment, use a subnet that can more than cover your maximum scale size. A /27 with 32 addresses is the recommended size as that would accommodate an App Service plan that is scaled to 20 instances. You can consume Service Endpoint secured resources using the new VNet Integration capability. To do so, enable service endpoints on the subnet used for VNet Integration. To use the feature, go to the Networking UI in the portal. If your app is able to use the new feature then you will see a capability to use the new preview feature. Simply select the Resource Manager VNet that you want to integrate with and then either create a new subnet or pick an empty pre-existing subnet. Initially there are some things that will not work initially against the subnet used for VNet Integration. They include peering, network security groups, and route tables. These capabilities will be gradually enabled during the preview period. Also not initially available is the ability for your web app to pick up the VNet DNS setting. If you want your app to use your VNet DNS server then create an Application setting for your app where the name is WEBSITE\_DNS\_SERVER and the value is the IP address of the server. If you have a secondary DNS server then create another Application setting where the name is WEBSITE\_DNS\_ALT\_SERVER and the value is the IP address of the server. You can read more about the feature in the documentation on [Integrate an app with a VNet](https://docs.microsoft.com/en-us/azure/app-service/web-sites-integrate-with-vnet#new-vnet-integration)     

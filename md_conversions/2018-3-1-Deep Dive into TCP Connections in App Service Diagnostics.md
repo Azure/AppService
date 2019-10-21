@@ -1,0 +1,18 @@
+---
+author_name: Jennifer Lee (MSFT)
+layout: post
+hide_excerpt: true
+---
+      [Jennifer Lee (MSFT)](https://social.msdn.microsoft.com/profile/Jennifer Lee (MSFT))  3/1/2018 8:51:29 AM  Note: This information below **only applies to Windows** web apps on App Service. Recently, we released the TCP Connections tile shortcut in App Service diagnostics. In this blog, we will walk through the implications of having unhealthy TCP Connections and how you can analyze them using App Service diagnostics. **Why should you care about TCP Connections?**
+----------------------------------------------
+
+ Let's say that you have created two web apps on the App Service Plan, and both are breaking. An example of when TCP Connections can cause this behavior in your web apps could be that one app is leaking a lot of socket handles and ends up hitting the *machine wide* TCP Connection limit. App Service enforces limits on the number of outbound connections that can be outstanding at any given point in time. **When web apps run into these connection limits, they will start intermittently failing because calls to those remote endpoints will fail, causing downtime. **You’ll frequently see errors like the following: “An attempt was made to access a socket in a way forbidden by its access permissions aaa.bbb.ccc.ddd.” The maximum connection limits are the following:  - 1,920 connections per B1/S1/P1 instance
+ - 3,968 connections per B2/S2/P2 instance
+ - 8,064 connections per B3/S3/P3 instance
+  If you want more information, read more in the “Network Port Capacity for Outbound Network Calls” section of the [“Azure - Inside the Azure App Service Architecture”](https://msdn.microsoft.com/en-us/magazine/mt793270.aspx) article. **TCP Connections Walkthrough**
+-------------------------------
+
+ To examine your TCP Connections more closely, click on the "Diagnose and solve problems" tab in the left hand menu. Then, select the "TCP Connections" tile shortcut. [![]({{ site.baseurl }}/media/2018/01/2018-01-16_16h02_35-1024x383.png)]({{ site.baseurl }}/media/2018/01/2018-01-16_16h02_35.png) Upon opening the TCP Connections, you can quickly see three levels of data: TCP Connections, Connections Rejections, Open Socket Handles. If it’s healthy, there will be a green checkmark. If it’s unhealthy, there will be an orange exclamation mark. **TCP Connections **
+--------------------
+
+ Here, you can monitor the total connections on your instances and the state of the connections, which include TIME\_WAIT, ESTABLISHED etc. If your web app has high outbound connections (> 1500 outbound connections), you will see the IP addresses’ first three octets and the port number in the Summary. By examining the port number, you can determine what type of remote service is causing the high outbound connections.    **Port Number** **Service**   1433 SQL   80 or 433 Web Service    [![]({{ site.baseurl }}/media/2018/01/318-1024x554.png)]({{ site.baseurl }}/media/2018/01/318.png) **Connections Rejections ** Check if there are any port rejections. If your web app failed to make an outbound TCP connection because the machine-wide TCP Connection limit was hit, we will highlight that in the Summary and associated graph. [![]({{ site.baseurl }}/media/2018/01/130.png)]({{ site.baseurl }}/media/2018/01/130.png) **Open Socket Handles** Here, you can determine which web app is causing a socket leak if you have multiple web apps in your App Service Plan. If your web app has leaking connections, you will see the process name, process ID, site name, and number of open handles. We will highlight the process that is causing the maximum damage in the Summary. [![]({{ site.baseurl }}/media/2018/01/223.png)]({{ site.baseurl }}/media/2018/01/223.png)      

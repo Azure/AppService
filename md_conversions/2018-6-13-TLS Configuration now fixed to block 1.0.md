@@ -1,0 +1,8 @@
+---
+author_name: Oded Dvoskin
+layout: post
+hide_excerpt: true
+---
+      [Oded Dvoskin](https://social.msdn.microsoft.com/profile/Oded Dvoskin)  6/13/2018 8:57:33 AM  We recently announced that all App Service and Functions apps could [update TLS configuration](https://blogs.msdn.microsoft.com/appserviceteam/2018/04/17/app-service-and-functions-hosted-apps-can-now-update-tls-versions/). However, after deployment, an [edge case scenario](https://blogs.msdn.microsoft.com/appserviceteam/2018/05/02/breaking-change-for-sni-ssl-hostnames-on-azure-app-service/) was identified involving SNI-SSL which led to SSL analyzing tools such as [SSL Labs](https://www.ssllabs.com/ssltest/analyze.html), showing that TLS 1.0 was still accepted, while higher versions were selected. We have now completed the deployment which solves the issue for SSI-SSL and will also translate to the reporting tool indicating correctly that lower versions of TLS, mainly TLS 1.0, are indeed blocked. [![]({{ site.baseurl }}/media/2018/06/TLS12-300x74.jpg)]({{ site.baseurl }}/media/2018/06/TLS12.jpg) To update your TLS configuration, follow one of the methods below:  - In the Azure Portal, in the app's menu, browse to SSL Settings option and select which version of SSL you require.
+  [![]({{ site.baseurl }}/media/2018/06/tls111222-300x170.png)]({{ site.baseurl }}/media/2018/06/tls111222.png)  - Through CLI, details for the commands are in our [documentation](https://docs.microsoft.com/en-us/cli/azure/webapp/config?view=azure-cli-latest#az-webapp-config-set).
+  az webapp config set --name [--min-tls-version]  For any questions, please reach out over the [App Service MSDN forum](https://social.msdn.microsoft.com/Forums/en-US/home?forum=windowsazurewebsitespreview).     
