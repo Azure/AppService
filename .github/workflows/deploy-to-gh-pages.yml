@@ -24,7 +24,7 @@ jobs:
     - name: Build and deploy to gh-pages branch
       run: |
         chmod 777 deployment-script.sh
-        ./deployment-script.sh
+        JEKYLL_ENV=production ./deployment-script.sh
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
 
