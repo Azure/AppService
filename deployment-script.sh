@@ -13,9 +13,9 @@ git init && \
 git config user.name "${GITHUB_ACTOR}" && \
 git config user.email "${GITHUB_ACTOR}@users.noreply.github.com" && \
 git add . && \
-echo -n 'Files to Commit:' && ls -l | wc -l && \
-git commit -m "Automated deployment triggered by ${GITHUB_SHA}" > /dev/null 2>&1 && \
-git push --force $remote_repo master:$remote_branch > /dev/null 2>&1 && \
+echo -n 'Files and directories to commit:' && ls -l | wc -l && \
+git commit -m "Automated deployment triggered by ${GITHUB_SHA}" && \
+git push $remote_repo $remote_branch --force && \
 rm -fr .git && \
 cd ../
 echo '👍 GREAT SUCCESS!'
