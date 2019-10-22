@@ -3,7 +3,8 @@ echo '👍 INSTALLING THE GEM BUNDLE'
 bundle install
 bundle list | grep "jekyll ("
 echo '👍 BUILDING THE SITE'
-JEKYLL_ENV=production bundle exec jekyll build
+echo 'Jekyll env = ${JEKYLL_ENV}'
+bundle exec jekyll build
 echo '👍 PUSHING IT BACK TO GITHUB-PAGES'
 cd _site
 remote_repo="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" && \
