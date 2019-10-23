@@ -27,7 +27,7 @@ jobs:
 
     - name: Build site
       run: |
-        echo "Building site for PR ${{GITHUB_ACTOR}}"
+        echo "Building site for PR ${{GITHUB_SHA}}"
         bundle exec jekyll build 
 
     - name: Deploy to staging site
@@ -36,4 +36,4 @@ jobs:
         app-name: antares-blog-staging
         package: _site/  
         publish-profile: ${{ secrets.STAGING_SITE_PUB_PROFILE }}  # Replace with the name of your publish profile
-        slot-name: article-from-${{GITHUB_ACTOR}}
+        slot-name: article-from-${{GITHUB_SHA}}
