@@ -1,4 +1,5 @@
 ---
+title: Azure Mobile Apps .NET SDK Releases
 author_name: Adrian Hall (MSFT)
 layout: post
 hide_excerpt: true

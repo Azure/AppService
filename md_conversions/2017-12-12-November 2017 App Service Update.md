@@ -1,4 +1,5 @@
 ---
+title: November 2017 App Service Update
 author_name: Byron Tardif
 layout: post
 hide_excerpt: true

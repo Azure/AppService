@@ -1,4 +1,5 @@
 ---
+title: New Price Drops for App Service on Linux
 author_name: Jennifer Lee (MSFT)
 layout: post
 hide_excerpt: true

@@ -1,4 +1,5 @@
 ---
+title: Azure Functions Recipes
 author_name: Anthony Chu - MSFT
 layout: post
 hide_excerpt: true

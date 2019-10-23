@@ -1,4 +1,5 @@
 ---
+title: Wiki  WordPress on App Service
 author_name: mksunitha
 layout: post
 hide_excerpt: true

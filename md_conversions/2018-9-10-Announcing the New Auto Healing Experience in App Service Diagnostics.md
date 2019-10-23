@@ -1,4 +1,5 @@
 ---
+title: Announcing the New Auto Healing Experience in App Service Diagnostics
 author_name: Jennifer Lee (MSFT)
 layout: post
 hide_excerpt: true

@@ -1,4 +1,5 @@
 ---
+title: Announcing Azure App Service Companion preview
 author_name: Byron Tardif
 layout: post
 hide_excerpt: true

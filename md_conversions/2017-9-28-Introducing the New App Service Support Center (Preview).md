@@ -1,4 +1,5 @@
 ---
+title: Introducing the New App Service Support Center (Preview)
 author_name: Jennifer Lee (MSFT)
 layout: post
 hide_excerpt: true

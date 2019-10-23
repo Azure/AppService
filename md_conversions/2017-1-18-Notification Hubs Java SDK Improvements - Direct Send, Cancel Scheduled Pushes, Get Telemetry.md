@@ -1,4 +1,5 @@
 ---
+title: Notification Hubs Java SDK Improvements - Direct Send, Cancel Scheduled Pushes, Get Telemetry
 author_name: Mimi Xu (Azure)
 layout: post
 hide_excerpt: true

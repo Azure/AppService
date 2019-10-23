@@ -1,4 +1,5 @@
 ---
+title: Cross-Post App Service Auth and Azure AD B2C
 author_name: Chris Gillum (MSFT)
 layout: post
 hide_excerpt: true

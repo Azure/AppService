@@ -1,4 +1,5 @@
 ---
+title: Azure App Service (Web, API, Mobile, ASE) &amp; Azure Functions SKU Comparison Matrix
 author_name: Cory Fowler (MSFT)
 layout: post
 hide_excerpt: true

@@ -1,4 +1,5 @@
 ---
+title: New tabbed experience for Azure Functions UX
 author_name: Byron Tardif
 layout: post
 hide_excerpt: true

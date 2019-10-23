@@ -1,4 +1,5 @@
 ---
+title: PHP Minor Version Update for February 2018
 author_name: Jennifer Lee (MSFT)
 layout: post
 hide_excerpt: true

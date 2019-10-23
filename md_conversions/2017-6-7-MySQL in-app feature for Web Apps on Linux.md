@@ -1,4 +1,5 @@
 ---
+title: MySQL in-app feature for Web Apps on Linux
 author_name: mksunitha
 layout: post
 hide_excerpt: true

@@ -1,4 +1,5 @@
 ---
+title: Troubleshooting FAQ for MySQL in-app
 author_name: mksunitha
 layout: post
 hide_excerpt: true

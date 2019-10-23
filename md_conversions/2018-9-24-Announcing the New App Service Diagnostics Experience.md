@@ -1,4 +1,5 @@
 ---
+title: Announcing the New App Service Diagnostics Experience
 author_name: Jennifer Lee (MSFT)
 layout: post
 hide_excerpt: true

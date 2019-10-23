@@ -1,4 +1,5 @@
 ---
+title: Application Insights integration with Functions now in preview
 author_name: Chris Anderson (Azure)
 layout: post
 hide_excerpt: true

@@ -1,4 +1,5 @@
 ---
+title: Pick the right data solution for Azure App Service
 author_name: mksunitha
 layout: post
 hide_excerpt: true

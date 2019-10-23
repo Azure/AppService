@@ -1,4 +1,5 @@
 ---
+title: PHP Minor Version + Xdebug Update for August 2018
 author_name: Jennifer Lee (MSFT)
 layout: post
 hide_excerpt: true

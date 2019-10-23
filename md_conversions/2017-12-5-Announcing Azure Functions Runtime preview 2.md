@@ -1,4 +1,5 @@
 ---
+title: Announcing Azure Functions Runtime preview 2
 author_name: Andrew Westgarth
 layout: post
 hide_excerpt: true

@@ -1,4 +1,5 @@
 ---
+title: My Intern Project Microsoft Graph Bindings for Azure Functions
 author_name: Chris Gillum (MSFT)
 layout: post
 hide_excerpt: true

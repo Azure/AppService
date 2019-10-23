@@ -1,4 +1,5 @@
 ---
+title: Updating Migrated Azure Mobile Services Sites for Facebook Auth
 author_name: Adrian Hall (MSFT)
 layout: post
 hide_excerpt: true

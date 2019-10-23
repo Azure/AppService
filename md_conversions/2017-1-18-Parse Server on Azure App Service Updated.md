@@ -1,4 +1,5 @@
 ---
+title: Parse Server on Azure App Service Updated
 author_name: Adrian Hall (MSFT)
 layout: post
 hide_excerpt: true

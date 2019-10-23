@@ -1,4 +1,5 @@
 ---
+title: Azure App Service Companion preview now available for iOS
 author_name: Byron Tardif
 layout: post
 hide_excerpt: true

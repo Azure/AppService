@@ -1,4 +1,5 @@
 ---
+title: ClearDB maintenance for Mercury databases on Microsoft Azure
 author_name: mksunitha
 layout: post
 hide_excerpt: true

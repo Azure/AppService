@@ -1,4 +1,5 @@
 ---
+title: Azure Functions Proxies is now Generally Available
 author_name: Alex Karcher
 layout: post
 hide_excerpt: true

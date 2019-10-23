@@ -1,4 +1,5 @@
 ---
+title: Azure Functions API development updates
 author_name: Matthew Henderson - MSFT
 layout: post
 hide_excerpt: true

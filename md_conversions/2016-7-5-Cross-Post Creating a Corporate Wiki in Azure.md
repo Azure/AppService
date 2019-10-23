@@ -1,4 +1,5 @@
 ---
+title: Cross-Post Creating a Corporate Wiki in Azure
 author_name: Chris Gillum (MSFT)
 layout: post
 hide_excerpt: true

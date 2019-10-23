@@ -1,4 +1,5 @@
 ---
+title: Announcing General Availability and Sovereign Cloud Support of Managed Service Identity for App Service and Azure Functions
 author_name: Matthew Henderson - MSFT
 layout: post
 hide_excerpt: true

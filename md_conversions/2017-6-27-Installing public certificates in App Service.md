@@ -1,4 +1,5 @@
 ---
+title: Installing public certificates in App Service
 author_name: akurmi
 layout: post
 hide_excerpt: true

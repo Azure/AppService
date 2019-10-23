@@ -1,4 +1,5 @@
 ---
+title: Durable Functions and Bindings Extensibility Preview Announcement
 author_name: Chris Anderson (Azure)
 layout: post
 hide_excerpt: true

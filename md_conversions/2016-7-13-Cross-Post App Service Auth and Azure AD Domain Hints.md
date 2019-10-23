@@ -1,4 +1,5 @@
 ---
+title: Cross-Post App Service Auth and Azure AD Domain Hints
 author_name: Chris Gillum (MSFT)
 layout: post
 hide_excerpt: true

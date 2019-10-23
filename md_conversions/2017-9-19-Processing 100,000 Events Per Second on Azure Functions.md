@@ -1,4 +1,5 @@
 ---
+title: Processing 100,000 Events Per Second on Azure Functions
 author_name: Paul Batum
 layout: post
 hide_excerpt: true

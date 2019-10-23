@@ -1,4 +1,5 @@
 ---
+title: App Service Continuous Delivery Preview
 author_name: Byron Tardif
 layout: post
 hide_excerpt: true

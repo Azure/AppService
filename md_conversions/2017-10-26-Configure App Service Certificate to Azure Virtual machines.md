@@ -1,4 +1,5 @@
 ---
+title: Configure App Service Certificate to Azure Virtual machines
 author_name: 
 layout: post
 hide_excerpt: true

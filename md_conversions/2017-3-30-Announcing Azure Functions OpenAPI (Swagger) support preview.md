@@ -1,4 +1,5 @@
 ---
+title: Announcing Azure Functions OpenAPI (Swagger) support preview
 author_name: Alex Karcher
 layout: post
 hide_excerpt: true

@@ -1,4 +1,5 @@
 ---
+title: Streamlined integration of App Service and Application Insights
 author_name: Byron Tardif
 layout: post
 hide_excerpt: true

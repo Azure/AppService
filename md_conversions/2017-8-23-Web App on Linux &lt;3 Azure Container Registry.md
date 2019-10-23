@@ -1,4 +1,5 @@
 ---
+title: Web App on Linux &lt;3 Azure Container Registry
 author_name: Ahmed Elnably
 layout: post
 hide_excerpt: true

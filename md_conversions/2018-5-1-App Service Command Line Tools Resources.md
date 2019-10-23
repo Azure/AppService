@@ -1,4 +1,5 @@
 ---
+title: App Service Command Line Tools Resources
 author_name: Ahmed Elnably
 layout: post
 hide_excerpt: true

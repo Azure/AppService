@@ -1,4 +1,5 @@
 ---
+title: Connect Azure App Service to Azure database for MySQL and PostgreSQL via SSL
 author_name: mksunitha
 layout: post
 hide_excerpt: true

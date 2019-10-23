@@ -1,4 +1,5 @@
 ---
+title: Avoid downtime due to Docker Hub's scheduled maintenance window on August 25th
 author_name: Yi Liao MSFT
 layout: post
 hide_excerpt: true

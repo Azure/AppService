@@ -1,4 +1,5 @@
 ---
+title: Announcing the Availability of Azure Functions in National Clouds
 author_name: Asavari Tayal
 layout: post
 hide_excerpt: true

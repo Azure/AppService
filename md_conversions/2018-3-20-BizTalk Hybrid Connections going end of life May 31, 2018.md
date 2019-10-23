@@ -1,4 +1,5 @@
 ---
+title: BizTalk Hybrid Connections going end of life May 31, 2018
 author_name: Christina Compy (MSFT)
 layout: post
 hide_excerpt: true

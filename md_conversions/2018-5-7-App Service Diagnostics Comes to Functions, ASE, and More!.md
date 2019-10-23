@@ -1,4 +1,5 @@
 ---
+title: App Service Diagnostics Comes to Functions, ASE, and More!
 author_name: Jennifer Lee (MSFT)
 layout: post
 hide_excerpt: true

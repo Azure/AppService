@@ -1,4 +1,5 @@
 ---
+title: Azure Functions preview versioning update
 author_name: Chris Anderson (Azure)
 layout: post
 hide_excerpt: true

@@ -1,4 +1,5 @@
 ---
+title: Connecting existing Web App to Azure database for MySQL (Preview)
 author_name: mksunitha
 layout: post
 hide_excerpt: true

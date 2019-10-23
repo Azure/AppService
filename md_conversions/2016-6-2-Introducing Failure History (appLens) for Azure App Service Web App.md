@@ -1,4 +1,5 @@
 ---
+title: Introducing Failure History (appLens) for Azure App Service Web App
 author_name: Apurva Joshi (AJ)
 layout: post
 hide_excerpt: true

@@ -1,4 +1,5 @@
 ---
+title: Enable PHP error logging in App Service
 author_name: mksunitha
 layout: post
 hide_excerpt: true

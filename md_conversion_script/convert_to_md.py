@@ -51,7 +51,17 @@ def main(argv):
 
                 soup = BeautifulSoup(filedata, "html.parser")
                 author_name = getattr(soup.find(class_="profile-usercard-hover"), 'text', '')
-                font_matter = font_matter[0:3]+"\nauthor_name: "+author_name+font_matter[3:len(font_matter)]+"\n"
+                author_name = "author_name: "+author_name
+
+                title = os.path.basename(f).replace(".html", "").replace(".md", "")
+                title = re.sub(pattern="\d*-\d*-\d*-", repl="", string=title)
+                title = "title: "+title
+
+                font_matter = font_matter[0:3]+"\n"+\
+                            title+"\n"+\
+                            author_name+\
+                            font_matter[3:len(font_matter)]+\
+                            "\n"
             with open(f, 'w', encoding='utf-8') as modified:
                 converted_article = font_matter+markdownify(filedata, bullets='-', header='ATX')
                 modified.write(converted_article)
