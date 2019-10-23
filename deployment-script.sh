@@ -16,11 +16,9 @@ git init
 git config user.name "${GITHUB_ACTOR}"
 git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 git add .
-
-echo -n 'Files and directories to commit:' && ls -l | wc -l
 git commit -m "Automated deployment triggered by ${GITHUB_SHA}"
 #git remote add origin "${remote_repo}"
-git push --force $remote_repo master:$remote_branch
+git push $remote_repo master:$remote_branch
 rm -fr .git
 cd ../
 
