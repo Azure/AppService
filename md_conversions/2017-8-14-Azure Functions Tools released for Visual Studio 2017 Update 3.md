@@ -1,4 +1,5 @@
 ---
+title: "Azure Functions Tools released for Visual Studio 2017 Update 3"
 author_name: Donna Malayeri
 layout: post
 hide_excerpt: true

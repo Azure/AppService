@@ -1,4 +1,5 @@
 ---
+title: "Exporting your database to MySQL in-app database"
 author_name: mksunitha
 layout: post
 hide_excerpt: true

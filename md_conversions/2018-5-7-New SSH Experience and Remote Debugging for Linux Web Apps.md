@@ -1,4 +1,5 @@
 ---
+title: "New SSH Experience and Remote Debugging for Linux Web Apps"
 author_name: 
 layout: post
 hide_excerpt: true

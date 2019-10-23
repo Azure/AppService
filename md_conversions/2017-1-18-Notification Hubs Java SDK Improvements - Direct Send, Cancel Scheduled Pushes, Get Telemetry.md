@@ -1,5 +1,6 @@
 ---
-author_name: Mimi Xu (Azure)
+title: "Notification Hubs Java SDK Improvements - Direct Send, Cancel Scheduled Pushes, Get Telemetry"
+author_name: Mimi Xu 
 layout: post
 hide_excerpt: true
 ---

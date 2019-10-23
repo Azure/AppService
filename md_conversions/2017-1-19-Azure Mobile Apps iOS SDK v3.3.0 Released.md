@@ -1,5 +1,6 @@
 ---
-author_name: Adrian Hall (MSFT)
+title: "Azure Mobile Apps iOS SDK v3.3.0 Released"
+author_name: Adrian Hall 
 layout: post
 hide_excerpt: true
 ---

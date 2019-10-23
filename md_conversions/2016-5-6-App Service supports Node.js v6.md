@@ -1,5 +1,6 @@
 ---
-author_name: Chris Anderson (Azure)
+title: "App Service supports Node.js v6"
+author_name: Chris Anderson 
 layout: post
 hide_excerpt: true
 ---

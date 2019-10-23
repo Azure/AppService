@@ -1,4 +1,5 @@
 ---
+title: "App Service Certificates now supports public certificates (.cer)"
 author_name: mksunitha
 layout: post
 hide_excerpt: true

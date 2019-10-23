@@ -1,4 +1,5 @@
 ---
+title: "Develop Azure Functions on any platform"
 author_name: Donna Malayeri
 layout: post
 hide_excerpt: true

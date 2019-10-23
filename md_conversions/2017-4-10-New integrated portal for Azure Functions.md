@@ -1,4 +1,5 @@
 ---
+title: "New integrated portal for Azure Functions"
 author_name: Donna Malayeri
 layout: post
 hide_excerpt: true

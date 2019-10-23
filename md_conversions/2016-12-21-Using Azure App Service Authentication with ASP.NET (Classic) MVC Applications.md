@@ -1,5 +1,6 @@
 ---
-author_name: Adrian Hall (MSFT)
+title: "Using Azure App Service Authentication with ASP.NET (Classic) MVC Applications"
+author_name: Adrian Hall 
 layout: post
 hide_excerpt: true
 ---

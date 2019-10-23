@@ -1,4 +1,5 @@
 ---
+title: "Check out App Service sessions at Microsoft Ignite 2018!"
 author_name: Oded Dvoskin
 layout: post
 hide_excerpt: true

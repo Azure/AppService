@@ -1,5 +1,6 @@
 ---
-author_name: Chris Gillum (MSFT)
+title: "Cross-Post App Service Auth and Azure AD Domain Hints"
+author_name: Chris Gillum 
 layout: post
 hide_excerpt: true
 ---

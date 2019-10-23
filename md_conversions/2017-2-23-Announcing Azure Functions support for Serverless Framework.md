@@ -1,5 +1,6 @@
 ---
-author_name: Chris Anderson (Azure)
+title: "Announcing Azure Functions support for Serverless Framework"
+author_name: Chris Anderson 
 layout: post
 hide_excerpt: true
 ---

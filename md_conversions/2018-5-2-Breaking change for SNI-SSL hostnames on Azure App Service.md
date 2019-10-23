@@ -1,4 +1,5 @@
 ---
+title: "Breaking change for SNI-SSL hostnames on Azure App Service"
 author_name: Oded Dvoskin
 layout: post
 hide_excerpt: true

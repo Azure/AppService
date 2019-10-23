@@ -1,4 +1,5 @@
 ---
+title: "App Service Environment Support for Availability Zones (Preview)"
 author_name: 
 layout: post
 hide_excerpt: false

@@ -1,5 +1,6 @@
 ---
-author_name: Mimi Xu (Azure)
+title: "Azure Mobile Apps iOS SDK 3.2.0 – Refresh Token, iOS 10Swift 3 Support, and Performance Improvement"
+author_name: Mimi Xu 
 layout: post
 hide_excerpt: true
 ---

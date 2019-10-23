@@ -1,4 +1,5 @@
 ---
+title: "Demystifying the magic behind App Service OS updates"
 author_name: Oded Dvoskin
 layout: post
 hide_excerpt: true

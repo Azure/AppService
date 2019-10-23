@@ -1,5 +1,6 @@
 ---
-author_name: Christina Compy (MSFT)
+title: "App Service Environment is now available in US Government regions"
+author_name: Christina Compy 
 layout: post
 hide_excerpt: true
 ---

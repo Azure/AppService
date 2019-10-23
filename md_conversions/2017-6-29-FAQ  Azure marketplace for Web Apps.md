@@ -1,4 +1,5 @@
 ---
+title: "FAQ  Azure marketplace for Web Apps"
 author_name: mksunitha
 layout: post
 hide_excerpt: true

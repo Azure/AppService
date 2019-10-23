@@ -1,5 +1,6 @@
 ---
-author_name: Apurva Joshi (AJ)
+title: "Introducing Azure App Service Support Center"
+author_name: Apurva Joshi 
 layout: post
 hide_excerpt: true
 ---

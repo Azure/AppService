@@ -1,5 +1,6 @@
 ---
-author_name: Christina Compy (MSFT)
+title: "BizTalk Hybrid Connections going end of life May 31, 2018"
+author_name: Christina Compy 
 layout: post
 hide_excerpt: true
 ---

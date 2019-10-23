@@ -1,5 +1,6 @@
 ---
-author_name: Jennifer Lee (MSFT)
+title: "Deep Dive into TCP Connections in App Service Diagnostics"
+author_name: Jennifer Lee 
 layout: post
 hide_excerpt: true
 ---

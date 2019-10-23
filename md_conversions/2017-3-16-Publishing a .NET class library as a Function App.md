@@ -1,4 +1,5 @@
 ---
+title: "Publishing a .NET class library as a Function App"
 author_name: Donna Malayeri
 layout: post
 hide_excerpt: true

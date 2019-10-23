@@ -1,4 +1,5 @@
 ---
+title: "Disable Session affinity cookie (ARR cookie) for Azure web apps"
 author_name: mksunitha
 layout: post
 hide_excerpt: true

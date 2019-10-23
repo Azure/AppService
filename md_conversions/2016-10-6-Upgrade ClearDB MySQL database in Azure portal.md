@@ -1,4 +1,5 @@
 ---
+title: "Upgrade ClearDB MySQL database in Azure portal"
 author_name: mksunitha
 layout: post
 hide_excerpt: true
