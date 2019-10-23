@@ -1,6 +1,9 @@
 name: Build site and deploy to gh-pages branch
 
-on: [push]
+on:
+  push:
+    branches:
+    - master
 
 jobs:
   build:
