@@ -27,10 +27,10 @@ jobs:
 
     - name: Build site
       run: |
-        echo "Building site for PR ${GITHUB_ACTOR}"
+        echo "Building site for PR ${{GITHUB_ACTOR}}"
         bundle exec jekyll build 
 
-    - name: Deploy to staging
+    - name: Deploy to staging site
       uses: azure/webapps-deploy@v1
       with: 
         app-name: antares-blog-staging
