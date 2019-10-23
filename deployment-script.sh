@@ -19,8 +19,8 @@ git add .
 
 echo -n 'Files and directories to commit:' && ls -l | wc -l
 git commit -m "Automated deployment triggered by ${GITHUB_SHA}"
-git remote add origin "${remote_repo}"
-git push $remote_branch
+#git remote add origin "${remote_repo}"
+git push --force $remote_repo master:$remote_branch
 rm -fr .git
 cd ../
 
