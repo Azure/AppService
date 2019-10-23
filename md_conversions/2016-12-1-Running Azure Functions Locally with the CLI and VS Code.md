@@ -1,5 +1,5 @@
 ---
-title: Running Azure Functions Locally with the CLI and VS Code
+title: "Running Azure Functions Locally with the CLI and VS Code"
 author_name: Donna Malayeri
 layout: post
 hide_excerpt: true

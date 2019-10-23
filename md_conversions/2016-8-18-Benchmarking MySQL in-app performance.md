@@ -1,5 +1,5 @@
 ---
-title: Benchmarking MySQL in-app performance
+title: "Benchmarking MySQL in-app performance"
 author_name: mksunitha
 layout: post
 hide_excerpt: true

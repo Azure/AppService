@@ -1,5 +1,5 @@
 ---
-title: Preview API Apps Deprecation
+title: "Preview API Apps Deprecation"
 author_name: Alex Karcher
 layout: post
 hide_excerpt: true

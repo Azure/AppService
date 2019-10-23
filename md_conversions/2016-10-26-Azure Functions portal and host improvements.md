@@ -1,5 +1,5 @@
 ---
-title: Azure Functions portal and host improvements
+title: "Azure Functions portal and host improvements"
 author_name: Donna Malayeri
 layout: post
 hide_excerpt: true

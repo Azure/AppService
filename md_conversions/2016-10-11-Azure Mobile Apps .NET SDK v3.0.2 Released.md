@@ -1,6 +1,6 @@
 ---
-title: Azure Mobile Apps .NET SDK v3.0.2 Released
-author_name: Adrian Hall (MSFT)
+title: "Azure Mobile Apps .NET SDK v3.0.2 Released"
+author_name: Adrian Hall 
 layout: post
 hide_excerpt: true
 ---

@@ -1,5 +1,5 @@
 ---
-title: Learn how to orchestrate serverless functions by scraping APIs in 8 minutes
+title: "Learn how to orchestrate serverless functions by scraping APIs in 8 minutes"
 author_name: 
 layout: post
 hide_excerpt: true

@@ -1,5 +1,5 @@
 ---
-title: Function Proxies now Available in Functions Version 2.x!
+title: "Function Proxies now Available in Functions Version 2.x!"
 author_name: Alex Karcher
 layout: post
 hide_excerpt: true

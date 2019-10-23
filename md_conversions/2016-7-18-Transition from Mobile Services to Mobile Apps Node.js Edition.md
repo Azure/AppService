@@ -1,6 +1,6 @@
 ---
-title: Transition from Mobile Services to Mobile Apps Node.js Edition
-author_name: Adrian Hall (MSFT)
+title: "Transition from Mobile Services to Mobile Apps Node.js Edition"
+author_name: Adrian Hall 
 layout: post
 hide_excerpt: true
 ---

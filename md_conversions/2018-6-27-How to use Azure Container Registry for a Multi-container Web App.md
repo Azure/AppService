@@ -1,5 +1,5 @@
 ---
-title: How to use Azure Container Registry for a Multi-container Web App
+title: "How to use Azure Container Registry for a Multi-container Web App"
 author_name: Yi Liao MSFT
 layout: post
 hide_excerpt: true

@@ -1,6 +1,6 @@
 ---
-title: New App Service VNet Integration feature
-author_name: Christina Compy (MSFT)
+title: "New App Service VNet Integration feature"
+author_name: Christina Compy 
 layout: post
 hide_excerpt: true
 ---

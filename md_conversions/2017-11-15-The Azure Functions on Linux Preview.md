@@ -1,5 +1,5 @@
 ---
-title: The Azure Functions on Linux Preview
+title: "The Azure Functions on Linux Preview"
 author_name: Daria Grigoriu
 layout: post
 hide_excerpt: true

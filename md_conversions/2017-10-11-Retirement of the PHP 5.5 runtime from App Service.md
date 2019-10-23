@@ -1,6 +1,6 @@
 ---
-title: Retirement of the PHP 5.5 runtime from App Service
-author_name: Jennifer Lee (MSFT)
+title: "Retirement of the PHP 5.5 runtime from App Service"
+author_name: Jennifer Lee 
 layout: post
 hide_excerpt: true
 ---

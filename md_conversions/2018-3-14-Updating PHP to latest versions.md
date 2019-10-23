@@ -1,6 +1,6 @@
 ---
-title: Updating PHP to latest versions
-author_name: Eric Stenson (Microsoft)
+title: "Updating PHP to latest versions"
+author_name: Eric Stenson 
 layout: post
 hide_excerpt: true
 ---

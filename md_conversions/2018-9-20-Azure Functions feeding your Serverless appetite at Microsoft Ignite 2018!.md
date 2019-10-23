@@ -1,5 +1,5 @@
 ---
-title: Azure Functions feeding your Serverless appetite at Microsoft Ignite 2018!
+title: "Azure Functions feeding your Serverless appetite at Microsoft Ignite 2018!"
 author_name: Oded Dvoskin
 layout: post
 hide_excerpt: true

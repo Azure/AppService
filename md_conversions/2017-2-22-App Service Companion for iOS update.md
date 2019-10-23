@@ -1,5 +1,5 @@
 ---
-title: App Service Companion for iOS update
+title: "App Service Companion for iOS update"
 author_name: Byron Tardif
 layout: post
 hide_excerpt: true

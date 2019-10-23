@@ -1,5 +1,5 @@
 ---
-title: Announcing Try App Service API Apps
+title: "Announcing Try App Service API Apps"
 author_name: Alex Karcher
 layout: post
 hide_excerpt: true

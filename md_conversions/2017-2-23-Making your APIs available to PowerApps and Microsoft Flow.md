@@ -1,5 +1,5 @@
 ---
-title: Making your APIs available to PowerApps and Microsoft Flow
+title: "Making your APIs available to PowerApps and Microsoft Flow"
 author_name: Matthew Henderson - MSFT
 layout: post
 hide_excerpt: true

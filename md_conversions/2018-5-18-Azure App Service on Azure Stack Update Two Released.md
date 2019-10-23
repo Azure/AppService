@@ -1,5 +1,5 @@
 ---
-title: Azure App Service on Azure Stack Update Two Released
+title: "Azure App Service on Azure Stack Update Two Released"
 author_name: Andrew Westgarth
 layout: post
 hide_excerpt: true

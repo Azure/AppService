@@ -1,6 +1,6 @@
 ---
-title: Azure Functions 0.5 release &amp; August portal update
-author_name: Chris Anderson (Azure)
+title: "Azure Functions 0.5 release &amp; August portal update"
+author_name: Chris Anderson 
 layout: post
 hide_excerpt: true
 ---

@@ -1,6 +1,6 @@
 ---
-title: Git Version Update Planned for November and December 2018
-author_name: Stefan Schackow (MSFT)
+title: "Git Version Update Planned for November and December 2018"
+author_name: Stefan Schackow 
 layout: post
 hide_excerpt: true
 ---

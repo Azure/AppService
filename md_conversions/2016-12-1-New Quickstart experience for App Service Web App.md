@@ -1,5 +1,5 @@
 ---
-title: New Quickstart experience for App Service Web App
+title: "New Quickstart experience for App Service Web App"
 author_name: Byron Tardif
 layout: post
 hide_excerpt: true

@@ -1,6 +1,6 @@
 ---
-title: Exciting New Features in App Service Diagnostics
-author_name: Jennifer Lee (MSFT)
+title: "Exciting New Features in App Service Diagnostics"
+author_name: Jennifer Lee 
 layout: post
 hide_excerpt: true
 ---

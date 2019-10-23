@@ -1,6 +1,6 @@
 ---
-title: Implementing Client-side Encryption with Azure Mobile Apps
-author_name: Adrian Hall (MSFT)
+title: "Implementing Client-side Encryption with Azure Mobile Apps"
+author_name: Adrian Hall 
 layout: post
 hide_excerpt: true
 ---

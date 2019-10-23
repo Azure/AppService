@@ -51,11 +51,12 @@ def main(argv):
 
                 soup = BeautifulSoup(filedata, "html.parser")
                 author_name = getattr(soup.find(class_="profile-usercard-hover"), 'text', '')
+                author_name = re.sub(pattern="\([a-zA-Z\s]*\)", repl="", string=author_name)
                 author_name = "author_name: "+author_name
 
                 title = os.path.basename(f).replace(".html", "").replace(".md", "")
                 title = re.sub(pattern="\d*-\d*-\d*-", repl="", string=title)
-                title = "title: "+title
+                title = "title: "+"\""+title+"\""
 
                 font_matter = font_matter[0:3]+"\n"+\
                             title+"\n"+\

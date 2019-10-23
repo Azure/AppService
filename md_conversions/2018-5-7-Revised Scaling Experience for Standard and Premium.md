@@ -1,5 +1,5 @@
 ---
-title: Revised Scaling Experience for Standard and Premium
+title: "Revised Scaling Experience for Standard and Premium"
 author_name: Byron Tardif
 layout: post
 hide_excerpt: true

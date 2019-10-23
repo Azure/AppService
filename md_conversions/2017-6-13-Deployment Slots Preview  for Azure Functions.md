@@ -1,5 +1,5 @@
 ---
-title: Deployment Slots Preview  for Azure Functions
+title: "Deployment Slots Preview  for Azure Functions"
 author_name: Daria Grigoriu
 layout: post
 hide_excerpt: true

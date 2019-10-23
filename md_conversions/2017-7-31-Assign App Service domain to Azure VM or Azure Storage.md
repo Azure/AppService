@@ -1,5 +1,5 @@
 ---
-title: Assign App Service domain to Azure VM or Azure Storage
+title: "Assign App Service domain to Azure VM or Azure Storage"
 author_name: mksunitha
 layout: post
 hide_excerpt: true

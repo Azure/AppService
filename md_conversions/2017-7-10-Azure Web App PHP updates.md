@@ -1,5 +1,5 @@
 ---
-title: Azure Web App PHP updates
+title: "Azure Web App PHP updates"
 author_name: Donna Malayeri
 layout: post
 hide_excerpt: true

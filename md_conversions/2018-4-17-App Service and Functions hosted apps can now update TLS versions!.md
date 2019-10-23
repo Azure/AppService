@@ -1,5 +1,5 @@
 ---
-title: App Service and Functions hosted apps can now update TLS versions!
+title: "App Service and Functions hosted apps can now update TLS versions!"
 author_name: Oded Dvoskin
 layout: post
 hide_excerpt: true

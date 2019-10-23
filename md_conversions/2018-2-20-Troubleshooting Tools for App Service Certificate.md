@@ -1,5 +1,5 @@
 ---
-title: Troubleshooting Tools for App Service Certificate
+title: "Troubleshooting Tools for App Service Certificate"
 author_name: mksunitha
 layout: post
 hide_excerpt: true

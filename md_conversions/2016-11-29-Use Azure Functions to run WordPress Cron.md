@@ -1,5 +1,5 @@
 ---
-title: Use Azure Functions to run WordPress Cron
+title: "Use Azure Functions to run WordPress Cron"
 author_name: mksunitha
 layout: post
 hide_excerpt: true

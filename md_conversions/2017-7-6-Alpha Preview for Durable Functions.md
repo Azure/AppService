@@ -1,6 +1,6 @@
 ---
-title: Alpha Preview for Durable Functions
-author_name: Chris Anderson (Azure)
+title: "Alpha Preview for Durable Functions"
+author_name: Chris Anderson 
 layout: post
 hide_excerpt: true
 ---

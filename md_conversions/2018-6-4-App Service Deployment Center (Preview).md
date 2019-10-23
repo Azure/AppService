@@ -1,5 +1,5 @@
 ---
-title: App Service Deployment Center (Preview)
+title: "App Service Deployment Center (Preview)"
 author_name: Byron Tardif
 layout: post
 hide_excerpt: true

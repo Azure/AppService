@@ -1,6 +1,6 @@
 ---
-title: Offline Sync with Azure Mobile Apps and Apache Cordova
-author_name: Adrian Hall (MSFT)
+title: "Offline Sync with Azure Mobile Apps and Apache Cordova"
+author_name: Adrian Hall 
 layout: post
 hide_excerpt: true
 ---

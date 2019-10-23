@@ -1,6 +1,6 @@
 ---
-title: Azure App Service Web App troubleshooting blade and tools
-author_name: Apurva Joshi (AJ)
+title: "Azure App Service Web App troubleshooting blade and tools"
+author_name: Apurva Joshi 
 layout: post
 hide_excerpt: true
 ---

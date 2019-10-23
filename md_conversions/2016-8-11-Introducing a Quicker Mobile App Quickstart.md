@@ -1,6 +1,6 @@
 ---
-title: Introducing a Quicker Mobile App Quickstart
-author_name: Adrian Hall (MSFT)
+title: "Introducing a Quicker Mobile App Quickstart"
+author_name: Adrian Hall 
 layout: post
 hide_excerpt: true
 ---

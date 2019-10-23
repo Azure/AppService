@@ -1,5 +1,5 @@
 ---
-title: Azure Functions on IoT Edge
+title: "Azure Functions on IoT Edge"
 author_name: Colby Tresness
 layout: post
 hide_excerpt: true

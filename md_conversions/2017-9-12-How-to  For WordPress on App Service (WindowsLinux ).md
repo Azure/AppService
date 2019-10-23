@@ -1,5 +1,5 @@
 ---
-title: How-to  For WordPress on App Service (WindowsLinux )
+title: "How-to  For WordPress on App Service (WindowsLinux )"
 author_name: mksunitha
 layout: post
 hide_excerpt: true

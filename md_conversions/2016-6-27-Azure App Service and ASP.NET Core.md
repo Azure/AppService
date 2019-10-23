@@ -1,5 +1,5 @@
 ---
-title: Azure App Service and ASP.NET Core
+title: "Azure App Service and ASP.NET Core"
 author_name: Daria Grigoriu
 layout: post
 hide_excerpt: true

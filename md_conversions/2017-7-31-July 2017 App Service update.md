@@ -1,5 +1,5 @@
 ---
-title: July 2017 App Service update
+title: "July 2017 App Service update"
 author_name: Byron Tardif
 layout: post
 hide_excerpt: true

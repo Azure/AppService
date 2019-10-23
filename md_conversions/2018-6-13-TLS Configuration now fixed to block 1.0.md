@@ -1,5 +1,5 @@
 ---
-title: TLS Configuration now fixed to block 1.0
+title: "TLS Configuration now fixed to block 1.0"
 author_name: Oded Dvoskin
 layout: post
 hide_excerpt: true

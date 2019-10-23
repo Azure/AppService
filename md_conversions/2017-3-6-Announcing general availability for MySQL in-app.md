@@ -1,5 +1,5 @@
 ---
-title: Announcing general availability for MySQL in-app
+title: "Announcing general availability for MySQL in-app"
 author_name: mksunitha
 layout: post
 hide_excerpt: true

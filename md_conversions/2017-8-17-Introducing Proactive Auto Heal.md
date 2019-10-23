@@ -1,6 +1,6 @@
 ---
-title: Introducing Proactive Auto Heal
-author_name: Jennifer Lee (MSFT)
+title: "Introducing Proactive Auto Heal"
+author_name: Jennifer Lee 
 layout: post
 hide_excerpt: true
 ---

@@ -1,5 +1,5 @@
 ---
-title: Update Changes to MySQL support for Azure Imagine Offer
+title: "Update Changes to MySQL support for Azure Imagine Offer"
 author_name: mksunitha
 layout: post
 hide_excerpt: true

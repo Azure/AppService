@@ -1,5 +1,5 @@
 ---
-title: Get some hands-on time with Serverless development right now, for free
+title: "Get some hands-on time with Serverless development right now, for free"
 author_name: Yochay Kiriaty
 layout: post
 hide_excerpt: true

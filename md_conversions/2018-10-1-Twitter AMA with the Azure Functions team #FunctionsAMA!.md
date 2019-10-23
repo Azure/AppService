@@ -1,5 +1,5 @@
 ---
-title: Twitter AMA with the Azure Functions team #FunctionsAMA!
+title: "Twitter AMA with the Azure Functions team #FunctionsAMA!"
 author_name: Oded Dvoskin
 layout: post
 hide_excerpt: true

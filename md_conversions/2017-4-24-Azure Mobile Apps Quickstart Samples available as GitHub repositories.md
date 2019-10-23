@@ -1,6 +1,6 @@
 ---
-title: Azure Mobile Apps Quickstart Samples available as GitHub repositories
-author_name: Adrian Hall (MSFT)
+title: "Azure Mobile Apps Quickstart Samples available as GitHub repositories"
+author_name: Adrian Hall 
 layout: post
 hide_excerpt: true
 ---

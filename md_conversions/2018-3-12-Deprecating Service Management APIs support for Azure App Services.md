@@ -1,5 +1,5 @@
 ---
-title: Deprecating Service Management APIs support for Azure App Services
+title: "Deprecating Service Management APIs support for Azure App Services"
 author_name: Naveed Aziz
 layout: post
 hide_excerpt: true

@@ -1,5 +1,5 @@
 ---
-title: Creating a local PFX copy of App Service Certificate
+title: "Creating a local PFX copy of App Service Certificate"
 author_name: 
 layout: post
 hide_excerpt: true

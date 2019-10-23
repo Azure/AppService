@@ -1,5 +1,5 @@
 ---
-title: Announcing Bring your own Storage to App Service
+title: "Announcing Bring your own Storage to App Service"
 author_name: Ranjith Ramachandra
 layout: post
 hide_excerpt: true

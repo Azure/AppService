@@ -1,5 +1,5 @@
 ---
-title: Renaming our new command to up
+title: "Renaming our new command to up"
 author_name: Ahmed Elnably
 layout: post
 hide_excerpt: true

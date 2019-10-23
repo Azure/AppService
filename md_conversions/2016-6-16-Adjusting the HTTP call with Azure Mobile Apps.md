@@ -1,6 +1,6 @@
 ---
-title: Adjusting the HTTP call with Azure Mobile Apps
-author_name: Adrian Hall (MSFT)
+title: "Adjusting the HTTP call with Azure Mobile Apps"
+author_name: Adrian Hall 
 layout: post
 hide_excerpt: true
 ---

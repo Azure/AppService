@@ -1,5 +1,5 @@
 ---
-title: My Backups are failing, Let's open a support ticket
+title: "My Backups are failing, Let's open a support ticket"
 author_name: Ahmed Elnably
 layout: post
 hide_excerpt: true

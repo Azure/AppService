@@ -1,6 +1,6 @@
 ---
-title: Making Azure Functions more “serverless”
-author_name: Chris Anderson (Azure)
+title: "Making Azure Functions more “serverless”"
+author_name: Chris Anderson 
 layout: post
 hide_excerpt: true
 ---

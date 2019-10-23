@@ -1,6 +1,6 @@
 ---
-title: Updates to WebJobs Portal experience
-author_name: Chris Anderson (Azure)
+title: "Updates to WebJobs Portal experience"
+author_name: Chris Anderson 
 layout: post
 hide_excerpt: true
 ---

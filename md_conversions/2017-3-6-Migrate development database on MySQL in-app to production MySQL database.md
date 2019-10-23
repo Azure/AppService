@@ -1,5 +1,5 @@
 ---
-title: Migrate development database on MySQL in-app to production MySQL database
+title: "Migrate development database on MySQL in-app to production MySQL database"
 author_name: mksunitha
 layout: post
 hide_excerpt: true

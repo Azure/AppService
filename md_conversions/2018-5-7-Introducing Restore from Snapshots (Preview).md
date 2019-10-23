@@ -1,5 +1,5 @@
 ---
-title: Introducing Restore from Snapshots (Preview)
+title: "Introducing Restore from Snapshots (Preview)"
 author_name: Nick B. King
 layout: post
 hide_excerpt: true
