@@ -1,4 +1,5 @@
 ---
+title: "App Service Diagnostics – Profiling an ASP.NET Web App on Azure App Service"
 author_name: PuneetG
 layout: post
 hide_excerpt: true

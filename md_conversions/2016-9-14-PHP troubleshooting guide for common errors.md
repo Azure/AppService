@@ -1,4 +1,5 @@
 ---
+title: "PHP troubleshooting guide for common errors"
 author_name: mksunitha
 layout: post
 hide_excerpt: true

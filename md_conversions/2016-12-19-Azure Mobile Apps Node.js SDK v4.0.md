@@ -1,5 +1,6 @@
 ---
-author_name: Adrian Hall (MSFT)
+title: "Azure Mobile Apps Node.js SDK v4.0"
+author_name: Adrian Hall 
 layout: post
 hide_excerpt: true
 ---

@@ -1,4 +1,5 @@
 ---
+title: "Azure Functions Proxies public preview"
 author_name: Matthew Henderson - MSFT
 layout: post
 hide_excerpt: true

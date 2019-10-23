@@ -1,5 +1,6 @@
 ---
-author_name: Adrian Hall (MSFT)
+title: "Azure Mobile Apps for Apache Cordova reaches GA"
+author_name: Adrian Hall 
 layout: post
 hide_excerpt: true
 ---

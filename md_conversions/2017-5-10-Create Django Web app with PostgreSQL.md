@@ -1,4 +1,5 @@
 ---
+title: "Create Django Web app with PostgreSQL"
 author_name: mksunitha
 layout: post
 hide_excerpt: true

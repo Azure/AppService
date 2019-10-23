@@ -1,4 +1,5 @@
 ---
+title: "Announcing  MySQL in-app for Web Apps (Windows)"
 author_name: mksunitha
 layout: post
 hide_excerpt: true

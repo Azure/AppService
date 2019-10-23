@@ -1,4 +1,5 @@
 ---
+title: "Zip Push Deployment for Web Apps, Functions and WebJobs"
 author_name: Nick Walker
 layout: post
 hide_excerpt: true

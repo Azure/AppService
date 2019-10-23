@@ -1,4 +1,5 @@
 ---
+title: "FAQ  App Service Domain and Custom Domains"
 author_name: mksunitha
 layout: post
 hide_excerpt: true

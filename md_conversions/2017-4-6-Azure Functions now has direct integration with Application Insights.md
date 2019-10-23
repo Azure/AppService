@@ -1,4 +1,5 @@
 ---
+title: "Azure Functions now has direct integration with Application Insights"
 author_name: Donna Malayeri
 layout: post
 hide_excerpt: true

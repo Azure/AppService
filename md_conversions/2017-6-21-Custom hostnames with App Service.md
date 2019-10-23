@@ -1,4 +1,5 @@
 ---
+title: "Custom hostnames with App Service"
 author_name: akurmi
 layout: post
 hide_excerpt: true

@@ -1,5 +1,6 @@
 ---
-author_name: Mimi Xu (Azure)
+title: "App Service Mobile Apps .NET Client SDK 3.0.1 Release"
+author_name: Mimi Xu 
 layout: post
 hide_excerpt: true
 ---

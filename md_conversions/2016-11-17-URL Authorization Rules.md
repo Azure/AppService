@@ -1,5 +1,6 @@
 ---
-author_name: Chris Gillum (MSFT)
+title: "URL Authorization Rules"
+author_name: Chris Gillum 
 layout: post
 hide_excerpt: true
 ---

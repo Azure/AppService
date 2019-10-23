@@ -1,5 +1,6 @@
 ---
-author_name: Jennifer Lee (MSFT)
+title: "Announcing the Linux on App Service Environment Public Preview"
+author_name: Jennifer Lee 
 layout: post
 hide_excerpt: true
 ---

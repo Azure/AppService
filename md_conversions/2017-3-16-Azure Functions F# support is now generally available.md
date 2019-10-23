@@ -1,5 +1,6 @@
 ---
-author_name: Chris Anderson (Azure)
+title: "Azure Functions F# support is now generally available"
+author_name: Chris Anderson 
 layout: post
 hide_excerpt: true
 ---

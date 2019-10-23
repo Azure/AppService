@@ -1,4 +1,5 @@
 ---
+title: "Function Proxies adds Mock APIs to the Portal"
 author_name: Alex Karcher
 layout: post
 hide_excerpt: true

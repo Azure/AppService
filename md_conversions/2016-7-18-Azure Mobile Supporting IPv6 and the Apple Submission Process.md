@@ -1,5 +1,6 @@
 ---
-author_name: Adrian Hall (MSFT)
+title: "Azure Mobile Supporting IPv6 and the Apple Submission Process"
+author_name: Adrian Hall 
 layout: post
 hide_excerpt: true
 ---

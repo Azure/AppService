@@ -1,4 +1,5 @@
 ---
+title: "Revisiting Windows Azure Pack Web Sites V2 Support Lifecycle Dates"
 author_name: Andrew Westgarth
 layout: post
 hide_excerpt: true

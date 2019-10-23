@@ -1,5 +1,6 @@
 ---
-author_name: Cory Fowler (MSFT)
+title: "PHP runtime and extension updates including potentially breaking changes"
+author_name: Cory Fowler 
 layout: post
 hide_excerpt: true
 ---

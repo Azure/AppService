@@ -1,4 +1,5 @@
 ---
+title: "Deploying Visual Studio 2017 Function Projects with VSTS"
 author_name: Donna Malayeri
 layout: post
 hide_excerpt: true

@@ -1,4 +1,5 @@
 ---
+title: "Announcing HTTP2 support in Azure App Service"
 author_name: Oded Dvoskin
 layout: post
 hide_excerpt: true
