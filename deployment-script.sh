@@ -18,7 +18,7 @@ git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 git add .
 git commit -m "Automated deployment triggered by ${GITHUB_SHA}"
 #git remote add origin "${remote_repo}"
-git push $remote_repo master:$remote_branch
+git push --force $remote_repo master:$remote_branch
 rm -fr .git
 cd ../
 
