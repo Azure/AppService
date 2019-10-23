@@ -24,14 +24,24 @@ jobs:
         gem install bundler
         bundle install --jobs 4 --retry 3
 
-    - name: Build and deploy to gh-pages branch
-      run: |
-        echo "Jekyll env = $JEKYLL_ENV"
-        chmod 777 deployment-script.sh
-        ./deployment-script.sh
+    - name: Build and Deploy
+      uses: JamesIves/github-pages-deploy-action@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+        BASE_BRANCH: master # The branch the action should deploy from.
+        BRANCH: gh-pages45 # The branch the action should deploy to.
+        FOLDER: _site # The folder the action should deploy.
+        BUILD_SCRIPT: bundle exec jekyll build # The build script the action should run prior to deploying.
         JEKYLL_ENV: production
+
+    # - name: Build and deploy to gh-pages branch
+    #   run: |
+    #     echo "Jekyll env = $JEKYLL_ENV"
+    #     chmod 777 deployment-script.sh
+    #     ./deployment-script.sh
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+    #     JEKYLL_ENV: production
 
     # TODO: Make this step depend on the deploy action
     - name: Update Algolia search index
