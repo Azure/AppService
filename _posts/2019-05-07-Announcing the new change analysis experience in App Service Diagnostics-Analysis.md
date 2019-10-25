@@ -26,17 +26,17 @@ Turn on **Change Analysis** and click **Save** to get property changes and code 
 
 To disable Change Analysis on your web app, click on **Go to Change Analysis Settings** in the upper right corner of Change Analysis in the diagnostic report. [Note: Change Analysis Resource Provider is still registered on the subscription of your web app.] To unregister Change Analysis Resource Provider from your subscription, navigate to your subscription, click **Resource providers** in the left navigation, select **Microsoft.ChangeAnalysis**, and click **Unregister**.
 
-## Navigating through the change group timeline
+## Navigating through the change timeline
 
-Once Change Analysis is enabled, you will see a **change group timeline** embedded in the diagnostic reports. A change group is a group of changes captured at the same time stamp and is represented by a square box on the timeline. You can click on each change group to view individual changes in the **change chart** below. You can also use the search bar to filter for changes that have your search term.
+Once Change Analysis is enabled, you will see a **change timeline** embedded in the diagnostic reports. The change timeline is populated by changes made in the past 24 hours, represented by square boxes on the timeline. You can click on each box to filter for corresponding change(s) in the **change chart** below. You can also use the search bar to filter for changes that have your search term.
 
-![Change group timeline and chart]({{site.baseurl}}/media/2019/05/changegrouptimelineandchart12.png)
+![Change timeline and chart]({{site.baseurl}}/media/2019/05/changetimelineandchart12.png)
 
 You can also expand each row of change to view the difference between the old values and the new values.
 
 ![Diff view]({{site.baseurl}}/media/2019/05/diffview13.png)
 
-Above the timeline group is the **last scanned time stamp** that shows the last time the timeline was updated. If you wish to find out about changes made after the last scanned time, click **Scan changes now**. (This process may take few minutes)
+Above the timeline is the **last scanned time stamp** that shows the last time the timeline was updated. If you wish to find out about changes made after the last scanned time, click **Scan changes now**. (This process may take few minutes)
 
 ![Last scanned stamp and Scan changes now]({{site.baseurl}}/media/2019/05/lastscannedstampandscanchangesnow14.png)
 
@@ -46,7 +46,7 @@ After scanning is complete, you can update the timeline by clicking on **View ch
 
 ## Change Analysis in Practice
 
-Now, let’s walk through a scenario where Change Analysis can be helpful. Suppose you have noticed some downtime in your app caused by a changed App Setting, but you do not know what has caused the issue. First, open a diagnostic report with Change Analysis like **Application Crashes**. Browse through the change group timeline to see if there were any changes made before the app started crashing. If you do not find any changes on the timeline that could be related to the issue, click **Scan changes now** to update the timeline with the most recent changes. After the scanning completes, click **View changes now** to populate the timeline with the new change groups. You notice there is one change group that occurred right before the app started crashing. You can click on the change group to look at the change details. Expand the changes to view the differences. You may find that you accidentally deleted the connection string when you last made your code changes.  
+Now, let’s walk through a scenario where Change Analysis can be helpful. Suppose you have noticed some downtime in your app caused by a changed App Setting, but you do not know what has caused the issue. First, open a diagnostic report with Change Analysis like **Application Crashes**. Browse through the change timeline to see if there were any changes made before the app started crashing. If you do not find any changes on the timeline that could be related to the issue, click **Scan changes now** to update the timeline with the most recent changes. After the scanning completes, click **View changes now** to populate the timeline with the new changes. You notice there is one change that occurred right before the app started crashing. Expand the new change to view the differences. You may find that you accidentally deleted the connection string when you last made your code changes.  
 
 Used in tandem with other information, Change Analysis can serve as a powerful tool for diagnosing and solving problems with your web app.
 
