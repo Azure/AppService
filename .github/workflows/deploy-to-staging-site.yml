@@ -29,8 +29,8 @@ jobs:
       run: |
         echo "Building site for PR ${{GITHUB_SHA}}"
         bundle exec jekyll build
-        echo: "SHA:"
-        echo  ${{GITHUB_SHA}}
+        echo: "ENV:"
+        env
 
     - name: Deploy to staging site
       uses: azure/webapps-deploy@v1
@@ -38,4 +38,4 @@ jobs:
         app-name: antares-blog-staging
         package: _site/  
         publish-profile: ${{ secrets.STAGING_SITE_PUB_PROFILE }}  # Replace with the name of your publish profile
-        slot-name: "article-from-${{GITHUB_SHA}}"
+        slot-name: "article-from"
