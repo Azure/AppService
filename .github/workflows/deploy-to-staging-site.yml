@@ -27,7 +27,7 @@ jobs:
 
     - name: Build site
       run: |
-        echo "Building site for PR ${{GITHUB_SHA}}"
+        echo "Building site for PR"
         bundle exec jekyll build
         echo: "ENV:"
         env
