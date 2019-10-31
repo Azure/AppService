@@ -1,7 +1,7 @@
 ---
 title: "Speed up your Joomla Web App on Azure Web Apps"
 author_name: mksunitha
-layout: post
+layout: single
 hide_excerpt: true
 --- 
 
