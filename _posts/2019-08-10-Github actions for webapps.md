@@ -71,12 +71,12 @@ After your build action, add the App Service action with `uses: azure/appservice
 {% raw %}
 ```yaml
 # Deploy to App Service
-- uses: azure/appservice-actions/webapp@master
-- name: Deploy to app service  # Name is optional
-  with:
-    app-name: <the app name>  # Replace with your app name
-    package: <path to deployment source>  # Specify the folder or file to deploy
-    publish-profile: ${{ secrets.<your-publish-profile-name> }}  # Replace with the name of your publish profile
+- name: 'Run Azure webapp deploy action using publish profile credentials'
+    uses: azure/webapps-deploy@v1
+    with:
+      app-name: node-rn # Replace with your app name
+      publish-profile: ${{ secrets.azureWebAppPublishProfile }} # Replace with the name of your publish profile
+      package: <path to artifact>  # Specify the folder or file to deploy
 ```
 {% endraw %}
 
@@ -158,23 +158,28 @@ jobs:
   java-build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-    # checkout the repo
+
     - uses: actions/checkout@master
+
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
 
     # install dependencies, build, and test
     - name: Maven build phase
       run: |
         mvn clean package
 
-    - uses: azure/appservice-actions/webapp@master
+    - uses: azure/webapps-deploy@v1
       with:
         app-name: <your-app-name>
         publish-profile: ${{ secrets.<publish-profile> }}
-        package: target/app.war
+        package: target/app.war  # Can also be a jar
 ```
 {% endraw %}
 
-### Javascript
+### Node 
 
 {% raw %}
 ```yaml
@@ -186,6 +191,11 @@ jobs:
     steps:
     - uses: actions/checkout@master
 
+    - name: Set Node.js version
+      uses: actions/setup-node@v1
+      with:
+        node-version: '10.x'
+
     # install dependencies, build, and test
     - name: npm install, build, and test
       run: |
@@ -193,7 +203,7 @@ jobs:
         npm run build --if-present
         npm run test --if-present
 
-   - uses: azure/appservice-actions/webapp@master
+   - uses: azure/webapps-deploy@v1
      with:
        app-name: <your-app-name>
        publish-profile: ${{ secrets.<publish-profile> }}
@@ -213,16 +223,49 @@ jobs:
     steps:
     - uses: actions/checkout@master
 
+    - uses: actions/setup-python@v1
+      with:
+        python-version: '3.7.4'
+
     - name: install dependencies, and zip the app to use ZipDeploy
       run: |
         pip install -r requirements.txt
-        zip -r myapp.zip
 
     - uses: azure/appservice-actions/webapp@master
       with:
         app-name: <your-app-name>
         publish-profile: ${{ secrets.<publish-profile> }}
-        package: './myapp.zip'
+```
+{% endraw %}
+
+### DotNet
+
+{% raw %}
+```yaml
+on: push
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 2.2.108
+
+    - name: Build with dotnet
+      run: dotnet build --configuration Release
+    - name: dotnet publish
+      run: |
+        dotnet publish -c Release -o myapp
+
+    - uses: azure/webapps-deploy@v1
+      with:
+        app-name: <your-app-name>
+        publish-profile: ${{ secrets.<publish-profile> }}
+        package: './myapp'
 ```
 {% endraw %}
 
