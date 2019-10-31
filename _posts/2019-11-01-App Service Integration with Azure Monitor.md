@@ -11,6 +11,14 @@ tags:
 
 We are happy to announce that App Service has new and improved integration with Azure Monitor. You can now send your logs from Windows or Linux App Service to Storage Accounts, Event Hubs, or Log Analytics.
 
+## Increased visibility into your web apps 
+
+Azure Monitor is the central observability service to collect, analyze, and act on telemetry from your other Azure resources. You can use Azure Monitor to set up rule-based alerts, create dashboards, export to third-party services with Event Hubs, or archive logs and metrics for compliance needs. 
+
+App Service’s improved integration with Monitor enables new observability scenarios for development and operations teams. Developers can set up automatic emails with full stack traces when an exception is thrown. Operations teams can create dashboards to view the overall performance and stability of their applications. Compliance teams can monitor login attempts and file changes.  
+
+# Getting Started
+
 ## Prerequisites
 1. [Create an App Service app](https://docs.microsoft.com/en-us/azure/app-service/)
 1. Create a Storage Account, Event Hubs, or Log Analytics 
