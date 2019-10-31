@@ -1,7 +1,6 @@
 ---
 title: "Azure Functions The Journey"
 author_name: Mathew Charles
-layout: post
 hide_excerpt: true
 ---
 
