@@ -1,6 +1,7 @@
 ---
 title: "Azure Functions The Journey"
 author_name: Mathew Charles
+layout: single
 hide_excerpt: true
 ---
 
@@ -61,7 +62,7 @@ You’ll notice that this function is structurally the same as the C# function a
 
 The basic idea is that we can use this metadata to generate an in memory adaptor between various languages and the .NET WebJobs SDK runtime. We effectively generate the C# function you see above, and the method body of that function simply delegates to the actual user function (i.e. the Node.js function you wrote). An Azure Function can then just be a simple **function.json** metadata file describing the function bindings, along with a collection of one or more script files implementing the function. Here’s the same example as above, using the same metadata file, with the function written as a Windows BAT file:
 
-```bat
+```shell
 SET /p order=<%order%>
 echo Processing order '%order%'  
 echo '<some value>' > %receipt%
