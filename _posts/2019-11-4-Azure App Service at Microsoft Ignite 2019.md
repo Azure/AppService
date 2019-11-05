@@ -1,8 +1,6 @@
 ---
 title: "Azure App Service at Microsoft Ignite 2019"
 author_name: "Andrew Westgarth"
-toc: true
-toc_sticky: true
 ---
 
 During Microsoft Ignite 2019, this week, these are the Azure App Service sessions to look out for in the session catalog.
