@@ -2,12 +2,12 @@
 title: "Azure Functions The Journey"
 author_name: Mathew Charles
 layout: single
-hide_excerpt: true
+excerpt: "The Journey of the Azure Functions product and team."
 ---
 
 Our team was excited to recently release a preview of the new [Azure Functions](https://azure.microsoft.com/en-us/services/functions/) service at **//build**. We’ve done some blogging about the service already (e.g. [Introducing Azure Functions](https://azure.microsoft.com/en-us/blog/introducing-azure-functions/)), but in this post we’d like to delve a bit *behind the scenes* and discuss how the project started and the journey we’ve taken to arrive at where we are today. We’ll discuss the Functions Runtime, the Dynamic Compute layer ("Serverless") as well as the Functions Portal, and see at a high level how all those pieces evolved and came together into a cohesive product. It’s been a fun ride for the team, and it’s only just begun :)
 
- The evolution of this project is a great example of identifying synergies across a bunch of existing platform pieces, and connecting them together into a new product offering. In Azure App Service we already had many of the building blocks in place to enable us to rather quickly execute on the Azure Functions vision. By leveraging these existing assets and bringing in new innovations and functionality we were able to pull the project together pretty quickly.
+The evolution of this project is a great example of identifying synergies across a bunch of existing platform pieces, and connecting them together into a new product offering. In Azure App Service we already had many of the building blocks in place to enable us to rather quickly execute on the Azure Functions vision. By leveraging these existing assets and bringing in new innovations and functionality we were able to pull the project together pretty quickly.
 
 ### WebJobs SDK
 
