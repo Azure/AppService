@@ -94,7 +94,13 @@ Yes. When you access the Custom Domains and SSL blade in the Azure portal, you w
 You can move a domain to another subscription/resource group by using '<a href="https://msdn.microsoft.com/en-us/library/mt652516.aspx">Move-AzureRmResource</a>' PowerShell cmdlet.
 <h4 id="domainfreeapp">How can I manage my custom domain if I don't currently have an Azure App Service app that is not a free app?</h4>
 You can manage your domain even if you don't have an App Service Web App. Domains can be used for Azure services like Virtual machine, Storage etc . If you intend to use the domain for App Service Web Apps , then you need to include a Web App that is not on the Free App Service plan in order to bind the domain to your web app.
+
+
+<!-- Commenting out because transfer out isn't currently supported -->
+
+<!-- 
 <h4 id="transfer-domain-out">How can I transfer my domain out of Azure</h4>
+
 Follow the steps below to transfer out the domain
 <ul>
 <li>Login to Azure portal</li>
@@ -104,7 +110,9 @@ Follow the steps below to transfer out the domain
 <li>Under "Additional Settings"
 a. Unlock your domain . Click on Edit for "Domain lock" and turn it Off.
 b. Click on <b>Transfer domains away from Azure</b> to follow instructions to transfer out .</li>
-</ul></div>
+</ul>
+-->
+</div>
 </div></body>
 <script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
 <script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
