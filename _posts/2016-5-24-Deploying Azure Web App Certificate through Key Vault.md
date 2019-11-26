@@ -1,5 +1,7 @@
 ---
-title: "Deploying Azure Web App Certificate through Key Vault" 
+title: "Deploying Azure Web App Certificate through Key Vault"
+author_name: 
+layout: post
 hide_excerpt: true
 ---
 <html><head>
@@ -78,87 +80,4 @@ PUT /subscriptions/fb2c25dc-6bab-45c4-8cc9-cece7c42a95a/resourceGroups/Default-W
 Host: management.azure.com
 ….
 ---------- Response (2997 ms) ------------
-…
-{
-  "id": "/subscriptions/fb2c25dc-6bab-45c4-8cc9-cece7c42a95a/resourceGroups/Default-Web-EastAsia/providers/Microsoft.Web/certificates/keyvaultcertificate",
-  "name": "keyvaultcertificate",
-  "type": "Microsoft.Web/certificates",
-  "location": "East Asia",
-  "tags": null,
-  "properties": {
-    "friendlyName": "",
-    "subjectName": "appservicecertificatedemo.com",
-    "hostNames": [
-      "appservicecertificatedemo.com"
-    ],
-    "pfxBlob": null,
-    "siteName": null,
-    "selfLink": null,
-    "issuer": "appservicecertificatedemo.com",
-    "issueDate": "2016-05-02T21:09:24-07:00",
-    "expirationDate": "2017-05-02T00:00:00-07:00",
-    "password": null,
-    "thumbprint": "<strong>F454D4277D449D8CD2384B63D7AA2F2F7F3766E4</strong>",
-    "valid": null,
-    "toDelete": null,
-    "cerBlob": null,
-    "publicKeyHash": null,
-    "hostingEnvironment": null,
-    "hostingEnvironmentProfile": null,
-    "keyVaultId": "/subscriptions/fb2c25dc-6bab-45c4-8cc9-cece7c42a95a/resourcegroups/keyvaulttestrg/providers/microsoft.keyvault/vaults/akurmitestvault",
-    "keyVaultSecretName": "keyvaultcert",
-    "webSpace": "eastasiawebspace",
-    "tags": null
-  }
-}</pre>
-After executing this command, the certificate would be listed under ‘Custom Domains and SSL’ blade in Azure portal. Now you can use this certificate to create SSL bindings just like a regular certificate as described in <a href="https://azure.microsoft.com/en-us/documentation/articles/web-sites-configure-ssl-certificate/#bkmk_configuressl">this article</a>. You can also use the following ARMClient command to create SSL binding for custom hostname ‘appservicecertificatedemo.com’. If the custom hostname you want to use in this call is not already added to the website, then you should also create the DNS records required for verification as described <a href="https://docs.microsoft.com/en-us/azure/app-service-web/web-sites-custom-domain-name"> here </a>.
-<pre class="prettyprint">ARMClient.exe PUT /subscriptions/fb2c25dc-6bab-45c4-8cc9-cece7c42a95a/resourceGroups/Default-Web-EastAsia/providers/Microsoft.Web/sites/appservicecertificatedemo/hostnameBindings/appservicecertificatedemo.com?api-version=2016-03-01 "{'Location':'East Asia','properties':{'sslState':'SniEnabled','thumbprint':'F454D4277D449D8CD2384B63D7AA2F2F7F3766E4'}}"
-…
-
-{
-  "id": "/subscriptions/fb2c25dc-6bab-45c4-8cc9-cece7c42a95a/resourceGroups/Default-Web-EastAsia/providers/Microsoft.Web/sites/appservicecertificatedemo/hostNameBindings/appservicecertificatedemo.com",
-  "name": "appservicecertificatedemo/appservicecertificatedemo.com",
-  "type": "Microsoft.Web/sites/hostNameBindings",
-  "location": "East Asia",
-  "tags": null,
-  "properties": {
-    "siteName": "appservicecertificatedemo",
-    "domainId": null,
-    "azureResourceName": "appservicecertificatedemo",
-    "azureResourceType": "Website",
-    "customHostNameDnsRecordType": "A",
-    "hostNameType": "Managed",
-    "sslState": "SniEnabled",
-    "thumbprint": "F454D4277D449D8CD2384B63D7AA2F2F7F3766E4"
-  }
-}
-
-…</pre>
-If you want to create an IP-based SSL binding instead of SNI then replace ‘SniEnabled' with ‘IpBasedEnabled’ in the ARMClient command.
-You can also access this certificate from your Web App once it’s uploaded instead of creating SSL binding as described in <a href="https://azure.microsoft.com/en-us/blog/using-certificates-in-azure-websites-applications/">this blog</a>.
-<h1>Rotating Certificate</h1>
-Once a certificate has been deployed through KVS, follow these steps to rotate it:
-<ol>
-<li>Update the KVS with a new certificate</li>
-<li>Call the Create Certificate API again with the same body. This would update the certificate resource and migrate all Web Apps that are using it to the new certificate
-The Web App RP has a batch job that periodically syncs all Web App certificate resources with the associated Key Vault secret so if you don’t call the Create Certificate API after updating the KVS, then this periodic job would eventually migrate the Web Apps to the new certificate.</li>
-</ol>
-<h1>Deploying other secrets from Key Vault</h1>
-You may ask, deploying a certificate from KVS is fine. But what about deploying other secrets from KV such as connection strings? Currently, our platform only supports certificate deployment through Key Vault. You can however, use this feature and write some custom code to deploy generic Key Vault secrets into your Web App. Say your application requires a symmetric encryption key and a SQL connection string. You can follow these steps to deploy your app secrets through Key Vault:
-<ol>
-<li>Store the connection string and symmetric key in a Key Vault as individual secrets</li>
-<li>Create a self-signed certificate and authorize it to read Key Vault Secrets as described here</li>
-<li>Store this certificate in the Key Vault</li>
-<li>Deploy the certificate through KVS and create the required App Setting so that it would be available locally for your Web App to use</li>
-<li>In the Application_Start event, use this certificate to read secrets from Key Vault and update web.config if required</li>
-</ol>
-<h1>ARM Template to deploy and Assign KV Certificate</h1>
-You can use the following ARM template to deploy a certificate through KVS and create SSL bindings for a custom hostname:
-<a href="https://azure.microsoft.com/en-us/documentation/templates/201-web-app-certificate-from-key-vault/">https://azure.microsoft.com/en-us/documentation/templates/201-web-app-certificate-from-key-vault/</a>
-</div>
-</div>
-</div></div>
-</div></body>
-<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
-<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
-</html>
+ … { "id": "/subscriptions/fb2c25dc-6bab-45c4-8cc9-cece7c42a95a/resourceGroups/Default-Web-EastAsia/providers/Microsoft.Web/certificates/keyvaultcertificate", "name": "keyvaultcertificate", "type": "Microsoft.Web/certificates", "location": "East Asia", "tags": null, "properties": { "friendlyName": "", "subjectName": "appservicecertificatedemo.com", "hostNames": [ "appservicecertificatedemo.com" ], "pfxBlob": null, "siteName": null, "selfLink": null, "issuer": "appservicecertificatedemo.com", "issueDate": "2016-05-02T21:09:24-07:00", "expirationDate": "2017-05-02T00:00:00-07:00", "password": null, "thumbprint": "**F454D4277D449D8CD2384B63D7AA2F2F7F3766E4**", "valid": null, "toDelete": null, "cerBlob": null, "publicKeyHash": null, "hostingEnvironment": null, "hostingEnvironmentProfile": null, "keyVaultId": "/subscriptions/fb2c25dc-6bab-45c4-8cc9-cece7c42a95a/resourcegroups/keyvaulttestrg/providers/microsoft.keyvault/vaults/akurmitestvault", "keyVaultSecretName": "keyvaultcert", "webSpace": "eastasiawebspace", "tags": null } }

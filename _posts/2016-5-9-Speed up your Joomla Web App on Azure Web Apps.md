@@ -1,8 +1,8 @@
 ---
 title: "Speed up your Joomla Web App on Azure Web Apps"
-author_name: mksunitha
+author_name: "Sunitha Muthukrishna"
 layout: single
-hide_excerpt: true
+excerpt: "How to speed up your Joomla app on Azure App Service"
 --- 
 
 Every website for a company or personal wants to engage their customers , but if your website takes too long to load then you lose your users. For different types of applications, there are different options to prevent this from happening . In the blog post below we are going to discuss how we can improve Joomla web app fast and respond to users quickly by just making some or all the tweaks mentioned below.

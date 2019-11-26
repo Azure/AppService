@@ -1,8 +1,8 @@
 ---
 title: "App Service supports Node.js v6"
-author_name: Chris Anderson 
+author_name: "Chris Anderson" 
 layout: single
-hide_excerpt: true
+excerpt: "Azure App Service now supports Node v6"
 ---
 
 We're happy to announce that Azure App Service supports [Node.js v6.0.0.](https://github.com/nodejs/node/blob/master/CHANGELOG.md#2016-04-26-version-600-current-jasnell) Node.js v6.0.0 is a major step forward for the Node.js community thanks to the efforts of so many to increase the ES6 compatibility coverage, as well as many performance and security improvements. We'll follow the developments of v6 closely (including v6.1.0 which came out last night) as it moves towards a new v6 LTS version, at which point we'll plan on recommending developers creating new apps on App Service use that version, as we currently do for the v4 LTS version. Get started with Node.js on Azure App Service [here](https://azure.microsoft.com/en-us/documentation/articles/app-service-web-nodejs-get-started/). Using Node.js v6.0.0 on Azure App Service
