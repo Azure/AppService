@@ -11,7 +11,7 @@ When you deploy multiple App Services in the same App Service Plan, they all sha
 
 ## How to verify your App Service Plan density
 
-In order to verify if your apps are possibly competing for resources, run the App Service Plan Density check detector by following these steps:
+For App Service Plans running Windows based apps, you can run the App Service Plan Density check detector by following these steps:
 
 1. From the Azure Portal, go to one of your Apps
 2. Go to the "Diagnose and solve problems" blade
