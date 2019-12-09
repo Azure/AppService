@@ -9,17 +9,17 @@ tags:
 author_profile: true
 ---
 
-App Service Plans define the compute resource assigned to run your App Service. The pricing tier of your App Service Plan determines the compute power and features you get... the higher the tier, the more features and compute power are available. To find out which features are supported in each pricing tier, see [App Service Plan details](https://azure.microsoft.com/en-us/pricing/details/app-service/plans/).
+App Service Plans define the compute resources assigned to run your App Service. The pricing tier of your App Service Plan determines the compute power and features you get. The higher the tier, the more features and compute power are available. To find out which features are supported in each pricing tier as well as the compute power, see [App Service Plan details](https://azure.microsoft.com/en-us/pricing/details/app-service/plans/).
 
-When you deploy multiple App Services in the same App Service Plan, they all share the underlying compute resources. If your App Service Plan has more than the recommended number of apps, the apps will compete for the same set of resources. This will cause high CPU and memory that could result in availability and performance issues.
+When you deploy multiple App Services in the same App Service Plan, they all share the underlying compute resources. If your App Service Plan has more than the recommended number of apps, the apps will compete for the same set of resources. **This could potentially cause CPU and memory exhaustion that could result in availability and performance issues for all your apps on the App Service Plan.**
 
-## How to verify the App Service Plan density
+## How to verify your App Service Plan density
 
-In order to verify if your apps are possibly competing for resources, run the App Service Plan Density check detector by following these steps:
+For App Service Plans running Windows based apps, you can run the App Service Plan Density check detector by following these steps:
 
 1. From the Azure Portal, go to one of your Apps
 2. Go to the "Diagnose and solve problems" blade
-3. In the search bar, you can search for "Best Practices for Availability & Performance" to run multiple checks on your app or search for "App Service Plan density check" to run this check only
+3. In the search bar, search for "Best Practices for Availability & Performance" to run multiple checks on your app or search for "App Service Plan density check" to run this check only
 
 You will see one of the following notifications.
 
@@ -27,13 +27,14 @@ You will see one of the following notifications.
 
     ![green]({{site.baseurl}}/media/2019/05/Green.JPG)
 
-- Your plan is nearing exhaustion
+- Your plan hosts more than the recommended active sites
 
     ![red]({{site.baseurl}}/media/2019/05/red.png)
 
+**If your App Service Plan is hosting more than the recommended active sites, this greatly increases the possibility of your apps suffering downtime due to resource exhaustion.** See the "Recommended Solutions" to protect your apps from possible downtimes.
 ## Recommended Solutions
 
-1. Stop apps to decrease load
+1. Stop apps to decrease load on resources
 
     In the description, the detector will recommend stopping a number of apps to be within the recommended number of apps on the respective pricing tier. The number may actually be lower depending on how resource intensive the hosted applications are, however as a general guidance, you may refer to the table below.
 
@@ -51,7 +52,7 @@ You will see one of the following notifications.
 
     ![scale]({{site.baseurl}}/media/2019/05/scale.png)
 
-1. Split Apps in multiple App Service Plans
+1. Split Apps into multiple App Service Plans
 
     If you have other App Service Plans that have been created in the same Resource Group and Region, you can move your app to one of those plans and decrease the load.
 
