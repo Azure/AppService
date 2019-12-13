@@ -2,7 +2,7 @@
 title: "Offline Sync with Azure Mobile Apps and Apache Cordova"
 author_name: "Adrian Hall"
 layout: single
-excerpt: ""
+excerpt: "How to do Offline Sync with Azure Mobile Apps and Apache Cordova"
 toc: true
 toc_sticky: true
 ---
