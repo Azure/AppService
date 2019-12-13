@@ -4,6 +4,7 @@ author_name: "Sunitha Muthukrishna"
 layout: single
 excerpt: "How to disable the session affinity cookie on Azure App Service"
 toc: true
+toc_sticky: true
 ---
       
 Azure app service allows you to auto scale your web app by dynamically adding web server instances to handle the traffic to your web app. Azure app service uses [Application Request Routing](http://www.iis.net/learn/extensions/planning-for-arr) IIS Extension to distribute your connecting users between your active instances serving up the content. ARR cleverly identifies the user by assigning them a special cookie (known as an **affinity cookie**), which allows the service to choose the right instance the user was using to serve subsequent requests made by that user. This means, a client establishes a session with an instance and it will keep talking to the same instance until his session has expired. If you already have a web app on Azure app service , just browse the app and use browser debugger ( click on F12) to see the list of cookies. In the list of cookie you will see **ARRAffinity** Cookie.

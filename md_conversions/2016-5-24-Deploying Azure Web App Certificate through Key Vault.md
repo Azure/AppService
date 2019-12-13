@@ -136,3 +136,25 @@ Host: management.azure.com
   }
 }
 ```
+
+If you want to create an IP-based SSL binding instead of SNI then replace ‘SniEnabled' with ‘IpBasedEnabled’ in the ARMClient command.
+You can also access this certificate from your Web App once it’s uploaded instead of creating SSL binding as described in <a href="https://azure.microsoft.com/en-us/blog/using-certificates-in-azure-websites-applications/">this blog</a>.
+<h1>Rotating Certificate</h1>
+Once a certificate has been deployed through KVS, follow these steps to rotate it:
+<ol>
+<li>Update the KVS with a new certificate</li>
+<li>Call the Create Certificate API again with the same body. This would update the certificate resource and migrate all Web Apps that are using it to the new certificate
+The Web App RP has a batch job that periodically syncs all Web App certificate resources with the associated Key Vault secret so if you don’t call the Create Certificate API after updating the KVS, then this periodic job would eventually migrate the Web Apps to the new certificate.</li>
+</ol>
+<h1>Deploying other secrets from Key Vault</h1>
+You may ask, deploying a certificate from KVS is fine. But what about deploying other secrets from KV such as connection strings? Currently, our platform only supports certificate deployment through Key Vault. You can however, use this feature and write some custom code to deploy generic Key Vault secrets into your Web App. Say your application requires a symmetric encryption key and a SQL connection string. You can follow these steps to deploy your app secrets through Key Vault:
+<ol>
+<li>Store the connection string and symmetric key in a Key Vault as individual secrets</li>
+<li>Create a self-signed certificate and authorize it to read Key Vault Secrets as described here</li>
+<li>Store this certificate in the Key Vault</li>
+<li>Deploy the certificate through KVS and create the required App Setting so that it would be available locally for your Web App to use</li>
+<li>In the Application_Start event, use this certificate to read secrets from Key Vault and update web.config if required</li>
+</ol>
+<h1>ARM Template to deploy and Assign KV Certificate</h1>
+You can use the following ARM template to deploy a certificate through KVS and create SSL bindings for a custom hostname:
+<a href="https://azure.microsoft.com/en-us/documentation/templates/201-web-app-certificate-from-key-vault/">https://azure.microsoft.com/en-us/documentation/templates/201-web-app-certificate-from-key-vault/</a>

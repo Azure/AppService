@@ -4,6 +4,7 @@ author_name: Apurva Joshi
 layout: single
 excerpt: "How to use the Azure App Service troubleshooting blade and tools"
 toc: true
+toc_sticky: true
 ---
 
 I have been fortunate to have an opportunity to Build/Ship/Support on premise products as well as cloud services for Microsoft. One of my biggest take aways from this experience is, “You ship an on-premises product and make it’s issues/bugs your **CUSTOMER’S** problem. You ship a service in the cloud and now the same issues/bugs are **YOUR** problem!” Azure App Service Web App team aggress to this philosophy and has been aggressively investing in troubleshooting and diagnostic tools. I highly recommend watching this one hour “short” video (short from troubleshooting standards) from my **[//Build 2015 session, When bad things happen to good apps](https://channel9.msdn.com/Events/Build/2015/2-764).** It all started as an experiment outside of the Azure portal, we called it **[Support Portal](https://azure.microsoft.com/blog/support-site-extension-for-azure-websites-preview-release/)**. It was a success and was ready to be first-class citizen inside Azure portal. It found a place inside **SUPPORT + TROUBLESHOOTING** section of your Web App settings. ![settingsBlade](https://azurecomcdn.azureedge.net/mediahandler/acomblog/media/Default/blog/da0ad09a-4329-4a61-8750-5fc282a4fc77.png "settingsBlade") We soon realized that while these tools are great ingredients which are better served as a recipe. In another words, Please tell me what tools to use when and how? This is where **Troubleshoot Blade** comes handy.
