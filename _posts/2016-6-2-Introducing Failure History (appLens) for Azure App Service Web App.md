@@ -31,7 +31,7 @@ Let’s drill down on each of them with a real life examples.
 
 This an overlay chart of 2 distinct data points, **Organic availability** and **Container Health (Canary Web App).**
 
-**Organic availability** is an aggregated data points of successful HTTP requests vs. Failed HTTP requests to your web app. On the other hand **Container Health (Canary Web App)** is an aggregated data points of successful HTTP requests vs. Failed HTTP requests to a static page that resides inside same VM (container) as your web app. Both of them are weighted number in percentage. To learn more about the Canary Web App, please read [“Resource Health Check” section of my previous blog.]({% post_url 2016-5-18-Azure App Service Web App troubleshooting blade and tools %})
+**Organic availability** is an aggregated data points of successful HTTP requests vs. Failed HTTP requests to your web app. On the other hand **Container Health (Canary Web App)** is an aggregated data points of successful HTTP requests vs. Failed HTTP requests to a static page that resides inside same VM (container) as your web app. Both of them are weighted number in percentage. To learn more about the Canary Web App, please read [“Resource Health Check” section of my previous blog]({{ site.baseurl }}{% post_url 2016-5-18-Azure App Service Web App troubleshooting blade and tools %}).
 
 I call this chart “**Is it me? vs. Is it you?”** chart. This literally is best way to isolate application issues vs. platform issues. This chart tries to answer *“Was it cloud provider issue?”* question.
 
