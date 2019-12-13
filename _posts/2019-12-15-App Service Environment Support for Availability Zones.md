@@ -2,10 +2,11 @@
 title: "App Service Environment Support for Availability Zones"
 author_name: "Stefan Schackow"
 tags:
-    - App Service Environment
-    - Availability Zones
+    - "App Service Environment"
+    - "Availability Zones"
 ---
-App Service has GA'd App Service Environment (ASE) support for being deployed into Availability Zones (AZ).  Customers can choose to optionally deploy internal load balancer (ILB) ASEs into a specific AZ (Zone 1, 2 or 3) within an Azure region, and the resources used by that ILB ASE will either be pinned to the specified AZ, or deployed in a zone redundant manner.  
+
+App Service has GA'd App Service Environment (ASE) support for deploying into Availability Zones (AZ).  Customers can choose to optionally deploy internal load balancer (ILB) ASEs into a specific AZ (Zone 1, 2 or 3) within an Azure region, and the resources used by that ILB ASE will either be pinned to the specified AZ, or deployed in a zone redundant manner.  
 
 An ILB ASE that is explicitly deployed into an AZ is considered a zonal resource because the ILB ASE is pinned to a specific zone. The following ILB ASE dependencies will be located (pinned) in the specified zone:
 
@@ -14,7 +15,7 @@ An ILB ASE that is explicitly deployed into an AZ is considered a zonal resource
 
 The remote file storage for web applications deployed on a zonal ILB ASE uses Zone Redundant Storage (ZRS), though this is an internal implementation detail of zonal ILB ASEs.
 
-Note that unless the steps described in this article are followed, ILB ASEs do not automatically get deployed in a zonal manner.  Furthermore only ILB ASEs support availability zones - external facing ASEs (i.e. ASEs that have a public IP address for accepting website traffic) currently do not support zone pinning.
+Note that unless the steps described in this article are followed, ILB ASEs are not automatically deployed in a zonal manner.  Furthermore only ILB ASEs support availability zones - external facing ASEs (i.e. ASEs that have a public IP address for accepting website traffic) currently do not support zone pinning.
 
 Zonal ILB ASEs can be created in any of the following regions:
 
@@ -37,29 +38,31 @@ The only change needed in an ARM template to specify a zonal ILB ASE is the new 
 
 The ARM template snippet below shows the new ***zones*** property specifying that the ILB ASE should be pinned to zone 2.
 
-    "resources": [
-      {
-         "type": "Microsoft.Web/hostingEnvironments",
-         "kind": "ASEV2",
-         "name": "yourASENameHere",
-         "apiVersion": "2015-08-01",
-         "location": "your location here",
-         "zones": [
-            "2"
-         ],
-         "properties": {
-            "name": "yourASENameHere",
-            "location": "your location here",
-            "ipSslAddressCount": 0,
-            "internalLoadBalancingMode": "3",
-            "dnsSuffix": "contoso-internal.com",
-            "virtualNetwork": {
-               "Id": "/subscriptions/your-subscription-id-here/resourceGroups/your-resource-group-here/providers/Microsoft.Network/virtualNetworks/your-vnet-name-here",
-               "Subnet": "yourSubnetNameHere"
-            }
-         }
-      }
-    ]
+```json
+"resources": [
+  {
+     "type": "Microsoft.Web/hostingEnvironments",
+     "kind": "ASEV2",
+     "name": "yourASENameHere",
+     "apiVersion": "2015-08-01",
+     "location": "your location here",
+     "zones": [
+        "2"
+     ],
+     "properties": {
+        "name": "yourASENameHere",
+        "location": "your location here",
+        "ipSslAddressCount": 0,
+        "internalLoadBalancingMode": "3",
+        "dnsSuffix": "contoso-internal.com",
+        "virtualNetwork": {
+           "Id": "/subscriptions/your-subscription-id-here/resourceGroups/your-resource-group-here/providers/Microsoft.Network/virtualNetworks/your-vnet-name-here",
+           "Subnet": "yourSubnetNameHere"
+        }
+     }
+  }
+]
+```
 
 In order to attain end-to-end zone resiliency for apps created on a zonal ILB ASE, customers need to deploy at least two zonal ILB ASEs - with each ILB ASE being pinned to a different zone.  Customers must then create and publish copies of their application onto each of the zonal ILB ASEs.
 
