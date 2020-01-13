@@ -12,7 +12,7 @@ This afternoon we released the eighth update to Azure App Service on Azure Stack
 - **Managed disk support** for all **new deployments** – All new deployments of Azure App Service on Azure Stack Hub will make use of managed disks for all Virtual Machines and Virtual Machine Scale Sets.  All existing deployments will continue to use unmanaged disks.
 - **TLS 1.2 Enforced by Front End load Balancers**
 
-- All other fixes and updates are detailed in the App Service on Azure Stack Update Seven Release Notes
+- All other fixes and updates are detailed in the App Service on Azure Stack Update Eight Release Notes
 
 The App Service on Azure Stack Hub Update 8 build number is **86.0.2.13**
 
