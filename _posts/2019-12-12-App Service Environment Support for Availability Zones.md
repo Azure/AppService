@@ -26,6 +26,7 @@ Zonal ILB ASEs can be created in any of the following regions:
 - France Central 
 - Japan East
 - North Europe
+- West Europe
 - Southeast Asia
 - UK South
 - West US 2
