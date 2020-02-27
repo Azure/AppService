@@ -1,0 +1,28 @@
+---
+title: "Announcing general availability of VNet Integration with Windows Web Apps"
+tags: 
+    - Networking
+author_name: "Christina Compy"
+---
+
+
+## Announcing general availability of VNet Integration with Windows Web Apps
+
+One of the issues that App Service customers need to solve is how to access resources in their Azure Virtual Networks (VNets). To solve that issue, a feature was launched in 2014. The older VNet Integration feature required a virtual network gateway and really only supported reaching into the VNet.  There was still a major need to be able to use networking features like Network Security Groups (NSGs), Route Tables (UDRs) and Service Endpoints. A new VNet Integration technology was developed to solve thse problems while also being easier to use. 
+
+The new capability is referred to as regional VNet Integration because it will only work with VNets in the same region as the app. This new capabilty has been in preview for a little while already but only supported making calls to RFC1918 (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) addresses and service endpoints. The regional VNet Integration feature now supports sending all outbound calls into your VNet. You can now use features like Network NSGs and UDRs against all of the outbound traffic from your web app.  
+
+By default, if you use regional VNet Integration, your app will still only route RFC1918 (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) traffic into your VNet. If you set the app setting WEBSITE_VNET_ROUTE_ALL to 1, your app will then enable all of the outbound traffic from your app to be subject to NSGs and UDRs. 
+
+These new changes enable you to: 
+
+* access non-RFC1918 endpoints through your VNet
+* secure all outbound traffic leaving your web app
+* force tunnel all outbound traffic to a network appliance of your own choosing
+
+![regional VNet Integration]({{site.baseurl}}/media/2020/02/vnet-regionalworks.png)
+
+The pre-existing gateway required VNet Integration feature will continue to be supported. It supports integrations with VNets in other regions, or Classic VNets. This feature is available in all public regions. Regional VNet Integration for Linux apps is still in preview. Today's general availability announcement is only for windows apps.  To use regional VNet Integration, your app must be in a Standard, Premium, Premiumv2 or Elastic Premium App Service plan.  The feature is not support in an App Service Environment which is already in a customer VNet.  Regional VNet Integration is only for outbound calls being made by your apps. It does not enable private access to your apps.  
+
+For more information about regional VNet Integration, read the documentation here: https://docs.microsoft.com/azure/app-service/web-sites-integrate-with-vnet 
+For more information about App Service networking features in general, read the documentation here: https://docs.microsoft.com/en-us/azure/app-service/networking-features 
