@@ -24,5 +24,5 @@ These new changes enable you to:
 
 The pre-existing gateway required VNet Integration feature will continue to be supported. It supports integrations with VNets in other regions, or Classic VNets. This feature is available in all public regions. Regional VNet Integration for Linux apps is still in preview. Today's general availability announcement is only for windows apps.  To use regional VNet Integration, your app must be in a Standard, Premium, Premiumv2 or Elastic Premium App Service plan.  The feature is not support in an App Service Environment which is already in a customer VNet.  Regional VNet Integration is only for outbound calls being made by your apps. It does not enable private access to your apps.  
 
-For more information about regional VNet Integration, read the documentation here: https://docs.microsoft.com/azure/app-service/web-sites-integrate-with-vnet 
-For more information about App Service networking features in general, read the documentation here: https://docs.microsoft.com/en-us/azure/app-service/networking-features 
+For more information about regional VNet Integration, read [App Service VNet Integration](https://docs.microsoft.com/azure/app-service/web-sites-integrate-with-vnet.md) 
+For more information about App Service networking features in general, read [App Service networking features](https://docs.microsoft.com/en-us/azure/app-service/networking-features.md)
