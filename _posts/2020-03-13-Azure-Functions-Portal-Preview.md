@@ -9,7 +9,7 @@ author_name: "Byron Tardif"
 
 ## Access the preview
 
-Thew new user experience for **Azure Functions** is now available for all users in the **Azure Portal**.
+The new user experience for **Azure Functions** is now available for all users in the **Azure Portal**.
 
 You can try the new experience by clicking on the "*Preview the new Azure Functions management experience*" banner in your function apps.
 
@@ -43,7 +43,7 @@ The core **Azure Functions** features are grouped in the menu bar under the **Fu
 
 - **View** the values for Host & System keys
 - **Add / Remove** Host & System keys
-- **Renew** values for Host & system keys
+- **Renew** values for Host & System keys
 
 ![New functions app keys]({{ site.baseurl }}/media/2020/03/function_app_keys.gif)
 
@@ -80,7 +80,7 @@ Test your function and see the execution logs:
 
 ### Integration
 
-**Integration** menu item give you a graphical representation of your function. From here you can add / remove / edit all of your **Triggers**, **Inputs** and **Outputs** bindings.
+**Integration** menu item give you a graphical representation of your function. From here you can add / remove / edit all your **Triggers**, **Inputs** and **Outputs** bindings.
 
 ![New functions integrate]({{ site.baseurl }}/media/2020/03/function_integration.png)
 
