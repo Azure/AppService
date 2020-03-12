@@ -74,13 +74,19 @@ To add images, GIFs, or other digital content to your post...
 
 ## Publishing
 
-1. Proofread your post for spelling and grammar
-    - **Pro-Tips**: Copy/paste your content into Word to check spelling. Also, install the VSCode [Markdown Linting extension](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint).
+1. Proofread your post for spelling and grammar:
+
+- If you are using VSCode, please install: [Markdown Linting extension](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint) and fix all linting issues.
+- Install the [Code Spell checker extension](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker) this should help catch spelling mistakes and typos.
+
 1. Submit a pull request
-  - [Using GitHub Desktop](https://help.github.com/en/desktop/contributing-to-projects/creating-a-pull-request)
+
+- [Using GitHub Desktop](https://help.github.com/en/desktop/contributing-to-projects/creating-a-pull-request)
+
 1. Tag `@jasonfreeberg` in your pull request
     - Send an email if it is high priority
 
-### Notes:
+### Notes
+
 - [/media](/media): All images and digital content from the old MSDN blog
 - [/resource](/resource): All the CSS and JS content from the old MSDN blog
