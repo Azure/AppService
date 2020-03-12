@@ -19,7 +19,7 @@ You can try the new experience by clicking on the "*Preview the new Azure Functi
 
 Once you are in the new experience, you will notice that the new  **Azure Functions** UX is now consistent with the rest of the **Azure Portal**.
 
-This UX is powered by the same [**Azure Functions Runtime API**](https://docs.microsoft.com/azure/azure-functions/functions-runtime-overview) except they are now exposed through [**ARM**](https://azure.microsoft.com/features/resource-manager/). This allows for better caching through the [**Azure Resource Graph**](https://azure.microsoft.com/features/resource-graph/), as well as support for [**RBAC**](https://docs.microsoft.com/azure/role-based-access-control/overview), and enables new scenarios like being able to manage Azure Functions hosted on an [**Internal Load Balancer App Service Environment ASE**](https://docs.microsoft.com/azure/app-service/environment/create-ilb-ase).
+This UX is powered by the same [**Azure Functions Runtime API**](https://docs.microsoft.com/azure/azure-functions/functions-runtime-overview) except they are now exposed through [**ARM**](https://azure.microsoft.com/features/resource-manager/). This allows for better caching, as well as support for [**RBAC**](https://docs.microsoft.com/azure/role-based-access-control/overview), and enables new scenarios like being able to manage Azure Functions hosted on an [**Internal Load Balancer App Service Environment ASE**](https://docs.microsoft.com/azure/app-service/environment/create-ilb-ase).
 
 The core **Azure Functions** features are grouped in the menu bar under the **Functions (preview)** heading:
 
