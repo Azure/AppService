@@ -4,6 +4,8 @@ on:
   push:
     branches:
     - master
+  schedule:
+    - cron:  '0 0 * * *'  # Run build every day at 00:00 UTC every day for future-dated articles
 
 jobs:
   build:
