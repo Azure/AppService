@@ -10,7 +10,7 @@ tags:
     - self-help
 ---
 
-> Currently available for select Windows web apps.
+> The new experience is currently available for select Windows web apps. We are gradually rolling it out to all subscriptions in the coming weeks.
 
 App Service Diagnostics is an intelligent and interactive experience to help you troubleshoot your app with no configuration required. When you run into issues with your app, App Service Diagnostics points out what's wrong to guide you to the right information to more easily troubleshoot and resolve issues.
 
@@ -42,12 +42,13 @@ Click the **Ask Genie** button at the top of the page to start a chat with our i
 
 The new experience introduces a command bar control at the top where you will find buttons and controls you often interact with. Below controls are now available in every page with diagnostics.
 
-![Command Bar]({{site.baseurl}}/media/2020/03/command-bar.png)
+![Command Bar]({{site.baseurl}}/media/2020/03/commandbar.png)
 
 - **Search**: Search is now available in every page for you to quickly find and navigate to different diagnostics of your choice.
 - **Ask Genie**: Ask Genie button is available in every page for you to get analysis and documentation results tailored to your issue.
+- **Refresh**: Refresh button is available in every page for you to reload the diagnostics.
 - **Feedback**: Feedback button is available in every page for you to share feedback with the App Service Diagnostics Product team.
-- **Time Filter**: The new time filter now gives options to choose from predefined time range and custom time range using date picker and time picker to more easily filter the diagnostics to your desired time range. The time you select will be honored when you switch to another page. (Current limitation: The time will reset to 24-hour range once you go back to the homepage.)
+- **Time Filter**: The new time filter now gives options to choose from predefined time range and custom time range using date picker and time picker to more easily filter the diagnostics to your desired time range. The time you select will be honored when you switch to another page. (Current limitations: The end time cannot be more than (current time - 15 minutes) due to limitations on data ingestion; The time range will reset to a 24-hour range once you go back to the homepage.)
 
 ## What's Next
 
