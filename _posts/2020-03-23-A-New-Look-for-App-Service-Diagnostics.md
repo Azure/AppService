@@ -34,7 +34,7 @@ If you already know the problem you want to drill down to, choose a relevant ite
 
 When you are not sure where to begin, or you cannot find the information you are looking for, App Service Diagnostics' interactive interface, Genie, can help guide you through diagnosing and solving problems of your app.
 
-Click the **Ask Genie** button at the top of the page to start a chat with our interactive interface, Genie. Type in the issue you are experiencing, and Genie will automatically fetch relevant diagnostics available in App Service Diagnostics and return the results along with relevant documentation found on web. Genie will share its observation on the issue and list out checks that have succeeded. You can click on **More Info** to see additional information for each check.
+Click the **Ask Genie** button at the top of the page to start a chat with our interactive interface, Genie. Type in the issue you are experiencing, and Genie will automatically fetch relevant diagnostics available in App Service Diagnostics and return the results along with relevant documentation found on the web. Genie will share its observation on the issue and list out checks that have succeeded. You can click on **More Info** to see additional information for each check.
 
 ![Genie]({{site.baseurl}}/media/2020/03/genie.png)
 
