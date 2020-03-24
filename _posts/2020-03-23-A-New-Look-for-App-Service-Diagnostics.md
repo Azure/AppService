@@ -10,9 +10,9 @@ tags:
     - self-help
 ---
 
-> Currently available to select Windows web apps.
+> Currently available for select Windows web apps.
 
-App Service Diagnostics is an intelligent and interactive experience to help you troubleshoot your app with no configuration required. When you run into issues with your app, App Service Diagnostics points out what's wrong to guide you to the right information to more easily and quickly troubleshoot and resolve issues.
+App Service Diagnostics is an intelligent and interactive experience to help you troubleshoot your app with no configuration required. When you run into issues with your app, App Service Diagnostics points out what's wrong to guide you to the right information to more easily troubleshoot and resolve issues.
 
 To make it easier for you to discover your application's issues and helpful insights, we are launching a new experience in App Service Diagnostics.
 
@@ -24,7 +24,7 @@ The new experience allows you quickly discover issues that your application migh
 
 ![Overview Page]({{site.baseurl}}/media/2020/03/overview-page.png)
 
-The cards at the top of the overview page calls out the status of your app by performing pre-selected checks on your application's backend telemetry. You can click on these cards to further investigate the issue.
+The cards at the top of the overview page show the status of your app by performing pre-selected checks on your application's backend telemetry. You can click on these cards to further investigate the issue.
 
 If you already know the problem you want to drill down to, choose a relevant item in the left navigation where you will find more comprehensive checks on different topics.
 
