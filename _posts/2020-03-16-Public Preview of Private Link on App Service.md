@@ -5,12 +5,14 @@ tags:
 author_name: "Christina Compy"
 ---
 
-We are happy to announce the public preview of Private Link for Azure App Service. This preview is available for all PremiumV2 Windows and Linux web apps.  It is also now available for Elastic Premium Functions plans. [Private Link](https://docs.microsoft.com/en-us/azure/private-link/) enables you to host your apps on an address in your Azure Virtual Network (VNet) rather than on a shared public address. By moving the endpoint for your app into your VNet you can:
+We are happy to announce the public preview of Private Link for Azure App Service. This preview is available in limited regions for all PremiumV2 Windows and Linux web apps. It is also now available for Elastic Premium Functions plans. [Private Link](https://docs.microsoft.com/en-us/azure/private-link/) enables you to host your apps on an address in your Azure Virtual Network (VNet) rather than on a shared public address. By moving the endpoint for your app into your VNet you can:
 
 * **Isolate your apps from the internet**. Configuring a Private Endpoint with your app, you can securely host line-of-business applications and other intranet applications.
 * **Prevent data exfiltration**. Since the Private Endpoint only goes to one app, you don't need to worry about data exfiltration situations. 
 
 ![Private Link Flow]({{ site.baseurl }}/media/2020/03/privatelink-flow.png)
+
+The feature is currently available in East US and West US 2. Remaining regions will be updated shortly.
 
 ### Using Private Link or Service Endpoints
 
