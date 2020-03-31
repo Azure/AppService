@@ -3,7 +3,7 @@ title: "Get started with GitHub Actions and App Service"
 author_name: "Jason Freeberg"
 ---
 
-Last year we [shared an article]({{site.baseurl}}{% post_url 2019-08-10-Github actions for webapps%}) that covered deploying your application to App Service using [GitHub Actions](https://github.com/features/actions). I am excited to share that we have added GitHub Actions as a build provider in the Deployment Center. This makes it easier for any developer to start deploying with GitHub Actions. Follow the instructions below to get started.
+Last year we [shared an article]({{site.baseurl}}{% post_url 2019-08-10-Github actions for webapps%}) that demonstrated how to deploy your application to App Service using [GitHub Actions](https://github.com/features/actions). I am excited to share that we have added GitHub Actions as a build provider in the Deployment Center. This means it is even easier for developers to set up a continuous delivery pipeline with GitHub Actions. Follow the video or instructions below to get started.
 
 {% include video id="b2oyxbSbLPA" provider="youtube" %}
 
@@ -29,7 +29,7 @@ Last year we [shared an article]({{site.baseurl}}{% post_url 2019-08-10-Github a
 
     ![Select GitHub Actions]({{site.baseurl}}/media/2020/03/summary.PNG)
 
-    Click **Finish** after reviewing your selections. The Portal will commit this repository, which will run the workflow.
+    Click **Finish** after reviewing your selections. The Portal will commit this to the repository, which will trigger the the workflow to run.
 
 1. You will be forwarded to the Deployment Center Dashboard, where you can see a list of your recent deployments. You can use the buttons at the top to disconnect the dashboard.
 
@@ -37,7 +37,9 @@ Last year we [shared an article]({{site.baseurl}}{% post_url 2019-08-10-Github a
 
 ## Next steps
 
-Congratulations, you now have an automated workflow that will build and deploy your app whenever new commits are pushed to the branch. As your application grows in complexity, so too can your workflows.
+Congratulations! You now have an automated workflow that will build and deploy your app whenever new commits are pushed to the branch. As your application grows in complexity, so too can your workflows. There are plenty of [other GitHub Actions](https://github.com/azure/actions#github-actions-for-azure) to interact with the rest of your Azure Services as well.
+
+As always, don't forget to [use UserVoice](https://feedback.azure.com/forums/169385-web-apps) to suggest enhancements and vote for other suggestions.
 
 ## More information
 
