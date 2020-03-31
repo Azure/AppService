@@ -5,6 +5,8 @@ author_name: "Jason Freeberg"
 
 Last year we [shared an article]({{site.baseurl}}{% post_url 2019-08-10-Github actions for webapps%}) that covered deploying your application to App Service using [GitHub Actions](https://github.com/features/actions). I am excited to share that we have added GitHub Actions as a build provider in the Deployment Center. This makes it easier for any developer to start deploying with GitHub Actions. Follow the instructions below to get started.
 
+{% include video id="b2oyxbSbLPA" provider="youtube" %}
+
 ## Getting started
 
 1. First, create an Azure Webapp if you do not already have one. Follow one of [these quick start guides](https://docs.microsoft.com/azure/app-service/containers/quickstart-dotnetcore).
