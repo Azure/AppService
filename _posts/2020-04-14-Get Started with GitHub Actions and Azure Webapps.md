@@ -15,25 +15,25 @@ Last year we [shared an article]({{site.baseurl}}{% post_url 2019-08-10-Github a
 
 1. In the Deployment Center, Select **GitHub**. You will be prompted to authenticate with GitHub if this is your first time using the Deployment Center. Click **Continue** at the bottom.
 
-    ![Navigate to the Deployment Center]({{site.baseurl}}/media/2020/03/deploy-center.PNG)
+    ![Navigate to the Deployment Center]({{site.baseurl}}/media/2020/04/deploy-center.PNG)
 
 1. On the next screen, choose **GitHub Actions (Preview)** as your build provider.  Click **Continue** at the bottom.
 
-    ![Select GitHub Actions]({{site.baseurl}}/media/2020/03/select-gh-actions.PNG)
+    ![Select GitHub Actions]({{site.baseurl}}/media/2020/04/select-gh-actions.PNG)
 
 1. On the following panel, use the dropdowns to select your repository and branch. The branch you choose will be deployed to the Webapp. Next, choose your language and version. When you are done, click **Continue** at the bottom.
 
-    ![Select your repo, branch, and runtime]({{site.baseurl}}/media/2020/03/select-repo-branch-runtime.PNG)
+    ![Select your repo, branch, and runtime]({{site.baseurl}}/media/2020/04/select-repo-branch-runtime.PNG)
 
 1. The final screen shows a preview of the workflow file that will be committed into your repository under `.github/workflows/`. The workflow file will check out your branch, set your language and version, build your application, and deploy it to your Webapp. The workflow will run any time there is a commit on your specified branch.
 
-    ![Select GitHub Actions]({{site.baseurl}}/media/2020/03/summary.PNG)
+    ![Select GitHub Actions]({{site.baseurl}}/media/2020/04/summary.PNG)
 
     Click **Finish** after reviewing your selections. The Portal will commit this to the repository, which will trigger the the workflow to run.
 
 1. You will be forwarded to the Deployment Center Dashboard, where you can see a list of your recent deployments. You can use the buttons at the top to disconnect the dashboard.
 
-    ![Deployment Center Dashboard]({{site.baseurl}}/media/2020/03/dashboard.PNG)
+    ![Deployment Center Dashboard]({{site.baseurl}}/media/2020/04/dashboard.PNG)
 
 ## Next steps
 
