@@ -73,10 +73,11 @@ Set-AzureRmResource -ResourceId $resourceId -Tag $updatedTags
 
 ## What's Next
 
-So, what are you waiting for ! Integrate your application with Application Insights and leverage Application Insights integration feature in our diagnostics to get the unified experience that brings the best of both worlds. We just want to close by sharing some articles around Application Insights.
+So, what are you waiting for :smiley:! Integrate your application with Application Insights and leverage Application Insights integration feature in our diagnostics to get the unified experience that brings the best of both worlds. We just want to close by sharing some articles around Application Insights.
 
 + [What is Application Insights?](https://docs.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview)
 + [Monitor Azure App Service performance](https://docs.microsoft.com/en-us/azure/azure-monitor/app/azure-web-apps?tabs=net)
++ [Instrument Application Code to Track Exceptions](https://docs.microsoft.com/en-us/azure/azure-monitor/app/asp-net-exceptions#exceptions)
 
 For more information on App Service Diagnostics, please visit [Azure App Service diagnostics overview](https://docs.microsoft.com/azure/app-service/overview-diagnostics).
 
