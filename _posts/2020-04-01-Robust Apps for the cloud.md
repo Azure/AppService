@@ -10,7 +10,7 @@ tags:
 
 Modern day data centers are extremely complex and have too many moving parts. Restarts, instance changes, upgrades, file server movements and more are expected in a cloud environment. However, you can make your cloud application resilient to these problems by following a few guidelines. We've outlined in this document 15 crucial steps that you can take to ensure that your app is cloud ready. By taking these steps, you will ensure that any changes in the data center will have negligible effects on your app and that your app will be more resilient and future proof.
 
-As mentioned above, your instances are expected to and will restart. They will be upgraded and will sometimes suffer from file server movements. However you can make your app resilient to all these incidents. In order to guarantee the maximum uptime for your app, <b>please ensure that you follow all 15 practices</b>.
+As mentioned above, your instances are expected to and will restart. They will be upgraded and will sometimes suffer from file server movements. However you can make your app resilient to all these incidents. In order to guarantee the maximum uptime for your app, <b>please ensure that you follow all practices</b>.
 <br>
 
 We're going to cover the following topics:
@@ -31,7 +31,7 @@ We're going to cover the following topics:
 - [Check the resiliency of your app from App Service Diagnostics](#check-the-resiliency-of-your-app-from-app-service-diagnostics)
 
 ### Multiple Instances 
-Running your app on one instance causes it to have on single point of failure. By ensuring that you have multiple instances allocated to your app, if something goes wrong with any particular instance, your app will still be able to respond to requests going to the other instances. One thing to keep in mind here would be that the <b> app code should be able to handle multiple instances </b> without synchronization issues with common data read/write sources. 
+Running your app on one instance causes it to have one single point of failure. By ensuring that you have multiple instances allocated to your app, if something goes wrong with any particular instance, your app will still be able to respond to requests going to the other instances. One thing to keep in mind here would be that the <b> app code should be able to handle multiple instances </b> without synchronization issues with common data read/write sources. 
 <br><br>You can allocate multiple instances to your app using the "Scale out (App Service Plan)" blade:
 <br>
 ![multiple-instances]({{site.baseurl}}/media/2020/04/multiple-instances.png)
