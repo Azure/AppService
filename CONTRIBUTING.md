@@ -1,6 +1,8 @@
 # Instructions for posting content
 
-> For **Antares team** members only. You will need write access to create pull request. Email Jason Freeberg with any questions or to request access.
+## Access
+
+1. Get contributor access to the repository. Email Jason Freeberg with your GitHub username. This will allow you to submit pull requests without creating and maintaining your own fork of the repository.
 
 ## Environment Setup
 
@@ -26,12 +28,13 @@
 
     The blog will be running at <http://127.0.0.1:4000/>
 
+1. Install [GitHub Desktop](https://desktop.github.com/) for making branches, pull requests, etc.
+
 > **VSCODE**: If you are using VSCode to author your blog post, please install [Markdown Linting extension](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint)
 
 ## Authoring your post
 
-1. Create a new branch for your article(s).
-    - If you are not comfortable on the command line, download [GitHub Desktop](https://desktop.github.com/).
+1. Create a new branch for your article(s). If you are not using GitHub Desktop, run the command `git checkout -b [name_of_your_new_branch]`
 
 1. Create a markdown file under the `_posts` directory with the following file name format: `YYYY-MM-DD-Your Article Title.md`
 
@@ -71,12 +74,19 @@ To add images, GIFs, or other digital content to your post...
 
 ## Publishing
 
-1. Proofread your post for spelling and grammar
-    - **Pro-Tips**: Copy/paste your content into Word to check spelling. Also, install the VSCode [Markdown Linting extension](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint).
+1. Proofread your post for spelling and grammar:
+
+- If you are using VSCode, please install: [Markdown Linting extension](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint) and fix all linting issues.
+- Install the [Code Spell checker extension](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker) this should help catch spelling mistakes and typos.
+
 1. Submit a pull request
+
+- [Using GitHub Desktop](https://help.github.com/en/desktop/contributing-to-projects/creating-a-pull-request)
+
 1. Tag `@jasonfreeberg` in your pull request
     - Send an email if it is high priority
 
-### Notes:
+### Notes
+
 - [/media](/media): All images and digital content from the old MSDN blog
 - [/resource](/resource): All the CSS and JS content from the old MSDN blog

@@ -20,7 +20,7 @@ title                    : "App Service Blog"
 title_separator          : "-"
 subtitle                 : "" # site tagline that appears below site title in masthead
 name                     : "Azure App Service"
-description              : "Azure App Service team blog archives."
+description              : "Announcements, updates, and release notes from the Azure App Service product team."
 url                      : "https://azure.github.io" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : "/AppService" # the subpath of your site, e.g. "/blog"
 repository               : "Azure/AppService" # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
@@ -91,13 +91,13 @@ lang: "en_US"
 jekyll-archives:
   enabled: all
   layouts:
-    year: archive-year
+    year:  archive-year
     month: archive-month
-    day: archive-day
+    day:   archive-day
   permalinks:
-    year: '/:year/'
+    year:  '/:year/'
     month: '/:year/:month/'
-    day: '/:year/:month/:day/'
+    day:   '/:year/:month/:day/'
 
 # Social Sharing
 twitter:

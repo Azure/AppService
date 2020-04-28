@@ -13,7 +13,7 @@ This afternoon we released the seventh update to Azure App Service on Azure Stac
   As of this release Users can configure Access Restrictions for their Web/Api/Functions applications according to the documentation published - Azure App Service Access Restrictions, NOTE: Azure App Service on Azure Stack does not support Service Endpoints.
 - All other fixes and updates are detailed in the [App Service on Azure Stack Update Seven Release Notes](https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-app-service-release-notes-update-seven)
 
-The App Service on Azure Stack Update 7 build number is **82.0.2.10**
+The App Service on Azure Stack Update 7 build number is **84.0.2.10**
 
 You can download the new installer and helper scripts:
 
