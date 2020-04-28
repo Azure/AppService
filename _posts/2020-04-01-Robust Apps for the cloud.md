@@ -139,8 +139,10 @@ In contrast, when you run directly from a package, the files in the package are 
 
 > Please note that this feature is not compatible with [local cache](#local-cache). Also if you are using a CMS application, we do <b> not </b> recommend the use of this feature.
 
-For improved cold-start performance, use the local Zip option `WEBSITE_RUN_FROM_PACKAGE=1`.
+Ensure to set the app setting `WEBSITE_DISABLE_STANDBY_VOLUMES = 1`, this prevents the app from getting restarted when the primary storage volume is down and the app starts using standby storage volume. Also, for improved cold-start performance, use the local Zip option `WEBSITE_RUN_FROM_PACKAGE=1`.
 
+> Please note the zip file should not exceed 1 GB.
+<br>
 Learn more about Run from Package here: <br>
 
 - [Run your app in Azure App Service directly from a ZIP package](https://docs.microsoft.com/en-us/azure/app-service/deploy-run-package)
