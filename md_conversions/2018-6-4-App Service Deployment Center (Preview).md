@@ -1,0 +1,15 @@
+---
+title: "App Service Deployment Center (Preview)"
+author_name: Byron Tardif
+layout: post
+hide_excerpt: true
+---
+      [Byron Tardif](https://social.msdn.microsoft.com/profile/Byron Tardif)  6/4/2018 5:12:14 PM   We are happy to announce a new preview experience for setting up deployments to Azure App Service. Deployment Center is a centralized overview for all of the deployment options available to you. It also provides a guided experience to set up your deployments. With the new UX you can now **search** and **filter** through your **repositories** and **branches** making navigation through large code repositories easier. [![search]({{ site.baseurl }}/media/2018/06/search_thumb.gif "search")]({{ site.baseurl }}/media/2018/06/search.gif) We have also revamped the access to **log files** making them easier to find and consume. [![logs]({{ site.baseurl }}/media/2018/06/logs_thumb.gif "logs")]({{ site.baseurl }}/media/2018/06/logs.gif) Other improvements include:  2. Link back to ****source repository**** ([as requested in our Uservoice](https://feedback.azure.com/forums/169385/suggestions/16327096))
+ 4. Displaying the **branch information** ([as requested in our Uservoice](https://feedback.azure.com/forums/169385-web-apps/suggestions/15365301-show-deployment-source))
+ 6. Information about the **Commit ID** and **Author**
+ 8. Surfacing the **Check-in message**
+  All of these improvements are geared to help developers understand what version of their code is currently deployed in their app. [![image]({{ site.baseurl }}/media/2018/06/image_thumb35.png "image")]({{ site.baseurl }}/media/2018/06/image37.png) Deployment credential management is now contextualized to your deployment provider/method of choice. It is now easier to set and re-set credentials from the deployment center without having to visit another UI or abandon the flow. [![creds]({{ site.baseurl }}/media/2018/06/creds_thumb.gif "creds")]({{ site.baseurl }}/media/2018/06/creds.gif) ### Preview Limitations
+
+  - This preview is currently available for **Windows** hosted apps and we plan to extend this to **Linux** and **Functions** in the coming months.
+ - You must be part of the **Owner role** in the subscription to use this feature, we plan to remove this limitation in future releases.
+  If you find any issues with the preview you can report a bug [here](https://github.com/Azure/azure-functions-ux/issues) For any questions about any of this features or App Service be sure to check our forums in [MSDN](https://social.msdn.microsoft.com/Forums/en-US/home?forum=windowsazurewebsitespreview) and [Stack Overflow](https://stackoverflow.com/questions/tagged/azure-web-sites). For any feature requests or ideas check out our [User Voice](https://feedback.azure.com/forums/169385-web-apps-formerly-websites)     

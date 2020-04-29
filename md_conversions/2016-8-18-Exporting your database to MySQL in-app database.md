@@ -1,0 +1,23 @@
+---
+title: "Exporting your database to MySQL in-app database"
+author_name: mksunitha
+layout: post
+hide_excerpt: true
+---
+      [mksunitha](https://social.msdn.microsoft.com/profile/mksunitha)  8/18/2016 4:27:45 PM  This blog post will guide you through the process of exporting your current website's database to local MySQL. Follow the process below to export your database: ### Locate and access your current database:
+
+ Your database must be remotely accessible. Check your existing hosting provider on how to access your MySQL database. Most common tool used is PHPmyadmin for accessing your database. Check out this article on [How to setup PHPmyadmin for your Azure Web App](https://sunithamk.wordpress.com/2016/01/04/how-to-use-phpmyadmin-for-your-azure-web-app/) if your app is already running on Azure. PHPmyadmin is browser based tool that can be used to manipulate and manage your database.
+
+ [![phpmyadmin1]({{ site.baseurl }}/media/2016/08/phpmyadmin1-1024x480.png)]({{ site.baseurl }}/media/2016/08/phpmyadmin1.png) You may also use [MySQL workbench ](https://dev.mysql.com/downloads/workbench/)to access your database . Check out this article on [how to access your database using MySQL workbench](https://dev.mysql.com/doc/workbench/en/wb-mysql-connections-new.html). ### Export your database and Save it locally
+
+ #### PHPmyadmin
+
+ Access your database using PHPmyadmin and click on **Export **tab. ![exportmyadmin]({{ site.baseurl }}/media/2016/08/exportmyadmin-1024x316.png) Select **Custom export method **to have the ability to modify how the script should be generated. Click on **GO **to generate the script and save the file locally . ![options-config-myadmin]({{ site.baseurl }}/media/2016/08/options-config-myadmin-1024x884.png) #### MySQLDump.exe
+
+ If you have MySQL installed on your local machine you can using mysqldump.exe utility usually found in the bin folder within MySQL folder. To export a remote database run the command in this format D:\Program Files (x86)\mysql\5.7.9.0\bin>mysqldump -P port\_number -h host\_name -u mysql\_user -p database\_name > result\_file.sql Example: D:\Program Files (x86)\mysql\5.7.9.0\bin>mysqldump -P 48926 -h mysqlserver.cloudapp.net -u root -p mywordpressdb > mydatabaseexport.sql #### MySQL workbench
+
+ This tool offers an export wizard as shown below to export your database content. Check out the documentation for using [the Export wizard to export the database](https://dev.mysql.com/doc/workbench/en/wb-admin-export-import-management.html) ![dbexport-wkbench]({{ site.baseurl }}/media/2016/08/dbexport-wkbench-1024x743.png) Once you have successfully exported the database, then inspect your MySQL database script to check if your application stores the site URL in the database. If yes, then update the URL to use Azure app service web app URL or custom domain if the custom domain is already pre-configured on your Azure web app. Your script is ready to be imported. ### Import your database
+
+ Go to your web app **Settings->Feature -> MySQL in-app **to access the management settings for this feature.  - **Import Feature in Azure portal : **Select **MySQL in App** setting , under **Data Import and Export** select "Import" to import a remote database into MySQL In App database . Enter the remote database connection information to import the database. Note that MySQL In App uses MySQL 5.7.9 version and make sure your remote database is compatible with this version of MySQL . **![]({{ site.baseurl }}/media/2018/02/image_thumb155.png)**
+ - **Using PHPmyadmin : **To open PHPmyadmin for your MySQL in-app database . Check your SQL script and make sure the USE statement is using the database name “**azuredb**” . This is the database used with the connection string we provide with MySQL in-app. If the USE statement has a different database name, update it to use **azuredb **database. Then Click **Import** in the top menu in PHPmyadmin .Under File to Import, click Browse and select the script your exported from your source database. Then click Go to complete the import.
+  [![importphpmyadmin1]({{ site.baseurl }}/media/2016/08/importphpmyadmin1-1024x630.png)]({{ site.baseurl }}/media/2016/08/importphpmyadmin1.png) When the import is completed and successful, you can update your web app to connect to **azuredb** database with the imported database schema. That's it and your database migration is completed.      

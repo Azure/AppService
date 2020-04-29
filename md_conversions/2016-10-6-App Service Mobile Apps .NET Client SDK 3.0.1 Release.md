@@ -1,0 +1,10 @@
+---
+title: "App Service Mobile Apps .NET Client SDK 3.0.1 Release"
+author_name: Mimi Xu 
+layout: post
+hide_excerpt: true
+---
+      [Mimi Xu (Azure)](https://social.msdn.microsoft.com/profile/Mimi Xu (Azure))  10/6/2016 1:53:07 PM  We just rolled out [Azure Mobile Client SDK 3.0.1](http://www.nuget.org/packages/Microsoft.Azure.Mobile.Client/3.0.1) and [Azure ](http://www.nuget.org/packages/Microsoft.Azure.Mobile.Client.SQLiteStore/3.0.1)[Mobile SQLiteStore 3.0.1](https://www.nuget.org/packages/Microsoft.Azure.Mobile.Client.SQLiteStore/3.0.1)! Here are the updates we made:  2. This Mobile Client SDK release is out of [3.0.0-beta](https://www.nuget.org/packages/Microsoft.Azure.Mobile.Client.SQLiteStore/3.0.0-beta)!
+ 4. The previous Mobile SQLiteStore 2.x.x libraries depending on [SQLitePCL](https://www.nuget.org/packages/SQLitePCL/), which uses the Android system SQLiteStore, no longer works with Android Level 24/Android N. Starting with Android Level 24/Android N, the Android system SQLiteStore cannot be accessed expect through the android.database.sqlite Java wrapper (Eric Sink has a great blog post [here](http://ericsink.com/entries/sqlite_android_n.html) detailing the issue). This enforcement from Android impacts customers working with native Android, Xamarin.Android, and Xamarin.Forms Android. This 3.0.1 release updates the Mobile SQLiteStore library to take dependency on [SQLitePCLRaw.bundle\_green](https://www.nuget.org/packages/SQLitePCLRaw.bundle_green/) and [SQLitePCLRaw.Core](https://www.nuget.org/packages/SQLitePCLRaw.core/) to resolve this problem.
+ 6. We unified versions across .NET Client SDK and SQLiteStore library to make dependencies and developer experience more straightforward.
+  To take advantage of the releases, simply uninstall dependencies to your client project and grab the latest versions with Visual Studio package manager. [Let us know](https://social.msdn.microsoft.com/Forums/en-US/home?forum=azuremobile) if you bump into any issues!     

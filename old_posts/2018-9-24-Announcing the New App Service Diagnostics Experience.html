@@ -1,0 +1,84 @@
+---
+layout: post
+hide_excerpt: true
+---
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Jennifer Lee (MSFT)" target="_blank">Jennifer Lee (MSFT)</a>
+<time>    9/24/2018 2:00:51 AM</time>
+<hr/>
+<div id="content">Today, we’re excited to announce our new user experience for <strong>App Service Diagnostics</strong>. App Service Diagnostics is our intelligent and interactive experience to help you diagnose and troubleshoot issues with your app. You can use Genie to guide you through the different ways to troubleshoot a variety of potential issues, since sometimes bad things happen to good apps. You can learn more about App Service Diagnostics in these <a href="https://blogs.msdn.microsoft.com/appserviceteam/tag/app-service-diagnostics/">other blog posts</a>.
+
+Since we’ve first started with helping you with availability and performance issues, the coverage of issues that App Service Diagnostics has grown. To accommodate for a variety of problem categories and to more closely integrate with other troubleshooting content, we have <strong>revamped the user experience for App Service Diagnostics</strong>.
+
+<a href="{{ site.baseurl }}/media/2018/09/2018-09-23_22h06_44.png"><img alt="" class="alignnone size-large wp-image-9605" height="475" src="{{ site.baseurl }}/media/2018/09/2018-09-23_22h06_44-1024x553.png" width="879"/></a>
+<h2>How to Get Started</h2>
+As always, without any additional configuration, you can access App Service Diagonstics by:
+<ol>
+<li>Go to the Azure Portal.</li>
+<li>Select your app (Windows, Linux, or Functions) or App Service Environment.</li>
+<li>Click on “Diagnose and solve problems."</li>
+</ol>
+You can still access the old experience by selecting the blue bar at the top.
+<h2>Problem Categories</h2>
+In the new App Service Diagnostics homepage, the guided diagnostics experience is now separated into different problem categories to help you be more focused on the specific issue that you’re facing. Each problem category will have a <strong>description and keywords</strong> to help describe what types of problems would fall underneath that category.
+
+<a href="{{ site.baseurl }}/media/2018/09/2018-09-23_22h17_02.png"><img alt="" class="alignnone size-large wp-image-9685" height="500" src="{{ site.baseurl }}/media/2018/09/2018-09-23_22h17_02-1024x582.png" width="879"/></a>
+
+If you’re new to diagnosing issues with your app or new to App Service, it’s a good idea to click around these tiles to investigate your issue.
+
+The health checkup from our old experience will be under <strong>Availability and Performance</strong>.
+
+<a href="{{ site.baseurl }}/media/2018/09/2018-09-23_22h07_31.png"><img alt="" class="alignnone size-large wp-image-9625" height="553" src="{{ site.baseurl }}/media/2018/09/2018-09-23_22h07_31-1024x644.png" width="879"/></a>
+<h2>Genie and Tiles for Each Problem Category</h2>
+Once you have selected a problem category, you are introduced to Genie, who will guide you through the troubleshooting experience for that category. In this new iteration, <strong>Genie is specific to the problem category</strong> that you’ve selected.
+
+<a href="{{ site.baseurl }}/media/2018/09/2018-09-23_22h18_58.png"><img alt="" class="alignnone size-large wp-image-9695" height="205" src="{{ site.baseurl }}/media/2018/09/2018-09-23_22h18_58-1024x239.png" width="879"/></a>
+<strong>The blue buttons that show up are tiles</strong>; you should select those that best match your issue. These tiles run analyses on our end and output insights that show up within Genie. You should <strong>click on these insights to get more data</strong>, the full report, and actual suggestions on what to do next.
+
+<a href="{{ site.baseurl }}/media/2018/09/2018-09-23_22h08_31.png"><img alt="" class="alignnone size-large wp-image-9635" height="355" src="{{ site.baseurl }}/media/2018/09/2018-09-23_22h08_31-1024x413.png" width="879"/></a>
+
+Insights are arranged in terms of severity:
+<ul>
+<li>Red: critical</li>
+<li>Orange: warning</li>
+<li>Green: success</li>
+<li>Blue: informational</li>
+</ul>
+Once you click on the insight, there may be more insights and next steps to follow. Make sure you select each insight to expand to show more details. Also, there is a <strong>new time picker</strong> on the top right to help to navigate between different time periods of interest.
+
+<a href="{{ site.baseurl }}/media/2018/09/2018-09-23_22h10_13.png"><img alt="" class="alignnone size-large wp-image-9665" height="399" src="{{ site.baseurl }}/media/2018/09/2018-09-23_22h10_13-1024x465.png" width="879"/></a>
+
+At any time, select <strong>Show Tile Menu</strong> to show all the tiles for that problem category.
+<h2>Search Documentation</h2>
+Also new to Genie’s flow is our <strong>Search Documentation. </strong>If the tiles weren’t of help, you can enter in your issue in the inline search bar that appears after you select <strong>Search Documentation. </strong>This will do a web search of the issue you’ve written about to find relevant content that might help you with your “how do I…?” questions. It brings up the most relevant results if you include “App Service” or “web app” in your search terms.
+
+<a href="{{ site.baseurl }}/media/2018/09/2018-09-23_22h08_56.png"><img alt="" class="alignnone size-large wp-image-9645" height="403" src="{{ site.baseurl }}/media/2018/09/2018-09-23_22h08_56-1024x469.png" width="879"/></a>
+<h2>Search App Service Diagnostics</h2>
+Now, in the new App Service Diagnostics home page, we have a search bar in the top left-hand corner. This search bar allows you to <strong>search within App Service Diagnostics</strong> to find the relevant tiles or tools that fit the search term.
+
+Therefore, the search bar is great when you are more experienced with App Service Diagnostics and know specifically what problem category, tile, or diagnostic tool you’re looking for. You can just type in the search term and quickly get to the tile that you’re interested in, which is great when showing your troubleshooting methods to other members on your team.
+
+<a href="{{ site.baseurl }}/media/2018/09/2018-09-23_22h07_11.png"><img alt="" class="alignnone size-large wp-image-9615" height="457" src="{{ site.baseurl }}/media/2018/09/2018-09-23_22h07_11-1024x532.png" width="879"/></a>
+<h2>Diagnostic Tools</h2>
+The Diagnostic Tools problem category is where our advanced tools are now. These include all the <strong>Support Tools that were on the right-hand side of the page</strong> as well our new Auto Healing feature. This is a great option for our advanced users who want to collect a profiler trace, memory dump, network trace, and more.
+
+<a href="{{ site.baseurl }}/media/2018/09/2018-09-23_22h09_55.png"><img alt="" class="alignnone size-large wp-image-9655" height="462" src="{{ site.baseurl }}/media/2018/09/2018-09-23_22h09_55-1024x538.png" width="879"/></a>
+<h2>Best Practices</h2>
+The Best Practices problem category is where our suggestions for running production apps in the cloud are. These suggestions are app-specific recommendations for optimizing your app configurations for production.
+
+<a href="{{ site.baseurl }}/media/2018/09/2018-09-23_22h10_37.png"><img alt="" class="alignnone size-large wp-image-9675" height="428" src="{{ site.baseurl }}/media/2018/09/2018-09-23_22h10_37-1024x499.png" width="879"/></a>
+
+As before, App Service Diagnostics is a great first step in guiding you through the troubleshooting experience on App Service, App Service Environment, or Azure Functions. Please try out the new experience and let us know about your feedback!
+
+ 
+
+ </div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
+</html>

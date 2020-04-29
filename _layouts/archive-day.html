@@ -1,0 +1,15 @@
+---
+layout: archive
+---
+
+{{content}}
+
+<h1>Posts from {{ page.date | date: "%B %-d, %Y" }}</h1>
+<section id="{{ page.type }}" class="taxonomy__section">
+    <div class="entries-list">
+        {% for post in page.posts %}
+            {% include archive-single.html %}
+        {% endfor %}
+    </div>
+    <a href="#page-title" class="back-to-top">{{ site.data.ui-text[site.locale].back_to_top | default: 'Back to Top' }} &uarr;</a>
+</section>

@@ -1,6 +1,26 @@
 ---
-# Feel free to add content and custom Front Matter to this file.
-# To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
-
 layout: home
+author_profile: true
+header:
+    image: /media/pages/header-photo.jpg
+    og_image: "assets/images/icon.png"
 ---
+
+{% if paginator.page == 1 %}
+<p>
+    Quickly build, deploy, and scale web apps created with popular frameworks .NET, .NET Core, Node.js, Java, PHP, Ruby, or Python, in containers or running on any operating system. Meet rigorous, enterprise-grade performance, security, and compliance requirements by using the fully managed platform for your operational and monitoring tasks.
+</p>
+
+<h3>Wikis</h3>
+<ul>
+    <li><a href="https://github.com/Azure/app-service-linux-docs" target="_blank">Linux Best Practices and FAQ</a></li>
+    <li><a href="https://github.com/Azure-Samples/java-on-app-service" target="_blank">Java on App Service</a></li>
+    <li><a href="https://aka.ms/appservicewindowscontainerwiki" target="_blank">Windows Containers on App Service</a></li>
+</ul>
+
+<h3>Other Blogs</h3>
+<ul>
+    <li><a href="https://azure.microsoft.com/en-us/blog/" target="_blank">Azure Blog</a></li>
+    <li><a href="https://azure.microsoft.com/en-us/updates/" target="_blank">Azure Updates</a></li>
+</ul>
+{% endif %}

@@ -1,0 +1,13 @@
+---
+title: "March 2017 App Service Update"
+author_name: Byron Tardif
+layout: post
+hide_excerpt: true
+---
+      [Byron Tardif](https://social.msdn.microsoft.com/profile/Byron Tardif)  4/4/2017 10:56:04 AM  This month we shipped a pair of new features: Remote debugging support for Visual Studio 2017
+===============================================
+
+ App Service now supports **remote debugging** your app form **Visual Studio 2017**. Remote debugging can be enabled form **Application Settings** in the menu: [![2017-03-31_16h47_29]({{ site.baseurl }}/media/2017/03/2017-03-31_16h47_29_thumb.png "2017-03-31_16h47_29")]({{ site.baseurl }}/media/2017/03/2017-03-31_16h47_29.png) If you want to learn more about remote debugging you apps in App Service and other troubleshooting tools supported by the platform check out this article: [Troubleshoot a web app in Azure App Service using Visual Studio](https://docs.microsoft.com/en-us/azure/app-service-web/web-sites-dotnet-troubleshoot-visual-studio "https://docs.microsoft.com/en-us/azure/app-service-web/web-sites-dotnet-troubleshoot-visual-studio") You can get Visual Studio 2017 here: [https://www.visualstudio.com/downloads/](https://www.visualstudio.com/downloads/ "https://www.visualstudio.com/downloads/")  WordPress on Linux (preview)
+============================
+
+ App Service has always supported running WordPress on Windows based App Service plans, but now you have the option to also run it on Linux. This version of WordPress leverages the **App Service on Linux** support for container and it’s implemented as a [custom Docker image](https://github.com/Azure-App-Service/apps/tree/master/Wordpress) publicly available on [Docker hub](https://hub.docker.com/r/appsvc). [![2017-03-31_16h48_46]({{ site.baseurl }}/media/2017/03/2017-03-31_16h48_46_thumb.png "2017-03-31_16h48_46")]({{ site.baseurl }}/media/2017/03/2017-03-31_16h48_46.png) You can read more about App Service on Linux here: [Introduction to App Service on Linux](https://docs.microsoft.com/en-us/azure/app-service-web/app-service-linux-intro) and how to [Create WordPress using Web Apps on Linux](https://blogs.msdn.microsoft.com/appserviceteam/2017/03/21/create-wordpress-using-web-apps-on-linux/)  If you have any questions about any of this features or App Service in general be sure to check our forums in [MSDN](https://social.msdn.microsoft.com/Forums/en-US/home?forum=windowsazurewebsitespreview) and [Stack Overflow](https://stackoverflow.com/questions/tagged/azure-web-sites). For any feature requests or ideas check out our [User Voice](https://feedback.azure.com/forums/169385-web-apps-formerly-websites)     

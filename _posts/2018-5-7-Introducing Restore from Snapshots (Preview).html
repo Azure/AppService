@@ -1,5 +1,5 @@
 ---
-layout: post
+title: "Introducing Restore from Snapshots (Preview)" 
 hide_excerpt: true
 ---
 <html><head>
@@ -39,7 +39,7 @@ If the extension is already installed, update it with
 <em>Restore a snapshot from the production slot to a new slot named SnapshotSlot</em>
 <pre>az webapp deployment slot create -g &lt;resource group&gt; -n &lt;name&gt; -s SnapshotSlot
 az webapp config snapshot list -g &lt;resource group&gt; -n &lt;app name&gt;
-az webapp config snapshot restore -g &lt;resource group&gt; -n &lt;name&gt; -t &lt;snapshot timestamp&gt; -s SnapshotSlot --restore-config --source-resource-group &lt;resource group&gt; --source-webapp-name &lt;name&gt;</pre>
+az webapp config snapshot restore -g &lt;resource group&gt; -n &lt;name&gt; -t &lt;snapshot timestamp&gt; -s SnapshotSlot --restore-config --source-resource-group &lt;resource group&gt; --source-name &lt;name&gt;</pre>
 <h3>Azure Powershell</h3>
 Snapshot cmdlets were added in Azure Powershell 6.0. Follow these instructions to update Azure Powershell if the snapshot cmdlets are not found.
 

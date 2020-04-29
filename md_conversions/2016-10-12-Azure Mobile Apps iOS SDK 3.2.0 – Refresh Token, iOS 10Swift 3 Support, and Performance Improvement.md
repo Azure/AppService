@@ -1,0 +1,10 @@
+---
+title: "Azure Mobile Apps iOS SDK 3.2.0 – Refresh Token, iOS 10Swift 3 Support, and Performance Improvement"
+author_name: Mimi Xu 
+layout: post
+hide_excerpt: true
+---
+      [Mimi Xu (Azure)](https://social.msdn.microsoft.com/profile/Mimi Xu (Azure))  10/12/2016 8:54:25 AM  We are excited to bring you the latest release of our [Mobile Apps iOS client SDK 3.2.0](https://github.com/Azure/azure-mobile-apps-ios-client/releases/tag/3.2.0) ([CocoaPods](http://cocoadocs.org/docsets/MicrosoftAzureMobile/3.2.0/)). There are a few updates in this release:  2. We extended support for Refresh[ ](https://azure.microsoft.com/en-us/blog/mobile-apps-easy-authentication-refresh-token-support/)Token for all of our iOS customers. This feature was previously only captured in our [Managed SDK 2.1.0](https://www.nuget.org/packages/Microsoft.Azure.Mobile.Client) and later versions to enable a smoother development experience around identity provider token expiry. For more information on this feature, see the [Refreshing User Logins in App Service Mobile Apps](https://azure.microsoft.com/en-us/blog/mobile-apps-easy-authentication-refresh-token-support/) blog post.
+ 4. We added support for the latest iOS environments [iOS 10](https://developer.apple.com/ios/). It also works with [Xcode 8.1](https://developer.apple.com/xcode/) and [Swift 3](https://swift.org/).
+ 6. We optimized network performance by reusing NSURLSession objects. This is particularly apparent in long-running async operations like data pulls. (Shout out to [Damien Pontifex](https://github.com/damienpontifex) for his continuous support in helping to improve our iOS SDK through open source contributions).
+  The latest [Mobile Apps iOS Quickstart](https://azure.microsoft.com/en-us/documentation/articles/app-service-mobile-ios-get-started/) is also available and compatible with this release of the iOS SDK. Try these out and let us know what you think!     

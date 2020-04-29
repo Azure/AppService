@@ -1,5 +1,5 @@
 ---
-layout: post
+title: "Deep Dive into TCP Connections in App Service Diagnostics" 
 hide_excerpt: true
 ---
 <html><head>
@@ -22,8 +22,9 @@ The maximum connection limits are the following:
 <li>1,920 connections per B1/S1/P1 instance</li>
 <li>3,968 connections per B2/S2/P2 instance</li>
 <li>8,064 connections per B3/S3/P3 instance</li>
+<li>16,000 connections per I1/I2/I3 instance</li>
 </ul>
-If you want more information, read more in the “Network Port Capacity for Outbound Network Calls” section of the <a href="https://msdn.microsoft.com/en-us/magazine/mt793270.aspx">“Azure - Inside the Azure App Service Architecture”</a> article.
+For more information, read the “Network Port Capacity for Outbound Network Calls” section of <a href="https://msdn.microsoft.com/magazine/mt793270.aspx">Azure - Inside the Azure App Service Architecture</a> and the row, "IP connections," in the "App Service Limits" section of <a href="https://docs.microsoft.com/azure/azure-resource-manager/management/azure-subscription-service-limits#app-service-limits">Azure subscription and service limits, quotas, and constraints</a>.
 <h2><strong>TCP Connections Walkthrough</strong></h2>
 To examine your TCP Connections more closely, click on the "Diagnose and solve problems" tab in the left hand menu. Then, select the "TCP Connections" tile shortcut.
 

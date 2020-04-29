@@ -1,0 +1,41 @@
+name: Build site and deploy to gh-pages branch
+
+on:
+  push:
+    branches:
+    - master
+  schedule:
+    - cron:  '0 0 * * *'  # Run build every day at 00:00 UTC every day for future-dated articles
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out repo
+      uses: actions/checkout@v1
+
+    - name: Set up Ruby 2.6
+      uses: actions/setup-ruby@v1
+      with:
+        ruby-version: 2.6.x
+
+    - name: Install Ruby dependencies
+      run: |
+        gem install bundler
+        bundle install --jobs 4 --retry 3
+
+    - name: Build and deploy to gh-pages branch
+      run: |
+        chmod 777 deployment-script.sh
+        ./deployment-script.sh
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+        JEKYLL_ENV: production
+
+    # TODO: Make this step depend on the deploy action
+    - name: Update Algolia search index
+      run: bundle exec jekyll algolia
+      env:
+        ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}

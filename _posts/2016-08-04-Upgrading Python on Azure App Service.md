@@ -1,7 +1,7 @@
 ---
-layout: post
+title: "Upgrading Python on Azure App Service" 
 title: "Upgrading Python on Azure App Service"
-author: Steve Dower
+author_name: Steve Dower
 ---
 
 [App Service](https://azure.microsoft.com/en-us/services/app-service/) is [Microsoft Azure](https://azure.microsoft.com/en-us/)'s platform-as-a-service offering for web apps, whether they are sites accessed through a browser, REST APIs used by your own clients, or event-triggered processing. Many of you are already using Python to implement your apps on App Service (and rightly so!).

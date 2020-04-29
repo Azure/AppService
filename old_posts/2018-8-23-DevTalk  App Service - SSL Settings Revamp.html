@@ -1,0 +1,66 @@
+---
+layout: post
+hide_excerpt: true
+---
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Chibi Chakaravarthi V" target="_blank">Chibi Chakaravarthi V</a>
+<time>    8/23/2018 2:00:40 PM</time>
+<hr/>
+<div id="content">App Service SSL settings experience is one of the most used features in App Service. Based on customer feedback we are making the following changes to the UX to address and improve the overall experience of managing certificates in Azure App Service.
+<h3>Tabs</h3>
+The new SSL settings experience divides the features into 3 tabs. Namely SSL Bindings, Private certificates (.pfx), and Public certificates (.cer). The Bindings tab allows the user to configure the protocol settings and add/edit/delete SSL bindings, the private certificates tab allows the user to upload and manage private certificates (.pfx) used in SSL bindings and the public certificates tab allows the user to upload and manage public certificates (.cer). We also call out what type of certificate type the customer needs to use for each feature.
+
+ 
+
+<a href="{{ site.baseurl }}/media/2018/08/Tabs.png"><img alt="" class="aligncenter size-full wp-image-9325" height="477" src="{{ site.baseurl }}/media/2018/08/Tabs.png" width="1191"/></a>
+
+ 
+<h3>Editing SSL Bindings</h3>
+SSL Settings didn't have a way to update an existing SSL binding, the feature to edit was present but unfortunately hidden under the Add Binding flow. We enabled the ability to edit a few sprints ago, we polished the feature further and now the customer is free to edit any binding by clicking on the row. <strong>When you change the thumbprint for the IP Based SSL binding the IP will not be lost, but if you change out from IP Based SSL to SNI and back you will lose the IP. </strong>The ability to change the certificate without removing and adding back the binding was an issue in the past we are addressing with this release. For more details on adding SSL Bindings click <a href="https://docs.microsoft.com/en-us/azure/app-service/app-service-web-tutorial-custom-ssl#bind-your-ssl-certificate-1">here</a>.
+
+<a href="{{ site.baseurl }}/media/2018/08/EditableBindings.png"></a><a href="{{ site.baseurl }}/media/2018/08/Bindings.png"><img alt="" class="size-full wp-image-9345 aligncenter" height="943" src="{{ site.baseurl }}/media/2018/08/Bindings.png" width="1426"/></a>
+<a href="{{ site.baseurl }}/media/2018/08/EditableBindings.png"></a>
+<h3><strong>Private Certificate Details</strong></h3>
+Private certificates used in App Service required a facelift to show the information we already gather when the certificate is uploaded, imported from App Service Certificate or imported from KeyVault. The driving reason was when we saw hundreds of private certificates configured on their app and had a tough time browsing through the certificates, the revamp allows the customer to now to get details of the certificates uploaded and imported. We added a new status column to the grid showing three possible states. Healthy, Warning and Expired. Warning being a certificate about to expire in the next 60 days. We also explicitly mention that you will need to upload a .pfx file to add a private certificate.
+
+[caption id="attachment_9355" align="aligncenter" width="1429"]<a href="{{ site.baseurl }}/media/2018/08/CertificateDetails.png"><img alt="" class="wp-image-9355 size-full" height="881" src="{{ site.baseurl }}/media/2018/08/CertificateDetails.png" width="1429"/></a> Showing a test certificate that is valid.[/caption]
+
+We also show the KeyVault details and the sync status of the certificates pulled from KeyVault like certificates imported from App Service Certificate.
+
+<a href="{{ site.baseurl }}/media/2018/08/KeyVaultDetails.png"><img alt="" class="size-full wp-image-9365 aligncenter" height="606" src="{{ site.baseurl }}/media/2018/08/KeyVaultDetails.png" width="413"/></a>
+
+ 
+<h3>Uploading certificates</h3>
+The Upload Certificate experience overall is more consistent in showing that private certificates only accept .pfx file and you need a valid pfx to add a private certificate to your App Service. Addressing another feedback, we stopped showing both upload path. <strong>Now upload certificates from the private certificates opens the UX where you can only upload the private certificates to avoid the confusion about uploading .cer or .pfx file.</strong> When the Upload certificate flow is opened from the public certificate tab we show only the public certificate option.
+
+<a href="{{ site.baseurl }}/media/2018/08/PrivateCert.png"><img alt="" class="aligncenter size-full wp-image-9385" height="735" src="{{ site.baseurl }}/media/2018/08/PrivateCert.png" width="1428"/></a>
+
+We updated the upload certificate UX (and the underlying way it is implemented) to show errors while trying to upload a certificate without leaving the upload blade.
+
+ 
+
+<a href="{{ site.baseurl }}/media/2018/08/UploadFails.png"><img alt="" class="aligncenter size-full wp-image-9375" height="942" src="{{ site.baseurl }}/media/2018/08/UploadFails.png" width="433"/></a>
+
+ 
+<h3>Public Certificates</h3>
+Public certificates can only be used by your app and they cannot be used for making SSL bindings. We are working out a way to move it to a place where it will make more sense. For now, SSL Setting is the place where Public certificates will reside. Private certificates require app settings to enable that feature (it's covered in this very old but reliable blog <u><a href="https://azure.microsoft.com/en-us/blog/using-certificates-in-azure-websites-applications/">here</a></u>) and now public certificates add another dimension to that feature by allowing you to upload (.cer) files and get the certificates in runtime.
+
+<a href="{{ site.baseurl }}/media/2018/08/publiccert.png"><img alt="" class="aligncenter size-full wp-image-9395" height="563" src="{{ site.baseurl }}/media/2018/08/publiccert.png" width="1428"/></a>
+
+ 
+
+Thanks for reading! I am writing this blog to showcase the changes we made to improve the overall certificate management experience for customers using App Service day in and day out. We are always open to feedback and looking forward to your comments.
+
+Feel free to reach out to us for any feature request or issues.
+
+<a href="https://social.msdn.microsoft.com/Forums/azure/en-US/home?forum=windowsazurewebsitespreview">App Service MSDN forum</a>
+<a href="https://feedback.azure.com/forums/169385-web-apps">Feature Requests </a></div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
+</html>

@@ -1,0 +1,48 @@
+---
+layout: post
+hide_excerpt: true
+---
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Donna Malayeri" target="_blank">Donna Malayeri</a>
+<time>    10/26/2016 2:00:59 AM</time>
+<hr/>
+<div id="content">Based on lots of great customer feedback, we've redesigned the Azure Functions portal experience. Now you can see more of your code <strong>and</strong> see your logs and the Run window at the same time. The Run window has new features for HTTP-triggered functions: you can now specify the HTTP verb and add query parameters and request headers. This makes it easy to test these functions without leaving the Functions portal.
+
+Aside from the visual improvements, we've released a lot of great new functionality in the <a href="https://github.com/Azure/azure-webjobs-sdk-script/releases/tag/v1.0.0-beta1-10532">Azure Functions 0.7 host</a> and <a href="https://github.com/Azure/azure-webjobs-sdk-script/releases/tag/v1.0.0-beta1-10564">0.8 host</a>, including support for custom routes and route templates.
+<h3>Portal</h3>
+You can now view the editor in a classic three-pane view, where your code is at the top, logs are at the bottom, and the Run tab is on the right. You can show and hide the logs and the Run tab to allow more room for editing code. Check out the new buttons on the right (highlighted with a purple rectangle in the screenshot below).
+
+<a href="{{ site.baseurl }}/media/2016/10/3-pane-view1.png"><img alt="3-pane-view" class="alignnone size-large wp-image-1985" height="446" src="{{ site.baseurl }}/media/2016/10/3-pane-view1-1024x520.png" width="879"/></a>
+
+Clicking on the Run button will pull up the test harness, which will let you easily craft HTTP calls without having to launch a new tool. Just choose your verb and add query parameters and headers. (Note that we're not trying to reinvent other great HTTP tools like Fiddler or Postman, but we've heard from customers that it's convenient to quickly run HTTP triggered functions without leaving the Azure portal.)
+
+<a href="{{ site.baseurl }}/media/2016/10/run-tab.png"><img alt="run-tab" class="alignnone size-mediumlarge wp-image-2005" height="350" src="{{ site.baseurl }}/media/2016/10/run-tab-248x350.png" width="248"/></a>
+
+HTTP and Webhook triggers now have richer options in the Integrate tab. You can now easily restrict the permitted HTTP verbs by choosing "Selected methods" and checking off the appropriate options.
+
+<a href="{{ site.baseurl }}/media/2016/10/verbs.png"><img alt="verbs" class="alignnone size-mediumlarge wp-image-2015" height="232" src="{{ site.baseurl }}/media/2016/10/verbs-500x232.png" width="500"/></a>
+<h3>API Routing</h3>
+The portal is not the only place we've made changes--the Azure Functions Host is now at <a href="https://github.com/Azure/azure-webjobs-sdk-script/releases">version 0.8</a>. By popular request, we've added the following:
+<ul>
+<li>Custom route support<span>. You can now specify </span>complex route constraints, such as <code>"route": "products/{Category:alpha}/{Id:int}"</code>. The supported constraints are the same as those in <a href="https://www.asp.net/web-api/overview/web-api-routing-and-actions/attribute-routing-in-web-api-2#constraints">ASP.NET Web API Attribute Routing</a>.</li>
+<li>Route prefix customization. Customize the <code>api</code> route prefix (or remove it completely) in <code>host.json</code>.</li>
+</ul>
+To learn more, see <a href="https://azure.microsoft.com/en-us/documentation/articles/functions-triggers-bindings/#route-support">Route support</a> in the <a href="https://azure.microsoft.com/en-us/documentation/articles/functions-triggers-bindings">Azure Functions triggers and bindings developer reference</a>.
+<h3>Provide feedback</h3>
+As always, we're interested in your feedback. There are a lot of channels available:
+<ul>
+<li>Ask questions below!</li>
+<li>Ask product questions on the <a href="https://social.msdn.microsoft.com/Forums/azure/en-US/home?forum=AzureFunctions">Azure Functions MSDN forum</a> and <a href="http://stackoverflow.com/questions/tagged/azure-functions">StackOverflow</a>, where you'll get answers directly from the engineering team.</li>
+<li>Submit general feedback on <a href="https://feedback.azure.com/forums/355860-azure-functions">feedback.azure.com</a>.</li>
+<li>Reach out to us on Twitter via <a href="https://twitter.com/azure">@Azure</a> with the hashtag <a href="https://twitter.com/search?q=%23azurefunctions">#AzureFunctions</a>.</li>
+</ul>
+Our development is done in the open, so we encourage you to watch issues, ask questions and see our progress. You can submit issues directly on GitHub (<a href="https://github.com/Azure/azure-webjobs-sdk-script">Functions Host repo</a> and <a href="https://github.com/projectkudu/AzureFunctionsPortal">Functions Portal repo</a>). If you're not sure where an issue belongs, you can file it on the <a href="https://github.com/Azure/azure-functions">Azure-Functions GitHub repo</a>.</div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
+</html>

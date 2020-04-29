@@ -1,0 +1,41 @@
+name: "New article: deploy to staging site"
+
+on:
+  pull_request:
+    branches:
+    - master
+    types: [opened, edited, reopened, ready_for_review, synchronize]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out repo
+      uses: actions/checkout@v1
+
+    - name: Set up Ruby 2.6
+      uses: actions/setup-ruby@v1
+      with:
+        ruby-version: 2.6.x
+
+#     - name: Install Ruby dependencies
+#       run: |
+#         gem install bundler
+#         bundle install --jobs 4 --retry 3
+
+#     - name: Build site
+#       run: |
+#         echo "Building site for PR"
+#         bundle exec jekyll build
+#         echo: "ENV:"
+#         env
+
+#     - name: Deploy to staging site
+#       uses: azure/webapps-deploy@v1
+#       with: 
+#         app-name: antares-blog-staging
+#         package: _site/  
+#         publish-profile: ${{ secrets.STAGING_SITE_PUB_PROFILE }}  # Replace with the name of your publish profile
+#         slot-name: "article-from"

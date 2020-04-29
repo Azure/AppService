@@ -1,0 +1,68 @@
+---
+layout: post
+hide_excerpt: true
+---
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Ahmed Elnably" target="_blank">Ahmed Elnably</a>
+<time>    3/22/2018 5:12:33 PM</time>
+<hr/>
+<div id="content">We listened to feedback, we decided to change our previously released <a href="https://blogs.msdn.microsoft.com/appserviceteam/2018/02/06/az-webapp-new/">experimental "new"</a> command to be now "up".
+
+With version 0.2.0 of the extension, "new" is no longer available, and you will have to use "up" instead.
+
+<a href="{{ site.baseurl }}/media/2018/03/azwebappup.png"><img alt="" class="alignnone size-large wp-image-7495" height="300" src="{{ site.baseurl }}/media/2018/03/azwebappup-1024x349.png" width="879"/></a>
+
+The command (<strong>Which is still in Preview</strong>) enables the user to create and deploy their Node.js, .NET Core, ASP.NET, Java, or Static HTML apps using a single command. For Node.js we check for the existence of a <strong>package.json</strong> file in the code root path to indicate it is a Node.js app. For ASP.NET and .NET Core we check for the existence of a <strong>*.csproj</strong> file with <strong>netcoreapp </strong>as the<strong> TargetFramework</strong>. For static HTML we check the existence of a<strong> *.html</strong> file.
+
+The command check for languages in the following order:
+<ol>
+<li>Node.js</li>
+<li>.NET Core and ASP.NET</li>
+<li>Static HTML</li>
+</ol>
+In the case of Node.js and Java apps the command does the following:
+<ol>
+<li>Create a new resource group (in Central US, you can use the --location to change the region)</li>
+<li>Create a new Linux single VM small App Service plan in the Standard SKU (in Central US)</li>
+<li>Create a Linux webapp</li>
+<li>Deploy the content of the current working directory to the webapp using <a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/10/16/zip-push-deployment-for-web-apps-functions-and-webjobs/">Zip Deployment</a></li>
+</ol>
+In the case of an ASP.NET, .NET Core, Static HTML app the command does the following:
+<ol>
+<li>Create a new resource group (in Central US, you can use the --location to change the region)</li>
+<li>Create a new free Windows App Service plan (in Central US)</li>
+<li>Create a Windows webapp</li>
+<li>Deploy the content of the current working directory to the webapp using <a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/10/16/zip-push-deployment-for-web-apps-functions-and-webjobs/">Zip Deployment</a></li>
+</ol>
+To Install the Azure CLI tools refer to their <a href="https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest">documentation</a>.
+
+To Install the extension:
+<pre>az extension add --name webapp</pre>
+To update the extension with the latest fixes and new languages support (Current version is 0.2.0):
+<pre>az extension update --name webapp</pre>
+To know what the command will do without creating anything:
+<pre>az webapp up --name [app name] --location [optional Azure region name] --dryrun</pre>
+To use the new command:
+<pre>az webapp up --name [app name] --location [optional Azure region name]</pre>
+To update your app content - Just rerun the command you used to create the app (including the --location argument):
+<pre>az webapp up --name [app name] --location [optional Azure region name]</pre>
+To submit feedback or submit an issue please open an issue in the <a href="https://aka.ms/webapp-extension-issues">Azure CLI extensions Github Project page</a>.
+
+Road Map - also tracked <a href="https://aka.ms/webapp-extension-issues">here</a>:
+<ol>
+<li>Add ASP.Net support</li>
+<li>Add Java support</li>
+<li>Add more languages to the supported list</li>
+<li>Add support to <a href="https://azure.microsoft.com/en-us/services/functions/">Azure Functions</a></li>
+</ol>
+<pre></pre>
+<pre></pre></div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
+</html>

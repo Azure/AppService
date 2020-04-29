@@ -1,0 +1,136 @@
+---
+layout: post
+hide_excerpt: true
+---
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Chris Gillum (MSFT)" target="_blank">Chris Gillum (MSFT)</a>
+<time>    11/17/2016 3:40:36 PM</time>
+<hr/>
+<div id="content">One of the goals of <a href="https://azure.microsoft.com/en-us/documentation/articles/app-service-authentication-overview/" target="_blank">Azure App Service Authentication / Authorization</a> is to make it very easy to add "auth" to your App Service apps (which is why we often refer to it as Easy Auth). Most of our investments so far have been focused on creating a streamlined <em>authentication</em> setup experience. However, up until now <em>authorization</em> was something developers had to implement mostly on their own. Typically authorization rules involve restricting access to certain resources within your app. Ideally, such authorization rules can be just as simple to set up without writing a bunch of custom code. To that end, we're happy to announce the initial preview of <strong>URL Authorization Rules</strong> in App Service.
+<h1 id="configuration">Configuration</h1>
+In the initial preview, URL Authorization Rules are defined in an <strong>authorization.json</strong> file (if you prefer, we also support the YAML syntax inside an <strong>authorization.yaml</strong> file).  The feature is enabled automatically when you configure Easy Auth in the management portal and place either an authorization.json file or an authorization.yaml file in the <em>D:\home\site\wwwroot</em> directory of your App Service app. This means you can include the file in your app's source and easily deploy it via Git, Web Deploy, FTP, or any of the <a href="https://azure.microsoft.com/en-us/documentation/articles/app-service-continuous-deployment/">continuous deployment</a> mechanisms supported by App Service.
+
+Here is the basic schema of the configuration file in the JSON syntax:
+<pre style=" ">{
+  "routes": [
+    {
+      "http_methods": [ "GET", "POST", "PUT", ... ],
+      "path_prefix": "/some/url/prefix",
+      "policies": {
+        "unauthenticated_action": "AllowAnonymous|RedirectToLoginPage|RejectWith401|RejectWith404"
+      }
+    },
+    ...
+  ]
+}
+</pre>
+Now let's talk about what these properties are for:
+<ul>
+<li><strong>routes:</strong> Required. A collection of URL authorization rules for your App Service app.  In this preview release, each route contains an <strong>http_methods</strong>, a <strong>path_prefix</strong>, and a <strong>policies</strong> property, described below.
+<ul>
+<ul>
+<li><strong>http_methods</strong>: Optional. An array of HTTP verbs that can be used to trigger a route policy. If not specified, all HTTP verbs can be used to trigger the policy.</li>
+<li><strong>path_prefix</strong>: Required. A relative URL path under which the specified <em>policies</em> will be enforced. More details on this in a subsequent section.</li>
+<li><strong>policies</strong>: A collection of policies to enforce when an HTTP request matches a route. At the time of writing, the only supported sub-property is <strong>unauthenticated_action</strong>.</li>
+<li><strong>unauthenticated_action</strong>: Required. One of the following values:
+<ul>
+<li><strong>AllowAnonymous</strong>: Allows anonymous clients to access the resource.</li>
+<li><strong>RedirectToLoginPage</strong>: If a user is unauthenticated, they will be redirected to the login page of the default identity provider that was configured in the portal (for example, Azure Active Directory).</li>
+<li><strong>RejectWith401</strong>: Unauthenticated requests will fail with an HTTP 401 status.</li>
+<li><strong>RejectWith404</strong>: Unauthenticated requests will fail with an HTTP 404 status. You would choose this over RejectWith401 when you want to hide the existence of HTTP routes within your app.</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+</ul>
+As you can see, there are quite a few ways in which you can configure URL-based authorization policies for your app.
+<h1 id="">Route Evaluation Order and Wildcards</h1>
+In the simplest case, your <em>authorization.json</em> (or <em>authorization.yaml</em>) file will contain one or more static routes. For example, consider the following <em>authorization.json</em> file contents, which represent authorization rules for an Azure Functions app with two HTTP triggers:
+<pre style=" ">{
+  "routes": [{
+      "path_prefix": "/api/AnonymousHttpFunction",
+      "policies": { "unauthenticated_action": "AllowAnonymous" }
+    },{
+      "path_prefix": "/api/ProtectedHttpFunction",
+      "policies": { "unauthenticated_action": "RejectWith401" }
+    }]
+}
+</pre>
+All HTTP requests to <strong>/api/AnonymousHttpFunction</strong> will be allowed, but requests to <strong>/api/ProtectedHttpFunction</strong> will require a client to be authenticated (e.g. using an access token).  This works well for simple, static APIs but many modern REST-ful APIs will have parameterized URL segments. In those cases, you'll want to take advantage of wildcard segments for your authorization routes. For example, consider a REST-ful API for viewing chapters of books. The name of the book and the chapter may be embedded in the URL:
+<pre style=" ">{
+  "routes": [{
+      "http_methods": [ "GET", "HEAD" ],
+      "path_prefix": "/api/book/*/chapter/*/content",
+      "policies": { "unauthenticated_action": "RejectWith401" }
+    }]
+}
+</pre>
+In the above example there is a wildcard * for both the name of the book and the chapter number. The * will match any single value within that segment.
+
+If your routes represent a resource hierarchy, you will likely need to configure separate policies for parent and child resources. Consider then the following example:
+<pre style=" ">{
+  "routes": [{
+      "path_prefix": "/",
+      "policies": { "unauthenticated_action": "AllowAnonymous" }
+    },{
+      "path_prefix": "/admin",
+      "policies": { "unauthenticated_action": "RedirectToLoginPage" }
+    }]
+}
+</pre>
+In this case, all URLs will be publicly accessible to anyone on the internet except those at or under <strong>/admin</strong>, which require a user to log in first. In the case of a browser client, navigating to /admin or a sub-path like <strong>/admin/edit_content.php</strong> will result in an automatic redirect to the configured login page. Now, technically a request such as <em>GET /admin/edit_content.php</em> which I used as an example matches both "/" and "/admin" routes. How do we decide which policy to execute? The answer is that the authorization runtime will always execute the policy with the most specific matching URL path (sometimes known as "longest-prefix matching") and only that policy will be executed.
+<h1 id="file-share-example">Example: File Share</h1>
+The nice thing about the example below is that it literally requires no code - at all. The idea is that you want to put some files on the web and protect access to them. It's also very easy to set up.
+
+The first thing you'll want to do is create a web app and configure Easy Auth with <strong>Azure Active Directory</strong> login. You could choose another provider, but AAD is the simplest to set up. This can be done in a few clicks in the portal as shown in the following screenshot. Make sure to select <strong>Allow Anonymous requests (no action)</strong> under the "Action to take when request is not authenticated".
+
+[caption id="attachment_2095" align="alignnone" width="851"]<a href="{{ site.baseurl }}/media/2016/11/Files-EasyAuthSetup.png"><img alt="Setting up Easy Auth with Azure AD authentication." class="size-full wp-image-2095" height="453" src="{{ site.baseurl }}/media/2016/11/Files-EasyAuthSetup.png" width="851"/></a> Setting up Easy Auth with Azure AD authentication.[/caption]
+
+Now that your AAD setup is ready, it's time to create the app. Because we're only dealing with file contents, this is easy to setup manually using the Kudu console, which can be found under <strong>Settings -&gt; Advanced Tools</strong>. Or, you can navigate to it directly at <strong>https://{web-app-name}.scm.azurewebsites.net/DebugConsole</strong>. Use the following commands to create the necessary files.
+<pre style=" "> cd site\wwwroot
+ del hostingstart.html
+ mkdir public
+ echo "hello, public!" &gt; public\file1.txt
+ mkdir admin
+ echo "hello, admin!" &gt; admin\file2.txt
+</pre>
+This will set up your file system structure with some folders and files.  Next we want to enable directory browsing, which is disabled by default. We do this by creating a web.config file in the <em>wwwroot</em> directory. You can create it using the <strong>touch web.config</strong> command and edit by clicking the edit button and populating it with the following configuration:
+<pre style=" ">&lt;!--?xml version="1.0"?--&gt;
+&lt;configuration&gt;
+  &lt;system.webserver&gt;
+    &lt;directoryBrowse enabled="true"/&gt;
+  &lt;/system.webserver&gt;
+&lt;/configuration&gt;
+</pre>
+Lastly, we need to create the authorization.json file.  You can use the command <strong>touch authorization.json</strong> to create the file. Then, click the edit button and add the following file contents:
+<pre style=" ">{
+    "routes":[{
+        "path_prefix" : "/public",
+        "policies" : { "unauthenticated_action" : "AllowAnonymous" }
+    },{
+        "path_prefix" : "/admin",
+        "policies": { "unauthenticated_action" : "RedirectToLoginPage" }
+    }]
+}
+</pre>
+To test this, open a new In-Private/Incognito browser session and navigate to your web app. You should see a list of the directories you created as well as the web.config and authorization.json files (note that if you want to hide these infrastructure files, you can do so using the <strong>attrib +h {filename}</strong> command in the Kudu console). You can then navigate to the directories in your browser and observe the authorization behavior.
+
+To help understand what's going on under the covers, I recommend <a href="https://docs.microsoft.com/en-us/azure/app-service-web/web-sites-enable-diagnostic-log#a-nameenablediagahow-to-enable-diagnostics">enabling Application Logging</a> in the portal and then opening the Log Stream blade to see the authorization logs in real-time.
+
+[caption id="attachment_2165" align="alignnone" width="1227"]<a href="{{ site.baseurl }}/media/2016/11/Files-LogStream.png"><img alt="Streaming Easy Auth logs in the Azure Portal" class="size-full wp-image-2165" height="602" src="{{ site.baseurl }}/media/2016/11/Files-LogStream.png" width="1227"/></a> Streaming Easy Auth logs in the Azure Portal[/caption]
+<h1 id="conclusion">Conclusion</h1>
+While the example above was a web apps example, this feature works the same whether you're writing a web app, a mobile app backend, an API app, or a Azure Functions app. However, remember that this is an early preview so there are a few things that need to be smoothed out before the feature can be considered GA. For example, when changing the authorization.json (or authorization.yaml) file, you must restart the site before the changes take effect. In the future we would like to have these updates be reflected immediately.
+
+We are also working on additional authorization policies that can be configured. As an example, in a coming update you can expect to see support for restricting access to specified URL routes to Azure AD Security Groups (we actually support this in the runtime today, but need to smooth out the setup experience before we blog about it).
+
+So give this a try and let us know how it goes. If you have questions, please head over to StackOverflow and tag them with <strong>azure-app-service</strong> or <strong>azure-web-sites</strong>, so that our automated processes can find them.</div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
+</html>

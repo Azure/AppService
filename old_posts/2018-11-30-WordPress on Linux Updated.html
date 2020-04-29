@@ -1,0 +1,37 @@
+---
+layout: post
+hide_excerpt: true
+---
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Yi Liao MSFT" target="_blank">Yi Liao MSFT</a>
+<time>    11/30/2018 2:30:16 PM</time>
+<hr/>
+<div id="content"><h4><span><span style="color: #000000">Updated image for WordPress on Linux</span></span></h4>
+We have recently updated the WordPress on Linux offering on Azure Marketplace.  In this version we have replaced Apache/mod_php with Nginx/PHP-FPM, we've seen the improved performance in our internal testing.  Customers can use the <a href="https://aka.ms/linux-wordpress">WordPress on Linux image</a> from the Azure Marketplace to create a new WordPress site and get the latest image automatically.
+<h4>Upgrade WordPress on Linux</h4>
+If you have an existing WordPress site running on the previous version of the Marketplace template, you may upgrade to the new image following the steps below. Before you begin, we recommend you backup the database and WordPress site (details in Migrate section).
+
+Upgrade steps:
+<ol>
+<li>In the Azure Portal, find your Web App and go to "Container Settings"</li>
+<li>Update the "image:tag" setting to 'appsvcorg/wordpress-alpine-php:0.61'</li>
+<li>Click Save and wait for the Web App to restart</li>
+</ol>
+<h4>Migrate your site to WordPress on Linux</h4>
+For customers who plan to migrate their WordPress site to Azure App Service, while the Marketplace image comes with a fresh install of WordPress, customers can replace the code on the Web App and bring their own WordPress codebase (for example during migrations from on-premises or other hosting platforms).
+<ol>
+<li>Connect to the Web App using FTPS and replace the contents of the '/home/site/wwwroot' directory.  Alternatively, you can create a zip file for your codebase and deploy it to the Web App using App Service <a href="https://docs.microsoft.com/en-us/azure/app-service/app-service-deploy-zip">zipdeploy</a>.</li>
+<li>Verify that 'wp-config.php' contains the correct database connection string, using the <a href="https://github.com/Azure/app-service-quickstart-docker-images/blob/master/wordpress-alpine-php/0.61/wp-config.php">wp-config.php</a> file from Azure Marketplace for reference.</li>
+<li>For WordPress database, you can use tools such as <a href="https://linuxize.com/post/how-to-back-up-and-restore-mysql-databases-with-mysqldump/">mysqldump</a> or <a href="https://www.mysql.com/products/workbench/">MySQL Workbench</a> to backup the MySQL database from the original server and restore it to Azure Database for MySQL.</li>
+</ol>
+<h4>Customization</h4>
+For cases in which additional customization is needed for plugins or themes, we recommend customers to modify the Docker image used in the Marketplace (<a href="https://github.com/Azure/app-service-quickstart-docker-images/tree/master/wordpress-alpine-php/0.61">source on GitHub</a>), and run it on Web App for Containers. Once completed, migrate the site so that you don’t have to start from scratch.</div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
+</html>

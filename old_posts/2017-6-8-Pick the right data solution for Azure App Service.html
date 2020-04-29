@@ -1,0 +1,169 @@
+---
+layout: post
+hide_excerpt: true
+---
+<html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/mksunitha" target="_blank">mksunitha</a>
+<time>    6/8/2017 10:02:11 AM</time>
+<hr/>
+<div id="content"><span>App Service makes building data driven solutions easier via the <a href="https://portal.azure.com">Azure portal</a>. Azure app service supports various data solutions like SQL , MySQL  etc. To help understand how these data solutions work with App Service (Web Apps, Mobile Apps, Functions) and pick the right solution based on your needs, view the table below. </span>
+<div style="font-size: 11px;padding: 10px">
+<i><span>* Free Azure SQL DB  offers one SQL Database per subscriptions limited to 32 MB for free for one year.</span></i>
+<i><span>** Both Linux and Windows App service platforms support use of these data solutions , but based on your application framework you may require additional libraries in your application code to connect to the database.</span></i>
+<i><span>*** Currently App Service backup and restore feature does not support database connections over SSL.</span></i>
+<i><span>**** Azure Functions supports Azure SQL DB , MySQL and PostgreSQL via the  .NET SDK of these respective data services. For cosmos DB you can use binding or the SDK.</span></i>
+</div>
+<table>
+<tbody>
+<tr>
+<td></td>
+<td><b><span>Azure </span></b><b><span>SQL DB</span></b></td>
+<td><b><span>MySQL in-app</span></b><b><span> </span></b></td>
+<td><b><span>Azure Database for MySQL </span></b></td>
+<td><b><span>Azure Database for PostgreSQL </span></b></td>
+<td><b><span>Cosmos DB</span></b></td>
+</tr>
+<tr>
+<td><span>Generally available </span></td>
+<td><span>✓</span></td>
+<td><span>✓</span></td>
+<td><span>Public Preview </span></td>
+<td><span>Public Preview</span></td>
+<td><span>✓</span></td>
+</tr>
+<tr>
+<td><span>Free Database Tier  <strong>*</strong></span></td>
+<td><span>✓</span></td>
+<td><span>✓</span></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><span>Managed Database as a Service</span></td>
+<td><span>✓</span></td>
+<td></td>
+<td><span>✓</span></td>
+<td><span>✓</span></td>
+<td><span>✓</span></td>
+</tr>
+<tr>
+<td><span>Remotely access database</span></td>
+<td><span>✓</span></td>
+<td><span>✓</span></td>
+<td><span>✓</span></td>
+<td><span>✓</span></td>
+<td><span>✓</span></td>
+</tr>
+<tr>
+<td><span>Documentation</span></td>
+<td><a href="https://docs.microsoft.com/en-us/azure/sql-database/"><span>link</span></a></td>
+<td><a href="https://blogs.msdn.microsoft.com/appserviceteam/2016/08/18/announcing-mysql-in-app-preview-for-web-apps/"><span>link</span></a></td>
+<td><a href="https://docs.microsoft.com/en-us/azure/mysql/"><span>link</span></a></td>
+<td><a href="https://docs.microsoft.com/en-us/azure/postgresql/"><span>link</span></a></td>
+<td><a href="https://docs.microsoft.com/en-us/azure/cosmos-db/"><span>link</span></a></td>
+</tr>
+<tr>
+<td><span>Scalability</span></td>
+<td><span>✓</span></td>
+<td></td>
+<td><span>✓</span></td>
+<td><span>✓</span></td>
+<td><span>✓</span></td>
+</tr>
+<tr>
+<td><span>Geo Replication</span></td>
+<td><span>✓</span></td>
+<td></td>
+<td></td>
+<td></td>
+<td><span>✓</span></td>
+</tr>
+<tr>
+<td><span>SSL</span></td>
+<td><span>✓</span></td>
+<td></td>
+<td><span>✓</span></td>
+<td><span>✓</span></td>
+<td><span>✓</span></td>
+</tr>
+<tr>
+<td><span>Firewall Configuration</span></td>
+<td><span>✓</span></td>
+<td></td>
+<td><span>✓</span></td>
+<td><span>✓</span></td>
+<td><span>✓</span></td>
+</tr>
+<tr>
+<td><span>Database </span><span>Sharding</span> <span>/Partitioning </span></td>
+<td><span>✓</span></td>
+<td></td>
+<td></td>
+<td></td>
+<td><span>✓</span></td>
+</tr>
+<tr>
+<td><span>Pricing</span></td>
+<td><a href="https://azure.microsoft.com/en-us/pricing/details/sql-database/"><span>link</span></a></td>
+<td></td>
+<td><a href="https://azure.microsoft.com/en-us/pricing/details/mysql/"><span>link</span></a></td>
+<td><a href="https://azure.microsoft.com/en-us/pricing/details/postgresql"><span>link</span></a></td>
+<td><a href="https://azure.microsoft.com/en-us/pricing/details/cosmos-db/"><span>link</span></a></td>
+</tr>
+<tr>
+<td><span>Region Availability </span></td>
+<td colspan="5" style="text-align: center"><a href="https://azure.microsoft.com/en-us/regions/services/"><span>link</span></a></td>
+</tr>
+<tr>
+<td><span>Linux </span><span>Azure Web Apps </span><strong>**</strong></td>
+<td><span>✓</span></td>
+<td><a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/06/07/mysql-in-app-feature-for-web-apps-on-linux/"><span>link</span></a></td>
+<td><span>✓</span></td>
+<td><span>✓</span></td>
+<td><span>✓</span></td>
+</tr>
+<tr>
+<td><span>Windows Azure Web Apps <strong>**</strong></span></td>
+<td><span>✓</span></td>
+<td><a href="https://blogs.msdn.microsoft.com/appserviceteam/2016/08/18/announcing-mysql-in-app-preview-for-web-apps/">link</a></td>
+<td><span>✓</span></td>
+<td><span>✓</span></td>
+<td><span>✓</span></td>
+</tr>
+<tr>
+<td><span>App service Backup and Restore <strong>***</strong></span></td>
+<td><span>✓</span></td>
+<td><span>✓</span></td>
+<td><span>✓</span></td>
+<td><span>✓</span></td>
+<td></td>
+</tr>
+<tr>
+<td><span>Azure</span><span> Mobile App</span></td>
+<td><span>✓</span></td>
+<td></td>
+<td></td>
+<td></td>
+<td><span>✓</span></td>
+</tr>
+<tr>
+<td><span>Azure Functions <strong>****</strong></span></td>
+<td> <span>✓</span></td>
+<td></td>
+<td><span>✓</span></td>
+<td><span>✓</span></td>
+<td> <span>✓</span></td>
+</tr>
+</tbody>
+</table>
+<i><span></span></i></div>
+</div></body>
+<script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
+</html>

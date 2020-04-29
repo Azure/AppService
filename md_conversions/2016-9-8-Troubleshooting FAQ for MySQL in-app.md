@@ -1,0 +1,39 @@
+---
+title: "Troubleshooting FAQ for MySQL in-app"
+author_name: mksunitha
+layout: post
+hide_excerpt: true
+---
+      [mksunitha](https://social.msdn.microsoft.com/profile/mksunitha)  9/8/2016 1:09:42 PM  Here are some troubleshooting guidelines for MySQL in-app feature:  ### 1. I cannot to access the database using Phpmyadmin
+
+ When you access [PHPmyadmin for MySQL in-app](https://blogs.msdn.microsoft.com/appserviceteam/2016/08/18/announcing-mysql-in-app-preview-for-web-apps/#phpmyadmin) and the page returns a **login page** or “**cannot connect: invalid settings**” error. There can be two causes for this issue:  - **MySQL process may not be running.**
+  Check process explorer if MySQL is running for your web app. You can access the process explorer in the portal. Select **your web app -> Tools -> Process explorer** [![processexploreremysql]({{ site.baseurl }}/media/2016/08/processexploreremysql-1024x715.png)]({{ site.baseurl }}/media/2016/08/processexploreremysql.png) There will be **mysqld.exe** process visible in the process explorer. If the process **mysqld.exe** is not visible in the process explorer, then browse the web app or ping your web app which would trigger mysqld.exe process to run. Check process explorer again to verify that mysql process is running and browse phpmyadmin.  - ** You have two instances of PHPmyadmin installed**
+  With MySQL in-app we already preconfigure and setup PHPmyadmin. If you install PHPmyadmin from Site extensions gallery, then you will end up having two instances of PHPmyadmin. To identify if you have two instances both the conditions below will be true:  2. PHPmyadmin folder exists in *D:\home\siteextensions* folder
+ 4. web app is using MySQL in-app feature
+  To resolve this, remove the site extension. Access the site extension gallery and click on remove button. Restart your web app and [access your database with PHPmyadmin](https://blogs.msdn.microsoft.com/appserviceteam/2016/08/18/announcing-mysql-in-app-preview-for-web-apps/#phpmyadmin) .  - **There may be a connection strings in application settings.**
+  Check in your web app application settings if there is a connection string. PHPmyadmin uses MYSQLCONNSTR\_ to connect to the MySQL server. If you have a connection string in application setting change the connection string type to Custom , so you can still have the information if needed or delete it. This will force PHPmyadmin to access MYSQLCONNSTR\_localdb and connect to the MySQL in-app server. [![mysqlinapp-connectionstring]({{ site.baseurl }}/media/2016/09/mysqlinapp-connectionstring-1024x596.png)]({{ site.baseurl }}/media/2016/09/mysqlinapp-connectionstring.png)  - **File server storage is in read only mode** Click [here](https://blogs.msdn.microsoft.com/appserviceteam/2016/09/08/troubleshooting-faq-for-mysql-in-apppreview#readmode) to learn more
+  ### 2. My application cannot connect to MySQL in-app database
+
+ If your web app is unable to connect to MySQL in-app database, it could result from :  - MySQL process is not running for your application: You can access the process explorer in the portal. Select **your web app -> Tools -> Process explorer. **There will be **exe** process visible in the process explorer. If the process **mysqld.exe** is not visible in the process explorer, then restart the web app and browse the web app. Now check process explorer again to verify **mysqld.exe** loads and check if your web app is functioning correctly.
+ - Your web app is not configured correctly to use MySQL in-app: MySQL in-app does not use port 3306 for MySQL server and hence **DO NOT hard code the database information **in your application configuration file. If the MySQL port used by your web app as using in not available during the situations mentioned below, the MySQL port will change:during an upgrade of azure app service 
+	 - when your web app is scaled up/down
+	 - when your app is moved to a different app service plan
+	 - when you migrate your app from one subscription to another subscription
+	  
+  To make your app resilient, use environment variables as shown [here](https://blogs.msdn.microsoft.com/appserviceteam/2016/08/18/announcing-mysql-in-app-preview-for-web-apps/#mysqlconnect). ### 3. I cannot import my database with PHPmyadmin
+
+ PHPmyadmin allows your to import a database , but this may fail due to:  - MySQL server used when exporting the database is different than the MySQL version used in MySQL in-app and the schema changes are not supported in the version of destination MySQL server.The version on MySQL in-app is 5.7.9.0. You verify this check by checking the version number folder in MySQL folder "D:\Program Files (x86)\mysql\5.7.9.0"
+ - PHPmyadmin version used for exporting the database varies with PHPmyadmin version used to import the database schema. The PHPmyadmin version that is used with MySQL in-app is 4.5.1. During export make sure the schema is supported. A workaround is to use mysqlimport.exe found in D:\Program Files (x86)\mysql\5.7.9.0\bin on the Kudu Debug console "D:\Program Files (x86)\mysql\5.7.9.0\bin\mysql.exe" --user=azure --password=password --port=PORT --bind-address=127.0.0.1 DATABASE\_NAME < exportedfile.sql 
+   - The exported database file is greater than 8MB. PHPmyadmin is a php application , and the max\_upload\_size is 8MB for PHP on Azure app service. You can either modify the max\_upload\_size to your desired value before doing an import as per instructions mentioned [here](https://azure.microsoft.com/en-us/documentation/articles/web-sites-php-configure/) or use mysql utilities in Kudu debug console to do the import with this sample command "D:\Program Files (x86)\mysql\5.7.9.0\bin\mysql.exe" --user=azure --password=password --port=PORT --bind-address=127.0.0.1 DATABASE\_NAME < exportedfile.sql 
+  ***Note:** When using mysqlimport.exe via Kudu debug console , the browser session timesout after 10 mins. If you have a large file then add the app setting SCM\_COMMAND\_IDLE\_TIMEOUT=3600 for your web app prior to running mysqlimport.exe.* ### 4. I cannot write to the database OR I cannot create a comment or post on WordPress application
+
+ Turn on[ PHP error logs](https://blogs.msdn.microsoft.com/azureossds/2015/04/15/info-about-php-fatal-error-and-error-log-on-azure-website/) and if the error log states that the "InnoDB is in read only mode". This means file server storage is in READ ONLY mode , note that the file server is shared by your web app and MySQL database. The file server can be in read only mode due to
+
+  - an upgrade on the service : Once the upgrade is completed you should be able to write to the database. This usually does not take more than a few minutes.
+ - Platform issues : Check the [Azure status](https://azure.microsoft.com/en-us/status/) to see if there are any ongoing issues that could be resulting in this.
+ - Network blips : This could impact the site for a couple of seconds if there was network connection loss.
+  It is recommended to code your application to detect if the storage is in read only mode when using MySQL in-app. This can be done using a simple check to see if the folder wwwroot is writable using [is\_writable() in PHP](http://php.net/manual/en/function.is-writable.php) before executing any INSERT / UPDATE / DELETE /CREATE Sql queries in your application. ### 5. How can I change MySQL server configuration
+
+ Click on your **web app -> application setting **, under app settings add the Key/Value pair , for example to increase max allowed packet to 16MB WEBSITE\_MYSQL\_ARGUMENTS = --max\_allowed\_packet=16M [![appsetting_mysql_arguments]({{ site.baseurl }}/media/2016/09/appsetting_mysql_arguments-1024x309.jpg)]({{ site.baseurl }}/media/2016/09/appsetting_mysql_arguments.jpg) ### Additional References
+
+ [Troubleshooting Wiki](https://github.com/projectkudu/kudu/wiki/MySQL-in-app-(preview)#internals-diagnostics-and-loggings)     
