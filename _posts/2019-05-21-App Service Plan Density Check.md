@@ -1,8 +1,12 @@
 ---
-layout: post
-title: "App Service Plan Density Check"
-author: "Khaled Zayed"
-tags: app service, azure app service, app service plan, high cpu, web app, high memory, self-help, troubleshooting
+title: "App Service Plan Density Check" 
+author_name: "Khaled Zayed"
+tags: 
+    - app service plan
+    - troubleshooting
+    - diagnostics
+    - best practice
+author_profile: true
 ---
 
 App Service Plans define the compute resources assigned to run your App Service. The pricing tier of your App Service Plan determines the compute power and features you get. The higher the tier, the more features and compute power are available. To find out which features are supported in each pricing tier as well as the compute power, see [App Service Plan details](https://azure.microsoft.com/en-us/pricing/details/app-service/plans/).
@@ -11,7 +15,7 @@ When you deploy multiple App Services in the same App Service Plan, they all sha
 
 ## How to verify your App Service Plan density
 
-In order to verify if your apps are possibly competing for resources, run the App Service Plan Density check detector by following these steps:
+For App Service Plans running Windows based apps, you can run the App Service Plan Density check detector by following these steps:
 
 1. From the Azure Portal, go to one of your Apps
 2. Go to the "Diagnose and solve problems" blade
