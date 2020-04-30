@@ -59,8 +59,8 @@ Before deploying your new code to production, you can leverage the Deployment Sl
 
 Deploying your application to a non-production slot has the following benefits:
 
-- You can validate app changes in a staging deployment slot before swapping it with the production slot.
-- Deploying an app to a slot first and swapping it into production makes sure that all instances of the slot are warmed up before being swapped into production. This eliminates downtime when you deploy your app. The traffic redirection is seamless, and no requests are dropped because of swap operations. You can automate this entire workflow by configuring auto swap when pre-swap validation isn't needed.
+- You can validate app changes in a staging environment before swapping it into the production slot.
+- Deploying an app to a slot first and swapping it into production makes sure that all instances of the staging slot are warmed up before swapping into production. This eliminates downtime when you deploy your app. The traffic redirection is seamless, and no requests are dropped because of swap operations. You can automate this entire workflow by configuring auto swap.
 - After a swap, the slot with previously staged app now has the previous production app. If the changes swapped into the production slot aren't as you expect, you can perform the same swap immediately to get your "last known good site" back.
 
 ![slots]({{site.baseurl}}/media/2020/04/slots.jpg)
@@ -77,14 +77,15 @@ We highly recommend using **Swap with Preview**. Swap with Preview allows you to
 
 ## Set your Health Check path
 
-When we have multiple instances serving in production and one of the instances goes bad, Health Check Feature will come in handy. It will exclude the unhealthy instance(s) from serving requests and improve reliability. You can specify the endpoint of your application that represents the health of your web app. It is advised to use a health-check url which can analyze the overall health of the app quickly.
-Our service will ping the health check path on all instances every 2 mins. If an instance does not respond within 10 minutes (5 pings), the instance is determined to be "unhealthy" and our service will stop routing requests to it. To setup health check feature go to "Development Tools -> Resource Explorer" on the web app blade for Azure portal:
+App Service allows you to specify a health check path on your apps. The platform pings this path to determine if your application is healthy and responding to requests. When your site is scaled out to multiple instances, App Service will exclude any unhealthy instance(s) from serving requests, improving your overall availability. Your app's health check path should poll the critical components of your application, such as your database, cache, or messaging service. This ensures that the status returned by the health check path is an accurate picture of the overall health of your application.
 
-![health-check-1]({{site.baseurl}}/media/2020/04/health-check-1.jpg)
+1. Go to *Development Tools* > *Resource Explorer* on the web app blade for Azure portal:
 
-On the resource explorer page, expand the "config" section and click the "web" tab. Add an element with the name, "healthCheckPath", and value is the path of your health-check url that our service will ping.
+    ![health-check-1]({{site.baseurl}}/media/2020/04/health-check-1.jpg)
 
-![health-check-2]({{site.baseurl}}/media/2020/04/health-check-2.png)
+1. On the resource explorer page, expand the "config" section and click the "web" tab. Add an element with the name, "healthCheckPath", and value is the path of your health-check url that our service will ping.
+
+    ![health-check-2]({{site.baseurl}}/media/2020/04/health-check-2.png)
 
 > Please note that the Health Check feature works only when you have one or more instances, which is a **very** strong recommendation. For a single instance web app, the traffic is never blocked even if that single instance is encountering issues.
 
@@ -94,7 +95,7 @@ On the resource explorer page, expand the "config" section and click the "web" t
 
 ## Use Application Initialization
 
-Enable Application Initialization to ensure that site (specific instance) is completely warmed before it is swapped into production and real customer traffic hits it. The warming up is also ensured in site restarts, auto scaling, and manual scaling. This is a critical feature where hitting the site's base url is not sufficient for warming up the application. For this purpose a warm-up path must be created on the app which should be unauthenticated and App Init should be configured to use this url path. Try to make sure that the method implemented by the warm-up url takes care of touching the functions of all important routes and it returns a response only when warm-up is complete. The site will be put into production only when it returns a response (success or failure) and app initialization will assume "everything is fine with the app". App Initialization can be configured for your app within web.config file.
+Enable Application Initialization to ensure that your app instances are have fully started before they are added to the load balancer. Application Initialization is used during site restarts, auto scaling, and manual scaling. This is a critical feature where hitting the site's root path is not sufficient to start the application. For this purpose a warm-up path must be created on the app which should be unauthenticated and App Init should be configured to use this url path. Try to make sure that the method implemented by the warm-up url takes care of touching the functions of all important routes and it returns a response only when warm-up is complete. The site will be put into production only when it returns a response (success or failure) and app initialization will assume "everything is fine with the app". App Initialization can be configured for your app within web.config file.
 
 **Learn More**
 
@@ -102,9 +103,9 @@ Enable Application Initialization to ensure that site (specific instance) is c
 
 ## Run from a package file
 
-When you deploy to your App Service in any way other than Run from Package, your files are deployed to `D:\home\site\wwwroot` in your app (or /home/site/wwwroot for Linux apps). Since the same directory is used by your app at runtime, it's possible for deployment to fail because of file lock conflicts, and for the app to behave unpredictably because some of the files are not yet updated.
+When you deploy to your App Service in any way other than Run from Package, your files are deployed to `D:\home\site\wwwroot` (or `/home/site/wwwroot` on Linux apps). Since the same directory is used by your app at runtime, it is possible for a deployment to fail because of file lock conflicts, and for the app to behave unpredictably because some files were not yet updated.
 
-In contrast, when you run directly from a package, the files in the package are not copied to the wwwroot directory. Instead, the ZIP package itself gets mounted directly as the read-only wwwroot directory. **This removes a hard dependency on File System & Storage access**. This has a significant impact on the app's availability and performance as for example your app will be resilient against File System failovers. There are several other benefits to running directly from a package:
+In contrast, when you run directly from a package, the app files are not copied to the `wwwroot/` directory. Instead, the .zip file itself is mounted directly as a read-only directory. **This removes a hard dependency between the app instance and the shared File System**. This has a significantly increases the app's availability and performance. For example, your app will be resilient against File System failovers. There are several other benefits to running directly from a package:
 
 - Eliminates file lock conflicts between deployment and runtime.
 - Ensures only full-deployed apps are running at any time.
@@ -114,13 +115,9 @@ In contrast, when you run directly from a package, the files in the package are 
 
 > Please note that this feature is not compatible with [local cache](#local-cache). Also if you are using a CMS application, we do **not** recommend the use of this feature.
 
-Ensure to set the app setting `WEBSITE_DISABLE_STANDBY_VOLUMES = 1`, this prevents the app from getting restarted when the primary storage volume is down and the app starts using standby storage volume. Also, for improved cold-start performance, use the local Zip option `WEBSITE_RUN_FROM_PACKAGE=1`.
+Refer to the documentation to [get started with Run from Package](https://docs.microsoft.com/azure/app-service/deploy-run-package). Ensure to set the app setting `WEBSITE_DISABLE_STANDBY_VOLUMES = 1`, this prevents the app from getting restarted when the primary storage volume is down and the app starts using standby storage volume. 
 
 > Please note the zip file should not exceed 1 GB.
-
-**Learn More**
-
-- [Run your app in Azure App Service directly from a ZIP package](https://docs.microsoft.com/azure/app-service/deploy-run-package)
 
 ## Enable Local Cache
 
@@ -221,8 +218,7 @@ You can also leverage our newly released [App Insights integration with App Serv
 
 ## Deploy in Multiple Regions
 
-In the event that a catastrophic incident happens in one of the Azure Datacenters, you can still guarantee that your app will run and serve requests by investing in Azure Front Door or Traffic Manager. There are additional benefits to using Front 
-Door or Traffic Manager, such as routing incoming requests based the customers' geography to provide the shortest respond time to customers and distribute the load among your instances.
+In the event that a catastrophic incident happens in one of the Azure Datacenters, you can still guarantee that your app will run and serve requests by investing in Azure Front Door or Traffic Manager. There are additional benefits to using Front Door or Traffic Manager, such as routing incoming requests based the customers' geography to provide the shortest respond time to customers and distribute the load among your instances.
 
 **Learn More**
 
