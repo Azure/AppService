@@ -7,17 +7,17 @@ tags:
     - resiliency
 ---
 
-Modern day data centers are extremely complex and have too many moving parts. Restarts, instance changes, upgrades, file server movements and more are expected in a cloud environment. However, you can make your cloud application resilient to these problems by following a few guidelines. We've outlined in this document 15 crucial steps that you can take to ensure that your app is cloud ready. By taking these steps, you will ensure that any changes in the data center will have negligible effects on your app and that your app will be more resilient and future proof.
+Modern-day data centers are extremely complex and have many moving parts. VMs can restart or move, systems are upgraded, and file servers are scaled up and down. All these are to be expected in a cloud environment. However, you can make your cloud application resilient to these events by following best practices. This document outlines 15 crucial steps that you can take to ensure that your app is cloud ready. By taking these steps, you will ensure that any changes in the data center will have negligible effects on your app and that your app will be more resilient and future proof.
 
 As mentioned above, your instances are expected to and will restart. They will be upgraded and will sometimes suffer from file server movements. However you can make your app resilient to all these incidents. In order to guarantee the maximum uptime for your app, **please ensure that you follow all practices**.
 
 ## Use Multiple Instances
 
-Running your app on one instance causes it to have one single point of failure. By ensuring that you have multiple instances allocated to your app, if something goes wrong with any particular instance, your app will still be able to respond to requests going to the other instances. Keep in mind that your **app code should be able to handle multiple instances** without synchronization issues when reading or writing to data sources. You can allocate multiple instances to your app using the "Scale out (App Service Plan)" blade:
+Running your app on only one VM instance is an immediate single point-of-failure. By ensuring that you have multiple instances allocated to your app, if something goes wrong with any particular instance, your app will still be able to respond to requests going to the other instances. Keep in mind that your **app code should be able to handle multiple instances** without synchronization issues when reading from or writing to data sources. You can allocate multiple instances to your app using the "Scale out (App Service Plan)" blade:
 
 ![multiple-instances]({{site.baseurl}}/media/2020/04/multiple-instances.png)
 
-We recommend that you run your app with **at least 2-3 instances** to avoid a single point-of-failures, especially if your app takes considerable time to start (known as cold start). Running more than one instance ensures that your application is available when App Service moves or upgrades the underlying VM instances. You can also configure rules to automatically scale out based on predefined rules such as:
+To avoid a single point-of-failure, run your app with **at least 2-3 instances**. This is especially important if your app takes considerable time to start (known as cold start). Running more than one instance ensures that your application is available when App Service moves or upgrades the underlying VM instances. You can also configure rules to automatically scale out based on predefined rules such as:
 
 - Time of day (when the app has the most traffic)
 - Resource utilization (memory, CPU, etc.)
@@ -30,9 +30,9 @@ We recommend that you run your app with **at least 2-3 instances** to avoid a si
 
 ## Update your default settings
 
-App Service has many settings for developers to configure the web app to their use case. **Always-On** keeps your application up even when no requests have been received in the past 20 minutes. By default, Always-On is disabled; enabling Always-On will prevent application cold-starts. **ARR Affinity** creates sticky sessions so that clients will connect to the same app instance on subsequent requests. However, ARR Affinity can cause unequal distribution of requests between your instances and possibly overload an instance. For production apps that are aiming to be robust, it is recommended to set **Always on to On** and **ARR Affinity to Off**
+App Service has many settings for developers to configure the web app to their use case. **Always-On** keeps your VM instances alive even when no requests have been received in the last 20 minutes. By default, Always-On is disabled; enabling Always-On will limit application cold starts. **ARR Affinity** creates sticky sessions so that clients will connect to the same app instance on subsequent requests. However, ARR Affinity can cause unequal distribution of requests between your instances and possibly overload an instance. For production apps that are aiming to be robust, it is recommended to set **Always on to On** and **ARR Affinity to Off**. Disabling ARR Affinity assumes that your application is either stateless, or the session state is stored on a remote service such as a cache or database.
 
-You can change that by going to the configurations section of your app in the Azure Portal and then going to the General settings tab:
+You can change these settings in the configurations section of the Azure Portal, under the *General Settings* tab:
 
 ![alwayson]({{site.baseurl}}/media/2020/04/alwayson.jpg)
 
