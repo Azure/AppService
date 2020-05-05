@@ -57,7 +57,7 @@ The App Service on Azure Stack Hub Update 8 build number is **87.0.2.10**
 
 All of the documentation for Azure App Service and Azure Functions on Azure Stack Hub has been reviewed and edited to support this release, to address feedback from customers and to improve the quality of the documentation to support cloud operators.  In addition the articles covering Azure App Service and Azure Functions on Azure Stack Hub have been reclassified under the table of contents to better classify the documentation and to maintain consistency with other resource providers on Azure Stack Hub:
 
-![New documentation TOC structure for App Service on Azure Stack Hub]({{ site.baseurl }}/media/2020/05/appservice_on_azure_stack_new_doc_toc.png)
+    ![New documentation TOC structure for App Service on Azure Stack Hub]({{ site.baseurl }}/media/2020/05/appservice_on_azure_stack_new_doc_toc.png)
 
 You can download the new installer and helper scripts:
 - [Installer](https://aka.ms/appsvcupdateq2installer)
