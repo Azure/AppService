@@ -53,6 +53,8 @@ For ASDK deployments, you can scale the instances down to lower SKUs to reduce t
 
 The App Service on Azure Stack Hub Update 8 build number is **87.0.2.10**
 
+Please review the release notes and all [**Known issues**](https://docs.microsoft.com/en-us/azure-stack/operator/app-service-release-notes-q2) prior to updating your installation of Azure App Service on Azure Stack Hub.
+
 ## Documentation Updates
 
 All of the documentation for Azure App Service and Azure Functions on Azure Stack Hub has been reviewed and edited to support this release, to address feedback from customers and to improve the quality of the documentation to support cloud operators.  In addition the articles covering Azure App Service and Azure Functions on Azure Stack Hub have been reclassified under the table of contents to better classify the documentation and to maintain consistency with other resource providers on Azure Stack Hub:
