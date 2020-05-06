@@ -53,7 +53,7 @@ For ASDK deployments, you can scale the instances down to lower SKUs to reduce t
 
 The App Service on Azure Stack Hub Update 8 build number is **87.0.2.10**
 
-Please review the release notes and all [**Known issues**](https://docs.microsoft.com/azure-stack/operator/app-service-release-notes-q2) prior to updating your installation of Azure App Service on Azure Stack Hub.
+Please review the release notes and all [**Known issues**](https://docs.microsoft.com/azure-stack/operator/app-service-release-notes-2020-q2) prior to updating your installation of Azure App Service on Azure Stack Hub.
 
 ## Documentation Updates
 
@@ -67,7 +67,7 @@ You can download the new installer and helper scripts:
 
 Please read the updated documentation prior to getting started with deployment:
 
-- [Update 8 Release Notes](https://docs.microsoft.com/azure-stack/operator/app-service-release-notes-q2)
+- [2020 Q2 Update Release Notes](https://docs.microsoft.com/azure-stack/operator/app-service-release-notes-2020-q2)
 - [Prerequisites for deploying App Service on Azure Stack Hub](https://docs.microsoft.com/azure-stack/operator/azure-stack-app-service-before-you-get-started)
 - [Deploy the App Service Resource Provider](https://docs.microsoft.com/azure-stack/operator/azure-stack-app-service-deploy) for new deployments
 - [Update the App Service Resource Provider](https://docs.microsoft.com/azure-stack/operator/azure-stack-app-service-update) for updating existing deployments
