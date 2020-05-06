@@ -5,7 +5,7 @@ tags:
 author_name: "Andrew Westgarth"
 ---
 
-This afternoon we released the 2020 Q2 update to Azure App Service on Azure Stack Hub. This release updates the resource provider and brings the following key capabilities and fixes:
+We have released the 2020 Q2 update to Azure App Service on Azure Stack Hub. This release updates the resource provider and brings the following key capabilities and fixes:
 
 - Updates to **App Service Tenant, Admin, Functions portals and Kudu tools**. Consistent with Azure Stack Portal SDK version.
 - Updates **Azure Functions** runtime to **v1.0.13021**.
