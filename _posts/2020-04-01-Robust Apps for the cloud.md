@@ -95,7 +95,9 @@ App Service allows you to specify a health check path on your apps. The platform
 
 ## Use Application Initialization
 
-Enable Application Initialization to ensure that your app instances are have fully started before they are added to the load balancer. Application Initialization is used during site restarts, auto scaling, and manual scaling. This is a critical feature where hitting the site's root path is not sufficient to start the application. For this purpose a warm-up path must be created on the app which should be unauthenticated and App Init should be configured to use this url path. Try to make sure that the method implemented by the warm-up url takes care of touching the functions of all important routes and it returns a response only when warm-up is complete. The site will be put into production only when it returns a response (success or failure) and app initialization will assume "everything is fine with the app". App Initialization can be configured for your app within web.config file.
+Application Initialization ensures that your app instances have fully started before they are added to they start serving requests. Application Initialization is used during site restarts, auto scaling, and manual scaling. This is a critical feature where hitting the site's root path is not sufficient to start the application. For this purpose a warm-up path must be created on the app which should be unauthenticated and App Init should be configured to use this url path. 
+
+Try to make sure that the method implemented by the warm-up url takes care of touching the functions of all important routes and it returns a response only when warm-up is complete. The site will be put into production only when it returns a response (success or failure) and app initialization will assume "everything is fine with the app". App Initialization can be configured for your app within web.config file.
 
 **Learn More**
 
@@ -137,7 +139,10 @@ External storage like storage containers, db or cosmosDB should be used for stor
 
 ## Auto Heal
 
-Enable auto heal on the app. I would recommend to create an auto heal mitigation rule by going to "Diagnose and Solve problems" section, selecting the "Diagnostic Tools" tile and then "Auto Healing" under Proactive Tools section.
+Sometimes your application might experience unexpected behaviors that could be resolved by a simple restart. The Auto Heal features allows you to do exactly that! It allows you to define the 'condition' that would trigger Auto Heal and the 'action' that Auto Heal will initiate when the condition is met.
+
+
+You can create an auto heal mitigation rule by going to "Diagnose and Solve problems" section -> "Diagnostic Tools" tile and then "Auto Healing" under Proactive Tools section.
 
 ![multiple-instances]({{site.baseurl}}/media/2020/04/autoheal.jpg)
 
@@ -150,14 +155,14 @@ Below are example filter values to set up, however if some other value of error 
 | Sub-status code  | 0              |
 | Win32-status code| 0              |
 | Frequency in seconds| 60          |
-| Request Count    | 70             |
-| Request Count    | 70             |
-| Request Count    | 70             |
 
-Configure Action
-<br>Recycle Process
-<br>Override when Action Executes 
-<br>Startup Time for process before auto heal executes: 3600 seconds (1 hour)
+
+Once the condition above is met, we recommend configuring an action to:
+- Recycle Process
+
+
+and add an 'Override when Action Executes': 
+- Startup Time for process before auto heal executes: 3600 seconds (1 hour)
 
 **Learn More**
 
@@ -218,7 +223,9 @@ You can also leverage our newly released [App Insights integration with App Serv
 
 ## Deploy in Multiple Regions
 
-In the event that a catastrophic incident happens in one of the Azure Datacenters, you can still guarantee that your app will run and serve requests by investing in Azure Front Door or Traffic Manager. There are additional benefits to using Front Door or Traffic Manager, such as routing incoming requests based the customers' geography to provide the shortest respond time to customers and distribute the load among your instances.
+You can deploy Azure Front Door or Azure Traffic Manager to intercept traffic before they hit your site. They help in routing & distributing traffic between your instances/regions. In the event that a catastrophic incident happens in one of the Azure Datacenters, you can still guarantee that your app will run and serve requests by investing in one of them. 
+<br>
+There are additional benefits to using Front Door or Traffic Manager, such as routing incoming requests based the customers' geography to provide the shortest respond time to customers and distribute the load among your instances in order not to overload one of them with requests.
 
 **Learn More**
 
