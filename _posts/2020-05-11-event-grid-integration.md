@@ -82,3 +82,4 @@ If you have suggestions for events that App Service should emit, let us know on 
 - [Event Grid terminology](https://docs.microsoft.com/azure/event-grid/concepts)
 - [Compare Azure messaging services](https://docs.microsoft.com/azure/event-grid/compare-messaging-services)
 - [Azure CLI for Event Grid](https://docs.microsoft.com/azure/event-grid/cli-samples)
+- [Event Grid Pricing](https://azure.microsoft.com/pricing/details/event-grid/)
