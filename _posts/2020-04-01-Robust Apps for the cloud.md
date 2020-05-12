@@ -232,14 +232,6 @@ There are additional benefits to using Front Door or Traffic Manager, such as ro
 - [Controlling Azure App Service traffic with Azure Traffic Manager](https://docs.microsoft.com/en-us/azure/app-service/web-sites-traffic-manager)
 - [Quickstart: Create a Front Door for a highly available global web application](https://docs.microsoft.com/en-us/azure/frontdoor/quickstart-create-front-door)
 
-## Consider using Linux
-
-When creating a new Web App, follow the recommended app type in the create flow. For example, if you're going to deploy a Python or Node.js app, use Linux.
-
-![multiple-instances]({{site.baseurl}}/media/2020/04/linux.jpg)
-
-We recommend using Windows for .NET/.NET Core apps, but you should consider Linux for your Python, Java, and Node apps.
-
 ## Check App Service Diagnostics
 
 Finally, you can check the progress you've accomplished in making your app resilient by leverage the "Best Practices" detectors available in App Service Diagnostics here:
