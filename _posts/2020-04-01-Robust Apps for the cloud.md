@@ -103,24 +103,6 @@ Try to make sure that the method implemented by the warm-up url takes care of to
 
 - [How to warm up Azure Web App during deployment slots swap](https://ruslany.net/2015/09/how-to-warm-up-azure-web-app-during-deployment-slots-swap/)
 
-## Run from a package file
-
-When you deploy to your App Service in any way other than Run from Package, your files are deployed to `D:\home\site\wwwroot` (or `/home/site/wwwroot` on Linux apps). Since the same directory is used by your app at runtime, it is possible for a deployment to fail because of file lock conflicts, and for the app to behave unpredictably because some files were not yet updated.
-
-In contrast, when you run directly from a package, the app files are not copied to the `wwwroot/` directory. Instead, the .zip file itself is mounted directly as a read-only directory. **This removes a hard dependency between the app instance and the shared File System**. This has a significantly increases the app's availability and performance. For example, your app will be resilient against File System failovers. There are several other benefits to running directly from a package:
-
-- Eliminates file lock conflicts between deployment and runtime.
-- Ensures only full-deployed apps are running at any time.
-- Can be deployed to a production app (with restart).
-- Improves the performance of Azure Resource Manager deployments.
-- May reduce cold-start times, particularly for JavaScript functions with large npm package trees.
-
-> Please note that this feature is not compatible with [local cache](#local-cache). Also if you are using a CMS application, we do **not** recommend the use of this feature.
-
-Refer to the documentation to [get started with Run from Package](https://docs.microsoft.com/azure/app-service/deploy-run-package). Ensure to set the app setting `WEBSITE_DISABLE_STANDBY_VOLUMES = 1`, this prevents the app from getting restarted when the primary storage volume is down and the app starts using standby storage volume. 
-
-> Please note the zip file should not exceed 1 GB.
-
 ## Enable Local Cache
 
 When this feature is enabled, the site content is read, written from the local virtual machine instance instead of fetching from Azure storage (where site content is stored). This will reduce the number of recycles required for the app. It can be enabled through Azure portal from the "General -> Application settings". On this page under the App settings section add `WEBSITE_LOCAL_CACHE_OPTION` as key and `"Always"` as value. Also add the `WEBSITE_LOCAL_CACHE_SIZEINMB` with a desired local cache size value up to 2000MB (if not provided, it defaults to 300 MB). It helps to provide the cache size specially when the site contents are more than 300 MB. Ensure that site contents are less than 2000MB for this feature to work. Also it is a good practice to keep it as a slot setting so that it does not get removed with a swap.
