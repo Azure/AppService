@@ -11,7 +11,7 @@ Follow [the quickstart](#get-started) below to get started!
 
 ## Integrated Events
 
-App Service now emits 15 distinct events to Event Grid. These events span configuration changes, slot swaps, restarts, backups, and more. If you have an idea for an event type that you would like to see added, let us know on [UserVoice](https://feedback.azure.com/forums/169385-web-apps).
+App Service now emits 13 events to Event Grid. These events span configuration changes, slot swaps, restarts, backups, and more. If you have an idea for an event type that you would like to see added, let us know on [UserVoice](https://feedback.azure.com/forums/169385-web-apps).
 
 |    Event Type                                             |    Description                                                     |
 |-----------------------------------------------------------|--------------------------------------------------------------------|
@@ -26,10 +26,8 @@ App Service now emits 15 distinct events to Event Grid. These events span config
 |    `Microsoft.Web/sites.SlotSwapFailed`                   |    Triggered when a [slot swap](https://docs.microsoft.com/azure/app-service/deploy-staging-slots) has failed                        |
 |    `Microsoft.Web/sites.SlotSwapWithPreviewStarted`       |    Triggered when a [slot swap](https://docs.microsoft.com/azure/app-service/deploy-staging-slots) with preview has started          |
 |    `Microsoft.Web/sites.SlotSwapWithPreviewCancelled`     |    Triggered when a [slot swap](https://docs.microsoft.com/azure/app-service/deploy-staging-slots) with preview has been cancelled   |
-|    `Microsoft.Web/sites.AppUpdated.Restarted`             |    Triggered when a site has been restarted                      |
-|    `Microsoft.Web/sites.AppUpdated.Stopped`               |    Triggered when a site has been stopped                        |
-|    `Microsoft.Web/sites.AppUpdated.ChangedAppSettings`    |    Triggered when a site’s app settings have changed             |
-|    `Microsoft.Web/serverfarms.AppServicePlanUpdated`      |    Triggered when an App Service Plan is updated                 |
+|    `Microsoft.Web/sites.AppUpdated`                       |    Triggered when a site has been restarted, stopped, or the app settings have changed   |
+|    `Microsoft.Web/serverfarms.AppServicePlanUpdated`      |    Triggered when an App Service Plan is updated                                         |
 
 > [More information about these events](https://aka.ms/event-grid-schema-app-service).
 
