@@ -4,7 +4,7 @@ author_name: "Khaled Zayed"
 toc: true
 toc_sticky: true
 tags:
-    - resiliency
+    - best practice
 ---
 
 Modern-day data centers are extremely complex and have many moving parts. VMs can restart or move, systems are upgraded, and file servers are scaled up and down. All these events are to be expected in a cloud environment. However, you can make your cloud application resilient to these events by following best practices. This document outlines 13 crucial steps that you can take to ensure that your app is cloud ready. By taking these steps, you will ensure that any events in the data center will have negligible effects on your app and that your app will be more resilient and future proof.
