@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "App Service plan Density Check"
 author: "Khaled Zayed"
 tags: app service, azure app service, app service plan, high cpu, web app, high memory, self-help, troubleshooting
