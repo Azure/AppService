@@ -2,10 +2,7 @@ name: "Delete slot on staging site"
 
 on:
   pull_request:
-    branches:
-      - master
-    types:
-      - closed
+    types: [closed]
 
 jobs:
   build:
