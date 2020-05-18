@@ -4,7 +4,6 @@ on:
   pull_request:
     branches:
     - master
-    types: [opened, edited, reopened, ready_for_review, synchronize]
 
 jobs:
   build:
@@ -15,27 +14,33 @@ jobs:
     - name: Check out repo
       uses: actions/checkout@v1
 
+    - name: Log into Azure CLI with service principal
+      uses: azure/login@v1.1
+      with:
+        creds: ${{ secrets.ANTARES_BLOG_SITE_SP }}
+
     - name: Set up Ruby 2.6
       uses: actions/setup-ruby@v1
       with:
         ruby-version: 2.6.x
 
-#     - name: Install Ruby dependencies
-#       run: |
-#         gem install bundler
-#         bundle install --jobs 4 --retry 3
+    - name: Install Ruby dependencies
+      run: |
+        gem install bundler
+        bundle install --jobs 4 --retry 3
 
-#     - name: Build site
-#       run: |
-#         echo "Building site for PR"
-#         bundle exec jekyll build
-#         echo: "ENV:"
-#         env
+    - name: Build site
+      run: bundle exec jekyll build
+      env:
+        JEKYLL_ENV: production
 
-#     - name: Deploy to staging site
-#       uses: azure/webapps-deploy@v1
-#       with: 
-#         app-name: antares-blog-staging
-#         package: _site/  
-#         publish-profile: ${{ secrets.STAGING_SITE_PUB_PROFILE }}  # Replace with the name of your publish profile
-#         slot-name: "article-from"
+    - name: Create slot on staging site
+      run: az webapp deployment slot create --resource-group appserviceblogsite  --name antares-blog-staging --slot ${GITHUB_REF##*/}
+
+    - name: Deploy to slot on staging site
+      uses: azure/webapps-deploy@v1
+      with: 
+        app-name: antares-blog-staging
+        package: _site/  
+        publish-profile: ${{ secrets.STAGING_SITE_PUB_PROFILE }}  # Replace with the name of your publish profile
+        slot-name: ${GITHUB_REF##*/}
