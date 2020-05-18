@@ -1,0 +1,22 @@
+name: "Delete slot on staging site"
+
+on:
+  pull_request:
+    branches:
+      - master
+    types:
+      - closed
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Log into Azure CLI with service principal
+      uses: azure/login@v1.1
+      with:
+        creds: ${{ secrets.ANTARES_BLOG_SITE_SP }}
+    
+    - name: Create slot on staging site
+      run: az webapp deployment slot delete --resource-group appserviceblogsite  --name antares-blog-staging --slot ${{ github.event.number }}
