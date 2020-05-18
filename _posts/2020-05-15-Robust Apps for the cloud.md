@@ -87,7 +87,7 @@ App Service allows you to specify a health check path on your apps. The platform
 
     ![health-check-2]({{site.baseurl}}/media/2020/04/health-check-2.png)
 
-> Please note that the Health Check feature works only when you have one or more instances, which is a **very** strong recommendation. For a single instance web app, the traffic is never blocked even if that single instance is encountering issues.
+> Please note that the Health Check feature works only when you have two or more instances, which is a **very** strong recommendation. For a single instance web app, the traffic is never blocked even if that single instance is encountering issues.
 
 **Learn More**
 
