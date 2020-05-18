@@ -41,6 +41,6 @@ jobs:
       uses: azure/webapps-deploy@v1
       with: 
         app-name: antares-blog-staging
-        package: _site/
-        publish-profile: ${{ secrets.STAGING_SITE_PUB_PROFILE }}  # Replace with the name of your publish profile
         slot-name:  "pr-${{ github.event.number }}"
+        publish-profile: ${{ secrets.STAGING_SITE_PUB_PROFILE }}  # Replace with the name of your publish profile
+        package: _site/
