@@ -52,3 +52,12 @@ jobs:
         app-name: antares-blog-staging
         slot-name:  "pr-${{ github.event.number }}"
         package: _site/
+    
+    - name: Comment on PR with the preview link
+      uses: mshick/add-pr-comment@v1
+      with:
+        message: |
+          Your article has been deployed to the staging site. See it at https://antares-blog-staging-pr-${{ github.event.number }}.azurewebsites.net
+          [test link](https://antares-blog-staging-pr-${{ github.event.number }}.azurewebsites.net)
+        repo-token: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+        allow-repeats: false
