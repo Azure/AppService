@@ -16,4 +16,4 @@ jobs:
         creds: ${{ secrets.ANTARES_BLOG_SITE_SP }}
     
     - name: Delete slot on staging site
-      run: az webapp deployment slot delete --resource-group appserviceblogsite  --name antares-blog-staging --slot ${{ github.event.number }}
+      run: az webapp deployment slot delete --resource-group appserviceblogsite  --name antares-blog-staging --slot pr-${{ github.event.number }}
