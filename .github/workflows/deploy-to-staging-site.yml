@@ -57,7 +57,8 @@ jobs:
       uses: mshick/add-pr-comment@v1
       with:
         message: |
-          Your article has been deployed to the staging site. See it at https://antares-blog-staging-pr-${{ github.event.number }}.azurewebsites.net
-          [test link](https://antares-blog-staging-pr-${{ github.event.number }}.azurewebsites.net)
+          Your article has been deployed to the staging site. See your changes at https://antares-blog-staging-pr-${{ github.event.number }}.azurewebsites.net
+          Note that the staging site shows future-dated articles. If you are merging a future-dated article, it will not show on the prduction site until the file's specified date.
+          > *This is an automated message.*
         repo-token: ${{ secrets.GITHUB_ACCESS_TOKEN }}
         allow-repeats: false
