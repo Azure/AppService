@@ -30,22 +30,17 @@ jobs:
         bundle install --jobs 4 --retry 3
 
     - name: Build site
-      run: bundle exec jekyll build
+      run: bundle exec jekyll build --baseurl "/" --future
       env:
         JEKYLL_ENV: production
-
-    - name: Copy built site to /AppService subdirectory
-      run: |
-        mkdir -p site/AppService
-        cp -R _site/* site/AppService
 
     - name: Create slot on staging site
       run: az webapp deployment slot create --resource-group appserviceblogsite  --name antares-blog-staging --slot  ${{ github.event.number }}
 
-    - name: Deploy to slot
+    - name: Deploy to slot on staging site
       uses: azure/webapps-deploy@v1
       with: 
         app-name: antares-blog-staging
-        package: site/  
+        package: _site/
         publish-profile: ${{ secrets.STAGING_SITE_PUB_PROFILE }}  # Replace with the name of your publish profile
         slot-name:  ${{ github.event.number }}
