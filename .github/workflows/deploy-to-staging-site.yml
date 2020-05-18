@@ -34,12 +34,8 @@ jobs:
       env:
         JEKYLL_ENV: production
 
-    - name: Set branch name
-      id: vars
-      run: echo ::set-output name=short_ref::${GITHUB_REF#refs/*/}
-
     - name: Create slot on staging site
-      run: az webapp deployment slot create --resource-group appserviceblogsite  --name antares-blog-staging --slot  ${{ steps.vars.outputs.short_ref }}
+      run: az webapp deployment slot create --resource-group appserviceblogsite  --name antares-blog-staging --slot  ${{ github.event.number }}
 
     - name: Deploy to slot on staging site
       uses: azure/webapps-deploy@v1
@@ -47,4 +43,4 @@ jobs:
         app-name: antares-blog-staging
         package: _site/  
         publish-profile: ${{ secrets.STAGING_SITE_PUB_PROFILE }}  # Replace with the name of your publish profile
-        slot-name:  ${{ steps.vars.outputs.short_ref }}
+        slot-name:  ${{ github.event.number }}
