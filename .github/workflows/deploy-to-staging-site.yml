@@ -42,5 +42,4 @@ jobs:
       with: 
         app-name: antares-blog-staging
         slot-name:  "pr-${{ github.event.number }}"
-        publish-profile: ${{ secrets.STAGING_SITE_PUB_PROFILE }}  # Replace with the name of your publish profile
         package: _site/
