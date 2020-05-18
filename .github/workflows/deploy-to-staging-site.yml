@@ -18,6 +18,14 @@ jobs:
       uses: azure/login@v1.1
       with:
         creds: ${{ secrets.ANTARES_BLOG_SITE_SP }}
+        
+    - name: Set up cache for Ruby Bundler
+      uses: actions/cache@v1
+      with:
+        path: vendor/bundle
+        key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-gems-
 
     - name: Set up Ruby 2.6
       uses: actions/setup-ruby@v1
@@ -27,6 +35,7 @@ jobs:
     - name: Install Ruby dependencies
       run: |
         gem install bundler
+        bundle config path vendor/bundle
         bundle install --jobs 4 --retry 3
 
     - name: Build site
