@@ -9,6 +9,8 @@ This year, [Microsoft Build](https://mybuild.microsoft.com/) is entirely online.
 
 *Building web apps with .NET Core? Check out the latest from the App Service team including how to build a continuous delivery pipeline using GitHub Actions, how to use Event Grid to subscribe and act on deployment events and how to monitor your production apps with Health Checks.*
 
+<iframe src="https://channel9.msdn.com/Events/Build/2020/BOD126/player" width="1170" height="658.125" allowFullScreen frameBorder="0" title="Building and managing .NET Core with App Service - Microsoft Channel 9 Video"></iframe>
+
 ### GitHub Actions
 
 GitHub Actions is a flexible automation framework that allows developers to (among other things) continuously deploy their applications to App Service.
