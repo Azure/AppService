@@ -35,7 +35,7 @@ Event Grid is a high performance publish/subscribe messaging system. App Service
 - [Event Grid overview](https://docs.microsoft.com/azure/event-grid/overview)
 - [Comparison of Azure messaging services](https://docs.microsoft.com/azure/event-grid/compare-messaging-services)
 
-### FAQ
+## FAQ
 
 Many of you attended our "Ask the Experts" live session and sent us your questions. Here are some common questions you asked, along with their answers.
 
