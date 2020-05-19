@@ -7,12 +7,9 @@ This year, [Microsoft //Build](https://mybuild.microsoft.com/) is entirely onlin
 
 ## Building and Managing .NET Core with App Service
 
-- **Description**: *Building web apps with .NET Core? Check out the latest from the App Service team including how to build a continuous delivery pipeline using GitHub Actions, how to use Event Grid to subscribe and act on deployment events and how to monitor your production apps with Health Checks.*
-- **Speaker**: Jason Freeberg
+*Building web apps with .NET Core? Check out the latest from the App Service team including how to build a continuous delivery pipeline using GitHub Actions, how to use Event Grid to subscribe and act on deployment events and how to monitor your production apps with Health Checks.*
 
-### Topics
-
-#### GitHub Actions
+### GitHub Actions
 
 GitHub Actions is a flexible automation framework that allows developers to (among other things) continuously deploy their applications to App Service.
 
@@ -20,13 +17,13 @@ GitHub Actions is a flexible automation framework that allows developers to (amo
 - [GitHub Actions for Azure](https://github.com/azure/actions)
 - [GitHub Actions Marketplace](https://github.com/marketplace?type=actions)
 
-#### App Service Health Checks
+### App Service Health Checks
 
 App Service Health Checks will automatically remove and restart unhealthy instances of your application when you are scaled out.
 
 - [Documentation](https://github.com/projectkudu/kudu/wiki/Health-Check-(Preview))
 
-#### Event Grid Integration
+### Event Grid Integration
 
 Event Grid is a high performance publish/subscribe messaging system. App Service now emits events that can be handled with Functions, Logic Apps, and more.
 
