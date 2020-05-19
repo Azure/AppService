@@ -3,7 +3,7 @@ title: "App Service //Build 2020 Recap"
 author_name: "Jason Freeberg"
 ---
 
-This year, [Microsoft //Build](https://mybuild.microsoft.com/) is entirely online. Live and pre-recorded sessions are available for anyone to view. This article is a recap of the sessions from the App Service team, along with links to more information.
+This year, [Microsoft Build](https://mybuild.microsoft.com/) is entirely online. Live and pre-recorded sessions are available for anyone to view. This article is a recap of the sessions from the App Service team, along with links to more information.
 
 ## Building and Managing .NET Core with App Service
 
