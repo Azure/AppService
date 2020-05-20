@@ -39,7 +39,7 @@ jobs:
         bundle install --jobs 4 --retry 3
 
     - name: Build site
-      run: bundle exec jekyll build --baseurl "/" --future
+      run: bundle exec jekyll build --future --baseurl=''
       env:
         JEKYLL_ENV: production
 
