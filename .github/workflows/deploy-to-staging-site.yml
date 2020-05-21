@@ -1,4 +1,4 @@
-name: "New article: deploy to staging site"
+name: "Deploy to staging site"
 
 on:
   pull_request:
@@ -18,6 +18,14 @@ jobs:
       uses: azure/login@v1.1
       with:
         creds: ${{ secrets.ANTARES_BLOG_SITE_SP }}
+        
+    - name: Set up cache for Ruby Bundler
+      uses: actions/cache@v1
+      with:
+        path: vendor/bundle
+        key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-gems-
 
     - name: Set up Ruby 2.6
       uses: actions/setup-ruby@v1
@@ -27,10 +35,11 @@ jobs:
     - name: Install Ruby dependencies
       run: |
         gem install bundler
+        bundle config path vendor/bundle
         bundle install --jobs 4 --retry 3
 
     - name: Build site
-      run: bundle exec jekyll build --baseurl "/" --future
+      run: bundle exec jekyll build --future --baseurl=''
       env:
         JEKYLL_ENV: production
 
@@ -43,3 +52,17 @@ jobs:
         app-name: antares-blog-staging
         slot-name:  "pr-${{ github.event.number }}"
         package: _site/
+    
+    - name: Comment on PR with the preview link
+      uses: mshick/add-pr-comment@v1
+      with:
+        message: |
+          ## [Preview link](https://antares-blog-staging-pr-${{ github.event.number }}.azurewebsites.net) 
+          
+          - Your changes have been deployed to the preview site. The preview site will update as you add more commits to this branch. 
+          - The preview site shows any future-dated articles. Don't worry, if you are publishing a future-dated article, it will not show on the production site until the file's specified date.
+          - The preview link is shareable, but will be deleted when the pull request is merged or closed.
+          
+          > *This is an automated message.*
+        repo-token: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+        allow-repeats: false
