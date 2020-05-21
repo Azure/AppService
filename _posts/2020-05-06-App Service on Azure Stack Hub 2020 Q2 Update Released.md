@@ -1,7 +1,7 @@
 ---
 title: "Azure App Service and Azure Functions on Azure Stack Hub 2020 Q2 Released"
 tags: 
-    - Azure Stack
+  - Azure Stack
 author_name: "Andrew Westgarth"
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "App Service Environment Support for Availability Zones"
 author_name: "Stefan Schackow"
-tags: networking
+category: networking
 ---
 
 App Service has GA'd App Service Environment (ASE) support for deploying into Availability Zones (AZ).  Customers can choose to optionally deploy internal load balancer (ILB) ASEs into a specific AZ (Zone 1, 2 or 3) within an Azure region, and the resources used by that ILB ASE will either be pinned to the specified AZ, or deployed in a zone redundant manner.  
