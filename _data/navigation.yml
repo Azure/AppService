@@ -8,11 +8,17 @@ main:
 # Default sidebar links
 default:
   - title: "Product Areas"
-    children: 
+    children:
+      - title: "Networking"
+        url: "/networking/"
       - title: "Java"
         url: "/java/"
       - title: "Diagnostics"
         url: "/diagnostics/"
+      - title: "Certs and Domains"
+        url: "/certsdomains/"
+      - title: "Deployment, CI/CD, Slots"
+        url: "/deployment/"
   - title: "Reference"
     children:
       - title: Documentation

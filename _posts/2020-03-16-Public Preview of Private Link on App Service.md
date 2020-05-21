@@ -1,7 +1,6 @@
 ---
 title: "Public Preview of Private Link on App Service"
-tags: 
-    - Networking
+category: networking
 author_name: "Christina Compy"
 ---
 

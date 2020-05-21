@@ -4,10 +4,7 @@ author_name: "Yun Jung Choi"
 toc: true
 toc_sticky: true
 excerpt: "Automatically mitigate CPU anomalies and save yourself from another late-night servicing call."
-tags: 
-    - diagnostics
-    - troubleshooting
-    - self-help
+category: diagnostics
 ---
 
 > Currently offered in App Service Diagnostics for Windows web apps.
