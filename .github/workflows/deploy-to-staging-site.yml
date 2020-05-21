@@ -54,7 +54,7 @@ jobs:
         package: _site/
     
     - name: Comment on PR with the preview link
-      uses: mshick/add-pr-comment@v1
+      uses: mshick/add-pr-comment@master
       with:
         message: |
           ## [Preview link](https://antares-blog-staging-pr-${{ github.event.number }}.azurewebsites.net) 
@@ -65,4 +65,3 @@ jobs:
           
           > *This is an automated message.*
         repo-token: ${{ secrets.GITHUB_ACCESS_TOKEN }}
-        allow-repeats: false
