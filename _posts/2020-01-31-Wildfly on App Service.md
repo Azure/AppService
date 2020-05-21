@@ -1,7 +1,6 @@
 ---
 title: "Run Wildfly on App Service"
-tags: 
-    - Java
+category: java
 author_name: "Jason Freeberg"
 ---
 

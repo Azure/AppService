@@ -3,36 +3,34 @@
 main:
   - title: "Topics"
     url: /tags/
-  - title: "Docs"
-    url: https://docs.microsoft.com/en-us/azure/app-service/
 
 
 # Default sidebar links
 default:
-  - title: "Team pages"
+  - title: "Product Areas"
     children: 
       - title: "Java"
         url: "/java/"
       - title: "Diagnostics"
         url: "/diagnostics/"
-  - title: "Wikis"
+  - title: "Reference"
     children:
+      - title: Documentation
+        url: "https://docs.microsoft.com/azure/app-service/"
       - title: "Linux FAQ"
         url: "https://github.com/Azure/app-service-linux-docs"
-      - title: "Windows Containers"
+      - title: "Windows Containers Wiki"
         url: "https://aka.ms/appservicewindowscontainerwiki"
-  - title: "Other Blogs"
-    children:
+  - title: "More"
+    children: 
+      - title: "Twitter"
+        url: "https://twitter.com/Azure"
+      - title: "RSS Feed"
+        url : "/feed.xml"
       - title: "Azure Blog"
         url: "https://azure.microsoft.com/blog/"
       - title: "Azure Updates"
         url: "https://azure.microsoft.com/updates/"
-  - title: "More"
-    children: 
-      - title: "Subscribe"
-        url : "/feed.xml"
-      - title: "Twitter"
-        url: "https://twitter.com/Azure"
   - title: "Archives"
     children:
       - title: "2020"
@@ -43,7 +41,9 @@ default:
         url: "/2018"
       - title: "2017"
         url: "/2017"
-      - title: "All"
+      - title: "2016"
+        url: "/2016"
+      - title: "All posts"
         url: "/posts/"
 
 

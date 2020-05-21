@@ -2,7 +2,9 @@
 layout: archive
 ---
 
-{{ content }}
+{% if paginator.page == 1 %}
+  {{ content }}
+{% endif %}
 
 <h3 class="archive__subtitle">{{ site.data.ui-text[site.locale].recent_posts | default: "Recent Posts" }}</h3>
 
