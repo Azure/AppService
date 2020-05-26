@@ -35,6 +35,12 @@ Event Grid is a high performance publish/subscribe messaging system. App Service
 - [Event Grid overview](https://docs.microsoft.com/azure/event-grid/overview)
 - [Comparison of Azure messaging services](https://docs.microsoft.com/azure/event-grid/compare-messaging-services)
 
+## Migrate Applications to Azure App Service
+
+See how Azure is making it easy to quickly get your application running on App Service. We’ll show you how to use Migration Assistant for moving IIS sites and Linux containers to the cloud.
+
+[Watch the session here](https://mybuild.microsoft.com/sessions/737d89e2-4255-4017-89df-2aa2adf9e348)
+
 ## FAQ
 
 Many of you attended our "Ask the Experts" live session and sent us your questions. Here are some common questions you asked, along with their answers.
