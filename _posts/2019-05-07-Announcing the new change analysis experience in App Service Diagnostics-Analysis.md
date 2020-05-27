@@ -2,7 +2,7 @@
 title: "Announcing the new change analysis experience in App Service Diagnostics"
 author_name: "Yun Jung Choi"
 category: diagnostics
-author_profile: true
+
 ---
 
 In a fast-paced development environment, sometimes it is difficult to keep track of all the changes made to your app... let alone pinpoint a change that caused an unhealthy behavior. Change Analysis can help you narrow down on changes made to your app to facilitate the trouble-shooting experience.
