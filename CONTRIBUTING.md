@@ -1,5 +1,19 @@
 # Instructions for publishing content
 
+Table of contents:
+
+- [Publishing an article](#publishing-an-article)
+  - [What content can I publish here?](#what-content-can-i-publish-here-)
+  - [Get access](#get-access)
+  - [Set up your environment](#set-up-your-environment)
+  - [Author your post](#author-your-post)
+    - [Add digital content](#add-digital-content)
+  - [Publish the article](#publish-the-article)
+- [The team pages](#the-team-pages)
+  - [Edit a team page](#edit-a-team-page)
+  - [Add a team page](#add-a-team-page)
+    - [Notes](#notes)
+
 ## Publishing an article
 
 ### What content can I publish here?
