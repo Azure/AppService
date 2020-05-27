@@ -1,6 +1,8 @@
 # Instructions for publishing content
 
-## What content can I publish here?
+## Publishing an article
+
+### What content can I publish here?
 
 The App Service Team Blog is a great place to share content with our users. Before you start writing, make sure that your content fits within one of these categories:
 
@@ -11,11 +13,11 @@ The App Service Team Blog is a great place to share content with our users. Befo
 - Announcements about upcoming events, or recaps of past events
 - Best practices
 
-## Access
+### Get access
 
 1. Get contributor access to the repository. Email Jason Freeberg with your GitHub username. This will allow you to submit pull requests without creating and maintaining your own fork of the repository.
 
-## Environment Setup
+### Set up your environment
 
 1. Download and install the [Ruby development kit](https://jekyllrb.com/docs/installation/)
 
@@ -35,7 +37,7 @@ The App Service Team Blog is a great place to share content with our users. Befo
 
 1. We suggest using VS Code to author your blog post. Install [Markdown Linting extension](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint) to make your life easier.
 
-## Authoring your post
+### Author your post
 
 1. Run the local Jekyll server. From the project directory, run the following command:
 
@@ -71,7 +73,7 @@ The App Service Team Blog is a great place to share content with our users. Befo
     - For Jekyll-related formatting, please see these [Jekyll Docs](https://jekyllrb.com/docs/posts/).
     - Our blog uses the popular [Minimal Mistakes](https://github.com/mmistakes) theme. If you would like to do advanced markup for your post, please see the [theme's utility classes](https://mmistakes.github.io/minimal-mistakes/docs/utility-classes/).
 
-### Adding Digital Content
+#### Add digital content
 
 You can add images, GIFs, or other digital content to your post by adding it to the `/media/` directory and referencing the file from the post.
 
@@ -85,7 +87,7 @@ You can add images, GIFs, or other digital content to your post by adding it to 
 
     For more information on `baseurl`, please see [this post](https://byparker.com/blog/2014/clearing-up-confusion-around-baseurl/).
 
-## Publishing
+### Publish the article
 
 1. Proofread your post for spelling and grammar. Ask a friend or coworker to proof-read it as well.
 
@@ -96,7 +98,42 @@ You can add images, GIFs, or other digital content to your post by adding it to 
 
 1. Assign `jasonfreeberg` as a reviewer for your pull request. Send an email to Jason if it is high priority.
 
-### Notes
+## The team pages
+
+There are team pages in the left sidebar to help organize content from that team. Each Antares team can set up a team page **if they have published at least 5 relevant articles**.
+
+### Edit a team page
+
+1. Find your team's page under `_pages/team_pages/`
+1. Edit the markdown content as you wish. You can use in-line HTML as well, see the [theme's utility classes](https://mmistakes.github.io/minimal-mistakes/docs/utility-classes/) for more information.
+1. Any images should be placed under `media/pages/team_pages/your-team-name/`. See [adding digital content](#adding-digital-content) for more information on adding these images to your post.
+1. When you're done making changes, submit a Pull Request and add `jasonfreeberg` as a reviewer
+
+### Add a team page
+
+1. Create a markdown file under `_pages/team_pages/`.
+1. Add the following front matter to the markdown document (without the inline comments).
+
+    ```yaml
+    ---
+    permalink: "/your-category-name/"       # Chose your own permalink
+    layout: home                            # Don't change this
+    title: "My team's name"                 # Short title for the page
+    sidebar:
+        nav: "default"                      # Don't change this
+    pagination:
+      enabled: true
+      category: your-category-name          # Same string as your permalink, w/o the slashes
+      sort_reverse: true
+    ---
+    ```
+
+1. Add content about your team, any relevant links, or team member photos to the body of the markdown document. See the other team pages for ideas.
+1. To add articles to your team's page like the others, go back to your team's articles and add `category: your-category-name` to the articles' front matter. This will add them to your team page's paginator.
+
+---------
+
+#### Notes
 
 - [/media](/media): All images and digital content from the old MSDN blog
 - [/resource](/resource): All the CSS and JS content from the old MSDN blog
