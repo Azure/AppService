@@ -3,7 +3,9 @@ layout: archive
 ---
 
 {% if paginator.page == 1 %}
-  {{ content }}
+  <div class="home-content">
+    {{ content }}
+  </div>
 {% endif %}
 
 <h3 class="archive__subtitle">{{ site.data.ui-text[site.locale].recent_posts | default: "Recent Posts" }}</h3>
