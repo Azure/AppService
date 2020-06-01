@@ -10,17 +10,9 @@ pagination:
   sort_reverse: true
 ---
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+App Service supports Java SE and Tomcat applications on Windows and Linux. Use the REST APIs to deploy your .jar or .war files. You can also use the [Zulu OpenJDK for Azure Docker images](https://hub.docker.com/_/microsoft-java-jdk) to deploy a custom container, fully supported by Azure.
 
-<figure class="third">
-	<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSEgsMyptYjVKQ8wQlk57uGoKZ8zUnfGoo_nBPdbdcx3iabmL3U&usqp=CAU">
-	<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSEgsMyptYjVKQ8wQlk57uGoKZ8zUnfGoo_nBPdbdcx3iabmL3U&usqp=CAU">
-	<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSEgsMyptYjVKQ8wQlk57uGoKZ8zUnfGoo_nBPdbdcx3iabmL3U&usqp=CAU">
-</figure>
+## Helpful resources
 
-<figure class="third">
-	<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSEgsMyptYjVKQ8wQlk57uGoKZ8zUnfGoo_nBPdbdcx3iabmL3U&usqp=CAU">
-	<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSEgsMyptYjVKQ8wQlk57uGoKZ8zUnfGoo_nBPdbdcx3iabmL3U&usqp=CAU">
-	<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSEgsMyptYjVKQ8wQlk57uGoKZ8zUnfGoo_nBPdbdcx3iabmL3U&usqp=CAU">
-	<figcaption>The team.</figcaption>
-</figure>
+- [Configuration guide for Java on App Service](https://docs.microsoft.com/azure/app-service/containers/configure-language-java)
+- [Deploy your Spring Boot app with GitHub Actions](https://www.youtube.com/watch?v=b2oyxbSbLPA)

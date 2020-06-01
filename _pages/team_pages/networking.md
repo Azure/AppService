@@ -1,7 +1,7 @@
 ---
 permalink: "/networking/"
 layout: home
-title: "Networking"
+title: "Networking & ASE"
 sidebar:
     nav: "default"
 pagination: 
@@ -10,17 +10,10 @@ pagination:
   sort_reverse: true
 ---
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+App Service has a suite of networking features that enable teams to fulfill their security requirements. Teams that must meet the most stringent security requirements can use an [App Service Environment](https://docs.microsoft.com/azure/app-service/environment/intro), a fully isolated and dedicated hosting option that can be deployed with or without an external IP address.
 
-<figure class="third">
-	<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSEgsMyptYjVKQ8wQlk57uGoKZ8zUnfGoo_nBPdbdcx3iabmL3U&usqp=CAU">
-	<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSEgsMyptYjVKQ8wQlk57uGoKZ8zUnfGoo_nBPdbdcx3iabmL3U&usqp=CAU">
-	<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSEgsMyptYjVKQ8wQlk57uGoKZ8zUnfGoo_nBPdbdcx3iabmL3U&usqp=CAU">
-</figure>
+## Networking Features
 
-<figure class="third">
-	<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSEgsMyptYjVKQ8wQlk57uGoKZ8zUnfGoo_nBPdbdcx3iabmL3U&usqp=CAU">
-	<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSEgsMyptYjVKQ8wQlk57uGoKZ8zUnfGoo_nBPdbdcx3iabmL3U&usqp=CAU">
-	<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSEgsMyptYjVKQ8wQlk57uGoKZ8zUnfGoo_nBPdbdcx3iabmL3U&usqp=CAU">
-	<figcaption>The team.</figcaption>
-</figure>
+- [Private Endpoints](https://docs.microsoft.com/azure/app-service/networking/private-endpoint)
+- [Service Endpoints](https://docs.microsoft.com/azure/app-service/networking/app-gateway-with-service-endpoints)
+- [Virtual Network Integration](https://docs.microsoft.com/azure/app-service/web-sites-integrate-with-vnet)

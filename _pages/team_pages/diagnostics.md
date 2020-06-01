@@ -10,17 +10,9 @@ pagination:
   sort_reverse: true
 ---
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+App Service Diagnostics is an intelligent and interactive experience to help you troubleshoot your app with no configuration required. When you do run into issues with your app, App Service diagnostics points out what’s wrong to guide you to the right information to more easily and quickly troubleshoot and resolve the issue.
 
-<figure class="third">
-	<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSEgsMyptYjVKQ8wQlk57uGoKZ8zUnfGoo_nBPdbdcx3iabmL3U&usqp=CAU">
-	<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSEgsMyptYjVKQ8wQlk57uGoKZ8zUnfGoo_nBPdbdcx3iabmL3U&usqp=CAU">
-	<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSEgsMyptYjVKQ8wQlk57uGoKZ8zUnfGoo_nBPdbdcx3iabmL3U&usqp=CAU">
-</figure>
+## Helpful resources
 
-<figure class="third">
-	<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSEgsMyptYjVKQ8wQlk57uGoKZ8zUnfGoo_nBPdbdcx3iabmL3U&usqp=CAU">
-	<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSEgsMyptYjVKQ8wQlk57uGoKZ8zUnfGoo_nBPdbdcx3iabmL3U&usqp=CAU">
-	<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSEgsMyptYjVKQ8wQlk57uGoKZ8zUnfGoo_nBPdbdcx3iabmL3U&usqp=CAU">
-	<figcaption>The team.</figcaption>
-</figure>
+- [Product Overview](https://docs.microsoft.com/azure/app-service/overview-diagnostics)
+- [How to keep your apps healthy with Genie and Navigator](https://www.youtube.com/watch?v=PtWC43_D0KU)

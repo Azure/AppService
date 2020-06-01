@@ -10,17 +10,11 @@ pagination:
   sort_reverse: true
 ---
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+App Service makes it easy to deploy from your local machine or a CI/CD pipeline. You can deploy to staging environments, known as slots, and swap your new release to production with one click. Finally, you can split traffic between your slots to do A/B testing, or validate your new release with production traffic before swapping.
 
-<figure class="third">
-	<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSEgsMyptYjVKQ8wQlk57uGoKZ8zUnfGoo_nBPdbdcx3iabmL3U&usqp=CAU">
-	<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSEgsMyptYjVKQ8wQlk57uGoKZ8zUnfGoo_nBPdbdcx3iabmL3U&usqp=CAU">
-	<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSEgsMyptYjVKQ8wQlk57uGoKZ8zUnfGoo_nBPdbdcx3iabmL3U&usqp=CAU">
-</figure>
+## Helpful resources
 
-<figure class="third">
-	<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSEgsMyptYjVKQ8wQlk57uGoKZ8zUnfGoo_nBPdbdcx3iabmL3U&usqp=CAU">
-	<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSEgsMyptYjVKQ8wQlk57uGoKZ8zUnfGoo_nBPdbdcx3iabmL3U&usqp=CAU">
-	<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSEgsMyptYjVKQ8wQlk57uGoKZ8zUnfGoo_nBPdbdcx3iabmL3U&usqp=CAU">
-	<figcaption>The team.</figcaption>
-</figure>
+- [Set up CI/CD to App Service](https://docs.microsoft.com/azure/app-service/deploy-continuous-deployment)
+- [Deploy with GitHub Actions](https://www.youtube.com/watch?v=b2oyxbSbLPA)
+- [RuslanY.net blog](https://ruslany.net/)
+- [Deployment best practices](https://docs.microsoft.com/azure/app-service/deploy-best-practices)

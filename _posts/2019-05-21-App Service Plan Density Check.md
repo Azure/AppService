@@ -1,6 +1,5 @@
 ---
 title: "App Service plan Density Check"
-author: "Khaled Zayed"
 category: diagnostics
 author_name: "Khaled Zayed"
 ---
