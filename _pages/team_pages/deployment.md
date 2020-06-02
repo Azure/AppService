@@ -8,6 +8,9 @@ pagination:
   enabled: true
   category: deployment
   sort_reverse: true
+  trail: 
+    before: 2
+    after: 2
 ---
 
 App Service makes it easy to deploy from your local machine or a CI/CD pipeline. You can deploy to staging environments, known as slots, and swap your new release to production with one click. Finally, you can split traffic between your slots to do A/B testing, or validate your new release with production traffic before swapping.
