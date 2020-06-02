@@ -4,7 +4,7 @@ layout: archive
 
 {% if paginator.page == 1 %}
   <div class="home-content">
-    {{ content }}
+    {{ content | markdownify  }}
   </div>
 {% endif %}
 
