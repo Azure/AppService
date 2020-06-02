@@ -1,7 +1,6 @@
 ---
 title: "Announcing general availability of VNet Integration with Windows Web Apps"
-tags: 
-    - Networking
+category: networking
 author_name: "Christina Compy"
 ---
 

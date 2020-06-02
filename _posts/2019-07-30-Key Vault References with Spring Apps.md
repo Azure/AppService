@@ -9,8 +9,7 @@ header:
     og_image: "media/2019/07/locks-header.jpg"
     overlay_image: "media/2019/07/locks-header.jpg"
     overlay_filter: 0.4
-tags:
-    - Java
+category: java
 ---
 
 [Azure Key Vault](https://docs.microsoft.com/en-us/azure/key-vault/) provides a centralized service for managing secrets and certificates with full control over access policies and auditing capabilities. This article will show how to wire up a Spring Boot application on App Service to read a database username, password, and URL from Key Vault. Using Key Vault references requires **no** code changes, but we will need to do some configuration acrobatics.

@@ -2,8 +2,7 @@
 title: "Restore App Service domains within 30 days"
 author_name: Elle Tojaroon
 excerpt: "If the domain was deleted within the past 30 days, you restore it by re-creating the resource under the same subscription and resource group."
-tags:
-    - App Service Domains
+category: certsdomains
 ---
 
 If you deleted your [App Service Domain](https://docs.microsoft.com/en-us/azure/app-service/manage-custom-dns-buy-domain#buy-the-domain) resource within the past 30 days, you can easily restore it by purchasing it again with the same Domain Registration Subscription and resource group. Unlike trying to purchase the domain name from other subscriptions or resource groups, the validation will allow you to purchase the same domain name.
