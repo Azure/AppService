@@ -6,7 +6,7 @@ tags:
     - windows containers
 ---
 
-Github Actions enables you to easily automate your development workflow to build, test, and deploy your projects setting up continuous deployment right inside of your GitHub repo.  Actions are defined inside of a YAML file that is added to your repository once you decide to setup your workflow through a template or by creating your own.  The actions are triggered by an event of a push to a specific branch which runs a number of jobs that you'll define that can push to a registry or cloud service.
+Github Actions enables you to easily automate your development workflow to build, test, and deploy your projects setting up continuous deployment right inside of your GitHub repo.  Actions are defined inside of a YAML file that is added to your repository once you decide to setup your workflow through a template or by creating your own.  The actions are triggered by an event of a push to a specific branch which runs a number of jobs that you'll define that can push to a registry or cloud service. 
 
 Using GitHub Actions for Azure, you're able to deploy a containerized application to your App Service.  You have your choice of deploying it to Windows or Linux, but for todays example, we'll be diving into Windows with the steps you need to properly deploy.  
 
