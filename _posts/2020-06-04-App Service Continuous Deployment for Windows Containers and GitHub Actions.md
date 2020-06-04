@@ -22,7 +22,7 @@ We'll be using a sample application available that is ready to be used as a cont
 **Sample Application** <br/>
 The sample application is a simple task tracking app built with .NET Framework using Azure SQL for storage and added docker support.  The project is setup with a GitHub Actions *main.yaml* file that is ready to work with your account.  You have your choice of using Azure Container Registry (ACR) or Docker Hub for your registry needs (the difference in syntax will be explained below). 
 
-Find the full repository samples for [.NET Framework](https://github.com/jeffwmartinez/dotnet-framework-wc-actions) and [.NET Core](https://github.com/jeffwmartinez/dotnet-core-wc-actions) at these highlighted links. 
+Find the full repository samples for [.NET Framework](https://aka.ms/dotnetframeworkdeployment) and [.NET Core](https://aka.ms/dotnetcoredeployment) at these highlighted links. 
 
 1. Clone the repository.
 1. Add in the necessary GitHub secrets so actions knows where to connect to your Azure resources and committing your changes to the master branch will trigger the build.  
