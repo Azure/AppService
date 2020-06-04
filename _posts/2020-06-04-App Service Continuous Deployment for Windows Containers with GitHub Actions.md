@@ -1,5 +1,5 @@
 ---
-title: "App Service Continuous Deployment for Windows Containers and GitHub Actions"
+title: "App Service Continuous Deployment for Windows Containers with GitHub Actions"
 author_name: "Jeff Martinez"
 tags:
     - dotnet
