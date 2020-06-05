@@ -1,7 +1,6 @@
 ---
 title: "Announcing public preview for Azure Functions portal UX"
 tags: 
-    - Function
     - Azure Portal
 author_name: "Byron Tardif"
 ---

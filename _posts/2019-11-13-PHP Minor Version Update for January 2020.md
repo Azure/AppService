@@ -2,7 +2,7 @@
 title: "PHP Minor Version Update for January 2020" 
 author_name: "Eric Stenson"
 tags: PHP
-author_profile: true
+
 ---
 Latest version updates to PHP
 
