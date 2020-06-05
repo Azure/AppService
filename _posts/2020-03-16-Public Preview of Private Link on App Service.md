@@ -11,7 +11,7 @@ We are happy to announce the public preview of Private Link for Azure App Servic
 
 ![Private Link Flow]({{ site.baseurl }}/media/2020/03/privatelink-flow.png)
 
-The feature is currently available in East US and West US 2. Remaining regions will be updated shortly.
+The feature is currently available in all public regions.
 
 ### Using Private Link or Service Endpoints
 
