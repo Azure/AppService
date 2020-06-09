@@ -20,16 +20,21 @@ The sample application is a simple task-tracking app built with .NET Framework u
 
 Find the full repository samples for [.NET Framework](https://aka.ms/dotnetframeworkdeployment) and [.NET Core](https://aka.ms/dotnetcoredeployment) at these highlighted links.
 
-1. Clone the repository
-1. Add in the necessary GitHub secrets so actions knows where to connect to your Azure resources and committing your changes to the master branch will trigger the build.  
 
 ## Create Resources
 
 Create the following resources. You will need information from each resource that will be used in the file and stored in your secrets. Create your choice of registry (Azure Container Registry or Docker Hub) first since you will need information from there before you can create your App Service.
 
-1. Azure Container Registry or a Docker Hub container registry
-1. App Service (Web App for Container)
-1. Azure SQL Database (Optional)
+1. Azure Container Registry OR Docker Hub 
+- `CONTAINER_REGISTRY_USERNAME` = registry-username
+- `CONTAINER_REGISTRY_PASSWORD` = registry-password
+- `CONTAINER_REGISTRY_NAME` = login-server-name (ACR only)
+2. App Service (Web App for Container) 
+- `APP_NAME` = web-app-name
+3. .NET Framework application with supporting dockerfile in a GitHub repository
+4. Azure SQL Database (Optional)
+- `AZURE_SQL_CONNECTION_STRING` = database-connection-string
+- `DATABASE_SERVER_NAME` = server-name
 
 ## Create a Service Principal
 
@@ -58,20 +63,19 @@ Our workflow will use a Service Principal to authenticate with Azure when deploy
 
 Since we are using sensitive information that you don't want others to access, we will use GitHub secrets to protect our information. Create a secret by following the directions [here](https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets).  Add the github secrets variables below with your own secrets appropriate from each resource.  If you are not using Docker Hub, ignore the DOCKERHUB prefixed parameters and if you are not using ACR, ignore the REGISTRY prefixed variables. 
 
-- `APP_NAME` = your web apps name
-- `AZURE_CREDENTIALS` = your service principal output
-- `IMAGE_NAME` = name of your image that will upload to your registry
-- `REGISTRY_USERNAME` = your registry username
-- `REGISTRY_PASSWORD` = your registry password
-- `AZURE_SQL_CONNECTION_STRING` = database connection string
-- `DATABASE_SERVER_NAME` = name of your server
-- `DOCKERHUB_REGISTRY_NAME` = your docker hub registry name
-- `DOCKERHUB_USERNAME` = your docker hub user name
-- `DOCKERHUB_PASSWORD` = your docker hub password
+- `APP_NAME` = web-app-name
+- `AZURE_CREDENTIALS` = service-principal-output
+- `IMAGE_NAME` = name-of-image
+- `CONTAINER_REGISTRY_USERNAME` = registry-name
+- `CONTAINER_REGISTRY_PASSWORD` = registry-password
+- `CONTAINER_NAME` = login-server-name (ACR only)
+- `AZURE_SQL_CONNECTION_STRING` = database-connection-string
+- `DATABASE_SERVER_NAME` = server-name
+
 
 ## The Dockerfile
 
-Before we can start on our GitHub Action workflow, we also need to make sure our dockerfile is in order.  The sample(s) below are setup to work with the sample app linked above. If you need to adjust your dockerfile or create your own, remember to test building it locally first or it will not work when you run the action. 
+The samples below explain the associated Dockerfiles for the .NET Framework and .NET Core sample applications linked above.  If creating your own application, use the appropriate Dockerfile below and replace the directory paths to match your application. 
 
 ### .NET Framework
 
@@ -169,9 +173,9 @@ jobs:
 In order to access our registry we need to add our docker login action first.  We will use the same docker-login action to login to your choice of ACR or Docker Hub.  If logging into docker hub, you can get away with not using the login-server parameter.  If using ACR, you can  grab the server name, username, and password from the *Access Keys* tab in your Azure Container Registry Resource
 
 You'll need the following secrets:
-
-- REGISTRY_USERNAME or DOCKERHUB_USERNAME
-- REGISTRY_PASSWORD or DOCKERHUB_PASSWORD
+- `CONTAINER_REGISTRY_USERNAME`
+- `CONTAINER_REGISTRY_PASSWORD`
+- `CONTAINER_REGISTRY_NAME`
 
 ![ghactions]({{ site.baseurl }}/media/2020/06/githubactions_2.jpg)
 
@@ -182,9 +186,9 @@ You'll need the following secrets:
 - name: Docker login to ACR
   uses: azure/docker-login@v1
   with:
-    login-server: ${{ secrets.REGISTRY_USERNAME }}.azurecr.io
-    username: ${{ secrets.REGISTRY_USERNAME }}
-    password: ${{ secrets.REGISTRY_PASSWORD }}
+    login-server: ${{ secrets.CONTAINER_REGISTRY_NAME }}
+    username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
+    password: ${{ secrets.CONTAINER_REGISTRY_PASSWORD }}
 ```
 
 #### Docker Hub
@@ -194,37 +198,24 @@ You'll need the following secrets:
 - name: Docker Hub login
   uses: azure/docker-login@v1
   with:
-    username: ${{ secrets.DOCKERHUB_USERNAME }}
-    password: ${{ secrets.DOCKERHUB_PASSWORD }}
+    username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
+    password: ${{ secrets.CONTAINER_REGISTRY_PASSWORD }}
 ```
 
 ### Build and Push Image to Registry
 
-Under the same action, run the following docker build & push commands to publish to your chosen registry.  The "${{ github.sha }}" in the tags place will add in the github commit id so you know where it came from. Remember that your "container-name" is also defined here.
+Under the same action, run the following docker build & push commands to publish to your chosen registry.  The "${{ github.sha }}" in the tags place will add in the github commit id so you know where it came from.  
 
 You'll need the following secrets:
-
-- REGISTRY_USERNAME or DOCKERHUB_REGISTRY_NAME
-- IMAGE_NAME <br/>
-
-#### Azure Container Registry
+- `CONTAINER_REGISTRY_NAME`
+- `IMAGE_NAME`
 
 ```yaml
-# Build and push the image to Azure Container Registry
-- name: Build and Push container to ACR
+# Build and push the image to Container Registry
+- name: Build and Push container to registry
   run: |
-    docker build --file=taskapp/taskapp/Dockerfile -t ${{ secrets.REGISTRY_USERNAME }}.azurecr.io/${{ secrets.IMAGE_NAME }}:${{ github.sha }} .
-    docker push ${{ secrets.REGISTRY_USERNAME }}.azurecr.io/${{ secrets.IMAGE_NAME }}:${{ github.sha }}
-```
-
-#### Docker Hub
-
-```yaml
-# Build and push the image to Azure Container Registry
-- name: Build and Push container to ACR
-  run: |
-    docker build --file=taskapp/taskapp/Dockerfile -t ${{ secrets.DOCKERHUB_REGISTRY_NAME }}/${{ secrets.IMAGE_NAME }}:${{ github.sha }} .
-    docker push ${{ secrets.DOCKERHUB_REGISTRY_NAME }}/${{ secrets.IMAGE_NAME }}:${{ github.sha }} 
+    docker build --file=taskapp/taskapp/Dockerfile -t ${{ secrets.CONTAINER_REGISTRY_NAME }}/${{ secrets.IMAGE_NAME }}:${{ github.sha }} .
+    docker push ${{ secrets.CONTAINER_REGISTRY_NAME }}/${{ secrets.IMAGE_NAME }}:${{ github.sha }}
 ```
 
 Now that you have your image pushed to your registry.  You can push the container to App Service.  If you haven't already created your App Service, now is the time to do so before you can proceed.  Just remember that Windows Containers deployment is only available on the Premium SKU App Service Plans.  Be mindful of the SKU capacity levels as you may need to scale up if your container is too large.
@@ -235,7 +226,7 @@ In order to automate deployment to App Serivce and Azure SQL, you'll need to use
 
 You'll need the following secret:
 
-- AZURE_CREDENTIALS
+-  `AZURE_CREDENTIALS`
 
 ```yaml
 - name: Azure Service Principal Authentication
@@ -250,29 +241,19 @@ The final step to setting up the continuous deployment is to add the webapps con
 
 You'll need the following secrets:
 
-- APP_NAME
-- REGISTRY_USERNAME
-- IMAGE_NAME
+- `APP_NAME`
+- `CONTAINER_REGISTRY_NAME`
+- `IMAGE_NAME`
 
-### Azure Container Registry
-
-```yaml
-- name: Deploy Container to Azure App Service
-  uses: azure/webapps-container-deploy@v1
-  with:
-    app-name: ${{ secrets.APP_NAME }}
-    images: ${{ secrets.REGISTRY_USERNAME }}.azurecr.io/${{ secrets.IMAGE_NAME }}:${{ github.sha }}
-```
-
-### Docker Hub
 
 ```yaml
 - name: Deploy Container to Azure App Service
   uses: azure/webapps-container-deploy@v1
   with:
     app-name: ${{ secrets.APP_NAME }}
-    images: ${{ secrets.DOCKERHUB_REGISTRY_NAME }}/${{ secrets.IMAGE_NAME }}:${{ github.sha }}
+    images: ${{ secrets.CONTAINER_REGISTRY_NAME }}/${{ secrets.IMAGE_NAME }}:${{ github.sha }}
 ```
+
 
 ## Deploy to Azure SQL Database (Optional)
 
@@ -280,8 +261,8 @@ Adding Azure SQL to the workflow is optional of course, as you might have other 
 
 You'll need the following secrets:
 
-- DATABASE_SERVER_NAME
-- AZURE_SQL_CONNECTION_STRING
+- `DATABASE_SERVER_NAME`
+- `AZURE_SQL_CONNECTION_STRING`
 
 ![ghactions]({{ site.baseurl }}/media/2020/06/githubactions_5.jpg)
 
@@ -313,7 +294,7 @@ From here you are setup to continuously build your Windows Container application
 
 -------------------------------------------------------------------------
 
-The full template below:
+The full `main.yaml` template below:
 
 ```yaml
 name: Build and Deploy Windows Container App to Azure App Service
@@ -344,52 +325,32 @@ jobs:
     - name: Docker login to ACR
       uses: azure/docker-login@v1
       with:
-        login-server: ${{ secrets.REGISTRY_USERNAME }}.azurecr.io
-        username: ${{ secrets.REGISTRY_USERNAME }}
-        password: ${{ secrets.REGISTRY_PASSWORD }}
+       # comment out the login-server parameter if using docker hub
+        login-server: ${{ secrets.CONTAINER_REGISTRY_NAME }}
+        username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
+        password: ${{ secrets.CONTAINER_REGISTRY_PASSWORD }}
         
     # Build and push your image to Azure Container Registry 
     - name: Build and Push container to ACR
       run: |
-        docker build --file=taskapp/taskapp/Dockerfile -t ${{ secrets.REGISTRY_USERNAME }}.azurecr.io/${{ secrets.IMAGE_NAME }}:${{ github.sha }} .
-        docker push ${{ secrets.REGISTRY_USERNAME }}.azurecr.io/${{ secrets.IMAGE_NAME }}:${{ github.sha }}     
+        docker build --file=taskapp/taskapp/Dockerfile -t ${{ secrets.CONTAINER_REGISTRY_NAME }}/${{ secrets.IMAGE_NAME }}:${{ github.sha }} .
+        docker push ${{ secrets.CONTAINER_REGISTRY_NAME }}/${{ secrets.IMAGE_NAME }}:${{ github.sha }}  
       
     # Deploy your container to App Service 
     - name: Deploy Container to Azure App Service
       uses: azure/webapps-container-deploy@v1
       with:
         app-name: ${{ secrets.APP_NAME }}
-        images: ${{ secrets.REGISTRY_USERNAME }}.azurecr.io/${{ secrets.IMAGE_NAME }}:${{ github.sha }}
-       
-  # **** UNCOMMENT IF USING DOCKER HUB **** 
-    # Use docker login
-    #- name: Docker login to ACR
-    #  uses: azure/docker-login@v1
-    #  with:
-    #    username: ${{ secrets.DOCKERHUB_USERNAME }}
-    #    password: ${{ secrets.DOCKERHUB_PASSWORD }}
-
-    # Build and push your image to Docker Hub
-    #- name: Build and Push container to Docker Hub
-    #  run: |
-    #    docker build --file=taskapp/taskapp/Dockerfile -t ${{ secrets.DOCKERHUB_REGISTRY_NAME }}/${{ secrets.IMAGE_NAME }}:${{ github.sha }} .
-    #    docker push ${{ secrets.DOCKERHUB_REGISTRY_NAME }}/${{ secrets.IMAGE_NAME }}:${{ github.sha }}  
-  
-    # Deploy your container to App Service
-    #- name: Deploy Container to Azure App Service
-    #  uses: azure/webapps-container-deploy@v1
-    #  with:
-    #    app-name: ${{ secrets.APP_NAME }}
-    #    images: ${{ secrets.DOCKERHUB_REGISTRY_NAME }}/${{ secrets.IMAGE_NAME }}:${{ github.sha }}
-  # *************************************** 
-
+        images: ${{ secrets.CONTAINER_REGISTRY_NAME }}/${{ secrets.IMAGE_NAME }}:${{ github.sha }}
+    
     # Deploy a dacpac file to your SQL server
     - name: Azure SQL Deploy
       uses: Azure/sql-action@v1
       with:
-        server-name: ${{ secrets.DATABASE_SERVER_NAME }}.database.windows.net
+        server-name: ${{ secrets.DATABASE_SERVER_NAME }}
         connection-string: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
         dacpac-package: './data.dacpac'
+
 ```
 
 --------------------------------------------------
