@@ -1,5 +1,5 @@
 ---
-title: "Linux Hybrid Connections"
+title: "General Availability of Linux Hybrid Connections"
 author_name: "Christina Compy"
 category: networking
 tags:
@@ -7,6 +7,8 @@ tags:
 ---
 
 We are happy to announce general availability for Hybrid Connections for Linux apps. The Hybrid Connections feature has been available for Windows apps for quite a few years and is now available for Linux. The Hybrid Connections feature enables your apps to access TCP endpoints in any network that can make outbound calls to Azure. 
+
+![Hybrid Connections high level]({{site.baseurl}}/media/2020/06/hybrid-connections-linux.png)
 
 Hybrid Connections don't enable an alternate capability to access your application. For that you should look at Private Endpoints. As used in App Service, each Hybrid Connection matches to a single TCP host and port combination. This means that the Hybrid Connection endpoint can be a TCP endpoint on any operating system and any application. There is no awareness in the feature for any application protocols that are used. It provides network access. You can make calls to SQL, a web service or really any TCP socket.
 
