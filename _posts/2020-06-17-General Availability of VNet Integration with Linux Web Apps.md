@@ -1,5 +1,5 @@
 ---
-title: "General availability of VNet Integration with Linux Web Apps"
+title: "General Availability of VNet Integration for Linux Web Apps"
 category: networking
 author_name: "Christina Compy"
 ---
