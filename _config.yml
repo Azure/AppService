@@ -12,22 +12,22 @@
 
 # theme                  : "minimal-mistakes-jekyll"
 # remote_theme           : "mmistakes/minimal-mistakes"
-minimal_mistakes_skin    : "dark" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
+minimal_mistakes_skin    : "default" # "air", "aqua", "contrast", "dark", "default", "dirt", "neon", "mint", "plum", "sunrise"
 
 # Site Settings
 locale                   : "en-US"
-title                    : "App Service Blog"
+title                    : "Azure App Service"
 title_separator          : "-"
-subtitle                 : "" # site tagline that appears below site title in masthead
+subtitle                 : "Team Blog" # site tagline that appears below site title in masthead
 name                     : "Azure App Service"
 description              : "Announcements, updates, and release notes from the Azure App Service product team."
 url                      : "https://azure.github.io" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : "/AppService" # the subpath of your site, e.g. "/blog"
 repository               : "Azure/AppService" # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
 teaser                   : "media/pages/new_app_service_logo_64.svg" # path of fallback teaser image
-logo                     : "media/pages/new_app_service_logo_16.svg" # path of logo image to display in the masthead
+logo                     : "media/pages/new_app_service_logo_64.svg" # path of logo image to display in the masthead
 masthead_title           : # overrides the website title displayed in the masthead, use " " for no title
-# breadcrumbs            : false # true, false (default)
+breadcrumbs              : false # true, false (default)
 words_per_minute         : 200
 comments:
   provider               : false # false (default), "disqus", "discourse", "facebook", "staticman", "staticman_v2", "utterances", "custom"
@@ -86,18 +86,6 @@ bing_site_verification   :
 yandex_site_verification :
 naver_site_verification  :
 lang: "en_US"
-
-# Config for Jekyll archives
-jekyll-archives:
-  enabled: all
-  layouts:
-    year:  archive-year
-    month: archive-month
-    day:   archive-day
-  permalinks:
-    year:  '/:year/'
-    month: '/:year/:month/'
-    day:   '/:year/:month/:day/'
 
 # Social Sharing
 twitter:
@@ -235,14 +223,22 @@ sass:
 
 # Outputting
 permalink: /:year/:month/:day/:title:output_ext
-paginate: 5 # amount of posts to show
-paginate_path: /page:num/
+# paginate: 5 # amount of posts to show
+# paginate_path: /page:num/
 timezone: # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+pagination:
+  enabled: true
+  permalink: /page:num/
+  per_page: 5
+  trail: 
+    before: 2
+    after: 2
+
 
 
 # Plugins (previously gems:)
 plugins:
-  - jekyll-paginate
+  - jekyll-paginate-v2
   - jekyll-sitemap
   - jekyll-gist
   - jekyll-feed
@@ -269,24 +265,19 @@ whitelist:
 #  - <base_path>/tags/my-awesome-tag/index.html ~> path: /tags/
 #  - <base_path/categories/my-awesome-category/index.html ~> path: /categories/
 #  - <base_path/my-awesome-category/index.html ~> path: /
-category_archive:
-  type: liquid
-  path: /categories/
-tag_archive:
-  type: liquid
-  path: /tags/
-# https://github.com/jekyll/jekyll-archives
-# jekyll-archives:
-#   enabled:
-#     - categories
-#     - tags
-#   layouts:
-#     category: archive-taxonomy
-#     tag: archive-taxonomy
-#   permalinks:
-#     category: /categories/:name/
-#     tag: /tags/:name/
 
+# https://github.com/jekyll/jekyll-archives
+# Config for Jekyll archives
+jekyll-archives:
+  enabled: all
+  layouts:
+    year:  archive-year
+    month: archive-month
+    day:   archive-day
+  permalinks:
+    year:  '/:year/'
+    month: '/:year/:month/'
+    day:   '/:year/:month/:day/'
 
 # HTML Compression
 # - http://jch.penibelst.de/
@@ -304,8 +295,10 @@ defaults:
       type: posts
     values:
       layout: single
-      author_profile: true
+      # author_profile: true
       read_time: true
-      comments: false # true
+      comments: false
       share: true
       related: true
+      sidebar:
+        nav: "default"

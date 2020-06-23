@@ -3,10 +3,9 @@ title: "Announcing GitHub Actions for App Service"
 author_name: "Jason Freeberg"
 toc: true
 toc_sticky: true
-tags:
-    - deployment
-    - devops
-    - github
+category: deployment
+tags: 
+  - devops
 ---
 
 Last week GitHub announced the preview of [GitHub Actions](https://github.com/features/actions) with built-in CI/CD; watch the announcement [here](https://youtu.be/E1OunoCyuhY?t=2150). These actions, defined in YAML files, allow you to trigger an automated workflow process on any GitHub event. Today the App Service team is happy to share our own action, allowing you to deploy to App Service following a push or pull request.

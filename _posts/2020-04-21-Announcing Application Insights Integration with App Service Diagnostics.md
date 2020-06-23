@@ -1,10 +1,7 @@
 ---
 title: "Announcing Application Insights integration with App Service Diagnostics"
 author_name: "Puneet Gupta"
-tags:
-    - diagnostics
-    - troubleshooting
-    - self-help
+category: diagnostics
 ---
 
 App Services Diagnostics is a powerful tool that allows you to troubleshoot and mitigate issues within your application. The rich set of tools under the App Services Diagnostics carefully analyze all the telemetry emitted by App Services platform and suggests recommendations and troubleshooting steps that help in keeping your apps up and healthy. We are happy to announce that **App Services Diagnostics has now deeper and better integration with Application Insights**.

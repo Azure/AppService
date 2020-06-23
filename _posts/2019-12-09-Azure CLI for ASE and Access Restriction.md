@@ -1,6 +1,7 @@
 ---
 title: "Azure CLI for ASE and Access Restriction"
 author_name: "Mads Damgård"
+category: networking
 tags: devops
 ---
 

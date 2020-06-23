@@ -3,7 +3,7 @@ title:  "The Data Connections will be removed from Web App menu"
 tags:
     - Azure Portal
 author_name: "Byron Tardif"
-author_profile: true
+
 ---
 
 Data connections provides a guided experience to easily add a connection string to a new or existing **SQL Azure Database** or **Azure Storage Account**.
