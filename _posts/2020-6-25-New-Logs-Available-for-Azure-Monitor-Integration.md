@@ -17,7 +17,7 @@ To learn more about how to set up your Diagnostic Settings, refer to our [previo
 ### AppServiceIPSecAuditLogs (Linux and Windows)
 This log will show requests made to an web app if there were any [IP access restriction rules](https://docs.microsoft.com/en-us/azure/app-service/app-service-ip-restrictions) created. It will provide information such as the host, client IP, result, and the matching rule. This is available for both Linux and Windows.
 
-For example, if a user created an IP rule to only allow access from a certain IP range, and there was a request made to the app from an IP outside of the allowed IP range, the log will show the IP of the request and what rule denied the request. Similar results will show for requests made from allowed IP ranges.
+As an example, if a user created an IP rule to only allow access from a certain IP range, and there was a request made to the app from an IP outside of the allowed IP range, the log will show the IP of the request and what rule denied the request. Similar results will show for requests made from allowed IP ranges.
 
 ***Note:*** As of current writing, this log is only available in the Storage Account endpoint. Updates will be made once this is available in Log Analytics.
 
