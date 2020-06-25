@@ -1,7 +1,5 @@
 ---
 title: "Important update for Tinfoil security"
-tags: 
-    - Tinfoil
 author_name: "Byron Tardif"
 ---
 

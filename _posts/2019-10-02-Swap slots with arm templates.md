@@ -2,8 +2,7 @@
 title: "Use ARM templates to swap deployment slots"
 author_name: Ruslan Yakushev
 excerpt: "You can now use ARM templates to swap deployment slots."
-tags:
-    - "deployment slots"
+category: deployment
 ---
 
 *A version of this article appeared on [ruslany.net](https://ruslany.net/2019/10/using-arm-template-to-swap-app-service-deployment-slots/)*

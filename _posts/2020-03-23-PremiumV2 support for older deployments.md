@@ -1,7 +1,5 @@
 ---
 title: "PremiumV2 tier for older App Service deployments"
-tags: 
-    - app service plan
 author_name: "Christina Compy"
 ---
 
