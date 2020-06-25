@@ -47,4 +47,5 @@ The table below shows the latest availability for the log categories on Windows 
 |    AppServicePlatformLogs            |    TBA             |    ✔️   |
 
 <sup>1</sup> Supported only on Premium, PremiumV2 and Isolated App Service Plans
+
 <sup>2</sup> Supported on Java SE and Tomcat
