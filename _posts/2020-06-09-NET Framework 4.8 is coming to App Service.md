@@ -6,6 +6,7 @@ toc_sticky: true
 tags:
     - dotnet
 ---
+> The .NET Framework update is an in-place upgrade to App Service, **it is not expected to break any pre-existing .NET Framework apps** and you are not being required to update your applications.
 
 An update is coming for App Service to support .NET Framework 4.8. You will soon be able to take advantage of the updated .NET Framework toolset, bug fixes, and key improvements in accessibility and runtime. For the full list of updates and changes see the [announcement](https://devblogs.microsoft.com/dotnet/announcing-the-net-framework-4-8/) and [release notes](https://github.com/microsoft/dotnet/blob/master/releases/net48/README.md). The update will come to App Service starting in *July 14, 2020* and completing by *September 15, 2020*. In preparation for your application update to .NET Framework 4.8, we recommend that you test your applications locally in advance.
 
