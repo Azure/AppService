@@ -4,8 +4,8 @@ author_name: "Jason Freeberg and Yutang Lin"
 toc: true
 toc_sticky: true
 tags:
-    - logs
     - monitoring
+last_modified_at: 2020-06-25
 ---
 
 We are happy to announce that App Service has new and improved integration with Azure Monitor (preview). You can now send your logs from Windows or Linux App Service to Storage Accounts, Event Hubs, or Log Analytics.
