@@ -2,7 +2,7 @@
 title:  "PHP Minor Version Update for July 2019"
 author_name: "Eric Stenson"
 tags: PHP
-author_profile: true
+
 layout: single
 ---
 Latest version updates to PHP

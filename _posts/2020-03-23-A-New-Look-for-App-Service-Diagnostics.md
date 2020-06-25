@@ -4,10 +4,7 @@ author_name: "Yun Jung Choi"
 toc: true
 toc_sticky: true
 excerpt: "We are launching a new experience in App Service Diagnostics to help you more easily and quickly diagnose and solve problems of your application."
-tags: 
-    - diagnostics
-    - troubleshooting
-    - self-help
+category: diagnostics
 ---
 
 > The new experience is currently available for select Windows web apps. We are gradually rolling it out to all subscriptions in the coming weeks.

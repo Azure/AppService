@@ -1,13 +1,12 @@
-name: "New article: deploy to staging site"
+name: "Deploy to staging site"
 
 on:
   pull_request:
     branches:
     - master
-    types: [opened, edited, reopened, ready_for_review, synchronize]
 
 jobs:
-  build:
+  build-and-deploy:
 
     runs-on: ubuntu-latest
 
@@ -15,27 +14,53 @@ jobs:
     - name: Check out repo
       uses: actions/checkout@v1
 
+    - name: Log into Azure CLI with service principal
+      uses: azure/login@v1.1
+      with:
+        creds: ${{ secrets.ANTARES_BLOG_SITE_SP }}
+        
+    - name: Set up cache for Ruby Bundler
+      uses: actions/cache@v1
+      with:
+        path: vendor/bundle
+        key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-gems-
+
     - name: Set up Ruby 2.6
       uses: actions/setup-ruby@v1
       with:
         ruby-version: 2.6.x
 
-#     - name: Install Ruby dependencies
-#       run: |
-#         gem install bundler
-#         bundle install --jobs 4 --retry 3
+    - name: Install Ruby dependencies
+      run: |
+        gem install bundler
+        bundle config path vendor/bundle
+        bundle install --jobs 4 --retry 3
 
-#     - name: Build site
-#       run: |
-#         echo "Building site for PR"
-#         bundle exec jekyll build
-#         echo: "ENV:"
-#         env
+    - name: Build site
+      run: bundle exec jekyll build --future --baseurl=''
+      env:
+        JEKYLL_ENV: production
 
-#     - name: Deploy to staging site
-#       uses: azure/webapps-deploy@v1
-#       with: 
-#         app-name: antares-blog-staging
-#         package: _site/  
-#         publish-profile: ${{ secrets.STAGING_SITE_PUB_PROFILE }}  # Replace with the name of your publish profile
-#         slot-name: "article-from"
+    - name: Create slot on staging site
+      run: az webapp deployment slot create --resource-group appserviceblogsite  --name antares-blog-staging --slot pr-${{ github.event.number }}
+
+    - name: Deploy to slot on staging site
+      uses: azure/webapps-deploy@v1
+      with: 
+        app-name: antares-blog-staging
+        slot-name:  "pr-${{ github.event.number }}"
+        package: _site/
+    
+    - name: Comment on PR with the preview link
+      uses: mshick/add-pr-comment@master
+      with:
+        message: |
+          ## [Preview link](https://antares-blog-staging-pr-${{ github.event.number }}.azurewebsites.net) 
+          - Your changes have been deployed to the preview site. The preview site will update as you add more commits to this branch. 
+          - The preview site shows any future-dated articles. Don't worry, if you are publishing a future-dated article, it will not show on the production site until the file's specified date.
+          - The preview link is shareable, but will be deleted when the pull request is merged or closed.
+          > *This is an automated message.*
+        repo-token: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+   
