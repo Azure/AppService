@@ -1,13 +1,14 @@
 ---
-title: "App Service Integration with Azure Monitor"
+title: "App Service Integration with Azure Monitor (Preview)"
 author_name: "Jason Freeberg and Yutang Lin"
 toc: true
 toc_sticky: true
 tags:
-   - monitoring
+    - monitoring
+last_modified_at: 2020-06-25
 ---
 
-We are happy to announce that App Service has new and improved integration with Azure Monitor. You can now send your logs from Windows or Linux App Service to Storage Accounts, Event Hubs, or Log Analytics.
+We are happy to announce that App Service has new and improved integration with Azure Monitor (preview). You can now send your logs from Windows or Linux App Service to Storage Accounts, Event Hubs, or Log Analytics.
 
 ## Increased visibility into your web apps
 
@@ -27,19 +28,25 @@ App Service now outputs the following log types into Azure Monitor.
 - **AppServiceAuditLogs**: Logs for any user login via FTP or Kudu
 - **AppServiceFileAuditLogs**: Logs for file changes (add, delete, or update) via FTP or Kudu
 - **AppServiceAppLogs**: Any logs or exceptions written to the stack’s logging utility. Supports multi-line logs and exceptions
+- **AppServiceIPSecLogs**:  Logs request made to the web app with IP info if there were IP access restriction rules set up
+- **AppServicePlatformLogs**: Logs from containers (ie. "docker run")
 
 The table below shows the current availability for the log categories.
 
-|    Log Name                          |    Windows       |    Linux |
-|--------------------------------------|------------------|----------|
-|    AppServiceConsoleLogs             |    TBA           |    ✔️   |
-|    AppServiceHTTPLogs                |    ✔️            |    ✔️   |
-|    AppServiceEnvironmentPlatformLogs |    ✔️   ️         |    ✔️   |
-|    AppServiceAuditLogs               |    ✔️            |    ✔️   |
-|    AppServiceFileAuditLogs           |    TBA           |    TBA   |
-|    AppServiceAppLogs                 |    TBA           |    ✔️ * |
+|    Log Name                          |    Windows         |    Linux |
+|--------------------------------------|--------------------|----------|
+|    AppServiceConsoleLogs             |    TBA             |    ✔️   |
+|    AppServiceHTTPLogs                |    ✔️              |    ✔️   |
+|    AppServiceEnvironmentPlatformLogs |    ✔️              |    ✔️   |
+|    AppServiceAuditLogs               |    ✔️              |    ✔️   |
+|    AppServiceFileAuditLogs           |    ✔️ <sup>1</sup> |   TBA   |
+|    AppServiceAppLogs                 |    TBA             |    ✔️ <sup>2</sup> |
+|    AppServiceIPSecLogs               |    ✔️              |    ✔️  |
+|    AppServicePlatformLogs            |    TBA             |    ✔️   |
 
-\* Supported on Java SE and Tomcat
+<sup>1</sup> Supported only on Premium, PremiumV2 and Isolated App Service Plans
+
+<sup>2</sup> Supported on Java SE and Tomcat
 
 ## Getting Started
 
