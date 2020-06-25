@@ -14,13 +14,15 @@ To track progress during the deployment, we will be posting periodic updates [on
 
 ## Testing your applications locally
 
-Test your application locally by reviewing the [Migration Guide](https://docs.microsoft.com/dotnet/framework/migration-guide/) and completing the following steps:
+Test your application locally by completing the following steps:
+1.	Download & install .NET Framework 4.8 for your appropriate scenario [here](https://devblogs.microsoft.com/dotnet/announcing-the-net-framework-4-8/).
+2.	Run your application in your local browser and verify the application features.
+3.	If you have issues with your application, feedback can be given on [GitHub](https://github.com/Microsoft/dotnet/issues/).
 
-1. Download & install .NET Framework 4.8 for your appropriate scenario [here](https://devblogs.microsoft.com/dotnet/announcing-the-net-framework-4-8/).
-2. See the [Runtime changes](https://docs.microsoft.com/dotnet/framework/migration-guide/runtime/4.7.2-4.8) and [Retargeting Guide](https://docs.microsoft.com/dotnet/framework/migration-guide/retargeting/4.7.2-4.8) to check for application compatibility issues that may affect your application.
-3. Run the application in your local browser and verify the application features.
-
-If you have issues with your application, feedback can be given on [GitHub](https://github.com/Microsoft/dotnet/issues/).
+---Optional steps if you plan to re-target your application in the future to explicitly require .NET Framework 4.8---
+1. If you choose to re-target your application to 4.8 in the future:
+    1.	Review the [Migration Guide](https://docs.microsoft.com/dotnet/framework/migration-guide/) for [Runtime changes](https://docs.microsoft.com/dotnet/framework/migration-guide/runtime/4.7.2-4.8) and [Retargeting Guide](https://docs.microsoft.com/dotnet/framework/migration-guide/retargeting/4.7.2-4.8) for application compatibility issues that may affect your application.
+    1.	Re-test your application in your local browser and verify the application features.
 
 ## Confirming the update on App Service
 
