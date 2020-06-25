@@ -1,5 +1,5 @@
 ---
-title: "New Logs Available for Azure Monitor Integration"
+title: "New Log Types for Azure Monitor Integration"
 author_name: "Yutang Lin"
 tags:
     - monitoring
