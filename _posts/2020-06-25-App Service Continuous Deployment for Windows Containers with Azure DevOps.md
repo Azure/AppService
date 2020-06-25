@@ -12,7 +12,6 @@ Azure DevOps enables you to host, build, plan and test your code with compliment
 
 In this article, we will use Azure Pipelines to deploy a Windows Container application to App Service.  The sample application is already configured to be used in a Windows Container, pushed to a registry, and deployed to App Service. Of course, you can use this guide to add the correct deployment tasks to work with your own application.
 
-
 ## Sample Application
 
 > If you would like to get started with your own application, you can skip to the next section.
@@ -37,7 +36,6 @@ Before you create your pipeline, you should first create your Service Connection
 ## The Dockerfile
 
 The samples below explain the associated Dockerfiles for the .NET Framework and .NET Core sample applications linked above. If creating your own application, use the appropriate Dockerfile below and replace the directory paths to match your application.
-
 
 ### .NET Framework
 
@@ -108,9 +106,9 @@ Since we are using Docker containers we can choose the **Docker** template that 
 
 Choose your *subscription* that you will be pushing your resources to, then pick your *Container registry* on the following screen.  You will notice your Image Name and Dockerfile are pre-populated with a suggested name and path to your Dockerfile.  You can leave those as is, and click on the **Validate and configure** button to generate your azure-pipeline.yaml file.
   
- ## Secure Secrets with Variables
+## Secure Secrets with Variables
  
- > Variables are only accessible after your create the pipeline.
+> Variables are only accessible after your create the pipeline.
  
 Since we are using sensitive information that you don't want others to access, we will use variables to protect our information. Create a variable by following the directions [here](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch).  
 
