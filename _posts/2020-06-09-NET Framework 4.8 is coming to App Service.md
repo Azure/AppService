@@ -28,7 +28,7 @@ Test your application locally by completing the following steps:
 
 You can confirm your webapp's current .NET Framework version by following these quick steps.
 
-To see if your apps have been updated after we begin the platform update, check which .NET Framework version is in use by using the 
+To see if your apps have been updated after we begin the platform update, check which .NET Framework version is in use by using the console.
 
 1. Open the **Console** feature under **Development Tools** in the App Service blade of your Azure Portal.
 
