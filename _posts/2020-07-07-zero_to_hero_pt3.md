@@ -23,7 +23,7 @@ Open the Azure Portal to your web app. On the left side menu, select
 slots. You will see a **production** and **staging** slot. Click the **Swap**
 button at the top.
 
-![The slots overview blade]({{site.baseurl}}/media/2020/07/slots-blade.png)
+![The slots overview blade]({{site.baseurl}}/media/2020/07/slots-blade.png){: .align-center}
 
 The **Swap** button will open a context menu with a table to preview any changes
 configuration changes that will occur after the swap. [App
@@ -32,7 +32,7 @@ are key-value configurations that are exposed to your app as environment
 variables. A future article will cover app settings in more detail. Click
 **swap** at the bottom of the menu to swap the slots.
 
-![Swap the slots]({{site.baseurl}}/media/2020/07/slots-swap-menu.png)
+![Swap the slots]({{site.baseurl}}/media/2020/07/slots-swap-menu.png){: .align-center}
 
 When the operation completes, browse to the production site and you should see
 the sample application! The staging slot should now have the sample application,
@@ -50,7 +50,7 @@ site to validate your latest changes. When you’re ready, use the swap button (
 command](https://docs.microsoft.com/en-us/cli/azure/webapp/deployment/slot?view=azure-cli-latest#az-webapp-deployment-slot-swap))
 to swap the slots.
 
-![A bird's eye view of the CI/CD process]({{site.baseurl}}/media/2020/07/CICD_overview.png)
+![A bird's eye view of the CI/CD process]({{site.baseurl}}/media/2020/07/CICD_overview.png){: .align-center}
 
 If you work in a large team, you can create slots for testing, quality
 assurance, canary testing, A/B testing, and more. Here is an example use case
