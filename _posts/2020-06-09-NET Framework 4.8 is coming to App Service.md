@@ -8,7 +8,7 @@ tags:
 ---
 > The .NET Framework 4.8 update is a non-breaking in-place upgrade on App Service.  No updates are required to existing applications.
 
-An update is coming for App Service to support .NET Framework 4.8. You will soon be able to take advantage of the updated .NET Framework toolset, bug fixes, and key improvements in accessibility and runtime. For the full list of updates and changes see the [announcement](https://devblogs.microsoft.com/dotnet/announcing-the-net-framework-4-8/) and [release notes](https://github.com/microsoft/dotnet/blob/master/releases/net48/README.md). The update will come to App Service starting in *July 14, 2020* and completing by *September 15, 2020*. In preparation for the platform upgrade to .NET Framework 4.8, customers can choose to test applications locally in advance.
+An update is coming for App Service to support .NET Framework 4.8. You will soon be able to take advantage of the updated .NET Framework toolset, bug fixes, and key improvements in accessibility and runtime. For the full list of updates and changes see the [announcement](https://devblogs.microsoft.com/dotnet/announcing-the-net-framework-4-8/) and [release notes](https://github.com/microsoft/dotnet/blob/master/releases/net48/README.md). The update will come to App Service starting in *July 14, 2020* and completing by *September 15, 2020*.  For sovereign clouds the update will start on *August 11, 2020* completing by *October 15, 2020*. In preparation for the platform upgrade to .NET Framework 4.8, customers can choose to test applications locally in advance.
 
 To track progress during the deployment, we will be posting periodic updates [on this GitHub Issue](https://github.com/Azure/app-service-announcements/issues/249).
 
