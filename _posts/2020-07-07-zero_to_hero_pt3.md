@@ -86,13 +86,13 @@ the staging slot. Then click **Save.** With that simple change, a tenth of your
 production traffic will now go to the new build! This practice is known as a
 “canary deployment” or “canarying a build”.
 
-<iframe src="https://channel9.msdn.com/Shows/Azure-Friday/Testing-in-production-with-Azure-App-Service/player?format=html5" 
-    width="960"
-    height="540"
-    allowFullScreen
-    frameBorder="0"
-    title="Testing in production with Azure App Service - Microsoft Channel 9 Video">
-</iframe>
+<div class="responsive-video-container">
+    <iframe src="https://channel9.msdn.com/Shows/Azure-Friday/Testing-in-production-with-Azure-App-Service/player"
+        allowFullScreen
+        frameBorder="0"
+        title="Testing in production with Azure App Service - Microsoft Channel 9 Video">
+    </iframe>
+</div>
 
 > The term “canary deployment” originates from [the “canary in a coal mine” idiom](https://en.wiktionary.org/wiki/canary_in_a_coal_mine).
 
