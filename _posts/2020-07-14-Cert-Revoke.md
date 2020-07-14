@@ -1,5 +1,5 @@
 ---
-title: 'FAQ on Certificate Authority revocation due to non-compliance of your certificates potentially impacting your App Service'
+title: 'App Service Guide on Certificate Authority revocation due to non-compliance of your certificates potentially impacting your App Service'
 author_name: "Yutang Lin"
 tags: 
     - certificate revocation
