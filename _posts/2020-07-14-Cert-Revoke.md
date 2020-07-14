@@ -7,7 +7,7 @@ toc: true
 toc_sticky: true
 ---
 
-***Azure has reached out to customers who may have been potentially impacted by this issue. If you have been notified with the similar information below, following these steps to [avoid application interruption](#avoiding-application-interruption):***
+***If you have received a notification from Azure with the similar information below on potentially being impacted by the said issue, follow these steps to [avoid application interruption](#avoiding-application-interruption):***
 
 [Certificate Authority (CA) Browser forum](https://cabforum.org/) recently published reports detailing multiple certificates issued by CA vendors that are used by our customers, Microsoft, and the greater technology community that were out of compliance with industry standards for publicly trusted CAs. The reports regarding the non-compliant CAs can be found here:  
 
