@@ -46,7 +46,7 @@ If you’re using Key Vault and you would like to immediately update your bindin
 
 If you are uploading a certificate to your app web, you will need to update the bindings with your new certificate following the steps below: 
 
-***Note: If you are using IP SSL bindings – do not \*delete\* your bindings as your IP inbound IP can change.  Instead you must only *update* the IP SSL bindings.***
+***Note: If you are using IP SSL bindings – \*do not delete\* your bindings as your IP inbound IP can change.  Instead you must only \*update\* the IP SSL bindings.***
 
 1. Upload the new certificate to your web app 
 1. [**Update your binding**](#updating-bindings)
