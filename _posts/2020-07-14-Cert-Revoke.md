@@ -17,12 +17,14 @@ As per the industry’s compliance requirements, CA vendors began revoking
 
  If you have been notified about using a self-acquired certificate or using the BYOC feature on App Service that is potentially impacted by this issue, check if certificates utilized by your application have been revoked by referencing [DigiCert’s Announcement](https://knowledge.digicert.com/alerts/DigiCert-ICA-Replacement) and the [Certificate Revocation Tracker](https://misissued.com/#revoked). New certificates need to be requested from the CA vendor utilized in your applications. 
 
+ **NOTE: This issue will not affect App Service Managed Certificates**
+
 ## Avoiding Application Interruptions <a name="avoiding-application-interruption"></a>
 
-To avoid your application’s availability being interrupted due to certificates being unexpectedly revoked, or to update a certificates which has been revoked, follow the steps below:
+To avoid your application’s availability being interrupted due to certificates being unexpectedly revoked, or to update a certificate which has been revoked, follow the steps below:
 
-1. Acquire a new certificate.
-1. Once your new certificate has been reissued, [add the new certificate to your web app](https://docs.microsoft.com/en-us/azure/app-service/configure-ssl-certificate) by either uploading a new certificate to your web app or by updating the new certificate in your Key Vault 
+1. Reissue your certificate (contact your certificate provider for more information).
+1. Once your new certificate has been reissued, [add the new certificate to your web app](https://docs.microsoft.com/en-us/azure/app-service/configure-ssl-certificate) by either uploading the new certificate to your web app or by updating the new certificate in your Key Vault 
 1. Once you have added your certificate to your web app, you will need to update your bindings [refer to the next section](#safely-updating-bindings). 
 
 ## How to safely update your bindings <a name="safely-updating-bindings"></a>
@@ -31,9 +33,9 @@ To avoid your application’s availability being interrupted due to certificat
 
 _If you are importing your certificate from Key Vault, App Service has a background job that will automatically update your bindings with the new version of your certificate within 48 hours._
 
-If you’re using Key Vault and you would like to immediately update your bindings and not wait for the background job following these steps below: 
+If you’re using Key Vault and you would like to immediately update your bindings and not wait for the background job, follow these steps below: 
 
-***NOTE: If you are using IP SSL bindings – do not \*delete\* your bindings as your inbound IP can change. It is recommended to wait for the platform’s background job to update the bindings with the new version of your certificate to avoid losing your IP address.***
+***NOTE: If you are using IP SSL bindings – \*do not delete\* your bindings as your inbound IP can change. It is recommended to wait for the platform’s background job to update the bindings with the new version of your certificate to avoid losing your IP address.***
 
 1. Upload the new certificate in Key Vault using a new certificate name 
 1. Import the new certificate to your web app 
