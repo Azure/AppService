@@ -25,7 +25,7 @@ To check if certificates utilized by your application have been revoked referenc
 ## How to safely update your bindings <a name="safely-updating-bindings"></a>
 
 ### Certificate Imported from Key Vault to App Service 
-If you are importing your certificate from Key Vault, App Service has a background job that will automatically update your bindings with the new version of your certificate within 48 hours.  
+_If you are importing your certificate from Key Vault, App Service has a background job that will automatically update your bindings with the new version of your certificate within 48 hours._
 
 If you’re using Key Vault and you would like to immediately update your bindings and not wait for the background job following these steps below: 
 
