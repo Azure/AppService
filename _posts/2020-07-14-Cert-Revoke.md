@@ -1,5 +1,5 @@
 ---
-title: 'Certificate Authorities revoking non-complient certificates, potentially impacting your App Service'
+title: 'Certificate Authorities revoking non-compliant certificates, potentially impacting your App Service'
 author_name: "Yutang Lin"
 category: certsdomains
 toc: true
