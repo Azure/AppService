@@ -7,7 +7,7 @@ toc: true
 toc_sticky: true
 ---
 
-Certificate Authority (CA) Browser members recently published reports detailing multiple certificates issued by 3rd party vendors that are used by Microsoft, our customers, and the greater technology community that were out of compliance with industry standards for publicly trusted CAs. The reports regarding the non-compliant CAs can be found here:  
+[Certificate Authority (CA) Browser forum](https://cabforum.org/) recently published reports detailing multiple certificates issued by 3rd party vendors that are used by Microsoft, our customers, and the greater technology community that were out of compliance with industry standards for publicly trusted CAs. The reports regarding the non-compliant CAs can be found here:  
 1. [Bug 1649951](https://bugzilla.mozilla.org/show_bug.cgi?id=1649951)
 1. [Bug 1650910](https://bugzilla.mozilla.org/show_bug.cgi?id=1650910) 
 
