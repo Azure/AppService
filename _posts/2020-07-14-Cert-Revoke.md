@@ -2,23 +2,25 @@
 title: 'CRITICAL: Certificate Authority revocation due to non-compliance potentially impacting your services on App Service'
 author_name: "Yutang Lin"
 tags: 
-    - certificate
+    - certificate revocation
 toc: true
 toc_sticky: true
 ---
 
-Certificate Authority (CA) Browser members recently published reports detailing multiple certificates issued by 3rd party vendors that are used by Microsoft, our customers, and the greater technology community that were out of compliance with industry standards for publicly trusted CAs. The reports regarding the non-compliant CAs can be found here:  
+Certificate Authority (CA) Browser members recently published reports detailing multiple certificates issued by CA vendors that are used by Microsoft, our customers, and the greater technology community that were out of compliance with industry standards for publicly trusted CAs. The reports regarding the non-compliant CAs can be found here: 
 1. [Bug 1649951](https://bugzilla.mozilla.org/show_bug.cgi?id=1649951)
 1. [Bug 1650910](https://bugzilla.mozilla.org/show_bug.cgi?id=1650910) 
 
 
-To prevent a potential attack, CA vendors began revoking non-compliant certificates on 10 July 2020, and issuing compliant versions requiring certificates to be re-issued. **Microsoft is partnering closely with these vendors to minimize the potential impact to Azure Services, however your self-issued certificates or certificates used in “Bring Your Own Certificate” (BYOC) scenarios are still at risk of being unexpectedly revoked.**
+As per the industry’s compliance requirements, CA vendors began revoking non-compliant CAs on 10 July 2020 and issuing compliant CAs which requires customers to have their certificates re-issued. Microsoft is partnering closely with these vendors to minimize the potential impact to Azure Services, **however your self-issued certificates or certificates used in “Bring Your Own Certificate” (BYOC) scenarios are still at risk of being unexpectedly revoked.**
 
+
+To check if certificates utilized by your application have been revoked reference [DigiCert’s Announcement](https://knowledge.digicert.com/alerts/DigiCert-ICA-Replacement) and the [Certificate Revocation Tracker](https://misissued.com/#revoked). New certificates need to be requested from the CA vendor utilized in your applications. 
 
 ## Avoiding Application Interruptions
-To check if certificates utilized by your application have been revoked reference [DigiCert’s Announcement](https://knowledge.digicert.com/alerts/DigiCert-ICA-Replacement) and the [Certificate Revocation Tracker](https://misissued.com/#revoked). New certificates need to be requested from the CA vendor utilized in your applications. To avoid your application’s availability being interrupted due to certificates being unexpectedly revoked, or to update a certificates which has been revoked, follow the steps below:
+To avoid your application’s availability being interrupted due to certificates being unexpectedly revoked, or to update a certificates which has been revoked, follow the steps below:
 
-1. Get a new certificate.
+1. Acquire a new certificate.
 1. Once your new certificate has been reissued, [add the new certificate to your web app](https://docs.microsoft.com/en-us/azure/app-service/configure-ssl-certificate) by either uploading a new certificate to your web app or by updating the new certificate in your Key Vault 
 1. Once you have added your certificate to your web app, you will need to update your bindings [refer to the next section](#safely-updating-bindings). 
 
