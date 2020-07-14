@@ -6,7 +6,7 @@ toc: true
 toc_sticky: true
 ---
 
-***If you have received a notification from Azure about potentially being impacted by the certificate revocation issue, follow these [steps to avoid application interruption](#avoiding-application-interruption):***
+***If you have received a notification from Azure about potentially being impacted by the certificate revocation issue, follow these [steps to avoid application interruption](#avoiding-application-interruption).***
 
 [Certificate Authority (CA) Browser forum](https://cabforum.org/) recently published reports of multiple certificates issued by CA vendors that are used by our customers, Microsoft, and the greater technology community that were out-of-compliance with industry standards for publicly trusted CAs. The reports regarding the non-compliant CAs can be found here:  
 
