@@ -9,7 +9,8 @@ toc_sticky: true
 
 ***Azure has reached out to customers who may have been potentially impacted by this issue. If you have been notified with the similar information below, following these steps to [avoid application interruption](#avoiding-application-interruption):***
 
-Certificate Authority (CA) Browser members recently published reports detailing multiple certificates issued by CA vendors that are used by our customers, Microsoft, and the greater technology community that were out of compliance with industry standards for publicly trusted CAs. The reports regarding the non-compliant CAs can be found here:  
+[Certificate Authority (CA) Browser forum](https://cabforum.org/) recently published reports detailing multiple certificates issued by CA vendors that are used by our customers, Microsoft, and the greater technology community that were out of compliance with industry standards for publicly trusted CAs. The reports regarding the non-compliant CAs can be found here:  
+
 1. [Bug 1649951](https://bugzilla.mozilla.org/show_bug.cgi?id=1649951)
 1. [Bug 1650910](https://bugzilla.mozilla.org/show_bug.cgi?id=1650910) 
 
