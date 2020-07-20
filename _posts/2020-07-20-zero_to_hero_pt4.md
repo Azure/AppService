@@ -31,7 +31,7 @@ You can also refer to the Microsoft [learn module](https://docs.microsoft.com/le
 - Tool based assessment of internal web applications using the version of tool available for Windows OS and Linux OS. (Download the tool at [https://appmigration.microsoft.com/readiness](https://appmigration.microsoft.com/readiness))
 - Based on outcome of assessment (readiness checks) you may proceed further to migrate your web application to Azure App service using App Service Migration Assessment [Tool](https://appmigration.microsoft.com/readiness)
 
-_Please read_ [_How the Assistant Works_](https://github.com/Azure/App-Service-Migration-Assistant/wiki/How-the-Assistant-Works) _for detailed information._
+> Please read [How the Assistant Works](https://github.com/Azure/App-Service-Migration-Assistant/wiki/How-the-Assistant-Works) for detailed information.
 
 ## Readiness Checks
 
