@@ -165,6 +165,8 @@ If you installed App Insights using the HTML snippet from the previous section, 
 
 By this point, your client-side code is instrumented with App Insights and will tag any outgoing telemetry with the slot's name. Now all that is left is to deploy the application. If you followed parts [two](https://azure.github.io/AppService/2020/06/29/zero_to_hero_pt2.html) and [three](https://azure.github.io/AppService/2020/06/29/zero_to_hero_pt3.html) of *Zero to Hero with App Service*, then you can simply commit your changes to the master branch and let the CI/CD pipeline deploy the new build to your staging slot.
 
+![Overview of the CI/CD process]({{site.baseurl}}media/2020/07/CICD_overview.png){: .align-center}
+
 Once your instrumented code is deployed to the staging slot, it is time to start routing some production traffic to the staging slot. In the Azure Portal, go to the **Deployment Slots** menu. In the table of your slots, you will see a column for **Traffic %**. By default, all your traffic is routed to the production slot. Try setting the traffic percentage to **10%** on the staging slot. Then click **Save**. With that simple change, a tenth of your production traffic will now go to the new build!
 
 </insert image here>
