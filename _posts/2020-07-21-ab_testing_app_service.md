@@ -1,18 +1,23 @@
 ---
 title: "A/B Testing with App Service, Part 1: Client-side configuration"
 author_name: "Jason Freeberg, Shubham Dhond"
+category: deployment
+tags: 
+  - A/B Testing
 toc: true
 toc_sticky: true
 ---
 
-A/B testing is the process of comparing two versions of a webpage or application to determine which one performs better for a given goal. A couple reasons why you should be doing A/B testing...
+In software, A/B testing is the process of comparing two versions of a webpage or application to determine which one improves a given metric. Depending on your role, there a few reasons why you should start A/B testing your application.
 
-- A frontend developer can test if a code refactor improves page load time
-- A backend developer can deploy two versions of their APIs to determine performance gains
+- A frontend developer can test if a code refactor improves page load time under real-world conditions
+- A backend developer can deploy two versions of their APIs to determine any performance gains of a new implementation
 - A designer can check if a new UI layout improves usability metrics
-- A product manager can test different product landing pages to see how changes affect click-through and average time-on-page
+- A product manager can test different product landing pages to see how different value propositions affect click-through and average time-on-page
 
-A/B testing is a powerful technique for software professionals of all types, but it is not without its complexities. For example, how does one deploy two versions of the application? How should traffic be split between the versions? And most importantly... how is the data tracked, tagged, and analyzed? This new blog series guide will show how to accomplish all these tasks.
+A/B testing is a powerful technique for software professionals of all types, but it is not without its complexities. For example, how does one deploy two versions of the application? How should traffic be split between the versions? And most importantly... how is the data tracked, tagged, and analyzed? This blog series will show how to accomplish all these tasks. This article will show how to instrument your client-side code with a monitoring agent and tag the metrics with the version. Our upcoming articles will show how to instrument your backend services and how to analyze the results.
+
+> Have any thoughts about this guide? Let us know in the comments below!
 
 ## Overview
 
