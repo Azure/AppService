@@ -64,7 +64,9 @@ If you are interested in securing your custom domain, proceed to the following s
 
 If you would like to secure your custom domain at no cost, you can create an App Service Managed Certificate and bind it to your domain. With Managed Certificates, you don’t have to worry about renewals, as the certificate is automatically renewed for you! 
 
-Go to your web app resource and navigate to the “TLS/SSL settings” section under “Settings”. Click on the “Private Key Certificates” blade and look for the “Create App Service Managed Certificate” button.  
+1. Go to your web app resource and navigate to the “TLS/SSL settings” section under “Settings”
+1. Click on the “Private Key Certificates” blade 
+1. Click the “Create App Service Managed Certificate” button 
 
 ![Custom Domain Verification ID]({{site.baseurl}}/media/2020/07/Cert-Blade.png){: .align-center}
 
