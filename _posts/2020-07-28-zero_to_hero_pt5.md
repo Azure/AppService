@@ -7,11 +7,12 @@ toc: true
 toc_sticky: true
 ---
 
-This article is the fifth part of the Zero to Hero with App Service series. This article assumes you have completed the [first article]({{ site.baseurl }}{% link _posts/2020-06-29-zero_to_hero_pt1.md %}). 
+This article is the fifth part of the [Zero to Hero with App Service](https://azure.github.io/AppService/tags/#zero-to-hero) series. This article assumes you have completed the [first article]({{ site.baseurl }}{% link _posts/2020-06-29-zero_to_hero_pt1.md %}). 
 
-If you would like to customize your web app and have a domain name other than “azurewebsites.net”, you can add a custom domain to your web app. Moreover, you can secure your custom domain with a free certificate with App Service Managed Certificates, which will give your customers peace of mind when browsing your website. 
+If you would like to customize your web app with a domain name other than “azurewebsites.net”, you can add a custom domain to your web app. Moreover, you can secure your custom domain with a free certificate from App Service Managed Certificates, which will give your customers peace of mind when browsing your website. 
 
 ## Prerequisite
+
 Before you can add a custom domain to your web app, you need to have purchased a custom domain already. If you don’t have a custom domain, you can buy one through App Service Domains, which you can get started with the [App Service Domain section of the article](#app-service-domain). If you already have your own custom domain, proceed to the [adding of custom domain to your web app section of the article](#add-custom-domain). 
 
 ## App Service Domains <a name="app-service-domain"></a>
@@ -98,6 +99,7 @@ Once the binding has successfully been created, you will see a green checkmark a
 
 Congratulations! In this article, you have successfully added and secured a custom domain for your App Service! Your users can now reach your web site at the new domain, and their browser will let them know that the site is secured. 
 
-## Helpful Resources 
+## Helpful Resources
+
 - [Tutorial: Map an existing custom DNS name to Azure App Service](https://docs.microsoft.com/azure/app-service/app-service-web-tutorial-custom-domain)
 - [Add a TLS/SSL certificate in Azure App Service](https://docs.microsoft.com/azure/app-service/configure-ssl-certificate#create-a-free-certificate-preview)
