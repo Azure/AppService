@@ -56,7 +56,7 @@ The App Service Team Blog is a great place to share content with our users. Befo
 1. Run the local Jekyll server. From the project directory, run the following command:
 
     ```bash
-    bundle exec jekyll serve --limit_posts=50 --incremental
+    bundle exec jekyll serve --limit_posts=50 --incremental --future
     ```
 
     The blog will be running at <http://127.0.0.1:4000/AppService/>. (The `--limit_posts=5` arg only builds the latest 5 articles. This speeds up the time-to-refresh.)
