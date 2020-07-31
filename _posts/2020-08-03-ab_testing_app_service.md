@@ -8,20 +8,20 @@ toc: true
 toc_sticky: true
 ---
 
-In software, A/B testing is the process of comparing two versions of a webpage or application to determine which one improves a given metric. Depending on your role, there a few reasons why you should start A/B testing your application.
+In software development, A/B testing is the process of comparing two versions of a webpage or application to determine which version improves a metric or KPI. Depending on your role, there a few reasons why you should start A/B testing your applications.
 
-- A frontend developer can test if a code refactor improves page load time under real-world conditions
-- A backend developer can deploy two versions of their APIs to determine any performance gains of a new implementation
+- A frontend developer can test if a refactor improves page load time under real-world conditions
+- A backend developer can deploy two versions of an API to determine any performance gains of a new implementation
 - A designer can check if a new UI layout improves usability metrics
 - A product manager can test different product landing pages to see how different value propositions affect click-through and average time-on-page
 
-A/B testing is a powerful technique for software professionals of all types, but it is not without its complexities. For example, how does one deploy two versions of the application? How should traffic be split between the versions? And most importantly... how is the data tracked, tagged, and analyzed? This blog series will show how to accomplish all these tasks. This article will show how to instrument your client-side code with a monitoring agent and tag the metrics with the version. Our upcoming articles will show how to instrument your backend services and how to analyze the results.
+A/B testing is a powerful technique for software professionals of all types, but it is not without its complexities. For example, how does one deploy two versions of the application? How is user traffic split between the versions? And most importantly... how is the data tracked, tagged, and analyzed? This blog series will show how to accomplish all these tasks. This first article explains how to instrument your client-side code with a monitoring agent and tag the metrics with the version. The following articles will show how to instrument your backend services and how to analyze the results.
 
 > Have any thoughts about this guide? Let us know in the comments below!
 
 ## Overview
 
-App Service's deployment slots allow developers to deploy their new application builds to independent staging environments. Once a new build is deployed to a slot, you can route a percentage of your production traffic to the slot. Once the traffic is split, Application Insights will capture usage and performance metrics, tagged with the slot information. The Application Insights Portal blade allows you to filter, visualize, and compare data from the different versions.  
+To do A/B testing with App Service, we will use App Service's deployment slots and Application Insights. Deployment slots allow developers to deploy their new application builds to independent staging environments. Once a new build is deployed to a slot, you can route a percentage of your production traffic to the slot. Once the traffic is split, Application Insights will capture usage and performance metrics tagged with the slot name. The Application Insights blade in the Portal allows you to filter, visualize, and compare data from the different versions.  
 
 ## Prerequisites
 
@@ -113,21 +113,20 @@ cfg: { // Application Insights Configuration
 
 ## Tag the telemetry
 
-You now have app insights installed, and if you deployed the app now you will will be able to see the data in the App Insights blade of the Portal. However, tag the outgoing data needs to be tagged with the slot name so you can correctly filter and analyze the data in the Portal. To do this, add the [TelemetryInitializer](https://docs.microsoft.com/azure/azure-monitor/app/api-filtering-sampling#javascript-web-applications) to your project, and register it with the AI object.
+You now have AppInsights installed. However, the outgoing data needs to be tagged with the slot name so you can correctly filter and analyze the data in the Portal. To do this, add a [TelemetryInitializer](https://docs.microsoft.com/azure/azure-monitor/app/api-filtering-sampling#javascript-web-applications) to your project and register it with the AI object. The telemetry intializer below will get the name of the slot from the `x-ms-routing-name` cookie and add it as a property on the outgoing data object.
 
 ### NPM-based applications
 
 If you are using React, Angular, Vue, or another NPM-based framework, copy and paste the following method definitions into your project.
 
 ```javascript
+/**
+ * Tags the outgoing telemetry with the slot name taken from the cookie.
+ * @param {object} envelope The outgoing AI telemetry object 
+ */
 var telemetryInitializer = (envelope) => {
-  const environment = getCookieValue('x-ms-routing-name') || 'local';
-
-  if (environment == 'local') {
-    return false; // Do not send telemetry for local development.
-  } else {
-    envelope.data['slot'] = environment;
-  }
+  const environment = getCookieValue('x-ms-routing-name') || 'production';
+  envelope.data['slot'] = environment;
 }
 ```
 
@@ -157,13 +156,26 @@ If you installed App Insights using the HTML snippet from the previous section, 
 
 ```html
 <script>
-    TODO
+function getCookieValue(key) {
+  const cookie = document.cookie
+    .split('; ')
+    .find(cookie => cookie.startsWith(key));
+  
+  return cookie ? cookie.split('=')[1] : null;
+}
+
+var telemetryInitializer = (envelope) => {
+  const environment = getCookieValue('x-ms-routing-name') || 'production';
+  envelope.data['slot'] = environment;
+}
+
+appInsights.addTelemetryInitializer(telemetryInitializer);
 </script>
 ```
 
 ## Deploy and split traffic
 
-By this point, your client-side code is instrumented with App Insights and will tag any outgoing telemetry with the slot's name. Now all that is left is to deploy the application. If you followed parts [two](https://azure.github.io/AppService/2020/06/29/zero_to_hero_pt2.html) and [three](https://azure.github.io/AppService/2020/06/29/zero_to_hero_pt3.html) of *Zero to Hero with App Service*, then you can simply commit your changes to the master branch and let the CI/CD pipeline deploy the new build to your staging slot.
+Your client-side code is now instrumented with App Insights and will tag any outgoing telemetry with the slot's name. Now all that is left to do is deploy the application. If you followed parts [two](https://azure.github.io/AppService/2020/06/29/zero_to_hero_pt2.html) and [three](https://azure.github.io/AppService/2020/06/29/zero_to_hero_pt3.html) of *Zero to Hero with App Service*, then you can simply commit your changes to the master branch and let the CI/CD pipeline deploy the new build to your staging slot.
 
 ![Overview of the CI/CD process]({{site.baseurl}}/media/2020/07/CICD_overview.png){: .align-center}
 
@@ -173,10 +185,10 @@ Once your instrumented code is deployed to the staging slot, it is time to start
 
 ### (Optional) Deploy PR's to staging slots
 
-To do A/B testing with App Service, you need at least two slots: production and staging (which map to the A and B versions). However, you can also spin up a staging slot for Pull Requests to your main tracking branch. This allows your teammates to see Pull Requests deployed to a staging server, and makes it easy to try the changes live. Even more powerful, you can route a percentage of your traffic to these PR's as well.
+To do A/B testing with App Service, you need at least two slots: production and staging (which map to the A and B versions). However, you can also spin up a staging slot for Pull Requests to your main tracking branch. This allows your teammates to see the requested changes deployed to a staging server and makes it easy to try the changes live. Even more powerful, you can route a percentage of your traffic to these deployed PR's as well.
 
 You can set up the automation for this process using GitHub Actions. It requires two workflow files: one to create the slot and deploy the Pull Request contents, and another to delete the slot once the PR has been closed. We put together example workflows for this, [check them out in this repository](https://github.com/JasonFreeberg/create-and-delete-slots).
 
 ## Summary
 
-In this article you instrumented your client-side code or HTML templates. In the next article you will instrument your backend code. We are considering building this functionality into the default behavior of the App Insights SDK (so you don't have to create your own TelemetryInitializer). If you have thoughts on this guide, please comment below and share! Your input will help us improve this whole scenario.
+In this article, you instrumented your client-side code or HTML templates. In the next article you will instrument your backend code. We are considering building this functionality into the default behavior of the App Insights SDK (so you don't have to create your own TelemetryInitializer). If you have thoughts on this guide, please comment below and share! Your input will help us improve this whole story.
