@@ -18,7 +18,7 @@ In software development, A/B testing is the process of comparing two versions of
 
 A/B testing is a powerful technique for software professionals of all types, but it is not without its complexities. For example, how does one deploy two versions of the application? How is user traffic split between the versions? And most importantly... how is the data tracked, tagged, and analyzed? This blog series will show how to accomplish all these tasks. This first article explains how to instrument your client-side code with a monitoring agent and tag the metrics with the version. The following articles will show how to instrument your backend services and how to analyze the results.
 
-> Have any thoughts about this guide? Let us know in the comments below!
+> Have any thoughts about this guide? Let us know in [the comments below](#disqus_thread)!
 
 ## Overview
 
@@ -192,4 +192,4 @@ You can set up the automation for this process using GitHub Actions. It requires
 
 ## Summary
 
-In this article, you instrumented your client-side code or HTML templates. In the next article you will instrument your backend code. We are considering building this functionality into the default behavior of the App Insights SDK (so you don't have to create your own TelemetryInitializer). If you have thoughts on this guide, please comment below and share! Your input will help us improve this whole story.
+In this article, you instrumented your client-side code or HTML templates. In the next article you will instrument your backend code. We are considering building this functionality into the default behavior of the App Insights SDK (so you don't have to create your own TelemetryInitializer). If you have thoughts on this guide, please [comment below](#disqus_thread) and share! Your input will help us improve this whole story.
