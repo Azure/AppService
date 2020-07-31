@@ -6,6 +6,7 @@ tags:
   - A/B Testing
 toc: true
 toc_sticky: true
+comments: true
 ---
 
 In software development, A/B testing is the process of comparing two versions of a webpage or application to determine which version improves a metric or KPI. Depending on your role, there a few reasons why you should start A/B testing your applications.
