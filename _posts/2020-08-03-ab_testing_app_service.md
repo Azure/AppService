@@ -181,7 +181,7 @@ Your client-side code is now instrumented with App Insights and will tag any out
 
 Once your instrumented code is deployed to the staging slot, it is time to start routing some production traffic to the staging slot. In the Azure Portal, go to the **Deployment Slots** menu. In the table of your slots, you will see a column for **Traffic %**. By default, all your traffic is routed to the production slot. Try setting the traffic percentage to **10%** on the staging slot. Then click **Save**. With that simple change, a tenth of your production traffic will now go to the new build!
 
-![Slots menu]({site.baseurl}}/media/2020/07/slots_TIP_menu.png){: .align-center}
+![Slots menu]({{site.baseurl}}/media/2020/07/slots_TIP_menu.png){: .align-center}
 
 ### (Optional) Deploy PR's to staging slots
 
