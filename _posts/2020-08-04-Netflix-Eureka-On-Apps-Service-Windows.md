@@ -270,8 +270,8 @@ leaseInfo                     : leaseInfo
 metadata                      : metadata
 homePageUrl                   : http://example-moive-catalog-service.azurewebsites.net:80/
 statusPageUrl                 : https://example-moive-catalog-service.azurewebsites.net:443/actuator/info
-healthCheckUrl                : http://example-moive-catalog-service.azurewebsites.net:32714/actuator/health
-secureHealthCheckUrl          : https://example-moive-catalog-service.azurewebsites.net:32714/actuator/health
+healthCheckUrl                : http://example-moive-catalog-service.azurewebsites.net:443/actuator/health
+secureHealthCheckUrl          : https://example-moive-catalog-service.azurewebsites.net:443/actuator/health
 vipAddress                    : movie-catalog-service
 secureVipAddress              : movie-catalog-service
 isCoordinatingDiscoveryServer : false
