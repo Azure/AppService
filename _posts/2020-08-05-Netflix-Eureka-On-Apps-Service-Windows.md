@@ -10,7 +10,7 @@ toc: true
 toc_sticky: true
 ---
 
-Netflix Eurkea is a REST based middleware designed for discovery and load balancing of web applications. This article includes the [configurations](#configurations) required to get a Netflix Eureka based app running correctly in App Service (for those who already have a Netflix Eureka app), and a [demo project](#get-started-with-example-netflix-eureka-project) showing a working example of Netflix Eureka based services working together on Azure App Servcie (for those starting from scratch).
+Netflix Eurkea is a REST based middleware designed for discovery and load balancing of web applications. This article includes the [configurations](#configurations) required to get a Netflix Eureka based app running correctly in App Service (for those who already have a Netflix Eureka app), and a [demo project](#get-started-with-example-netflix-eureka-project) showing a working example of Netflix Eureka based services working together on Azure App Service (for those starting from scratch).
 
 ## Netflix Eureka on App Service
 
@@ -70,7 +70,7 @@ eureka:
 
 ![Configure App to Only Accept HTTPS Traffic]({{site.baseurl}}/media/2020/08/EnableHTTPSOnly.png){: .align-center}
 
-#### Explaination of Properties
+#### Explanation of Properties
 
 ```yml
 spring.application.name=[YOUR APP NAME]
@@ -88,7 +88,7 @@ eureka.client.serviceUrl.defaultZone=https://[YOUR SERVER HOSTNAME]:443/eureka
 eureka.instance.hostname=[YOUR CLIENT HOSTNAME]
 ```
 
-  The url of the client itself. Should look like `my-eureka-client.azurewebsites.net`
+  The url of the client itself should look like `my-eureka-client.azurewebsites.net`
 
 ```yml
 eureka.instance.secure-port-enabled=true
@@ -107,7 +107,7 @@ eureka.instance.healthCheckUrl=https://${eureka.hostname}:443/actuator/health
 eureka.instance.secureHealthCheckUrl=https://${eureka.hostname}:443/actuator/health
 ```
 
-  If using a service such as [Spring Actuator](https://spring.io/guides/gs/actuator-service/), the management server port must be defined as the same port as server.port. This is because the platform assigns a random port to server.port, which the platform then exposes as port 80 and port 443. As such, the Actuator must also communicate on the port which is chosen by the platform to be exposed to the internet
+  If using a service such as [Spring Actuator](https://spring.io/guides/gs/actuator-service/), the management server port must be defined as the same port as server.port. This is because the platform assigns a random port to server.port, which the platform then exposes as port 80 and port 443. As such, the Actuator must also communicate on the port which is chosen by the platform to be exposed to the internet.
 
 #### Server Configuration
 
@@ -178,9 +178,9 @@ Then, run
 
 **Note:** you should specify a prefix using -Dprefix=yourPrefix. This is to prevent name collision with another user running this demo. Pick a prefix that is unique to you or your organization. If a prefix is not set this way, a timestamp prefix will be generated based on the current time.
 
-**Note:** the application.properties file of each of the services is generated based on client.application.properties.template. The application.properties file of the discovery server is generated from server.appliation.properties.template. This is to apply the prefix and ensure each application has the same properties. This happens in the prepare-package step of the build process.
+**Note:** the application.properties file of each of the services is generated based on client.application.properties.template. The application.properties file of the discovery server is generated from server.application.properties.template. This is to apply the prefix and ensure each application has the same properties. This happens in the prepare-package step of the build process.
 
-To build and run the project in one command, use 
+To build and run the project in one command, use:
 
   ```bash
   mvn clean prepare-package package azure-webapp:deploy -Dprefix=yourPrefix -DskipTests
@@ -188,7 +188,7 @@ To build and run the project in one command, use
 
 ### The Service
 
-After deployment, the project will be hosted on four Azure webapps.
+After deployment, the project will be hosted on four Azure Webapps.
 
 These can be accessed at:
 
@@ -202,7 +202,7 @@ http://$prefix-movie-info-service.azurewebsites.net/
 http://$prefix-ratings-data-service.azurewebsites.net/
 ```
 
-Where $prefix is the automatically generated prefix to ensure the webapps have a unique identifier.
+Where $prefix is the automatically generated prefix to ensure the web apps have a unique identifier.
 
 The URLS can be accessed either through the output of the maven command, or on the Azure portal under the new resource group `$prefix-example-netflix-eureka-rg`
 
@@ -263,7 +263,7 @@ curl -s https://$prefix-movie-catalog-service.azurewebsites.net/catalog/12
 
 The discovery server can be queried to provide information about the services registered with it.
 
-The following command gets the applications registered with the discovery server
+The following command gets the applications registered with the discovery server:
 
 ```powershell
 $response = Invoke-RestMethod -URI https://$prefix-discovery-server.azurewebsites.net/eureka/apps -ContentType "application/json"
@@ -275,7 +275,7 @@ versions__delta apps__hashcode application
 1               UP_3_          {MOVIE-INFO-SERVICE, RATINGS-DATA-SERVICE, MOVIE-CATALOG-SERVICE}
 ```
 
-An individual service can then be queried as a powershell object
+An individual service can then be queried as a powershell object:
 
 ```powershell
 $catalogService = $response.applications.application | Where-Object {$_.name -eq "MOVIE-CATALOG-SERVICE"}
@@ -328,7 +328,6 @@ Since our example application is based on Spring Boot, it can use Spring Boot's 
 2. In the application.properties of the discovery server, add the following:
 
     ```java
-    spring.security.basic.enabled=true
     spring.security.user.name=your-eureka-user
     spring.security.user.password=your-eureka-password
     ```
@@ -359,19 +358,19 @@ Since our example application is based on Spring Boot, it can use Spring Boot's 
 
 4. Modify the application.properties file of the client to include the username and password in the discovery server URL
 
-    ```java
+    ```html
     eureka.client.serviceUrl.defaultZone=https://discovery-server.azurewebsites.net:443/eureka
     ```
 
     Should now be:
 
-    ```java
+    ```html
     eureka.client.serviceUrl.defaultZone=https://username:password@discovery-server.azurewebsites.net:443/eureka
     ```
 
     **Note:**: if adding to the example project, add the username and password to `client.application.properties.template`
 
-The client should now be able to successfully register with the eureka server
+The client should now be able to successfully register with the eureka server.
 
 ### Security through Network Configuration
 
