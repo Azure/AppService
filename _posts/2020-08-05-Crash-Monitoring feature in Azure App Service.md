@@ -12,7 +12,7 @@ comments: true
 
 > Currently offered in App Service Diagnostics for Windows web apps.
 
-A crash happens when an exception in your application code goes un-handled and ends up terminating the process. These unhandled exceptions are also known as _second chance exceptions_ as they end up terminating the application process. When your application crashes, your app process gets terminated and all the in-flight requests (request that are currently processed by the app) are aborted. An end user may experience a HTTP 502 error for such those aborted requests. Also, when the process restarts, performance of the app is also impacted due to the cold start which makes things worse.
+A crash happens when an exception in your application code goes un-handled and ends up terminating the process. These unhandled exceptions are also known as _second chance exceptions_ as they end up terminating the application process. When your application crashes, your app process gets terminated and all the in-flight requests (request that are currently processed by the app) are aborted. An end user may experience a HTTP 502 error for those aborted requests. Also, when the process restarts, performance of the app is also impacted due to the cold start which makes things worse.
 
 Therefore, when you are running production workloads, it’s important to quickly identify the root cause of an application crash to troubleshoot and minimize the business impact. Having the right set of logs is the key to quick resolution when your application is crashing or behaving unexpectedly. However, it could be difficult capture these logs at the time of the crash.
 
