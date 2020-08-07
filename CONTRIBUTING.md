@@ -56,7 +56,7 @@ The App Service Team Blog is a great place to share content with our users. Befo
 1. Run the local Jekyll server. From the project directory, run the following command:
 
     ```bash
-    bundle exec jekyll serve --limit_posts=50 --incremental
+    bundle exec jekyll serve --limit_posts=50 --incremental --future
     ```
 
     The blog will be running at <http://127.0.0.1:4000/AppService/>. (The `--limit_posts=5` arg only builds the latest 5 articles. This speeds up the time-to-refresh.)
@@ -96,6 +96,8 @@ Here are some quick tips to make your blog post clear, concise, and more effecti
 1. **Avoid run-on sentences**. Your article is likely going to cover a technical concept. Make things easy for the reader. Use short, concise sentences.
 1. **Don't narrate with the first person**. Whenever possible, avoid "we" or "I". In instructional articles, avoid using phrases like _"we will now deploy they app"_ or _"we will move to the next topic"_. These phrases don't serve any instructional purpose, and lengthen the article unnecessarily.
     1. It is OK to refer directly to the reader as "you". For example, "Your web app is ready to deploy", or "You can now proceed to the next step".
+
+For more best practices, please see [this deck from ACOM](https://microsoft.sharepoint.com/:p:/t/cloudosdigital/EYElo_4ScDZCqBNEHs6P7q0BD7Vl-6jnb8vaOfxhmAmE_w?e=g43Da6).
 
 #### Add digital content
 
