@@ -1,5 +1,5 @@
 ---
-title: "Crash Monitoring feature in Azure App Service"
+title: "Crash Monitoring Feature in Azure App Service"
 author_name: "Yun Jung Choi, Puneet Gupta"
 category: 'Diagnostics'
 tags:
@@ -78,3 +78,5 @@ You can view up to past 15 days of data in the **View History** section. If you 
 To completely disable Crash Monitoring, you need to disable the app setting for the tool. You can do this by clicking on **Disable agent** in the Analyze section. This will remove the app setting for Crash Monitoring and restart your app.
 
 ![Crash Monitoring disable agent]({{site.baseurl}}/media/2020/08/crash-monitoring-disable-agent.png)
+
+Feel free to share your feedback or questions about Crash Monitoring by emailing diagnostics@microsoft.com
