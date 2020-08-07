@@ -18,7 +18,7 @@ The following sections assume you have owner-level access to the site. These ins
 
 To disable FTP access to the site, copy the following snippet and paste it at [resources.azure.com/raw](https://resources.azure.com/raw/). Replace the placeholders with your subscription, resource group, site name, and site's location. 
 
-```txt
+```bash
 PATCH https://management.azure.com/subscriptions/<subscription>/resourceGroups/<resource-group>/providers/Microsoft.Web/sites/<site-name>/basicPublishingCredentialsPolicies/ftp/?api-version=2014-11-01
 {
   "id": null,
@@ -63,14 +63,12 @@ All successful and attempted logins are logged to the Azure Monitor **AppService
 
 > [Pricing information for Azure Monitor features and services](https://azure.microsoft.com/pricing/details/monitor/)
 
-### Setup
-
 To audit the attempted and successful logins on FTP and WebDeploy, click the **Diagnostic Settings** tab on your web app. This will open a blade to select your desired log types, and the destination for the logs. The logs can be sent to Log Analytics, a Storage Account, or an Event Hub. 
 
 1. Provide a name for the Diagnostic Setting
-1. Select the log types you want to capture
-1. Select the services you want to send the logs to. (The service(s) must already be created, you can't create them from this blade.)
-1. Click **Save**.
+2. Select the log types you want to capture
+3. Select the services you want to send the logs to. (The service(s) must already be created, you can't create them from this blade.)
+4. Click **Save**.
 
 To confirm that the logs are sent to your selected service(s), try logging in via FTP or WebDeploy. An example Storage Account log is shown below.
 
@@ -93,15 +91,13 @@ To confirm that the logs are sent to your selected service(s), try logging in vi
 
 [Azure Policy](https://docs.microsoft.com/azure/governance/policy/overview) can help you enforce organizational standards and to assess compliance at-scale. Using Azure Policy, you can define JSON-formatted policies to alter or deny the creation of Azure services. In this scenario, you can use Azure Policy to ensure that all newly created sites have disabled publishing profile authentication for FTP and/or WebDeploy.
 
-### Setup
-
 Follow these steps to enforce a policy that disables publishing profile authentication on any newly created sites.
 
 1. [Create a new Azure Policy resource](https://docs.microsoft.com/azure/governance/policy/assign-policy-portal)
-1. Click **Definitions** under **Authoring**
-1. Click **+ Policy Definition**
-1. Choose the definition subscription, name, and provide a description
-1. Under policy rule, paste the following JSON definition
+2. Click **Definitions** under **Authoring**
+3. Click **+ Policy Definition**
+4. Choose the definition subscription, name, and provide a description
+5. Under policy rule, paste the following JSON definition
 
   ```json
   {
