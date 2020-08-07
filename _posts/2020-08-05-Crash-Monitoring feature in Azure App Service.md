@@ -1,5 +1,5 @@
 ---
-title: "Crash Monitoring feature in Azure App Service"
+title: "Crash Monitoring Feature in Azure App Service"
 author_name: "Yun Jung Choi, Puneet Gupta"
 category: 'Diagnostics'
 tags:
@@ -20,9 +20,9 @@ Therefore, when you are running production workloads, it’s important to quickl
 
 > Note: Enabling crash monitoring might incur slight performance impact on your app because a debugger is always attached to your process. The delay would vary depending upon the number of exceptions that your application code is throwing.
 
-To access Crash Monitoring, browse to your App Service web app in [Azure portal](https://portal.azure.com) and click **Diagnose and Solve problems** in the left navigation panel. Then, click on the home page tile named **Diagnostic Tools**. Once you are inside Diagnostic Tools, click **Crash Monitoring**.
+## Navigating to Crash Monitoring
 
-![Crash Monitoring]({{site.baseurl}}/media/2020/08/crash-monitoring-ui.png)
+To access Crash Monitoring, browse to your App Service web app in [Azure portal](https://portal.azure.com) and click **Diagnose and Solve problems** in the left navigation panel. Then, click on the home page tile named **Diagnostic Tools**. Once you are inside Diagnostic Tools, click **Crash Monitoring**.
 
 ## Configuring Crash Monitoring
 
@@ -32,6 +32,8 @@ Crash Monitoring operates based on 4 conditions that you can configure to tailor
 - **Start time**: Crash Monitoring session will begin at the selected time.
 - **Stop time**: Crash Monitoring session will end at the selected time regardless of the maximum of memory dumps captured. To completely disable the agent after the Crash Monitoring session, click on the **Disable Agent** link.
 - **Max No. of memory dump**: Crash Monitoring session will end after the maximum number of dumps are collected. To completely disable the agent after the Crash Monitoring session, click on the **Disable Agent** link.
+
+![Crash Monitoring]({{site.baseurl}}/media/2020/08/crash-monitoring-ui.png)
 
 Once you click **Start Monitor**, the configuration will be saved, and the monitoring session will begin.
 
@@ -43,13 +45,13 @@ Once you click **Start Monitor**, the configuration will be saved, and the monit
 
 Once you configure and start the Crash Monitoring session, the tool will automatically collect memory dumps and stack trace as your application crashes. You can view the memory dumps and stack trace information grouped by the exit code in the **Analyze** section. Memory dumps and stack trace information become available as your application crashes though you may experience 15 minutes of delay for complete logs to show.
 
-![Crash Monitoring Insight]({{site.baseurl}}/media/2020/08/crash-monitoring-insight.png)
-
 You can click on the **View details** link to expand the details of the crash.
 
-![Crash Monitoring Details]({{site.baseurl}}/media/2020/08/crash-monitoring-details.png)
+![Crash Monitoring Insight]({{site.baseurl}}/media/2020/08/crash-monitoring-insight.png)
 
 Then, you can click on the **View** link under **Callstack** to view the call stack for the crash.
+
+![Crash Monitoring Details]({{site.baseurl}}/media/2020/08/crash-monitoring-details.png)
 
 ![Crash Monitoring CallStack]({{site.baseurl}}/media/2020/08/crash-monitoring-callstack.png)
 
@@ -67,7 +69,7 @@ Clicking on **Debug with Managed Only** will attempt to load the PDB files and o
 
 ## View Historical Data
 
-You can view up to past 15 days of data in the "View History" section. If you delete the memory dumps from your storage accounts, they will no longer show in this section.
+You can view up to past 15 days of data in the **View History** section. If you delete the memory dumps from your storage accounts, they will no longer show in this section.
 
 ![Crash Monitoring Historical Data]({{site.baseurl}}/media/2020/08/crash-monitoring-history.png)
 
@@ -76,3 +78,5 @@ You can view up to past 15 days of data in the "View History" section. If you de
 To completely disable Crash Monitoring, you need to disable the app setting for the tool. You can do this by clicking on **Disable agent** in the Analyze section. This will remove the app setting for Crash Monitoring and restart your app.
 
 ![Crash Monitoring disable agent]({{site.baseurl}}/media/2020/08/crash-monitoring-disable-agent.png)
+
+Feel free to share your feedback or questions about Crash Monitoring by emailing diagnostics@microsoft.com
