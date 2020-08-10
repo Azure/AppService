@@ -6,7 +6,7 @@ toc: true
 toc_sticky: true
 ---
 
-Netflix Eurkea is a REST based middleware designed for discovery and load balancing of web applications. For those who already have a Netflix Eureka app, this article explains the [configurations](#configurations) required to get a Netflix Eureka based app running correctly in App Service. For readers starting from scratch, we have prepared a [demo project](#tutorial) with a working example of Netflix Eureka based services working together on Azure App Service.
+Netflix Eureka is a REST based middleware designed for discovery and load balancing of web applications. For those who already have a Netflix Eureka app, this article explains the [configurations](#configurations) required to get a Netflix Eureka based app running correctly in App Service. For readers starting from scratch, we have prepared a [demo project](#tutorial) with a working example of Netflix Eureka based services working together on Azure App Service.
 
 ## Configure Netflix Eureka for App Service
 
@@ -189,7 +189,7 @@ Your URLS are in output of the Maven command, and in the Azure Portal in the aut
 
 Ensure that you visit the discovery server first. This allows the services register with it and discover each other. Then visit the movie info and ratings data services before the movie catalog service. This is because the movie catalog service requires data from the movie info service and ratings data service. Querying the movie catalog service before the movie info and ratings data services results in a 500 error. *...welcome to microservices!*
 
-A powershell script which performs the requests in correct order:
+A PowerShell script which performs the requests in correct order:
 
 ```powershell
 #Replace with your prefix
@@ -215,7 +215,7 @@ curl -s https://$prefix-movie-catalog-service.azurewebsites.net
 
 ### Querying the Services
 
-Data from the services can be accessed directly on each site. Data can also be retrieved as powershell objects through the `Invoke-RestMethod` command:
+Data from the services can be accessed directly on each site. Data can also be retrieved as PowerShell objects through the `Invoke-RestMethod` command:
 
 ```powershell
 #Replace with your prefix
@@ -252,7 +252,7 @@ versions__delta apps__hashcode application
 1               UP_3_          {MOVIE-INFO-SERVICE, RATINGS-DATA-SERVICE, MOVIE-CATALOG-SERVICE}
 ```
 
-An individual service can then be queried as a powershell object:
+An individual service can then be queried as a PowerShell object:
 
 ```powershell
 $catalogService = $response.applications.application | Where-Object {$_.name -eq "MOVIE-CATALOG-SERVICE"}
@@ -287,7 +287,7 @@ This means that services and discovery servers hosted on Azure can be accessed a
 
 ## Securing Eureka
 
-Without requiring authorization, any user can access the discovery server. This means that a malicious user has all of the information about every service and server registered, and can register their own malicious applications to your discovery server, potentially accessing sensative information.
+Without requiring authorization, any user can access the discovery server. This means that a malicious user has all of the information about every service and server registered, and can register their own malicious applications to your discovery server, potentially accessing sensitive information.
 
 ### Basic Auth
 
