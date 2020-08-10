@@ -1,5 +1,5 @@
 ---
-title: 'Disabling basic auth on your sites'
+title: 'Disabling basic auth on App Service'
 author_name: "Jason Freeberg and Shubham Dhond"
 category: deployment
 toc: true
