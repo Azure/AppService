@@ -1,45 +1,46 @@
 ---
-title: "Crash Monitoring Feature in Azure App Service"
+title: "Crash Monitoring in Azure App Service"
 author_name: "Yun Jung Choi, Puneet Gupta"
 category: 'Diagnostics'
-tags:
-    - process crash
-    - unhandled exception
 toc: true
 toc_sticky: true
 comments: true
 ---
 
+Application crashes happen. A crash is when an exception in your code goes un-handled and terminates the process. These unhandled exceptions are also known as _second chance exceptions_. When your application crashes, all the in-flight requests (request that are currently being processed by the app) are aborted. An end user may experience an HTTP 502 error for those requests. When the app restarts, availability of the app is still impacted due to the cold start which makes things worse.
+
+When you are running production applications, it is important to quickly identify the root cause of an application crash to troubleshoot and minimize the business impact. Having the right set of logs is key to a quick resolution. However, it could be difficult capture these logs at the time of the crash.
+
+**With App Service Diagnostics' Crash Monitoring**, you can collect memory dumps and call stack information at the time of the crash to identify the root cause. Crash Monitoring works by enabling an agent on your application hosted on App Service. The agent attaches a debugger (`procdump.exe` in this case) when process starts. If the process crashes with an unhandled exception, the debugger captures a memory dump.
+
 > Currently offered in App Service Diagnostics for Windows web apps.
 
-A crash happens when an exception in your application code goes un-handled and ends up terminating the process. These unhandled exceptions are also known as _second chance exceptions_ as they end up terminating the application process. When your application crashes, your app process gets terminated and all the in-flight requests (request that are currently processed by the app) are aborted. An end user may experience a HTTP 502 error for those aborted requests. Also, when the process restarts, performance of the app is also impacted due to the cold start which makes things worse.
+## Enabling Crash Monitoring
 
-Therefore, when you are running production workloads, it’s important to quickly identify the root cause of an application crash to troubleshoot and minimize the business impact. Having the right set of logs is the key to quick resolution when your application is crashing or behaving unexpectedly. However, it could be difficult capture these logs at the time of the crash.
+If you are using [Remote Debugging](https://azure.microsoft.com/blog/introduction-to-remote-debugging-on-azure-web-sites/) on your app, Remote Debugging takes preference over Crash Monitoring, and Crash Monitoring will not run. 
 
-**With App Service Diagnostics' Crash Monitoring**, you can collect memory dumps and call stack information at the time of the crash to identify the root cause of the crash. Crash Monitoring works by enabling an agent on your application hosted on App Service. The agent attaches a debugger (procdump.exe in this case) when process starts and as soon as the process crashes with an unhandled exception, the debugger captures a memory dump. If you are using [Remote Debugging](https://azure.microsoft.com/blog/introduction-to-remote-debugging-on-azure-web-sites/) on your app, Remote Debugging takes preference over Crash Monitoring, and Crash Monitoring will not run. Also, because Crash Monitoring uses app settings to enable the agent, any changes in the configuration of the crash monitoring session and starting and stopping the tool will restart your application.
+### Using the Aure Portal
 
-> Note: Enabling crash monitoring might incur slight performance impact on your app because a debugger is always attached to your process. The delay would vary depending upon the number of exceptions that your application code is throwing.
+To access Crash Monitoring, browse to your App Service in the [Azure Portal](https://portal.azure.com) and click **Diagnose and Solve problems** in the left navigation panel. Then, click on the home page tile named **Diagnostic Tools**. Once you are inside Diagnostic Tools, click **Crash Monitoring**.
 
-## Navigating to Crash Monitoring
+### Configuration
 
-To access Crash Monitoring, browse to your App Service web app in [Azure portal](https://portal.azure.com) and click **Diagnose and Solve problems** in the left navigation panel. Then, click on the home page tile named **Diagnostic Tools**. Once you are inside Diagnostic Tools, click **Crash Monitoring**.
-
-## Configuring Crash Monitoring
-
-Crash Monitoring operates based on 4 conditions that you can configure to tailor your needs. **Note**: Configuration will be saved in your app’s app setting, hence, each time a new configuration is saved, your app will restart.
+Crash Monitoring operates based on 4 conditions that you can configure to your needs. Enabling crash monitoring might incur slight performance impact on your app because a debugger is always attached to your process. The delay would vary depending upon the number of exceptions that your application code is throwing. 
 
 - **Storage account**: The selected storage account will store the memory dumps captured via Crash Monitoring. **It is strongly advised that you use one storage account per app.** Selecting a storage account already in use for another app may cause Crash Monitoring to fail. Also, do not change the storage account for your app if there is a crash monitoring session in progress.
 - **Start time**: Crash Monitoring session will begin at the selected time.
 - **Stop time**: Crash Monitoring session will end at the selected time regardless of the maximum of memory dumps captured. To completely disable the agent after the Crash Monitoring session, click on the **Disable Agent** link.
 - **Max No. of memory dump**: Crash Monitoring session will end after the maximum number of dumps are collected. To completely disable the agent after the Crash Monitoring session, click on the **Disable Agent** link.
 
+> The Crash Monitoring configurations are saved in your app’s app settings. Each time a new configuration is saved, your app will restart.
+
 ![Crash Monitoring]({{site.baseurl}}/media/2020/08/crash-monitoring-ui.png)
 
-Once you click **Start Monitor**, the configuration will be saved, and the monitoring session will begin.
+Once you click **Start Monitor**, the configuration will be saved and the monitoring session will begin.
 
 ![Crash Monitoring Enabled]({{site.baseurl}}/media/2020/08/crash-monitoring-enabled.png)
 
-**Note**: Deleting a memory dump from a storage account while the tool is still running may cause the tool to collect additional data than desired. Please ensure the session is completed before you delete the memory dumps from the storage account.
+> Deleting a memory dump from a storage account while the tool is still running may cause the tool to collect additional data than desired. Please ensure the session is completed before you delete the memory dumps from the storage account.
 
 ## Analyzing the Data
 
@@ -67,16 +68,16 @@ Clicking on **Debug with Managed Only** will attempt to load the PDB files and o
 
 ![View Exception in Visual Studio]({{site.baseurl}}/media/2020/08/crash-monitoring-visual-studio-exception.png)
 
-## View Historical Data
+### View Historical Data
 
 You can view up to past 15 days of data in the **View History** section. If you delete the memory dumps from your storage accounts, they will no longer show in this section.
 
 ![Crash Monitoring Historical Data]({{site.baseurl}}/media/2020/08/crash-monitoring-history.png)
 
-## Completely Disable Crash Monitoring
+##  Disable Crash Monitoring
 
-To completely disable Crash Monitoring, you need to disable the app setting for the tool. You can do this by clicking on **Disable agent** in the Analyze section. This will remove the app setting for Crash Monitoring and restart your app.
+To disable Crash Monitoring, click **Disable agent** in the Analyze section. This will remove the app settings for Crash Monitoring and restart your app.
 
 ![Crash Monitoring disable agent]({{site.baseurl}}/media/2020/08/crash-monitoring-disable-agent.png)
 
-Feel free to share your feedback or questions about Crash Monitoring by emailing diagnostics@microsoft.com
+Feel free to share your feedback or questions about Crash Monitoring by emailing [diagnostics@microsoft.com](mailto:diagnostics@microsoft.com)
