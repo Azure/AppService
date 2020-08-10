@@ -35,7 +35,7 @@ jobs:
         JEKYLL_ENV: production
 
     # TODO: Make this step depend on the deploy action
-    - name: Update Algolia search index
-      run: bundle exec jekyll algolia
-      env:
-        ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
+#     - name: Update Algolia search index
+#       run: bundle exec jekyll algolia
+#       env:
+#         ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}

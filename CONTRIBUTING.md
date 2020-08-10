@@ -56,7 +56,7 @@ The App Service Team Blog is a great place to share content with our users. Befo
 1. Run the local Jekyll server. From the project directory, run the following command:
 
     ```bash
-    bundle exec jekyll serve --limit_posts=50 --incremental
+    bundle exec jekyll serve --limit_posts=50 --incremental --future
     ```
 
     The blog will be running at <http://127.0.0.1:4000/AppService/>. (The `--limit_posts=5` arg only builds the latest 5 articles. This speeds up the time-to-refresh.)
@@ -87,6 +87,18 @@ The App Service Team Blog is a great place to share content with our users. Befo
     - For Jekyll-related formatting, please see these [Jekyll Docs](https://jekyllrb.com/docs/posts/).
     - Our blog uses the popular [Minimal Mistakes](https://github.com/mmistakes) theme. If you would like to do advanced markup for your post, please see the [theme's utility classes](https://mmistakes.github.io/minimal-mistakes/docs/utility-classes/).
 
+#### Writing Tips
+
+Here are some quick tips to make your blog post clear, concise, and more effective:
+
+1. **Write an outline**. Before you jump into writing the article, outline the article using a bulleted list. Doing this will help you organize the content from top-to-bottom.
+1. [**Avoid using Passive Voice**](https://www.wikihow.com/Avoid-Using-the-Passive-Voice). In most cases, the subject of the sentence should come before the verb. This is good: _"John hit the ball"_. This is bad: _"The ball was hit by John"_. The object precedes the verb in the second example. Excessive use of the passive voice will make your article longer, less clear, and awkward to read.
+1. **Avoid run-on sentences**. Your article is likely going to cover a technical concept. Make things easy for the reader. Use short, concise sentences.
+1. **Don't narrate with the first person**. Whenever possible, avoid "we" or "I". In instructional articles, avoid using phrases like _"we will now deploy they app"_ or _"we will move to the next topic"_. These phrases don't serve any instructional purpose, and lengthen the article unnecessarily.
+    1. It is OK to refer directly to the reader as "you". For example, "Your web app is ready to deploy", or "You can now proceed to the next step".
+
+For more best practices, please see [this deck from ACOM](https://microsoft.sharepoint.com/:p:/t/cloudosdigital/EYElo_4ScDZCqBNEHs6P7q0BD7Vl-6jnb8vaOfxhmAmE_w?e=g43Da6).
+
 #### Add digital content
 
 You can add images, GIFs, or other digital content to your post by adding it to the `/media/` directory and referencing the file from the post.
@@ -96,7 +108,7 @@ You can add images, GIFs, or other digital content to your post by adding it to 
 1. Once the file is added, you can link to the file in your markdown using the path `{{ site.baseurl }}/media/YEAR/MONTH/your_file_name.jpg`. For example, to insert an image in Markdown you would use the following syntax
 
     ```text
-    ![Required description of the image]({{ site.baseurl }}/media/2019/04/portal-picture.jpg)
+    ![Required description of the image]({{site.baseurl}}/media/2019/04/portal-picture.jpg)
     ```
 
     For more information on `baseurl`, please see [this post](https://byparker.com/blog/2014/clearing-up-confusion-around-baseurl/).
