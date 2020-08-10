@@ -52,7 +52,9 @@ PATCH https://management.azure.com/subscriptions/<subscription>/resourceGroups/<
 
 To confirm that the publish profile credentials are blocked on WebDeploy, try [publishing a web app using Visual Studio 2019](https://docs.microsoft.com/visualstudio/deployment/quickstart-deploy-to-azure?view=vs-2019).
 
-## RBAC
+## Create a custom RBAC role
+
+https://docs.microsoft.com/en-us/azure/role-based-access-control/custom-roles
 
 - How to make sure the on/off switch is owner-only on RBAC
 - Set it at the subscription level
