@@ -1,14 +1,14 @@
 ---
-title: 'Securing Data Plane Access'
+title: 'Disabling basic auth on your sites'
 author_name: "Jason Freeberg and Shubham Dhond"
 category: deployment
 toc: true
 toc_sticky: true
 ---
 
-App Service provides access for FTP and WebDeploy clients to connect using the basic auth credentials found in the site's [publish profile](https://docs.microsoft.com/visualstudio/deployment/tutorial-import-publish-settings-azure?view=vs-2019). These APIs are great for browsing your site's file system, uploading drivers and utilities, and deploying with MsBuild. However, enterprises often need to meet security requirements and would rather disable this basic auth access, so that employees can only access the organization's App Services through API's that are backed by Azure Active Directory (AAD).
+App Service provides access for FTP and WebDeploy clients to connect using the basic auth credentials found in the site's [publish profile](https://docs.microsoft.com/visualstudio/deployment/tutorial-import-publish-settings-azure). These APIs are great for browsing your site's file system, uploading drivers and utilities, and deploying with MsBuild. However, enterprises often need to meet security requirements and would rather disable this basic auth access, so that employees can only access the organization's App Services through API's that are backed by Azure Active Directory (AAD).
 
-This article shows how to disable basic authorization, and how to monitor any attempted or successful logins. You can also use Azure Policy to ensure any new sites have basic authentication disabled. Also, the API to disable or enable basic auth is backed by AAD and RBAC, so you can narrow which users or roles are able to re-enable basic auth.
+This article shows how to disable basic authorization, monitor any attempted or successful logins, and how to use Azure Policy to ensure any new sites have basic authentication disabled. Also, the API to disable or enable basic auth is backed by AAD and RBAC, so you can narrow which users or roles are able to re-enable basic auth for a site.
 
 ## Disabling Access
 
