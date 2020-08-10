@@ -6,9 +6,9 @@ toc: true
 toc_sticky: true
 ---
 
-App Service provides ports for FTP and WebDeploy clients to connect using the publish profile. These APIs are great for browsing your site's file system, uploading drivers and utilities, and deploying with MsBuild. However, enterprises often need to meet security requirements and would rather disable access . <\Add line about enterprises want to use AAD-backed APIs>.
+App Service provides access for FTP and WebDeploy clients to connect using the basic auth credentials found in the site's [publish profile](https://docs.microsoft.com/visualstudio/deployment/tutorial-import-publish-settings-azure?view=vs-2019). These APIs are great for browsing your site's file system, uploading drivers and utilities, and deploying with MsBuild. However, enterprises often need to meet security requirements and would rather disable this basic auth access, so that employees can only access the organization's App Services through API's that are backed by Azure Active Directory (AAD).
 
-This article shows how to disable access using the publish profile credentials, and how to monitor any attempted or successful logins. You can also use Azure Policy to ensure any new sites have publish profile authentication disabled. Lastly, the API to disable or enable publiosh profile access is backed by RBAC, so only the users or roles you specify will be able to re-enable access. After completing this guide, developers will only be able to access your site via AAD-backed entrypoints.
+This article shows how to disable basic authorization, and how to monitor any attempted or successful logins. You can also use Azure Policy to ensure any new sites have basic authentication disabled. Also, the API to disable or enable basic auth is backed by AAD and RBAC, so you can narrow which users or roles are able to re-enable basic auth.
 
 ## Disabling Access
 
@@ -54,16 +54,35 @@ To confirm that the publish profile credentials are blocked on WebDeploy, try [p
 
 ## Create a custom RBAC role
 
-https://docs.microsoft.com/en-us/azure/role-based-access-control/custom-roles
+The API in the previous section is backed Azure Role-Based Access Control (RBAC), which means you can [create a custom role](https://docs.microsoft.com/en-us/azure/role-based-access-control/custom-roles#steps-to-create-a-custom-role) to block users from using the API and assign lower-priveldged users to the role so they cannot enable basic auth on any sites. To configure the custom role, follow the instructions below.
 
-- How to make sure the on/off switch is owner-only on RBAC
-- Set it at the subscription level
+1.  Open the [Azure portal](https://portal.azure.com/)
+2.  Open the subscription that you want to create the custom role in
+3.  On the left navigation panel, click **Access Control (IAM)**
+4.  Click **+ Add** and click **Add custom role** in the dropdown
+5.  Provide a name and description for the role.
+6.  For **Baseline permissions** you can clone one of your organization's existing roles, or one of the default roles
+7.  Click the **Permissions** tab, and click **Exclude permissions**
+8.  In the context blade, click the **Microsoft Web Apps**. This will open a list of all the RBAC actions for App Service
+9.  Search for the `microsoft.web/sites/basicPublishingCredentialsPolicies/ftp` and `microsoft.web/sites/basicPublishingCredentialsPolicies/scm` operations. Under these, check the box for **Write**. This will add the actions as *NotActions* for the role.
+  
+    You can disable this for [slots](https://docs.microsoft.com/en-us/azure/app-service/deploy-staging-slots) as well. See the `microsoft.web/sites/slots/basicPublishingCredentialsPolicies/ftp` and `microsoft.web/sites/slots/basicPublishingCredentialsPolicies/scm` actions   
 
-## Auditing
+    ![Disable write actions in the Portal]({{site.baseurl}}/media/2020/08/rbac-ftp-list-operations-portal.png)
+
+10. Click **Review + create** at the bottom. Under **Permissions**, you will see the `basicPublishingCredentialsPolicies` APIs listed as NotActions.
+    
+    ![List of NotActions]({{site.baseurl}}/media/2020/08/rbac-ftp-list-notactions.png)
+
+11. Finally, click **Create**. You can now assign this role to your organization's users.
+
+> More information on [setting up custom RBAC roles](https://docs.microsoft.com/en-us/azure/role-based-access-control/custom-roles-portal#step-2-choose-how-to-start).
+
+## Audit with Azure Monitor
 
 All successful and attempted logins are logged to the Azure Monitor **AppServiceAuditLogs** log type. This means you can use all of Azure Monitor's features to store, query, and alert based on the log contents.
 
-> [Pricing information for Azure Monitor features and services](https://azure.microsoft.com/pricing/details/monitor/)
+> [Pricing information for Azure Monitor features and services](https://azure.microsoft.com/pricing/details/monitor/).
 
 To audit the attempted and successful logins on FTP and WebDeploy, click the **Diagnostic Settings** tab on your web app. This will open a blade to select your desired log types, and the destination for the logs. The logs can be sent to Log Analytics, a Storage Account, or an Event Hub. 
 
@@ -89,7 +108,7 @@ To confirm that the logs are sent to your selected service(s), try logging in vi
 }
 ```
 
-## Azure Policy
+## Enforce compliance with Azure Policy
 
 [Azure Policy](https://docs.microsoft.com/azure/governance/policy/overview) can help you enforce organizational standards and to assess compliance at-scale. Using Azure Policy, you can define JSON-formatted policies to alter or deny the creation of Azure services. In this scenario, you can use Azure Policy to ensure that all newly created sites have disabled publishing profile authentication for FTP and/or WebDeploy.
 
@@ -101,23 +120,23 @@ Follow these steps to enforce a policy that disables publishing profile authenti
 4. Choose the definition subscription, name, and provide a description
 5. Under policy rule, paste the following JSON definition
 
-  ```json
-  {
-    "mode": "All",
-    "policyRule": {
-      "if": {
-        "field": "Microsoft.Web/sites/basicPublishingCredentialsPolicies.ftp.allow",
-        "equals": true
-      },
-      "then": {
-        "effect": "deny"
+    ```json
+    {
+      "mode": "All",
+      "policyRule": {
+        "if": {
+          "field": "Microsoft.Web/sites/basicPublishingCredentialsPolicies.ftp.allow",
+          "equals": true
+        },
+        "then": {
+          "effect": "deny"
+        }
       }
     }
-  }
-  ```
+    ```
 
 1. Finally, click **Save**
 
 ## Summary
 
-In this article you learned how to disable basic authentication to the FTP and WebDeploy ports for your sites. Additionally, you can audit any attempted logins with Azure Monitor and enforce an Azure Policy to make any new sites compliant with your enterprise's security requirements.
+In this article you learned how to disable basic authentication to the FTP and WebDeploy ports for your sites. Additionally, you can audit any attempted logins with Azure Monitor and use an Azure Policy to esnure any new sites are compliant with your enterprise's security requirements.
