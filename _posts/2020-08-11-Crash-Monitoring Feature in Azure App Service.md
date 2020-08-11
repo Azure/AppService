@@ -19,7 +19,7 @@ When you are running production applications, it is important to quickly identif
 
 If you are using [Remote Debugging](https://azure.microsoft.com/blog/introduction-to-remote-debugging-on-azure-web-sites/) on your app, Remote Debugging takes preference over Crash Monitoring, and Crash Monitoring will not run. 
 
-### Using the Aure Portal
+### Using the Azure Portal
 
 To access Crash Monitoring, browse to your App Service in the [Azure Portal](https://portal.azure.com) and click **Diagnose and Solve problems** in the left navigation panel. Then, click on the home page tile named **Diagnostic Tools**. Once you are inside Diagnostic Tools, click **Crash Monitoring**.
 
