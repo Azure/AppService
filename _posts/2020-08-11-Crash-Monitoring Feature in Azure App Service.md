@@ -9,7 +9,7 @@ comments: true
 
 Application crashes happen. A crash is when an exception in your code goes un-handled and terminates the process. These unhandled exceptions are also known as _second chance exceptions_. When your application crashes, all the in-flight requests (request that are currently being processed by the app) are aborted. An end user may experience an HTTP 502 error for those requests. When the app restarts, availability of the app is still impacted due to the cold start which makes things worse.
 
-When you are running production applications, it is important to quickly identify the root cause of an application crash to troubleshoot and minimize the business impact. Having the right set of logs is key to a quick resolution. However, it could be difficult capture these logs at the time of the crash.
+When you are running production applications, it is important to quickly identify the root cause of an application crash to troubleshoot and minimize the business impact. Having the right set of logs is key to a quick resolution. However, it could be difficult to capture these logs at the time of the crash.
 
 **With App Service Diagnostics' Crash Monitoring**, you can collect memory dumps and call stack information at the time of the crash to identify the root cause. Crash Monitoring works by enabling an agent on your application hosted on App Service. The agent attaches a debugger (`procdump.exe` in this case) when process starts. If the process crashes with an unhandled exception, the debugger captures a memory dump.
 
@@ -19,7 +19,7 @@ When you are running production applications, it is important to quickly identif
 
 If you are using [Remote Debugging](https://azure.microsoft.com/blog/introduction-to-remote-debugging-on-azure-web-sites/) on your app, Remote Debugging takes preference over Crash Monitoring, and Crash Monitoring will not run. 
 
-### Using the Aure Portal
+### Using the Azure Portal
 
 To access Crash Monitoring, browse to your App Service in the [Azure Portal](https://portal.azure.com) and click **Diagnose and Solve problems** in the left navigation panel. Then, click on the home page tile named **Diagnostic Tools**. Once you are inside Diagnostic Tools, click **Crash Monitoring**.
 
@@ -36,7 +36,7 @@ Crash Monitoring operates based on 4 conditions that you can configure to your n
 
 ![Crash Monitoring]({{site.baseurl}}/media/2020/08/crash-monitoring-ui.png)
 
-Once you click **Start Monitor**, the configuration will be saved and the monitoring session will begin.
+Once you click **Start Monitor**, the configuration will be saved, and the monitoring session will begin.
 
 ![Crash Monitoring Enabled]({{site.baseurl}}/media/2020/08/crash-monitoring-enabled.png)
 
@@ -74,7 +74,7 @@ You can view up to past 15 days of data in the **View History** section. If you 
 
 ![Crash Monitoring Historical Data]({{site.baseurl}}/media/2020/08/crash-monitoring-history.png)
 
-##  Disable Crash Monitoring
+## Disable Crash Monitoring
 
 To disable Crash Monitoring, click **Disable agent** in the Analyze section. This will remove the app settings for Crash Monitoring and restart your app.
 
