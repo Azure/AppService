@@ -373,7 +373,7 @@ Since our example application is based on Spring Boot, it can use Spring Boot's 
 
     **Note:**: if you're adding this to the example project, add the username and password to `client.application.properties.template`
 
-The client should now be able to successfully register with the Eureka server.
+The client will now be able to successfully register with the Eureka server.
 
 ### Security Options for Azure and Spring Boot
 
