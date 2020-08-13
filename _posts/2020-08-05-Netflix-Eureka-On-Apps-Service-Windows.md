@@ -61,7 +61,7 @@ eureka:
 
 ### Enable HTTPS Only
 
-Configure your web app to only accept HTTP**S** traffic. 
+Configure your web app to only accept HTTP**S** traffic.
 
 1. Go to your App Service in the Azure Portal
 2. Find **Settings** on the left-side navigation menu
@@ -285,8 +285,8 @@ $catalogService = $response.applications.application | Where-Object {$_.name -eq
 
 $catalogService.instance
 
-instanceId                    : example-moive-catalog-service.azurewebsites.net:movie-catalog-service:443
-hostName                      : example-moive-catalog-service.azurewebsites.net
+instanceId                    : example-movie-catalog-service.azurewebsites.net:movie-catalog-service:443
+hostName                      : example-movie-catalog-service.azurewebsites.net
 app                           : MOVIE-CATALOG-SERVICE
 ipAddr                        : 10.0.5.129
 status                        : UP
@@ -297,10 +297,10 @@ countryId                     : 1
 dataCenterInfo                : dataCenterInfo
 leaseInfo                     : leaseInfo
 metadata                      : metadata
-homePageUrl                   : http://example-moive-catalog-service.azurewebsites.net:80/
-statusPageUrl                 : https://example-moive-catalog-service.azurewebsites.net:443/actuator/info
-healthCheckUrl                : http://example-moive-catalog-service.azurewebsites.net:443/actuator/health
-secureHealthCheckUrl          : https://example-moive-catalog-service.azurewebsites.net:443/actuator/health
+homePageUrl                   : http://example-movie-catalog-service.azurewebsites.net:80/
+statusPageUrl                 : https://example-movie-catalog-service.azurewebsites.net:443/actuator/info
+healthCheckUrl                : http://example-movie-catalog-service.azurewebsites.net:443/actuator/health
+secureHealthCheckUrl          : https://example-movie-catalog-service.azurewebsites.net:443/actuator/health
 vipAddress                    : movie-catalog-service
 secureVipAddress              : movie-catalog-service
 isCoordinatingDiscoveryServer : false
@@ -375,13 +375,15 @@ Since our example application is based on Spring Boot, it can use Spring Boot's 
 
 The client should now be able to successfully register with the Eureka server.
 
-### Spring Boot Starters for Azure
+### Security Options for Azure and Spring Boot
+
+Azure App Service provides built-in authentication and authorization support, so you can sign in users and access data by writing minimal or no code in your web app. This feature, **EasyAuth**, allows Azure Web Apps to authenticate though identity providers, including Azure Active Directory, Google, Microsoft Account, Facebook, Twitter, and OpenID Connect.
+
+[You can read more about EasyAuth and Authentication and Authorization in Azure here](https://docs.microsoft.com/en-us/azure/app-service/overview-authentication-authorization)
 
 The Spring Boot Starter for Azure provides auto-configuration for a number of Azure Services. These include Azure Active Directory, an authorization and identity service, and Key Vault, a service for storing and retrieving secrets securely across Azure.
 
 [You can read more about Spring Boot Starters for Azure here](https://docs.microsoft.com/en-us/azure/developer/java/spring-framework/spring-boot-starters-for-azure)
-
-### Spring Security
 
 Aside from Basic Auth, our example application can use the security features of Spring Security for other types of authorization (Including OAuth2) and protection from exploits such as CSRF attacks.
 
