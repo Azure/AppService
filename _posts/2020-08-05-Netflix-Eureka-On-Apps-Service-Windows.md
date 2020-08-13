@@ -1,5 +1,5 @@
 ---
-title: "Netflix Eureka on App Service (Windows)"
+title: "Netflix Eureka on App Service"
 author_name: "Gregory Goldshteyn"
 category: "java"
 toc: true
@@ -12,12 +12,14 @@ Netflix Eureka is a REST based middleware designed for discovery and load balanc
 
 In Azure, there are several configurations that must be performed on Eureka clients to get them working correctly in App Service. These settings can be included in an application.yml file, application.properties file, or as arguments to the JVM in the `JAVA_OPTS` app setting.
 
+  **Note:** These configurations are for Windows Web Apps. For configuration on Linux, see [Linux Configuration](#linux-configuration)
+
 ### Example configuration files
 
 If you are using .properties files, the required configurations are below.
 
 ```yml
-spring.application.name=exmaple-client
+spring.application.name=example-client
 eureka.client.serviceUrl.defaultZone=https://example-server.azurewebsites.com:443/eureka
 eureka.instance.hostname=example-client.azurewebsites.com
 eureka.instance.secure-port-enabled=true
@@ -36,17 +38,17 @@ Here are the same configurations for YAML users.
 ```yml
 spring:
   application:
-    name: exmaple-server
+    name: example-server
 management:
   server:
     port: ${server.port}
 eureka:
   client:
     serviceUrl:
-      defaultZone: https://exmaple-server.azurewebsites.com:443/eureka
+      defaultZone: https://example-server.azurewebsites.com:443/eureka
 eureka:
   instance:
-    hostname: exmaple-client.azurewebsites.com
+    hostname: example-client.azurewebsites.com
     secure-port-enabled: true
     nonsecure-port-enabled: false
     nonSecurePort: 80
@@ -116,9 +118,33 @@ eureka.client.register-with-eureka=false
 eureka.client.fetch-registry=false
 ```
 
-## Tutorial 
+### Linux Configuration
+
+If you are planning on hosting your Netflix Eureka application as a Linux Web App, the port information specified in Windows Web Apps is not required. This is because Windows Web Apps can only expose port 80 and port 443 externally, whereas a Linux Web App can expose other ports.
+
+An example application.properties file for a Netflix Eureka client on a Linux Web App:
+
+```yml
+spring.application.name=example-client
+eureka.client.serviceUrl.defaultZone=https://example-server.azurewebsites.com:443/eureka
+eureka.instance.hostname=example-client.azurewebsites.com
+eureka.instance.secure-port-enabled=true
+eureka.instance.nonsecure-port-enabled=false
+```
+
+By default the ports 80 and 443 are used for http and https traffic respectively. Notably, `management.server.port` can be set to any arbitrary port. This may be useful for security or administrative purposes.
+
+```yml
+management.server.port=888
+```
+
+## Tutorial
 
 If you do not have a Netflix Eureka project, you can [get the example project files here](https://github.com/Azure-Samples/app-service-netflix-eureka-windows) and follow the instructions below to get started.
+
+If you prefer to use Linux App Service Plans, the example project for Linux is [available here](https://github.com/Azure-Samples/app-service-netflix-eureka-linux). The instructions for the Linux project are the same.
+
+**NOTE:** the Linux version of this project will be hosted on premium (P1v2) App Service Plans, which may incur costs.
 
 ### Prerequisites
 
@@ -187,7 +213,7 @@ Your URLS are in output of the Maven command, and in the Azure Portal in the aut
 
 > By default, this project is configured to use a free tier App Service Plan. These app service plans are not "always on" by default, which means they must be visited after deployment to start up. Additionally, they will stop after 20 minutes of inactivity.
 
-Ensure that you visit the discovery server first. This allows the services register with it and discover each other. Then visit the movie info and ratings data services before the movie catalog service. This is because the movie catalog service requires data from the movie info service and ratings data service. Querying the movie catalog service before the movie info and ratings data services results in a 500 error. *...welcome to microservices!*
+Ensure that you visit the discovery server first. This allows the services register with it and discover each other. Then visit the movie info and ratings data services before the movie catalog service. This is because the movie catalog service requires data from the movie info service and ratings data service. Querying the movie catalog service before the movie info and ratings data services results in a 500 error.
 
 A PowerShell script which performs the requests in correct order:
 
@@ -349,9 +375,14 @@ Since our example application is based on Spring Boot, it can use Spring Boot's 
 
 The client should now be able to successfully register with the Eureka server.
 
-### Security through Network Configuration
+### Spring Boot Starters for Azure
 
-Using Azure's network security features, you can block traffic to your discovery server except for your own services. This is possible by setting a Network Security Group which only allows communication to the discovery server from a select list or range of IP addresses.
+The Spring Boot Starter for Azure provides auto-configuration for a number of Azure Services. These include Azure Active Directory, an authorization and identity service, and Key Vault, a service for storing and retrieving secrets securely across Azure.
 
-- [Learn more about Network Security Groups here](https://docs.microsoft.com/en-us/azure/virtual-network/security-overview)
-- [Read more about Azure Network Security here](https://docs.microsoft.com/en-us/azure/security/fundamentals/network-overview)
+[You can read more about Spring Boot Starters for Azure here](https://docs.microsoft.com/en-us/azure/developer/java/spring-framework/spring-boot-starters-for-azure)
+
+### Spring Security
+
+Aside from Basic Auth, our example application can use the security features of Spring Security for other types of authorization (Including OAuth2) and protection from exploits such as CSRF attacks.
+
+[You can read more about Spring Security here](https://docs.spring.io/spring-security/site/docs/current/reference/html5/)
