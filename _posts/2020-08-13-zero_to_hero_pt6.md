@@ -78,11 +78,11 @@ To secure outbound traffic from your web app you need to use the regional VNet I
 
 To secure your outbound traffic from your web app, enable [VNet Integration](https://docs.microsoft.com/azure/app-service/web-sites-integrate-with-vnet). By default, your app outbound traffic will only be affected by NSGs and UDRs if you are going to a private address (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16). To ensure that all of your outbound traffic is affected by the NSGs and UDRs on your integration subnet, set the application setting WEBSITE_VNET_ROUTE_ALL to 1.  
 
-### Summary
+## Summary
 
 Congratulations! In this article you learned how to secure your inbound and outbound networking traffic. You are now able to assemble App Service and Networking features to create a secure internet facing web application.  
 
-## Helpful Resources
+### Helpful Resources
 
 * [App Service networking features](https://docs.microsoft.com/azure/app-service/networking-features)
 * [App Service access restrictions](https://docs.microsoft.com/azure/app-service/app-service-ip-restrictions)
