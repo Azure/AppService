@@ -17,6 +17,8 @@ In this article, you will learn how to secure your standalone app in the multi-t
 
 There are two aspects that need to be secured for a web app, inbound traffic and outbound traffic.  Inbound traffic are visitors going to your web page, or clients sending requests to your API. Outbound traffic is when your web app makes an outbound call to a database, cache, message queue, or other service. The inbound traffic passes through a load balancer to a set of shared front end servers before reaching the workers which your apps run on. The outbound traffic leaves those workers and goes out through one of the outbound load balancers used by the scale unit. In the diagram below, the inbound and outbound load balancers are shown in green.
 
+![App Service architecture]({{ site.baseurl }}/media/2020/08/app-service-architecture.png)
+
 All traffic to and from the components inside App Service is strictly locked down and secured to prevent malicious actions.  This includes preventing any worker-to-worker communication.  This means users just need to secure the networking path to and from their apps--all other traffic is secured for you.
 
 ### Features and Services
@@ -32,17 +34,21 @@ The following tutorial uses a number of Azure Networking features and services. 
 
 ## Securing your web app
 
-The details will follow but the synopsis of how to secure an app is:
+To secure the network access around your web app you will need to secure:
 
-* Secure application inbound traffic with a combination of a WAF configured Application Gateway and service endpoints
-* Secure publishing inbound traffic with access restrictions, service endpoints or a build agent
-* Secure outbound traffic from your web app with VNet Integration, the WEBSITE_VNET_ROUTE_ALL application setting, and an Azure Firewall
+* inbound request traffic to your app
+* inbound publishing traffic to your app
+* outbound calls made from your app.  
+
+To secure inbound request traffic to your app, use a WAF enabled Application Gateway with [Service Endpoints](https://docs.microsoft.com/azure/app-service/app-service-ip-restrictions#service-endpoints). To secure inbound publishing traffic to your app, use a build agent with service endpoints on the publishing endpoint. Lastly, to secure outbound traffic from your web app, use VNet Integration and an Azure Firewall.
+
+![App Service architecture]({{ site.baseurl }}/media/2020/08/secure-web-app.png)
 
 ### Securing inbound traffic
 
 1. Select or create an Azure Virtual Network (VNet).  To secure your inbound traffic to your app you will need to have a VNet. If you have one already, you do not need to create another.  It should be in the same region as your web app.  If you do not have a VNet, you can create one following these instructions.
 2. Create an Application Gateway as described here.
-3. Enable [Service Endpoints](https://docs.microsoft.com/azure/app-service/app-service-ip-restrictions#service-endpoints) to your web app.
+3. Enable Service Endpoints  to your web app.
 4. Once you have the VNet, App Gateway, and Service Endpoints set up, you need to add a custom domain name for your app that should point to your Application Gateway.  Your web app needs to be configured with the new domain name.  To add a custom domain name to your web app, follow the guidance here.
 
 The end result is that your web app will have all inbound traffic routed through your Application Gateway to your app.  You can, and should, enable Web Application Firewall (WAF) support on your Application Gateway.
