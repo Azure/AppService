@@ -10,17 +10,17 @@ The ASEv3 project is a realization of several years of infrastructure developmen
 
 The App Service Environment (ASE) is a single tenant instance of the Azure App Service that runs in a customers Azure Virtual Network (VNet). To date, the ASE has been based on the older Azure Cloud Services technology. This has limited the feature set in a number of ways. The ASE also has many networking dependencies that must be allowed in the customer VNet in order for the ASE to operate properly. 
 
-[ASEv2 system architecture diagram]({{ site.baseurl }}/media/2020/08/asev3-asev2-dependencies.png)
+![ASEv2 system architecture diagram]({{ site.baseurl }}/media/2020/08/asev3-asev2-dependencies.png)
 
 
 ASEv3 has several major changes in the system architecture. In ASEv3, the underlying technology is based on Virtual Machine Scale Sets (VMSS) instead of Cloud Services. This opens the door to a number of improvements including better load balancers, zone redundancy and multiple other things. Also in ASEv3, the ASE is deployed in a Microsoft managed VNet and then inbound/outbound application sockets are opened in the customer VNet.  This means that there isn't any ASE management traffic within the customer VNet, only application traffic.  If you were to look at the customer facing experience around the ASE dependencies, it is a lot cleaner.  There aren't any.
 
-[ASEv3 system architecture diagram]({{ site.baseurl }}/media/2020/08/asev3-dependencies.png)
+![ASEv3 system architecture diagram]({{ site.baseurl }}/media/2020/08/asev3-dependencies.png)
 
 
 The way this is accomplished is by integrating the networking injection technologies with the single-tenant ASE.  
 
-[ASEv3 multi-network architecture]({{ site.baseurl }}/media/2020/08/asev3-mnet.png)
+![ASEv3 multi-network architecture]({{ site.baseurl }}/media/2020/08/asev3-mnet.png)
 
 The end result is a single tenant system that has no internet hosted dependencies in the customer network.  Customers can secure their workloads to their heart's content and Microsoft can secure the infrastructure in similar fashion.  
 
@@ -97,25 +97,20 @@ Private preview requirements
 - Must create 2 subnets.  One subnet must be delegated to Microsoft.Web/HostingEnvironments and should be a /24
 - Need write access on the entire VNET
 
-[ASEv3 multi-network architecture]({{ site.baseurl }}/media/2020/08/asev3-create.png)
+![ASEv3 multi-network architecture]({{ site.baseurl }}/media/2020/08/asev3-create.png)
 
 The Hosting tab allows you to pick the initial OS that the ASE will start with.  You can always add the other OS later. This matters to the type of workers that are initially provisioned.  
 The host group option allows you to deploy on dedicated hardware. There is an added charge for the host group above and beyond the ASE rate.  This capability does not yet work but will in the next App Service update.
 
-[ASEv3 multi-network architecture]({{ site.baseurl }}/media/2020/08/asev3-create-hosting.png)
+![ASEv3 multi-network architecture]({{ site.baseurl }}/media/2020/08/asev3-create-hosting.png)
 
 When configuring your Network, you can only use pre-existing networking resources. The ability to create the Vnet and subnets will be added in a later portal update. 
 The outbound subnet must be delegated to Microsoft.Web/HostingEnvirionment and cannot be used for anything else.
 
-[ASEv3 multi-network architecture]({{ site.baseurl }}/media/2020/08/asev3-create-network.png)
+![ASEv3 multi-network architecture]({{ site.baseurl }}/media/2020/08/asev3-create-network.png)
 
 ASEv3 creation isn't fast yet. It will still take a while as the resources are provisioned and configured.  
 
 ## Feedback
 
 To provide feedback, send mail to asev3-privatepreview@microsoft.com.  
-
-
-
-
-
