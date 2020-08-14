@@ -1,5 +1,5 @@
 ---
-title: 'Zero to Hero with App Service, Part 6: Securing a web app'
+title: 'Zero to Hero with App Service, Part 6: Securing your web app'
 author_name: "Christina Compy"
 tags: 
     - zero to hero
@@ -32,11 +32,11 @@ The following tutorial uses a number of Azure Networking features and services. 
 
 ## Securing your web app
 
-To secure the network access around your web app you will need to secure:
+To secure the network access around your web app you will need to secure...
 
-* inbound request traffic to your app
-* inbound publishing traffic to your app
-* outbound calls made from your app.  
+1. [Inbound request traffic to your app](#securing-inbound-traffic)
+1. [Inbound publishing traffic to your app](#secure-publishing-inbound-traffic)
+1. [Outbound calls made from your app](#secure-outbound-traffic-from-your-web-app)
 
 To secure inbound request traffic to your app, use a WAF enabled Application Gateway with Service Endpoints. To secure inbound publishing traffic to your app, use a build agent with service endpoints on the publishing endpoint. Lastly, to secure outbound traffic from your web app, use VNet Integration and an Azure Firewall.
 
@@ -53,13 +53,13 @@ The end result is that your web app will have all inbound traffic routed through
 
 #### Alternate Configuration
 
-There are two alternative services that are in preview that should be noted.  One is using [Private Endpoints](https://docs.microsoft.com/en-us/azure/app-service/networking/private-endpoint) rather than Service Endpoints and the other is using Azure Front Door instead of an Application Gateway.  
+There are two alternative services that are in preview that should be noted.  One is using [Private Endpoints](https://docs.microsoft.com/azure/app-service/networking/private-endpoint) rather than Service Endpoints and the other is using Azure Front Door instead of an Application Gateway.  
 
 If you use Private Endpoints instead of Service Endpoints, you would create your Private Endpoint in a subnet other than the GatewaySubnet. This Private Endpoint would be configured against your app. This is a great solution as it also hosts the HTTPS publishing endpoint for your app. When you add Private Endpoints to your app, the app is no longer accessible from the internet.  Traffic to your app must only go through the private endpoints on your app.  
 
 If you use [Azure Front Door](https://docs.microsoft.com/azure/frontdoor/front-door-overview) (AFD) with your app, you would need to set an IP address [access restriction](https://docs.microsoft.com/azure/app-service/app-service-ip-restrictions) to secure your app to only being accessible through AFD. There are some additional changes that will soon be available that will enable you to lock you app down to specific AFD profiles. If you use AFD, you can enable a mix of capabilities such as WAF protection just like with an Application Gateway. 
 
-#### Secure publishing inbound traffic 
+### Secure publishing inbound traffic 
 
 Publishing is the process by which you upload your web app content to your app service instance. Unless you are using FTP, all publishing actions are performed against the scm site for your app. For every app there exists the app url and there also exists the publishing url. The publishing url is *&lt;app name&gt;.scm.azurewebsites.net*. Secure publishing is not too different from secure app access. For secure publishing you need to publish from inside your VNet.  To have a secure publishing story you need to follow one of the following patterns:
 * Use Access Restrictions to secure traffic to the publishing endpoint for your app
