@@ -1,6 +1,7 @@
 ---
 title: 'Zero to Hero with App Service, Part 6: Securing your web app'
 author_name: "Christina Compy"
+date: "2020-08-14"
 tags: 
     - zero to hero
 toc: true
