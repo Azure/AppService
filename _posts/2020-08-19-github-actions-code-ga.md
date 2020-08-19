@@ -14,3 +14,4 @@ A year ago [we announced](https://azure.github.io/AppService/2019/08/10/Github-a
 
 The Deployment Center helps you build a CI/CD pipeline on GitHub Actions. This saves time, and simplifies the process if you are new to GitHub Actions or CI/CD.
 
+If you are new to App Service, see our [Zero to Hero series](https://azure.github.io/AppService/tags/#zero-to-hero) to learn about App Service and to go from zero to cloud hero! The articles cover CI/CD, deployment slots, certificates, domains, and even network security!
