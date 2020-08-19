@@ -2,8 +2,7 @@
 title: "GitHub Actions integration is now Generally Available"
 author_name: "Mitren Chinoy and Jason Freeberg"
 category: "deployment"
-toc: true
-toc_sticky: true
+toc: false
 ---
 
 A year ago [we announced](https://azure.github.io/AppService/2019/08/10/Github-actions-for-webapps.html) a GitHub Action to deploy your web apps to Azure App Service. Then in April we added GitHub Actions as an option in the Deployment Center. We are excited to share that the GitHub Actions integration with Azure App Service is now Generally Available and ready for production workloads. 
