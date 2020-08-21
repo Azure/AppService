@@ -33,7 +33,7 @@ Until specified otherwise, you need to use two subnets for ASEv3.  One subnet wi
 There are no required Network Security Groups (NSGs) or Route Tables (UDRs).  
 
 ### IP Addresses 
-The IP address situation is different from previous ASE versions.  In ASEv3 private preview, there will be a default external address per size of worker and OS. That means there is a public address for small Windows workers, another for small Linux workers, another for medium Windows workers, etc…for a total of 6 possible outbound addresses.  The inbound address will be the private endpoint used for all traffic to your ASE, during preview. The private endpoint shows up as a resource in the customer subscription. If the customer deletes the private endpoint, they can no longer reach their ASE. There currently is no way to repair the ASE should a customer delete the private endpoint used with the ASE.  As a reminder, this is not the intended way to GA the feature.  There currently is no way to see the addresses being used with the ASE by default. 
+The IP address situation is different from previous ASE versions. In ASEv3 private preview, there will be a default external address per worker and OS. That means there is a public address for Windows workers and another for Linux workers. The inbound address will be a private endpoint used for all traffic to your ASE, during preview. The private endpoint shows up as a resource in the customer subscription. If the customer deletes the private endpoint, they can no longer reach their ASE. There currently is no way to repair the ASE should a customer delete the private endpoint used with the ASE.  As a reminder, this is not the intended way to GA the feature.  There currently is no way to see the addresses being used with the ASE by default. 
 
 ## ASEv3 description
 The system architecture to the ASE will evolve over time. In this initial release the ASEv3 instance will:
@@ -73,7 +73,7 @@ Coming later we will also add:
 
 ## Joining the private preview
 
-If you want to join the private preview, please go to https://aka.ms/asev3-private-preview-signup and provide:
+If you want to join the private preview, please go to <https://aka.ms/asev3-private-preview-signup> and provide:
 
 - Name 
 - Email address
@@ -81,17 +81,17 @@ If you want to join the private preview, please go to https://aka.ms/asev3-priva
 
 The allowlisting process can take a few days as it is a manual process
 
-This blog can be reached at the link:  http://aka.ms/asev3-private-preview
+This blog can be reached at the link: <http://aka.ms/asev3-private-preview>
 As updates and changes are made, they will be noted in this article.
 
-Participation will enroll your email address in the asev3preview@microsoft.com distribution list along with the engineering team and other private preview participants.
+Participation will enroll your email address in the <asev3preview@microsoft.com> distribution list along with the engineering team and other private preview participants.
 
 ## Creating an ASEv3 
 
 Private preview requirements
 
 - Subscription must be allowlisted
-- Must use hide key for portal support https://aka.ms/ASEv3Creation
+- Must use hide key for portal support <https://aka.ms/ASEv3Creation>
 - Users will pay the current ASEv2 rates
 - Must provision a VNet in East US 2 before ASEv3 creation
 - Must create 2 subnets.  One subnet must be delegated to Microsoft.Web/HostingEnvironments and should be a /24
