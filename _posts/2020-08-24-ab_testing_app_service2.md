@@ -21,11 +21,36 @@ For example, here is an Azure CLI command to set the app setting and value for a
 az webapp config --name my-webapp -g my-resource-group -slot staging --settings SLOT_NAME=staging
 ```
 
-## Add the telemetry initializer
+## Add the Telemetry Initializer
 
-Like in the first article, you will need to add a telemetry initializer to your project and register it with the Application Insights SDK. 
+Like in the first article, you will need to add a telemetry initializer to your project and register it with the Application Insights SDK. The Telemetry Initializer will  tag all outgoing events and metrics with the slot's name, so you can split and filter the data during analysis later. Instructions are below for common backend languages, please jump to your language's section.
 
 ### .NET
+
+#### .NET Core
+
+Follow the [instructions shown here](https://docs.microsoft.com/azure/azure-monitor/app/asp-net-core) to add App Insights to your project. Once it's added to your project, add 
+
+#### ASP.NET
+
+```c#
+using System;
+using Microsoft.ApplicationInsights.Channel;
+using Microsoft.ApplicationInsights.DataContracts;
+using Microsoft.ApplicationInsights.Extensibility;
+
+public class MyTelemetryInitializer : ITelemetryInitializer
+{
+  public void Initialize(ITelemetry telemetry)
+  {
+      String SLOT_ENV_VAR = "SLOT_NAME";
+      var requestTelemetry = telemetry as RequestTelemetry;
+      slot = Environment.GetEnvironmentVariable(SLOT_ENV_VAR);
+
+      requestTelemetry.Properties[SLOT_ENV_VAR] = slot;
+  }
+}
+```
 
 ### Java
 
@@ -69,6 +94,8 @@ Like in the first article, you will need to add a telemetry initializer to your 
   }
   ```
 
+### Other frameworks 
+
 For other Java frameworks you can install the core SDK, coordinates shown below. Once the SDK is added to your dependency list, create an `ApplicationInsights.xml` file in your app's classpath. Copy the file contents from [here](https://docs.microsoft.com/en-us/azure-monitor/app/java-get-started?tabs=maven#add-an-applicationinsightsxml-file).
 
 ```xml
@@ -79,12 +106,37 @@ For other Java frameworks you can install the core SDK, coordinates shown below.
 </dependency>
 ```
 
-
-
 ### Node
 
-### Other stacks
+TODO: npm install
 
+```bash
+npm install what?
+```
 
-- Add the slot name app setting
-- Reminder about routing traffic 
+Like in the other language examples, create a telemetry initializer and register it with the Application Insights SDK.
+
+```js
+var tagSlotName = (envelope) => {
+  const SLOT_ENV_VAR = "SLOT_NAME";
+  let slot = process.env[SLOT_ENV_VAR];
+  if (slot != null) {
+    envelope.data[SLOT_ENV_VAR] = slot;
+  }
+};
+```
+
+Then register the telemetry initializer as shown below.
+
+```js
+appInsights.addTelemetryInitializer(tagSlotName);
+```
+
+### Other languages
+
+## Summary
+
+- Summary of what we did
+- how to check the telemetry
+- Reminder about routing traffic
+- Allude to the next article about analysis 
