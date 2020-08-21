@@ -45,7 +45,7 @@ The system architecture to the ASE will evolve over time. In this initial releas
 - Require two subnets, one for inbound and another for outbound
 - Will not support some App Service features going through the customer VNet. Backup/restore, Key Vault references in app settings, using a private container registry, and Diagnostic logging to storage are some that will not work.  
 - Will not have FTP
-- Only available in East US 2.  Other regions will be added later.  
+- **The preview is only available in South Central US**  Other regions will be added later.  
 
 The preview bits will evolve and add:
 
@@ -93,7 +93,7 @@ Private preview requirements
 - Subscription must be allowlisted
 - Must use hide key for portal support <https://aka.ms/ASEv3Creation>
 - Users will pay the current ASEv2 rates
-- Must provision a VNet in East US 2 before ASEv3 creation
+- Must provision a VNet in South Central US before ASEv3 creation
 - Must create 2 subnets.  One subnet must be delegated to Microsoft.Web/HostingEnvironments and should be a /24
 - Need write access on the entire VNET
 
@@ -113,4 +113,4 @@ ASEv3 creation isn't fast yet. It will still take a while as the resources are p
 
 ## Feedback
 
-To provide feedback, send mail to asev3-privatepreview@microsoft.com.  
+To provide feedback, send mail to <asev3-privatepreview@microsoft.com>.  
