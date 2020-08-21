@@ -97,6 +97,8 @@ Here are some quick tips to make your blog post clear, concise, and more effecti
 1. **Don't narrate with the first person**. Whenever possible, avoid "we" or "I". In instructional articles, avoid using phrases like _"we will now deploy they app"_ or _"we will move to the next topic"_. These phrases don't serve any instructional purpose, and lengthen the article unnecessarily.
     1. It is OK to refer directly to the reader as "you". For example, "Your web app is ready to deploy", or "You can now proceed to the next step".
 
+For more best practices, please see [this deck from ACOM](https://microsoft.sharepoint.com/:p:/t/cloudosdigital/EYElo_4ScDZCqBNEHs6P7q0BD7Vl-6jnb8vaOfxhmAmE_w?e=g43Da6).
+
 #### Add digital content
 
 You can add images, GIFs, or other digital content to your post by adding it to the `/media/` directory and referencing the file from the post.
