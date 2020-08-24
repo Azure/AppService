@@ -175,11 +175,9 @@ For other Java frameworks you can install the core SDK, coordinates shown below.
 
 > For more information, see the [App Insights documentation for Node.js](https://docs.microsoft.com/azure/azure-monitor/app/nodejs)
 
-### Other languages
+### Python
 
-Please refer to the following documentation links for any languages that were not covered above.
-
-- [Python](https://docs.microsoft.com/azure/azure-monitor/app/opencensus-python)
+Please refer to the [Python documentation for Application Insights](https://docs.microsoft.com/azure/azure-monitor/app/opencensus-python) for instructions on installation and configuration. Once App Insights is added to your Python app, you can tag the outgoing telemetry with the slot name using the [OpenCensus Python telemetry processors](https://docs.microsoft.com/azure/azure-monitor/app/api-filtering-sampling#opencensus-python-telemetry-processors).
 
 ## Summary
 
