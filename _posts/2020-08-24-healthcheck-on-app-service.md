@@ -1,12 +1,11 @@
 ---
-title: "Health Check is Generally Available"
+title: "Health Check is now Generally Available"
 author_name: "Jason Freeberg and Suwat Bodin"
 toc: true
 toc_sticky: true
-comments: true
 ---
 
-App Service makes it easy to automatically scale your apps to multiple instances when traffic increases. This increases your app's throughput, but what if there is an uncaught exception on one of your instances? To address this situation, we began previewing Health Check last year. The Health Check feature allows you to specify a path on your application for App Service to ping. If an instance fails to respond to the ping, the system determines it is *unhealthy* and removes it from the load balancer rotation. This increases your application's average availability and resiliency. 
+App Service makes it easy to automatically scale your apps to multiple instances when traffic increases. This increases your app's throughput, but what if there is an uncaught exception on one of the instances? To address this situation, we began previewing Health Check last year. The Health Check feature allows you to specify a path on your application for App Service to ping. If an instance fails to respond to the ping, the system determines it is *unhealthy* and removes it from the load balancer rotation. This increases your application's average availability and resiliency. 
 
 Health Check is now Generally Available and ready for production applications. Set up Health Check on your applications today in the Azure Portal. Go to your web app and find **Health Check** under **Monitoring** in the left-side navigation menu. You may see "(Preview)" on the Portal blade. This is because the Portal blade uses the latest React libraries, but the feature itself is Generally Available.
 
