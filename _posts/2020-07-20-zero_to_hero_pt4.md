@@ -9,6 +9,8 @@ toc_sticky: true
 
 In this installment of Zero to Hero with App Service, learn how to migrate your existing applications to App Service. If you followed parts one, two, and three then you already have an application on App Service, and you can continue to the next article.
 
+{% include video id="9LBUmkUhmXU" provider="youtube" %}
+
 ## Overview
 
 There are multiple ways to migrate a web application to Azure App Service:
