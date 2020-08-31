@@ -49,7 +49,7 @@ If you have various trace levels in your web app but are only interested in havi
 
 The application setting name will be ```APPSERVICEAPPLOGS_TRACE_LEVEL``` and the value will be the minimum level (ie. Error, Warning, Verbose, etc.). Refer to [TraceLevel](https://docs.microsoft.com/dotnet/api/system.diagnostics.tracelevel?view=netframework-4.8) for more info. 
 
-> The trace level value is ***case sensitive***. Make sure the first letter is uppercase and the rest is lowercase (ie. Error, Warning, etc.)**
+> The trace level value is ***case sensitive***. Make sure the first letter is uppercase and the rest is lowercase (ie. Error, Warning, etc.)
 
 For example, if you are only interested in seeing logs that are of level Error and higher, you will set your application setting `APPSERVICEAPPLOGS_TRACE_LEVEL` to **Error**.
 
