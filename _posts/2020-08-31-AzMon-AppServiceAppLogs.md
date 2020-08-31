@@ -17,7 +17,7 @@ Refer to [how to create Diagnostic settings](#https://azure.github.io/AppService
 
 ## Add log message to your web app
 
-To start using this log type, you need to [update the Web.config file](#update-web-config) and [add log statements to your code](#add-logs-to-code). Then you can route logs to Log Analyics, Event Hubs, or a Storage Account.
+To start using this log type, you need to [update the Web.config file](#update-web-config) and [add log statements to your code](#add-logs-to-code). Then you can route logs to Log Analytics, Event Hubs, or a Storage Account.
 
 ### Update your Web.config file <a name="update-web-config"></a>
 
