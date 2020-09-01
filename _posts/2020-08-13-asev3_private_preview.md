@@ -97,7 +97,7 @@ Private preview requirements
 - Must provision a VNet in South Central US before ASEv3 creation
 - Must create 2 subnets.  One subnet must be delegated to Microsoft.Web/HostingEnvironments and should be a /24
 - Need write access on the entire VNET
-- Keep total ASP instances below 20. This will be opened up gradually.
+- Keep total ASP instances at 5 or below. This will be opened up gradually.
 - Delete your test ASEv3 when you are done playing with it
 
 ![ASEv3 multi-network architecture]({{ site.baseurl }}/media/2020/08/asev3-create.png)
