@@ -85,7 +85,6 @@ The allowlisting process can take a few days as it is a manual process
 This blog can be reached at the link: <http://aka.ms/asev3-private-preview>
 As updates and changes are made, they will be noted in this article.
 
-Participation will enroll your email address in the <asev3preview@microsoft.com> distribution list along with the engineering team and other private preview participants.
 
 ## Creating an ASEv3 
 
