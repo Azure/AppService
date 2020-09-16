@@ -13,7 +13,7 @@ ASP.NET Framework had the fusion [Assembly Binding logging](https://docs.microso
 
 We are pleased to announce that you can **enable Fusion logging in Azure App Service on a per-app basis** and troubleshoot assembly failures easily.
 
-> Currently offered in App Service for Windows web apps only and applies to classic ASP.NET Framework apps.
+> Currently offered in App Service for Windows web apps only and applies to classic ASP.NET Framework apps. This logging **does not** apply to ASP.NET Core apps.
 
 ## Enabling Fusion Logging
 
