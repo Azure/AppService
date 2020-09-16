@@ -23,7 +23,7 @@ To enable fusion logging, follow these steps
 2. Click on **Configuration** for your App.
 3. Under the **Application Settings** section, add a new application setting with the name **WEBSITE_FUSIONLOGGING_ENABLED** and Value **1** and hit the **Save** button.
 
-After you save this app setting, fusion logging will be enabled for your app. All processes launched for your app i.e. w3wp.exe, w3wp.exe for the Kudu site and any child processes of these processes will have fusion logging enabled. This means you can use this feature to troubleshooting assembly binding issues even in WebJobs. Also note that the fusion logging is only on the app where you are adding this app setting. *It is not enabled on other apps in the same App Service Plan.*
+After you save this app setting, fusion logging will be enabled for your app. All processes launched for your app i.e. w3wp.exe, w3wp.exe for the Kudu site and any child processes of these processes will have fusion logging enabled. This means you can use this feature to troubleshooting assembly binding issues even in WebJobs. Enabling fusion logging on one app does not enable it for other apps in the App Service Plan.
 
 > Saving the application setting causes a restart of the app on all instances so perform this step during non production hours.
 
