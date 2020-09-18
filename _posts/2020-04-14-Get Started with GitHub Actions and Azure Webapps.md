@@ -3,7 +3,7 @@ title: "Get started with GitHub Actions and App Service"
 author_name: "Jason Freeberg"
 ---
 
-Last year we [shared an article]({{site.baseurl}}{% post_url 2019-08-10-Github actions for webapps%}) that demonstrated how to deploy your application to App Service using [GitHub Actions](https://github.com/features/actions). I am excited to share that we have added GitHub Actions as a build provider in the Deployment Center. This means it is even easier for developers to set up a continuous delivery pipeline with GitHub Actions. Follow the video or instructions below to get started.
+Last year we [shared an article]({{site.baseurl}}{% post_url 2019-08-10-Github actions for webapps%}) that demonstrated how to deploy your application to App Service using [GitHub Actions](https://github.com/features/actions). We are excited to share that we have added GitHub Actions as a build provider in the Deployment Center. This means it is even easier for developers to set up a continuous delivery pipeline with GitHub Actions. Follow the video or instructions below to get started.
 
 {% include video id="b2oyxbSbLPA" provider="youtube" %}
 
