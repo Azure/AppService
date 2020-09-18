@@ -26,6 +26,6 @@ After you save this app setting, fusion logging will be enabled for your app. Al
 
 After fusion logging is enabled, if you browse to the page that was failing to load an assembly, you will now see detailed fusion logs emitted in the actual error message itself. An example is shown below.
 
-![Fusion logging]({{site.baseurl}}/media/2020/09/fusion-logging-error.png)
+![Fusion logging]({{site.baseurl}}/media/2020/09/fusion-logging-error.PNG)
 
 Using fusion logging you can identify the exact assembly, the version, the location and other information about the whereabouts of the assembly. After you have diagnosed the root cause of the issue, be sure to **remove the app setting**. Fusion logging incurs some performance impact on the runtime of the application and leaving it enabled is not recommended in production.
