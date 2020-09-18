@@ -2,10 +2,6 @@
 title: "Troubleshoot ASP.NET assembly loading failures using Fusion Logging"
 author_name: "Puneet Gupta"
 category: 'Diagnostics'
-tags:
-    - Fusion Logging
-    - Could not load file or assembly
-    - FileNotFoundException
 comments: true
 ---
 
