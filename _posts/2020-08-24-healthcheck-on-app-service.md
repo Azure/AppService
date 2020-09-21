@@ -11,17 +11,17 @@ Health Check is now Generally Available and ready for production applications. S
 
 ![Health Check blade in the Portal]({{site.baseurl}}/media/2020/08/health-check/health-check-portal.png)
 
+> For more details, please refer to the **[health check documentation](https://docs.microsoft.com/en-us/azure/azure-monitor/platform/autoscale-get-started#health-check-path)**
+
 ## Behavior
 
 Once you specify a path on your site, App Service will ping it every two minutes. If the path responds with a status code outside of 200 to 299 (or does not respond at all) for 5 pings, then the instance is determined to be unhealthy, and it is removed from the load balancer rotation. This stops the load balancer from routing requests to the unhealthy instances. 
 
 When the instance is unhealthy and removed from the load balancer, the service continues to ping it. If it begins responding with successful response codes (200 to 299), the instance is returned to the load balancer. If it continues to respond unsuccessfully, App Service will restart the underlying VM in an effort to return the instance to a healthy status.
 
-> For more details, please refer to the [health check documentation](https://docs.microsoft.com/en-us/azure/azure-monitor/platform/autoscale-get-started#health-check-path)
-
 ## Health check path
 
-The path must respond within two minutes with a status code between 200 and 299 (inclusive). If the path does not respond within two minutes, or returns a status code outside the range, then the instance is considered "unhealthy". Health Check integrates with App Service's authentication and authorization features, the system will reach the endpoint even if these security features are enabled. If you are using your own authentication system, the health check path must allow anonymous access. If the site has HTTPS enabled, then the healthcheck will honor HTTPS and send the request using that protocol.
+The path must respond within two minutes with a status code between 200 and 299 (inclusive). If the path does not respond within two minutes, or returns a status code outside the range, then the instance is considered "unhealthy". Health Check integrates with App Service's authentication and authorization features, the system will reach the endpoint even if these security features are enabled. If you are using your own authentication system, the health check path must allow anonymous access.
 
 ![Health Check Diagram]({{site.baseurl}}/media/2020/08/health-check/health_check_path_diagram.png){: .align-center}
 
