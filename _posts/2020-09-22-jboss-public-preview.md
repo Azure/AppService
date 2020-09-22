@@ -22,7 +22,7 @@ To create a JBoss EAP instance, head to the Azure Portal and create a new web ap
 
 ### Public Preview release notes
 
-You can create a JBoss EAP 7.2 instance on App Service in the Azure Portal. Simply select "JBoss EAP 7.2 (Preview)" in the language stack dropdown. JBoss  EAP on App Service is available on all hardware tiers at current prices. As a preview release, this is recommended for development and testing your applications. The General Availability release of JBoss EAP on App Service will include a service fee for the integrated technical support. If you create a JBoss EAP instance on App Service, you will receive an email notice prior to the GA release with more details on the pricing changes. Azure will resolve all support cases until the service fee is added at General Availability.
+You can create a JBoss EAP 7.2 instance on App Service in the Azure Portal. Simply select "JBoss EAP 7.2 (Preview)" in the language stack dropdown. JBoss  EAP on App Service is available on all hardware tiers at current prices. As a preview release, there is no commercial support offering and use of the preview is limited to development and testing of your applications. The General Availability release of JBoss EAP on App Service will include a service fee for the integrated technical support. If you create a JBoss EAP instance on App Service, you will receive an email notice prior to the GA release with more details on the pricing changes. Azure will resolve all support cases until the service fee is added at General Availability.
 
 > **[Try JBoss EAP on App Service](https://github.com/Azure-Samples/jboss-on-app-service) today** and [send us your feedback](mailto:java-on-app-service@microsoft.com).
 
