@@ -4,9 +4,11 @@ author_name: "Christina Compy and Jason Freeberg"
 category: java
 ---
 
-For several years, Red Hat and Microsoft have [partnered](https://www.redhat.com/en/red-hat-microsoft-partnership) to create cloud solutions that enable enterprises to achieve more. Today, we are happy to announce that Red Hat JBoss Enterprise Application Platform (EAP) is now in Public Preview on Azure App Service. App Service has supported Tomcat and Java SE applications on Linux since 2018. Since then, our customers made it clear that they wanted an equivalent service for their Jakarta EE applications. 
+For several years, Red Hat and Microsoft have [partnered](https://www.redhat.com/en/red-hat-microsoft-partnership) to create cloud solutions that enable enterprises to achieve more. Today, we are happy to announce that Red Hat JBoss Enterprise Application Platform (EAP) is now in Public Preview on Azure App Service. App Service has supported Tomcat and Java SE applications on Linux since 2018. Since then, our customers made it clear that they wanted an equivalent service for their Jakarta EE applications.
 
 > **[Try JBoss EAP on App Service](https://github.com/Azure-Samples/jboss-on-app-service) today** and [send us your feedback](mailto:java-on-app-service@microsoft.com).
+
+[![Create a JBoss EAP site from the Azure Portal]({{site.baseurl}}/media/2020/09/jboss-create.png)](https://portal.azure.com/#create/Microsoft.WebSite){: .align-center}
 
 ## JBoss EAP across Azure
 
