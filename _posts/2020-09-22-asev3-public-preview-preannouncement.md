@@ -15,11 +15,9 @@ The App Service Environment (ASEv3) project is a realization of several years of
 
 The App Service Environment (ASE) is a single tenant instance of the Azure App Service that runs in a customers Azure Virtual Network (VNet). It solves many isolation scenarios for some of our top customers in a way you cannot with the multi-tenant service. While the service is used widely and is well received, there are some areas  we wanted to improve.  
 
-![ASEv2 system architecture diagram]({{ site.baseurl }}/media/2020/09/asev3-asev2-dependencies.png)
-
 In ASEv3, the underlying technology is based on Virtual Machine Scale Sets (VMSS) instead of Cloud Services. This opens the door to a number of improvements including better load balancers, zone redundancy and multiple other things. Also in ASEv3, we have eliminated the challenge of managing the ASE dependency traffic. With ASEv3, you no longer have any inbound or outbound management traffic in the customer VNet. This vastly simplifies ASE deployment and management.
 
-![ASEv3 system architecture diagram]({{ site.baseurl }}/media/2020/09/asev3-dependencies.png)
+![ASEv2 to ASEv3 dependencies diagram]({{ site.baseurl }}/media/2020/09/asev2-to-asev3-dependencies.png)
  
 The end result is a single tenant system that has no internet hosted dependencies being called from the customer network. Customers can secure their workloads to their heart's content and Microsoft can better secure the infrastructure without any impact on customer workloads.
 
