@@ -3,13 +3,13 @@ title: 'App Service Environment v3 (ASEv3) public preview pre-announcement'
 author_name: "Christina Compy"
 date: "2020-09-22"
 tags: 
-    - ase
+    - ASE
 category: networking
 toc: true
 toc_sticky: true
 ---
 
-The App Service Environment (ASEv3) project is a realization of several years of infrastructure development to enable a best in class network isolated application hosting PaaS service. Today we are happy to pre-announce the upcoming public preview of ASEv3. The ASEv3 platform is expected to land in public preview in early November in a limited set of regions.  
+The App Service Environment v3 (ASEv3) project is a realization of several years of infrastructure development to enable a best-in-class, network isolated application hosting PaaS service. Today we are happy to pre-announce the upcoming public preview of ASEv3. The ASEv3 platform is expected to land in public preview in early November in a limited set of regions.  
 
 ## ASEv3 Overview
 
