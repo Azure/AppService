@@ -21,4 +21,4 @@ In ASEv3, the underlying technology is based on Virtual Machine Scale Sets (VMSS
  
 The end result is a single tenant system that has no internet hosted dependencies being called from the customer network. Customers can secure their workloads to their heart's content and Microsoft can better secure the infrastructure without any impact on customer workloads.
 
-In addition to operational improvements, we're also making this new ASE more cost-effective for customers As part of our Isolated v2 plan we're reducing the PAYG rates and eliminating the per instance stamp fee for ASE v3, reducing the cost of deployment by up to 80%
+In addition to operational improvements, we're also making this new ASE more cost-effective for customers. As part of our Isolated v2 plan, we're reducing the PAYG rates and eliminating the per instance stamp fee for ASE v3, reducing the cost of deployment by up to 80%.
