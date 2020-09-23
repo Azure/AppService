@@ -13,7 +13,7 @@ The App Service Environment (ASEv3) project is a realization of several years of
 
 ## ASEv3 Overview
 
-The App Service Environment (ASE) is a single tenant instance of the Azure App Service that runs in a customers Azure Virtual Network (VNet). To date, the ASE has been based on the older Azure Cloud Services technology. This has limited the feature set in a number of ways. The ASE also has many networking dependencies that must be allowed in the customer VNet in order for the ASE to operate properly. 
+The App Service Environment (ASE) is a single tenant instance of the Azure App Service that runs in a customers Azure Virtual Network (VNet). It solves many isolation scenarios for some of our top customers in a way you cannot with the multi-tenant service. While the service is used widely and is well received, there are some areas  we wanted to improve.  
 
 ![ASEv2 system architecture diagram]({{ site.baseurl }}/media/2020/08/asev3-asev2-dependencies.png)
 
@@ -23,4 +23,4 @@ In ASEv3, the underlying technology is based on Virtual Machine Scale Sets (VMSS
  
 The end result is a single tenant system that has no internet hosted dependencies being called from the customer network. Customers can secure their workloads to their heart's content and Microsoft can better secure the infrastructure without any impact on customer workloads.
 
-There are pricing changes coming with ASEv3 as well. The primary pricing change is the elimination of the ASE stamp fee. You will only be charged for the App Service Isolated v2 plans hosted in your ASEv3. If your ASEv3 was completely empty, you will be charged as if you had one App Service plan with one instance of the smallest size worker in it. 
+In addition to all of the operational improvements, we are also making some pricing changes with ASEv3. The first item is that there will be a new pricing plan called Isolated V2. The second pricing change is the elimination of the ASEv2 stamp fee. You will only be charged for the App Service Isolated V2 plans hosted in your ASEv3. If your ASEv3 was completely empty, you will be charged as if you had one App Service plan with one instance of I1V2 in it.  
