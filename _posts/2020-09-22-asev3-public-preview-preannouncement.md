@@ -21,4 +21,4 @@ In ASEv3, the underlying technology is based on Virtual Machine Scale Sets (VMSS
  
 The end result is a single tenant system that has no internet hosted dependencies being called from the customer network. Customers can secure their workloads to their heart's content and Microsoft can better secure the infrastructure without any impact on customer workloads.
 
-In addition to all of the operational improvements, we are also making some pricing changes with ASEv3. The first item is that there will be a new pricing plan called Isolated V2. The second pricing change is the elimination of the ASEv2 stamp fee. You will only be charged for the App Service Isolated V2 plans hosted in your ASEv3. If your ASEv3 was completely empty, you will be charged as if you had one App Service plan with one instance of I1V2 in it.  
+In addition to operational improvements, we're also making this new ASE more cost-effective for customers As part of our Isolated v2 plan we're reducing the PAYG rates and eliminating the per instance stamp fee for ASE v3, reducing the cost of deployment by up to 80%
