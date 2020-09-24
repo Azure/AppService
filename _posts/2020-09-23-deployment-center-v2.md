@@ -14,10 +14,10 @@ The Deployment Center makes it easy to create a CI/CD pipeline from your GitHub,
 
 ![Use the deployment center to wire up GitHub Actions for CI/CD]({{site.baseurl}}/media/2020/09/deployment-center-code.png)
 
-## Easy CI/CD for Containers
-
-![Use the deployment center to wire up GitHub Actions for CI/CD]({{site.baseurl}}/media/2020/09/deployment-center-container.png)
+## Continuously deploy containers
 
 With the new Deployment Center, you can easily set up a CI/CD pipeline with GitHub Actions for your containerized applications as well. Before today, you would have to create the GitHub Actions CI/CD workflow file yourself. Now you can go to the Deployment Center in the Portal and follow the on-screen, step-by-step instructions to set up the CI/CD automation. *No more YAML indentation errors!* The Portal will guide you through setting up a GitHub Actions workflow to build your container, push it to a registry, and pull it to the web app whenever there is a new commit on your specified branch.
+
+![Use the deployment center to wire up GitHub Actions for CI/CD]({{site.baseurl}}/media/2020/09/deployment-center-container.png)
 
 GitHub Actions is free for public repositories. For private repositories, please see the [GitHub pricing page](https://github.com/pricing).
