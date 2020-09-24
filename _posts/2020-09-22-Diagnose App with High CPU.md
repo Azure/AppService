@@ -2,14 +2,13 @@
 title: "Part 1: How to Identify and Diagnose App with High CPU"
 author_name: "Ellie Alume"                                          # required
 category: 'Diagnositcs'                                  # optional
-tags:                                                             # tags are optional
-    - CPU
-    - App Service 
 ---
 
-This is part one of our deep dive on Diagnosing CPU in Azure App Service. In this post, you will learn about measuring CPU utilization for all apps hosted in an App Service Plan and identifying apps that are consuming maximum CPU resources. Note: This post applies to Windows web apps on Azure App Service.
+This is part one of our deep dive on Diagnosing CPU utilization issues in Azure App Service. In this post, you will learn about measuring CPU utilization for all apps hosted in an App Service Plan and identifying apps that are consuming maximum CPU resources. 
 
-First, we will cover troubleshooting tools for debugging Web Apps running on Azure App Services for Windows. These steps can be applied to apps built using any framework such as ASP.NET, Node, PHP, Java running on dedicated SKU.
+> This post applies to Windows web apps on Azure App Service.
+
+First, we will cover troubleshooting tools for debugging Web Apps running on Azure App Services for Windows. These steps can be applied to apps built using any framework such as ASP.NET, Node, PHP, or Java running on a dedicated hardware tier (Basic or higher).
 
 ## On the Azure Portal
 
