@@ -1,7 +1,9 @@
 ---
-title: "Part 1: How to Identify and Diagnose App with High CPU"
-author_name: "Ellie Alume"                                          # required
-category: 'Diagnositcs'                                  # optional
+title: "CPU Diagnostics Part 1: Identify and Diagnose High CPU issues"
+author_name: "Ellie Alume"
+category: 'Diagnositcs'
+toc: true
+toc_sticky: true
 ---
 
 This is part one of our deep dive on Diagnosing CPU utilization issues in Azure App Service. In this post, you will learn about measuring CPU utilization for all apps hosted in an App Service Plan and identifying apps that are consuming maximum CPU resources. 
