@@ -12,16 +12,12 @@ This is part one of our deep dive on Diagnosing CPU utilization issues in Azure 
 
 First, we will cover troubleshooting tools for debugging Web Apps running on Azure App Services for Windows. These steps can be applied to apps built using any framework such as ASP.NET, Node, PHP, or Java running on a dedicated hardware tier (Basic or higher).
 
-## On the Azure Portal
+1. Open a browser to the [Azure Portal](https://portal.azure.com/)
+1. Navigate to one of oyur web apps
+1. On the left navigation bar, click the **Diagnose and Solve Problems** tab
+1. Select **Availability and Performance** section on the portal.
 
-On the Azure Portal you can find different tools to run on your app to ensure your app is healthy and running properly.
-
-- On the Microsoft Azure Portal, click on the **Diagnose and Solve Problems** tab on the left-hand menu.
-- Select **Availability and Performance** section on the portal.
-
-![Diagnose Blade Overview]({{site.baseurl}}/media/2020/09/high-cpu-diagnose-blade-overview.png)
-
-## Availability and Performance Section
+  ![Diagnose Blade Overview]({{site.baseurl}}/media/2020/09/high-cpu-diagnose-blade-overview.png)
 
 On this page, you can see an overview of your app’s health as well as various topics related to availability and performance. The time duration for the graph's defaults is the last 24 hours, but you can modify it if needed.
 
@@ -29,34 +25,27 @@ On this page, you can see an overview of your app’s health as well as various 
 
 The main topics presented are as follows:
 
-**Failed Requests:** Percentage of requests that have failed within the specified time range.
+- **Failed Requests:** Percentage of requests that have failed within the specified time range.
+- **Performance:** Response time at the 90th percentile for the specified time range.
+- **CPU Usage:** Maximum percentage of CPU Usage per instance over the specified time range.
+- **Memory Usage:** Maximum Private bytes of memory usage for the current app.
 
-**Performance:** Response time at the 90th percentile for the specified time range.
-
-**CPU Usage:** Maximum percentage of CPU Usage per instance over the specified time range.
-
-**Memory Usage:** Maximum Private bytes of memory usage for the current app.
-
-## Select High CPU Analysis
+## Analyze high CPU usage
 
 High CPU Analysis helps with troubleshooting issues related to the CPU.
 
-- Click on the **High CPU Analysis** on the left-hand menu.
-- Click the **App Service Plan Density**
+1. Click on the **High CPU Analysis** on the left-hand menu.
+1. Click the **App Service Plan Density**. This check will ensure the App Service Plan is not over the safe limit or overstuffed due to many apps in the service plan. In the post, we are only running three apps in the App Service Plan which is within safe limits for the SKU.
+
+  ![High CPU Analysis Blade ]({{site.baseurl}}/media/2020/09/high-cpu-analysis-blade.png)
+
+1. Expand the insight for **One Web App Causing High CPU Usage**. This will identify the app consuming the maximum CPU resource on the App Service Plan.
   
-This check will ensure the app service plan is not over the safe limit or overstuffed due to many apps in the service plan. In the post, we are only running three apps in the App Service Plan which is within safe limits for the SKU.
+  Notice the app **demohighcpu** is consuming the highest CPU. This is different from the app we are currently looking at **demotroubleshootingapp**. The tool suggests to further debug the app **demohighcpu**.
 
-![High CPU Analysis Blade ]({{site.baseurl}}/media/2020/09/high-cpu-analysis-blade.png)
+  ![High CPU Analysis Blade. App Service Plan Density Check ]({{site.baseurl}}/media/2020/09/high-cpu-analysis-blade-dropdown.png)
 
-Next, identify the app consuming the maximum CPU resource on the App Service Plan.
-
-- Expand the insight for **One Web App Causing High CPU Usage**
-  
-Notice the app **demohighcpu** is consuming the highest CPU. This is different from the app we are currently looking at **demotroubleshootingapp**. The tool suggests to further debug the app **demohighcpu**.
-
-![High CPU Analysis Blade. App Service Plan Density Check ]({{site.baseurl}}/media/2020/09/high-cpu-analysis-blade-dropdown.png)
-
-## Overall CPU per Instance Graph
+## Inspect CPU usage by instance
 
 Below you can see the overall CPU usage for all the instances associated with the App Service Plan. In this example the app is running in two instances that are consuming high CPU.
 
