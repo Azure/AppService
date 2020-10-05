@@ -125,6 +125,8 @@ Once you have completed the steps above, you can head over to the portal and sea
 2. App Service Plan
 3. Web App
 
+## References
+[Configure Pv3 tier for Azure App Service](https://docs.microsoft.com/azure/app-service/app-service-configure-premium-tier)
 
 
 
