@@ -8,8 +8,6 @@ toc: true
 toc_sticky: true
 ---
 
-# Multi-tier web applications
-
 The Azure App Service is offered as two deployment types: the multi-tenant service and the App Service Environment. In the multi-tenant service there are thousands of customers on the same infrastructure. Your apps are always secured but they share the network, address space, front ends, and some other components.  In an App Service Environment you get a single tenant version of App Service that runs in your Azure Virtual Network. In this article, you will learn how to build network-secured, multi-tier web applications in the multi-tenant App Service.  
 
 ## Multi-tier web applications
