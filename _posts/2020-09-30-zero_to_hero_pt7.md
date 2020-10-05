@@ -22,7 +22,7 @@ There are multiple ways to secure your API applications so that they can only be
 
 Each of those features satisfies a specific situation and there are trade offs.  Access restrictions are useful if you have public address access points like NAT devices or perhaps a virtual network device with a dedicated public address.  If you use service endpoints, you do not add any new resources to your subscription and are able to use one subnet.  If you use private endpoints you will add a new top level resource, add Azure DNS private zones to your VNet and will require two subnets. Let's now dicsuss each of these options in greater detail. 
 
-### Service endpoints
+## Service endpoints
 
 To configure a multi-tier application using service endpoints to secure your API application, you need to use VNet Integration with your front end app and service endpoints with your API app. Set service endpoints on the integration subnet used by your Front End application. This solution is fast to set up and easy as well.   
 
@@ -38,7 +38,7 @@ If you have multiple API apps and multiple front end apps from separate App Serv
 
 As you add front end applications, you need to configure service endpoints with each dependent API application. This means service endpoints are great at smaller scale. It can quickly get out of hand if you have many--*or an ever increasing number of*--front end applications with multiple API applications. Managing the configuration can be confusing as the number of front ends grows.
 
-### Private endpoints
+## Private endpoints
 
 With private endpoints, the configuration is both easier and harder. It is easier in that when you place a private endpoint in your VNet for an app, you are done managing the inbound traffic to your API app. Unlike with service endpoints, there is no additional configuration to your API app as you add new front end consumers.  It is harder because setting up private endpoints creates a new, top-level resource and Azure DNS private zones. 
 
@@ -56,6 +56,6 @@ If you have multiple API applications, you will need multiple private endpoints.
 
 At a small scale, private endpoints incurs more overhead. You will have more to manage and maintain than with service endpoints. On the other hand, private endpoints are a solution for data exfiltration concerns. They also do better at scale as it is easy to add more front end applications.  
 
-### Access restrictions
+## Access restrictions
 
 With access restrictions you can secure inbound traffic to a set of IP address blocks.  This is useful when you want to lock your traffic to a set of egress devices.  You can also use it with other edge protection services such as Azure Front Door. With respect to using it directly with multi-tier applications, you can secure your API applications to the egress addresses used by your front end applications. The problem with this approach is that the outbound addresses are shared with all of the other customers in the same scale unit. From a security review perspective it doesn't look as secure as service endpoint or private endpoint based solutions.  So while it is possible and worth noting, it is not recommended to use access restrictions to create multi-tier web applications. 
