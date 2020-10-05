@@ -103,7 +103,7 @@ The ARM template you'll need to make amounts to a JSON file which will define th
 ```
 
 ## Use Azure CLI to deploy your template
-ARM deployments can be managed through the Azure CLI or Powershell.  In this example, we will be using the Azure CLI.  If you'd rather use Powershell, please see the instructions at this doc.
+ARM deployments can be managed through the Azure CLI or Powershell.  In this example, we will be using the Azure CLI.  If you'd rather use Powershell, please see the instructions [here](https://docs.microsoft.com/azure/azure-resource-manager/templates/template-tutorial-create-first-template?tabs=azure-powershell).
 
 1.	First, open Powershell and run **az login** to login to your Azure account 
 2.	Use the **az account set --subscription** *your-subscription-id* to set your desired subscription for your resources
