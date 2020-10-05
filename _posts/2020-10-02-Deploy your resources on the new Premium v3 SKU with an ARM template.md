@@ -17,26 +17,18 @@ Portal updates are rolling out to enable the new SKU but as that rolls out, you 
 >NOTE: For Windows container workloads, Premium v3 is the only SKU that will be available for these specific container workloads as it supports Hyper-V, the chosen security mode for a multi-tenant architecture.
 
 As Premium v3 continues to roll out, increased coverage will be seen across our regions.  Currently, Premium v3 is an option in the following regions: 
-- East Asia
-- East US
-- North Europe
-- West Europe
-- West US
-- Japan East
-- Brazil South
-- Southeast Asia
-- South Central US
-- East US 2
-- Central US
-- West Central US
-- Australia Southeast
-- Australia East
-- Canada Central
+
 - West US 2
-- UK West
+- South Central US
 - UK South
-- Korea Central
-- France Central
+- Southeast Asia
+- West Europe
+- East US
+- East US 2
+- Australia East
+- North Europe
+
+
 
 ## Create your JSON template
 The ARM template you'll need to make amounts to a JSON file which will define the necessary parameters and resources.  The following template creates a Premium v3 App Service Plan and Windows container Web App resource.  
