@@ -10,13 +10,13 @@ tags:
 ---
 
 
-The Premium v3 SKU, previously [announced at Microsoft Ignite 2020](https://aka.ms/appservice2020), is now available for you to deploy your applications to.  This new SKU introduces new CPU and Memory options, enabling deployment of more apps per App Service Plan and better support for large enterprise applications and content management systems.  With additional price points for dev/test and production workloads and, from 11/1 Reserved Instance Pricing (1 and 3 year options),  Premium v3 is our most cost-effective and performant offering ever.
+The Premium v3 hardware tier, previously [announced at Microsoft Ignite 2020](https://aka.ms/appservice2020), is now available for you to deploy your applications to.  This new hardware tier introduces new CPU and memory options, enabling deployment of more apps per App Service Plan and better support for large enterprise applications and content management systems.  With additional price points for dev/test and production workloads and Reserved Instance Pricing starting November 1st*,  Premium v3 is our most cost-effective and performant offering ever.
 
-Portal updates are rolling out to enable the new SKU but as that rolls out, you can deploy resources via ARM templates, Azure CLI and PowerShell.  This tutorial walks you through creating a new Resource Group, Pv3 App Service Plan and a Windows Container Web App using an Azure Resource Manager (ARM) template.
+Portal updates are rolling out now to enable the new hardware option, but you can still deploy resources via ARM templates, Azure CLI and PowerShell.  This tutorial walks you through creating a new Resource Group, Pv3 App Service Plan and a Windows Container Web App using an Azure Resource Manager (ARM) template.
 
->NOTE: For Windows container workloads, Premium v3 is the only SKU that will be available for these specific container workloads as it supports Hyper-V, the chosen security mode for a multi-tenant architecture.
+> Premium v3 is the only hardware option that will be available for Windows container apps as it supports Hyper-V, the chosen security mode for a multi-tenant architecture.
 
-As Premium v3 continues to roll out, increased coverage will be seen across our regions.  Currently, Premium v3 is an option in the following regions: 
+Premium v3 is an option in the regions below. Premium v3 will be available in more regions in the future. 
 
 - West US 2
 - South Central US
@@ -28,81 +28,80 @@ As Premium v3 continues to roll out, increased coverage will be seen across our 
 - Australia East
 - North Europe
 
-
-
 ## Create your JSON template
-The ARM template you'll need to make amounts to a JSON file which will define the necessary parameters and resources.  The following template creates a Premium v3 App Service Plan and Windows container Web App resource.  
+
+For those not familiar with ARM Templates, they amount to a JSON file which will define the necessary parameters and resources.  The following template creates a Premium v3 App Service Plan and Windows container Web App.  
 
 1.	Open a New File in Visual Studio Code or your IDE of choice
 2.	Create a JSON file named *azuredeploy.json*
 3.	Copy the below template in its entirety and replace any existing brackets in your new file
 
-```JSON
-{
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "appServiceWebAppName": {
-            "type": "String"
-        },
-        "appServicePlanName": {
-            "type": "String"
-        }
-    },
-    "resources": [
-        {
-            "type": "Microsoft.Web/sites",
-            "name": "[parameters('appServiceWebAppName')]",
-            "apiVersion": "2016-03-01",
-            "location": "[resourceGroup().location]",
-            "tags": {
-                "[concat('hidden-related:', subscription().id, '/resourcegroups/', resourceGroup().name, '/providers/Microsoft.Web/serverfarms/', parameters('appServicePlanName'))]": "empty"
+    ```json
+    {
+        "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+        "contentVersion": "1.0.0.0",
+        "parameters": {
+            "appServiceWebAppName": {
+                "type": "String"
             },
-            "properties": {
-                "name": "[parameters('appServiceWebAppName')]",
-                "siteConfig": {
-                    "appSettings": [
-                        {
-                            "name": "WEBSITES_ENABLE_APP_SERVICE_STORAGE",
-                            "value": "false"
-                        }
-                    ],
-                    "appCommandLine": "",
-                    "windowsFxVersion": "DOCKER|microsoft/iis"
-                },
-                "serverFarmId": "[concat(subscription().id, '/resourcegroups/', resourceGroup().name, '/providers/Microsoft.Web/serverfarms/', parameters('appServicePlanName'))]",
-                "hostingEnvironment": ""
-            },
-            "dependsOn": [
-                "[concat('Microsoft.Web/serverfarms/', parameters('appServicePlanName'))]"
-            ]
-        },
-        {
-            "type": "Microsoft.Web/serverfarms",
-            "sku": {
-                "Name": "P1v3",
-                "Tier": "PremiumV3"                
-            },
-            //For Windows code apps, set the kind parameter to "app" 
-            "kind": "windows",
-            "name": "[parameters('appServicePlanName')]",
-            "apiVersion": "2016-09-01",
-            "location": "[resourceGroup().location]",
-            "properties": {
-                "name": "[parameters('appServicePlanName')]",
-                "workerSizeId": "0",
-                "numberOfWorkers": "1",
-                // For Windows code apps, set the hyperv parameter to false
-                "hyperv": true,                
-                "hostingEnvironment": ""
+            "appServicePlanName": {
+                "type": "String"
             }
-        }
-    ]
-}
-
-```
+        },
+        "resources": [
+            {
+                "type": "Microsoft.Web/sites",
+                "name": "[parameters('appServiceWebAppName')]",
+                "apiVersion": "2016-03-01",
+                "location": "[resourceGroup().location]",
+                "tags": {
+                    "[concat('hidden-related:', subscription().id, '/resourcegroups/', resourceGroup().name, '/providers/Microsoft.Web/serverfarms/', parameters('appServicePlanName'))]": "empty"
+                },
+                "properties": {
+                    "name": "[parameters('appServiceWebAppName')]",
+                    "siteConfig": {
+                        "appSettings": [
+                            {
+                                "name": "WEBSITES_ENABLE_APP_SERVICE_STORAGE",
+                                "value": "false"
+                            }
+                        ],
+                        "appCommandLine": "",
+                        "windowsFxVersion": "DOCKER|microsoft/iis"
+                    },
+                    "serverFarmId": "[concat(subscription().id, '/resourcegroups/', resourceGroup().name, '/providers/Microsoft.Web/serverfarms/', parameters('appServicePlanName'))]",
+                    "hostingEnvironment": ""
+                },
+                "dependsOn": [
+                    "[concat('Microsoft.Web/serverfarms/', parameters('appServicePlanName'))]"
+                ]
+            },
+            {
+                "type": "Microsoft.Web/serverfarms",
+                "sku": {
+                    "Name": "P1v3",
+                    "Tier": "PremiumV3"                
+                },
+                //For Windows code apps, set the kind parameter to "app" 
+                "kind": "windows",
+                "name": "[parameters('appServicePlanName')]",
+                "apiVersion": "2016-09-01",
+                "location": "[resourceGroup().location]",
+                "properties": {
+                    "name": "[parameters('appServicePlanName')]",
+                    "workerSizeId": "0",
+                    "numberOfWorkers": "1",
+                    // For Windows code apps, set the hyperv parameter to false
+                    "hyperv": true,                
+                    "hostingEnvironment": ""
+                }
+            }
+        ]
+    }
+    ```
 
 ## Use Azure CLI to deploy your template
+
 ARM deployments can be managed through the Azure CLI or Powershell.  In this example, we will be using the Azure CLI.  If you'd rather use Powershell, please see the instructions [here](https://docs.microsoft.com/azure/azure-resource-manager/templates/template-tutorial-create-first-template?tabs=azure-powershell).
 
 1.	First, open Powershell and run **az login** to login to your Azure account 
@@ -111,8 +110,8 @@ ARM deployments can be managed through the Azure CLI or Powershell.  In this exa
 4.	Once you have created the resource group in the correct location, you can then deploy your ARM template 
 5.	Enter **az deployment group create --name** *my-template-name* **--resource-group** *my-resource-group-name* **--template-file** *"path\to\azuredeploy.json"*
 
-
 You will then be prompted to enter string values for the following parameters:
+
 1.	appServiceWebAppName: *web-app-name*
 2.	appServicePlanName: *app-service-plan-name*
 
@@ -128,6 +127,6 @@ Once you have completed the steps above, you can head over to the portal and sea
 ## References
 [Configure Pv3 tier for Azure App Service](https://docs.microsoft.com/azure/app-service/app-service-configure-premium-tier)
 
-
+* Reserved Instances are offered in 1 and 3 year options.
 
 
