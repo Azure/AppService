@@ -4,9 +4,7 @@ author_name: "Jeff Martinez"
 toc: true
 toc_sticky: true
 tags:
-    - Windows containers
-    - Premium v3
-    - ARM
+    - windows containers
 ---
 
 
