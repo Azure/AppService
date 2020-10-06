@@ -5,7 +5,7 @@ author_name: "Eric Grenon"
 ---
 We are happy to announce Private Endpoint for Web App is now Generally Available in all Azure public regions, for both Windows and Linux apps, containerized or not. To use Private Endpoint your app must be hosted on PremiumV2, PremiumV3 or function Premium plan.
 
-Private Endpoint enables you to consume your app through a specific IP address located in your Azure Virtual Network (Vnet), eliminating the exposure of your app to the public Internet.
+Private Endpoint enables you to consume your app through a specific IP address located in your Azure Virtual Network (VNet), eliminating the exposure of your app to the public Internet.
 Private Endpoint provides at the same time a solution to remove the data exfiltration risk, you can secure your VNet with NSG denying any outbound flow and a Private Endpoint will let you go only to the specified app linked to this endpoint.
 
 ![Private Link Flow]({{ site.baseurl }}/media/2020/03/privatelink-flow.png)
