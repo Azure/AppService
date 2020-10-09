@@ -125,6 +125,6 @@ Once you have completed the steps above, you can head over to the portal and sea
 ## References
 [Configure Pv3 tier for Azure App Service](https://docs.microsoft.com/azure/app-service/app-service-configure-premium-tier)
 
-* Reserved Instances are offered in 1 and 3 year options.
+* Reserved Instances are offered in 1 and 3 year options (Starting November 1st, 2020).
 
 
