@@ -49,13 +49,13 @@ Before we render the timechart, use the `evaluate pivot(..)` command to rotate t
 | render timechart with ( title="Request duration by slot")
 ```
 
-### The visualization
+### The graph
 
 When the query is executed, you should get a graph similar to the one shown below. Each line represents a deployment slot. The y-axis shows the request duration, and the x-axis shows the time. In the example shown below, we can see that customers that are routed to the slot "230" are experiencing very long request durations. Knowing this, we can investigate the changes in that Pull Request and fix the problem before merging.
 
 ![Graph of request duration by slot]({{ site.baseurl }}/media/2020/10/ab-testing-request-duration-by-slot-graph.png)
 
-### Example 2: Comparing custom metrics
+## Example 2: Comparing custom metrics
 
 You can use Application Insight's [`telemetryClient.trackMetric()`](https://docs.microsoft.com/azure/azure-monitor/app/api-custom-events-metrics#trackmetric) and [`telemetryClient.trackEvent()`](https://docs.microsoft.com/azure/azure-monitor/app/api-custom-events-metrics#trackevent) methods to track custom metrics and events. In this scenario, we are emitting a custom metric to track the average duration of a database query in milliseconds. You could also track the time spent for other backend operations, such as heavy data processing or I/O operations.
 
@@ -77,15 +77,15 @@ The final step is to render a bar chart and clean up the labels. The `order by s
 | render barchart with ( title="Average query time by slot", ytitle="Query time in ms", xtitle="Slot name")
 ```
 
-## The graph
+### The graph
 
 Similar to the previous example, this chart shows us that Pull Request 232 is greatly improving the query performance under real-world traffic. This is a good sign, and gives developers or QA engineers another data point for the PR review process.
 
 ![Graph of request duration by slot]({{ site.baseurl }}/media/2020/10/ab-testing-query-time-by-slot-graph.png)
 
-### Setting up a dashboard
+## Monitoring dashboards
 
-
+TODO
 
 ## Resources
 
