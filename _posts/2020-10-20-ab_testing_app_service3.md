@@ -85,7 +85,13 @@ Similar to the previous example, this chart shows us that Pull Request 232 is gr
 
 ## Monitoring dashboards
 
-TODO
+You can use Azure Monitor Workbooks to monitor your experiments and quickly gauge results across your queries. To get started, open your Application Insights resource in the Portal and open the **Workbooks** blade. Then click **+ New**.
+
+![Create a new Azure Monitor Workbook]({{ site.baseurl }}/media/2020/10/ab-testing-create-workbook.png)
+
+The workbook will open with a default Markdown section and graph. Click the **Edit** button below the graph and paste one of the earlier queries. Click **Done Editing** at the bottom to save the query. You can also annotate your workbook with notes, links, and lists using Markdown.
+
+![Azure Monitor workbook]({{ site.baseurl }}/media/2020/10/ai-workbook.gif)
 
 ## Resources
 
