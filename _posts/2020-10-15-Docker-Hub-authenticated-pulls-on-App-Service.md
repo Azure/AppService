@@ -35,4 +35,5 @@ Once you have created your ACR resource, you can import your Docker Hub containe
 1.	Use **az login** to connect to Azure
 2.	Run **az acr import --name** *my-registry* **--source** *docker.io/registryname/image-name:tag* **--image** *image-name:tag*
 
-Once this runs, you can validate that your image has been imported to ACR by going to your Azure Container Registry resource and viewing your Repositories.  To learn more, please see the ACR documentation to [import from docker hub](https://docs.microsoft.com/azure/container-registry/container-registry-import-images#import-from-docker-hub).
+Once this runs, you can validate that your image has been imported to ACR by going to your Azure Container Registry resource and viewing your Repositories.  To learn more, please see the ACR documentation to [import from docker hub](https://docs.microsoft.com/azure/container-registry/container-registry-import-images#import-from-docker-hub). – – –— — —00—000—
+————0—0—0—0 — - — - — —- 
