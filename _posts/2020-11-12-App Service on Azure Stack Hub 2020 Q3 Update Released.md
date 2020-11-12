@@ -46,7 +46,7 @@ The 2020 Q3 update to Azure App Service on Azure Stack Hub is now available. Thi
 
 The App Service on Azure Stack Hub Update 8 build number is **89.0.2.15**
 
-Please review the release notes and all [**Known issues**](https://docs.microsoft.com/azure-stack/operator/app-service-release-notes-2020-q3) prior to updating your installation of Azure App Service on Azure Stack Hub.
+Please review the [**release notes and all known issues**](https://docs.microsoft.com/azure-stack/operator/app-service-release-notes-2020-q3) prior to updating your installation of Azure App Service on Azure Stack Hub.
 
 You can download the new installer and helper scripts:
 
