@@ -36,8 +36,8 @@ Another option to create a Web App with a .NET 5 runtime is through the Azure CL
 2.	Next run the follwing command to create a web app with a .NET 5 runtime.
 
     ```shell
-    az webapp create -g MyResourceGroup -p MyPlan -n MyUniqueAppName --runtime "DOTNET |5.0" --deployment-local-git\
-    ``` 
+    az webapp create -g MyResourceGroup -p MyPlan -n MyUniqueAppName --runtime "DOTNET |5.0" --deployment-local-git
+    ```
 
 3.	Verify that your web app was created on the Azure portal
 
