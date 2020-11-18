@@ -31,23 +31,23 @@ Choose this option when creating your application, review your web app configura
 
 ## Deploying via CLI 
 Another option to create a Web App with a .NET 5 runtime is through the Azure CLI with the az webapp create and az webapp up commands.  Before you run these commands,  make sure you are  up to date  on the most recent version of the Azure CLI first. 
-1.	Once you are on the latest version,  you can run `az webapp list-runtimes -linux` or `az webapp list-runtimes` (for windows) and you will find **"DOTNET|5.0"** in the list of available runtimes.  
+
+1.	Once you are on the latest version,  you can run `az webapp list-runtimes -linux` or `az webapp list-runtimes` (for windows) and you will find **"DOTNET\|5.0"** in the list of available runtimes.  
 2.	Next run the follwing command to create a web app with a .NET 5 runtime.
 
-```shell
-
-az webapp create -g MyResourceGroup -p MyPlan -n MyUniqueAppName --runtime "DOTNET |5.0" --deployment-local-git
-
-``` 
+    ```shell
+    az webapp create -g MyResourceGroup -p MyPlan -n MyUniqueAppName --runtime "DOTNET |5.0" --deployment-local-git\
+    ``` 
 
 3.	Verify that your web app was created on the Azure portal
 
 You may also use the `az webapp up` command to deploy to App Service, which allows you to deploy your code quickly from a local workspace where the code is present.
 1.	Use the `az login` command to login into Azure 
 1.	Go to the source of where your code is and run the command where your code is located (for .NET apps, this is where the .csproj is located).
-```shell
- az webapp up -n myUniqueAppName
-```
+
+    ```shell
+    az webapp up -n myUniqueAppName
+    ```
 
 This will deploy your .NET 5 application directly to App Service.  For more arguments and examples of az webapp up, please see the [documentation](https://docs.microsoft.com/cli/azure/webapp?view=azure-cli-latest#az_webapp_up). 
 
@@ -139,59 +139,58 @@ Azure DevOps is another option for deploying your code with continuous deploymen
 1. Connect to your **Azure Repos Git**, Select your repository and Configure your pipeline choosing the **ASP.NET** option. Azure DevOps will suggest a pipeline configuration, but we will be replacing it with the example below
 1. After the above step you will be taken to the Review tab.  Replace the suggested code with the template below:
 
-  If you are using Windows, replace the  `vmImage:` value with `windows-latest`
+    If you are using Windows, replace the  `vmImage:` value with `windows-latest`
 
-  ```yaml
-  trigger:
-  - master
+    ```yaml
+    trigger:
+    - master
 
-  pool:
-    vmImage: 'ubuntu-latest'
+    pool:
+      vmImage: 'ubuntu-latest'
 
-  variables:
-    buildConfiguration: 'Release'
+    variables:
+      buildConfiguration: 'Release'
 
-  steps:
-  - task: UseDotNet@2
-    inputs:
-      packageType: 'sdk'
-      version: '5.0.100'
-      includePreviewVersions: true
+    steps:
+    - task: UseDotNet@2
+      inputs:
+        packageType: 'sdk'
+        version: '5.0.100'
+        includePreviewVersions: true
 
-  - task: DotNetCoreCLI@2
-    displayName: Build
-    inputs:
-      command: build
-      projects: '**/*.csproj'
-      arguments: '--configuration $(buildConfiguration)' # Update this to match your need)'
+    - task: DotNetCoreCLI@2
+      displayName: Build
+      inputs:
+        command: build
+        projects: '**/*.csproj'
+        arguments: '--configuration $(buildConfiguration)' # Update this to match your need)'
 
-  - task: DotNetCoreCLI@2
-    inputs:
-      command: publish
-      publishWebProjects: True
-      arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-      zipAfterPublish: True
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: publish
+        publishWebProjects: True
+        arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+        zipAfterPublish: True
 
-  # this code takes all the files in $(Build.ArtifactStagingDirectory) and uploads them as an artifact of your build.
-  - task: PublishBuildArtifacts@1
-    inputs:
-      pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
-      artifactName: 'myWebsiteName'
-
-  ```
+    # this code takes all the files in $(Build.ArtifactStagingDirectory) and uploads them as an artifact of your build.
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
+        artifactName: 'myWebsiteName'
+    ```
 
 4. Now **Save and run** your build pipeline.  This will build your application and create an artifact that will be used for your release pipeline.  After the run, you can create your release pipeline.
 5. Go to **Releases** in the left menu area and click the **New Pipeline** button on the following page
 6. Next, select the **Azure App Service deployment** template and hit **Apply**
 7. In the following page, select the +Add an artifact box on the left to add the artifact we previously created in the Build pipeline
 
-  ![devops]({{ site.baseurl }}/media/2020/11/net5_3.png)
+    ![devops]({{ site.baseurl }}/media/2020/11/net5_3.png)
 
 7. Choose your **Source(build pipeline)** and hit the **Add** button
 8. Once that is set you'll want to setup the trigger by clicking the lightning bolt icon in the top right of your artifact
 9. A new window will pop up. Switch the **Continuous  deployment trigger** to **Enabled** and close the window
 
-  ![devops]({{ site.baseurl }}/media/2020/11/net5_4.png)
+    ![devops]({{ site.baseurl }}/media/2020/11/net5_4.png)
 
 10.  Next, you can click on the 1 job, 1 task link to setup your deployment stage
 11. Fill in your Parameters under "Stage 1"
@@ -204,7 +203,7 @@ Azure DevOps is another option for deploying your code with continuous deploymen
 15. Click **OK** for the folder location and Create release
 16. Select the "Stage 1" trigger from the drop down menu and click **Create** 
 
-  ![devops]({{ site.baseurl }}/media/2020/11/net5_4.png)
+    ![devops]({{ site.baseurl }}/media/2020/11/net5_4.png)
 
 17. Once the release is created it will be named "Release-1" and you will be able to see a similar screen as above.  Click **Deploy** under the Stage 1 and **Deploy** again on the next screen to start your deployment to your Azure App Service Web App.
 18. Verify that your application has been published by launching your Web App in the Azure Portal.
@@ -224,8 +223,7 @@ If you are using Windows your base image will be `FROM mcr.microsoft.com/dotnet/
 
 For Linux applications, your base image will be `FROM mcr.microsoft.com/dotnet/aspnet:5.0-buster-slim AS base` using the `FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build` SDK.
 
-
-``` docker
+```docker
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base  # For Windows apps
 # FROM mcr.microsoft.com/dotnet/aspnet:5.0-buster-slim AS base # For Linux apps
 WORKDIR /app
