@@ -13,7 +13,7 @@ hide_excerpt: true
 <hr/>
 <div id="content">Well, that’s a loaded title for a blog post! But here’s the thing, we’ve been asked many times about what actually goes on behind the scenes when App Service updates the resources hosting App Service apps.
 
-First, we need to mention briefly what is <a href="https://docs.microsoft.com/en-us/azure/app-service/app-service-web-overview" rel="noopener" target="_blank">App Service</a><a href="https://docs.microsoft.com/en-us/azure/app-service/app-service-web-overview"> </a>. App Service is a PaaS (Platform as a Service) offering that allows customers to focus on their code, rather than having to worry about managing the underlying Virtual Machines and other resources with the latest security updates, OS patches and so on.
+First, we need to mention briefly what is <a href="https://docs.microsoft.com/en-us/azure/app-service/app-service-web-overview" rel="noopener" target="_blank">App Service</a>. App Service is a PaaS (Platform as a Service) offering that allows customers to focus on their code, rather than having to worry about managing the underlying Virtual Machines and other resources with the latest security updates, OS patches and so on.
 
 Still, those resources don’t get magically updated, do they? That is the beauty in a managed platform — we do that for our customers! App Service applies monthly updates to the resources, making sure our customers’ code is always running on the most recent security patches and OS versions available. As an example, this was extremely useful for our customers when the latest Spectre and Meltdown vulnerabilities were announced. Customers did not have to take any action because the service was updated automatically.
 
@@ -27,7 +27,7 @@ To give some additional technical details and demystify the process, we’ll out
 <li><a href="https://docs.microsoft.com/en-us/azure/best-practices-availability-paired-regions" rel="noopener" target="_blank">Paired Regions</a> – Two Azure regions which within the same geography which Azure guarantees not to update simultaneously.</li>
 </ul>
 <h2><u>App Service update cycle:</u></h2>
-First and foremost, it’s important to note that App Service assures and maintains its <a href="https://azure.microsoft.com/en-us/support/legal/sla/app-service/v1_0/" rel="noopener" target="_blank">SLA</a> at all times, even during updates. In addition, we try to avoid updates during local business hours, unless there is a pressing security issue or a high priority item to mitigate.
+First and foremost, it’s important to note that App Service assures and maintains its <a href="https://azure.microsoft.com/en-us/support/legal/sla/app-service/v1_0/" rel="noopener" target="_blank">SLA</a> at all times, even during updates. Though we try our best, the upgrade process can sometimes run for over 18hrs which causes the upgrade activity to spill over into business hours. Following our robust best practices, which can be found under the Diagose & Solve blade for your resource or in<a href="https://azure.github.io/AppService/2020/05/15/Robust-Apps-for-the-cloud.html" rel="noopener" target="_blank">this</a> article, will ensure minimal SLA impact even during platform upgrades.
 
 Before beginning worldwide updates, we deploy first to a private region which is not commonly accessible. Only after testing is validated there, we begin to roll out to datacenters across the globe.
 
