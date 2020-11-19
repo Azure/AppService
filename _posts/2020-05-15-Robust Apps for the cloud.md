@@ -79,13 +79,13 @@ We highly recommend using **Swap with Preview**. Swap with Preview allows you to
 
 App Service allows you to specify a health check path on your apps. The platform pings this path to determine if your application is healthy and responding to requests. When your site is scaled out to multiple instances, App Service will exclude any unhealthy instance(s) from serving requests, improving your overall availability. Your app's health check path should poll the critical components of your application, such as your database, cache, or messaging service. This ensures that the status returned by the health check path is an accurate picture of the overall health of your application.
 
-1. Go to *Development Tools* > *Resource Explorer* on the web app blade for Azure portal:
+1. Go to *Monitoring* > *Health Check* on the Web App blade for Azure portal:
 
-    ![health-check-1]({{site.baseurl}}/media/2020/04/health-check-1.jpg)
+    ![health-check-1]({{site.baseurl}}/media/2020/04/health-check-1.png)
 
-1. On the resource explorer page, expand the "config" section and click the "web" tab. Add an element with the name, "healthCheckPath", and value is the path of your health-check url that our service will ping.
+2. Set the value of the path that our service will ping.
 
-    ![health-check-2]({{site.baseurl}}/media/2020/04/health-check-2.png)
+3. Hit save to save the configurations.
 
 > Please note that the Health Check feature works only when you have two or more instances, which is a **very** strong recommendation. For a single instance web app, the traffic is never blocked even if that single instance is encountering issues.
 
