@@ -85,7 +85,7 @@ App Service allows you to specify a health check path on your apps. The platform
 
 2. Set the value of the path that our service will ping.
 
-3. Hit save to save the configurations.
+3. Hit save to save the configuration.
 
 > Please note that the Health Check feature works only when you have two or more instances, which is a **very** strong recommendation. For a single instance web app, the traffic is never blocked even if that single instance is encountering issues.
 
