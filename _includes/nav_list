@@ -37,7 +37,30 @@
               {% assign active = "" %}
             {% endif %}
 
-            <li><a href="{{ child_url }}" class="{{ active }}">{{ child.title }}</a></li>
+            <li>
+              <a href="{{ child_url }}" class="{{ active }}">{{ child.title }}</a>
+              {% if child.children != null %}
+                {% include nav_list_items parent=child %}
+                {% for child in child.children %}
+                {% comment %} internal/external URL check {% endcomment %}
+                {% if child.url contains "://" %}
+                  {% assign child_url = child.url %}
+                {% else %}
+                  {% assign child_url = child.url | relative_url %}
+                {% endif %}
+    
+                {% comment %} set "active" class on current page {% endcomment %}
+                {% if child.url == page.url %}
+                  {% assign active = "active" %}
+                {% else %}
+                  {% assign active = "" %}
+                {% endif %}
+                <ul>
+                  <li style="padding-left: 6px;"><a href="{{ child_url }}" class="{{ active }}">{{ child.title }}</a></li>
+                </ul>
+                {% endfor %}
+              {% endif %}
+            </li>
           {% endfor %}
         </ul>
         {% endif %}
