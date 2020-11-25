@@ -219,7 +219,7 @@ Your .NET 5 project will have a new Dockerfile added with the .NET 5.0 base imag
 
 > For more information on .NET 5 Docker images, please see the [official images for ASP.NET Core runtimes](https://hub.docker.com/_/microsoft-dotnet-aspnet) on docker.
 
-If you are using Windows your base image will be `FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base` using the `FROM mcr.microsoft.com/dotnet/sdk:5.0 AS buil` SDK.
+If you are using Windows your base image will be `FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base` using the `FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build` SDK.
 
 For Linux applications, your base image will be `FROM mcr.microsoft.com/dotnet/aspnet:5.0-buster-slim AS base` using the `FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build` SDK.
 
