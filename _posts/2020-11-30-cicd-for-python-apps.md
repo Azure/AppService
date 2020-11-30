@@ -28,8 +28,16 @@ The sections below show example GitHub Actions workflows for building and deploy
 
 ### Django
 
-[Here is an example workflow for building and deploying a Django app.](https://github.com/Azure-Samples/djangoapp/blob/master/.github/workflows/build_and_deploy.yaml)
+[**Example workflow for building and deploying a Django app.**](https://github.com/Azure-Samples/djangoapp/blob/master/.github/workflows/build_and_deploy.yaml)
 
-- https://github.com/Azure-Samples/djangoapp
+The workflow starts by setting up the desired Python version and creating a virtual environment. Once the virtual environment is activated, the dependencies are installed from the `requirements.txt` file. The first job ends by collecting the static assets and running tests. Assuming all those jobs succeed, the files are uploaded for the next job. The virtual environment is **not** uploaded since it is not compatible with the runtime OS. A nice side-effect of uploading the files at the end of the job is that you can download the uploaded files from the **Actions** tab to debug or inspect the contents.
 
-### Flask
+The second job begins by logging into the Azure CLI using a Service Principal. For more information on creating a Service Principal for GitHub Actions, see [these instructions](https://github.com/Azure/login#configure-deployment-credentials). Once the Azure CLI is authenticated, the job sets the `SCM_DO_BUILD_DURING_DEPLOYMENT` setting mentioned earlier. It also sets settings to disable static collection (since that was done in the previous job), to run migrations on the database, and to set the Django environment to "production". Finally, the job deploys the code using the [`webapps-deploy` action](https://github.com/azure/webapps-deploy/).
+
+### Flask and Vue.js
+
+[**Example workflow for building and deploying a Flask app with Vue.js**](https://github.com/Azure-Samples/flask-vuejs-webapp/blob/main/.github/workflows/build_and_deploy.yaml)
+
+This workflow begins similarly to the Django example by setting the Python version, creating a virtual environment, and installing the Python packages. Unique to this example, it also sets Node.js to the desired version since the job will need to install the Vue project's dependencies and build it. Once the Flask and Vue.js apps are built and tested, the files are uploaded for the second job, except for the `node_modules/` and `venv/` directories. We want to exclude these directories and allow Oryx to install the dependencies like in the Django example above.
+
+The second job logs into the Azure CLI and sets the `SCM_DO_BUILD_DURING_DEPLOYMENT` flag. Unlike the Django example, the workflow sets the "startup-file" command to `gunicorn --bind=0.0.0.0 --timeout 600 app:app`. ([Gunicorn](https://docs.gunicorn.org/en/stable/index.html) is a WSGI HTTP Server commonly used for Python applications. Learn more about [custom startup commands on App Service](https://docs.microsoft.com/azure/app-service/configure-language-python#customize-startup-command).) Finally, the application is deployed with the [`webapps-deploy` action](https://github.com/azure/webapps-deploy/).
