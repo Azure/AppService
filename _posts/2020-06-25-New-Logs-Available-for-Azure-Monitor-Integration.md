@@ -35,17 +35,15 @@ This log will have the contents of the `YYYY_MM_DD_RDXXXXXXXX_docker.log`. It wi
 
 The table below shows the latest availability for the log categories on Windows and Linux.
 
-|    Log Name                          |    Windows         |    Linux |
-|--------------------------------------|--------------------|----------|
-|    AppServiceConsoleLogs             |    TBA             |    ✔️   |
-|    AppServiceHTTPLogs                |    ✔️              |    ✔️   |
-|    AppServiceEnvironmentPlatformLogs |    ✔️              |    ✔️   |
-|    AppServiceAuditLogs               |    ✔️              |    ✔️   |
-|    AppServiceFileAuditLogs           |    ✔️ <sup>1</sup> |   TBA   |
-|    AppServiceAppLogs                 |    TBA             |    ✔️ <sup>2</sup> |
-|    AppServiceIPSecLogs               |    ✔️              |    ✔️  |
-|    AppServicePlatformLogs            |    TBA             |    ✔️   |
+| Log type | Windows | Windows Container | Linux | Linux Container | Description |
+|-|-|-|-|-|-|
+| AppServiceConsoleLogs | Java SE & Tomcat | Yes | Yes | Yes | Standard output and standard error |
+| AppServiceHTTPLogs | Yes | Yes | Yes | Yes | Web server logs |
+| AppServiceEnvironmentPlatformLogs | Yes | N/A | Yes | Yes | App Service Environment: scaling, configuration changes, and status logs|
+| AppServiceAuditLogs | Yes | Yes | Yes | Yes | Login activity via FTP and Kudu |
+| AppServiceFileAuditLogs | Yes | Yes | TBA | TBA | File changes made to the site content; only available for Premium tier and above |
+| AppServiceAppLogs | ASP .NET | ASP .NET | Java SE & Tomcat <sup>1</sup> | Java SE & Tomcat Blessed Images <sup>1</sup> | Application logs |
+| AppServiceIPSecAuditLogs  | Yes | Yes | Yes | Yes | Requests from IP Rules |
+| AppServicePlatformLogs  | TBA | Yes | Yes | Yes | Container operation logs |
 
-<sup>1</sup> Supported only on Premium, PremiumV2 and Isolated App Service Plans
-
-<sup>2</sup> Supported on Java SE and Tomcat
+<sup>1</sup> For Java SE apps, add the app setting `WEBSITE_AZMON_PREVIEW_ENABLED` and set it to `1` `true`.
