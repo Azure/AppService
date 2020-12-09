@@ -30,6 +30,7 @@ App Service now outputs the following log types into Azure Monitor.
 - **AppServiceAppLogs**: Any logs or exceptions written to the stack’s logging utility. Supports multi-line logs and exceptions
 - **AppServiceIPSecLogs**:  Logs request made to the web app with IP info if there were IP access restriction rules set up
 - **AppServicePlatformLogs**: Logs from containers (ie. "docker run")
+- **AppServiceAntivirusScanAuditLogs**: Logs from the anti-virus scan using Windows Defender (see [blog]({{site.baseurl}}/2020/12/09/AppServiceAntiVirusScanLogs.html) for more information)
 
 The table below shows the current availability for the log categories.
 
@@ -43,6 +44,7 @@ The table below shows the current availability for the log categories.
 | AppServiceAppLogs | ASP .NET | ASP .NET | Java SE & Tomcat <sup>1</sup> | Java SE & Tomcat  <sup>1</sup> | Application logs |
 | AppServiceIPSecAuditLogs  | Yes | Yes | Yes | Yes | Requests from IP Rules |
 | AppServicePlatformLogs  | TBA | Yes | Yes | Yes | Container operation logs |
+| AppServiceAntivirusScanAuditLogs | Yes | Yes | Yes | [Anti-virus scan logs]({{site.baseurl}}/2020/12/09/AppServiceAntiVirusScanLogs.html) | 
 
 <sup>1</sup> For Java SE apps, add the app setting `WEBSITE_AZMON_PREVIEW_ENABLED` and set it to `1` `true`.
 
