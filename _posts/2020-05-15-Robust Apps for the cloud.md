@@ -218,7 +218,7 @@ There are additional benefits to using Front Door or Traffic Manager, such as ro
 
 Finally, you can check the progress you've accomplished in making your app resilient by leverage the "Risk Assessments" section available in App Service Diagnostics here:
 
-![bestpractices]({{site.baseurl}}/media/2020/04/riskalerts.png)
+![bestpractices]({{site.baseurl}}/media/2020/04/risk-alerts.png)
 
 You'll be presented by 2 options:
 
