@@ -6,7 +6,7 @@ toc_sticky: true
 tags: Python
 ---
 
-GitHub announced [CI/CD support](https://github.blog/2019-08-08-github-actions-now-supports-ci-cd/) through GitHub Actions which became generally available at GitHub Universe in November 2019. Since then, many Azure services have released [actions](https://github.com/azure/actions) and integrations to make developers' workflows more efficient. The App Service Deployment Center guides developers through setting up GitHub Actions to deploy their web apps. Since then, our teams have received requests for guidance and best practices when setting up CI/CD (Continuous Integration and Delivery) for deploying Python apps to App Service.
+GitHub announced [CI/CD support](https://github.blog/2019-08-08-github-actions-now-supports-ci-cd/) through GitHub Actions which became generally available at GitHub Universe in November 2019. Since then, many Azure services have released [actions](https://github.com/azure/actions) and integrations to make developers' workflows more efficient. The App Service Deployment Center guides developers to set up GitHub Actions to deploy their web apps. Since then, our teams have received requests for guidance and best practices when setting up CI/CD (Continuous Integration and Delivery) for deploying Python apps to App Service.
 
 > This article assumes you are familiar with CI/CD pipelines. If you are not familiar, [read this article](https://www.redhat.com/en/topics/devops/what-cicd-pipeline) for an overview.
 
