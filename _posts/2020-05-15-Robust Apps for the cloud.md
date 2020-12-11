@@ -119,14 +119,14 @@ External storage like storage containers, db or cosmosDB should be used for stor
 
 - [Azure App Service Local Cache overview](https://docs.microsoft.com/en-us/azure/app-service/overview-local-cache)
 
-## Auto Heal
+## Auto-Heal
 
-Sometimes your application might experience unexpected behaviors that could be resolved by a simple restart. The Auto Heal features allows you to do exactly that! It allows you to define the 'condition' that would trigger Auto Heal and the 'action' that Auto Heal will initiate when the condition is met.
+Sometimes your application might experience unexpected behaviors that could be resolved by a simple restart. The Auto-Heal features allows you to do exactly that! It allows you to define the 'condition' that would trigger Auto-Heal and the 'action' that Auto-Heal will initiate when the condition is met.
 
 
-You can create an auto heal mitigation rule by going to "Diagnose and Solve problems" section -> "Diagnostic Tools" tile and then "Auto Healing" under Proactive Tools section.
+You can create an Auto-Heal mitigation rule by going to "Diagnose and Solve problems" section -> "Diagnostic Tools" tile and then "Auto-Heal" under Proactive Tools section.
 
-![multiple-instances]({{site.baseurl}}/media/2020/04/autoheal.jpg)
+![multiple-instances]({{site.baseurl}}/media/2020/04/auto-heal.png)
 
 Below are example filter values to set up, however if some other value of error code and frequency suits your application, please modify accordingly:
 
@@ -148,8 +148,8 @@ and add an 'Override when Action Executes':
 
 **Learn More**
 
-- [Azure App Service Auto-Healing](https://stack247.wordpress.com/2019/05/20/azure-app-service-auto-healing/)
-- [Announcing the New Auto Healing Experience in App Service Diagnostics](https://azure.github.io/AppService/2018/09/10/Announcing-the-New-Auto-Healing-Experience-in-App-Service-Diagnostics.html)
+- [Azure App Service Auto-Heal](https://stack247.wordpress.com/2019/05/20/azure-app-service-auto-healing/)
+- [Announcing the New Auto-Heal Experience in App Service Diagnostics](https://azure.github.io/AppService/2018/09/10/Announcing-the-New-Auto-Healing-Experience-in-App-Service-Diagnostics.html)
 
 ## Minimize App Service Plan Density
 
@@ -216,9 +216,9 @@ There are additional benefits to using Front Door or Traffic Manager, such as ro
 
 ## Check App Service Diagnostics
 
-Finally, you can check the progress you've accomplished in making your app resilient by leverage the "Best Practices" detectors available in App Service Diagnostics here:
+Finally, you can check the progress you've accomplished in making your app resilient by leverage the "Risk Assessments" section available in App Service Diagnostics here:
 
-![bestpractices]({{site.baseurl}}/media/2020/04/bestpractices.jpg)
+![bestpractices]({{site.baseurl}}/media/2020/04/risk-alerts.png)
 
 You'll be presented by 2 options:
 
