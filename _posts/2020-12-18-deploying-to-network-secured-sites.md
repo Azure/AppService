@@ -22,31 +22,20 @@ To follow this guide you will need the following:
 
 - A valid Azure subscription
 - An Azure DevOps organization and project
-- A DevOps repo to build a pipeline for
+- A DevOps repository with a web application we can deploy to App Service
 
 ## Part 1: Set up resources
 
 First, let's set up the Azure DevOps project and VM that will host the agent.
-  
-1. Open Azure DevOps and create a PAT token with the permissions shown below. Go to **User Settings** (right side of the navbar) > **Personal access tokens**. Be sure to copy the PAT token, you will need it later!
 
-   - **Agent Pools** (read, manage)
-   - **deployment groups** (read, manage)
-
-2. Create a Deployment Group by going to **Pipelines** > **Deployment groups** and click **+ New**. Provide a memorable name and description, and click **Create**.
-3. Next, [create a Virtual Machine](https://portal.azure.com/#create/Microsoft.VirtualMachine) of your choice, there are DevOps build agents for Linux and Windows. (I used Ubuntu Server 18.04 LTS.) This will automatically create a VNet as well.
-4. Once the VM is deployed, open it in the Portal and click **Extensions** on the left, then click **+ Add**. This will open the list of VM Extensions. Click the item for **Azure Pipelines Agent For Linux/Windows**, then click **Create**... after reading the description of course.
-5. The next blade is where you will provide the PAT token and metadata about your DevOps project. You can hover over the info icon for more information about each input. Here is an example of the values for my DevOps project:  
-
-    ![DevOps Agent VM Extension]({{ site.baseurl }}/media/2020/12/priv-endpoints-deploy-vm-extensions.png)
-
-6. Once the extension is installed, you can open the DevOps deployment groups panel and you should see that there is now one online agent in the group. You can click into the group for more information.
-
-    ![Deployment group shows an online agent]({{ site.baseurl }}/media/2020/12/priv-endpoints-deploy-deployment-group.png)
+1. Create a Virtual Machine Scale Set with Ubuntu Server 18.04 LTS. This process will automatically create a VNet as well.
+2. Once the VM Scale Set is created, open Azure DevOps and navigate to **Project settings** > **Pipelines** > **Agent pools**.
+3. Click **Add pool** and this will open a context menu. Under **Pool type** select "Azure virtual machine scale set". Choose your subscription and the VM Scale Set you just created. You can configure the max number of machines for the scale set, the number to keep on standby, and more. You can read more information [here](https://docs.microsoft.com/azure/devops/pipelines/licensing/concurrent-jobs?view=azure-devops&tabs=self-hosted).
+4. Click **Create** to set up the agent pool. You can monitor the process under **Diagnostics**. 
 
 ## Part 2: Configure networking features
 
-Now that we have VNet and a DevOps agent installed on the VM let's create the web app that we will deploy to.
+You now have a VM Scale Set with DevOps agents installed, all deployed within a VNet. Now you will create the web app and confirm that the VM's and webapp can communicate over the virtual network.
 
 1. [Create an Azure Webapp](https://portal.azure.com/#create/Microsoft.WebSite) *in the same region* as the VM. Choose whatever runtime and operating system fit your application.
 2. Once the VM is created, go to **Networking** > **VNet Integration**. Add the site to the same virtual network as the VM. The VM and webapp cannot be in the same subnet, so you may need to create another subnet.
@@ -68,8 +57,42 @@ Now that we have VNet and a DevOps agent installed on the VM let's create the we
 
     You can also use `nslookup` to see how the private DNS entries ultimately map to the web app.
 
+### Installing build tools on your VMs
+
+The virtual machines in your scale set may not come with the build tools that your pipeline will need (like Maven, NPM, or dotnet). To install these tools, you can add the [**Custom Script for Linux Extension**](https://github.com/Azure/azure-linux-extensions/tree/master/CustomScript). This extension allows you to upload a shell script that is executed whenever a new VM is provisioned in the scale set. So in this case, the shell script could install your necessary build tools.
+
 ## Part 3: Create the CI pipeline
 
-The site cannot be reached from the internet, and our VM can reach the site through the virtual network. Now let's set up a DevOps Pipeline to deploy your application from the VM.
+The site cannot be reached from the internet, and our VM can reach the site through the virtual network. Now let's set up a DevOps Pipeline to build and deploy your application from the VM.
 
-1. 
+1. Head back to Azure DevOps and go to **Pipelines** > **New pipeline**. Then select the location of your project.
+2. Once you choose your project, Azure DevOps will show some templates based on your stack. For example, I was given a starter pipeline to build my Java app with Maven and deploy it to App Service Linux. Click **Show more** if you don't immediately see a good starter template.
+
+    If you are not given a good template to deploy your app to App Service, use the generic starter template and add the [Deploy to Azure Web App](https://docs.microsoft.com/azure/devops/pipelines/targets/webapp?view=azure-devops&tabs=yaml) action.
+
+3. Next, specify the VMSS agent pool by adding [the `pool` keyword](https://docs.microsoft.com/azure/devops/pipelines/yaml-schema?view=azure-devops&tabs=schema%2Cparameter-schema#pool) on the pipeline. The value should be the name of your VMSS agent pool that you created earlier.
+
+    ```yaml
+    trigger:
+    - main
+
+    pool: 'VMSS for private endpoints deployment'  # This is the name of your agent pool
+
+    steps:
+      - task: AzureWebApp@1
+        displayName: 'Azure Web App Deploy: priv-endpoints-webapp'
+        inputs:
+          azureSubscription: 'aaaaaa-bbbb-cccc-dddd-eeeeeeeeee'
+          appType: webAppLinux
+          appName: 'priv-endpoints-webapp'
+          package: 'app.jar'
+    ```
+
+4. Finally, save and run the workflow! See the pipeline's logs to monitor progress and check for any errors.
+
+## Resources
+
+- [Using Private Endpoints for Azure Web App](https://docs.microsoft.com/azure/app-service/networking/private-endpoint)
+- [Integrate your app with an Azure virtual network](https://docs.microsoft.com/azure/app-service/web-sites-integrate-with-vnet)
+- [Azure Private Link documentation](https://docs.microsoft.com/azure/private-link/)
+- [Azure virtual machine scale set DevOps agents](https://docs.microsoft.com/azure/devops/pipelines/agents/scale-set-agents?view=azure-devops)
