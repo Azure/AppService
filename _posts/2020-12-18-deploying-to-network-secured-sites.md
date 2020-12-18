@@ -8,13 +8,15 @@ tags:
     - Networking
 ---
 
-With the recently-announced [Private Endpoints integration]() you can block inbound access from the internet to your web app. Before this integration, developers would need to use an App Service Environment (ASE) if they wanted to host their network-secured applications on App Service. With the combination of the Virtual Network (VNet) and Private Endpoint integrations on App Service, you can secure your site's inbound and outbound requests respectively. 
+With the recently-announced [Private Endpoints integration](https://azure.github.io/AppService/2020/10/06/private-endpoint-app-service-ga.html) you can block inbound access from the internet to your web app. Before this integration, developers would need to use an App Service Environment (ASE) if they wanted to host their network-secured applications on App Service. With the combination of the Virtual Network (VNet) and Private Endpoint integrations on App Service, you can secure your site's inbound and outbound requests respectively.
 
 This is great for organizations that want the network security without the added cost of an ASE. However, if inbound access to your site is blocked, that can disrupt your existing delivery pipeline if you were not using Private Endpoints before. This article will walk through the process of installing an Azure DevOps agent on a Virtual Machine (VM) to deploy to a site secured with VNet and Private Endpoints.
 
-> This article assumes some familiarity with Virtual Networks. If you are new to Azure Networking, please see this [Microsoft Learning Path]().
+> This article assumes some familiarity with Virtual Networks. If you are new to Azure Networking, please see this [Microsoft Learning Path](https://docs.microsoft.com/learn/modules/network-fundamentals/).
 
 ## Solution Overview
+
+This guide will walk through the process of deploying a Virtual Machine Scale Set (VMSS) and web app into two subnets of the same virtual network. You wil use Azure DevOps to install a build agent on the virtual machines and configure your DevOps Pipeline to run on those agents. Finally, you will enable private endpoints so the site cannot be reached from the public internet.
 
 ## Prerequisites
 
@@ -30,8 +32,8 @@ First, let's set up the Azure DevOps project and VM that will host the agent.
 
 1. Create a Virtual Machine Scale Set with Ubuntu Server 18.04 LTS. This process will automatically create a VNet as well.
 2. Once the VM Scale Set is created, open Azure DevOps and navigate to **Project settings** > **Pipelines** > **Agent pools**.
-3. Click **Add pool** and this will open a context menu. Under **Pool type** select "Azure virtual machine scale set". Choose your subscription and the VM Scale Set you just created. You can configure the max number of machines for the scale set, the number to keep on standby, and more. You can read more information [here](https://docs.microsoft.com/azure/devops/pipelines/licensing/concurrent-jobs?view=azure-devops&tabs=self-hosted).
-4. Click **Create** to set up the agent pool. You can monitor the process under **Diagnostics**. 
+3. Click **Add pool** and this will open a context menu. Under **Pool type** select "Azure virtual machine scale set". Choose your subscription and the VM Scale Set you just created. You can configure the max number of machines for the scale set, the number to keep on standby, and more. Read more information [here](https://docs.microsoft.com/azure/devops/pipelines/licensing/concurrent-jobs?view=azure-devops&tabs=self-hosted).
+4. Click **Create** to set up the agent pool. You can monitor the process under **Diagnostics**.
 
 ## Part 2: Configure networking features
 
@@ -43,7 +45,7 @@ You now have a VM Scale Set with DevOps agents installed, all deployed within a 
     With VNet integration enabled, the web app and VM can communicate over the virtual network. To test this, go to the web console for your site at *https://my-linux-site.scm.azurewebsites.net/webssh/host* on Linux apps, or *https://my-windows-site.scm.azurewebsites.net/DebugConsole/?shell=powershell* for Windows. Once the console is open, run the following command to ping the VM's private IP. You can find your VM's private IP from the **Networking** blade on the VM resource. It's shown under "NIC Private IP".
 
     ```bash
-    root@87d2385265ad:/\# ping 10.0.0.5  # replace with your VM's private IP
+    root@87d2385265ad$ ping 10.0.0.5  # replace with your VM's private IP
     ```
 
     Now that the resources are in the same Virtual Network and can communicate over that network, let's enable Private Endpoints on the web app. This will block inbound access to the web app from the public internet.
@@ -63,7 +65,7 @@ The virtual machines in your scale set may not come with the build tools that yo
 
 ## Part 3: Create the CI pipeline
 
-The site cannot be reached from the internet, and our VM can reach the site through the virtual network. Now let's set up a DevOps Pipeline to build and deploy your application from the VM.
+At this point the web app cannot be reached from the public internet but our VM can reach the site through the virtual network. Now let's set up a DevOps Pipeline to build and deploy your application from the VM.
 
 1. Head back to Azure DevOps and go to **Pipelines** > **New pipeline**. Then select the location of your project.
 2. Once you choose your project, Azure DevOps will show some templates based on your stack. For example, I was given a starter pipeline to build my Java app with Maven and deploy it to App Service Linux. Click **Show more** if you don't immediately see a good starter template.
