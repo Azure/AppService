@@ -10,7 +10,7 @@ tags:
 
 With the recently-announced [Private Endpoints integration](https://azure.github.io/AppService/2020/10/06/private-endpoint-app-service-ga.html) you can block inbound access from the internet to your web app. Before this integration, developers would need to use an App Service Environment (ASE) if they wanted to host their network-secured applications on App Service. With the combination of the Virtual Network (VNet) and Private Endpoint integrations on App Service, you can secure your site's inbound and outbound requests respectively.
 
-This is great for organizations that want the network security without the added cost of an ASE. However, if inbound access to your site is blocked, that can disrupt your existing delivery pipeline if you were not using Private Endpoints before. This article will walk through the process of installing an Azure DevOps agent on a Virtual Machine (VM) to deploy to a site secured with VNet and Private Endpoints.
+This is great for organizations that want the network security without the added cost of an ASE. However, if inbound access to your site is blocked, that can disrupt your existing delivery pipeline if you were not using Private Endpoints before. This article will walk through the process of installing an Azure DevOps agent on a Virtual Machine (VM) to deploy to a site secured with VNet and Private Endpoints. This solution works for [ILB ASEs](https://docs.microsoft.com/azure/app-service/environment/create-ilb-ase) as well.
 
 > This article assumes some familiarity with Virtual Networks. If you are new to Azure Networking, please see this [Microsoft Learning Path](https://docs.microsoft.com/learn/modules/network-fundamentals/).
 
@@ -40,7 +40,7 @@ First, let's set up the Azure DevOps project and VM that will host the agent.
 You now have a VM Scale Set with DevOps agents installed, all deployed within a VNet. Now you will create the web app and confirm that the VM's and webapp can communicate over the virtual network.
 
 1. [Create an Azure Webapp](https://portal.azure.com/#create/Microsoft.WebSite) *in the same region* as the VM. Choose whatever runtime and operating system fit your application.
-2. Once the VM is created, go to **Networking** > **VNet Integration**. Add the site to the same virtual network as the VM. The VM and webapp cannot be in the same subnet, so you may need to create another subnet.
+2. Once the web app is created, go to **Networking** > **VNet Integration**. Add the site to the same virtual network as the VM. The VM and webapp cannot be in the same subnet, so you may need to create another subnet.
 
     With VNet integration enabled, the web app and VM can communicate over the virtual network. To test this, go to the web console for your site at *https://my-linux-site.scm.azurewebsites.net/webssh/host* on Linux apps, or *https://my-windows-site.scm.azurewebsites.net/DebugConsole/?shell=powershell* for Windows. Once the console is open, run the following command to ping the VM's private IP. You can find your VM's private IP from the **Networking** blade on the VM resource. It's shown under "NIC Private IP".
 
