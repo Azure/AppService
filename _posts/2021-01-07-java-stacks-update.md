@@ -5,7 +5,7 @@ tags:
     - Java
 ---
 
-The latest App Service release brings the following runtime versions:
+The latest App Service releases included new Java, Tomcat and JBoss EAP versions.
 
 ## Windows
 
