@@ -1,8 +1,9 @@
 ---
 title: "Migrate from Windows Azure Pack Websites to Azure App Service"
 author_name: "Andrew Westgarth"
+toc: true
+toc_sticky: true
 tags: 
-    - Windows Azure Pack Web Sites
     - Windows Azure Pack
 ---
 
