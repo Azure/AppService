@@ -17,7 +17,7 @@ The latest App Service releases included new Java, Tomcat and JBoss EAP versions
   - 8.0.265
   - 7.0.272
 
-Eclipse Foundation has deprecated Jetty 9.1 and 9.3 ([source](https://www.eclipse.org/jetty/download.php)), so these runtimes are no longer shown on the Portal. You can still [create sites with these versions](https://docs.microsoft.com/en-us/azure/app-service/overview#built-in-languages-and-frameworks). Tomcat 8.0 has [reached End-Of-Life](https://tomcat.apache.org/tomcat-80-eol.html) and will also be hidden in an upcoming Portal update.
+Eclipse Foundation has deprecated Jetty 9.1 and 9.3 ([source](https://www.eclipse.org/jetty/download.php)), so these runtimes are no longer shown on the Portal. You can still [create sites with these versions](https://docs.microsoft.com/azure/app-service/overview#built-in-languages-and-frameworks). Tomcat 8.0 has [reached End-Of-Life](https://tomcat.apache.org/tomcat-80-eol.html) and will also be hidden in an upcoming Portal update.
 
 ## Linux
 
@@ -29,3 +29,9 @@ Eclipse Foundation has deprecated Jetty 9.1 and 9.3 ([source](https://www.eclips
 - New Tomcat versions
   - 9.0.37
   - 8.5.57
+
+## How to upgrade your Java or Tomcat version
+
+To upgrade your Java or Tomcat version, open the Azure Portal to your web app and open the **Configuration** blade. Under the **General settings** tab you can select a new Java and Tomcat version using the dropdowns for **Java minor version** and **Java web server version**.
+
+![Upgrade your Java versions in the Portal]({{site.baseurl}}/media/2021/01/upgrade-java-versions.png)
