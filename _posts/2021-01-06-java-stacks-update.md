@@ -17,7 +17,7 @@ The latest App Service releases included new Java, Tomcat and JBoss EAP versions
   - 8.0.265
   - 7.0.272
 
-Eclipse Foundation has deprecated Jetty 9.1 and 9.3 ([source](https://www.eclipse.org/jetty/download.php)), so these runtimes are no longer shown on the Portal. You can still [create sites with these versions](https://docs.microsoft.com/azure/app-service/overview#built-in-languages-and-frameworks). Tomcat 8.0 has [reached End-Of-Life](https://tomcat.apache.org/tomcat-80-eol.html) and will also be hidden in an upcoming Portal update.
+Eclipse Foundation has deprecated Jetty 9.1 and 9.3 ([source](https://www.eclipse.org/jetty/download.php)), so these runtimes are no longer shown on the Portal. You can still [create sites with these versions](https://docs.microsoft.com/azure/app-service/overview#built-in-languages-and-frameworks). Tomcat 8.0 has [reached End-Of-Life](https://tomcat.apache.org/tomcat-80-eol.html) and will also be hidden in an upcoming Portal update. Web apps using these outdated runtimes will continue to run, but using the latest versions ensures that your apps are running on the most secure and performant runtimes.
 
 ## Linux
 
