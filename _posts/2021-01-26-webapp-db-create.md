@@ -9,6 +9,8 @@ This new create flow was built with simplicity in mind. You only need to provide
 
 [![Screenshot of the new create experience.]({{site.baseurl}}/media/2021/01/webapp-db-create.png)](https://portal.azure.com/?feature.customportal=false#create/Microsoft.AppServiceWebAppDatabaseV3){: .align-center}
 
+You can get to the new blade using [this link](https://portal.azure.com/?feature.customportal=false#create/Microsoft.AppServiceWebAppDatabaseV3), or by searching "web app database" in the Azure Portal.
+
 By default, the  blade will create a new PremiumV2 App Service plan and either a [serverless Azure SQL](https://docs.microsoft.com/azure/azure-sql/database/serverless-tier-overview) server or General Purpose [PostgreSQL flexible server](https://docs.microsoft.com/azure/postgresql/flexible-server/) depending on you choice of database. Once created, you can scale these services up or down depending on your requirements.
 
 > Azure Database for PostgreSQL is currently in preview.
