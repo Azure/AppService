@@ -1,5 +1,5 @@
 ---
-title: "CI/CD for Python Applications"
+title: "Using GitHub Actions for Python Applications"
 author_name: "Jason Freeberg"
 toc: true
 toc_sticky: true
