@@ -115,6 +115,8 @@ Finally, the job deploys the code using the [`webapps-deploy` action](https://gi
 ```
 {% endraw %}
 
+> By default, the `appservice-settings` action will mask the inputs and obfuscate any occurences of those strings in logs. Set [`mask-inputs: false`](https://github.com/Azure/appservice-settings/blob/master/action.yml#L20-L23) to disable this.
+
 ### Flask and Vue.js
 
 See the [**example workflow for building and deploying a Flask app with Vue.js**](https://github.com/Azure-Samples/flask-vuejs-webapp/blob/main/.github/workflows/build_and_deploy.yaml). Fork this repository and [create a secret](https://docs.github.com/en/free-pro-team@latest/actions/reference/encrypted-secrets) with the Service Principal. Name the secret `AZURE_SERVICE_PRINCIPAL`. You also need to replace the placeholder value for the `RESOURCE_GROUP` environment variable at the top of the workflow file.
