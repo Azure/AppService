@@ -18,7 +18,7 @@ In order to verify if your apps are possibly competing for resources, run the Ap
 You will see one of the following:
 <br>1) Your plan is within the recommended value
 ![green]({{site.baseurl}}/media/2019/05/Green.JPG)
-<br>2) Your plan is nearing exhaustion
+<br><br>2) Your plan is nearing exhaustion
 ![red]({{site.baseurl}}/media/2019/05/red.png)
 
 ## Recommended Solutions
