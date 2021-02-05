@@ -13,12 +13,12 @@ When you deploy multiple App Services in the same App Service plan, they all sha
 In order to verify if your apps are possibly competing for resources, run the App Service plan Density check detector by following these steps:
 <br>1) From the Azure Portal, go to on of your Apps
 <br>2) Go to the "Diagnose and solve problems" blade
-<br>3) In the search bar, you can search for "Best Practices for Availbility & Performance" to run multiple checks on your app or search for "App Service plan Density check" to run this check only
+<br>3) Then either select the 'Risk Assessments' category or you can search for "Best Practices for Availability & Performance" in the search bar
 
 You will see one of the following:
 <br>1) Your plan is within the recommended value
-![green]({{site.baseurl}}/media/2019/05/green.JPG)
-<br>2) Your plan is nearing exhaustion
+![green]({{site.baseurl}}/media/2019/05/Green.JPG)
+<br><br>2) Your plan is nearing exhaustion
 ![red]({{site.baseurl}}/media/2019/05/red.png)
 
 ## Recommended Solutions
