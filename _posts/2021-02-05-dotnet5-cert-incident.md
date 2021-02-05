@@ -15,4 +15,10 @@ For more information, please see [this GitHub thread](https://github.com/NuGet/H
 
 ## Resolution for App Service
 
-We are in the process of updating the root certificates used in the .NET 5 runtime and build image (also known as the Oryx image) and will begin rolling out the updated image as soon as possible. We will update this article as new information becomes available.
+We have updated the root certificates used in the .NET 5 runtime and build image (also known as the Oryx image) and will begin rolling out the updated image as soon as possible. We will update this article as new information becomes available.
+
+## Workaround
+
+To work around this limitation, please build your .NET 5 applications locally or on a build system (such as GitHub Actions or AzureDevops) and deploy the built application to App Service. You can set up a GitHub Actions workflow from the **Deployment Center** in the App Service blade in the Portal. If you would rather build locally, you can use the [`az webapp deployment source config-zip`](https://docs.microsoft.com/azure/app-service/deploy-zip#deploy-zip-file-with-azure-cli) command to deploy your app from a .zip file.
+
+Once the root certifactes have been updated on your site, you can return to using the Oryx build service. We will update this article as new information becomes available.
