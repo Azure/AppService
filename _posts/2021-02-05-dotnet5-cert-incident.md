@@ -1,9 +1,8 @@
 ---
 title: ".NET 5 NuGet package restore Incident: App Service Response"
 author_name: "Jason Freeberg"
+toc: true
 ---
-
-## Incident Summary
 
 Last week an incident occurred that caused .NET 5 NuGet package operations to fail on some Debian-family distributions. Specifically, Debian and Ubuntu maintainers published an update (for at least some distro versions) that distrusted the Symantec certificate entirely. This change was later rolled back, but patched packages were not available on the package repositories prior to the Microsoft NuGet author signing certificate expiring. Please see [this NuGet announcement for more information](https://github.com/NuGet/Announcements/issues/49).
 
