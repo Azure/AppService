@@ -20,6 +20,7 @@ We will use GitHub Actions as the CI system to demonstrate this solution, but th
 
 The workflow has two jobs. The first builds and tests the application and uploads the artifact for the second job. Once the artifact is built, tested and uploaded, the second job pulls the artifact and runs an Azure CLI script to publish the files to an Azure Storage Account. Once the files are uploaded, we generate a SAS URL for the storage container with an expiration of 30-minutes. (This means the URL will be invalid 30 minutes after creation.)
 
+{% raw %}
 ```yaml
 name: Deploy web app via Storage Account
 
@@ -95,6 +96,7 @@ jobs:
 
             az webapp deploy --name $WEBAPP --resource-group $GROUP --type zip --src-url $ZIP_URL
 ```
+{% endraw %}
 
 To use this workflow in your GitHub project, simply [create an Azure Service Principal](https://github.com/azure/login#configure-deployment-credentials) and save it as a secret named `AZURE_CREDENTIALS` in your repository. Finally, update the `WEBAPP`, `CONTAINER`, `GROUP`, and `ACCOUNT` environment variables with your desired resource names. By defaault, this workflow will run whenever a commit is pushed to the `main` or `master` branch. You can change this by updating the workflow triggers at the top of the yaml file.
 
