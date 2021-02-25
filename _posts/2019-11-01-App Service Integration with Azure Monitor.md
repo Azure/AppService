@@ -44,7 +44,7 @@ The table below shows the current availability for the log categories.
 | AppServiceAppLogs | ASP .NET | ASP .NET | Java SE & Tomcat <sup>1</sup> | Java SE & Tomcat  <sup>1</sup> | Application logs |
 | AppServiceIPSecAuditLogs  | Yes | Yes | Yes | Yes | Requests from IP Rules |
 | AppServicePlatformLogs  | TBA | Yes | Yes | Yes | Container operation logs |
-| AppServiceAntivirusScanAuditLogs | Yes | Yes | Yes | Yes | [Anti-virus scan logs]({{site.baseurl}}/2020/12/09/AzMon-AppServiceAntiVirusScanLogs.html) using Microsoft Defender; only available for Premium tier | 
+| AppServiceAntivirusScanAuditLogs | Yes | Yes | Yes | Yes | [Anti-virus scan logs]({{site.baseurl}}/2020/12/09/AzMon-AppServiceAntivirusScanAuditLogs.html) using Microsoft Defender; only available for Premium tier | 
 
 <sup>1</sup> For Java SE apps, add the app setting `WEBSITE_AZMON_PREVIEW_ENABLED` and set it to `1` `true`.
 
