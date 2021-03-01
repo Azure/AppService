@@ -14,5 +14,6 @@ Previously when setting this up and browsing to https://[scm.mydomain.com]/basic
 
 A few notes:
 
-- It only works with deployment credentials. SSO is not possible.
-- SCM site does not have an unauthenticated health endpoint, so health probes should either be disabled or accept 401 and 403.
+- It only works with deployment credentials. SSO is not possible
+- SCM site does not have an unauthenticated health endpoint, so health probes should either be disabled or accept 401 and 403
+- Some response payloads from the SCM APIs contain absolute references defaulting to the incoming host (appname.scm.azurewebsites.net). To override this and honor the originating address, configure the following App Setting on the web app: SCM_USE_ORIGINALHOST_FOR_REFERENCE = 1
