@@ -18,7 +18,7 @@ We will use GitHub Actions as the CI system to demonstrate this solution, but th
 
 ## GitHub Actions workflow
 
-The workflow has two jobs. The first builds and tests the application and uploads the artifact for the second job. Once the artifact is built, tested and uploaded, the second job pulls the artifact and runs an Azure CLI script to publish the files to an Azure Storage Account. Once the files are uploaded, we generate a SAS URL for the storage container with an expiration of 30-minutes. (This means the URL will be invalid 30 minutes after creation.)
+The workflow has two jobs. The first builds and tests the application and uploads the artifact for the second job. Once the artifact is built, tested and uploaded, the second job pulls the artifact and runs an Azure CLI script to publish the files to an Azure Storage Account. Once the files are uploaded, we generate a SAS URL for the storage container with an expiration of 30-minutes. (This means the URL will be invalid 10 minutes after creation.) The web app then pulls the application from the storage account and deploys it. Behind the scenes, the Azure CLI commands are using [ZIP deploy](https://docs.microsoft.com/azure/app-service/deploy-zip#deploy-zip-file-with-azure-cli) to publish the application. Once your code is deployed to the web app, a final CLI command deletes the storage container that contained the ZIP file.
 
 {% raw %}
 ```yaml
@@ -34,6 +34,7 @@ env:
   GROUP: your-resource-group-name
   ACCOUNT: name-for-storage-acct  # Does not have to exist, this will be created for you
   CONTAINER: name-for-storage-container
+  EXPIRY_TIME: 10 minutes         # How long the SAS token will valid for
 
 jobs:
   build:
@@ -78,8 +79,7 @@ jobs:
           dest: app.zip
 
       - name: Set SAS token expiration
-        run: |
-            echo "expiry=`date -u -d '30 minutes' '+%Y-%m-%dT%H:%MZ'`" >> $GITHUB_ENV
+        run: echo "expiry=`date -u -d "$EXPIRY_TIME" '+%Y-%m-%dT%H:%MZ'`" >> $GITHUB_ENV
 
       - name: Azure CLI script
         uses: azure/CLI@v1
@@ -94,11 +94,15 @@ jobs:
 
             ZIP_URL=$(az storage blob generate-sas --full-uri --permissions r --expiry ${{ env.expiry }} --account-name $ACCOUNT -c $CONTAINER -n $ACCOUNT | xargs)
 
-            az webapp deploy --name $WEBAPP --resource-group $GROUP --type zip --src-url $ZIP_URL
+            az webapp deploy --name $WEBAPP --resource-group $GROUP --type zip --src-url  $ZIP_URL --async false
+
+            az storage container delete -n $CONTAINER --account-name $ACCOUNT 
 ```
 {% endraw %}
 
-To use this workflow in your GitHub project, simply [create an Azure Service Principal](https://github.com/azure/login#configure-deployment-credentials) and save it as a secret named `AZURE_CREDENTIALS` in your repository. Finally, update the `WEBAPP`, `CONTAINER`, `GROUP`, and `ACCOUNT` environment variables with your desired resource names. By defaault, this workflow will run whenever a commit is pushed to the `main` or `master` branch. You can change this by updating the workflow triggers at the top of the yaml file.
+To use this workflow in your GitHub project, simply [create an Azure Service Principal](https://github.com/azure/login#configure-deployment-credentials) and save it as a secret named `AZURE_CREDENTIALS` in your repository. Finally, update the `WEBAPP`, `CONTAINER`, `GROUP`, and `ACCOUNT` environment variables with your desired resource names. By default, this workflow will run whenever a commit is pushed to the `main` or `master` branch. You can change this by updating the workflow triggers at the top of the yaml file.
+
+> The [`az webapp deploy`](https://docs.microsoft.com/cli/azure/ext/webapp/webapp?view=azure-cli-latest#ext_webapp_az_webapp_deploy) command is in the `webapps` extension as of March 2021, it will be included in the core CLI in future release.
 
 ## Notes for other CI services
 
