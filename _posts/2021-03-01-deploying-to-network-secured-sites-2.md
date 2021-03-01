@@ -34,7 +34,7 @@ env:
   GROUP: your-resource-group-name
   ACCOUNT: name-for-storage-acct  # Does not have to exist, this will be created for you
   CONTAINER: name-for-storage-container
-  EXPIRY_TIME: 10 minutes         # How long the SAS token will valid for
+  EXPIRY_TIME: 10 minutes
 
 jobs:
   build:
@@ -100,7 +100,7 @@ jobs:
 ```
 {% endraw %}
 
-To use this workflow in your GitHub project, simply [create an Azure Service Principal](https://github.com/azure/login#configure-deployment-credentials) and save it as a secret named `AZURE_CREDENTIALS` in your repository. Finally, update the `WEBAPP`, `CONTAINER`, `GROUP`, and `ACCOUNT` environment variables with your desired resource names. By default, this workflow will run whenever a commit is pushed to the `main` or `master` branch. You can change this by updating the workflow triggers at the top of the yaml file.
+To use this workflow in your GitHub project, simply [create an Azure Service Principal](https://github.com/azure/login#configure-deployment-credentials) and save it as a secret named `AZURE_CREDENTIALS` in your repository. Finally, update the `WEBAPP`, `CONTAINER`, `GROUP`, and `ACCOUNT` environment variables with your desired resource names. By default, this workflow will run whenever a commit is pushed to the `main` or `master` branch. You can change this by updating the workflow triggers at the top of the yaml file. You can change the SAS token expiration time by changing the value of the `EXPIRY_TIME` variable at the top of the workflow.
 
 > The [`az webapp deploy`](https://docs.microsoft.com/cli/azure/ext/webapp/webapp?view=azure-cli-latest#ext_webapp_az_webapp_deploy) command is in the `webapps` extension as of March 2021, it will be included in the core CLI in future release.
 
