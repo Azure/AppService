@@ -1,6 +1,7 @@
 ---
 title: "App Service Managed Certificate (Preview) Now Supports Apex Domains"
 author_name: "Yutang Lin"
+category: certsdomains
 toc: true
 toc_sticky: true
 tags: certsdomains
