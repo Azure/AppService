@@ -10,17 +10,14 @@ App Service Managed Certificate (preview) now lets you secure your apex domains 
 
 ## Getting started
 
-### Prior creating an App Service Managed Certificate
-Before you can create an App Service Managed Certificate, you need to [add an apex domain to your web app by mapping an A record and TXT record to your web app](https://docs.microsoft.com/en-us/azure/app-service/app-service-web-tutorial-custom-domain#map-an-a-record). 
+### Pre-requisites <a name="pre-reqs"></a>
+App Service Managed Certificates for apex domains are validated with HTTP token validation which App Service will set up on your behalf. However, to ensure a successful create and renewal validation, you want to make sure that you have the following set up, otherwise your certificate validation will fail.
 
-### Requirements to successfully create an App Service Managed Certificate for apex domains<a name="success-requirements"></a>
-App Service Managed Certificates for apex domains are validated with HTTP token validation which App Service will set up on your behalf. However, to ensure a successful validation, you want to make sure that you have the following set up, otherwise your certificate validation will fail.
-
-1. You have the correct A record set in your DNS record.
-1. Your web app is accessible from the public network. You cannot validate your certificate if your web app is not accessible from the public network.
+1. [Add an apex domain to your web app by mapping an A record and TXT record to your web app](https://docs.microsoft.com/en-us/azure/app-service/app-service-web-tutorial-custom-domain#map-an-a-record). 
+1. Your web app must be accessible from the public network and does not have any [IP restrictions](https://docs.microsoft.com/en-us/azure/app-service/app-service-ip-restrictions) set up. You cannot validate your certificate if your web app is not accessible from the public network. **Adding IP restrictions after creating a certificate will cause renewal to fail.**
 
 ### Creating an App Service Managed Certificate
-In the Azure Portal, head to your web app and from the left navigation menu of your app, select **TLS/SSL settings** > **Private Key Certificates (.pfx)** > **Create App Service Managed Certificate**.
+Before creating a managed certificate, make sure you have met the [pre-requisites](#pre-reqs).In the Azure Portal, head to your web app and from the left navigation menu of your app, select **TLS/SSL settings** > **Private Key Certificates (.pfx)** > **Create App Service Managed Certificate**.
 
 ![Create-Managed-Cert-Portal]({{site.baseurl}}/media/2021/01/create-managed-cert.png){: .align-center}
 
