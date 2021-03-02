@@ -14,7 +14,7 @@ App Service Managed Certificate (preview) now lets you secure your apex domains 
 Before you can create an App Service Managed Certificate, you need to [add an apex domain to your web app by mapping an A record and TXT record to your web app](https://docs.microsoft.com/en-us/azure/app-service/app-service-web-tutorial-custom-domain#map-an-a-record). 
 
 ### Requirements to successfully create an App Service Managed Certificate for apex domains<a name="success-requirements"></a>
-App Service Managed Certificates for apex domains are validated with HTTP token validation, so you want to make sure that you have the following set up, otherwise your certificate validation will fail.
+App Service Managed Certificates for apex domains are validated with HTTP token validation which App Service will set up on your behalf. However, to ensure a successful validation, you want to make sure that you have the following set up, otherwise your certificate validation will fail.
 
 1. You have the correct A record set in your DNS record.
 1. Your web app is accessible from the public network. You cannot validate your certificate if your web app is not accessible from the public network.
