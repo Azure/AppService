@@ -6,15 +6,15 @@ toc_sticky: true
 category: certsdomains
 ---
 
-App Service Managed Certificate (preview) now lets you secure your apex domains on your web apps at no additional charge. This feature is similar to the current App Service Managed Certificate sub-domain support where you can create a standard certificate valid for six months and will automatically renew a month prior expiration. You will need to separately create an App Service Managed Certificate for each domain; wildcard certificate is not supported for this feature.
+App Service Managed Certificate (preview) now lets you secure your apex domains on your web apps at no additional charge. This feature is similar to the current App Service Managed Certificate sub-domain support where you can create a standard certificate valid for six months which will automatically renew a month prior expiration. Your TLS/SSL bindings will also be automatically updated. If you have several domains, you will need to separately create an App Service Managed Certificate for each of them; wildcard certificate is not supported for this feature.
 
 ## Getting started
 
 ### Prior creating an App Service Managed Certificate
 Before you can create an App Service Managed Certificate, you need to [add an apex domain to your web app by mapping an A record and TXT record to your web app](https://docs.microsoft.com/en-us/azure/app-service/app-service-web-tutorial-custom-domain#map-an-a-record). 
 
-### Requirements to successfully create an App Service Managed Certificate <a name="success-requirements"></a>
-Apex domains are validated with HTTP token validation, so you want to make sure that you have the following set up, otherwise your certificate validation will fail.
+### Requirements to successfully create an App Service Managed Certificate for apex domains<a name="success-requirements"></a>
+App Service Managed Certificates for apex domains are validated with HTTP token validation, so you want to make sure that you have the following set up, otherwise your certificate validation will fail.
 
 1. You have the correct A record set in your DNS record.
 1. Your web app is accessible from the public network. You cannot validate your certificate if your web app is not accessible from the public network.
@@ -24,33 +24,33 @@ In the Azure Portal, head to your web app and from the left navigation menu of y
 
 ![Create-Managed-Cert-Portal]({{site.baseurl}}/media/2021/01/create-managed-cert.png){: .align-center}
 
-Select an apex domain from the drop down menu and click "Create". It may take up to a few minutes to issue a managed certificate for your apex domain.
+A blade will show up on the right side of the page. In that blade, select an apex domain from the drop down menu and click "Create". It may take up to a few minutes to create a managed certificate for your apex domain.
 
 ![Create-Managed-Cert-Apex-Domain-Portal]({{site.baseurl}}/media/2021/01/create-managed-cert-apex-domain.png){: .align-center}
 
-Once you get a notification that the managed certificate was created successfully, you will see the certificate in the list of "Private Key Certificates". Refresh the page if you do not see it on the list after getting the success notification.
+Once you get a notification that the managed certificate was created successfully, you will see the certificate on the list of "Private Key Certificates". If you close the blade before getting a successful notification or if you do not see the newly created managed certificate, refresh the page and you should see the new certificate on the list. 
 
 ## FAQ
 
 1. **Q:** I'm getting "Web app is not accessible by public network" error. What does this mean?
 
-    **Q:** In order to pass the HTTP token validation, your web app needs to be accessible. If your web app has network restrictions, the HTTP token validation will fail.
+    **Q:** In order to pass the HTTP token validation, your web app needs to be accessible from public network. If your web app has network restrictions, the HTTP token validation will fail.
 
 1. **Q:** Does this have CLI or Powershell support? How can I automate the create process?
 
     **A:** Currently, there is no first class CLI and Powershell support to create a managed certificate for apex domains. However, if you need to automate the process, you can try using ARM template. Refer to the [automate with scripts](#automate-with-scripts) section of the article.
 
-1. **Q:** Does this work with Traffic Manager?
+1. **Q:** Is this supported when using alias record for my apex domain when referencing Traffic Manager?
 
-    **A:** Since this uses HTTP token validation, the validation might not work with Traffic Manager, especially if you have several endpoints enabled. If you create a certificate and then enable other endpoints, you might encounter issues during your certificate renewal.
+    **A:** This scenario is **not** supported. Since managed certificates for apex domain uses HTTP token validation, the validation can fail if the web app itself isn't reached during certificate create/renew validation. Do not create a managed certificate for this scenario.
 
-1. **Q:** Is it expected that the managed certificate for apex domain to take a bit longer to issue than for sub-domain?
+1. **Q:** Is it expected that the managed certificate for apex domain to take a bit longer to create than for sub-domain?
 
-    **A:** Yes, your App Service Managed Certificate for apex domain will take a bit longer to issue than for sub-domain because it uses a different validation method.
+    **A:** Yes, your App Service Managed Certificate for apex domain will take a bit longer to create than for sub-domain because it uses a different validation method.
 
 ## Automate with scripts <a name="automate-with-scripts"></a>
 
-You can create an App Service Managed Certificate for your apex domain using ARM Template. Below is a sample of using a Powershell script to run your ARM template. This script will only create an App Service Managed Certificate for a domain that has already been added to your web app. 
+You can create an App Service Managed Certificate for your apex domain using ARM Template. Below is a sample of using a Powershell script to run your ARM template. This script will only create an App Service Managed Certificate for a custom domain that has already been added to your web app. If you run this script before adding a custom domain to the web app, the script will fail.
 
 ### Powershell script to run ARM template
 
