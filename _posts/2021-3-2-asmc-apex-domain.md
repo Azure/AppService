@@ -40,7 +40,7 @@ Once you get a notification that the managed certificate was created successfull
 
     **A:** Currently, there is no first class CLI and Powershell support to create a managed certificate for apex domains. However, if you need to automate the process, you can try using ARM template. Refer to the [automate with scripts](#automate-with-scripts) section of the article.
 
-1. **Q:** Is this supported when using alias record for my apex domain when referencing Traffic Manager?
+1. **Q:** Is this supported when using alias record for my apex domain referencing Traffic Manager?
 
     **A:** This scenario is **not** supported. Since managed certificates for apex domain uses HTTP token validation, the validation can fail if the web app itself isn't reached during certificate create/renew validation. Do not create a managed certificate for this scenario.
 
