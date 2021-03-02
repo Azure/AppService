@@ -17,7 +17,7 @@ App Service Managed Certificates for apex domains are validated with HTTP token 
 1. Your web app must be accessible from the public network and does not have any [IP restrictions](https://docs.microsoft.com/en-us/azure/app-service/app-service-ip-restrictions) set up. You cannot validate your certificate if your web app is not accessible from the public network. **Adding IP restrictions after creating a certificate will cause renewal to fail.**
 
 ### Creating an App Service Managed Certificate
-Before creating a managed certificate, make sure you have met the [pre-requisites](#pre-reqs).In the Azure Portal, head to your web app and from the left navigation menu of your app, select **TLS/SSL settings** > **Private Key Certificates (.pfx)** > **Create App Service Managed Certificate**.
+Before creating a managed certificate, make sure you have met the [pre-requisites](#pre-reqs). In the Azure Portal, head to your web app and from the left navigation menu of your app, select **TLS/SSL settings** > **Private Key Certificates (.pfx)** > **Create App Service Managed Certificate**.
 
 ![Create-Managed-Cert-Portal]({{site.baseurl}}/media/2021/01/create-managed-cert.png){: .align-center}
 
@@ -31,7 +31,7 @@ Once you get a notification that the managed certificate was created successfull
 
 1. **Q:** I'm getting "Web app is not accessible by public network" error. What does this mean?
 
-    **Q:** In order to pass the HTTP token validation, your web app needs to be accessible from public network. If your web app has network restrictions, the HTTP token validation will fail.
+    **A:** In order to pass the HTTP token validation, your web app needs to be accessible from public network. If your web app has network restrictions, the HTTP token validation will fail.
 
 1. **Q:** Does this have CLI or Powershell support? How can I automate the create process?
 
