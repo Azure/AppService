@@ -110,4 +110,4 @@ Not using GitHub Actions? No problem! You can log into the Azure CLI using a Ser
 
 - [Azure DevOps](https://docs.microsoft.com/azure/devops/pipelines/tasks/deploy/azure-cli?view=azure-devops)
 - [Circle CI](https://circleci.com/developer/orbs/orb/circleci/azure-cli)
-- [Jenkins](https://plugins.jenkins.io/azure-cli/
+- [Jenkins](https://plugins.jenkins.io/azure-cli/)
