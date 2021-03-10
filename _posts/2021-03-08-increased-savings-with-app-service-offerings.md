@@ -164,3 +164,5 @@ The chart below shows the comparison between the prices for P1v3 instance for pa
 <sup> * Prices are based on [App Service pricing](https://azure.microsoft.com/en-us/pricing/details/app-service/linux/) with the following configurations as of 02/02/2021: Linux OS, Central US region, USD currency, and displayed by month </sup>
 
 As you can see from the chart above, you can get significant savings from purchasing reserved instances. On Linux, a three-year commitment will save you ~55% compared to if you opt for pay as you go. While on Windows, a three-year commitment will save you ~40% compared if you opt for pay as you go. The longer the term commitment, the more savings you will get with reserved instances. Across both Linux and Windows, reserved instances pricing for Pv3 enables you to run at a lower price than equivalent Pv2 instances!   
+
+![Create-Managed-Cert-Apex-Domain-Portal]({{site.baseurl}}/media/2021/01/ri-how-to-1.png){: .align-center}
