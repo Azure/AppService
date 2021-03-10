@@ -19,11 +19,11 @@ App Service Managed Certificates for apex domains are validated with HTTP token 
 ### Creating an App Service Managed Certificate
 Before creating a managed certificate, make sure you have met the [pre-requisites](#pre-reqs). In the Azure Portal, head to your web app and from the left navigation menu of your app, select **TLS/SSL settings** > **Private Key Certificates (.pfx)** > **Create App Service Managed Certificate**.
 
-![Create-Managed-Cert-Portal]({{site.baseurl}}/media/2021/01/create-managed-cert.png){: .align-center}
+![Create-Managed-Cert-Portal]({{site.baseurl}}/media/2021/03/create-managed-cert.png){: .align-center}
 
 A blade will show up on the right side of the page. In that blade, select an apex domain from the drop down menu and click "Create". It may take up to a few minutes to create a managed certificate for your apex domain.
 
-![Create-Managed-Cert-Apex-Domain-Portal]({{site.baseurl}}/media/2021/01/create-managed-cert-apex-domain.png){: .align-center}
+![Create-Managed-Cert-Apex-Domain-Portal]({{site.baseurl}}/media/2021/03/create-managed-cert-apex-domain.png){: .align-center}
 
 Once you get a notification that the managed certificate was created successfully, you will see the certificate on the list of "Private Key Certificates". If you close the blade before getting a successful notification or if you do not see the newly created managed certificate, refresh the page and you should see the new certificate on the list. 
 
