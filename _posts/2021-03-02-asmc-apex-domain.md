@@ -33,6 +33,10 @@ Once you get a notification that the managed certificate was created successfull
 
     **A:** In order to pass the HTTP token validation, your web app needs to be accessible from public network. If your web app has network restrictions, the HTTP token validation will fail.
 
+1. **Q:** I am getting the following error on portal when validating my domain with a country code top-level domain (ccTLD): `Properties.CanonicalName is invalid. Canonical name XXXXX is not a subdomain. This validation method only supports subdomains`. How can I fix this?
+
+    **A:** If you are encountering this error with your apex domain, try creating a certificate with the [script](#automate-with-scripts) below.
+
 1. **Q:** Does this have CLI or Powershell support? How can I automate the create process?
 
     **A:** Currently, there is no first class CLI and Powershell support to create a managed certificate for apex domains. However, if you need to automate the process, you can try using ARM template. Refer to the [automate with scripts](#automate-with-scripts) section of the article.
