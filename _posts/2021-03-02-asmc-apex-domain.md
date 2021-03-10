@@ -19,11 +19,11 @@ App Service Managed Certificates for apex domains are validated with HTTP token 
 ### Creating an App Service Managed Certificate
 Before creating a managed certificate, make sure you have met the [pre-requisites](#pre-reqs). In the Azure Portal, head to your web app and from the left navigation menu of your app, select **TLS/SSL settings** > **Private Key Certificates (.pfx)** > **Create App Service Managed Certificate**.
 
-![Create-Managed-Cert-Portal]({{site.baseurl}}/media/2021/01/create-managed-cert.png){: .align-center}
+![Create-Managed-Cert-Portal]({{site.baseurl}}/media/2021/03/create-managed-cert.png){: .align-center}
 
 A blade will show up on the right side of the page. In that blade, select an apex domain from the drop down menu and click "Create". It may take up to a few minutes to create a managed certificate for your apex domain.
 
-![Create-Managed-Cert-Apex-Domain-Portal]({{site.baseurl}}/media/2021/01/create-managed-cert-apex-domain.png){: .align-center}
+![Create-Managed-Cert-Apex-Domain-Portal]({{site.baseurl}}/media/2021/03/create-managed-cert-apex-domain.png){: .align-center}
 
 Once you get a notification that the managed certificate was created successfully, you will see the certificate on the list of "Private Key Certificates". If you close the blade before getting a successful notification or if you do not see the newly created managed certificate, refresh the page and you should see the new certificate on the list. 
 
@@ -32,6 +32,10 @@ Once you get a notification that the managed certificate was created successfull
 1. **Q:** I'm getting "Web app is not accessible by public network" error. What does this mean?
 
     **A:** In order to pass the HTTP token validation, your web app needs to be accessible from public network. If your web app has network restrictions, the HTTP token validation will fail.
+
+1. **Q:** I am getting the following error on portal when validating my domain with a country code top-level domain (ccTLD): `Properties.CanonicalName is invalid. Canonical name XXXXX is not a subdomain. This validation method only supports subdomains`. How can I fix this?
+
+    **A:** If you are encountering this error with your apex domain, try creating a certificate with the [script](#automate-with-scripts) below.
 
 1. **Q:** Does this have CLI or Powershell support? How can I automate the create process?
 
