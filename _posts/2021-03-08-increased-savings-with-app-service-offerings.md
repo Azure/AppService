@@ -21,13 +21,6 @@ App Service provides Free App Service Plans on both Linux and Windows. This is a
 ## Basic App Service Plan on Linux 
 Linux developers who are starting out on App Service and are hosting a smaller web app with lower traffic requirements that don't need auto scale, virtual network integration and deployment slots features should take note of the discounted prices for Linux Basic App Service Plan. The chart below will show you a comparison between a Linux B1 and S1 instance so you can see the significant price difference between the two. 
 
-| OS | Instance | Cores | RAM | Storage | Cost |
-| -- | -- | -- | -- | -- | -- |
-| Linux | B1 | 1 core | 1.75 GB | 10 GB  | ~$13.14/month |
-| Linux | S1 | 1 core | 1.75 GB | 10 GB  | ~69.35/month |
-
-<sup> * Prices are based on [App Service pricing](https://azure.microsoft.com/en-us/pricing/details/app-service/linux/) with the following configurations as of 02/02/2021: Linux OS, Central US region, USD currency, and displayed by month </sup>
-
 <table>
     <thead>
         <tr>
@@ -198,3 +191,75 @@ Once you’ve decided on your choice, click on “Add to cart”. You may choose
 <sup> * The reserved instance selection above is for Linux P1v3, West US 2 region, for a three-year term that is billed monthly. </sup>
 
 When you are satisfied with your selections, make sure to head to “Review + buy” to finalize your purchase of the reserved instances. 
+
+### How Many Reserved Instances Should I Buy 
+
+If you are unsure of the quantity to buy, we recommend purchasing enough quantity to cover your steady state baseload. In other words, use the number of App Service Plan instances running for your baseload as a starting point for the quantity specified in the reserved instances purchase.  For many customers, the baseload would be one or two instances. You can still use an auto-scale rule to increase the number of running App Service Plan instances above the baseload. Reserved instances pricing will cover the baseload and any additional compute from auto-scaling will be charged at the regular price. 
+
+## Dev/Test Pricing 
+
+Dev/Test Pricing is a great option for customers who are looking to have discounted rates for the development and testing environments for their web apps. This option is available for Basic, Standard, Premium v2, and Premium v3 App Service Plans. For more information, you can look at the Azure Dev/Test Pricing page and scroll towards the bottom of the page where “App Service” is listed. If you are interested in getting an estimated price for your dev/test pricing, refer to next section under Pricing Calculator. 
+
+## Pricing Calculator 
+
+The pricing calculator can be a handy tool to calculate the estimated monthly costs of running your services. In this section we will show you how to use the pricing calculator to calculate the estimated price for your reserved instances and for your dev/test pricing. 
+
+### Getting Started 
+
+In the pricing calculator page, select “App Service” from the list of products and you will get a notification on the right side of the page.  
+
+![Pricing Calculator Getting Started 1]({{site.baseurl}}/media/2021/03/pricing-calculator-1.png){: .align-center}
+
+When you’ve successfully added App Service in the calculator, you will see a section in the UX showing App Service information when you scroll down the page. You can configure values such as region, OS, pricing tier, and etc. to get an estimate for the cost. The next few sections in the article will go over how you can use this tool to calculate an estimate for your reserved instances savings and for your dev/test pricing. 
+
+### Calculating Reserved Instances 
+
+Once you have selected “App Service” from the list of products and properly selected your configurations, look for the “Saving Options” and select from the reserved instances options. On the pricing calculator, it will also show the percentage of your savings for all the reserved instances options. The price will adjust accordingly after you have selected a reserved instances option. 
+
+The example below will show you how the savings options will look like for a P1v3 with a three-year reserved instance on Linux. 
+
+![Pricing Calculator Getting Started 2]({{site.baseurl}}/media/2021/03/pricing-calculator-2.png){: .align-center}
+
+<sup> * Price is based on Pricing Calculator with the following configurations as of 02/02/2021: Central US region, Linux OS, and Premium V3 for one P1v3 instance for three-year reserved instances. Price is in USD and is displayed per month. </sup>
+
+For another example, the image below will show you how the savings options will look like for a P1v3 with a three-year reserved instance on Windows. 
+
+![Pricing Calculator Getting Started 3]({{site.baseurl}}/media/2021/03/pricing-calculator-3.png){: .align-center}
+
+<sup> * Price is based on Pricing Calculator with the following configurations as of 02/02/2021: Central US region, Windows OS, and Premium V3 for one P1v3 instance for three-year reserved instances. Price is in USD and is displayed per month. </sup>
+
+As you can see from the examples above, the pricing calculator makes it convenient for you to calculate your estimated savings percentage with the reserved instances. 
+
+### Calculating Dev/Test Pricing 
+
+Once you have selected “App Service” from the list of products and properly selected your configurations, scroll to the very bottom of the calculator web page and look for the “Show Dev/Test Pricing” slider. When you enable the slider to show dev/test pricing, you will notice that your price estimates will have changed to reflect dev/test pricing if supported for the selected pricing tier. 
+
+![Pricing Calculator Getting Started 4]({{site.baseurl}}/media/2021/03/pricing-calculator-4.png){: .align-center}
+
+Look at the examples below for an estimate using the pricing calculator for a P1v3 instance when you apply Dev/Test Pricing on Windows. The first screenshot shows the regular price for a Windows P1v3 instance.  The second screenshot shows the discounted Dev/Test price.  There is a $147.46 price difference which is ~61% less for dev/test pricing. 
+
+![Pricing Calculator Getting Started 5]({{site.baseurl}}/media/2021/03/pricing-calculator-5.png){: .align-center}
+
+<sup> * Price is based on Pricing Calculator with the following configurations as of 02/02/2021: Central US region, Windows OS, and Premium V3 for one P1v3 instance for pay as you go without dev/test pricing. Price is in USD and is displayed per month. </sup>
+
+![Pricing Calculator Getting Started 6]({{site.baseurl}}/media/2021/03/pricing-calculator-6.png){: .align-center}
+
+<sup> * Price is based on Pricing Calculator with the following configurations as of 02/02/2021: Central US region, Windows OS, and Premium V3 for one P1v3 instance for pay as you go with dev/test pricing. Price is in USD and is displayed per month.  </sup>
+
+Another example below shows an estimate using the pricing calculator for a P1v3 instance when you apply Dev/Test Pricing on Linux.  The first screenshot shows the regular price for a Linux P1v3 instance.  The second screenshot shows the discounted Dev/Test price. You will notice a $30.66 price difference which is ~24% less for dev/test pricing. 
+
+![Pricing Calculator Getting Started 7]({{site.baseurl}}/media/2021/03/pricing-calculator-7.png){: .align-center}
+
+<sup> * Price is based on Pricing Calculator with the following configurations as of 02/02/2021: Central US region, Linux OS, and Premium V3 for one P1v3 instance for pay as you go without dev/test pricing. Price is in USD and is displayed per month.  </sup>
+
+![Pricing Calculator Getting Started 8]({{site.baseurl}}/media/2021/03/pricing-calculator-8.png){: .align-center}
+
+<sup> * Price is based on Pricing Calculator with the following configurations as of 02/02/2021: Central US region, Linux OS, and Premium V3 for one P1v3 instance for pay as you go with dev/test pricing. Price is in USD and is displayed per month. </sup>
+
+From the examples above, you can see the savings you can get for using the dev/test pricing for your development and testing environments. This is a great option for hosting your development and testing environments with the same amount of performance and capacity as your production environments, but at a lower cost. 
+
+## Summary 
+
+There are several ways for you to increase savings when running App Service . This article has described several App Service Plan offerings that help you save on prices, including reserved instances, and dev/test pricing options. We hope this article has equipped you with more information and presented you with a guide on how you can increase your savings when running App Service.  
+
+All prices in this article are all estimates during the time noted. Your final price would depend on your configurations for your App Service. 
