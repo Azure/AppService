@@ -46,14 +46,14 @@ Linux developers who are starting out on App Service and are hosting a smaller w
             <td> 1 core </td>
             <td> 1.75 GB </td>
             <td> 50 GB </td>
-            <td> ~69.35/month </td>
+            <td> ~$69.35/month </td>
         </tr>
     </tbody>
 </table>
 
 <sup> * Prices are based on [App Service pricing](https://azure.microsoft.com/en-us/pricing/details/app-service/linux/) with the following configurations as of 03/10/2021: Linux OS, Central US region, USD currency, and displayed by month </sup>
 
-Before moving from Standard to Basic, please refer to [App Service limits page](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#app-service-limits) and App Service pricing page for [Windows](https://azure.microsoft.com/en-us/pricing/details/app-service/windows/) or [Linux](https://azure.microsoft.com/en-us/pricing/details/app-service/linux/) for more information on the feature support for the different plans.  If your workload does not need the Standard feature set, moving to Basic will help optimize your costs. 
+Before moving from Standard to Basic, please refer to [App Service limits page](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#app-service-limits) and [App Service pricing page](https://azure.microsoft.com/en-us/pricing/details/app-service/linux/) for more information on the feature support for the different plans.  If your workload does not need the Standard feature set, moving to Basic will help optimize your costs. 
 
 ## Premium V3 App Service Plan 
 
@@ -182,19 +182,19 @@ A blade will appear on the right side showing options for App Service reserved i
 
 ![How to buy Reserved Instances - Select Linux]({{site.baseurl}}/media/2021/03/ri-how-to-select-linux.png){: .align-center}
 
-<sup> * The reserved instance selection above is for Linux P1v3, West US 2 region, for a three-year term that is billed monthly. </sup>
+<sup> * The reserved instance price is based on the following configurations as of 03/10/2021: Linux P1v3, West US 2 region, and a three-year term that is billed monthly. </sup>
 
 And another example below, I selected the P1v3 option for Windows in West US 2 region for a three-year term billed monthly.  
 
 ![How to buy Reserved Instances - Select Windows]({{site.baseurl}}/media/2021/03/ri-how-to-select-windows.png){: .align-center}
 
-<sup> * The reserved instance selection above is for Windows P1v3, West US 2 region, for a three-year term that is billed monthly. </sup>
+<sup> * The reserved instance price is based on the following configurations as of 03/10/2021: Windows P1v3, West US 2 region, and a three-year term that is billed monthly. </sup>
 
 Once you’ve decided on your choice, click on “Add to cart”. You may choose several plans in the same page, and when you’re done, click on “Close”. You will see a new page on the “Products” tab that will show you a list of products that you have chosen. In this page, you can set the name of your reservations and the quantities (which corresponds to the number of Pv3 instances being purchased with a reservation) that you would like to purchase for your products. If you are unsure of how many instances to reserve, refer to the [how many Reserved Instances should I buy section of the article](#how-many-reserved-instances-to-buy). You can also delete products and edit your purchases. You can also see the breakdown of the total costs and of your immediate charges at the bottom right corner of the page. 
 
 ![How to buy Reserved Instances - View Cart]({{site.baseurl}}/media/2021/03/ri-how-to-view-cart.png){: .align-center}
 
-<sup> * The reserved instance selection above is for Linux P1v3, West US 2 region, for a three-year term that is billed monthly. </sup>
+<sup> * The reserved instance price is based on the following configurations as of 03/10/2021: Linux P1v3, West US 2 region, and a three-year term that is billed monthly. </sup>
 
 When you are satisfied with your selections, make sure to head to “Review + buy” to finalize your purchase of the reserved instances. 
 
