@@ -119,6 +119,7 @@ If you are planning to run your PV3 instances in the long term, you should consi
 ## Reserved Instances <a name="reserved-instances"></a>
 
 Customers who are running high scale productions on App Service and are looking for long term cost saving options can consider purchasing [reserved instances for App Service](https://techcommunity.microsoft.com/t5/apps-on-azure/migrate-modernize-net-applications-with-azure/ba-p/1696499). Purchasing reserved instances lets customers save 35% to 55% on costs compared to pay-as-you-go if they buy reserved instances for a one-to-three-year commitment. The reserved instances options for App Service are available for Premium V3 Tiers and Isolated stamp fees for ASE V2. You can learn more about this on:
+
 - [What are Azure Reservations?](https://docs.microsoft.com/en-us/azure/cost-management-billing/reservations/save-compute-costs-reservations)
 - [Save costs with Azure App Service reserved instances](https://docs.microsoft.com/en-us/azure/cost-management-billing/reservations/prepay-app-service?branch=main)
 - [How reservation discounts apply to Azure App Service Premium v3 instances and Isolated Stamps](https://docs.microsoft.com/en-us/azure/cost-management-billing/reservations/reservation-discount-app-service-isolated-stamp)
