@@ -178,23 +178,23 @@ You will see a page that lists a range of products that you can purchase reserva
 
 ![How to buy Reserved Instances 3]({{site.baseurl}}/media/2021/03/ri-how-to-3.png){: .align-center}
 
-A blade will appear on the right side showing options for App Service reserved instances for PV3 and for Isolated App Service Plan. If you don’t see the region, term, or billing frequency that you are interested in, try adjusting the filters by clicking on the blue bubble. For the term, you can choose between a one-year and three-year option.  Once you select an instance, you can view the price and the savings at the bottom right corner. In the image below, I selected the P1v3 option for Linux in West US 2 region for a three-year term billed monthly. 
+A blade will appear on the right side showing options for App Service reserved instances for PV3 and for Isolated App Service Plan. If you don’t see the region, term, or billing frequency that you are interested in, try adjusting the filters by clicking on the blue bubble. For the term, you can choose between a one-year and three-year option.  Once you select an instance, you can view the price and the savings at the bottom right corner. In the image below, I selected the P1v3 option for Linux in Central US region for a three-year term billed monthly. 
 
 ![How to buy Reserved Instances - Select Linux]({{site.baseurl}}/media/2021/03/ri-how-to-select-linux.png){: .align-center}
 
-<sup> * The reserved instance price is based on the following configurations as of 03/10/2021: Linux P1v3, West US 2 region, and a three-year term that is billed monthly. </sup>
+<sup> * The reserved instance price is based on the following configurations as of 03/10/2021: Linux P1v3, Central US region, and a three-year term that is billed monthly. </sup>
 
-And another example below, I selected the P1v3 option for Windows in West US 2 region for a three-year term billed monthly.  
+And another example below, I selected the P1v3 option for Windows in Central US region for a three-year term billed monthly.  
 
 ![How to buy Reserved Instances - Select Windows]({{site.baseurl}}/media/2021/03/ri-how-to-select-windows.png){: .align-center}
 
-<sup> * The reserved instance price is based on the following configurations as of 03/10/2021: Windows P1v3, West US 2 region, and a three-year term that is billed monthly. </sup>
+<sup> * The reserved instance price is based on the following configurations as of 03/10/2021: Windows P1v3, Central US region, and a three-year term that is billed monthly. </sup>
 
 Once you’ve decided on your choice, click on “Add to cart”. You may choose several plans in the same page, and when you’re done, click on “Close”. You will see a new page on the “Products” tab that will show you a list of products that you have chosen. In this page, you can set the name of your reservations and the quantities (which corresponds to the number of Pv3 instances being purchased with a reservation) that you would like to purchase for your products. If you are unsure of how many instances to reserve, refer to the [how many Reserved Instances should I buy section of the article](#how-many-reserved-instances-to-buy). You can also delete products and edit your purchases. You can also see the breakdown of the total costs and of your immediate charges at the bottom right corner of the page. 
 
 ![How to buy Reserved Instances - View Cart]({{site.baseurl}}/media/2021/03/ri-how-to-view-cart.png){: .align-center}
 
-<sup> * The reserved instance price is based on the following configurations as of 03/10/2021: Linux P1v3, West US 2 region, and a three-year term that is billed monthly. </sup>
+<sup> * The reserved instance price is based on the following configurations as of 03/10/2021: Linux P1v3, Central US region, and a three-year term that is billed monthly. </sup>
 
 When you are satisfied with your selections, make sure to head to “Review + buy” to finalize your purchase of the reserved instances. 
 
