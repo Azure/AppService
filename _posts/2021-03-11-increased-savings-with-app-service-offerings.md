@@ -104,7 +104,7 @@ Customers who are currently running bigger production workloads on App Service s
     </tbody>
 </table>
 
-<sup> * Prices are based on App Service pricing for [Windows](https://azure.microsoft.com/en-us/pricing/details/app-service/windows/) and [Linux](https://azure.microsoft.com/en-us/pricing/details/app-service/linux/) with the following configurations as of 03/10/2021: Linux OS and Windows OS, Central US region, USD currency, and displayed by month </sup>
+<sup> * Prices are based on App Service pricing for [Linux](https://azure.microsoft.com/en-us/pricing/details/app-service/linux/) and [Windows](https://azure.microsoft.com/en-us/pricing/details/app-service/windows/) with the following configurations as of 03/10/2021: Linux OS and Windows OS, Central US region, USD currency, and displayed by month </sup>
 
 P1v3 provides double the cores and more than double the RAM compared to P1v2. If you look at the table above, for Linux P1v3, you get double the cores and more than double the RAM for an additional ~53% of the cost, while for Windows P1v3, you get double the cores and more than double the RAM for an additional ~65% of the cost.  Also note that the comparative price/performance difference is even larger when [reserved instances](#reserved-instances) or [dev/test pricing](#dev-test-pricing) are used (both are covered later in this article).  For example, with a one year reserved instances price, Linux customers can run a P1v3 instance at roughly the same price as a P1v2 instance.  And with a three year reserved instances price, Linux customers can run a P1v3 instance at a lower price than a P1v2! 
 
@@ -160,7 +160,7 @@ The chart below shows the comparison between the prices for P1v3 instance for pa
     </tbody>
 </table>
 
-<sup> * Prices are based on App Service pricing [Windows](https://azure.microsoft.com/en-us/pricing/details/app-service/windows/) and [Linux](https://azure.microsoft.com/en-us/pricing/details/app-service/linux/) with the following configurations as of 03/10/2021: Linux OS and Windows OS, Central US region, USD currency, and displayed by month </sup>
+<sup> * Prices are based on App Service pricing [Linux](https://azure.microsoft.com/en-us/pricing/details/app-service/linux/) and [Windows](https://azure.microsoft.com/en-us/pricing/details/app-service/windows/) with the following configurations as of 03/10/2021: Linux OS and Windows OS, Central US region, USD currency, and displayed by month </sup>
 
 As you can see from the chart above, you can get significant savings from purchasing reserved instances. On Linux, a three-year commitment will save you ~55% compared to if you opt for pay as you go. While on Windows, a three-year commitment will save you ~40% compared if you opt for pay as you go. The longer the term commitment, the more savings you will get with reserved instances. Across both Linux and Windows, reserved instances pricing for Pv3 enables you to run at a lower price than equivalent Pv2 instances!   
 
