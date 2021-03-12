@@ -1,11 +1,11 @@
 ---
-title: "How-to use gRPC-Web with Blazor WebAssembly on App Service"
+title: "How to use gRPC-Web with Blazor WebAssembly on App Service"
 author_name: "Jeff Martinez"
 toc: true
 toc_sticky: true
 ---
 
-gRPC is a modern protocol which uses HTTP/2 to streamline messaging between clients and back-end servers being an efficient way to connect services that require high-performance communication. However, HTTP/2 gRPC is not compatible with modern browsers and requires the use of gRPC-Web to communicate between a browser application and a gRPC server.  gRPC-Web enables this scenario by having the browser send normal HTTP requests and acting as a proxy in front of the gRPC server to translate the requests to the browser.  With gRPC-Web, you can create a .NET server app hosted on App Service using gRPC-Web middleware which operates as a translator between the browser application and the .NET server app.  This translation maps incoming gRPC-Web requests to the appropriate .NET classes in the server app, and translates the server app’s return values into gRPC-Web responses that are sent back to the browser.  If you would like to learn more about gRPC-Web, visit the [gRPC blog](https://grpc.io/blog/state-of-grpc-web/).
+gRPC is a modern protocol which uses HTTP/2 to streamline messaging between clients and back-end servers and is an efficient way to connect services that require high-performance communication. However, HTTP/2 gRPC is not compatible with modern browsers and requires the use of gRPC-Web to communicate between a browser application and a gRPC server.  gRPC-Web enables this scenario by having the browser send normal HTTP requests and acting as a proxy in front of the gRPC server to translate the requests to the browser.  With gRPC-Web, you can create a .NET server app hosted on App Service using gRPC-Web middleware which operates as a translator between the browser application and the .NET server app.  This translation maps incoming gRPC-Web requests to the appropriate .NET classes in the server app, and translates the server appâ€™s return values into gRPC-Web responses that are sent back to the browser.  If you would like to learn more about gRPC-Web, visit the [gRPC blog](https://grpc.io/blog/state-of-grpc-web/).
 
 In the following example, we'll be using a .NET 5 Blazor WebAssembly application and replacing the existing JSON calls with gRPC-Web by enabling the gRPC-Web middleware in the startup configuration.
 
@@ -218,7 +218,7 @@ Once the FetchData.razor file is updated to output the weather data we can verif
 ![grpc web network validation]({{ site.baseurl }}/media/2021/03/grpc_blazor_2.png)
 
 ## Deploying to App Service
-Since we are using a Blazor WebAssembly application that is hosted on ASP.NET Core the deployment process is slightly different.  You can still deploy to App Service as you typically would, but you’ll need to Publish the **Server** project.  The hosted deployment serves the Blazor app to browsers from its hosted ASP.NET Core app that runs on a web server.  Your Server app will have reference to the Client app DLLs as the apps are deployed together with the Client app being published in the wwwroot folder.  Learn more about hosted deployments in the [Blazor documentation](https://grpc.io/blog/state-of-grpc-web/).
+Since we are using a Blazor WebAssembly application that is hosted on ASP.NET Core the deployment process is slightly different.  You can still deploy to App Service as you typically would, but youâ€™ll need to Publish the **Server** project.  The hosted deployment serves the Blazor app to browsers from its hosted ASP.NET Core app that runs on a web server.  Your Server app will have reference to the Client app DLLs as the apps are deployed together with the Client app being published in the wwwroot folder.  Learn more about hosted deployments in the [Blazor documentation](https://grpc.io/blog/state-of-grpc-web/).
 
 Once your application is published you can verify that gRPC-Web is working using the same process from above by inspecting the Network in the browse.  Your Request URL will now point to your App Service URL (myappname.azurewebsites.net) and the *content-type:* will still be *application/grpc-web*.
 
