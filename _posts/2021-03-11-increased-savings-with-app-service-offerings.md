@@ -5,7 +5,7 @@ toc: true
 toc_sticky: true
 ---
 
-In this article, we will review different App Service offerings along with side-to-side comparisons on ways to increase your savings when running App Service. The offerings we will be covering in this article are: 
+In this article, we will review different App Service offerings with side-by-side comparisons to show how you can save more with App Service. The offerings we will be covering in this article are: 
 
 - Free App Service Plan on Linux and Windows 
 - Basic App Service Plan on Linux 
@@ -16,7 +16,7 @@ In this article, we will review different App Service offerings along with side-
 At the end of the article, we will also go through how you can estimate your cost savings using the Azure Pricing Calculator. 
 
 ## Free App Service Plan on Linux and Windows 
-App Service provides Free App Service Plans on both Linux and Windows. This is a great option if you are starting out in your journey to host web apps in the cloud. This tier comes with its own [limits on what features it supports](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#app-service-limits), so if you are expecting to increase the usage of your web app, we would recommend you to scale up.  
+App Service provides Free App Service Plans on both Linux and Windows. This is a great option if you are starting out in your journey to host web apps in the cloud. This tier comes with its own [limits on what features it supports](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#app-service-limits), so if your traffic increases significantly, you will likely need to scale up to Basic or Standard (covered later in this article).  
 
 ## Basic App Service Plan on Linux 
 Linux developers who are starting out on App Service and are hosting a smaller web app with lower traffic requirements that don't need auto scale, virtual network integration and deployment slots features should take note of the discounted prices for Linux Basic App Service Plan. The chart below will show you a comparison between a Linux B1 and S1 instance so you can see the significant price difference between the two. 
@@ -199,7 +199,7 @@ Once you’ve decided on your choice, click on “Add to cart”. You may choose
 
 When you are satisfied with your selections, make sure to head to “Review + buy” to finalize your purchase of the reserved instances. 
 
-### How Many Reserved Instances Should I Buy <a name="how-many-reserved-instances-to-buy"></a>
+### How Many Reserved Instances Should I Buy? <a name="how-many-reserved-instances-to-buy"></a>
 
 If you are unsure of the quantity to buy, we recommend purchasing enough quantity to cover your steady state baseload. In other words, use the number of App Service Plan instances running for your baseload as a starting point for the quantity specified in the reserved instances purchase.  For many customers, the baseload would be one or two instances. You can still use an auto-scale rule to increase the number of running App Service Plan instances above the baseload. Reserved instances pricing will cover the baseload and any additional compute from auto-scaling will be charged at the regular price. 
 
