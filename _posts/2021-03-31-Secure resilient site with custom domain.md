@@ -17,7 +17,7 @@ We will set this up in five steps + a bonus step with more advanced scenarios:
 
 - Alternative approaches and advanced scenarios
 
-### 1. Basic Web App with Azure AD Authentication
+## 1. Basic Web App with Azure AD Authentication
 
 ![Step 1]({{site.baseurl}}/media/2021/03/secureapp-step1.png){: .align-center}
 
@@ -35,7 +35,7 @@ and since the focus is security
 az webapp update -g securewebsetup -n securewebapp2021 --https-only
 ```
 
-#### Debug page
+### Debug page
 To help debug the application, you can create a file called default.cshtml with the following content
 
 ```html
@@ -69,7 +69,7 @@ az webapp deployment source config-zip -g securewebsetup -n securewebapp2021 --s
 
 ![Debug Page]({{site.baseurl}}/media/2021/03/debug-page.png){: .align-center}
 
-#### Authentication setup
+### Authentication setup
 
 App Service provides and easy way to setup authentication. The feature is sometimes referred to as Easy Auth. There is a new version of this in preview and for this setup we will need some of the new options that v2 provides. The new Authentication feature is available in the Azure portal, but since we need some advanced configuration options that are not yet exposed in the portal, we might as well open up the hood now.
 You have to construct the resource path to the Web App. It was returned when you created it in the previous steps, and you can also find it in the address bar when you open the resource in the portal.
@@ -153,7 +153,7 @@ az rest --uri /subscriptions/REPLACE-ME-SUBSCRIPTIONID/resourceGroups/REPLACE-ME
 
 If you browse to the site now, you should be redirected to consent to the App permissions and login to your Azure AD tenant. If you deployed the debug site, you will notice some extra headers prefixed with X-MS-CLIENT-PRINCIPAL.
 
-### 2. Add Azure Front Door
+## 2. Add Azure Front Door
 
 [Azure Front Door](https://docs.microsoft.com/azure/frontdoor/standard-premium/overview) is a global, scalable entry-point that uses the Microsoft global edge network to create fast, secure, and widely scalable web applications. With Front Door, you can transform your global consumer and enterprise applications into robust, high-performing personalized modern applications with contents that reach a global audience through Azure.
 
@@ -169,7 +169,7 @@ Use the Quick Create and under Basics, use the existing resource group. Give it 
 
 ![Azure Front Door Basics]({{site.baseurl}}/media/2021/03/frontdoor-basics.png){: .align-center}
 
-#### Alter authentication settings
+### Alter authentication settings
 
 After a good coffee, try to browse to the Front Door url. In my case: https://secureweb.z01.azurefd.net. I appears to be working, but notice the address bar. It redirected you directly back to your Web App. To fix that we need to update the App registration in Azure AD to allow authentication request coming from the new url. You can add multiple reply-urls by separating them with a space, but if you only want to allow authentication through Front Door, you can just replace it.
 
@@ -232,7 +232,7 @@ az rest --uri /subscriptions/REPLACE-ME-SUBSCRIPTIONID/resourceGroups/REPLACE-ME
 
 You should now be able to access the Web App through Front Door and be authenticated. If you added the debug page, you should now see a few additional headers. One being X-Forwarded-Host that contains the url of the Front Door and X-Azure-FDID which contains the unique ID of your Front Door instance (make a note of this as we will be using it in step 4).
 
-### 3. (Optional) Add Custom Domain and Certificate
+## 3. (Optional) Add Custom Domain and Certificate
 
 ![Step 3]({{site.baseurl}}/media/2021/03/secureapp-step3.png){: .align-center}
 
@@ -264,7 +264,7 @@ And to add a CNAME DNS record to map the actual domain:
 
 Allow another 5-10 minutes to replicate the settings globally, and you should now be able to access an authenticated Web App through Front Door using a custom domain and certificate.
 
-### 4. Restrict traffic to Web App from AFD
+## 4. Restrict traffic to Web App from AFD
 
 ![Step 4]({{site.baseurl}}/media/2021/03/secureapp-step4.png){: .align-center}
 
@@ -298,7 +298,7 @@ az rest --uri /subscriptions/REPLACE-ME-SUBSCRIPTIONID/resourceGroups/REPLACE-ME
 
 Now, if you access the site directly, you should immediately see the blue 403 - Forbidden error.
 
-### 5. Increase resiliency with multiple geo-distributed Web Apps
+## 5. Increase resiliency with multiple geo-distributed Web Apps
 
 ![Step 5]({{site.baseurl}}/media/2021/03/secureapp-final-setup.png){: .align-center}
 
@@ -325,7 +325,9 @@ After the Web App is configured, open the Front Door instance in Azure portal an
 
 Front Door default load balancing behavior is to round robin traffic between the fastest and the next fastest origins within the configured latency sensitivity, but you can modify that. If you refresh enough times, you should be seeing the page change color (and the Request url in the debug page change).
 
-### Alternative approaches and advanced scenarios
+## Alternative approaches and advanced scenarios
+
+TO BE COMPLETED
 
 Application Gateway
 
