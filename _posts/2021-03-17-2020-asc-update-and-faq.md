@@ -6,26 +6,26 @@ toc_sticky: true
 category: certsdomains
 ---
 
-There have been a few changes in the App Service Certificate offering in the recent months. In order to keep you updated with these changes, this article will go through:
+There have been a few updates to the App Service Certificate offering in recent months. In order to keep you updated with these changes, this article will cover:
 
 - New portal changes for App Service Certificate create
 - New auto-renew policy changes
 
-You will find a FAQ section for App Service Certificates at the end of the article which will go beyond just the updates and cover questions regarding the resource itself.
+You will find a FAQ section for App Service Certificates at the end of the article which will go beyond these updates.
 
 ## New portal changes for App Service Certificate create
 
-App Service Certificate recently release a [new create experience on Azure Portal](https://portal.azure.com/#create/Microsoft.SSL) that is currently in public preview. 
+App Service Certificate recently released a [new create experience on Azure Portal](https://portal.azure.com/#create/Microsoft.SSL) that is currently in public preview. 
 
 ### Marketplace offerings
 
-When you do a search of "App Service Certificate" on Marketplace, you will notice two different resource listed one with "(Preview)" and the other with "(Classic)".
+When you do a search of "App Service Certificate" on the Azure Marketplace, you will notice two different resources listed: one with "(Preview)" and the other with "(Classic)".
 
 ![ASC Marketplace Search]({{site.baseurl}}/media/2021/03/asc-marketplace-search.png){: .align-center}
 
 ![ASC Marketplace Offerings]({{site.baseurl}}/media/2021/03/asc-marketplace-offerings.png){: .align-center}
 
-**Both of these offerings will create the same App Service Certificate resource. However, the offering marked with "(Preview)" is the new create experience which we recommend you to use** because it will be a better experience than the "(Classic)" one and we will eventually be deprecating the "(Classic)" create experience.
+**Both of these offerings will create the same App Service Certificate resource. However, the offering marked with "(Preview)" is the new create experience which we recommend you to use**. We will eventually be deprecating the "(Classic)" create experience.
 
 ### What's new
 
@@ -33,21 +33,22 @@ Below is a screenshot of what the new experience looks like:
 
 ![ASC Create Basics Tab]({{site.baseurl}}/media/2021/03/asc-preview-basics.png){: .align-center}
 
-Here are a few reasons why you should be using the new create experience:
-1. Consistent with other Azure resources creates
-1. Provides better error messages and pre-validation
+Here are a few reasons why you should take advantage of the new create experience:
+
+1. Consistent with other Azure resource create blades
 1. Allows you to set your auto-renewal policy during resource creation -- auto-renew is set to on by default to avoid unexpected certificate expiration
 1. Allows you to create tags during resource creation which is not supported in "(Classic)"
+1. Provides better pre-validation and error messages
 
 ## New auto-renew policy changes
 
 **App Service Certificate auto-renew policy is now changed to kick-in 30 days before expiration instead of 60 days before expiration.** 
 
-Back on September 1st 2020 SSL/TLS certificates cannot be issued for longer than 13 months (397 days). This is an industry wide change that effects all Certificate Authorities. So all App Service Certificates are also affected by this change.
+As of September 1st 2020, SSL/TLS certificates cannot be issued for longer than 13 months (397 days). This is an industry wide change that affects all Certificate Authorities, so all App Service Certificates are also affected by this change.
 
 ### How is my certificate affected? <a name="how-is-my-cert-affected"></a>
 
-The new change of not allowing your certificate to be issued for more than 3 months (397 days) will affect the expiration date of your newly issued certificate if it is renewed more than a month before the expiration date. App Service Certificates used to auto-renew 60 days before expiration, but to avoid confusion with changing expiration dates due to this new policy, certificates will now auto-renew 30 days before expiration. To better explain the outcome, refer to the chart below:
+The new 397 day limit will affect the expiration date of your newly issued certificate if it is renewed more than a month before the expiration date. App Service Certificates previously auto-renewed 60 days before expiration, but to avoid confusion with changing expiration dates due to this new policy certificates will now auto-renew 30 days before expiration. To better explain the outcome, refer to the chart below:
 
 | Renewed Certificate Validity | |  Time Before Expiration for Renewal | | Total Time Validity for Renewed Certificate | Meets New 13 Month Validity Policy? | Result |
 | --- | :--: | --- | :---: | --- | --- | --- |
