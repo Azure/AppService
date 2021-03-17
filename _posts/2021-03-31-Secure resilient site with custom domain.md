@@ -29,7 +29,7 @@ az appservice plan create -g securewebsetup -n securewebplan --sku B1
 az webapp create -g securewebsetup -p securewebplan -n securewebapp2021 # Web App name must be globally unique
 ```
 
-and since the focus is security
+and since the focus is security, we only allow HTTPS:
 
 ```bash
 az webapp update -g securewebsetup -n securewebapp2021 --https-only
@@ -71,7 +71,7 @@ az webapp deployment source config-zip -g securewebsetup -n securewebapp2021 --s
 
 ### Authentication setup
 
-App Service provides and easy way to setup authentication. The feature is sometimes referred to as Easy Auth. There is a new version of this in preview and for this setup we will need some of the new options that v2 provides. The new Authentication feature is available in the Azure portal, but since we need some advanced configuration options that are not yet exposed in the portal, we might as well open up the hood now.
+App Service provides an easy way to setup authentication. The feature is sometimes referred to as Easy Auth. There is a new version of this in preview and for this setup we will need some of the new options that v2 provides. The new Authentication feature is available in the Azure portal, but since we need some advanced configuration options that are not yet exposed in the portal, we might as well open up the hood now.
 You have to construct the resource path to the Web App. It was returned when you created it in the previous steps, and you can also find it in the address bar when you open the resource in the portal.
 
 Ensure that you can read the settings first. Pay attention to the api-version. You should see a lot of json returned:
@@ -161,7 +161,7 @@ Azure Front Door announced in February the next generation in public preview. It
 
 ![Step 2]({{site.baseurl}}/media/2021/03/secureapp-step2.png){: .align-center}
 
-Create a new resource and search for Front Door Standard
+Create a new resource, search for Front Door and select "Front Door Standard/Premium (Preview)"
 
 ![Azure Front Door Standard/Premium]({{site.baseurl}}/media/2021/03/frontdoor-new.png){: .align-center}
 
