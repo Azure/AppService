@@ -4,7 +4,10 @@ author_name: "Mads Damgård"
 category: networking
 ---
 
-In this article I will walk you through setting up a secure resilient Web App using some new features that have just been release or are very close to release. Below is the target setup. One or more Web Apps in multiple regions with Azure AD authentication and custom domain. Azure Front Door (AFD) will provide global load balancing and Web Application Firewall (WAF) capabilities, and the web applications will be isolated to only receive traffic from the specific AFD instance. Most of the setup you can complete using the Azure portal, but there are some preview features that require scripting. I will be using Azure CLI throughout the walk-trough, however Azure PowerShell or Azure Resource Manager templates will be just as fine.
+In this article I will walk you through setting up a secure resilient Web App using some new features that have just been release or are very close to release. Below is the target setup. One or more Web Apps in multiple regions with Azure AD authentication and custom domain. Azure Front Door (AFD) will provide global load balancing and Web Application Firewall (WAF) capabilities, and the Web Apps will be isolated to only receive traffic from the specific AFD instance.
+
+Most of the setup you can complete using the Azure portal, but there are some preview features that require scripting. I will be using Azure CLI throughout the walk-trough, however Azure PowerShell or Azure Resource Manager templates will be just as fine. I am using bash though WSL to run the commands. If you are using a PowerShell or Cmd prompt, small syntax tweaks may be needed.
+
 ![Final setup]({{site.baseurl}}/media/2021/03/secureapp-final-setup.png){: .align-center}
 
 We will set this up in five steps + a bonus step with more advanced scenarios:
@@ -15,7 +18,7 @@ We will set this up in five steps + a bonus step with more advanced scenarios:
 4. Restrict traffic to Web App from AFD
 5. Increase resiliency with multiple geo-distributed Web Apps
 
-- Alternative approaches and advanced scenarios
+At the end, there is a section on alternative approaches and advanced scenarios and we finish off with a FAQ section.
 
 ## 1. Basic Web App with Azure AD Authentication
 
@@ -121,7 +124,7 @@ All the settings of Authentication is defined in a [json structure](https://docs
 }
 ```
 
-The file has some placeholders that you need to fill in with your own values. REPLACE-ME-WEBAPP-NAME (2 occurrences) should be replaced with the name of your Web App. In my case securewebapp2021.
+The file has some placeholders that you need to fill in with your own values. You will generate these values in the next few steps. The first REPLACE-ME-WEBAPP-NAME (2 occurrences) you already have. This should be replaced with the name of your Web App. In my case securewebapp2021.
 
 REPLACE-ME-TENANTID you can find by running ```az account show``` in the homeTenantId property.
 
@@ -327,12 +330,28 @@ Front Door default load balancing behavior is to round robin traffic between the
 
 ## Alternative approaches and advanced scenarios
 
-TO BE COMPLETED
+In this section, I will discuss some alternative approaches and advanced scenarios.
 
-Application Gateway
+### Application Gateway
 
-Private endpoint
+Instead of Front Door or in addition to Front Door you can use Azure Application Gateway to add WAF capabilities and advanced routing and rewrite logic. It can also be used to provide regional load balancing. Application Gateway currently does not support Manage Certificate, so you will have to bring your own certificate. For the Authentication in they auth.json, you will have to specify X-Original-Host as the customHostHeaderName. The rest of the settings and steps should be identical.
 
-Custom domain for SCM Site
+### Private endpoint
 
-WEBSITE_WARMUP_PATH – it tells Easy Auth to not require authentication to the path specified in the app setting.
+To secure the incoming traffic to the Web App(s) we used access restrictions. If you prefer private endpoint, this is also possible. The next generation Azure Front Door supports setting up a private endpoint from your Front Door instance directly to your Web App. For App Service, private endpoint requires Premium tier, so you need to scale up the App Service Plan. Besides that, the only change will be setup of origin in Front Door, where you can request the creation of a private endpoint, and then from the Web App(s) you can approve it.
+The step of uploading the debug page will require some additional setup. The SCM site will also be available only through private endpoint, and you will have to run the script from within a network with line-of-sight and proper DNS resolution for the private endpoint.
+
+### Custom domain for SCM Site
+
+While not directly related to the Authentication part, you may want/need to expose the SCM site through a proxy if you want access through a custom domain or if you want to expose a private endpoint enabled site externally. [A post on how to do that](https://azure.github.io/AppService/2021/03/03/Custom-domain-for-scm-site.html) was recently published.
+
+### Custom health probe path
+
+If you have a custom health probe path, you can tell App Service to allow unauthenticated traffic on that specific path. Specify the relative path using an App Setting called WEBSITE_WARMUP_PATH.
+
+```bash
+az webapp config appsettings set -g securewebsetup -n securewebapp2021 --settings "WEBSITE_WARMUP_PATH=/default.cshtml"
+```
+
+## FAQ and Links
+
