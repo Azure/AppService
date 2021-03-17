@@ -1,0 +1,922 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en_US"><generator uri="https://jekyllrb.com/" version="3.8.6">Jekyll</generator><link href="https://azure.github.io/AppService/feed.xml" rel="self" type="application/atom+xml" /><link href="https://azure.github.io/AppService/" rel="alternate" type="text/html" hreflang="en_US" /><updated>2021-03-17T00:22:39+00:00</updated><id>https://azure.github.io/AppService/feed.xml</id><title type="html">Azure App Service</title><subtitle>Announcements, updates, and release notes from the Azure App Service product team.</subtitle><author><name>Azure App Service</name></author><entry><title type="html">How to use gRPC-Web with Blazor WebAssembly on App Service</title><link href="https://azure.github.io/AppService/2021/03/15/How-to-use-gRPC-Web-with-Blazor-WebAssembly-on-App-Service.html" rel="alternate" type="text/html" title="How to use gRPC-Web with Blazor WebAssembly on App Service" /><published>2021-03-15T00:00:00+00:00</published><updated>2021-03-15T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2021/03/15/How-to-use-gRPC-Web-with-Blazor-WebAssembly-on-App-Service</id><content type="html" xml:base="https://azure.github.io/AppService/2021/03/15/How-to-use-gRPC-Web-with-Blazor-WebAssembly-on-App-Service.html">&lt;p&gt;gRPC is a modern protocol which uses HTTP/2 to streamline messaging between clients and back-end servers and is an efficient way to connect services that require high-performance communication. However, HTTP/2 gRPC is not compatible with modern browsers and requires the use of gRPC-Web to communicate between a browser application and a gRPC server.  gRPC-Web enables this scenario by having the browser send normal HTTP requests and acting as a proxy in front of the gRPC server to translate the requests to the browser.  With gRPC-Web, you can create a .NET server app hosted on App Service using gRPC-Web middleware which operates as a translator between the browser application and the .NET server app.  This translation maps incoming gRPC-Web requests to the appropriate .NET classes in the server app, and translates the server app’s return values into gRPC-Web responses that are sent back to the browser.  If you would like to learn more about gRPC-Web, visit the &lt;a href=&quot;https://grpc.io/blog/state-of-grpc-web/&quot;&gt;gRPC blog&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;In the following example, we’ll be using a .NET 5 Blazor WebAssembly application and replacing the existing JSON calls with gRPC-Web by enabling the gRPC-Web middleware in the startup configuration.&lt;/p&gt;
+
+&lt;h2 id=&quot;create-blazor-webassembly-app&quot;&gt;Create Blazor WebAssembly App&lt;/h2&gt;
+&lt;p&gt;In Visual Studio, you will create a Blazor WebAssembly application that we can add  gRPC-Web to.&lt;/p&gt;
+
+&lt;p&gt;Open Visual Studio and &lt;strong&gt;Create a new project&lt;/strong&gt; and search for &lt;strong&gt;Blazor app&lt;/strong&gt;.  Highlight &lt;strong&gt;Blazor app&lt;/strong&gt;, click &lt;strong&gt;Next&lt;/strong&gt;, name your application and click &lt;strong&gt;Create&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Choose &lt;strong&gt;.NET 5.0&lt;/strong&gt; in the drop-down, highlight the &lt;strong&gt;Blazor WebAssembly App&lt;/strong&gt; option and check the &lt;strong&gt;ASP.NET Core hosted&lt;/strong&gt; option under the &lt;strong&gt;Advanced&lt;/strong&gt; column before clicking the &lt;strong&gt;Create&lt;/strong&gt; button.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/AppService/media/2021/03/grpc_blazor_1.png&quot; alt=&quot;Blazor App Create in Visual Studio&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Once your application is created, you will have a Client, Server, and Shared project under your solution.&lt;/p&gt;
+
+&lt;h2 id=&quot;install-packages&quot;&gt;Install packages&lt;/h2&gt;
+&lt;p&gt;Before you add any code to your projects, you need to make sure the correct packages are installed on your Client, Server, and Shared projects.&lt;/p&gt;
+
+&lt;p&gt;Starting on the Shared project &lt;strong&gt;Right-click&lt;/strong&gt; the project and go to &lt;strong&gt;Manage Nuget packages&lt;/strong&gt;.  Browse for and install the following packages in the Shared project:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Google.Protobuf&lt;/li&gt;
+  &lt;li&gt;Grpc.Net.Client&lt;/li&gt;
+  &lt;li&gt;Grpc.Tools&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Next, follow the same process for the Shared project and go to your Server project to install these packages:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Grpc.AspNetCore&lt;/li&gt;
+  &lt;li&gt;Grpc.AspNetCore.Web&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Then, go to your Client project and install the following:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Grpc.Net.Client.Web&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;You can verify that each of the packages are installed by viewing the .csproj file of each project.  You should see an added package reference for the ones you’ve installed.&lt;/p&gt;
+
+&lt;h2 id=&quot;add-proto-file-and-service-to-the-shared-project&quot;&gt;Add Proto file and Service to the Shared project&lt;/h2&gt;
+&lt;p&gt;Grpc works with Proto files which are written in protocol buffer language that define your messaging.  To learn more about the language please visit this &lt;a href=&quot;https://developers.google.com/protocol-buffers/docs/proto3#simple&quot;&gt;guide&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;To add a proto file, &lt;strong&gt;Right-click&lt;/strong&gt; the Shared project and go to &lt;strong&gt;Add&lt;/strong&gt;, then &lt;strong&gt;New item&lt;/strong&gt;.  You can choose a Class file and name it &lt;strong&gt;weather.proto&lt;/strong&gt; and hit &lt;strong&gt;Add&lt;/strong&gt;.  Visual Studio will pick up that it is a gRPC file as you will see a gRPC icon next to the file.&lt;/p&gt;
+
+&lt;p&gt;Remove the boiler plate code in the file and replace it with the following:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-grpc&quot;&gt;syntax = &quot;proto3&quot;; 
+// replace namespace with your own
+option csharp_namespace = &quot;BlazorGrpcWebApp.Shared&quot;; 
+package WeatherForecast; 
+import &quot;google/protobuf/timestamp.proto&quot;; 
+
+service WeatherForecasts { 
+	rpc GetWeather (WeatherForecast) returns (WeatherReply); 
+} 
+
+message WeatherReply { 
+	repeated WeatherForecast forecasts = 1; 
+} 
+
+message WeatherForecast { 
+	google.protobuf.Timestamp dateTimeStamp = 1; 
+	int32 temperatureC = 2; 
+	string summary = 3; 
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Next we will add the Weather Service class.  This class will contain the same code and logic that is currently in the &lt;em&gt;WeatherForecastController.cs&lt;/em&gt; file, which provides us with our weather data.  Right-click the project and add a new class item naming it &lt;em&gt;WeatherService.cs&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Add the following using statements and code to the class:&lt;/p&gt;
+
+&lt;div class=&quot;language-c# highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Grpc.Core&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Google.Protobuf.WellKnownTypes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;WeatherService&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;WeatherForecasts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;WeatherForecastsBase&lt;/span&gt; 
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; 
+	&lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;readonly&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Summaries&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt; 
+	&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; 
+		&lt;span class=&quot;s&quot;&gt;&quot;Freezing&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Bracing&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Chilly&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Cool&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Mild&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Warm&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Balmy&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Hot&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Sweltering&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Scorching&quot;&lt;/span&gt; 
+	&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt; 
+
+	&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;override&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Task&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;WeatherReply&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;GetWeather&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;WeatherForecast&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ServerCallContext&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; 
+	&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; 
+		&lt;span class=&quot;kt&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;reply&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;WeatherReply&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt; 
+		&lt;span class=&quot;kt&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rng&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Random&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt; 
+
+		&lt;span class=&quot;n&quot;&gt;reply&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Forecasts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Enumerable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Select&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;index&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;WeatherForecast&lt;/span&gt; 
+		&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; 
+			&lt;span class=&quot;n&quot;&gt;Date&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DateTime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Now&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;AddDays&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; 
+			&lt;span class=&quot;n&quot;&gt;TemperatureC&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rng&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Next&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;55&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; 
+			&lt;span class=&quot;n&quot;&gt;Summary&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Summaries&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rng&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Next&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Summaries&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)]&lt;/span&gt; 
+		&lt;span class=&quot;p&quot;&gt;}));&lt;/span&gt; 
+
+		&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Task&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;FromResult&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reply&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; 
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; 
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now that you have your WeatherService added, you will notice that some of the objects won’t be recognized from the proto file.  To remedy this, we’ll need to include a reference to the proto file in the Shared .cproj file ItemGroup so it can be recongized.  Add the following to your ItemGroup in the .csproj file:&lt;/p&gt;
+
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;ItemGroup&amp;gt;&lt;/span&gt; 
+	&lt;span class=&quot;nt&quot;&gt;&amp;lt;SupportedPlatform&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;Include=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;browser&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt; 
+	// Add .proto file reference
+	&lt;span class=&quot;nt&quot;&gt;&amp;lt;Protobuf&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;Include=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;weather.proto&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt; 
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/ItemGroup&amp;gt;&lt;/span&gt;
+
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;configure-grpc-web-in-the-server&quot;&gt;Configure gRPC-Web in the Server&lt;/h2&gt;
+&lt;p&gt;To configure the application to take advantage of gRPC-Web you need to register the gRPC service in your &lt;em&gt;Startup.cs&lt;/em&gt; file.  This enables you to use dependency injection to consume the service across the app.  Add the following code to your ConfigureServices method in the Server Startup.cs file:&lt;/p&gt;
+
+&lt;div class=&quot;language-c# highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ConfigureServices&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;IServiceCollection&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;services&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; 
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; 
+	&lt;span class=&quot;c1&quot;&gt;// add gRPC service &lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;services&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;AddGrpc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt; 
+	&lt;span class=&quot;n&quot;&gt;services&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;AddControllersWithViews&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt; 
+	&lt;span class=&quot;n&quot;&gt;services&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;AddRazorPages&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt; 
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Next, you’ll add the gRPC-Web middleware to the apps configuration and register the gRPC service.  This must be added after UseRouting and before UseEndpoints in the Configure method.&lt;/p&gt;
+
+&lt;div class=&quot;language-c# highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;UseRouting&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt; 
+
+&lt;span class=&quot;c1&quot;&gt;// must be added after UseRouting and before UseEndpoints &lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;UseGrpcWeb&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt; 
+
+&lt;span class=&quot;n&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;UseEndpoints&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;endpoints&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&amp;gt;&lt;/span&gt; 
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; 
+	&lt;span class=&quot;c1&quot;&gt;// map to and register the gRPC service&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;endpoints&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MapGrpcService&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;WeatherService&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;().&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;EnableGrpcWeb&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt; 
+	&lt;span class=&quot;n&quot;&gt;endpoints&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;MapRazorPages&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt; 
+	&lt;span class=&quot;n&quot;&gt;endpoints&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;MapControllers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt; 
+	&lt;span class=&quot;n&quot;&gt;endpoints&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;MapFallbackToFile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;index.html&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; 
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;configure-grpc-web-with-the-net-client&quot;&gt;Configure gRPC-Web with the .NET client&lt;/h2&gt;
+&lt;p&gt;In order to configure gRPC-Web to use in our Client project, you’ll need to add a gRPC channel that provides a connection to a gRPC server using the HttpClient object.&lt;/p&gt;
+
+&lt;p&gt;Add the following code to the &lt;em&gt;Program.cs&lt;/em&gt; file in your Client project:&lt;/p&gt;
+
+&lt;div class=&quot;language-c# highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Grpc.Net.Client&lt;/span&gt; 
+&lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Grpc.Net.Client.Web&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 
+&lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Microsoft.AspNetCore.Components&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 
+
+&lt;span class=&quot;n&quot;&gt;builder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Services&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;AddSingleton&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;services&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&amp;gt;&lt;/span&gt; 
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; 
+	&lt;span class=&quot;kt&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;httpClient&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;HttpClient&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;GrpcWebHandler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;GrpcWebMode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;GrpcWeb&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;HttpClientHandler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()));&lt;/span&gt; 
+	&lt;span class=&quot;kt&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;baseUri&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;services&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;GetRequiredService&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NavigationManager&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;().&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BaseUri&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 
+	&lt;span class=&quot;kt&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;channel&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;GrpcChannel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;ForAddress&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;baseUri&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;GrpcChannelOptions&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;HttpClient&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;httpClient&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt; 
+	&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;WeatherForecasts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;WeatherForecastsClient&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;channel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; 
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now that gRPC-Web is configured in the client project, we need to adjust the code in the FetchData.razor file so we can test the gRPC calls.  The injected HttpClient will no longer be needed, but we will replace that with the Weather Forecasts Client so we can retrieve the weather data.  Replace the current code in the FetchData.Razor with the code below.&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@page &quot;/fetchdata&quot; 
+// replace using statement with your namespace
+@using BlazorGrpcWebApp.Shared 
+@inject WeatherForecasts.WeatherForecastsClient WeatherForecastsClient 
+
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;Weather forecast&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt; 
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;This component demonstrates fetching data from the server.&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt; 
+
+@if (forecasts == null) 
+{ 
+	&lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&amp;lt;em&amp;gt;&lt;/span&gt;Loading...&lt;span class=&quot;nt&quot;&gt;&amp;lt;/em&amp;gt;&amp;lt;/p&amp;gt;&lt;/span&gt; 
+} 
+else 
+{ 
+	&lt;span class=&quot;nt&quot;&gt;&amp;lt;table&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;table&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt; 
+	&lt;span class=&quot;nt&quot;&gt;&amp;lt;thead&amp;gt;&lt;/span&gt; 
+	&lt;span class=&quot;nt&quot;&gt;&amp;lt;tr&amp;gt;&lt;/span&gt; 
+	&lt;span class=&quot;nt&quot;&gt;&amp;lt;th&amp;gt;&lt;/span&gt;Date&lt;span class=&quot;nt&quot;&gt;&amp;lt;/th&amp;gt;&lt;/span&gt; 
+	&lt;span class=&quot;nt&quot;&gt;&amp;lt;th&amp;gt;&lt;/span&gt;Temp. (C)&lt;span class=&quot;nt&quot;&gt;&amp;lt;/th&amp;gt;&lt;/span&gt; 
+	&lt;span class=&quot;nt&quot;&gt;&amp;lt;th&amp;gt;&lt;/span&gt;Summary&lt;span class=&quot;nt&quot;&gt;&amp;lt;/th&amp;gt;&lt;/span&gt; 
+	&lt;span class=&quot;nt&quot;&gt;&amp;lt;/tr&amp;gt;&lt;/span&gt; 
+	&lt;span class=&quot;nt&quot;&gt;&amp;lt;/thead&amp;gt;&lt;/span&gt; 
+	&lt;span class=&quot;nt&quot;&gt;&amp;lt;tbody&amp;gt;&lt;/span&gt; 
+	@foreach (var forecast in forecasts) 
+	{ 
+		&lt;span class=&quot;nt&quot;&gt;&amp;lt;tr&amp;gt;&lt;/span&gt; 
+		&lt;span class=&quot;nt&quot;&gt;&amp;lt;td&amp;gt;&lt;/span&gt;@forecast.Date.ToShortDateString()&lt;span class=&quot;nt&quot;&gt;&amp;lt;/td&amp;gt;&lt;/span&gt; 
+		&lt;span class=&quot;nt&quot;&gt;&amp;lt;td&amp;gt;&lt;/span&gt;@forecast.TemperatureC&lt;span class=&quot;nt&quot;&gt;&amp;lt;/td&amp;gt;&lt;/span&gt; 
+		&lt;span class=&quot;nt&quot;&gt;&amp;lt;td&amp;gt;&lt;/span&gt;@forecast.Summary&lt;span class=&quot;nt&quot;&gt;&amp;lt;/td&amp;gt;&lt;/span&gt; 
+		&lt;span class=&quot;nt&quot;&gt;&amp;lt;/tr&amp;gt;&lt;/span&gt; 
+	} 
+	&lt;span class=&quot;nt&quot;&gt;&amp;lt;/tbody&amp;gt;&lt;/span&gt; 
+	&lt;span class=&quot;nt&quot;&gt;&amp;lt;/table&amp;gt;&lt;/span&gt; 
+} 
+
+@code 
+{ 
+	private IList&lt;span class=&quot;nt&quot;&gt;&amp;lt;WeatherForecast&amp;gt;&lt;/span&gt; forecasts; 
+	protected override async Task OnInitializedAsync() 
+	{ 
+		forecasts = (await WeatherForecastsClient.GetWeatherAsync(new WeatherForecast())).Forecasts; 
+	} 
+}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Once the FetchData.razor file is updated to output the weather data we can verify that we are using gRPC-Web by running our application locally &lt;strong&gt;Right-click&lt;/strong&gt; anywhere on the application and go to &lt;strong&gt;Inspect&lt;/strong&gt;.  Find the &lt;strong&gt;Network&lt;/strong&gt; tab and then visit the Fetch data page.  The Weather forecast data will load and you will see the name of our method GetWeather show up.  Click on the GetWeather name to view the Response Headers which show the &lt;strong&gt;content-type&lt;/strong&gt; being &lt;strong&gt;application/grpc-web&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/AppService/media/2021/03/grpc_blazor_2.png&quot; alt=&quot;grpc web network validation&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;deploying-to-app-service&quot;&gt;Deploying to App Service&lt;/h2&gt;
+&lt;p&gt;Since we are using a Blazor WebAssembly application that is hosted on ASP.NET Core the deployment process is slightly different.  You can still deploy to App Service as you typically would, but you’ll need to Publish the &lt;strong&gt;Server&lt;/strong&gt; project.  The hosted deployment serves the Blazor app to browsers from its hosted ASP.NET Core app that runs on a web server.  Your Server app will have reference to the Client app DLLs as the apps are deployed together with the Client app being published in the wwwroot folder.  Learn more about hosted deployments in the &lt;a href=&quot;https://grpc.io/blog/state-of-grpc-web/&quot;&gt;Blazor documentation&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Once your application is published you can verify that gRPC-Web is working using the same process from above by inspecting the Network in the browse.  Your Request URL will now point to your App Service URL (myappname.azurewebsites.net) and the &lt;em&gt;content-type:&lt;/em&gt; will still be &lt;em&gt;application/grpc-web&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;resources&quot;&gt;Resources&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.microsoft.com/aspnet/core/grpc/browser?view=aspnetcore-5.0&quot;&gt;Use gRPC in browser apps&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://devblogs.microsoft.com/aspnet/grpc-web-for-net-now-available/&quot;&gt;gRPC-Web for .NET apps&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://grpc.io/blog/state-of-grpc-web/&quot;&gt;gRPC-Web documentation&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;</content><author><name>Azure App Service</name></author><summary type="html">gRPC is a modern protocol which uses HTTP/2 to streamline messaging between clients and back-end servers and is an efficient way to connect services that require high-performance communication. However, HTTP/2 gRPC is not compatible with modern browsers and requires the use of gRPC-Web to communicate between a browser application and a gRPC server. gRPC-Web enables this scenario by having the browser send normal HTTP requests and acting as a proxy in front of the gRPC server to translate the requests to the browser. With gRPC-Web, you can create a .NET server app hosted on App Service using gRPC-Web middleware which operates as a translator between the browser application and the .NET server app. This translation maps incoming gRPC-Web requests to the appropriate .NET classes in the server app, and translates the server app’s return values into gRPC-Web responses that are sent back to the browser. If you would like to learn more about gRPC-Web, visit the gRPC blog.</summary></entry><entry><title type="html">Increased Savings with App Service Offerings</title><link href="https://azure.github.io/AppService/2021/03/11/increased-savings-with-app-service-offerings.html" rel="alternate" type="text/html" title="Increased Savings with App Service Offerings" /><published>2021-03-11T00:00:00+00:00</published><updated>2021-03-11T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2021/03/11/increased-savings-with-app-service-offerings</id><content type="html" xml:base="https://azure.github.io/AppService/2021/03/11/increased-savings-with-app-service-offerings.html">&lt;p&gt;In this article, we will review different App Service offerings with side-by-side comparisons to show how you can save more with App Service. The offerings we will be covering in this article are:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Free App Service Plan on Linux and Windows&lt;/li&gt;
+  &lt;li&gt;Basic App Service Plan on Linux&lt;/li&gt;
+  &lt;li&gt;Premium V3 App Service Plan on Linux and Windows&lt;/li&gt;
+  &lt;li&gt;Reserved Instances&lt;/li&gt;
+  &lt;li&gt;Dev/Test Pricing&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;At the end of the article, we will also go through how you can estimate your cost savings using the Azure Pricing Calculator.&lt;/p&gt;
+
+&lt;h2 id=&quot;free-app-service-plan-on-linux-and-windows&quot;&gt;Free App Service Plan on Linux and Windows&lt;/h2&gt;
+&lt;p&gt;App Service provides Free App Service Plans on both Linux and Windows. This is a great option if you are starting out in your journey to host web apps in the cloud. This tier comes with its own &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#app-service-limits&quot;&gt;limits on what features it supports&lt;/a&gt;, so if your traffic increases significantly, you will likely need to scale up to Basic or Standard (covered later in this article).&lt;/p&gt;
+
+&lt;h2 id=&quot;basic-app-service-plan-on-linux&quot;&gt;Basic App Service Plan on Linux&lt;/h2&gt;
+&lt;p&gt;Linux developers who are starting out on App Service and are hosting a smaller web app with lower traffic requirements that don’t need auto scale, virtual network integration and deployment slots features should take note of the discounted prices for Linux Basic App Service Plan. The chart below will show you a comparison between a Linux B1 and S1 instance so you can see the significant price difference between the two.&lt;/p&gt;
+
+&lt;table&gt;
+    &lt;thead&gt;
+        &lt;tr&gt;
+            &lt;th&gt; OS &lt;/th&gt; 
+            &lt;th&gt; Instance &lt;/th&gt;
+            &lt;th&gt; Cores &lt;/th&gt; 
+            &lt;th&gt; RAM &lt;/th&gt; 
+            &lt;th&gt; Storage &lt;/th&gt; 
+            &lt;th&gt; Cost &lt;/th&gt; 
+        &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+        &lt;tr&gt;
+            &lt;td rowspan=&quot;2&quot;&gt; Linux &lt;/td&gt;
+            &lt;td&gt; B1 &lt;/td&gt;
+            &lt;td&gt; 1 core &lt;/td&gt;
+            &lt;td&gt; 1.75 GB &lt;/td&gt;
+            &lt;td&gt; 10 GB &lt;/td&gt;
+            &lt;td&gt; ~$13.14/month &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt; S1 &lt;/td&gt;
+            &lt;td&gt; 1 core &lt;/td&gt;
+            &lt;td&gt; 1.75 GB &lt;/td&gt;
+            &lt;td&gt; 50 GB &lt;/td&gt;
+            &lt;td&gt; ~$69.35/month &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;sup&gt; * Prices are based on &lt;a href=&quot;https://azure.microsoft.com/en-us/pricing/details/app-service/linux/&quot;&gt;App Service pricing&lt;/a&gt; with the following configurations as of 03/10/2021: Linux OS, Central US region, USD currency, and displayed by month &lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;Before moving from Standard to Basic, please refer to &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#app-service-limits&quot;&gt;App Service limits page&lt;/a&gt; and &lt;a href=&quot;https://azure.microsoft.com/en-us/pricing/details/app-service/linux/&quot;&gt;App Service pricing page&lt;/a&gt; for more information on the feature support for the different plans.  If your workload does not need the Standard feature set, moving to Basic will help optimize your costs.&lt;/p&gt;
+
+&lt;h2 id=&quot;premium-v3-app-service-plan&quot;&gt;Premium V3 App Service Plan&lt;/h2&gt;
+
+&lt;p&gt;Customers who are currently running bigger production workloads on App Service should be aware of the &lt;a href=&quot;https://techcommunity.microsoft.com/t5/apps-on-azure/migrate-modernize-net-applications-with-azure/ba-p/1696499&quot;&gt;new App Service Premium V3 (Pv3) offering announced in November 2020&lt;/a&gt;, which is our most performant and cost effective offering yet.  The PV3 tier offers enhanced performance for a competitive price. To give an example, let’s compare the P1v2 to P1v3 for both Linux and Windows:&lt;/p&gt;
+
+&lt;table&gt;
+    &lt;thead&gt;
+        &lt;tr&gt;
+            &lt;th&gt; OS &lt;/th&gt; 
+            &lt;th&gt; Instance &lt;/th&gt;
+            &lt;th&gt; Cores &lt;/th&gt; 
+            &lt;th&gt; RAM &lt;/th&gt; 
+            &lt;th&gt; Storage &lt;/th&gt; 
+            &lt;th&gt; Cost &lt;/th&gt; 
+        &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+        &lt;tr&gt;
+            &lt;td rowspan=&quot;2&quot;&gt; Linux &lt;/td&gt;
+            &lt;td&gt; P1v2 &lt;/td&gt;
+            &lt;td&gt; 1 core &lt;/td&gt;
+            &lt;td&gt; 3.50 GB &lt;/td&gt;
+            &lt;td&gt; 250 GB &lt;/td&gt;
+            &lt;td&gt; ~$81.03/month &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt; P1v3 &lt;/td&gt;
+            &lt;td&gt; 2 cores &lt;/td&gt;
+            &lt;td&gt; 8 GB &lt;/td&gt;
+            &lt;td&gt; 250 GB &lt;/td&gt;
+            &lt;td&gt; ~$124.10/month &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td rowspan=&quot;2&quot;&gt; Windows &lt;/td&gt;
+            &lt;td&gt; P1v2 &lt;/td&gt;
+            &lt;td&gt; 1 core &lt;/td&gt;
+            &lt;td&gt; 3.50 GB &lt;/td&gt;
+            &lt;td&gt; 250 GB &lt;/td&gt;
+            &lt;td&gt; ~$146.00/month &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt; P1v3 &lt;/td&gt;
+            &lt;td&gt; 2 cores &lt;/td&gt;
+            &lt;td&gt; 8 GB &lt;/td&gt;
+            &lt;td&gt; 250 GB &lt;/td&gt;
+            &lt;td&gt; ~$240.90/month &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;sup&gt; * Prices are based on App Service pricing for &lt;a href=&quot;https://azure.microsoft.com/en-us/pricing/details/app-service/linux/&quot;&gt;Linux&lt;/a&gt; and &lt;a href=&quot;https://azure.microsoft.com/en-us/pricing/details/app-service/windows/&quot;&gt;Windows&lt;/a&gt; with the following configurations as of 03/10/2021: Linux OS and Windows OS, Central US region, USD currency, and displayed by month &lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;P1v3 provides double the cores and more than double the RAM compared to P1v2. If you look at the table above, for Linux P1v3, you get double the cores and more than double the RAM for an additional ~53% of the cost, while for Windows P1v3, you get double the cores and more than double the RAM for an additional ~65% of the cost.  Also note that the comparative price/performance difference is even larger when &lt;a href=&quot;#reserved-instances&quot;&gt;reserved instances&lt;/a&gt; or &lt;a href=&quot;#dev-test-pricing&quot;&gt;dev/test pricing&lt;/a&gt; are used (both are covered later in this article).  For example, with a one year reserved instances price, Linux customers can run a P1v3 instance at roughly the same price as a P1v2 instance.  And with a three year reserved instances price, Linux customers can run a P1v3 instance at a lower price than a P1v2!&lt;/p&gt;
+
+&lt;h3 id=&quot;scaling-up-to-pv3&quot;&gt;Scaling Up to PV3&lt;/h3&gt;
+
+&lt;p&gt;Note that some customers who are on pre-existing App Service footprints may not be able to scale up to PV3.  This will be the case if you notice the option greyed out on the portal when they try to scale up. You will be guaranteed to get support for PV3 if you create a new app in a new resource group in the region of your choice, and you pick a PV3 SKU when creating the new app service plan. You can subsequently scale down your app to a different SKU with the confidence that you can scale back up to Pv3 in the future. You can read more about the option to &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/app-service/app-service-configure-premium-tier#scale-up-from-an-unsupported-resource-group-and-region-combination&quot;&gt;scale up from an unsupported resource group and region combination for PV3&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;long-term-cost-savings-for-pv3&quot;&gt;Long Term Cost Savings for PV3&lt;/h3&gt;
+
+&lt;p&gt;If you are planning to run your PV3 instances in the long term, you should consider purchasing &lt;a href=&quot;#reserved-instances&quot;&gt;reserved instances&lt;/a&gt; as it can greatly increase your savings. The following section will go through it in more detail.&lt;/p&gt;
+
+&lt;h2 id=&quot;reserved-instances-&quot;&gt;Reserved Instances &lt;a name=&quot;reserved-instances&quot;&gt;&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;Customers who are running high scale productions on App Service and are looking for long term cost saving options can consider purchasing &lt;a href=&quot;https://techcommunity.microsoft.com/t5/apps-on-azure/migrate-modernize-net-applications-with-azure/ba-p/1696499&quot;&gt;reserved instances for App Service&lt;/a&gt;. Purchasing reserved instances lets customers save 35% to 55% on costs compared to pay-as-you-go if they buy reserved instances for a one-to-three-year commitment. The reserved instances options for App Service are available for Premium V3 Tiers and Isolated stamp fees for ASE V2. You can learn more about this on:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.microsoft.com/en-us/azure/cost-management-billing/reservations/save-compute-costs-reservations&quot;&gt;What are Azure Reservations?&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.microsoft.com/en-us/azure/cost-management-billing/reservations/prepay-app-service?branch=main&quot;&gt;Save costs with Azure App Service reserved instances&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.microsoft.com/en-us/azure/cost-management-billing/reservations/reservation-discount-app-service-isolated-stamp&quot;&gt;How reservation discounts apply to Azure App Service Premium v3 instances and Isolated Stamps&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#how-to-buy-reserved-instances&quot;&gt;How to buy reserved instances section in this article&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;If you would like to get a quick estimated percentage of your savings for using reserved instances, refer to the &lt;a href=&quot;#pricing-calculator&quot;&gt;Pricing Calculator section in this article&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;cost-comparisons&quot;&gt;Cost Comparisons&lt;/h3&gt;
+
+&lt;p&gt;We will go through a few examples from our pricing page to show you the savings you can get with reserved instances. If you would like more information, our pricing page shows a breakdown of the prices for the different options on both &lt;a href=&quot;https://azure.microsoft.com/en-us/pricing/details/app-service/linux/&quot;&gt;Linux&lt;/a&gt; and &lt;a href=&quot;https://azure.microsoft.com/en-us/pricing/details/app-service/windows/&quot;&gt;Windows&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The chart below shows the comparison between the prices for P1v3 instance for pay-as-you-go, one-year reserved instance, and three-year reserved instance on both Linux and Windows.&lt;/p&gt;
+
+&lt;table&gt;
+    &lt;thead&gt;
+        &lt;tr&gt;
+            &lt;th&gt; OS &lt;/th&gt; 
+            &lt;th&gt; Instance &lt;/th&gt;
+            &lt;th&gt; Pay as You Go &lt;/th&gt; 
+            &lt;th&gt; 1 Year Reserved &lt;/th&gt; 
+            &lt;th&gt; 3 Year Reserved &lt;/th&gt;
+        &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+        &lt;tr&gt;
+            &lt;td&gt; Linux &lt;/td&gt;
+            &lt;td&gt; P1v3 &lt;/td&gt;
+            &lt;td&gt; ~$124.100/month &lt;/td&gt;
+            &lt;td&gt; ~$81.001/month (~35% savings) &lt;/td&gt;
+            &lt;td&gt; ~$56.247/month (~55% savings) &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt; Windows &lt;/td&gt;
+            &lt;td&gt; P1v3 &lt;/td&gt;
+            &lt;td&gt; ~$240.90/month &lt;/td&gt;
+            &lt;td&gt; ~$180.332/month (~25% savings) &lt;/td&gt;
+            &lt;td&gt; ~$145.249/month (~40% savings) &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;sup&gt; * Prices are based on App Service pricing &lt;a href=&quot;https://azure.microsoft.com/en-us/pricing/details/app-service/linux/&quot;&gt;Linux&lt;/a&gt; and &lt;a href=&quot;https://azure.microsoft.com/en-us/pricing/details/app-service/windows/&quot;&gt;Windows&lt;/a&gt; with the following configurations as of 03/10/2021: Linux OS and Windows OS, Central US region, USD currency, and displayed by month &lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;As you can see from the chart above, you can get significant savings from purchasing reserved instances. On Linux, a three-year commitment will save you ~55% compared to if you opt for pay as you go. While on Windows, a three-year commitment will save you ~40% compared if you opt for pay as you go. The longer the term commitment, the more savings you will get with reserved instances. Across both Linux and Windows, reserved instances pricing for Pv3 enables you to run at a lower price than equivalent Pv2 instances!&lt;/p&gt;
+
+&lt;h3 id=&quot;how-to-buy-reserved-instances-&quot;&gt;How to Buy Reserved Instances &lt;a name=&quot;how-to-buy-reserved-instances&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Purchasing reserved instances is very convenient. You can purchase it through the &lt;a href=&quot;https://portal.azure.com&quot;&gt;Azure portal&lt;/a&gt;. To get started, head to the Azure portal, search for “Reservations” on the search bar, and then select the “Reservations” services.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/AppService/media/2021/03/ri-how-to-1.png&quot; alt=&quot;How to buy Reserved Instances 1&quot; class=&quot;align-center&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;You will be redirected to a page similar to a resource view page, but it will say “Reservations” on the top left corner. Click on the “+ Add” button to purchase reserved instances.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/AppService/media/2021/03/ri-how-to-2.png&quot; alt=&quot;How to buy Reserved Instances 2&quot; class=&quot;align-center&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;You will see a page that lists a range of products that you can purchase reservations for. Search for and select “App Service” from the list.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/AppService/media/2021/03/ri-how-to-3.png&quot; alt=&quot;How to buy Reserved Instances 3&quot; class=&quot;align-center&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;A blade will appear on the right side showing options for App Service reserved instances for PV3 and for Isolated App Service Plan. If you don’t see the region, term, or billing frequency that you are interested in, try adjusting the filters by clicking on the blue bubble. For the term, you can choose between a one-year and three-year option.  Once you select an instance, you can view the price and the savings at the bottom right corner. In the image below, I selected the P1v3 option for Linux in Central US region for a three-year term billed monthly.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/AppService/media/2021/03/ri-how-to-select-linux-p1v3.png&quot; alt=&quot;How to buy Reserved Instances - Select Linux&quot; class=&quot;align-center&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;sup&gt; * The reserved instance price is based on the following configurations as of 03/10/2021: Linux P1v3, Central US region, and a three-year term that is billed monthly. &lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;And another example below, I selected the P1v3 option for Windows in Central US region for a three-year term billed monthly.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/AppService/media/2021/03/ri-how-to-select-windows-p1v3.png&quot; alt=&quot;How to buy Reserved Instances - Select Windows&quot; class=&quot;align-center&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;sup&gt; * The reserved instance price is based on the following configurations as of 03/10/2021: Windows P1v3, Central US region, and a three-year term that is billed monthly. &lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;Once you’ve decided on your choice, click on “Add to cart”. You may choose several plans in the same page, and when you’re done, click on “Close”. You will see a new page on the “Products” tab that will show you a list of products that you have chosen. In this page, you can set the name of your reservations and the quantities (which corresponds to the number of Pv3 instances being purchased with a reservation) that you would like to purchase for your products. If you are unsure of how many instances to reserve, refer to the &lt;a href=&quot;#how-many-reserved-instances-to-buy&quot;&gt;how many Reserved Instances should I buy section of the article&lt;/a&gt;. You can also delete products and edit your purchases. You can also see the breakdown of the total costs and of your immediate charges at the bottom right corner of the page.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/AppService/media/2021/03/ri-how-to-view-cart-linux-p1v3.png&quot; alt=&quot;How to buy Reserved Instances - View Cart&quot; class=&quot;align-center&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;sup&gt; * The reserved instance price is based on the following configurations as of 03/10/2021: Linux P1v3, Central US region, and a three-year term that is billed monthly. &lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;When you are satisfied with your selections, make sure to head to “Review + buy” to finalize your purchase of the reserved instances.&lt;/p&gt;
+
+&lt;h3 id=&quot;how-many-reserved-instances-should-i-buy-&quot;&gt;How Many Reserved Instances Should I Buy? &lt;a name=&quot;how-many-reserved-instances-to-buy&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;If you are unsure of the quantity to buy, we recommend purchasing enough quantity to cover your steady state baseload. In other words, use the number of App Service Plan instances running for your baseload as a starting point for the quantity specified in the reserved instances purchase.  For many customers, the baseload would be one or two instances. You can still use an auto-scale rule to increase the number of running App Service Plan instances above the baseload. Reserved instances pricing will cover the baseload and any additional compute from auto-scaling will be charged at the regular price.&lt;/p&gt;
+
+&lt;h2 id=&quot;devtest-pricing-&quot;&gt;Dev/Test Pricing &lt;a name=&quot;dev-test-pricing&quot;&gt;&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;Dev/Test Pricing is a great option for customers who are looking to have discounted rates for the development and testing environments for their web apps. This option is available for Basic, Standard, Premium v2, and Premium v3 App Service Plans. For more information, you can look at the &lt;a href=&quot;https://azure.microsoft.com/en-us/pricing/dev-test/&quot;&gt;Azure Dev/Test Pricing page&lt;/a&gt; and scroll towards the bottom of the page where “App Service” is listed. If you are interested in getting an estimated price for your dev/test pricing, refer to next section under &lt;a href=&quot;#pricing-calculator&quot;&gt;pricing calculator&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;pricing-calculator-&quot;&gt;Pricing Calculator &lt;a name=&quot;pricing-calculator&quot;&gt;&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;The &lt;a href=&quot;https://azure.microsoft.com/en-us/pricing/calculator/&quot;&gt;pricing calculator&lt;/a&gt; can be a handy tool to calculate the estimated monthly costs of running your services. In this section we will show you how to use the pricing calculator to calculate the estimated price for your reserved instances and for your dev/test pricing.&lt;/p&gt;
+
+&lt;h3 id=&quot;getting-started&quot;&gt;Getting Started&lt;/h3&gt;
+
+&lt;p&gt;In the &lt;a href=&quot;https://azure.microsoft.com/en-us/pricing/calculator/&quot;&gt;pricing calculator page&lt;/a&gt;, select “App Service” from the list of products and you will get a notification on the right side of the page.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/AppService/media/2021/03/pricing-calculator-main-menu.png&quot; alt=&quot;Pricing Calculator Main Menu&quot; class=&quot;align-center&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;When you’ve successfully added App Service in the calculator, you will see a section in the UX showing App Service information when you scroll down the page. You can configure values such as region, OS, pricing tier, and etc. to get an estimate for the cost. The next few sections in the article will go over how you can use this tool to calculate an estimate for your reserved instances savings and for your dev/test pricing.&lt;/p&gt;
+
+&lt;h3 id=&quot;calculating-reserved-instances&quot;&gt;Calculating Reserved Instances&lt;/h3&gt;
+
+&lt;p&gt;Once you have selected “App Service” from the list of products and properly selected your configurations, look for the “Saving Options” and select from the reserved instances options. On the pricing calculator, it will also show the percentage of your savings for all the reserved instances options. The price will adjust accordingly after you have selected a reserved instances option.&lt;/p&gt;
+
+&lt;p&gt;The example below will show you how the savings options will look like for a P1v3 with a three-year reserved instance on Linux.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/AppService/media/2021/03/pricing-calculator-3-year-ri-linux.png&quot; alt=&quot;Pricing Calculator Getting Started 2&quot; class=&quot;align-center&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;sup&gt; * Price is based on &lt;a href=&quot;https://azure.microsoft.com/en-us/pricing/calculator/&quot;&gt;pricing calculator&lt;/a&gt; with the following configurations as of 03/10/2021: Central US region, Linux OS, and Premium V3 for one P1v3 instance for three-year reserved instances. Price is in USD and is displayed per month. &lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;For another example, the image below will show you how the savings options will look like for a P1v3 with a three-year reserved instance on Windows.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/AppService/media/2021/03/pricing-calculator-3-year-ri-windows.png&quot; alt=&quot;Pricing Calculator Getting Started 3&quot; class=&quot;align-center&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;sup&gt; * Price is based on &lt;a href=&quot;https://azure.microsoft.com/en-us/pricing/calculator/&quot;&gt;pricing calculator&lt;/a&gt; with the following configurations as of 03/10/2021: Central US region, Windows OS, and Premium V3 for one P1v3 instance for three-year reserved instances. Price is in USD and is displayed per month. &lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;As you can see from the examples above, the pricing calculator makes it convenient for you to calculate your estimated savings percentage with the reserved instances.&lt;/p&gt;
+
+&lt;h3 id=&quot;calculating-devtest-pricing&quot;&gt;Calculating Dev/Test Pricing&lt;/h3&gt;
+
+&lt;p&gt;Once you have selected “App Service” from the list of products and properly selected your configurations, scroll to the very bottom of the calculator web page and look for the “Show Dev/Test Pricing” slider. When you enable the slider to show dev/test pricing, you will notice that your price estimates will have changed to reflect dev/test pricing if supported for the selected pricing tier.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/AppService/media/2021/03/pricing-calculator-show-dev-test-option.png&quot; alt=&quot;Pricing Calculator Show Dev Test Option&quot; class=&quot;align-center&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The set of examples below show an estimate using the pricing calculator for a P1v3 instance when you apply Dev/Test Pricing on Linux.  The first screenshot shows the regular price for a Linux P1v3 instance.  The second screenshot shows the discounted Dev/Test price. You will notice a $30.66 price difference which is ~24% less for dev/test pricing.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/AppService/media/2021/03/pricing-calculator-dev-test-off-linux.png&quot; alt=&quot;Pricing Calculator Dev Test Off (Linux)&quot; class=&quot;align-center&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;sup&gt; * Price is based on &lt;a href=&quot;https://azure.microsoft.com/en-us/pricing/calculator/&quot;&gt;pricing calculator&lt;/a&gt; with the following configurations as of 03/10/2021: Central US region, Linux OS, and Premium V3 for one P1v3 instance for pay as you go without dev/test pricing. Price is in USD and is displayed per month.  &lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/AppService/media/2021/03/pricing-calculator-dev-test-on-linux.png&quot; alt=&quot;Pricing Calculator Dev Test On (Linux)&quot; class=&quot;align-center&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;sup&gt; * Price is based on &lt;a href=&quot;https://azure.microsoft.com/en-us/pricing/calculator/&quot;&gt;pricing calculator&lt;/a&gt; with the following configurations as of 03/10/2021: Central US region, Linux OS, and Premium V3 for one P1v3 instance for pay as you go with dev/test pricing. Price is in USD and is displayed per month. &lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;Another set of examples below show an estimate using the pricing calculator for a P1v3 instance when you apply Dev/Test Pricing on Windows. The first screenshot shows the regular price for a Windows P1v3 instance.  The second screenshot shows the discounted Dev/Test price.  There is a $147.46 price difference which is ~61% less for dev/test pricing.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/AppService/media/2021/03/pricing-calculator-dev-test-off-windows.png&quot; alt=&quot;Pricing Calculator Dev Test Off (Windows)&quot; class=&quot;align-center&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;sup&gt; * Price is based on &lt;a href=&quot;https://azure.microsoft.com/en-us/pricing/calculator/&quot;&gt;pricing calculator&lt;/a&gt; with the following configurations as of 03/10/2021: Central US region, Windows OS, and Premium V3 for one P1v3 instance for pay as you go without dev/test pricing. Price is in USD and is displayed per month. &lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/AppService/media/2021/03/pricing-calculator-dev-test-on-windows.png&quot; alt=&quot;Pricing Calculator Dev Test On (Windows)&quot; class=&quot;align-center&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;sup&gt; * Price is based on &lt;a href=&quot;https://azure.microsoft.com/en-us/pricing/calculator/&quot;&gt;pricing calculator&lt;/a&gt; with the following configurations as of 03/10/2021: Central US region, Windows OS, and Premium V3 for one P1v3 instance for pay as you go with dev/test pricing. Price is in USD and is displayed per month.  &lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;From the two sets of examples above, you can see the savings you can get for using the dev/test pricing for your development and testing environments. This is a great option for hosting your development and testing environments with the same amount of performance and capacity as your production environments, but at a lower cost.&lt;/p&gt;
+
+&lt;h2 id=&quot;summary&quot;&gt;Summary&lt;/h2&gt;
+
+&lt;p&gt;There are several ways for you to increase savings when running App Service . This article has described several App Service Plan offerings that help you save on prices, including reserved instances, and dev/test pricing options. We hope this article has equipped you with more information and presented you with a guide on how you can increase your savings when running App Service.&lt;/p&gt;
+
+&lt;p&gt;All prices in this article are all estimates during the time noted. Your final price would depend on your configurations for your App Service.&lt;/p&gt;</content><author><name>Azure App Service</name></author><summary type="html">In this article, we will review different App Service offerings with side-by-side comparisons to show how you can save more with App Service. The offerings we will be covering in this article are:</summary></entry><entry><title type="html">How-to Host a Python application with Windows containers on App Service</title><link href="https://azure.github.io/AppService/2021/03/04/How-to-Host-a-Python-application-with-Windows-Containers-on-App-Service.html" rel="alternate" type="text/html" title="How-to Host a Python application with Windows containers on App Service" /><published>2021-03-04T00:00:00+00:00</published><updated>2021-03-04T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2021/03/04/How-to-Host-a-Python-application-with-Windows-Containers-on-App-Service</id><content type="html" xml:base="https://azure.github.io/AppService/2021/03/04/How-to-Host-a-Python-application-with-Windows-Containers-on-App-Service.html">&lt;p&gt;Windows containers on App Service can help you easily modernize your application by making it easier to Lift-and-Shift to App Service and install custom dependencies that would otherwise not be available on App Service.  If your application is built with a language other than .NET, you can still create a custom container and take advantage of Windows cotnainers!  In this tutorial we will be using a Visual Studio templated Python 3.6 Flask application, containerizing it with Docker and publishing the image to Azure Container Registry so it can be deployed on App Service.&lt;/p&gt;
+
+&lt;h2 id=&quot;create-and-configure-your-python-app&quot;&gt;Create and configure your Python app&lt;/h2&gt;
+
+&lt;p&gt;Open Visual Studio and click on &lt;strong&gt;Create a new project&lt;/strong&gt;.  Find the &lt;strong&gt;Flask Web Project&lt;/strong&gt; template, name it and click &lt;strong&gt;Create&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Once you have created your application find the &lt;em&gt;runserver.py&lt;/em&gt; file and replace the existing code with the following:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-flask&quot;&gt;from os import environ 
+from FlaskWebProject1 import app 
+
+if __name__ == '__main__': 
+# Run the app server with default Flask port 
+app.run(port=5555, host='0.0.0.0')
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This code runs the local development server which defines the default Flask port that it will be using along with the host to use IP addresses on the local machine.  This will be utilized later for developing in your local browser.  In the next step we will be creating a Dockerfile for the application so we can containerize it.&lt;/p&gt;
+
+&lt;h2 id=&quot;adding-the-dockerfile&quot;&gt;Adding the Dockerfile&lt;/h2&gt;
+
+&lt;p&gt;To containerize your application you will need to add a Dockerfile, which includes instructions on how to build the container.  If you are using Visual Studio you may have to add the Dockerfile manually.  To add the Dockerfile manually, &lt;strong&gt;Right-Click&lt;/strong&gt; the project and add a &lt;strong&gt;New Item&lt;/strong&gt;.  Then, choose Text file and name it &lt;em&gt;Dockerfile.txt&lt;/em&gt; and click &lt;strong&gt;Add&lt;/strong&gt; to add the file.  However, Dockerfiles have no extensions so you’ll need to remove the “.txt” from the name and save it to create the Dockerfile.&lt;/p&gt;
+
+&lt;p&gt;Once you have your Dockerfile created copy and paste the following:&lt;/p&gt;
+&lt;div class=&quot;language-docker highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# first layer is our python base image enabling us to run pip&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; python:3.7-windowsservercore-1809 &lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# create directory in the container for adding your files&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;WORKDIR&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; /user/src/app &lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# copy over the requirements file and run pip install to install the packages into your container at the directory defined above&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;COPY&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; requirements.txt ./ &lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;RUN &lt;/span&gt;pip &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--no-cache-dir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; requirements.txt &lt;span class=&quot;nt&quot;&gt;--user&lt;/span&gt; 
+&lt;span class=&quot;k&quot;&gt;COPY&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; . . &lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# enter entry point parameters executing the container&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;ENTRYPOINT&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; [&quot;python&quot;, &quot;./runserver.py&quot;] &lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# exposing the port to match the port in the runserver.py file&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;EXPOSE&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; 5555&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This Dockerfile includes instructions that will build your container on a Windows Server base image, add your application files over to the container and build your packages using your requirements.txt file as you normally would with a Python app.  The port exposed must match the port that is previously defined in the &lt;em&gt;runserver.py&lt;/em&gt; file.&lt;/p&gt;
+
+&lt;h2 id=&quot;create-the-docker-image&quot;&gt;Create the Docker Image&lt;/h2&gt;
+
+&lt;p&gt;When using Docker, you need to build and create the image first before you can run the container.   Open your local Command Prompt, go to the directory where your Dockerfile lives and run this command:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-cli&quot;&gt;docker build -t mypythonapp .
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Running this command will take each step defined in the Dockerfile from above and build your image.  Once your image is successfully built and tagged, you can then run it locally to test the application.&lt;/p&gt;
+
+&lt;h2 id=&quot;run-your-application-locally&quot;&gt;Run your application locally&lt;/h2&gt;
+
+&lt;p&gt;Before you push your image to a registry, you’ll want to make sure your local version runs as expected.   Once your Docker image is built run the following command to start your container:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-cli&quot;&gt;docker run -d --isolation hyperv mypythonapp:latest
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Running this command will start your application and give you a Container ID in the form of a long string.   Confirm that your container is running by using the &lt;strong&gt;docker ps&lt;/strong&gt; command next.  This will output all containers currently running.  Locate and copy the string under Container ID to be used later.  This is a shorthand version of the long string from before.&lt;/p&gt;
+
+&lt;p&gt;After you have confirmed that your container is running locally with &lt;strong&gt;docker ps&lt;/strong&gt; you can use &lt;strong&gt;docker inspect&lt;/strong&gt; to find the IP Address that you will need to use to view your application.&lt;/p&gt;
+
+&lt;p&gt;Use the following command to output json that will include your IP Address that you will need:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-cli&quot;&gt;docker inspect &amp;lt;Container-ID&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Find your IP Address at the bottom of the output and paste it in the browser with your exposed port number after the IP Address.  It should look similar to &lt;strong&gt;http://172.00.000.000:5555&lt;/strong&gt;.  Hit enter and your application should show up in the browser.  If everything looks good and your application is ready to publish, the next step is to push your image to a container registry where it will live prior to being deployed to App Service.&lt;/p&gt;
+
+&lt;h2 id=&quot;push-your-container-image-to-a-registry&quot;&gt;Push your container image to a registry&lt;/h2&gt;
+&lt;p&gt;Now that we’ve tested the application locally in a container we can push it to a container registry where the image will live.  This will prepare us and satisfy the requirements for creating and publishing the application to App Service.  First you must have a &lt;a href=&quot;https://docs.microsoft.com/azure/container-registry/container-registry-get-started-portal&quot;&gt;registry created&lt;/a&gt; before you can push the image to it.  Once that is complete, you can continue with these instructions.  For this example, we will be using Azure Container Registry, but you can use Docker Hub as well by swapping out the &lt;em&gt;registry-name&lt;/em&gt;.azurecr.io with &lt;em&gt;your-docker-hub-registry-name&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Before you attempt to tag and push the image, make sure you are logged in by using docker login in the command prompt&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-cli&quot;&gt;docker login &amp;lt;registry-name&amp;gt;.azurecr.io
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This will prompt you to enter your username and password from your registry. You can find these under Access keys in your Container registry resource in the Azure portal.&lt;/p&gt;
+
+&lt;p&gt;After you’ve logged in, run the following commands to tag and push your Docker image:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-cli&quot;&gt;docker tag mypythonapp:latest &amp;lt;registry-name&amp;gt;.azurecr.io/mypythonapp:latest
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-cli&quot;&gt;docker push &amp;lt;registry-name&amp;gt;.azurecr.io/mypythonapp:latest
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Once the image is pushed you can verify that it is in your Azure Container Registry by viewing the Repositories in your Container registry resource. Next, we will use the image from our registry to create our Web App on App Service.&lt;/p&gt;
+
+&lt;h2 id=&quot;create-the-web-app-using-premium-v3&quot;&gt;Create the Web App using Premium v3&lt;/h2&gt;
+
+&lt;p&gt;When you are creating the Web App that you will publish your container to be sure to choose the correct options shown below. Name your site, choose Docker Container under Publishing type and Windows for the Operating System. Choose an available Region and then choose your SKU and size. Premium V3 is the only SKU that supports Windows containers. Learn more about the Premium V3 SKU &lt;a href=&quot;https://techcommunity.microsoft.com/t5/apps-on-azure/migrate-modernize-net-applications-with-azure/ba-p/1696499&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/AppService/media/2021/03/python_2.png&quot; alt=&quot;Azure Web App&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Next, click the &lt;strong&gt;Next:Docker &amp;gt;&lt;/strong&gt; button to pull your container image from Azure Container Registry.&lt;/p&gt;
+
+&lt;p&gt;Choose &lt;strong&gt;Azure Container Registry&lt;/strong&gt; as your Image Source and the registry options will show up for you to select. The registry you selected earlier should show up in the Registry drop-down along with the created Images and Tags.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/AppService/media/2021/03/python_1.png&quot; alt=&quot;Azure Web App&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Once you have the correct options selected you can hit &lt;strong&gt;Review + create&lt;/strong&gt; to start your deployment and verify your deployed app on App Service.&lt;/p&gt;</content><author><name>Azure App Service</name></author><summary type="html">Windows containers on App Service can help you easily modernize your application by making it easier to Lift-and-Shift to App Service and install custom dependencies that would otherwise not be available on App Service. If your application is built with a language other than .NET, you can still create a custom container and take advantage of Windows cotnainers! In this tutorial we will be using a Visual Studio templated Python 3.6 Flask application, containerizing it with Docker and publishing the image to Azure Container Registry so it can be deployed on App Service.</summary></entry><entry><title type="html">Custom domain for SCM site</title><link href="https://azure.github.io/AppService/2021/03/03/Custom-domain-for-scm-site.html" rel="alternate" type="text/html" title="Custom domain for SCM site" /><published>2021-03-03T00:00:00+00:00</published><updated>2021-03-03T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2021/03/03/Custom%20domain%20for%20scm%20site</id><content type="html" xml:base="https://azure.github.io/AppService/2021/03/03/Custom-domain-for-scm-site.html">&lt;p&gt;When enabling &lt;a href=&quot;https://docs.microsoft.com/azure/app-service/networking/private-endpoint&quot;&gt;private endpoint&lt;/a&gt; for a web app, both the web app and the Source Control Manager (SCM) site, also sometimes referred to as &lt;a href=&quot;https://github.com/projectkudu/kudu/wiki&quot;&gt;kudu&lt;/a&gt;, are locked down to only receive traffic from the private IP. If you are in the internal network and have setup proper private DNS resolution, you can access both sites by browsing to &lt;em&gt;https://appname[.scm].azurewebsites.net&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Externally public DNS for &lt;em&gt;appname[.scm].azurewebsites.net&lt;/em&gt; will still resolve and route you to the public endpoint in which case you will be met with the blue Forbidden page.
+To route external traffic to the site or if you prefer to use a custom domain internally, you can setup a reverse proxy like &lt;a href=&quot;https://docs.microsoft.com/azure/application-gateway/&quot;&gt;Azure Application Gateway&lt;/a&gt;. In a reverse proxy you can override the custom domain with an internal hostname like &lt;em&gt;appname[.scm].azurewebsites.net&lt;/em&gt;. All of this has been possible for a while and you can use the SCM APIs by providing the &lt;a href=&quot;https://docs.microsoft.com/azure/app-service/deploy-configure-credentials?tabs=cli&quot;&gt;deployment credentials&lt;/a&gt; in the request, but what has not been possible is to access the SCM site in the browser and using all the tools available here.&lt;/p&gt;
+
+&lt;p&gt;Previously when setting this up and browsing to &lt;em&gt;https://[scm.mydomain.com]/basicauth&lt;/em&gt; the browser would challenge you for your deployment credentials, but after validating your credentials, it would redirect you to &lt;em&gt;appname.scm.azurewebsites.net&lt;/em&gt;, which would be blocked. What you can now do, is to use &lt;em&gt;https://[scm.mydomain.com]/basicauth&lt;strong&gt;viaproxy&lt;/strong&gt;&lt;/em&gt;. When accessing this link, the backend will look for the originating address in &lt;code class=&quot;highlighter-rouge&quot;&gt;X-Forwarded-Host&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;X-Original-Host&lt;/code&gt; and redirect you to the appropriate address upon successful login.&lt;/p&gt;
+
+&lt;p&gt;A few notes:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;It only works with deployment credentials. SSO is not possible&lt;/li&gt;
+  &lt;li&gt;SCM site does not have an unauthenticated health endpoint, so health probes should either be disabled or accept 401 and 403&lt;/li&gt;
+  &lt;li&gt;Some response payloads from the SCM APIs contain absolute references defaulting to the incoming host (&lt;em&gt;appname.scm.azurewebsites.net&lt;/em&gt;). To override this and honor the originating address, configure the following App Setting on the web app: &lt;code class=&quot;highlighter-rouge&quot;&gt;SCM_USE_ORIGINALHOST_FOR_REFERENCE&lt;/code&gt; = &lt;code class=&quot;highlighter-rouge&quot;&gt;1&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Azure App Service</name></author><category term="networking" /><category term="scm" /><summary type="html">When enabling private endpoint for a web app, both the web app and the Source Control Manager (SCM) site, also sometimes referred to as kudu, are locked down to only receive traffic from the private IP. If you are in the internal network and have setup proper private DNS resolution, you can access both sites by browsing to https://appname[.scm].azurewebsites.net.</summary></entry><entry><title type="html">Using Azure Functions with Azure Virtual Network NAT to Avoid SNAT Port Exhaustion</title><link href="https://azure.github.io/AppService/2021/03/02/Using-Azure-Functions-with-Azure-Virtual-Network-NAT-to-Avoid-SNAT-Port-Exhaustion.html" rel="alternate" type="text/html" title="Using Azure Functions with Azure Virtual Network NAT to Avoid SNAT Port Exhaustion" /><published>2021-03-02T00:00:00+00:00</published><updated>2021-03-02T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2021/03/02/Using-Azure-Functions-with-Azure-Virtual-Network-NAT-to-Avoid-SNAT-Port-Exhaustion</id><content type="html" xml:base="https://azure.github.io/AppService/2021/03/02/Using-Azure-Functions-with-Azure-Virtual-Network-NAT-to-Avoid-SNAT-Port-Exhaustion.html">&lt;p&gt;Source Network Address Translation (SNAT) ports are used by App Service to translate outbound connections to public IP addresses.  However, there are limitations to the number of SNAT port connections you can use at once and if your application runs out of SNAT ports it will cause intermittent connectivity issues. To avoid SNAT port exhaustion issues you will need to make sure that no new connections are created repetitively on the same host and port. Follow this &lt;a href=&quot;https://github.com/paolosalvatori/azure-function-premium-plan&quot;&gt;sample&lt;/a&gt; for further detail on how this can be accomplished using Azure Functions, Regional VNET Integration, Private Endpoints and NAT Gateway.&lt;/p&gt;
+
+&lt;p&gt;To learn more about Troubleshooting outbound connection errors, see the &lt;a href=&quot;https://docs.microsoft.com/azure/app-service/troubleshoot-intermittent-outbound-connection-errors&quot;&gt;documentation&lt;/a&gt;.&lt;/p&gt;</content><author><name>Azure App Service</name></author><summary type="html">Source Network Address Translation (SNAT) ports are used by App Service to translate outbound connections to public IP addresses. However, there are limitations to the number of SNAT port connections you can use at once and if your application runs out of SNAT ports it will cause intermittent connectivity issues. To avoid SNAT port exhaustion issues you will need to make sure that no new connections are created repetitively on the same host and port. Follow this sample for further detail on how this can be accomplished using Azure Functions, Regional VNET Integration, Private Endpoints and NAT Gateway.</summary></entry><entry><title type="html">App Service Managed Certificate (Preview) Now Supports Apex Domains</title><link href="https://azure.github.io/AppService/2021/03/02/asmc-apex-domain.html" rel="alternate" type="text/html" title="App Service Managed Certificate (Preview) Now Supports Apex Domains" /><published>2021-03-02T00:00:00+00:00</published><updated>2021-03-02T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2021/03/02/asmc-apex-domain</id><content type="html" xml:base="https://azure.github.io/AppService/2021/03/02/asmc-apex-domain.html">&lt;p&gt;App Service Managed Certificate (preview) now lets you secure your apex domains on your web apps at no additional charge. This feature is similar to the current App Service Managed Certificate sub-domain support where you can create a standard certificate valid for six months which will automatically renew a month prior expiration. Your TLS/SSL bindings will also be automatically updated. If you have several domains, you will need to separately create an App Service Managed Certificate for each of them; wildcard certificate is not supported for this feature.&lt;/p&gt;
+
+&lt;h2 id=&quot;getting-started&quot;&gt;Getting started&lt;/h2&gt;
+
+&lt;h3 id=&quot;pre-requisites-&quot;&gt;Pre-requisites &lt;a name=&quot;pre-reqs&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;App Service Managed Certificates for apex domains are validated with HTTP token validation which App Service will set up on your behalf. However, to ensure a successful create and renewal validation, you want to make sure that you have the following set up, otherwise your certificate validation will fail.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.microsoft.com/en-us/azure/app-service/app-service-web-tutorial-custom-domain#map-an-a-record&quot;&gt;Add an apex domain to your web app by mapping an A record and TXT record to your web app&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;Your web app must be accessible from the public network and does not have any &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/app-service/app-service-ip-restrictions&quot;&gt;IP restrictions&lt;/a&gt; set up. You cannot validate your certificate if your web app is not accessible from the public network. &lt;strong&gt;Adding IP restrictions after creating a certificate will cause renewal to fail.&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;creating-an-app-service-managed-certificate&quot;&gt;Creating an App Service Managed Certificate&lt;/h3&gt;
+&lt;p&gt;Before creating a managed certificate, make sure you have met the &lt;a href=&quot;#pre-reqs&quot;&gt;pre-requisites&lt;/a&gt;. In the Azure Portal, head to your web app and from the left navigation menu of your app, select &lt;strong&gt;TLS/SSL settings&lt;/strong&gt; &amp;gt; &lt;strong&gt;Private Key Certificates (.pfx)&lt;/strong&gt; &amp;gt; &lt;strong&gt;Create App Service Managed Certificate&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/AppService/media/2021/03/create-managed-cert.png&quot; alt=&quot;Create-Managed-Cert-Portal&quot; class=&quot;align-center&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;A blade will show up on the right side of the page. In that blade, select an apex domain from the drop down menu and click “Create”. It may take up to a few minutes to create a managed certificate for your apex domain.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/AppService/media/2021/03/create-managed-cert-apex-domain.png&quot; alt=&quot;Create-Managed-Cert-Apex-Domain-Portal&quot; class=&quot;align-center&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Once you get a notification that the managed certificate was created successfully, you will see the certificate on the list of “Private Key Certificates”. If you close the blade before getting a successful notification or if you do not see the newly created managed certificate, refresh the page and you should see the new certificate on the list.&lt;/p&gt;
+
+&lt;h2 id=&quot;faq&quot;&gt;FAQ&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Q:&lt;/strong&gt; I’m getting “Web app is not accessible by public network” error. What does this mean?&lt;/p&gt;
+
+    &lt;p&gt;&lt;strong&gt;A:&lt;/strong&gt; In order to pass the HTTP token validation, your web app needs to be accessible from public network. If your web app has network restrictions, the HTTP token validation will fail.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Q:&lt;/strong&gt; I am getting the following error on portal when validating my domain with a country code top-level domain (ccTLD): &lt;code class=&quot;highlighter-rouge&quot;&gt;Properties.CanonicalName is invalid. Canonical name XXXXX is not a subdomain. This validation method only supports subdomains&lt;/code&gt;. How can I fix this?&lt;/p&gt;
+
+    &lt;p&gt;&lt;strong&gt;A:&lt;/strong&gt; If you are encountering this error with your apex domain, try creating a certificate with the &lt;a href=&quot;#automate-with-scripts&quot;&gt;script&lt;/a&gt; below.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Q:&lt;/strong&gt; Does this have CLI or Powershell support? How can I automate the create process?&lt;/p&gt;
+
+    &lt;p&gt;&lt;strong&gt;A:&lt;/strong&gt; Currently, there is no first class CLI and Powershell support to create a managed certificate for apex domains. However, if you need to automate the process, you can try using ARM template. Refer to the &lt;a href=&quot;#automate-with-scripts&quot;&gt;automate with scripts&lt;/a&gt; section of the article.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Q:&lt;/strong&gt; Is this supported when using alias record for my apex domain referencing Traffic Manager?&lt;/p&gt;
+
+    &lt;p&gt;&lt;strong&gt;A:&lt;/strong&gt; This scenario is &lt;strong&gt;not&lt;/strong&gt; supported. Since managed certificates for apex domain uses HTTP token validation, the validation can fail if the web app itself isn’t reached during certificate create/renew validation. Do not create a managed certificate for this scenario.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Q:&lt;/strong&gt; Is it expected that the managed certificate for apex domain to take a bit longer to create than for sub-domain?&lt;/p&gt;
+
+    &lt;p&gt;&lt;strong&gt;A:&lt;/strong&gt; Yes, your App Service Managed Certificate for apex domain will take a bit longer to create than for sub-domain because it uses a different validation method.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;automate-with-scripts-&quot;&gt;Automate with scripts &lt;a name=&quot;automate-with-scripts&quot;&gt;&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;You can create an App Service Managed Certificate for your apex domain using ARM Template. Below is a sample of using a Powershell script to run your ARM template. This script will only create an App Service Managed Certificate for a custom domain that has already been added to your web app. If you run this script before adding a custom domain to the web app, the script will fail.&lt;/p&gt;
+
+&lt;h3 id=&quot;powershell-script-to-run-arm-template&quot;&gt;Powershell script to run ARM template&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-ps&quot;&gt;#Connect-AzureRmAccount
+
+$subscription = &quot;SUBSCRIPTION-ID&quot;
+$resourceGroupName = &quot;RESOURCE-GROUP-NAME&quot;
+$appServicePlanName = &quot;APP-SERVICE-PLAN-NAME&quot;
+$subjectName = &quot;DOMAIN-NAME&quot;
+
+Set-AzureRmContext -SubscriptionId $subscription
+
+$appServicePlan = Get-AzureRmResource `
+    | Where-Object {$_.ResourceGroupName -eq $resourceGroupName } `
+    | Where-Object {$_.Name -eq $appServicePlanName}
+
+New-AzureRMResourceGroupDeployment `
+    -ResourceGroupName $resourceGroupName `
+    -SubjectName $subjectName `
+    -AppServicePlanName $appServicePlanName `
+    -Location $appServicePlan.Location `
+    -TemplateFile &quot;CreateHttpFreeCert.json&quot; 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;arm-template&quot;&gt;ARM template&lt;/h3&gt;
+
+&lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;$schema&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;contentVersion&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;1.0.0.0&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;parameters&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;SubjectName&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+            &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;type&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;string&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+            &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;metadata&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+                &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;description&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Subject name of the certificate.&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+            &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;AppServicePlanName&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+            &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;type&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;string&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+            &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;metadata&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+                &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;description&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;App Service Plan Name where certificate will be imported to.&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+            &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;Location&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+            &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;type&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;string&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+            &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;metadata&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+                &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;description&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Location of app service plan.&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+            &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;resources&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+            &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;apiVersion&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;2019-08-01&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+            &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;location&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;[parameters('Location')]&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+            &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;[concat(parameters('SubjectName'), '-', parameters('AppServicePlanName'), '-', parameters('Location'))]&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+            &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;type&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Microsoft.Web/certificates&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; 
+            &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;properties&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+                &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;serverFarmId&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;[resourceId('Microsoft.Web/serverfarms/', parameters('AppServicePlanName'))]&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+                &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;canonicalName&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;[parameters('SubjectName')]&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+                &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;domainValidationMethod&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;http-token&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+            &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>Azure App Service</name></author><category term="certsdomains" /><summary type="html">App Service Managed Certificate (preview) now lets you secure your apex domains on your web apps at no additional charge. This feature is similar to the current App Service Managed Certificate sub-domain support where you can create a standard certificate valid for six months which will automatically renew a month prior expiration. Your TLS/SSL bindings will also be automatically updated. If you have several domains, you will need to separately create an App Service Managed Certificate for each of them; wildcard certificate is not supported for this feature.</summary></entry><entry><title type="html">Proactive Crash Monitoring in Azure App Service</title><link href="https://azure.github.io/AppService/2021/03/01/Proactive-Crash-Monitoring-in-Azure-App-Service.html" rel="alternate" type="text/html" title="Proactive Crash Monitoring in Azure App Service" /><published>2021-03-01T00:00:00+00:00</published><updated>2021-03-01T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2021/03/01/Proactive%20Crash%20Monitoring%20in%20Azure%20App%20Service</id><content type="html" xml:base="https://azure.github.io/AppService/2021/03/01/Proactive-Crash-Monitoring-in-Azure-App-Service.html">&lt;p&gt;A crash of a process happens when the process terminates due to an unhandled exception within the application code. A crash leads to a restart and all the in-flight requests (requests currently being handled by the process) are aborted abruptly and may fail with an HTTP 502 error. The process restart causes the application startup code to kick in and the result might be observed as slowness in the application for end-users. Hence, crashes should be avoided as much as possible! &lt;strong&gt;Proactive Crash Monitoring&lt;/strong&gt; is a feature of Azure App Service that checks for process crashes and collects diagnostic data that helps you determine the root cause of the crash.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Currently offered in App Service Diagnostics for Windows web apps.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;how-does-proactive-crash-monitoring-work&quot;&gt;How does Proactive Crash Monitoring work?&lt;/h2&gt;
+
+&lt;p&gt;Whenever the worker process (w3wp.exe) corresponding to your app crashes due to an unhandled exception for more than &lt;strong&gt;3 times in 24 hours on the same instance&lt;/strong&gt;, the feature is enabled &lt;strong&gt;automatically&lt;/strong&gt; and a debugger process is attached to your site’s main worker process. This debugger process then waits for your process to crash again and, assuming it does crash again, a memory dump is collected. This memory dump is then analyzed and the call stack of the thread that caused the crash is logged in your App Service’s logs.&lt;/p&gt;
+
+&lt;h2 id=&quot;viewing-crashing-thread-information&quot;&gt;Viewing Crashing thread information&lt;/h2&gt;
+
+&lt;p&gt;Folow these steps to view the crashing thread’s call-stack.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Open the &lt;strong&gt;Diagnose and Solve&lt;/strong&gt; blade for the app (in the left-side navigation menu)&lt;/li&gt;
+  &lt;li&gt;Choose &lt;strong&gt;Availability and Performance&lt;/strong&gt; category&lt;/li&gt;
+  &lt;li&gt;Choose &lt;strong&gt;Application Crashes&lt;/strong&gt; tool&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;If this feature has collected a crashing thread stack trace, you will find an insight like in the image below&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/AppService/media/2021/03/applicationcrashsdetector1.png&quot; alt=&quot;Application Crashes Detector in Diagnose and Solve problems&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/AppService/media/2021/03/applicationcrashsdetector2.png&quot; alt=&quot;Application Crashes Detector in Diagnose and Solve problems&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;faq&quot;&gt;FAQ&lt;/h2&gt;
+
+&lt;h3 id=&quot;how-frequently-are-the-crash-dumps-recorded&quot;&gt;How frequently are the crash dumps recorded?&lt;/h3&gt;
+
+&lt;p&gt;Once a memory dump is captured on an instance, further memory dumps on the same instance may not be captured for the next 8 hours even if the process keeps crashing.&lt;/p&gt;
+
+&lt;h3 id=&quot;what-happens-to-the-memory-dump-that-is-collected&quot;&gt;What happens to the memory dump that is collected?&lt;/h3&gt;
+
+&lt;p&gt;Since the memory dump contains PII data, the memory dump is deleted once the call stack and exception information is recorded. There is no way to retrieve this dump later as this dump is not stored or persisted anywhere. If you need to capture a memory dump for further investigation and a call stack alone is not sufficient, then leverage the &lt;a href=&quot;https://azure.github.io/AppService/2020/08/11/Crash-Monitoring-Feature-in-Azure-App-Service.html&quot;&gt;Crash Monitoring feature of Azure App Service&lt;/a&gt; that allows you to collect memory dumps on process crashes.&lt;/p&gt;
+
+&lt;h3 id=&quot;is-the-original-exception-message-logged-somewhere&quot;&gt;Is the original exception message logged somewhere?&lt;/h3&gt;
+
+&lt;p&gt;The exception message may contain PII data due to which the exception message is not logged in Azure App Services Platform telemetry. There is a log file created in &lt;strong&gt;d:\home\logfiles\crashdumps&lt;/strong&gt; folder for each crash and this log file contains the exception type and full exception message. Information about the last 10 crashes only is saved and older files are deleted. You can view this log file by going to the KUDU console (available at &lt;em&gt;yoursitename.scm.azurewebsites.net&lt;/em&gt;) for your app.&lt;/p&gt;
+
+&lt;h3 id=&quot;which-processes-are-monitored-by-this-feature&quot;&gt;Which processes are monitored by this feature?&lt;/h3&gt;
+
+&lt;p&gt;This feature only monitors the w3wp.exe corresponding to the main app. Any processes that are spun up for out-of-process hosting scenarios (like PHP, CGI, Java, or .Net Core OutProc) are not monitored by this feature. Also, any processes that belong to the SCM site (for e.g. Webjobs) are not monitored by this feature.&lt;/p&gt;
+
+&lt;h3 id=&quot;are-there-additional-processes-started-as-a-result-of-this-feature&quot;&gt;Are there additional processes started as a result of this feature?&lt;/h3&gt;
+
+&lt;p&gt;When this feature is trying to capture a crash dump of your process, you may see CrashMon.exe, procdump.exe, or dbghost.exe running in the Kudu Console for your app.&lt;/p&gt;
+
+&lt;h3 id=&quot;are-we-notified-for-unhandled-exceptions-recorded-by-this-feature&quot;&gt;Are we notified for unhandled exceptions recorded by this feature?&lt;/h3&gt;
+
+&lt;p&gt;We are currently notifying via Azure Email service only for Stack Overflow exceptions. In the future, recommendation emails will be sent for all other crashes too. Here is an example of an email that gets sent out as a result of this feature.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/AppService/media/2021/03/crashmonitoringemail.png&quot; alt=&quot;Crash Monitoring Email&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;what-is-the-performance-overhead-introduced-by-the-feature&quot;&gt;What is the performance overhead introduced by the feature?&lt;/h3&gt;
+
+&lt;p&gt;There might be slight performance impact to your app because a debugger process is attached till the worker process crashes once. The overhead introduced should be negligible but only for apps that have very high exceptions per second rate, some delay may be observed.&lt;/p&gt;
+
+&lt;h3 id=&quot;can-this-feature-be-disabled&quot;&gt;Can this feature be disabled?&lt;/h3&gt;
+
+&lt;p&gt;You can opt-out of this feature by adding the APP SETTING &lt;strong&gt;WEBSITE_PROACTIVE_CRASHMONITORING_ENABLED&lt;/strong&gt; and setting it to &lt;strong&gt;FALSE&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Happy Debugging!&lt;/p&gt;</content><author><name>Azure App Service</name></author><category term="Diagnostics" /><summary type="html">A crash of a process happens when the process terminates due to an unhandled exception within the application code. A crash leads to a restart and all the in-flight requests (requests currently being handled by the process) are aborted abruptly and may fail with an HTTP 502 error. The process restart causes the application startup code to kick in and the result might be observed as slowness in the application for end-users. Hence, crashes should be avoided as much as possible! Proactive Crash Monitoring is a feature of Azure App Service that checks for process crashes and collects diagnostic data that helps you determine the root cause of the crash.</summary></entry><entry><title type="html">Deploying to Network-secured sites, Part 2</title><link href="https://azure.github.io/AppService/2021/03/01/deploying-to-network-secured-sites-2.html" rel="alternate" type="text/html" title="Deploying to Network-secured sites, Part 2" /><published>2021-03-01T00:00:00+00:00</published><updated>2021-03-01T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2021/03/01/deploying-to-network-secured-sites-2</id><content type="html" xml:base="https://azure.github.io/AppService/2021/03/01/deploying-to-network-secured-sites-2.html">&lt;p&gt;&lt;a href=&quot;https://azure.github.io/AppService/2021/01/04/deploying-to-network-secured-sites.html&quot;&gt;An earlier article&lt;/a&gt; explained how to use self-hosted Azure DevOps agents to build and deploy your applications to a web app that has Private Endpoints enabled, or an &lt;a href=&quot;https://docs.microsoft.com/azure/app-service/environment/create-ilb-ase&quot;&gt;ILB ASE&lt;/a&gt;. If you didn’t read that article, the TL;DR is that &lt;a href=&quot;https://azure.github.io/AppService/2020/10/06/private-endpoint-app-service-ga.html&quot;&gt;Private Endpoints&lt;/a&gt; blocks inbound access to your web app from the public internet. Private Endpoints is great for securing internal-facing applications without deploying an &lt;a href=&quot;https://docs.microsoft.com/azure/app-service/environment/intro&quot;&gt;App Service Environment&lt;/a&gt;, but it means that you cannot directly publish your code to the web app from your local machine or Continuous Integration pipeline because that traffic is blocked. The &lt;a href=&quot;https://azure.github.io/AppService/2021/01/04/deploying-to-network-secured-sites.html&quot;&gt;earlier article&lt;/a&gt; shows how to deploy Azure DevOps build agents onto Virtual Machine Scale Sets in your Azure VNet. Those agents can publish to the web app since the deployment is sent from within the virtual network, not over the public internet.&lt;/p&gt;
+
+&lt;h2 id=&quot;solution-overview&quot;&gt;Solution Overview&lt;/h2&gt;
+
+&lt;p&gt;This article shows how to deploy to a Private Endpoint-enabled site from a Continuous Integration pipeline (such as GitHub Actions, Circle CI, Jenkins, or Travis CI) without having to self-host the CI service on a VM. Since Private Endpoints disables all &lt;strong&gt;inbound&lt;/strong&gt; traffic from the internet, our CI pipeline will publish the files to a storage account and give the web app a SAS URL to files. Once the web app is given this SAS URL, it will pull the files from the storage account.&lt;/p&gt;
+
+&lt;p&gt;We will use GitHub Actions as the CI system to demonstrate this solution, but the same pattern can be applied to other CI providers as well. If you are not familiar with GitHub Actions, please &lt;a href=&quot;https://docs.github.com/en/actions&quot;&gt;refer to the docs&lt;/a&gt;. If you are using a different CI system, simply copy the Azure CLI commands at the bottom, and use them in your CI provider.&lt;/p&gt;
+
+&lt;h2 id=&quot;github-actions-workflow&quot;&gt;GitHub Actions workflow&lt;/h2&gt;
+
+&lt;p&gt;The workflow has two jobs. The first builds and tests the application and uploads the artifact for the second job. Once the artifact is built, tested and uploaded, the second job pulls the artifact and runs an Azure CLI script to publish the files to an Azure Storage Account. Once the files are uploaded, we generate a SAS URL for the storage container with an expiration of 30-minutes. (This means the URL will be invalid 10 minutes after creation.) The web app then pulls the application from the storage account and deploys it. Behind the scenes, the Azure CLI commands are using &lt;a href=&quot;https://docs.microsoft.com/azure/app-service/deploy-zip#deploy-zip-file-with-azure-cli&quot;&gt;ZIP deploy&lt;/a&gt; to publish the application. Once your code is deployed to the web app, a final CLI command deletes the storage container that contained the ZIP file.&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Deploy web app via Storage Account&lt;/span&gt;
+
+&lt;span class=&quot;na&quot;&gt;on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;branches&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;master&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;]&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;workflow_dispatch&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+
+&lt;span class=&quot;na&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;WEBAPP&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;your-webapp-name&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;GROUP&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;your-resource-group-name&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;ACCOUNT&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;name-for-storage-acct&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# Does not have to exist, this will be created for you&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;CONTAINER&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;name-for-storage-container&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;EXPIRY_TIME&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;10 minutes&lt;/span&gt;
+
+&lt;span class=&quot;na&quot;&gt;jobs&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;runs-on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ubuntu-latest&lt;/span&gt;
+
+    &lt;span class=&quot;na&quot;&gt;steps&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;actions/checkout@v2&lt;/span&gt;
+    
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Set up JDK &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1.8&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;actions/setup-java@v1&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;java-version&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1.8&lt;/span&gt;
+        
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Build with Maven&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;mvn package&lt;/span&gt;
+      
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Upload artifact for deployment jobs&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;actions/upload-artifact@v2&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;app&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;target/app.jar&lt;/span&gt;
+  
+  &lt;span class=&quot;na&quot;&gt;publish&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;runs-on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ubuntu-latest&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;needs&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;build&lt;/span&gt;
+    
+    &lt;span class=&quot;na&quot;&gt;steps&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Azure Login&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;azure/login@v1&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;creds&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;${{ secrets.AZURE_CREDENTIALS }}&lt;/span&gt;
+          
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Download artifact&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;actions/download-artifact@v2&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;app&lt;/span&gt;
+      
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Zip the app contents&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;papeloto/action-zip@v1&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;files&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;app.jar&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;dest&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;app.zip&lt;/span&gt;
+
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Set SAS token expiration&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;echo &quot;expiry=`date -u -d &quot;$EXPIRY_TIME&quot; '+%Y-%m-%dT%H:%MZ'`&quot; &amp;gt;&amp;gt; $GITHUB_ENV&lt;/span&gt;
+
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Azure CLI script&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;azure/CLI@v1&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;azcliversion&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;2.19.1&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;inlineScript&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;|&lt;/span&gt;
+            &lt;span class=&quot;s&quot;&gt;az extension add --name webapp&lt;/span&gt;
+
+            &lt;span class=&quot;s&quot;&gt;az storage account create   -n $ACCOUNT   -g $GROUP -l westus&lt;/span&gt;
+            &lt;span class=&quot;s&quot;&gt;az storage container create -n $CONTAINER --account-name $ACCOUNT&lt;/span&gt;
+            &lt;span class=&quot;s&quot;&gt;az storage blob upload      -f app.zip    --account-name $ACCOUNT -c $CONTAINER -n $ACCOUNT&lt;/span&gt;
+
+            &lt;span class=&quot;s&quot;&gt;ZIP_URL=$(az storage blob generate-sas --full-uri --permissions r --expiry ${{ env.expiry }} --account-name $ACCOUNT -c $CONTAINER -n $ACCOUNT | xargs)&lt;/span&gt;
+
+            &lt;span class=&quot;s&quot;&gt;az webapp deploy --name $WEBAPP --resource-group $GROUP --type zip --src-url  $ZIP_URL --async false&lt;/span&gt;
+
+            &lt;span class=&quot;s&quot;&gt;az storage container delete -n $CONTAINER --account-name $ACCOUNT &lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;To use this workflow in your GitHub project, simply &lt;a href=&quot;https://github.com/azure/login#configure-deployment-credentials&quot;&gt;create an Azure Service Principal&lt;/a&gt; and save it as a secret named &lt;code class=&quot;highlighter-rouge&quot;&gt;AZURE_CREDENTIALS&lt;/code&gt; in your repository. Finally, update the &lt;code class=&quot;highlighter-rouge&quot;&gt;WEBAPP&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;CONTAINER&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;GROUP&lt;/code&gt;, and &lt;code class=&quot;highlighter-rouge&quot;&gt;ACCOUNT&lt;/code&gt; environment variables with your desired resource names. By default, this workflow will run whenever a commit is pushed to the &lt;code class=&quot;highlighter-rouge&quot;&gt;main&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;master&lt;/code&gt; branch. You can change this by updating the workflow triggers at the top of the yaml file. You can change the SAS token expiration time by changing the value of the &lt;code class=&quot;highlighter-rouge&quot;&gt;EXPIRY_TIME&lt;/code&gt; variable at the top of the workflow.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The &lt;a href=&quot;https://docs.microsoft.com/cli/azure/ext/webapp/webapp?view=azure-cli-latest#ext_webapp_az_webapp_deploy&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;az webapp deploy&lt;/code&gt;&lt;/a&gt; command is in the &lt;code class=&quot;highlighter-rouge&quot;&gt;webapps&lt;/code&gt; extension as of March 2021, it will be included in the core CLI in future release.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;notes-for-other-ci-services&quot;&gt;Notes for other CI services&lt;/h2&gt;
+
+&lt;p&gt;Not using GitHub Actions? No problem! You can log into the Azure CLI using a Service Principal, just like on GitHub Actions, and use the Azure CLI commands at the bottom of the yaml file. We have compiled some helpful resources for common CI providers below.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.microsoft.com/azure/devops/pipelines/tasks/deploy/azure-cli?view=azure-devops&quot;&gt;Azure DevOps&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://circleci.com/developer/orbs/orb/circleci/azure-cli&quot;&gt;Circle CI&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://plugins.jenkins.io/azure-cli/&quot;&gt;Jenkins&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Azure App Service</name></author><category term="Deployment" /><category term="Networking" /><summary type="html">An earlier article explained how to use self-hosted Azure DevOps agents to build and deploy your applications to a web app that has Private Endpoints enabled, or an ILB ASE. If you didn’t read that article, the TL;DR is that Private Endpoints blocks inbound access to your web app from the public internet. Private Endpoints is great for securing internal-facing applications without deploying an App Service Environment, but it means that you cannot directly publish your code to the web app from your local machine or Continuous Integration pipeline because that traffic is blocked. The earlier article shows how to deploy Azure DevOps build agents onto Virtual Machine Scale Sets in your Azure VNet. Those agents can publish to the web app since the deployment is sent from within the virtual network, not over the public internet. Solution Overview This article shows how to deploy to a Private Endpoint-enabled site from a Continuous Integration pipeline (such as GitHub Actions, Circle CI, Jenkins, or Travis CI) without having to self-host the CI service on a VM. Since Private Endpoints disables all inbound traffic from the internet, our CI pipeline will publish the files to a storage account and give the web app a SAS URL to files. Once the web app is given this SAS URL, it will pull the files from the storage account. We will use GitHub Actions as the CI system to demonstrate this solution, but the same pattern can be applied to other CI providers as well. If you are not familiar with GitHub Actions, please refer to the docs. If you are using a different CI system, simply copy the Azure CLI commands at the bottom, and use them in your CI provider. GitHub Actions workflow The workflow has two jobs. The first builds and tests the application and uploads the artifact for the second job. Once the artifact is built, tested and uploaded, the second job pulls the artifact and runs an Azure CLI script to publish the files to an Azure Storage Account. Once the files are uploaded, we generate a SAS URL for the storage container with an expiration of 30-minutes. (This means the URL will be invalid 10 minutes after creation.) The web app then pulls the application from the storage account and deploys it. Behind the scenes, the Azure CLI commands are using ZIP deploy to publish the application. Once your code is deployed to the web app, a final CLI command deletes the storage container that contained the ZIP file. name: Deploy web app via Storage Account on: push: branches: [ main, master ] workflow_dispatch: env: WEBAPP: your-webapp-name GROUP: your-resource-group-name ACCOUNT: name-for-storage-acct # Does not have to exist, this will be created for you CONTAINER: name-for-storage-container EXPIRY_TIME: 10 minutes jobs: build: runs-on: ubuntu-latest steps: - uses: actions/checkout@v2 - name: Set up JDK 1.8 uses: actions/setup-java@v1 with: java-version: 1.8 - name: Build with Maven run: mvn package - name: Upload artifact for deployment jobs uses: actions/upload-artifact@v2 with: name: app path: target/app.jar publish: runs-on: ubuntu-latest needs: build steps: - name: Azure Login uses: azure/login@v1 with: creds: ${{ secrets.AZURE_CREDENTIALS }} - name: Download artifact uses: actions/download-artifact@v2 with: name: app - name: Zip the app contents uses: papeloto/action-zip@v1 with: files: app.jar dest: app.zip - name: Set SAS token expiration run: echo &quot;expiry=`date -u -d &quot;$EXPIRY_TIME&quot; '+%Y-%m-%dT%H:%MZ'`&quot; &amp;gt;&amp;gt; $GITHUB_ENV - name: Azure CLI script uses: azure/CLI@v1 with: azcliversion: 2.19.1 inlineScript: | az extension add --name webapp az storage account create -n $ACCOUNT -g $GROUP -l westus az storage container create -n $CONTAINER --account-name $ACCOUNT az storage blob upload -f app.zip --account-name $ACCOUNT -c $CONTAINER -n $ACCOUNT ZIP_URL=$(az storage blob generate-sas --full-uri --permissions r --expiry ${{ env.expiry }} --account-name $ACCOUNT -c $CONTAINER -n $ACCOUNT | xargs) az webapp deploy --name $WEBAPP --resource-group $GROUP --type zip --src-url $ZIP_URL --async false az storage container delete -n $CONTAINER --account-name $ACCOUNT To use this workflow in your GitHub project, simply create an Azure Service Principal and save it as a secret named AZURE_CREDENTIALS in your repository. Finally, update the WEBAPP, CONTAINER, GROUP, and ACCOUNT environment variables with your desired resource names. By default, this workflow will run whenever a commit is pushed to the main or master branch. You can change this by updating the workflow triggers at the top of the yaml file. You can change the SAS token expiration time by changing the value of the EXPIRY_TIME variable at the top of the workflow. The az webapp deploy command is in the webapps extension as of March 2021, it will be included in the core CLI in future release. Notes for other CI services Not using GitHub Actions? No problem! You can log into the Azure CLI using a Service Principal, just like on GitHub Actions, and use the Azure CLI commands at the bottom of the yaml file. We have compiled some helpful resources for common CI providers below. Azure DevOps Circle CI Jenkins</summary></entry><entry><title type="html">Webinar: Build Smarter and Faster .NET Web Apps</title><link href="https://azure.github.io/AppService/2021/02/05/dotnet-webinar.html" rel="alternate" type="text/html" title="Webinar: Build Smarter and Faster .NET Web Apps" /><published>2021-02-05T00:00:00+00:00</published><updated>2021-02-05T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2021/02/05/dotnet-webinar</id><content type="html" xml:base="https://azure.github.io/AppService/2021/02/05/dotnet-webinar.html">&lt;p&gt;&lt;a href=&quot;https://info.microsoft.com/ww-landing-build-smarter-and-faster-dotnet-web-apps-with-azure&quot;&gt;Join our upcoming webinar on &lt;strong&gt;Tuesday, February 23 from 1:00 to 2:00pm&lt;/strong&gt;&lt;/a&gt; Pacific Time! Learn how Azure can help you to innovate with your .NET web apps and SQL databases with native capabilities such as AI and analytics. In addition, you’ll learn how to build smarter and faster applications using functions, APIM, and auto deployment. Lastly, we’ll show you how GitHub actions can be used to help automate your workflows.&lt;/p&gt;
+
+&lt;p&gt;We will also cover:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Leveraging deployment slots and enabling autoscaling&lt;/li&gt;
+  &lt;li&gt;Using Azure Monitor Logs and App Insights to gain insights into log and performance data&lt;/li&gt;
+  &lt;li&gt;Azure SQL Hyperscale &amp;amp; Serverless&lt;/li&gt;
+  &lt;li&gt;CI/CD with GitHub Actions for Azure SQL&lt;/li&gt;
+  &lt;li&gt;JSON Support for simplified backend solutions&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;a href=&quot;https://info.microsoft.com/ww-landing-build-smarter-and-faster-dotnet-web-apps-with-azure&quot;&gt;&lt;strong&gt;Register for the webinar!&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</content><author><name>Azure App Service</name></author><summary type="html">Join our upcoming webinar on Tuesday, February 23 from 1:00 to 2:00pm Pacific Time! Learn how Azure can help you to innovate with your .NET web apps and SQL databases with native capabilities such as AI and analytics. In addition, you’ll learn how to build smarter and faster applications using functions, APIM, and auto deployment. Lastly, we’ll show you how GitHub actions can be used to help automate your workflows. We will also cover: Leveraging deployment slots and enabling autoscaling Using Azure Monitor Logs and App Insights to gain insights into log and performance data Azure SQL Hyperscale &amp;amp; Serverless CI/CD with GitHub Actions for Azure SQL JSON Support for simplified backend solutions Register for the webinar!</summary></entry><entry><title type="html">.NET 5 NuGet package restore Incident: App Service Response</title><link href="https://azure.github.io/AppService/2021/02/05/dotnet5-cert-incident.html" rel="alternate" type="text/html" title=".NET 5 NuGet package restore Incident: App Service Response" /><published>2021-02-05T00:00:00+00:00</published><updated>2021-02-05T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2021/02/05/dotnet5-cert-incident</id><content type="html" xml:base="https://azure.github.io/AppService/2021/02/05/dotnet5-cert-incident.html">&lt;p&gt;Last week an incident occurred that caused .NET 5 NuGet package operations to fail on some Debian-family distributions. Specifically, Debian and Ubuntu maintainers published an update (for at least some distro versions) that distrusted the Symantec certificate entirely. This change was later rolled back, but patched packages were not available on the package repositories prior to the Microsoft NuGet author signing certificate expiring. Please see &lt;a href=&quot;https://github.com/NuGet/Announcements/issues/49&quot;&gt;this NuGet announcement for more information&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;impact-to-app-service-users&quot;&gt;Impact to App Service users&lt;/h2&gt;
+
+&lt;p&gt;This incident affected any users running a .NET 5 application on App Service &lt;strong&gt;and&lt;/strong&gt; using App Service’s built-in build service, known as Oryx. If you are building your .NET 5 applications locally or on a CI system, this incident will not affect your .NET 5 applications.&lt;/p&gt;
+
+&lt;p&gt;For more information, please see &lt;a href=&quot;https://github.com/NuGet/Home/issues/10491#issuecomment-772867958&quot;&gt;this GitHub thread&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;resolution-for-app-service&quot;&gt;Resolution for App Service&lt;/h2&gt;
+
+&lt;p&gt;We have updated the root certificates used in the .NET 5 runtime and build image (also known as the Oryx image) and will begin rolling out the updated image as soon as possible. We will update this article as new information becomes available.&lt;/p&gt;
+
+&lt;h2 id=&quot;workaround&quot;&gt;Workaround&lt;/h2&gt;
+
+&lt;p&gt;To work around this limitation, please build your .NET 5 applications locally or on a build system (such as GitHub Actions or AzureDevops) and deploy the built application to App Service. You can set up a GitHub Actions workflow from the &lt;strong&gt;Deployment Center&lt;/strong&gt; in the App Service blade in the Portal. If you would rather build locally, you can use the &lt;a href=&quot;https://docs.microsoft.com/azure/app-service/deploy-zip#deploy-zip-file-with-azure-cli&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;az webapp deployment source config-zip&lt;/code&gt;&lt;/a&gt; command to deploy your app from a .zip file.&lt;/p&gt;
+
+&lt;p&gt;Once the root certifactes have been updated on your site, you can return to using the Oryx build service. We will update this article as new information becomes available.&lt;/p&gt;</content><author><name>Azure App Service</name></author><summary type="html">Last week an incident occurred that caused .NET 5 NuGet package operations to fail on some Debian-family distributions. Specifically, Debian and Ubuntu maintainers published an update (for at least some distro versions) that distrusted the Symantec certificate entirely. This change was later rolled back, but patched packages were not available on the package repositories prior to the Microsoft NuGet author signing certificate expiring. Please see this NuGet announcement for more information. Impact to App Service users This incident affected any users running a .NET 5 application on App Service and using App Service’s built-in build service, known as Oryx. If you are building your .NET 5 applications locally or on a CI system, this incident will not affect your .NET 5 applications. For more information, please see this GitHub thread. Resolution for App Service We have updated the root certificates used in the .NET 5 runtime and build image (also known as the Oryx image) and will begin rolling out the updated image as soon as possible. We will update this article as new information becomes available. Workaround To work around this limitation, please build your .NET 5 applications locally or on a build system (such as GitHub Actions or AzureDevops) and deploy the built application to App Service. You can set up a GitHub Actions workflow from the Deployment Center in the App Service blade in the Portal. If you would rather build locally, you can use the az webapp deployment source config-zip command to deploy your app from a .zip file. Once the root certifactes have been updated on your site, you can return to using the Oryx build service. We will update this article as new information becomes available.</summary></entry></feed>
