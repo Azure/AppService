@@ -180,7 +180,7 @@ After a good coffee, try to browse to the Front Door url. In my case: https://se
 az ad app update --id REPLACE-ME-APPID --reply-urls https://secureweb.z01.azurefd.net/.auth/login/aad/callback https://securewebapp2021.azurewebsites.net/.auth/login/aad/callback
 ```
 
-We also need one of the new features of Authentication in App Service. Open up the auth.json file again and in the login section under allowedExternalRedirectUrls add the Azure Front Door url. You should also add it in the AAD validation section under allowedAudiences (remember the comma in both settings). Finally we need to tell the Authentication framework where to look for the original address. In forward proxies like Front Door, the address is typically sent in an http header called X-Forwarded-Host. If you are working with Azure Application Gateway, the header will be called X-Original-Host. The forwardProxy section goes to httpSettings. Final json file looks like this:
+We also need one of the new features of Authentication in App Service. Open up the auth.json file again and in the login section under allowedExternalRedirectUrls add the Azure Front Door url. You should also add it in the AAD validation section under allowedAudiences (remember the comma in both settings). Finally we need to tell the Authentication framework where to look for the original address. In forward proxies like Front Door, the address is typically sent in an http header called X-Forwarded-Host, which is covered by the Standard convention. The forwardProxy section goes to httpSettings. Final json file looks like this:
 
 ```json
 {
@@ -195,8 +195,7 @@ We also need one of the new features of Authentication in App Service. Open up t
         "httpSettings": {
             "requireHttps": true,
             "forwardProxy": {
-                "convention": "Custom",
-                "customHostHeaderName": "X-Forwarded-Host"
+                "convention": "Standard"
             }
         },
         "login": {
@@ -336,11 +335,21 @@ In this section, I will discuss some alternative approaches and advanced scenari
 
 ### Application Gateway
 
-Instead of Front Door or in addition to Front Door you can use Azure Application Gateway to add WAF capabilities and advanced routing and rewrite logic. It can also be used to provide regional load balancing. Application Gateway currently does not support Manage Certificate, so you will have to bring your own certificate. For the Authentication in they auth.json, you will have to specify X-Original-Host as the customHostHeaderName. The rest of the settings and steps should be identical.
+Instead of Front Door or in addition to Front Door you can use Azure Application Gateway to add WAF capabilities and advanced routing and rewrite logic. It can also be used to provide regional load balancing. Application Gateway currently does not support Manage Certificate, so you will have to bring your own certificate.
+
+Application Gateway deviates from the standard http header used for the forwarded host. It uses a header called X-Original-Host. For the Authentication configuration in auth.json, you will have to change the convention to Custom and specify X-Original-Host as the customHostHeaderName. The rest of the settings and steps should be identical.
+
+```json
+"forwardProxy": {
+    "convention": "Custom",
+    "customHostHeaderName": "X-Original-Host"
+}
+```
 
 ### Private endpoint
 
 To secure the incoming traffic to the Web App(s) we used access restrictions. If you prefer private endpoint, this is also possible. The next generation Azure Front Door supports setting up a private endpoint from your Front Door instance directly to your Web App. For App Service, private endpoint requires Premium tier, so you need to scale up the App Service Plan. Besides that, the only change will be setup of origin in Front Door, where you can request the creation of a private endpoint, and then from the Web App(s) you can approve it.
+
 The step of uploading the debug page will require some additional setup. The SCM site will also be available only through private endpoint, and you will have to run the script from within a network with line-of-sight and proper DNS resolution for the private endpoint.
 
 ### Custom domain for SCM Site
@@ -349,11 +358,18 @@ While not directly related to the Authentication part, you may want/need to expo
 
 ### Custom health probe path
 
-If you have a custom health probe path, you can tell App Service to allow unauthenticated traffic on that specific path. Specify the relative path using an App Setting called WEBSITE_WARMUP_PATH.
+If you have a custom health probe path, you can configure the Authentication layer in App Service to allow unauthenticated traffic on specific paths. These paths are configured in the auth.json file in excludedPaths under globalValidation. An example of excluding the debug page if accessed directly will look like this:
 
-```bash
-az webapp config appsettings set -g securewebsetup -n securewebapp2021 --settings "WEBSITE_WARMUP_PATH=/default.cshtml"
+```json
+"globalValidation": {
+    "unauthenticatedClientAction": "RedirectToLoginPage",
+    "redirectToProvider": "azureActiveDirectory",
+    "excludedPaths": [
+        "/default.cshtml"
+    ]
+}
 ```
 
-## FAQ and Links
+Given you are not blocked by the access restrictions of your Web App, you can now browse directly
 
+## FAQ and Links
