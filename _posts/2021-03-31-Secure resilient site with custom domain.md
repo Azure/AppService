@@ -271,7 +271,9 @@ Allow another 5-10 minutes to replicate the settings globally, and you should no
 
 ![Step 4]({{site.baseurl}}/media/2021/03/secureapp-step4.png){: .align-center}
 
-We are still able to access the Web App directly, and in this step we will restrict access to the Web App, so traffic will only be allowed through Front Door. To do this we will be using some new features of access restrictions in App Service to create rules based on Service Tags and filter by http headers. Azure CLI support for the new features are still under construction, but since you are familiar with using REST calls by now, we can revert to that. Create a json file named restrictions.json with the the following content and replace the placeholder with the specific Front Door ID found in step 2. It is also visible in the Overview section of the Front Door instance in Azure portal:
+We are still able to access the Web App directly, and in this step we will restrict access to the Web App, so traffic will only be allowed through Front Door. To do this we will be using some new features of access restrictions in App Service to create rules based on Service Tags and filter by http headers. Azure CLI support for the new features are still under construction, but since you are familiar with using REST calls by now, we can revert to that.
+
+Create a json file named restrictions.json with the the following content and replace the placeholder with the specific Front Door ID found in step 2. It is also visible in the Overview section of the Front Door instance in Azure portal:
 
 ```json
 {
@@ -293,7 +295,7 @@ We are still able to access the Web App directly, and in this step we will restr
 }
 ```
 
-Run the script to deploy the restriction (notice the change in the URI; web instead of authsettingsV2):
+After you added the Front Door ID in the json file, run the script to deploy the restriction (notice the change in the URI; web instead of authsettingsV2):
 
 ```bash
 az rest --uri /subscriptions/REPLACE-ME-SUBSCRIPTIONID/resourceGroups/REPLACE-ME-RESOURCEGROUP/providers/Microsoft.Web/sites/REPLACE-ME-APPNAME/config/web?api-version=2020-09-01 --method put --body @restrictions.json 
