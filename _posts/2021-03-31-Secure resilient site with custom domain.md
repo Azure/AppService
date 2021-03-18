@@ -75,7 +75,7 @@ az webapp deployment source config-zip -g securewebsetup -n securewebapp2021 --s
 ### Authentication setup
 
 App Service provides an easy way to setup authentication. The feature is sometimes referred to as Easy Auth. There is a new version of this in preview and for this setup we will need some of the new options that v2 provides. The new Authentication feature is available in the Azure portal, but since we need some advanced configuration options that are not yet exposed in the portal, we might as well open up the hood now.
-You have to construct the resource path to the Web App. It was returned when you created it in the previous steps, and you can also find it in the address bar when you open the resource in the portal.
+You have to get the Resource ID to the Web App. It was returned when you created it in the previous steps, and you can also find it in the portal under Properties for any resource.
 
 Ensure that you can read the settings first. Pay attention to the api-version. You should see a lot of json returned:
 
@@ -148,7 +148,7 @@ Add the value of the generated password to the App Settings of the Web App:
 az webapp config appsettings set -g securewebsetup -n securewebapp2021 --settings "AAD_CLIENT_SECRET=reP!@ce-w!th.VeRys3cr3tC0d!"
 ```
 
-Finally, let's update the Web App with the Authentication configuration (make sure you save your auth.json file):
+Finally, let's update the Web App with the Authentication configuration (make sure you save your auth.json file and append /config/authsettingsV2 to the Resource ID):
 
 ```bash
 az rest --uri /subscriptions/REPLACE-ME-SUBSCRIPTIONID/resourceGroups/REPLACE-ME-RESOURCEGROUP/providers/Microsoft.Web/sites/REPLACE-ME-APPNAME/config/authsettingsV2?api-version=2020-09-01 --method put --body @auth.json 
@@ -174,13 +174,13 @@ Use the Quick Create and under Basics, use the existing resource group. Give it 
 
 ### Alter authentication settings
 
-After a good coffee, try to browse to the Front Door url. In my case: https://secureweb.z01.azurefd.net. I appears to be working, but notice the address bar. It redirected you directly back to your Web App. To fix that we need to update the App registration in Azure AD to allow authentication request coming from the new url. You can add multiple reply-urls by separating them with a space, but if you only want to allow authentication through Front Door, you can just replace it.
+After a good coffee, try to browse to the Front Door url. In my case: https://secureweb.z01.azurefd.net. I appears to be working, but notice the address bar. It redirected you directly back to your Web App. To fix that we need to do two things. First we need to update the App registration in Azure AD to allow authentication request coming from the new url. You can add multiple reply-urls by separating them with a space, but if you only want to allow authentication through Front Door, you can just replace it.
 
 ```bash
 az ad app update --id REPLACE-ME-APPID --reply-urls https://secureweb.z01.azurefd.net/.auth/login/aad/callback https://securewebapp2021.azurewebsites.net/.auth/login/aad/callback
 ```
 
-We also need one of the new features of Authentication in App Service. Open up the auth.json file again and in the login section under allowedExternalRedirectUrls add the Azure Front Door url. You should also add it in the AAD validation section under allowedAudiences (remember the comma in both settings). Finally we need to tell the Authentication framework where to look for the original address. In forward proxies like Front Door, the address is typically sent in an http header called X-Forwarded-Host, which is covered by the Standard convention. The forwardProxy section goes to httpSettings. Final json file looks like this:
+Second, we also need one of the new features of Authentication in App Service. Open up the auth.json file again and in the login section under allowedExternalRedirectUrls add the Azure Front Door url. You should also add it in the AAD validation section under allowedAudiences (remember the comma in both settings). Finally we need to tell the Authentication framework where to look for the original address. In forward proxies like Front Door, the address is typically sent in an http header called X-Forwarded-Host, which is covered by the Standard convention. The forwardProxy section goes to httpSettings. Final json file looks like this:
 
 ```json
 {
@@ -335,7 +335,7 @@ In this section, I will discuss some alternative approaches and advanced scenari
 
 ### Application Gateway
 
-Instead of Front Door or in addition to Front Door you can use Azure Application Gateway to add WAF capabilities and advanced routing and rewrite logic. It can also be used to provide regional load balancing. Application Gateway currently does not support Manage Certificate, so you will have to bring your own certificate.
+Instead of Front Door or in addition to Front Door you can use Azure Application Gateway to add WAF capabilities and advanced routing and rewrite logic. It can also be used to provide regional load balancing. Application Gateway currently does not support Managed Certificate, so you will have to bring your own certificate.
 
 Application Gateway deviates from the standard http header used for the forwarded host. It uses a header called X-Original-Host. For the Authentication configuration in auth.json, you will have to change the convention to Custom and specify X-Original-Host as the customHostHeaderName. The rest of the settings and steps should be identical.
 
@@ -370,6 +370,14 @@ If you have a custom health probe path, you can configure the Authentication lay
 }
 ```
 
-Given you are not blocked by the access restrictions of your Web App, you can now browse directly
+You can now browse directly to that page (but will be asked for authentication if you just go to /)
 
 ## FAQ and Links
+
+*Q: On sign in, I get error AADSTS50011: The reply URL specified ... What is wrong?*
+Most likely because the address does not match the reply-url configured for th Azure AD App registration.
+
+![Error AADSTS50011]({{site.baseurl}}/media/2021/03/error-aadsts50011.png){: .align-center}
+
+*Q: I am using custom routing rules in Front Door. Anything I should pay attention to?*
+Make sure you have a routing rule for .auth/* in addition to your content rules.
