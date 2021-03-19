@@ -4,13 +4,13 @@ author_name: "Mads Damgård"
 category: networking
 ---
 
-In this article I will walk you through setting up a secure resilient Web App using some new features that have just been release or are very close to release. Below is the target setup. One or more Web Apps in multiple regions with Azure AD authentication and custom domain. Azure Front Door (AFD) will provide global load balancing and Web Application Firewall (WAF) capabilities, and the Web Apps will be isolated to only receive traffic from the specific AFD instance.
+In this article I will walk you through setting up a secure resilient Web App using some new features that have just been release or are very close to release. Below is the target setup. One or more instances of your Web App in multiple regions with Azure AD authentication and custom domain. Azure Front Door (AFD) will provide global load balancing and Web Application Firewall (WAF) capabilities, and the Web Apps will be isolated to only receive traffic from the specific AFD instance.
 
-Most of the setup you can complete using the Azure portal, but there are some preview features that require scripting. I will be using Azure CLI throughout the walk-trough, however Azure PowerShell or Azure Resource Manager templates will be just as fine. I am using bash though WSL to run the commands. If you are using a PowerShell or Cmd prompt, small syntax tweaks may be needed.
+Most of the setup you can complete using the Azure portal, but there are some preview features that require scripting. I will be using Azure CLI throughout the walk-through, however Azure PowerShell or Azure Resource Manager templates will work as well. I am using bash though WSL to run the commands. If you are using a PowerShell or Cmd prompt, small syntax tweaks may be needed.
 
 ![Final setup]({{site.baseurl}}/media/2021/03/secureapp-final-setup.png){: .align-center}
 
-We will set this up in five steps + a bonus step with more advanced scenarios:
+The setup is divided into five steps:
 
 1. Basic Web App with Azure AD Authentication
 2. Add Azure Front Door
@@ -18,24 +18,24 @@ We will set this up in five steps + a bonus step with more advanced scenarios:
 4. Restrict traffic to Web App from AFD
 5. Increase resiliency with multiple geo-distributed Web Apps
 
-At the end, there is a section on alternative approaches and advanced scenarios and we finish off with a FAQ section.
+In closing there will be a section on alternative approaches and advanced scenarios and an FAQ section.
 
 ## 1. Basic Web App with Azure AD Authentication
 
 ![Step 1]({{site.baseurl}}/media/2021/03/secureapp-step1.png){: .align-center}
 
-First we will setup a Resource Group and a Web App with Azure AD Authentication. Choose a unique name for your Web App and feel free to change name of the resource group and location. If you have preferences for App Service Plan or other options, you can configure this as well.
+First setup a Resource Group and a Web App with Azure AD Authentication. Choose a unique name for your Web App and feel free to change name of the resource group and location. If you have preferences for App Service Plan or other options, you can configure this as well.
 
 ```bash
-az group create -n securewebsetup -l westeurope
-az appservice plan create -g securewebsetup -n securewebplan --sku B1
-az webapp create -g securewebsetup -p securewebplan -n securewebapp2021 # Web App name must be globally unique
+az group create --name securewebsetup --location westeurope
+az appservice plan create --resource-group securewebsetup --name securewebplan --sku B1
+az webapp create --resource-group securewebsetup --plan securewebplan --name securewebapp2021 # Web App name must be globally unique
 ```
 
-and since the focus is security, we only allow HTTPS:
+and since the focus is security, configure the Web App to only allow HTTPS:
 
 ```bash
-az webapp update -g securewebsetup -n securewebapp2021 --https-only
+az webapp update --resource-group securewebsetup --name securewebapp2021 --https-only
 ```
 
 ### Debug page
@@ -66,16 +66,19 @@ To help debug the application, you can create a file called default.cshtml with 
 Zip the file and push it to the Web App. Afterwards you should see a site with a green background and some Debug information:
 
 ```bash
-zip -r default.zip default.cshtml
-az webapp deployment source config-zip -g securewebsetup -n securewebapp2021 --src ./default.zip
+zip default.zip default.cshtml
+az webapp deployment source config-zip --resource-group securewebsetup --name securewebapp2021 --src ./default.zip
 ```
 
 ![Debug Page]({{site.baseurl}}/media/2021/03/debug-page.png){: .align-center}
 
 ### Authentication setup
 
-App Service provides an easy way to setup authentication. The feature is sometimes referred to as Easy Auth. There is a new version of this in preview and for this setup we will need some of the new options that v2 provides. The new Authentication feature is available in the Azure portal, but since we need some advanced configuration options that are not yet exposed in the portal, we might as well open up the hood now.
-You have to get the Resource ID to the Web App. It was returned when you created it in the previous steps, and you can also find it in the portal under Properties for any resource.
+App Service provides an simple way to setup authentication. The feature is sometimes referred to as Easy Auth. There is a new version in preview and for this setup some of the new options are needed. The new Authentication feature is available in the Azure portal, but since some advanced configuration options that are not yet exposed in the portal are needed, let's open up the hood by directly using the REST API to access these feature.
+
+You have to get the Resource ID of the Web App. It was returned when you created it in the previous steps, and you can also find it in the portal under Properties for any resource.
+
+![Resource ID]({{site.baseurl}}/media/2021/03/webapp-resourceid.png){: .align-center}
 
 Ensure that you can read the settings first. Pay attention to the api-version. You should see a lot of json returned:
 
@@ -83,7 +86,7 @@ Ensure that you can read the settings first. Pay attention to the api-version. Y
 az rest --uri /subscriptions/REPLACE-ME-SUBSCRIPTIONID/resourceGroups/REPLACE-ME-RESOURCEGROUP/providers/Microsoft.Web/sites/REPLACE-ME-APPNAME?api-version=2020-09-01 --method get
 ```
 
-All the settings of Authentication is defined in a [json structure](https://docs.microsoft.com/azure/app-service/app-service-authentication-how-to#configuration-file-reference). There are many options to fine tune the configuration, but below is an extraction of the required settings we need for this scenario. Copy this into a file called auth.json:
+All the settings of Authentication is defined in a [json structure](https://docs.microsoft.com/azure/app-service/app-service-authentication-how-to#configuration-file-reference). There are many options to fine tune the configuration, but below is an extraction of the required settings needed for this scenario. Copy this into a file called auth.json:
 
 ```json
 {
@@ -128,7 +131,7 @@ The file has some placeholders that you need to fill in with your own values. Yo
 
 REPLACE-ME-TENANTID you can find by running ```az account show``` in the homeTenantId property.
 
-Next we need to create an App registration in Azure AD. This is a way to tell Azure AD, that this Web App is allowed to authenticate users in the directory and that it can do so only using specific urls. Display name can be anything. The reply-url is your base url combined with a special callback path: https://securewebapp2021.azurewebsites.net/.auth/login/aad/callback
+Next, create an App registration in Azure AD. An App registration is a way to tell Azure AD, that this Web App is allowed to authenticate users in the directory and that it can do so only using specific urls. Display name can be anything. The reply-url is your base url combined with a special callback path: https://securewebapp2021.azurewebsites.net/.auth/login/aad/callback
 
 ```bash
 az ad app create --display-name securewebapp2021 --reply-urls https://securewebapp2021.azurewebsites.net/.auth/login/aad/callback
@@ -145,7 +148,7 @@ az ad app credential reset --id REPLACE-ME-APPID --password "reP!@ce-w!th.VeRys3
 Add the value of the generated password to the App Settings of the Web App:
 
 ```bash
-az webapp config appsettings set -g securewebsetup -n securewebapp2021 --settings "AAD_CLIENT_SECRET=reP!@ce-w!th.VeRys3cr3tC0d!"
+az webapp config appsettings set --resource-group securewebsetup --name securewebapp2021 --settings "AAD_CLIENT_SECRET=reP!@ce-w!th.VeRys3cr3tC0d!"
 ```
 
 Finally, let's update the Web App with the Authentication configuration (make sure you save your auth.json file and append /config/authsettingsV2 to the Resource ID):
@@ -160,11 +163,11 @@ If you browse to the site now, you should be redirected to consent to the App pe
 
 [Azure Front Door](https://docs.microsoft.com/azure/frontdoor/standard-premium/overview) is a global, scalable entry-point that uses the Microsoft global edge network to create fast, secure, and widely scalable web applications. With Front Door, you can transform your global consumer and enterprise applications into robust, high-performing personalized modern applications with contents that reach a global audience through Azure.
 
-Azure Front Door announced in February the next generation in public preview. It combines the existing features with integrated CDN and WAF capabilities as well as some new advanced options to use private endpoints as origin (backend) and onboard Managed Certificates using TXT records, which can be helpful in a migration scenario. We will be using the preview version. PowerShell and CLI support is being worked on, so we will use the portal for now.
+Public preview of Azure Front Door vNext was recently announced. It combines the existing features of Front Door with integrated CDN and WAF capabilities as well as some new advanced options to use private endpoints as origin (backend) and onboard Managed Certificates using TXT records, which can be helpful in a migration scenario.
 
 ![Step 2]({{site.baseurl}}/media/2021/03/secureapp-step2.png){: .align-center}
 
-Create a new resource, search for Front Door and select "Front Door Standard/Premium (Preview)"
+Open [Azure portal](https://portal.azure.com/). Create a new resource, search for Front Door and select "Front Door Standard/Premium (Preview)"
 
 ![Azure Front Door Standard/Premium]({{site.baseurl}}/media/2021/03/frontdoor-new.png){: .align-center}
 
@@ -174,13 +177,15 @@ Use the Quick Create and under Basics, use the existing resource group. Give it 
 
 ### Alter authentication settings
 
-After a good coffee, try to browse to the Front Door url. In my case: https://secureweb.z01.azurefd.net. I appears to be working, but notice the address bar. It redirected you directly back to your Web App. To fix that we need to do two things. First we need to update the App registration in Azure AD to allow authentication request coming from the new url. You can add multiple reply-urls by separating them with a space, but if you only want to allow authentication through Front Door, you can just replace it.
+After a good coffee, try to browse to the Front Door url. In my case: https://secureweb.z01.azurefd.net. It appears to be working, but notice the address bar. It redirected you directly back to your Web App. To fix that you need to do a few things. First, update the App registration in Azure AD to allow authentication request coming from the new url. You can add multiple reply-urls by separating them with a space, but if you only want to allow authentication through Front Door, you can just replace it.
 
 ```bash
 az ad app update --id REPLACE-ME-APPID --reply-urls https://secureweb.z01.azurefd.net/.auth/login/aad/callback https://securewebapp2021.azurewebsites.net/.auth/login/aad/callback
 ```
 
-Second, we also need one of the new features of Authentication in App Service. Open up the auth.json file again and in the login section under allowedExternalRedirectUrls add the Azure Front Door url. You should also add it in the AAD validation section under allowedAudiences (remember the comma in both settings). Finally we need to tell the Authentication framework where to look for the original address. In forward proxies like Front Door, the address is typically sent in an http header called X-Forwarded-Host, which is covered by the Standard convention. The forwardProxy section goes to httpSettings. Final json file looks like this:
+Second, it is time to look at one of the new features of Authentication in App Service. Open up the auth.json file again and in the login section under allowedExternalRedirectUrls add the Azure Front Door url. You should also add it in the AAD validation section under allowedAudiences (remember the comma in both settings).
+
+Finally, in auth.json configure the Authentication framework to look for the original address. In forward proxies like Front Door, the address is typically sent in an http header called X-Forwarded-Host, which is covered by the Standard convention. The forwardProxy section goes to httpSettings. Final json file looks like this:
 
 ```json
 {
@@ -232,7 +237,7 @@ Save the file and run the ```az rest``` command again to update the settings:
 az rest --uri /subscriptions/REPLACE-ME-SUBSCRIPTIONID/resourceGroups/REPLACE-ME-RESOURCEGROUP/providers/Microsoft.Web/sites/REPLACE-ME-APPNAME/config/authsettingsV2?api-version=2020-09-01 --method put --body @auth.json 
 ```
 
-You should now be able to access the Web App through Front Door and be authenticated. If you added the debug page, you should now see a few additional headers. One being X-Forwarded-Host that contains the url of the Front Door and X-Azure-FDID which contains the unique ID of your Front Door instance (make a note of this as we will be using it in step 4).
+You should now be able to access the Web App through Front Door and be authenticated. If you added the debug page, you should now see a few additional headers. One being X-Forwarded-Host that contains the url of the Front Door and X-Azure-FDID which contains the unique ID of your Front Door instance (make a note of this as it will be used in step 4).
 
 ## 3. (Optional) Add Custom Domain and Certificate
 
@@ -270,7 +275,7 @@ Allow another 5-10 minutes to replicate the settings globally, and you should no
 
 ![Step 4]({{site.baseurl}}/media/2021/03/secureapp-step4.png){: .align-center}
 
-We are still able to access the Web App directly, and in this step we will restrict access to the Web App, so traffic will only be allowed through Front Door. To do this we will be using some new features of access restrictions in App Service to create rules based on Service Tags and filter by http headers. Azure CLI support for the new features are still under construction, but since you are familiar with using REST calls by now, we can revert to that.
+You are still able to access the Web App directly, and in this step you will restrict access to the Web App, so traffic will only be allowed through Front Door. To do this another new feature will be used. Access restrictions in App Service recently added the ability to create rules based on Service Tags and filter by http headers. Azure CLI support for the new features are still under construction, but since you are familiar with using REST calls by now, let's do that.
 
 Create a json file named restrictions.json with the the following content and replace the placeholder with the specific Front Door ID found in step 2. It is also visible in the Overview section of the Front Door instance in Azure portal:
 
@@ -306,17 +311,17 @@ Now, if you access the site directly, you should immediately see the blue 403 - 
 
 ![Step 5]({{site.baseurl}}/media/2021/03/secureapp-final-setup.png){: .align-center}
 
-To improve resiliency of your App and protect against regional outages you can deploy your app to multiple regions. Let's add an instance in West US. We can reuse most of the scripts, but of course need to change the name in all lines. Since we are blocking access to the Web App directly, you can either remove or ignore the direct Web App url reference in auth.json. To make it easier to notice which site is accessed, you can change the background color of the alternative site by changing the last to digits of the body background-color to FF (light blue):
+To improve resiliency of your App and protect against regional outages you can deploy your app to multiple regions. Let's add an instance in West US. You can reuse most of the scripts, but of course need to change the name in all lines. Since direct access to the Web App is already blocked, you can either remove or ignore the direct Web App url reference in auth.json. To make it easier to notice which site is accessed, you can change the background color of the alternative site by changing the last to digits of the body background-color to FF (light blue):
 
 ```bash
-az appservice plan create -g securewebsetup -n securewebplan-westus --sku B1 --location westus
-az webapp create -g securewebsetup -p securewebplan-westus -n securewebapp2021-westus
-az webapp update -g securewebsetup -n securewebapp2021-westus --https-only
+az appservice plan create --resource-group securewebsetup --name securewebplan-westus --sku B1 --location westus
+az webapp create --resource-group securewebsetup --plan securewebplan-westus --name securewebapp2021-westus
+az webapp update --resource-group securewebsetup --name securewebapp2021-westus --https-only
 
-zip -r default-alt.zip default.cshtml
-az webapp deployment source config-zip -g securewebsetup -n securewebapp2021-westus --src ./default-alt.zip
+zip default-alt.zip default.cshtml
+az webapp deployment source config-zip --resource-group securewebsetup --name securewebapp2021-westus --src ./default-alt.zip
 
-az webapp config appsettings set -g securewebsetup -n securewebapp2021-westus --settings "AAD_CLIENT_SECRET=reP!@ce-w!th.VeRys3cr3tC0d!"
+az webapp config appsettings set --resource-group securewebsetup --name securewebapp2021-westus --settings "AAD_CLIENT_SECRET=reP!@ce-w!th.VeRys3cr3tC0d!"
 
 az rest --uri /subscriptions/REPLACE-ME-SUBSCRIPTIONID/resourceGroups/REPLACE-ME-RESOURCEGROUP/providers/Microsoft.Web/sites/REPLACE-ME-WESTUS-APPNAME/config/authsettingsV2?api-version=2020-09-01 --method put --body @auth.json 
 
@@ -348,7 +353,7 @@ Application Gateway deviates from the standard http header used for the forwarde
 
 ### Private endpoint
 
-To secure the incoming traffic to the Web App(s) we used access restrictions. If you prefer private endpoint, this is also possible. The next generation Azure Front Door supports setting up a private endpoint from your Front Door instance directly to your Web App. For App Service, private endpoint requires Premium tier, so you need to scale up the App Service Plan. Besides that, the only change will be setup of origin in Front Door, where you can request the creation of a private endpoint, and then from the Web App(s) you can approve it.
+To secure the incoming traffic to the Web App(s) the access restriction feature was used. If you prefer private endpoint, this is also possible. The next generation Azure Front Door supports setting up a private endpoint from your Front Door instance directly to your Web App. For App Service, private endpoint requires Premium tier, so you need to scale up the App Service Plan. Besides that, the only change will be setup of origin in Front Door, where you can request the creation of a private endpoint, and then from the Web App(s) you can approve it.
 
 The step of uploading the debug page will require some additional setup. The SCM site will also be available only through private endpoint, and you will have to run the script from within a network with line-of-sight and proper DNS resolution for the private endpoint.
 
@@ -374,10 +379,12 @@ You can now browse directly to that page (but will be asked for authentication i
 
 ## FAQ and Links
 
-*Q: On sign in, I get error AADSTS50011: The reply URL specified ... What is wrong?*
+**Q: On sign in, I get error AADSTS50011: The reply URL specified ... What is wrong?**
+
 Most likely because the address does not match the reply-url configured for th Azure AD App registration.
 
 ![Error AADSTS50011]({{site.baseurl}}/media/2021/03/error-aadsts50011.png){: .align-center}
 
-*Q: I am using custom routing rules in Front Door. Anything I should pay attention to?*
+**Q: I am using custom routing rules in Front Door. Anything I should pay attention to?**
+
 Make sure you have a routing rule for .auth/* in addition to your content rules.
