@@ -74,7 +74,7 @@ az webapp deployment source config-zip --resource-group securewebsetup --name se
 
 ### Authentication setup
 
-App Service provides an simple way to setup authentication. The feature is sometimes referred to as Easy Auth. There is a new version in preview and for this setup some of the new options are needed. The new Authentication feature is available in the Azure portal, but since some advanced configuration options that are not yet exposed in the portal are needed, let's open up the hood by directly using the REST API to access these feature.
+App Service provides an simple way to setup authentication. The feature is sometimes referred to as Easy Auth. There is a new version in preview and for this setup some of the new options are needed. The new Authentication feature is available in the Azure portal, but a few advanced configuration options are not yet exposed in the portal, so let's look under the hood using the REST API.
 
 You have to get the Resource ID of the Web App. It was returned when you created it in the previous steps, and you can also find it in the portal under Properties for any resource.
 
