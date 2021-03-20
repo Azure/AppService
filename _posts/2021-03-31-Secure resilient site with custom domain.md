@@ -6,7 +6,9 @@ category: networking
 
 In this article I will walk you through setting up a secure resilient Web App using some new features that have just been release or are very close to release. Below is the target setup. One or more instances of your Web App in multiple regions with Azure AD authentication and custom domain. Azure Front Door (AFD) will provide global load balancing and Web Application Firewall (WAF) capabilities, and the Web Apps will be isolated to only receive traffic from the specific AFD instance.
 
-Most of the setup you can complete using the Azure portal, but there are some preview features that require scripting. I will be using Azure CLI throughout the walk-through, however Azure PowerShell or Azure Resource Manager templates will work as well. I am using bash though WSL to run the commands. If you are using a PowerShell or Cmd prompt, small syntax tweaks may be needed.
+Most of the setup you can complete using the Azure portal, but there are some preview features that require scripting. I will be using Azure CLI throughout the walk-through, however Azure PowerShell or Azure Resource Manager templates will work as well. I am using bash though [Windows Subsystem for Linux (WSL)](https://docs.microsoft.com/windows/wsl/about) to run the commands. If you are using a PowerShell or Cmd prompt, small syntax tweaks may be needed.
+
+If you are new to scripting, you will find [overview and instructions on installing Azure CLI here](https://docs.microsoft.com/cli/azure/install-azure-cli). You can also use [Azure Cloud Shell](https://docs.microsoft.com/azure/cloud-shell/overview) from the portal. It also has a nice file editor you will be using in some of the steps.
 
 ![Final setup]({{site.baseurl}}/media/2021/03/secureapp-final-setup.png){: .align-center}
 
@@ -76,11 +78,11 @@ az webapp deployment source config-zip --resource-group securewebsetup --name se
 
 App Service provides an simple way to setup authentication. The feature is sometimes referred to as Easy Auth. There is a new version in preview and for this setup some of the new options are needed. The new Authentication feature is available in the Azure portal, but a few advanced configuration options are not yet exposed in the portal, so let's look under the hood using the REST API.
 
-You have to get the Resource ID of the Web App. It was returned when you created it in the previous steps, and you can also find it in the portal under Properties for any resource.
+You have to get the Resource ID of the Web App. It was returned when you created it in the previous steps, and you can also find it in the portal under Properties. This goes for any resource.
 
 ![Resource ID]({{site.baseurl}}/media/2021/03/webapp-resourceid.png){: .align-center}
 
-Ensure that you can read the settings first. Pay attention to the api-version. You should see a lot of json returned:
+Ensure that you can read the settings first. Pay attention to the api-version. You should see a lot of json returned when running this command:
 
 ```bash
 az rest --uri /subscriptions/REPLACE-ME-SUBSCRIPTIONID/resourceGroups/REPLACE-ME-RESOURCEGROUP/providers/Microsoft.Web/sites/REPLACE-ME-APPNAME?api-version=2020-09-01 --method get
@@ -259,13 +261,57 @@ When clicking the Pending link in the Validation state column, you will get inst
 
 ![Azure DNS Add TXT Record]({{site.baseurl}}/media/2021/03/dns-addtxtrecord.png){: .align-center}
 
-Time for another cup of coffee. The validation of the TXT record and the replication of the settings can take 5-10 minutes again. While you are waiting you can also modify the App registration and the auth.json file by adding the custom domain in the same sections mentioned in Step 2 under Alter authentication settings.
+Time for another cup of coffee. The validation of the TXT record and the replication of the settings can take 5-10 minutes again.
 
-Final steps are to go back to the Domains overview in Front Door and associate the custom domain with the endpoint:
+### Alter authentication settings
+
+Azure AD App registration and App Service Authentication need to be aware of the new url. You can either append or overwrite with the new url depending on whether you want the other urls to work as well. Update App registration with the this command (here I am appending):
+
+```bash
+az ad app update --id REPLACE-ME-APPID --reply-urls https://secure.reddoglabs.com/.auth/login/aad/callback https://secureweb.z01.azurefd.net/.auth/login/aad/callback https://securewebapp2021.azurewebsites.net/.auth/login/aad/callback
+```
+
+Modify the auth.json file and update the Authentication settings.
+
+```json
+{
+    "properties": {
+        ...
+        "login": {
+            "preserveUrlFragmentsForLogins": true,
+            "allowedExternalRedirectUrls": [
+                "https://easyauth.callback",
+                "https://secure.reddoglabs.com",
+                "https://securewebapp2021.azurewebsites.net",
+                "https://secureweb.z01.azurefd.net"
+            ]
+        },
+        "identityProviders": {
+                ...
+                "validation": {
+                    "allowedAudiences": [
+                        "https://secure.reddoglabs.com",
+                        "https://securewebapp2021.azurewebsites.net",
+                        "https://secureweb.z01.azurefd.net"
+                    ]
+                }
+            }
+        }
+    }
+}
+```
+
+```bash
+az rest --uri /subscriptions/REPLACE-ME-SUBSCRIPTIONID/resourceGroups/REPLACE-ME-RESOURCEGROUP/providers/Microsoft.Web/sites/REPLACE-ME-APPNAME/config/authsettingsV2?api-version=2020-09-01 --method put --body @auth.json 
+```
+
+### Associate and map custom domain
+
+Final steps are to go back to the Domains overview in Front Door and associate the custom domain with the endpoint,
 
 ![Azure Front Door Associate Endpoint]({{site.baseurl}}/media/2021/03/frontdoor-associateendpoint.png){: .align-center}
 
-And to add a CNAME DNS record to map the actual domain:
+and to add a CNAME DNS record to map the actual domain:
 
 ![Azure DNS Add CNAME Record]({{site.baseurl}}/media/2021/03/dns-addcnamerecord.png){: .align-center}
 
@@ -275,7 +321,7 @@ Allow another 5-10 minutes to replicate the settings globally, and you should no
 
 ![Step 4]({{site.baseurl}}/media/2021/03/secureapp-step4.png){: .align-center}
 
-You are still able to access the Web App directly, and in this step you will restrict access to the Web App, so traffic will only be allowed through Front Door. To do this another new feature will be used. Access restrictions in App Service recently added the ability to create rules based on Service Tags and filter by http headers. Azure CLI support for the new features are still under construction, but since you are familiar with using REST calls by now, let's do that.
+You are still able to access the Web App directly, and in this step you will restrict access to the Web App, so traffic will only be allowed through Front Door. To do this another new feature will be used. Access restrictions in App Service recently added the ability to create rules based on Service Tags and filter by http headers. Azure CLI support for the new features is still under construction, but since you are familiar with using REST calls by now, let's do that.
 
 Create a json file named restrictions.json with the the following content and replace the placeholder with the specific Front Door ID found in step 2. It is also visible in the Overview section of the Front Door instance in Azure portal:
 
@@ -299,7 +345,7 @@ Create a json file named restrictions.json with the the following content and re
 }
 ```
 
-After you added the Front Door ID in the json file, run the script to deploy the restriction (notice the change in the URI; web instead of authsettingsV2):
+After you added the Front Door ID in the json file, run the following script to deploy the restriction (notice the change in the URI; /web instead of /authsettingsV2):
 
 ```bash
 az rest --uri /subscriptions/REPLACE-ME-SUBSCRIPTIONID/resourceGroups/REPLACE-ME-RESOURCEGROUP/providers/Microsoft.Web/sites/REPLACE-ME-APPNAME/config/web?api-version=2020-09-01 --method put --body @restrictions.json 
@@ -311,7 +357,9 @@ Now, if you access the site directly, you should immediately see the blue 403 - 
 
 ![Step 5]({{site.baseurl}}/media/2021/03/secureapp-final-setup.png){: .align-center}
 
-To improve resiliency of your App and protect against regional outages you can deploy your app to multiple regions. Let's add an instance in West US. You can reuse most of the scripts, but of course need to change the name in all lines. Since direct access to the Web App is already blocked, you can either remove or ignore the direct Web App url reference in auth.json. To make it easier to notice which site is accessed, you can change the background color of the alternative site by changing the last to digits of the body background-color to FF (light blue):
+To improve resiliency of your App and protect against regional outages you can deploy your app to multiple regions. Let's add an instance in West US. You can reuse most of the scripts, but of course need to change the name in all lines. Since direct access to the Web App is already blocked, you can either remove or ignore the direct Web App url reference in auth.json.
+
+To make it easier to notice which site is accessed, you can change the background color of the debug page in the alternative site by changing the last to digits of the body background-color to FF (light blue):
 
 ```bash
 az appservice plan create --resource-group securewebsetup --name securewebplan-westus --sku B1 --location westus
@@ -359,7 +407,7 @@ The step of uploading the debug page will require some additional setup. The SCM
 
 ### Custom domain for SCM Site
 
-While not directly related to the Authentication part, you may want/need to expose the SCM site through a proxy if you want access through a custom domain or if you want to expose a private endpoint enabled site externally. [A post on how to do that](https://azure.github.io/AppService/2021/03/03/Custom-domain-for-scm-site.html) was recently published.
+While not directly related to the Authentication part, you may want/need to expose the SCM site through a proxy if you want access through a custom domain or if you want to expose a private endpoint enabled SCM site externally. [A post on how to do that](https://azure.github.io/AppService/2021/03/03/Custom-domain-for-scm-site.html) was recently published.
 
 ### Custom health probe path
 
