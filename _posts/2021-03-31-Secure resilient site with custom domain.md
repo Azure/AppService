@@ -70,8 +70,8 @@ To help debug the application, you can create a file called default.cshtml with 
 Zip the file and push it to the Web App. Afterwards you should see a site with a green background and some Debug information:
 
 ```bash
-zip default.zip default.cshtml
-az webapp deployment source config-zip --resource-group securewebsetup --name securewebapp2021 --src ./default.zip
+zip debug.zip default.cshtml
+az webapp deployment source config-zip --resource-group securewebsetup --name securewebapp2021 --src ./debug.zip
 ```
 
 ![Debug Page]({{site.baseurl}}/media/2021/03/debug-page.png){: .align-center}
@@ -141,7 +141,7 @@ Next, create an App registration in Azure AD. An App registration is a way to te
 az ad app create --display-name securewebapp2021 --reply-urls https://securewebapp2021.azurewebsites.net/.auth/login/aad/callback
 ```
 
-Replace REPLACE-ME-APPID with the the appId from the returned output.
+Replace REPLACE-ME-APPID in auth.json with the the appId from the returned output.
 
 For the last placeholder REPLACE-ME-SECRETNAME, this will be the name of an App Setting in your Web App that contains the secret. The App Setting can [reference a Key Vault secret](https://docs.microsoft.com/azure/app-service/app-service-key-vault-references) if you prefer. You can pick any name. I will choose AAD_CLIENT_SECRET. To add the secret, run the following command (with the AppId from the previous step). If you leave out the password parameter, it will auto-generate a complex password:
 
@@ -361,15 +361,15 @@ Now, if you access the site directly, you should immediately see the blue 403 - 
 
 To improve resiliency of your App and protect against regional outages you can deploy your app to multiple regions. Let's add an instance in West US. You can reuse most of the scripts, but of course need to change the name in all lines. Since direct access to the Web App is already blocked, you can either remove or ignore the direct Web App url reference in auth.json.
 
-To make it easier to notice which site is accessed, you can change the background color of the debug page in the alternative site by changing the last to digits of the body background-color to FF (light blue):
+To make it easier to notice which site is accessed, you can change the background color of the debug page in the alternative site by changing the last to digits of the body background-color to FF (light blue) and create a new zip file:
 
 ```bash
 az appservice plan create --resource-group securewebsetup --name securewebplan-westus --sku B1 --location westus
 az webapp create --resource-group securewebsetup --plan securewebplan-westus --name securewebapp2021-westus
 az webapp update --resource-group securewebsetup --name securewebapp2021-westus --https-only
 
-zip default-alt.zip default.cshtml
-az webapp deployment source config-zip --resource-group securewebsetup --name securewebapp2021-westus --src ./default-alt.zip
+zip debug-blue.zip default.cshtml
+az webapp deployment source config-zip --resource-group securewebsetup --name securewebapp2021-westus --src ./debug-blue.zip
 
 az webapp config appsettings set --resource-group securewebsetup --name securewebapp2021-westus --settings "AAD_CLIENT_SECRET=reP!@ce-w!th.VeRys3cr3tC0d!"
 
