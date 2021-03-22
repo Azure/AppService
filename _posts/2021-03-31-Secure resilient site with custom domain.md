@@ -4,23 +4,25 @@ author_name: "Mads Damgård"
 category: networking
 ---
 
-In this article I will walk you through setting up a secure resilient Web App using some new features that have just been release or are very close to release. Below is the target setup. One or more instances of your Web App in multiple regions with Azure AD authentication and custom domain. Azure Front Door (AFD) will provide global load balancing and Web Application Firewall (WAF) capabilities, and the Web Apps will be isolated to only receive traffic from the specific AFD instance.
-
-Most of the setup you can complete using the Azure portal, but there are some preview features that require scripting. I will be using Azure CLI throughout the walk-through, however Azure PowerShell or Azure Resource Manager templates will work as well. I am using bash though [Windows Subsystem for Linux (WSL)](https://docs.microsoft.com/windows/wsl/about) to run the commands. If you are using a PowerShell or Cmd prompt, small syntax tweaks may be needed.
-
-If you are new to scripting, you will find [overview and instructions on installing Azure CLI here](https://docs.microsoft.com/cli/azure/install-azure-cli). You can also use [Azure Cloud Shell](https://docs.microsoft.com/azure/cloud-shell/overview) from the portal. It also has a nice file editor you will be using in some of the steps.
+In this article I will walk you through setting up a secure resilient site with Azure App Service Web Apps using some new features that have just been released or are very close to release. Below is the target setup. One or more instances of your Web App in multiple regions with Azure AD authentication. Azure Front Door (AFD) will provide global load balancing and custom domain with certificates, and the Web Apps will be isolated to only receive traffic from the specific AFD instance.
 
 ![Final setup]({{site.baseurl}}/media/2021/03/secureapp-final-setup.png){: .align-center}
 
-The setup is divided into five steps:
+The setup is progressing in five steps:
 
 1. Basic Web App with Azure AD Authentication
 2. Add Azure Front Door
 3. Add Custom Domain and Certificate
-4. Restrict traffic to Web App from AFD
+4. Restrict traffic from Front Door to Web App
 5. Increase resiliency with multiple geo-distributed Web Apps
 
 In closing there will be a section on alternative approaches and advanced scenarios and an FAQ section.
+
+### Getting started
+
+Most of the setup you can complete using the Azure portal, but there are some preview features that require scripting. I will be using Azure CLI throughout the walk-through, however Azure PowerShell or Azure Resource Manager templates will work as well. I am using bash through [Windows Subsystem for Linux (WSL)](https://docs.microsoft.com/windows/wsl/about) to run the commands. If you are using a PowerShell or Cmd prompt, small syntax tweaks may be needed.
+
+If you are new to scripting, you will find [overview and instructions on installing Azure CLI here](https://docs.microsoft.com/cli/azure/install-azure-cli). You can also use [Azure Cloud Shell](https://docs.microsoft.com/azure/cloud-shell/overview) from the portal. It even has a nice file editor you will be using in some of the steps, so no local install is needed.
 
 ## 1. Basic Web App with Azure AD Authentication
 
@@ -317,7 +319,7 @@ and to add a CNAME DNS record to map the actual domain:
 
 Allow another 5-10 minutes to replicate the settings globally, and you should now be able to access an authenticated Web App through Front Door using a custom domain and certificate.
 
-## 4. Restrict traffic to Web App from AFD
+## 4. Restrict traffic from Front Door to Web App
 
 ![Step 4]({{site.baseurl}}/media/2021/03/secureapp-step4.png){: .align-center}
 
@@ -425,7 +427,7 @@ If you have a custom health probe path, you can configure the Authentication lay
 
 You can now browse directly to that page (but will be asked for authentication if you just go to /)
 
-## FAQ and Links
+## FAQ
 
 **Q: On sign in, I get error AADSTS50011: The reply URL specified ... What is wrong?**
 
@@ -436,3 +438,9 @@ Most likely because the address does not match the reply-url configured for th A
 **Q: I am using custom routing rules in Front Door. Anything I should pay attention to?**
 
 Make sure you have a routing rule for .auth/* in addition to your content rules.
+
+**Q: I do not have permissions to create App registrations in my Azure AD tenant, what to do?**
+
+If your organization locked down the ability to create App registrations, you will need to find someone in your organization with these permissions. It can either be the tenant admin or delegated with the built-in Application developer og Application administrator roles; or a custom [Application registration creator role](https://docs.microsoft.com/azure/active-directory/roles/quickstart-app-registration-limits) specific for this purpose.
+
+Alternatively you can use another identity provider such as Facebook, GitHub, Twitter or any custom provider using the OpenIdConnect specification.
