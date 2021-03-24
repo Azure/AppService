@@ -153,9 +153,9 @@ and add an 'Override when Action Executes':
 
 ## Minimize App Service Plan Density
 
-Ensure not more than 8 apps are running on the app service plan to ensure healthy performance. All the apps running on the app service plan can be seen on "Apps" under "Settings" section in your app service plan on azure portal.
+Running too many Apps in an App Service Plan can have a negative impact performance. All the apps running on the App Service Plan can be seen on "Apps" under "Settings" section in your App Service Plan on Azure portal.
 
-Learn more about App Service Plan Density Check here:
+You can verify the App Service Plan density with the App Service Plan Density Check. Learn more here:
 
 - [App Service Plan Density Check](https://azure.github.io/AppService/2019/05/21/App-Service-Plan-Density-Check.html)
 
