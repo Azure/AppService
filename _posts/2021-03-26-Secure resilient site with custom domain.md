@@ -1,26 +1,28 @@
 ---
-title: "Secure resilient site with custom domain"
+title: "Deploying a secure, resilient site with a custom domain"
 author_name: "Mads Damgård"
 category: networking
+toc:true
+toc_sticky:true
 ---
 
-In this article I will walk you through setting up a secure resilient site with Azure App Service Web Apps using some new features that have just been released or are very close to release. Below is the target setup. One or more instances of your Web App in multiple regions with Azure AD authentication. Azure Front Door (AFD) will provide global load balancing and custom domain with certificates, and the Web Apps will be isolated to only receive traffic from the specific AFD instance.
+In this article I will walk you through setting up a secure, resilient site with Azure App Service using some new features that have recently been released or are very close to release. The image below shows the basic architecture. One or more instances of your Web App in multiple regions with Azure AD authentication. Azure Front Door (AFD) will provide global load balancing and custom domain with certificates, and the Web Apps will be isolated to only receive traffic from the specific AFD instance.
 
 ![Final setup]({{site.baseurl}}/media/2021/03/secureapp-final-setup.png){: .align-center}
 
-The setup is progressing in five steps:
+This guide is organized into five steps:
 
-1. Basic Web App with Azure AD Authentication
+1. Create a basic Web App with Azure AD Authentication
 2. Add Azure Front Door
 3. Add Custom Domain and Certificate
 4. Restrict traffic from Front Door to Web App
 5. Increase resiliency with multiple geo-distributed Web Apps
 
-In closing there will be a section on alternative approaches and advanced scenarios and an FAQ section.
+In closing, there are sections on alternative approaches, advanced scenarios, and an FAQ section.
 
 ### Getting started
 
-Most of the setup you can complete using the Azure portal, but there are some preview features that require scripting. I will be using Azure CLI throughout the walk-through, however Azure PowerShell or Azure Resource Manager templates will work as well. I am using bash through [Windows Subsystem for Linux (WSL)](https://docs.microsoft.com/windows/wsl/about) to run the commands. If you are using a PowerShell or Cmd prompt, small syntax tweaks may be needed.
+You can complete most of this guide using the Azure portal, but there are some preview features that require scripting. I will be using Azure CLI throughout the walk-through, however Azure PowerShell or Azure Resource Manager templates will work as well. I am using bash through [Windows Subsystem for Linux (WSL)](https://docs.microsoft.com/windows/wsl/about) to run the commands. If you are using a PowerShell or Cmd prompt, small syntax tweaks may be needed.
 
 If you are new to scripting, you will find [overview and instructions on installing Azure CLI here](https://docs.microsoft.com/cli/azure/install-azure-cli). You can also use [Azure Cloud Shell](https://docs.microsoft.com/azure/cloud-shell/overview) from the portal. It even has a nice file editor you will be using in some of the steps, so no local install is needed.
 
@@ -36,7 +38,7 @@ az appservice plan create --resource-group securewebsetup --name securewebplan -
 az webapp create --resource-group securewebsetup --plan securewebplan --name securewebapp2021 # Web App name must be globally unique
 ```
 
-and since the focus is security, configure the Web App to only allow HTTPS:
+... and since the focus is security, configure the Web App to only allow HTTPS:
 
 ```bash
 az webapp update --resource-group securewebsetup --name securewebapp2021 --https-only
@@ -80,17 +82,17 @@ az webapp deployment source config-zip --resource-group securewebsetup --name se
 
 App Service provides an simple way to setup authentication. The feature is sometimes referred to as Easy Auth. There is a new version in preview and for this setup some of the new options are needed. The new Authentication feature is available in the Azure portal, but a few advanced configuration options are not yet exposed in the portal, so let's look under the hood using the REST API.
 
-You have to get the Resource ID of the Web App. It was returned when you created it in the previous steps, and you can also find it in the portal under Properties. This goes for any resource.
+You have to get the Resource ID of the Web App. It was returned when you created it in the previous steps, and you can also find it in the portal under **Properties**. This goes for any resource.
 
 ![Resource ID]({{site.baseurl}}/media/2021/03/webapp-resourceid.png){: .align-center}
 
-Ensure that you can read the settings first. Pay attention to the api-version. You should see a lot of json returned when running this command:
+Ensure that you can read the settings first. Pay attention to the `api-version`. You should see a lot of json returned when running this command:
 
 ```bash
 az rest --uri /subscriptions/REPLACE-ME-SUBSCRIPTIONID/resourceGroups/REPLACE-ME-RESOURCEGROUP/providers/Microsoft.Web/sites/REPLACE-ME-APPNAME?api-version=2020-09-01 --method get
 ```
 
-All the settings of Authentication is defined in a [json structure](https://docs.microsoft.com/azure/app-service/app-service-authentication-how-to#configuration-file-reference). There are many options to fine tune the configuration, but below is an extraction of the required settings needed for this scenario. Copy this into a file called auth.json:
+All the settings of Authentication is defined in a [json structure](https://docs.microsoft.com/azure/app-service/app-service-authentication-how-to#configuration-file-reference). There are many options to fine tune the configuration, but the snippet below is an extraction of the required settings needed for this scenario. Copy this into a file called auth.json:
 
 ```json
 {
@@ -131,17 +133,17 @@ All the settings of Authentication is defined in a [json structure](https://docs
 }
 ```
 
-The file has some placeholders that you need to fill in with your own values. You will generate these values in the next few steps. The first REPLACE-ME-WEBAPP-NAME (2 occurrences) you already have. This should be replaced with the name of your Web App. In my case securewebapp2021.
+The file has some placeholders that you need to fill in with your own values. You will generate these values in the next few steps. The first `REPLACE-ME-WEBAPP-NAME` (2 occurrences) you already have. This should be replaced with the name of your Web App. (In my case this was "securewebapp2021").
 
-REPLACE-ME-TENANTID you can find by running ```az account show``` in the homeTenantId property.
+You can find the value for `REPLACE-ME-TENANTID` by running ```az account show``` and looking in the `homeTenantId` property.
 
-Next, create an App registration in Azure AD. An App registration is a way to tell Azure AD, that this Web App is allowed to authenticate users in the directory and that it can do so only using specific urls. Display name can be anything. The reply-url is your base url combined with a special callback path: https://securewebapp2021.azurewebsites.net/.auth/login/aad/callback
+Next, create an App registration in Azure AD. An App registration is a way to tell Azure AD, that this Web App is allowed to authenticate users in the directory and that it can do so only using specific urls. The display name can be anything. The reply-url is your base url combined with a special callback path: https://securewebapp2021.azurewebsites.net/.auth/login/aad/callback
 
 ```bash
 az ad app create --display-name securewebapp2021 --reply-urls https://securewebapp2021.azurewebsites.net/.auth/login/aad/callback
 ```
 
-Replace REPLACE-ME-APPID in auth.json with the the appId from the returned output.
+Replace `REPLACE-ME-APPID` in auth.json with the the appId from the returned output.
 
 For the last placeholder REPLACE-ME-SECRETNAME, this will be the name of an App Setting in your Web App that contains the secret. The App Setting can [reference a Key Vault secret](https://docs.microsoft.com/azure/app-service/app-service-key-vault-references) if you prefer. You can pick any name. I will choose AAD_CLIENT_SECRET. To add the secret, run the following command (with the AppId from the previous step). If you leave out the password parameter, it will auto-generate a complex password:
 
@@ -181,7 +183,7 @@ Use the Quick Create and under Basics, use the existing resource group. Give it 
 
 ### Alter authentication settings
 
-After a good coffee, try to browse to the Front Door url. In my case: https://secureweb.z01.azurefd.net. It appears to be working, but notice the address bar. It redirected you directly back to your Web App. To fix that you need to do a few things. First, update the App registration in Azure AD to allow authentication request coming from the new url. You can add multiple reply-urls by separating them with a space, but if you only want to allow authentication through Front Door, you can just replace it.
+After a good coffee, try to browse to the Front Door URL. In my case: https://secureweb.z01.azurefd.net. It appears to be working, but notice the address bar. It redirected you directly back to your Web App. To fix that you need to do a few things. First, update the App registration in Azure AD to allow authentication request coming from the new url. You can add multiple reply-urls by separating them with a space, but if you only want to allow authentication through Front Door, you can just replace it.
 
 ```bash
 az ad app update --id REPLACE-ME-APPID --reply-urls https://secureweb.z01.azurefd.net/.auth/login/aad/callback https://securewebapp2021.azurewebsites.net/.auth/login/aad/callback
