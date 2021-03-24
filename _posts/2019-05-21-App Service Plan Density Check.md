@@ -25,11 +25,14 @@ You will see one of the following:
 <b>1) Stop apps to decrease load</b><br>
 In the description, the detector will recommend stopping a number of apps to be within the recommended number of apps on the respective pricing tier. The number may actually be lower depending on how resource intensive the hosted applications are, however as a general guidance, you may refer to the table below.
 
-Worker Size | Max sites
+App Service Plan SKU | Max Apps
 ---|---
-Small | 8
-Medium | 16
-Large | 32
+B1, S1, P1v2, I1v1 | 8
+B2, S2, P2v2, I2v1 | 16
+B3, S3, P3v2, I3v1 | 32
+P1v3, I1v2 | 16
+P2v3, I2v2 | 32
+P3v3, I3v2 | 64
 
 <i><strong>Note :</strong> An <u>active slot</u> is also classified as an <u>active app</u> as it too is competing for resources on the same App Service Plan.</i><br>
 <br>
