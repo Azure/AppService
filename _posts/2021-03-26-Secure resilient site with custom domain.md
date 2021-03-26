@@ -1,6 +1,6 @@
 ---
 title: "Deploying a secure, resilient site with a custom domain"
-author_name: "Mads Damgard"
+author_name: "Mads Damgård"
 category: networking
 toc: true
 toc_sticky: true
