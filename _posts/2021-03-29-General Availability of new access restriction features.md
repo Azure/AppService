@@ -1,6 +1,6 @@
 ---
 title: "General Availability of new Access Restriction Features"
-author_name: "Mads Damgard"
+author_name: "Mads Damgård"
 category: networking
 ---
 
