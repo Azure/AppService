@@ -1,9 +1,9 @@
 ---
 title: "Deploying a secure, resilient site with a custom domain"
-author_name: "Mads Damgård"
+author_name: "Mads Damgard"
 category: networking
-toc:true
-toc_sticky:true
+toc: true
+toc_sticky: true
 ---
 
 In this article I will walk you through setting up a secure, resilient site with Azure App Service using some new features that have recently been released or are very close to release. The image below shows the basic architecture. One or more instances of your Web App in multiple regions with Azure AD authentication. Azure Front Door (AFD) will provide global load balancing and custom domain with certificates, and the Web Apps will be isolated to only receive traffic from the specific AFD instance.
