@@ -22,7 +22,7 @@ You can use the following PowerShell script to create a local PFX copy.
 
 <strong>You need to first install Azure PowerShell and have the required modules installed. Follow this <a href="https://docs.microsoft.com/en-us/powershell/azure/install-az-ps">blog </a>to install the Azure PowerShell commandlets.</strong>
 
-To use the script, open a PowerShell window, copy the entire script below (uncomment Remove-AzureRmKeyVaultAccessPolicy line if you want to remove Access policies after export, check your permissions to see if you want to remove the policy) and paste it on the PowerShell window and hit enter.
+To use the script, open a PowerShell window, copy the entire script below (uncomment Remove-AzKeyVaultAccessPolicy line if you want to remove Access policies after export, check your permissions to see if you want to remove the policy) and paste it on the PowerShell window and hit enter.
 <pre>
     Function Export-AppServiceCertificate
     {
@@ -76,7 +76,7 @@ To use the script, open a PowerShell window, copy the entire script below (uncom
     ## Remove the Access Policy required for exporting the certificate once you have exported the certificate to prevent giving the account prolonged access to the KeyVault
     ## The account will be completely removed from KeyVault access policy and will prevent to account from accessing any keys/secrets/certificates on the KeyVault, 
     ## Run the following command if you are sure that the account is not used for any other access on the KeyVault or login to the portal and change the access policy accordingly.
-    # Remove-AzureRmKeyVaultAccessPolicy -ResourceGroupName $keyVaultResourceGroupName -VaultName $keyVaultName -UserPrincipalName $loginId
+    # Remove-AzKeyVaultAccessPolicy -ResourceGroupName $keyVaultResourceGroupName -VaultName $keyVaultName -UserPrincipalName $loginId
     # Write-Host "Access to account $loginId has been removed from the KeyVault"
     
     # Print the password for the exported certificate
