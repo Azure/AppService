@@ -20,9 +20,9 @@ This guide is organized into five steps:
 
 In closing, there are sections on alternative approaches, advanced scenarios, and an FAQ section.
 
-### Getting started
+## Getting started
 
-You can complete most of this guide using the Azure portal, but there are some preview features that require scripting. I will be using Azure CLI throughout the walk-through, however Azure PowerShell or Azure Resource Manager templates will work as well. I am using bash through [Windows Subsystem for Linux (WSL)](https://docs.microsoft.com/windows/wsl/about) to run the commands. If you are using a PowerShell or Cmd prompt, small syntax tweaks may be needed.
+You can complete most of this guide using the Azure portal, but there are some preview or advanced features that require scripting. I will be using Azure CLI throughout the walk-through, however Azure PowerShell or Azure Resource Manager templates will work as well. I am using bash through [Windows Subsystem for Linux (WSL)](https://docs.microsoft.com/windows/wsl/about) to run the commands. If you are using a PowerShell or Cmd prompt, small syntax tweaks may be needed.
 
 If you are new to scripting, you will find [overview and instructions on installing Azure CLI here](https://docs.microsoft.com/cli/azure/install-azure-cli). You can also use [Azure Cloud Shell](https://docs.microsoft.com/azure/cloud-shell/overview) from the portal. It even has a nice file editor you will be using in some of the steps, so no local install is needed.
 
@@ -45,6 +45,7 @@ az webapp update --resource-group securewebsetup --name securewebapp2021 --https
 ```
 
 ### Debug page
+
 To help debug the application, you can create a file called default.cshtml with the following content
 
 ```html
@@ -80,7 +81,7 @@ az webapp deployment source config-zip --resource-group securewebsetup --name se
 
 ### Authentication setup
 
-App Service provides an simple way to setup authentication. The feature is sometimes referred to as Easy Auth. There is a new version in preview and for this setup some of the new options are needed. The new Authentication feature is available in the Azure portal, but a few advanced configuration options are not yet exposed in the portal, so let's look under the hood using the REST API.
+App Service provides an simple way to setup authentication. The feature is sometimes referred to as Easy Auth. There is a new version just released and for this setup some of the new options are needed. The new Authentication feature is available in the Azure portal, but a few advanced configuration options are not yet exposed in the portal, so let's look under the hood using the REST API.
 
 You have to get the Resource ID of the Web App. It was returned when you created it in the previous steps, and you can also find it in the portal under **Properties**. This goes for any resource.
 
@@ -110,7 +111,6 @@ All the settings of Authentication is defined in a [json structure](https://docs
         "login": {
             "preserveUrlFragmentsForLogins": true,
             "allowedExternalRedirectUrls": [
-                "https://easyauth.callback",
                 "https://REPLACE-ME-WEBAPP-NAME.azurewebsites.net/"
             ]
         },
@@ -212,7 +212,6 @@ Finally, in auth.json configure the Authentication framework to look for the ori
         "login": {
             "preserveUrlFragmentsForLogins": true,
             "allowedExternalRedirectUrls": [
-                "https://easyauth.callback",
                 "https://securewebapp2021.azurewebsites.net",
                 "https://secureweb.z01.azurefd.net"
             ]
@@ -284,7 +283,6 @@ Modify the auth.json file and update the Authentication settings.
         "login": {
             "preserveUrlFragmentsForLogins": true,
             "allowedExternalRedirectUrls": [
-                "https://easyauth.callback",
                 "https://secure.reddoglabs.com",
                 "https://securewebapp2021.azurewebsites.net",
                 "https://secureweb.z01.azurefd.net"
