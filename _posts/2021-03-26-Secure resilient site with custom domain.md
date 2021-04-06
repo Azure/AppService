@@ -22,7 +22,7 @@ In closing, there are sections on alternative approaches, advanced scenarios, an
 
 ## Getting started
 
-You can complete most of this guide using the Azure portal, but there are some preview or advanced features that require scripting. I will be using Azure CLI throughout the walk-through, however Azure PowerShell or Azure Resource Manager templates will work as well. I am using bash through [Windows Subsystem for Linux (WSL)](https://docs.microsoft.com/windows/wsl/about) to run the commands. If you are using a PowerShell or Cmd prompt, small syntax tweaks may be needed.
+You can complete most of this guide using the Azure portal, but there are some advanced features that require scripting. I will be using Azure CLI throughout the walk-through, however Azure PowerShell or Azure Resource Manager templates will work as well. I am using bash through [Windows Subsystem for Linux (WSL)](https://docs.microsoft.com/windows/wsl/about) to run the commands. If you are using a PowerShell or Cmd prompt, small syntax tweaks may be needed.
 
 If you are new to scripting, you will find [overview and instructions on installing Azure CLI here](https://docs.microsoft.com/cli/azure/install-azure-cli). You can also use [Azure Cloud Shell](https://docs.microsoft.com/azure/cloud-shell/overview) from the portal. It even has a nice file editor you will be using in some of the steps, so no local install is needed.
 
