@@ -44,18 +44,23 @@ az webapp create --resource-group securewebsetup --plan securewebplan --name sec
 az webapp update --resource-group securewebsetup --name securewebapp2021 --https-only
 ```
 
-### Debug page
+### Debug page (optional)
 
-To help debug the application, you can create a file called default.cshtml with the following content
+To help debug the application, you can create a file called **default.cshtml** with the following content
 
 ```html
 @using System.Web.Configuration
 @using System.Net;
+<html>
+
+<head>
+  <title>Debug page</title>
+</head>
 
 <body style="background-color: #00E60A;">
-@{
-	var pubIp =  new System.Net.WebClient().DownloadString("https://api.ipify.org");
-}
+  @{
+    var pubIp = new System.Net.WebClient().DownloadString("https://api.ipify.org");
+  }
   <h3>Debug information</h3>
   <ul>
     <li><strong>Request Url</strong><span>: @Request.Url</span></li>
@@ -63,11 +68,15 @@ To help debug the application, you can create a file called default.cshtml with 
     <li><strong>Inbound client IP</strong><span>: @Request.ServerVariables["REMOTE_ADDR"]</span></li>
   </ul>
   <strong>Headers</strong>
-  <ul>    
-      @foreach (var h in Request.Headers)
-          {<li><strong>@h</strong><span>: @Request.Headers[h.ToString()]</span></li>}
+  <ul>
+    @foreach (var h in Request.Headers)
+    {
+      <li><strong>@h</strong><span>: @Request.Headers[h.ToString()]</span></li>
+    }
   </ul>
 </body>
+
+</html>
 ```
 
 Zip the file and push it to the Web App. Afterwards you should see a site with a green background and some Debug information:
@@ -78,6 +87,48 @@ az webapp deployment source config-zip --resource-group securewebsetup --name se
 ```
 
 ![Debug Page]({{site.baseurl}}/media/2021/03/debug-page.png){: .align-center}
+
+### Debug page on Linux (optional)
+
+If you are using App Service on Linux with Code deployment, you can use a php debug file. Create a file named **index.php** with the following content:
+
+```html
+<html>
+
+<head>
+  <title>Debug page</title>
+</head>
+
+<body style="background-color: #00E60A;">
+  <?php
+    $requestPageUrl = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"];
+    $pubIp = file_get_contents('https://api.ipify.org');
+  ?>
+  <h3>Debug information</h3>
+  <ul>
+    <li><strong>Request Url</strong><span>: <?php echo $requestPageUrl; ?></span></li>
+    <li><strong>Outbound public IP</strong><span>: <?php echo $pubIp ?></span></li>
+    <li><strong>Inbound client IP</strong><span>: <?php echo $_SERVER['REMOTE_ADDR']; ?></span></li>
+  </ul>
+  <strong>Headers</strong>
+  <ul>
+    <?php
+      foreach (getallheaders() as $name => $value) {
+        echo "<li><strong>$name</strong><span>: $value</span></li>";
+      }
+    ?>
+  </ul>
+</body>
+
+</html>
+```
+
+Zip the file and push it to the Web App. Afterwards you should see a site with a green background and some Debug information:
+
+```bash
+zip debug.zip index.php
+az webapp deployment source config-zip --resource-group securewebsetup --name securewebapp2021 --src ./debug.zip
+```
 
 ### Authentication setup
 
