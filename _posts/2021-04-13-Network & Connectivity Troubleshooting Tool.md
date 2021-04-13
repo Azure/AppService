@@ -37,13 +37,9 @@ If you attempted to connect your app to a subnet and it failed and would like to
 
 
 ### Learn more about VNet integration
+Finally, if you are new to VNet integration with App Services and would like to learn more, this flow will show you common docs that help our customers learn about general VNets in Azure as well as how to integrate an App Service with a VNet.
+![Test VNET]({{site.baseurl}}/media/2021/04/NT-Learn.png)
 
-In addition to specifying an IP range or service tag, you can also define specific values of http headers that must also be evaluated. Common cases are:
-
-* [Restrict traffic to specific Azure Front Door instance](https://docs.microsoft.com/azure/app-service/app-service-ip-restrictions#restrict-access-to-a-specific-azure-front-door-instance) using X-Azure-FDID header
-* Isolate traffic from forward proxy to specific client IPs or host names using X-Forwarded-For or X-Forwarded-Host header
-
-Http header filters can be added from Azure portal or through PowerShell.
 
 ### What's next?
 
