@@ -17,7 +17,6 @@ You can access the tool by going to the Diagnose & Solve blade and either use th
 
 This guided troubleshooter takes you step by step to understand your issue and provide curated solutions based on your inputs:
 ![Guided experience]({{site.baseurl}}/media/2021/04/NT-flows.png)
-
 ### Unable to connect to a resource, such as SQL or Redis or on-prem, in my Virtual Network 
 
 This flow will start by running the following checks on your app:
