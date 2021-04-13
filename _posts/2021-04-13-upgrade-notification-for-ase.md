@@ -18,7 +18,7 @@ The Azure App Service is a PaaS solution offering in Azure which constantly upda
 
 ## Overview
 
-Our maintenance notification for App Service is essentially an event of Azure Monitor. This means that you can set up your email address and/or SMS phone number when a notification is generated. You can also set up a trigger for your custom Azure Function or Logic App, which allows you to automatically take action to your resources. For example, you can automatically divert all the traffic to your ASE in one region which will be upgraded to ASE in another region in order to avoid any potential impact. Then you can automatically change the traffic back to normal when an upgrade completes. Please refer to [Logic App sample for automatic traffic diversion for Azure App Service](https://github.com/Azure-Samples/azure-logic-app-traffic-update-samples) for more details.
+Our maintenance notification for App Service is essentially an event of Azure Monitor. This means that you can set up your email address and/or SMS phone number when a notification is generated. You can also set up a trigger for your custom Azure Function or Logic App, which allows you to automatically take action to your resources. For example, you can automatically divert all the traffic from your ASE in one region which will be upgraded to ASE in another region in order to avoid any potential impact. Then you can automatically change the traffic back to normal when an upgrade completes. Please refer to [Logic App sample for automatic traffic diversion for Azure App Service](https://github.com/Azure-Samples/azure-logic-app-traffic-update-samples) for more details.
 
 ## Viewing upgrade notifications
 
@@ -70,7 +70,7 @@ Once the upgrade starts, we send in-progress notifications every 12 hours until 
 
 ### Is it in preview now?
 
-Yes, it's in preview. There is no GA date planned yet.
+Yes, it's currently in preview. There is no GA date planned yet.
 
 ### Can we get notifications earlier, like one day before?
 
