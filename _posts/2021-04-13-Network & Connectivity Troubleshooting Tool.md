@@ -11,10 +11,11 @@ tags:
 
 Troubleshooting networking & connectivity issues when running on App Services just became easier. We are happy to announce the release of our new diagnostic tool 'Network/Connectivity Troubleshooter' available now in the Diagnose & Solve blade. 
 
-You can access to the tool by going to the Diagnose & Solve blade and either use the search bar to search for it or use the quick link available under popular troubleshooting tools section:
-![Find the tool]({{site.baseurl}}/media/2021/04/NT-homepage.png)
+You can access the tool by going to the Diagnose & Solve blade and either use the search bar to search for it or use the quick link available under popular troubleshooting tools section:
+![Find the tool]({{site.baseurl}}/media/2021/04/NT-searchbar.png)
 
-This guided troubleshooter takes you step by step to understand your issue and provide catered solutions based on your inputs:
+
+This guided troubleshooter takes you step by step to understand your issue and provide curated solutions based on your inputs:
 ![Guided experience]({{site.baseurl}}/media/2021/04/NT-flows.png)
 
 ### Unable to connect to a resource, such as SQL or Redis or on-prem, in my Virtual Network 
@@ -23,11 +24,14 @@ This flow will start by running the following checks on your app:
 * VNet integration health
 * Networking configuration checks
 
-If an issue is found, the troubleshooter will display the issue along with recommended next steps to you:
+If an issue is found, the troubleshooter will display the issue along with the recommended next steps to you:
 ![Issue found]({{site.baseurl}}/media/2021/04/NT-checks.png)
 
 
-If everything looks healthy or just a warning insights was discovered, the flow will continue to ask for an endpoint to test connectivity to. You can use a hostname:port or IP:port combination to test the connectivity. Please note that this is just a tcpping from your app's instance to the specific endpoint. The connection could succeed on a tcp level, but you might still be facing issues executing http requests for example. The troubleshooter will make that clear to you along with recommendations:
+If everything looks healthy or just a warning insights was discovered, the flow will continue to ask for an endpoint to test connectivity to. You can use a hostname:port or IP:port combination to test the connectivity. 
+> Please note that this is just a tcpping from your app's instance to the specific endpoint. The connection could succeed on a tcp level, but you might still be facing issues executing http requests for example. 
+
+The troubleshooter will show you the results clearly along with recommendations:
 ![Endpoint test]({{site.baseurl}}/media/2021/04/NT-connectivity.png)
 
 ### Tried to configure VNet integration via Azure Portal or ARM template, but it failed
