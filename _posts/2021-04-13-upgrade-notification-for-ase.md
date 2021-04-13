@@ -10,15 +10,15 @@ tags:
     - Logic Apps
 ---
 
-We are happy to announce that the upgrade notifications for App Service Environment is available. With an upgrade notification you will be able to receive email, SMS text, or take action before a platform upgrade actually starts.
+We are happy to announce that the scheduled or planned maintenance notifications for App Service Environment  (Preview) is available. With that notification you will be able to receive email or SMS text which allows you to take action before a platform upgrade starts if necessary. You can even invoke your Azure Function or Logic App if you want.
 
 The Azure App Service is a PaaS solution offering in Azure which constantly updates the platform. One of the top requests from customers is to receive a notification before an upgrade operation happens. This feature has been rolled out for App Service Environments (ASEs) across regions.
 
-> Support for public App Service scale units will be coming soon.
+> Support for other App Service SKUs will be coming soon.
 
 ## Overview
 
-The upgrade notification for App Service is essentially an Azure Monitor event. This means that you can set up your email address and/or SMS phone number when a notification is generated. You can also set up a trigger for your custom Azure Function or Logic App, which allows you to automatically take action to your resources. For example, you can automatically divert all the traffic to your ASE in one region which will be upgraded to ASE in another region in order to avoid any potential impact. Then you can automatically change the traffic back to normal when an upgrade completes. Please refer to [Logic App sample for automatic traffic diversion for Azure App Service](https://github.com/Azure-Samples/azure-logic-app-traffic-update-samples) for more details.
+Our maintenance notification for App Service is essentially an event of Azure Monitor. This means that you can set up your email address and/or SMS phone number when a notification is generated. You can also set up a trigger for your custom Azure Function or Logic App, which allows you to automatically take action to your resources. For example, you can automatically divert all the traffic to your ASE in one region which will be upgraded to ASE in another region in order to avoid any potential impact. Then you can automatically change the traffic back to normal when an upgrade completes. Please refer to [Logic App sample for automatic traffic diversion for Azure App Service](https://github.com/Azure-Samples/azure-logic-app-traffic-update-samples) for more details.
 
 ## Viewing upgrade notifications
 
@@ -64,20 +64,24 @@ To see past notifications, navigate to **Health history** and filter **Planned m
 
 ### When do you send the upgrade notifications?
 
-The first upgrade notifications will be created about 60 to 90 minutes before an actual upgrade operation starts. We don't create notifications anything earlier due to some limitations at this moment.
+The first notifications will be created about 60 to 90 minutes before an actual upgrade operation starts. We don't create notifications anything earlier due to some limitations at this moment.
 
 Once the upgrade starts, we send in-progress notifications every 12 hours until the operation completes. After it's finished we send a notification of completion.
 
+### Is it in preview now?
+
+Yes, it's in preview. There is no GA date planned yet.
+
 ### Can we get notifications earlier, like one day before?
 
-No. At this point from 60 minutes to 90 minutes is the earliest timing of upgrade notifications.
+No. At this point from 60 minutes to 90 minutes is the earliest timing of notifications.
 
 ### Is it only available for ASEs?
 
-Yes, currently it is only available for ASEs. We are actively working on enabling it for all public Azure.
+Yes, currently it is only available for ASEs. We are actively working on enabling it for other App Service SKUs.
 
 ### Can we invoke my Azure Function when a notification comes?
 
 Yes, you can set up action to trigger your Azure Function or Logic App. Please see [Logic App sample for automatic traffic diversion for Azure App Service](https://github.com/Azure-Samples/azure-logic-app-traffic-update-samples) as example.
 
-To see the data format of the upgrade notifications, refer to [Common alert schema definitions](https://docs.microsoft.com/en-us/azure/azure-monitor/alerts/alerts-common-schema-definitions#:~:text=Essentials%20%20%20%20Field%20%20%20,the%20alert%20...%20%209%20more%20rows%20).
+To see the data format of the notifications, refer to [Common alert schema definitions](https://docs.microsoft.com/en-us/azure/azure-monitor/alerts/alerts-common-schema-definitions#:~:text=Essentials%20%20%20%20Field%20%20%20,the%20alert%20...%20%209%20more%20rows%20).
