@@ -1,5 +1,5 @@
 ---
-title: "Troubleshoot Networking/Connectivity issues with the new Troubleshooter"
+title: "Diagnose & Solve Networking/Connectivity issues with the new Troubleshooter"
 author_name: "Khaled Zayed"
 category: diagnostics
 tags:                                                           
@@ -9,10 +9,15 @@ tags:
     - Connectivity
 ---
 
-Troubleshooting networking & connectivity issues when running on App Services just became easier. We are happy to announce the release of our new diagnostic tool 'Network/Connectivity Troubleshooter' available now in the Diagnose & Solve blade. You can access to the tool by going to the Diagnose & Solve blade and either use the search bar to search for it or use the quick link available under popular troubleshooting tools section:
+Troubleshooting networking & connectivity issues when running on App Services just became easier. We are happy to announce the release of our new diagnostic tool 'Network/Connectivity Troubleshooter' available now in the Diagnose & Solve blade. 
+
+You can access to the tool by going to the Diagnose & Solve blade and either use the search bar to search for it or use the quick link available under popular troubleshooting tools section:
 ![Find the tool]({{site.baseurl}}/media/2021/04/NT-homepage.png)
 
-### Service tag-based rules
+This guided troubleshooter takes you step by step to understand your issue and provide catered solutions based on your inputs:
+![Guided experience]({{site.baseurl}}/media/2021/04/NT-flows.png)
+
+### Unable to connect to a resource, such as SQL or Redis or on-prem, in my Virtual Network 
 
 Networking [service tags](https://docs.microsoft.com/azure/virtual-network/service-tags-overview) define the set of IP CIDR ranges used for a given Azure service. As these ranges change, the tags will be automatically updated to reflect the change with no change needed from the customer side.
 
@@ -27,7 +32,7 @@ The tags cover different scopes such as data plane and management plane, and dif
 
 Azure portal supports the most common scenarios and for advanced configuration, you can use Azure PowerShell.
 
-### Multi-source rules
+### Tried to configure VNet integration via Azure Portal or ARM template, but it failed
 
 [Multi-source rules](https://docs.microsoft.com/azure/app-service/app-service-ip-restrictions#multi-source-rules) allow you to define multiple IP address ranges as part of a rule. Each rule can support up to 8 ranges. Use cases for multi-source rules include:
 
@@ -37,7 +42,7 @@ Azure portal supports the most common scenarios and for advanced configuration, 
 
 Multi-source rules are currently supported through PowerShell.
 
-### Http header filters
+### Learn more about VNet integration
 
 In addition to specifying an IP range or service tag, you can also define specific values of http headers that must also be evaluated. Common cases are:
 
@@ -46,6 +51,6 @@ In addition to specifying an IP range or service tag, you can also define specif
 
 Http header filters can be added from Azure portal or through PowerShell.
 
-### Putting it all together
+### What's next?
 
-To see a good example of using some of these capabilities, you can follow this [step-by-step guide](https://azure.github.io/AppService/2021/03/26/Secure-resilient-site-with-custom-domain) setting up a secure resilient site.
+Within the next few months, we will be adding new flows to allow you to diagnose & solve more networking related issues with this troubleshooter. If you have any questions or feedback, please reach out to our team at diagnostics@microsoft.com
