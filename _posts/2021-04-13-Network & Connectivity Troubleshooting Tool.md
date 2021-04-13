@@ -1,5 +1,5 @@
 ---
-title: "Diagnose & Solve Networking/Connectivity issues with the new Troubleshooter"
+title: "Diagnose & Solve Network/Connectivity issues with the new Troubleshooter"
 author_name: "Khaled Zayed"
 category: diagnostics
 tags:                                                           
@@ -36,7 +36,7 @@ The troubleshooter will show you the results clearly along with recommendations:
 ### Tried to configure VNet integration via Azure Portal or ARM template, but it failed
 
 If you attempted to connect your app to a subnet and it failed and would like to get more information, this flow will help you with this. You can select the VNet/subnet combo that you're attempting to connect to, and the tool will give you an insight if the integration will succeed or not along with a detailed explanation.
-![Test VNET]({{site.baseurl}}/media/2021/04/NT-testVNet.png)
+![Test VNET]({{site.baseurl}}/media/2021/04/NT-testVNet.jpg)
 
 
 ### Learn more about VNet integration
