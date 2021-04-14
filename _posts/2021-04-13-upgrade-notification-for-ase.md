@@ -54,7 +54,7 @@ On the Azure portal, go to **Home** > **Monitor** > **Service Health** > **Plann
 ## More resources
 
 * [Azure Monitor documentation](https://docs.microsoft.com/azure/azure-monitor/)
-* [Common alert schema definitions](https://docs.microsoft.com/en-us/azure/azure-monitor/alerts/alerts-common-schema-definitions#:~:text=Essentials%20%20%20%20Field%20%20%20,the%20alert%20...%20%209%20more%20rows%20)
+* [Common alert schema definitions](https://docs.microsoft.com/en-us/azure/azure-monitor/alerts/alerts-common-schema-definitions)
 * [Logic App sample for automatic traffic diversion for Azure App Service](https://github.com/Azure-Samples/azure-logic-app-traffic-update-samples)
 
 ## FAQ
@@ -81,4 +81,4 @@ Yes, currently it is only available for ASEs. We are actively working on enablin
 
 Yes, you can set up action to trigger your Azure Function or Logic App. Please see [Logic App sample for automatic traffic diversion for Azure App Service](https://github.com/Azure-Samples/azure-logic-app-traffic-update-samples) as example.
 
-To see the data format of the notifications, refer to [Common alert schema definitions](https://docs.microsoft.com/en-us/azure/azure-monitor/alerts/alerts-common-schema-definitions#:~:text=Essentials%20%20%20%20Field%20%20%20,the%20alert%20...%20%209%20more%20rows%20).
+To see the data format of the notifications, refer to [Common alert schema definitions](https://docs.microsoft.com/en-us/azure/azure-monitor/alerts/alerts-common-schema-definitions).
