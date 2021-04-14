@@ -21,21 +21,21 @@ A Self-Contained deployment enables you to run .NET 6 because it doesn't rely on
 
 1. To complete a self-contained deployment in .NET you would first create your project as usual then choose **.NET 6 (Preview)** for your apps version after selecting your application template. Select **Create** and modify your application as needed.
 
-  ![Dotnet 6]({{ site.baseurl }}/media/2021/04/dotnet_6_1.png)
+    ![Dotnet 6]({{ site.baseurl }}/media/2021/04/dotnet_6_1.png)
 
 2. To publish, **Right-Click** your project and select **publish**. In the latest version of Visual Studio you can choose where your target publish is from a new menu.  Select **Azure**.
 
-  ![Dotnet 6]({{ site.baseurl }}/media/2021/04/dotnet_6_2.png)
+    ![Dotnet 6]({{ site.baseurl }}/media/2021/04/dotnet_6_2.png)
 
 3. Then select **Azure App Service (Windows)** or **Azure App Service (Linux)** depending on your preference on the following screen.
 
-  ![Dotnet 6]({{ site.baseurl }}/media/2021/04/dotnet_6_3.png)
+    ![Dotnet 6]({{ site.baseurl }}/media/2021/04/dotnet_6_3.png)
 
 4. Next, choose a previously created App Service or create one from Visual Studio and fill out the required information as you normally would when publishing. When you reach the publish screen click the pencil icon to edit your **Deployment Mode** for publishing your application.
 
 5. Then, Choose the Deployment Mode option and make sure **Self-Contained** is chosen.
 
-  ![Dotnet 6]({{ site.baseurl }}/media/2021/04/dotnet_6_4.png)
+    ![Dotnet 6]({{ site.baseurl }}/media/2021/04/dotnet_6_4.png)
 
 After you select the Self-Contained option your *Target* Runtime will auto-populate to linux-x64 or win-x86 depending on your operating system selection. **Save** your new settings and click **Publish** on the preceding screen to publish to App Service and launch your application using .NET 6. More information on self-contained deployment can be found [here](https://docs.microsoft.com/dotnet/core/deploying/).
 
