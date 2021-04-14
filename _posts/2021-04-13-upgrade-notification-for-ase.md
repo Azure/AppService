@@ -46,9 +46,9 @@ To see past notifications, navigate to **Health history** and filter **Planned m
 9. At the Event type box, check **Planned maintenance**.
 10. In the Actions section, click **Add action groups**.
 11. Click **Create alert rule**.
-12. Select the subscription that you have created your Logic app during the previous part.
+12. Select a subscription that your ASE belongs to.
 13. Choose a resource group and name an action group. Set Display name to something you can easily identify the action (**IMPORTANT**: The display name will be shown in every email/SMS/post of the notifications.)
-14. *If you want to receive text notifications*: In the Notifications section, choose **Email/SMS message/Push/Voice** at the Notification type. Then choose output channels you need (For example, Email and SMS.) Put email addresses or phone number as necessary.
+14. *If you want to receive text notifications*: In the Notifications section, choose **Email/SMS message/Push/Voice** at the Notification type. Then choose output channels you need (For example, Email or SMS.) Put email addresses or phone number as necessary.
 15. *If you want to hook up your custom automation*: In the Actions section, choose **Azure Function** or **Logic App** at the Action type. Put a name into the Name. Select your app.
 16. Press **Save changes**. The page will go back to the Rules management page.
 17. In the Alert rule details section, set a name.
@@ -80,7 +80,7 @@ No. At this point from 60 minutes to 90 minutes is the earliest timing of notifi
 
 Yes, currently it is only available for ASEs. We are actively working on enabling it for other App Service SKUs.
 
-### Can we invoke my Azure Function when a notification comes?
+### Can I invoke my Azure Function when a notification comes?
 
 Yes, you can set up action to trigger your Azure Function or Logic App. Please see [Logic App sample for automatic traffic diversion for Azure App Service](https://github.com/Azure-Samples/azure-logic-app-traffic-update-samples) as example.
 
