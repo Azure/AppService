@@ -6,7 +6,7 @@ toc: true
 toc_sticky: true
 ---
 
-"Rød grød med fløde" - hmm, what language is that? Keep reading if you want to find out. In this article I will walk you through setting up a Web App with secure, network-isolated communication to backend services. The Web App will allow you to type in a text and using Cognitive Service Language Detection, you can detect the language of the given text. The authentication key for Cognitive Services will be stored in Key Vault and App Service will authenticate with Key Vault using Managed Identity. All traffic will be isolated within your Virtual Network using vNet Integration and Private Endpoints.
+"Rød grød med fløde" - hmm, what language is that? Keep reading if you want to find out. In this article I will walk you through setting up a Web App with secure, network-isolated communication to backend services. The Web App will allow you to type in a text and using Cognitive Services Language Detection, you can detect the language of the given text. The authentication key for Cognitive Services will be stored in Key Vault, and App Service will authenticate with Key Vault using Managed Identity. All traffic will be isolated within your Virtual Network using vNet Integration and Private Endpoints.
 
 ![Final setup]({{site.baseurl}}/media/2021/04/securebackend-final-setup.png){: .align-center}
 
@@ -21,19 +21,18 @@ In closing, there are sections on alternative approaches, advanced scenarios, an
 
 ## Getting started
 
-This is the second article in a series focusing on network security. If you missed the first one, you can [find it here](https://azure.github.io/AppService/2021/03/26/Secure-resilient-site-with-custom-domain.html), and it includes a more detailed Getting started section covering setting up the executing environment.
+This is the second article in a series focusing on network security. If you missed the first one, you can [find it here](https://azure.github.io/AppService/2021/03/26/Secure-resilient-site-with-custom-domain.html), and it includes a more detailed getting started section covering setting up the scripting environment.
 
-The article will also use Azure CLI executed in bash shell on WSL to set up the environment. It can be done using Azure portal, Resource Manager templates or PowerShell. CLI was chosen as I find it easier to follow and explain the individual steps and configurations needed.
+The article will also use Azure CLI executed in bash shell on WSL to set up the environment. It could be done using Azure portal, Resource Manager templates or PowerShell. CLI was chosen as I find it easier to follow and explain the individual steps and configurations needed.
 
-Remember in the scripts to replace all the resource names that need to be unique. This would be the name of the Web App, Key Vault, and Cognitive Service account. You may also change location if you want something closer to home. All other changes are optional.
+Remember in the scripts to replace all the resource names that need to be unique. This would be the name of the Web App, Key Vault, and Cognitive Services account. You may also change location if you want something closer to home. All other changes are optional.
 
 ## 1. Create network infrastructure
 
-First set up a Resource Group with a Virtual Network. The vNet should have at least two subnets. One for the vNet integration and one for the private endpoints. The address-prefix size must be at least /28 for both subnets and small subnets can affect scaling limits and the number of private endpoints. Go with /24 for both subnets if you are not under constraints.
+First set up a Resource Group with a Virtual Network. The vNet should have at least two subnets. One for the vNet integration and one for the private endpoints. The address-prefix size must be at least /28 for both subnets; small subnets can affect scaling limits and the number of private endpoints. Go with /24 for both subnets if you are not under constraints.
 
 ```bash
 az group create --name securebackendsetup --location westeurope
-
 az network vnet create --resource-group securebackendsetup --location westeurope --name securebackend-vnet --address-prefixes 10.0.0.0/16
 ```
 
@@ -41,7 +40,6 @@ For the subnets, there are two settings that we need to pay attention to. This i
 
 ```bash
 az network vnet subnet create --resource-group securebackendsetup --vnet-name securebackend-vnet --name vnet-integration-subnet --address-prefixes 10.0.0.0/24 --delegations Microsoft.Web/serverfarms
-
 az network vnet subnet create --resource-group securebackendsetup --vnet-name securebackend-vnet --name private-endpoint-subnet --address-prefixes 10.0.1.0/24 --disable-private-endpoint-network-policies
 ```
 
@@ -51,7 +49,6 @@ Create the Private DNS Zones for Key Vault and Cognitive Services:
 
 ```bash
 az network private-dns zone create --resource-group securebackendsetup --name privatelink.cognitiveservices.azure.com
-
 az network private-dns zone create --resource-group securebackendsetup --name privatelink.vaultcore.azure.net
 ```
 
@@ -59,7 +56,6 @@ Link the zones to the vNet:
 
 ```bash
 az network private-dns link vnet create --resource-group securebackendsetup --name cognitiveservices-zonelink --zone-name privatelink.cognitiveservices.azure.com --virtual-network securebackend-vnet --registration-enabled False
-
 az network private-dns link vnet create --resource-group securebackendsetup --name vaultcore-zonelink --zone-name privatelink.vaultcore.azure.net --virtual-network securebackend-vnet --registration-enabled False
 ```
 
@@ -67,19 +63,18 @@ Core network setup is done.
 
 ## 2. Set up backend services
 
-In this section, we will set up the Key Vault and the Cognitive Services account and store the access key for CS in Key Vault. We will also create the private endpoints and configure the services to block public traffic. First create the services:
+In this section, we will set up the Key Vault and the Cognitive Services (CS) account and store the access key for CS in Key Vault. We will also create the private endpoints and configure the services to block public traffic. First create the services:
 
 ```bash
 az keyvault create --resource-group securebackendsetup --name securekeyvault2021 --location westeurope --sku standard --enable-rbac-authorization
-
 az cognitiveservices account create --resource-group securebackendsetup --name securecstext2021 --location westeurope --kind TextAnalytics --sku F0 --custom-domain securecstext2021
 ```
 
-Then we need to add the access key from Cognitive Services as a secret in Key Vault. There are several ways to do this, you can do it in the portal, or as in this case using CLI. What matters here is that the Identity (in this case, you) must have permissions to write secrets to Key Vault. We are using a new permission model in Key Vault, where [the data plane permissions are set as RBAC permissions](https://docs.microsoft.com/azure/key-vault/general/rbac-guide?tabs=azure-cli). In this mode, no default data plane permissions are set.
+Then we need to add the access key from CS as a secret in Key Vault. There are several ways to do this; directly in the portal, or as in this case using CLI. What matters here is that the Identity (in this case, you) must have permissions to write secrets to Key Vault. We are using a new permission model in Key Vault, where [the data plane permissions are set as RBAC permissions](https://docs.microsoft.com/azure/key-vault/general/rbac-guide?tabs=azure-cli). In this mode, no default data plane permissions are set when creating the Key Vault.
 
 I am storing properties in variables for reuse in later steps. The `--output tsv` will ensure that the values do not have quotes. The `--query` parameter will allow me to return only a specific property.
 
-*Note that the syntax for using variables depends on your choice of shell.*
+**Note:** *The syntax for using variables depends on your choice of OS, shell and scripting language.*
 
 Assign permissions for you (the signed in user) to write secrets. You can also use service principal or other users if you have delegated responsibility:
 
@@ -89,16 +84,16 @@ kv_resource_id=$(az keyvault show --name securekeyvault2021 --query id --output 
 az role assignment create --role "Key Vault Secrets Officer" --assignee-object-id $my_id --scope $kv_resource_id
 ```
 
-Then get the key from Cognitive Services and store as a secret in Key Vault. We extract the URI of the secret as we need this in a later step. You can perhaps copy the secret in your notes if you plan on finishing later. The `secret set` command will display the secret in the shell if you are not querying a specific property. An alternative to tsv is to use `--output none`.
+Then get the key from CS and store as a secret in Key Vault. We extract the URI of the secret as we need this in a later step. You can perhaps copy the secret in your notes if you plan on finishing later. The `secret set` command will display the secret in the shell if you are not querying a specific property. An alternative to tsv is to use `--output none`.
 
-*Tip: In bash shell, which I am using, you can see the values of a variable by using the echo command, e.g. `echo $kv_secret_uri`*
+**Tip:** *In bash shell, which I am using, you can see the values of a variable by using the echo command, e.g. `echo $kv_secret_uri`*
 
 ```bash
 key1=$(az cognitiveservices account keys list --resource-group securebackendsetup --name securecstext2021 --query key1 --output tsv)
 kv_secret_uri=$(az keyvault secret set --vault-name securekeyvault2021 --name cskey --value $key1 --query id --output tsv)
 ```
 
-Next, let's create the private endpoints connecting the backend services into the vNet. We need the Resource ID, but we can get that with a script now that we know how to use variables and query/output parameters:
+Next, let's create the private endpoints connecting the backend services into the vNet. We already have the needed Key Vault Resource ID `$kv_resource_id` in a variable from a previous step:
 
 ```bash
 az network private-endpoint create --resource-group securebackendsetup --name securekeyvault-pe --location westeurope --connection-name securekeyvault-pc --private-connection-resource-id $kv_resource_id --group-id vault --vnet-name securebackend-vnet --subnet private-endpoint-subnet
@@ -110,21 +105,18 @@ az network private-endpoint create --resource-group securebackendsetup --name se
 az network private-endpoint dns-zone-group create --resource-group securebackendsetup --endpoint-name securekeyvault-pe --name securekeyvault-zg --private-dns-zone privatelink.vaultcore.azure.net --zone-name privatelink.vaultcore.azure.net
 ```
 
-Do the same for the Cognitive Service account:
+Do the same for the Cognitive Services account:
 
 ```bash
 cs_resource_id=$(az cognitiveservices account show --resource-group securebackendsetup --name securecstext2021 --query id --output tsv)
-
 az network private-endpoint create --resource-group securebackendsetup --name securecstext-pe --location westeurope --connection-name securecstext-pc --private-connection-resource-id $cs_resource_id --group-id account --vnet-name securebackend-vnet --subnet private-endpoint-subnet
-
 az network private-endpoint dns-zone-group create --resource-group securebackendsetup --endpoint-name securecstext-pe --name securecstext-zg --private-dns-zone privatelink.cognitiveservices.azure.com --zone-name privatelink.cognitiveservices.azure.com
 ```
 
-Finally, let's block public traffic. For Cognitive Services this property is not exposed in the official command, but we know our way around:
+Finally, let's block public traffic. For CS this property is not exposed in the official command, but we know our way around. You may need to fiddle a bit with the syntax for the `az rest` command if you are using an alternative shell/OS combination:
 
 ```bash
 az rest --uri $cs_resource_id?api-version=2017-04-18 --method PATCH --body '{"properties":{"publicNetworkAccess":"Disabled"}}' --headers 'Content-Type=application/json'
-
 az keyvault update --name securekeyvault2021 --default-action Deny
 ```
 
@@ -132,7 +124,7 @@ Everything is locked down now and you cannot even get to the Key Vault secrets t
 
 ## 3. Create network integrated Web App
 
-Now we get to creating the actual Web App. To use vNet Integration we need at least the Standard SKU. Currently, the steps are to create the Web App, integrate with the vNet and set a few App Settings. These settings will ensure that the Private DNS Zones are used to resolve the names of the backend services:
+Now we get to creating the actual Web App. To use vNet Integration we need at least the Standard SKU. The vNet Integration feature allow **outbound** traffic to flow directly into the vNet. By default only local IP traffic defined in [RFC-1918](https://tools.ietf.org/html/rfc1918#section-3) is routed to the vNet and this is what we need since we are using private endpoint. But to resolve the private endpoint IP from the Private DNS Zones we need to get to Azure internal DNS, which is not in RFC-1918. Therefore the two settings for `WEBSITE_DNS_SERVER` and `WEBSITE_VNET_ROUTE_ALL` are needed. The latter can also be used if you want to route internet traffic through your vNet e.g. through a Managed NAT or a Firewall:
 
 ```bash
 az appservice plan create --resource-group securebackendsetup --name securebackendplan --sku P1V2
@@ -142,7 +134,7 @@ az webapp vnet-integration add --resource-group securebackendsetup --name secure
 az webapp config appsettings set --resource-group securebackendsetup --name securebackend2021 --settings WEBSITE_VNET_ROUTE_ALL=1 WEBSITE_DNS_SERVER=168.63.129.16
 ```
 
-... and store the name of your Cognitive Services account for the code to query. Replace `securecstext2021` with the name of your account:
+Now store the name of your CS account for the code to query. Replace `securecstext2021` with the name of your account:
 
 ```bash
 az webapp config appsettings set --resource-group securebackendsetup --name securebackend2021 --settings CS_ACCOUNT_NAME=securecstext2021
@@ -154,11 +146,10 @@ As a last step in this section we need to generate a Managed Identity, grant thi
 
 ```bash
 az webapp identity assign --resource-group securebackendsetup --name securebackend2021 --scope $kv_resource_id --role  "Key Vault Secrets User"
-
 az webapp config appsettings set --resource-group securebackendsetup --name securebackend2021 --settings CS_ACCOUNT_KEY="@Microsoft.KeyVault(SecretUri=$kv_secret_uri)"
 ```
 
-You can now browse to the Web App and all outbound traffic from the Web App will be routed through the vNet.
+You can now browse to the Web App and all **outbound** traffic from the Web App will be routed through the vNet.
 
 ## 4. Connect "the dots"
 
@@ -241,6 +232,8 @@ if (!empty($_GET['text'])) {
 </body>
 </html>
 ```
+
+You are now ready to test the service.
 
 ### In closing
 
