@@ -1,5 +1,5 @@
 ---
-title: "Upgrade Notifications for App Service"
+title: "Upgrade Notifications for App Service (Preview)"
 author_name: "Michimune Kohno and Sanghmitra Gite"
 toc: true
 toc_sticky: true
