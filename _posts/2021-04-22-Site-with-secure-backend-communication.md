@@ -21,9 +21,11 @@ In closing, there are sections on alternative approaches, advanced scenarios, an
 
 ## Getting started
 
-This is the second article in a series focusing on network security. If you missed the first one, you can find it here, and it also includes a detailed Getting started section.
+This is the second article in a series focusing on network security. If you missed the first one, you can [find it here](https://azure.github.io/AppService/2021/03/26/Secure-resilient-site-with-custom-domain.html), and it also includes a detailed Getting started section.
 
 The article will use Azure CLI for the most part to setup the environment. It can be done using Azure portal, Resource Manager templates or PowerShell. CLI was chosen as I find it easier to follow and explain the individual steps and configurations needed.
+
+Remember to replace all the resource names that need to be unique in the scripts. This would be the name of the Web App, Key Vault, and Cognitive Service account. You may also change location if you want something closer to home. All other changes are optional.
 
 ## 1. Create network infrastructure
 
@@ -42,7 +44,7 @@ az network vnet subnet create --resource-group securebackendsetup --vnet-name se
 az network vnet subnet create --resource-group securebackendsetup --vnet-name securebackend-vnet --name private-endpoint-subnet --address-prefixes 10.0.1.0/24 --disable-private-endpoint-network-policies
 ```
 
-The last part of the network infrastructure is the Private DNS Zones. These zones are used to host the DNS records for private endpoints allowing the clients to find the backend services by name. We need a zone for Key Vault and a zone for Text Analytics (Cognitive Services). Go [here a primer on Azure Private Endpoints](https://docs.microsoft.com/azure/private-link/private-endpoint-overview) and [here for how DNS Zones fits into private endpoints](https://docs.microsoft.com/azure/private-link/private-endpoint-dns).
+The last part of the network infrastructure is the Private DNS Zones. These zones are used to host the DNS records for private endpoints allowing the clients to find the backend services by name. We need a zone for Key Vault and a zone for Text Analytics (Cognitive Services). Go [here for a primer on Azure Private Endpoints](https://docs.microsoft.com/azure/private-link/private-endpoint-overview) and [here for how DNS Zones fits into private endpoints](https://docs.microsoft.com/azure/private-link/private-endpoint-dns).
 
 Create the Private DNS Zones for Key Vault and Cognitive Services:
 
