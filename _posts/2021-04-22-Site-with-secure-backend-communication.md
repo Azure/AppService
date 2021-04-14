@@ -23,9 +23,9 @@ In closing, there are sections on alternative approaches, advanced scenarios, an
 
 This is the second article in a series focusing on network security. If you missed the first one, you can [find it here](https://azure.github.io/AppService/2021/03/26/Secure-resilient-site-with-custom-domain.html), and it also includes a detailed Getting started section.
 
-The article will use Azure CLI for the most part to setup the environment. It can be done using Azure portal, Resource Manager templates or PowerShell. CLI was chosen as I find it easier to follow and explain the individual steps and configurations needed.
+The article will also use Azure CLI executed in bash shell on WSL to setup the environment. It can be done using Azure portal, Resource Manager templates or PowerShell. CLI was chosen as I find it easier to follow and explain the individual steps and configurations needed.
 
-Remember to replace all the resource names that need to be unique in the scripts. This would be the name of the Web App, Key Vault, and Cognitive Service account. You may also change location if you want something closer to home. All other changes are optional.
+Remember in the scripts to replace all the resource names that need to be unique. This would be the name of the Web App, Key Vault, and Cognitive Service account. You may also change location if you want something closer to home. All other changes are optional.
 
 ## 1. Create network infrastructure
 
@@ -33,6 +33,7 @@ First setup a Resource Group with a Virtual Network. The vNet should have at lea
 
 ```bash
 az group create --name securebackendsetup --location westeurope
+
 az network vnet create --resource-group securebackendsetup --location westeurope --name securebackend-vnet --address-prefixes 10.0.0.0/16
 ```
 
@@ -57,8 +58,7 @@ az network private-dns zone create --resource-group securebackendsetup --name pr
 Link the zones to the vNet:
 
 ```bash
-az network private-dns link vnet create --resource-group securebackendsetup --name cognitiveservices-zonelink --zone-n
-ame privatelink.cognitiveservices.azure.com --virtual-network securebackend-vnet --registration-enabled False
+az network private-dns link vnet create --resource-group securebackendsetup --name cognitiveservices-zonelink --zone-name privatelink.cognitiveservices.azure.com --virtual-network securebackend-vnet --registration-enabled False
 
 az network private-dns link vnet create --resource-group securebackendsetup --name vaultcore-zonelink --zone-name privatelink.vaultcore.azure.net --virtual-network securebackend-vnet --registration-enabled False
 ```
@@ -94,17 +94,14 @@ Then get the key from Cognitive Services and store as a secret in Key Vault. We 
 *Tip: In bash shell, which I am using, you can see the values of a variable by using the echo command, e.g. `echo $kv_secret_uri`*
 
 ```bash
-key1=$(az cognitiveservices account keys list --resource-group securebackendsetup --name securecstext2021 --query key1
- --output tsv)
-kv_secret_uri=$(az keyvault secret set --vault-name securekeyvault2021 --name cskey --value $key1 --query id --output
-tsv)
+key1=$(az cognitiveservices account keys list --resource-group securebackendsetup --name securecstext2021 --query key1 --output tsv)
+kv_secret_uri=$(az keyvault secret set --vault-name securekeyvault2021 --name cskey --value $key1 --query id --output tsv)
 ```
 
 Next, let's create the private endpoints connecting the backend services into the vNet. We need the Resource ID, but we can get that with a script now that we know how to use variables and query/output parameters:
 
 ```bash
-az network private-endpoint create --resource-group securebackendsetup --name securekeyvault-pe --location westeurope --connection-name securekeyvault-pc --private-connection-resource-id $kv_resource_id --group-id vault --vnet-name secure
-backend-vnet --subnet private-endpoint-subnet
+az network private-endpoint create --resource-group securebackendsetup --name securekeyvault-pe --location westeurope --connection-name securekeyvault-pc --private-connection-resource-id $kv_resource_id --group-id vault --vnet-name securebackend-vnet --subnet private-endpoint-subnet
 ```
 
 ... and create a DNS Zone Group. This will create the DNS record for the private endpoint in the DNS Zone (and remove it if the private endpoint is deleted):
@@ -116,8 +113,7 @@ az network private-endpoint dns-zone-group create --resource-group securebackend
 Do the same for the Cognitive Service account:
 
 ```bash
-cs_resource_id=$(az cognitiveservices account show --resource-group securebackendsetup --name securecstext2021 --query
- id --output tsv)
+cs_resource_id=$(az cognitiveservices account show --resource-group securebackendsetup --name securecstext2021 --query id --output tsv)
 
 az network private-endpoint create --resource-group securebackendsetup --name securecstext-pe --location westeurope --connection-name securecstext-pc --private-connection-resource-id $cs_resource_id --group-id account --vnet-name securebackend-vnet --subnet private-endpoint-subnet
 
@@ -127,7 +123,7 @@ az network private-endpoint dns-zone-group create --resource-group securebackend
 Finally, let's block public traffic. For Cognitive Services this property is not exposed in the official command, but we know our way around:
 
 ```bash
-az rest --uri $cs_resource_id?api-version=2017-04-18 --method PATCH --body '{"properties":{"publicNetworkAccess":"Disabled"}}'
+az rest --uri $cs_resource_id?api-version=2017-04-18 --method PATCH --body '{"properties":{"publicNetworkAccess":"Disabled"}}' --headers 'Content-Type=application/json'
 
 az keyvault update --name securekeyvault2021 --default-action Deny
 ```
@@ -142,8 +138,7 @@ Now we get to creating the actual Web App. To use vNet Integration we need at le
 az appservice plan create --resource-group securebackendsetup --name securebackendplan --sku P1V2
 az webapp create --resource-group securebackendsetup --plan securebackendplan --name securebackend2021
 az webapp update --resource-group securebackendsetup --name securebackend2021 --https-only
-az webapp vnet-integration add --resource-group securebackendsetup --name securebackend2021 --vnet securebackend-vnet
---subnet vnet-integration-subnet
+az webapp vnet-integration add --resource-group securebackendsetup --name securebackend2021 --vnet securebackend-vnet --subnet vnet-integration-subnet
 az webapp config appsettings set --resource-group securebackendsetup --name securebackend2021 --settings WEBSITE_VNET_ROUTE_ALL=1 WEBSITE_DNS_SERVER=168.63.129.16
 ```
 
@@ -158,8 +153,7 @@ As a last step in this section we need to generate a Managed Identity, grant thi
 *Note: There are currently a few limitations in Key Vault references for App Service. Access to network-restricted vaults do not work on Linux-based applications and do not support version-less secrets (automatic update):*
 
 ```bash
-az webapp identity assign --resource-group securebackendsetup --name securebackend2021 --scope $kv_resource_id --role
- "Key Vault Secrets User"
+az webapp identity assign --resource-group securebackendsetup --name securebackend2021 --scope $kv_resource_id --role  "Key Vault Secrets User"
 
 az webapp config appsettings set --resource-group securebackendsetup --name securebackend2021 --settings CS_ACCOUNT_KEY="@Microsoft.KeyVault(SecretUri=$kv_secret_uri)"
 ```
