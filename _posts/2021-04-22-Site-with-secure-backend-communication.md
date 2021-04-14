@@ -13,7 +13,7 @@ toc_sticky: true
 This guide is organized into four steps:
 
 1. Create network infrastructure
-2. Setup backend services
+2. Set up backend services
 3. Create network integrated Web App
 4. Connect "the dots"
 
@@ -21,15 +21,15 @@ In closing, there are sections on alternative approaches, advanced scenarios, an
 
 ## Getting started
 
-This is the second article in a series focusing on network security. If you missed the first one, you can [find it here](https://azure.github.io/AppService/2021/03/26/Secure-resilient-site-with-custom-domain.html), and it also includes a detailed Getting started section.
+This is the second article in a series focusing on network security. If you missed the first one, you can [find it here](https://azure.github.io/AppService/2021/03/26/Secure-resilient-site-with-custom-domain.html), and it includes a more detailed Getting started section covering setting up the executing environment.
 
-The article will also use Azure CLI executed in bash shell on WSL to setup the environment. It can be done using Azure portal, Resource Manager templates or PowerShell. CLI was chosen as I find it easier to follow and explain the individual steps and configurations needed.
+The article will also use Azure CLI executed in bash shell on WSL to set up the environment. It can be done using Azure portal, Resource Manager templates or PowerShell. CLI was chosen as I find it easier to follow and explain the individual steps and configurations needed.
 
 Remember in the scripts to replace all the resource names that need to be unique. This would be the name of the Web App, Key Vault, and Cognitive Service account. You may also change location if you want something closer to home. All other changes are optional.
 
 ## 1. Create network infrastructure
 
-First setup a Resource Group with a Virtual Network. The vNet should have at least two subnets. One for the vNet integration and one for the private endpoints. The address-prefix size must be at least /28 for both subnets and small subnets can affect scaling limits and the number of private endpoints. Go with /24 for both subnets if you are not under constraints.
+First set up a Resource Group with a Virtual Network. The vNet should have at least two subnets. One for the vNet integration and one for the private endpoints. The address-prefix size must be at least /28 for both subnets and small subnets can affect scaling limits and the number of private endpoints. Go with /24 for both subnets if you are not under constraints.
 
 ```bash
 az group create --name securebackendsetup --location westeurope
@@ -45,7 +45,7 @@ az network vnet subnet create --resource-group securebackendsetup --vnet-name se
 az network vnet subnet create --resource-group securebackendsetup --vnet-name securebackend-vnet --name private-endpoint-subnet --address-prefixes 10.0.1.0/24 --disable-private-endpoint-network-policies
 ```
 
-The last part of the network infrastructure is the Private DNS Zones. These zones are used to host the DNS records for private endpoints allowing the clients to find the backend services by name. We need a zone for Key Vault and a zone for Text Analytics (Cognitive Services). Go [here for a primer on Azure Private Endpoints](https://docs.microsoft.com/azure/private-link/private-endpoint-overview) and [here for how DNS Zones fits into private endpoints](https://docs.microsoft.com/azure/private-link/private-endpoint-dns).
+The last part of the network infrastructure is the Private DNS Zones. These zones are used to host the DNS records for private endpoints allowing the clients to find the backend services by name. We need a zone for Key Vault and a zone for Text Analytics (Cognitive Services). Go [here for a primer on Azure Private Endpoints](https://docs.microsoft.com/azure/private-link/private-endpoint-overview) and [go here for how DNS Zones fits into private endpoints](https://docs.microsoft.com/azure/private-link/private-endpoint-dns).
 
 Create the Private DNS Zones for Key Vault and Cognitive Services:
 
@@ -65,9 +65,9 @@ az network private-dns link vnet create --resource-group securebackendsetup --na
 
 Core network setup is done.
 
-## 2. Setup backend services
+## 2. Set up backend services
 
-In this section, we will setup the Key Vault and the Cognitive Services account and store the access key for CS in Key Vault. We will also create the private endpoints and configure the services to block public traffic. First create the services:
+In this section, we will set up the Key Vault and the Cognitive Services account and store the access key for CS in Key Vault. We will also create the private endpoints and configure the services to block public traffic. First create the services:
 
 ```bash
 az keyvault create --resource-group securebackendsetup --name securekeyvault2021 --location westeurope --sku standard --enable-rbac-authorization
@@ -242,7 +242,7 @@ if (!empty($_GET['text'])) {
 </html>
 ```
 
-### In Closing
+### In closing
 
 What language is "Rødgrød med fløde"? With this new solution you should be able to use the AI engine to determine that it is Danish - my native language. It is a well known challenge for foreigners to pronounce, and you can probably find videos of this online. You may also have noticed in the code, that I added the "classic" same font color debug output for convenience.
 
