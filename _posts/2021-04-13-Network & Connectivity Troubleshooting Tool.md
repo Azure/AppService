@@ -1,5 +1,5 @@
 ---
-title: "Diagnose & Solve Network/Connectivity issues with the new Troubleshooter"
+title: "Troubleshoot Network/Connectivity issues on App Service & Functions"
 author_name: "Khaled Zayed"
 category: diagnostics
 tags:                                                           
@@ -9,9 +9,9 @@ tags:
     - Connectivity
 ---
 
-Troubleshooting networking & connectivity issues when running on App Services just became easier. We are happy to announce the release of our new diagnostic tool 'Network/Connectivity Troubleshooter' available now in the Diagnose & Solve blade. 
+Troubleshooting networking & connectivity issues when running on App Services just became easier. We are happy to announce the release of our new diagnostic tool 'Network/Connectivity Troubleshooter' available now in the Diagnose & Solve Problems blade. 
 
-You can access the tool by going to the Diagnose & Solve blade and either use the search bar to search for it or use the quick link available under popular troubleshooting tools section:
+You can access the tool by going to the Diagnose & Solve Problems blade and either use the search bar to search for it or use the quick link available under popular troubleshooting tools section:
 ![Find the tool]({{site.baseurl}}/media/2021/04/NT-searchbar.png)
 
 
