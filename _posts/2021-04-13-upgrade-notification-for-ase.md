@@ -4,27 +4,24 @@ author_name: "Michimune Kohno and Sanghmitra Gite"
 toc: true
 toc_sticky: true
 tags:
-    - Upgrade notifications
     - Azure Monitor
     - App Service Environment
-    - Logic Apps
 ---
 
-We are happy to announce that the scheduled or planned maintenance notifications for App Service Environment  (Preview) is available. With that notification you will be able to receive email or SMS text which allows you to take action before a platform upgrade starts if necessary. You can even invoke your Azure Function or Logic App if you want.
 
-The Azure App Service is a PaaS solution offering in Azure which constantly updates the platform. One of the top requests from customers is to receive a notification before an upgrade operation happens. This feature has been rolled out for App Service Environments (ASEs) across regions.
+The Azure App Service is a PaaS solution offering in Azure which constantly updates the platform. One of the top requests from customers is to receive a notification before an upgrade operation happens. 
 
-> Support for other App Service SKUs will be coming soon.
+We are happy to announce that notifications for scheduled maintenance on App Service Environments is now available in Preview. With these notifications, you will be able to receive email or SMS text alerts before a platform upgrade starts. You can also invoke Azure Functions or Logic Apps based on these notifications. This feature has been rolled out for App Service Environments (ASEs) across our regions. This article shows how to set up email and SMS alerts, as well as Function and Logic Apps to consume the events.
+
+> Support for the multi-tenant version of App Service will be coming soon.
 
 ## Overview
 
-Our maintenance notification for App Service is essentially an event of Azure Monitor. This means that you can set up your email address and/or SMS phone number when a notification is generated. You can also set up a trigger for your custom Azure Function or Logic App, which allows you to automatically take action to your resources. For example, you can automatically divert all the traffic from your ASE in one region which will be upgraded to ASE in another region in order to avoid any potential impact. Then you can automatically change the traffic back to normal when an upgrade completes. Please refer to [Logic App sample for automatic traffic diversion for Azure App Service](https://github.com/Azure-Samples/azure-logic-app-traffic-update-samples) for more details.
+Our maintenance notification for App Service is an event in Azure Monitor. This means that you can set up your email address and/or SMS phone number when a notification is generated. You can also set up a trigger for your custom Azure Function or Logic App, which allows you to automatically take action to your resources. For example, you can automatically divert all the traffic from your ASE in one region which will be upgraded to ASE in another region in order to avoid any potential impact. Then you can automatically change the traffic back to normal when an upgrade completes. Please refer to [Logic App sample for automatic traffic diversion for Azure App Service](https://github.com/Azure-Samples/azure-logic-app-traffic-update-samples) for more details.
 
 ## Viewing upgrade notifications
 
-On the Azure portal, go to **Home** > **Monitor** > **Service Health** > **Planned maintenance**. Here you can see all active (Either upcoming or in-progress) notification for the selected subscriptions. To make it easy to find App Service upgrade events, click **Service** box, check all App Service types and uncheck everything else.
-
-To see past notifications, navigate to **Health history** and filter **Planned maintenance** from the Health Event Type box.
+On the Azure portal, go to **Home** > **Monitor** > **Service Health** > **Planned maintenance**. Here you can see all active (including upcoming or in-progress) notifications for the selected subscriptions. To make it easy to find App Service upgrade events, click **Service** box, check all App Service types and uncheck everything else. To see past notifications, navigate to **Health history** and filter **Planned maintenance** from the Health Event Type box.
 
 ![Health history]({{ site.baseurl }}/media/2021/04/upgrade-notification-health-history.png)
 
@@ -70,15 +67,15 @@ Once the upgrade starts, we send in-progress notifications every 12 hours until 
 
 ### Is it in preview now?
 
-Yes, it's currently in preview. There is no GA date planned yet.
+Yes, it's currently in preview. We are collecting feedback and usage telemetry. We will announce a date for General Availability as one becomes available.
 
 ### Can we get notifications earlier, like one day before?
 
-No. At this point from 60 minutes to 90 minutes is the earliest timing of notifications.
+At this time,  60 minutes to 90 minutes is the earliest notification lead-time.
 
 ### Is it only available for ASEs?
 
-Yes, currently it is only available for ASEs. We are actively working on enabling it for other App Service SKUs.
+Yes, currently it is only available for ASEs. We are actively working on enabling it for the multi-tenant version of App Service.
 
 ### Can I invoke my Azure Function when a notification comes?
 
