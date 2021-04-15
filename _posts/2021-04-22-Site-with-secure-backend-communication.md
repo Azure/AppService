@@ -74,7 +74,7 @@ Then we need to add the access key from CS as a secret in Key Vault. There are s
 
 I am storing properties in variables for reuse in later steps. The `--output tsv` will ensure that the values do not have quotes. The `--query` parameter will allow me to return only a specific property.
 
-**Note:** *The syntax for using variables depends on your choice of OS, shell and scripting language.*
+> **Note:** The syntax for using variables depends on your choice of OS, shell and scripting language.
 
 Assign permissions for you (the signed in user) to write secrets. You can also use service principal or other users if you have delegated responsibility:
 
@@ -86,7 +86,7 @@ az role assignment create --role "Key Vault Secrets Officer" --assignee-object-i
 
 Then get the key from CS and store as a secret in Key Vault. We extract the URI of the secret as we need this in a later step. You can perhaps copy the secret in your notes if you plan on finishing later. The `secret set` command will display the secret in the shell if you are not querying a specific property. An alternative to tsv is to use `--output none`.
 
-**Tip:** *In bash shell, which I am using, you can see the values of a variable by using the echo command, e.g. `echo $kv_secret_uri`*
+> **Tip:** In bash shell, which I am using, you can see the values of a variable by using the echo command, e.g. `echo $kv_secret_uri`
 
 ```bash
 key1=$(az cognitiveservices account keys list --resource-group securebackendsetup --name securecstext2021 --query key1 --output tsv)
@@ -142,7 +142,7 @@ az webapp config appsettings set --resource-group securebackendsetup --name secu
 
 As a last step in this section we need to generate a Managed Identity, grant this identity read secrets permissions on the Key Vault and reference the secret in an App Setting. We will reuse the Resource ID variable from a previous step. Go back up if you missed that. The identity command can directly assign permissions as part of the command, so we will grant the Web App "Key Vault Secrets User" (read) permissions:
 
-*Note: There are currently a few limitations in Key Vault references for App Service. Access to network-restricted vaults do not work on Linux-based applications and do not support version-less secrets (automatic update):*
+> **Note:** There are currently a few limitations in Key Vault references for App Service. Access to network-restricted vaults do not work on Linux-based applications and do not support version-less secrets (automatic update).
 
 ```bash
 az webapp identity assign --resource-group securebackendsetup --name securebackend2021 --scope $kv_resource_id --role  "Key Vault Secrets User"
