@@ -9,7 +9,7 @@ toc_sticky: true
 
 To get started with .NET 6 (Preview) on App Service you can use one of two deployment methods. A Self-Contained deployment will allow you to deploy your app on machines that don't have the runtime installed. You can also deploy your application with a more portable solution using a Container which will package your app and dependencies to run on App Service.
 
-> Migrating your .NET 3.1 apps to .NET 6? We recommend going to .NEt 5 before jumping to 6, see [our previous article](https://azure.github.io/AppService/2021/04/14/Migrating-your-dotnet-31-applications-to-dotnet-5.html).
+> Migrating your .NET 3.1 apps to .NET 6? We recommend going to .NET 5 before jumping to 6, see [our previous article](https://azure.github.io/AppService/2021/04/14/Migrating-your-dotnet-31-applications-to-dotnet-5.html).
 
 ## Local Setup
 
