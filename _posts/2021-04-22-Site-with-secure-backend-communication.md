@@ -6,7 +6,7 @@ toc: true
 toc_sticky: true
 ---
 
-"Rød grød med fløde" - hmm, what language is that? Keep reading if you want to find out. In this article I will walk you through setting up a Web App with secure, network-isolated communication to backend services. The Web App will allow you to type in a text and using Cognitive Services Language Detection, you can detect the language of the given text. The authentication key for Cognitive Services will be stored in Key Vault, and App Service will authenticate with Key Vault using Managed Identity. All traffic will be isolated within your Virtual Network using vNet Integration and Private Endpoints.
+"Rød grød med fløde" - hmm, what language is that? Keep reading if you want to find out. In this article I will walk you through setting up a Web App with secure, network-isolated communication to backend services. The Web App will allow you to type in a text, and using Cognitive Services Language Detection you can detect the language of the given text. The authentication key for Cognitive Services will be stored in Key Vault, and App Service will authenticate with Key Vault using Managed Identity. All traffic will be isolated within your Virtual Network using vNet Integration and Private Endpoints.
 
 ![Final setup]({{site.baseurl}}/media/2021/04/securebackend-final-setup.png){: .align-center}
 
@@ -25,7 +25,7 @@ This is the second article in a series focusing on network security. If you miss
 
 The article will also use Azure CLI executed in bash shell on WSL to set up the environment. It could be done using Azure portal, Resource Manager templates or PowerShell. CLI was chosen as I find it easier to follow and explain the individual steps and configurations needed.
 
-Remember in the scripts to replace all the resource names that need to be unique. This would be the name of the Web App, Key Vault, and Cognitive Services account. You may also change location if you want something closer to home. All other changes are optional.
+**Remember** in the scripts to replace all the resource names that need to be unique. This would be the name of the Web App, Key Vault, and Cognitive Services account. You may also change location if you want something closer to home. All other changes are optional.
 
 ## 1. Create network infrastructure
 
@@ -36,7 +36,7 @@ az group create --name securebackendsetup --location westeurope
 az network vnet create --resource-group securebackendsetup --location westeurope --name securebackend-vnet --address-prefixes 10.0.0.0/16
 ```
 
-For the subnets, there are two settings that we need to pay attention to. This is often set by the portal or scripts, but here it is called out directly. Delegation "Microsoft.Web/serverfarms" informs the subnet that it is reserved for vNet Integration. For private endpoint subnets you need to disable private endpoint network policies:
+For the subnets, there are two settings that we need to pay attention to. This is often set by the portal or scripts, but here it is called out directly. [Delegation](https://docs.microsoft.com/azure/virtual-network/subnet-delegation-overview) "Microsoft.Web/serverfarms" informs the subnet that it is reserved for vNet Integration. For private endpoint subnets you need to [disable private endpoint network policies](https://docs.microsoft.com/azure/private-link/disable-private-endpoint-network-policy):
 
 ```bash
 az network vnet subnet create --resource-group securebackendsetup --vnet-name securebackend-vnet --name vnet-integration-subnet --address-prefixes 10.0.0.0/24 --delegations Microsoft.Web/serverfarms
