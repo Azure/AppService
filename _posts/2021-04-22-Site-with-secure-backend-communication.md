@@ -8,6 +8,8 @@ toc_sticky: true
 
 "Rød grød med fløde" - hmm, what language is that? Keep reading if you want to find out. In this article I will walk you through setting up a Web App with secure, network-isolated communication to backend services. The Web App will allow you to type in a text, and using Cognitive Services Language Detection you can detect the language of the given text. The authentication key for Cognitive Services will be stored in Key Vault, and App Service will authenticate with Key Vault using Managed Identity. All traffic will be isolated within your Virtual Network using vNet Integration and Private Endpoints.
 
+The scenario is intentionally kept simple to focus on the architecture and configuration; but with a practical purpose as I, at least, find it more easy to relate to. The backend services can be extended with the many other services supporting private endpoint like Azure SQL, Cosmos DB, App Configuration, and even another App Service Web Apps or Functions by following the same pattern.
+
 ![Final setup]({{site.baseurl}}/media/2021/04/securebackend-final-setup.png){: .align-center}
 
 This guide is organized into four steps:
@@ -17,19 +19,19 @@ This guide is organized into four steps:
 3. Create network integrated Web App
 4. Connect "the dots"
 
-In closing, there are sections on alternative approaches, advanced scenarios, and an FAQ section.
+In closing, there are sections on alternative approaches, advanced scenarios, and FAQ.
 
 ## Getting started
 
 This is the second article in a series focusing on network security. If you missed the first one, you can [find it here](https://azure.github.io/AppService/2021/03/26/Secure-resilient-site-with-custom-domain.html), and it includes a more detailed getting started section covering setting up the scripting environment.
 
-The article will also use Azure CLI executed in bash shell on WSL to set up the environment. It could be done using Azure portal, Resource Manager templates or PowerShell. CLI was chosen as I find it easier to follow and explain the individual steps and configurations needed.
+This article will also use Azure CLI executed in bash shell on WSL to set up the environment. It could be done using Azure portal, Resource Manager templates or Azure PowerShell. CLI was chosen as I find it easier to follow and explain the individual steps and configurations needed.
 
-**Remember** in the scripts to replace all the resource names that need to be unique. This would be the name of the Web App, Key Vault, and Cognitive Services account. You may also change location if you want something closer to home. All other changes are optional.
+**Remember** in the scripts to replace all the resource names that need to be unique. This would be the name of the Web App, Key Vault, and Cognitive Services account and custom domain. You may also change location if you want something closer to home. All other changes are optional.
 
 ## 1. Create network infrastructure
 
-First set up a Resource Group with a Virtual Network. The vNet should have at least two subnets. One for the vNet integration and one for the private endpoints. The address-prefix size must be at least /28 for both subnets; small subnets can affect scaling limits and the number of private endpoints. Go with /24 for both subnets if you are not under constraints.
+First set up a Resource Group with a Virtual Network. The vNet should have at least two subnets. One for the vNet Integration and one for the private endpoints. The address-prefix size must be at least /28 for both subnets; small subnets can affect scaling limits and the number of private endpoints. Go with /24 for both subnets if you are not under constraints.
 
 ```bash
 az group create --name securebackendsetup --location westeurope
@@ -76,7 +78,7 @@ I am storing properties in variables for reuse in later steps. The `--output tsv
 
 > **Note:** The syntax for using variables depends on your choice of OS, shell and scripting language.
 
-Assign permissions for you (the signed in user) to write secrets. You can also use service principal or other users if you have delegated responsibility:
+Assign permissions for you (the signed in user) to write secrets. You can optionally use service principal or other users if you have delegated responsibility:
 
 ```bash
 my_id=$(az ad signed-in-user show --query objectId --output tsv)
@@ -89,8 +91,8 @@ Then get the key from CS and store as a secret in Key Vault. We extract the URI 
 > **Tip:** In bash shell, which I am using, you can see the values of a variable by using the echo command, e.g. `echo $kv_secret_uri`
 
 ```bash
-key1=$(az cognitiveservices account keys list --resource-group securebackendsetup --name securecstext2021 --query key1 --output tsv)
-kv_secret_uri=$(az keyvault secret set --vault-name securekeyvault2021 --name cskey --value $key1 --query id --output tsv)
+cs_key1=$(az cognitiveservices account keys list --resource-group securebackendsetup --name securecstext2021 --query key1 --output tsv)
+kv_secret_uri=$(az keyvault secret set --vault-name securekeyvault2021 --name cskey --value $cs_key1 --query id --output tsv)
 ```
 
 Next, let's create the private endpoints connecting the backend services into the vNet. We already have the needed Key Vault Resource ID `$kv_resource_id` in a variable from a previous step:
@@ -249,14 +251,14 @@ In this section, I will discuss some alternative approaches and advanced scenari
 
 ### Service endpoints
 
-Lorem Ipsum
-
-### Key rotation
-
-Lorem Ipsum
+[Service endpoint](https://docs.microsoft.com/azure/virtual-network/virtual-network-service-endpoints-overview) is an alternative Azure Networking technology you can use to secure your network traffic. Essentially you register specific service endpoints like Microsoft.KeyVault on the subnet where traffic originates from. In this case the vNet Integration subnet. With this registration, Azure will append metadata to the traffic towards the specific service to allow the service to restrict which subnet to accept traffic from, and to block all other traffic. Unlike private endpoint, it still uses the public IP of the service for routing, and therefore do not need the setup of Azure Private DNS Zones.
 
 ## FAQ
 
-**Q: Question?**
+**Q: What is this 168.63.129.16 IP and is it static?**
 
-Answer.
+The IP is a [static virtual IP](https://docs.microsoft.com/azure/virtual-network/what-is-ip-address-168-63-129-16) representing Azure platform resources such as Azure internal DNS service.
+
+**Q: Can I apply the same steps to a Function App?**
+
+You will need a Premium Elastic plan to use vNet Integration with Function Apps. Further, if you would like to also have the storage account, that Functions use for code and state, you will need to initially create it with the storage publicly available. [The steps and limitations are documented here.](https://docs.microsoft.com/azure/azure-functions/configure-networking-how-to#restrict-your-storage-account-to-a-virtual-network)
