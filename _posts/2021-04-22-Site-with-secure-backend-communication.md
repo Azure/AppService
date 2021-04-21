@@ -6,9 +6,11 @@ toc: true
 toc_sticky: true
 ---
 
-"Rød grød med fløde" - hmm, what language is that? Keep reading if you want to find out. In this article I will walk you through setting up a Web App with secure, network-isolated communication to backend services. The Web App will allow you to type in a text, and using Cognitive Services Language Detection you can detect the language of the given text. The authentication key for Cognitive Services will be stored in Key Vault, and App Service will authenticate with Key Vault using Managed Identity. All traffic will be isolated within your Virtual Network using vNet Integration and Private Endpoints.
+*"Rød grød med fløde"* - hmm, what language is that? Keep reading if you want to find out. 
 
-The scenario is intentionally kept simple to focus on the architecture and configuration; but with a practical purpose as I, at least, find it more easy to relate to. The backend services can be extended with the many other services supporting private endpoint like Azure SQL, Cosmos DB, App Configuration, and even another App Service Web Apps or Functions by following the same pattern.
+In this article I will walk you through setting up a Web App with secure, network-isolated communication to backend services. The Web App will allow you to type in a text, and using Cognitive Services Language Detection, you can detect the language of the given text. The authentication key for Cognitive Services will be stored in Key Vault, and App Service will authenticate with Key Vault using Managed Identity. All traffic will be isolated within your Virtual Network using vNet Integration and Private Endpoints.
+
+The scenario is intentionally kept simple to focus on the architecture and configuration; but with a practical purpose I find it more easy to relate to. The backend services can be extended with the many other services supporting Private Endpoint like Azure SQL, Cosmos DB, App Configuration, and even another App Service Web Apps or Functions by following the same pattern.
 
 ![Final setup]({{site.baseurl}}/media/2021/04/securebackend-final-setup.png){: .align-center}
 
@@ -21,7 +23,7 @@ This guide is organized into four steps:
 
 In closing, there are sections on alternative approaches, advanced scenarios, and FAQ.
 
-## Getting started
+## Getting Started
 
 This is the second article in a series focusing on network security. If you missed the first one, you can [find it here](https://azure.github.io/AppService/2021/03/26/Secure-resilient-site-with-custom-domain.html), and it includes a more detailed getting started section covering setting up the scripting environment.
 
@@ -29,7 +31,7 @@ This article will also use Azure CLI executed in bash shell on WSL to set up the
 
 **Remember** in the scripts to replace all the resource names that need to be unique. This would be the name of the Web App, Key Vault, and Cognitive Services account and custom domain. You may also change location if you want something closer to home. All other changes are optional.
 
-## 1. Create network infrastructure
+## 1. Create Network Infrastructure
 
 First set up a Resource Group with a Virtual Network. The vNet should have at least two subnets. One for the vNet Integration and one for the private endpoints. The address-prefix size must be at least /28 for both subnets; small subnets can affect scaling limits and the number of private endpoints. Go with /24 for both subnets if you are not under constraints.
 
@@ -61,9 +63,9 @@ az network private-dns link vnet create --resource-group securebackendsetup --na
 az network private-dns link vnet create --resource-group securebackendsetup --name vaultcore-zonelink --zone-name privatelink.vaultcore.azure.net --virtual-network securebackend-vnet --registration-enabled False
 ```
 
-Core network setup is done.
+... and now the core network setup is done. We can now create our backend resources.
 
-## 2. Set up backend services
+## 2. Set Up Backend Services
 
 In this section, we will set up the Key Vault and the Cognitive Services (CS) account and store the access key for CS in Key Vault. We will also create the private endpoints and configure the services to block public traffic. First create the services:
 
@@ -72,7 +74,7 @@ az keyvault create --resource-group securebackendsetup --name securekeyvault2021
 az cognitiveservices account create --resource-group securebackendsetup --name securecstext2021 --location westeurope --kind TextAnalytics --sku F0 --custom-domain securecstext2021
 ```
 
-Then we need to add the access key from CS as a secret in Key Vault. There are several ways to do this; directly in the portal, or as in this case using CLI. What matters here is that the Identity (in this case, you) must have permissions to write secrets to Key Vault. We are using a new permission model in Key Vault, where [the data plane permissions are set as RBAC permissions](https://docs.microsoft.com/azure/key-vault/general/rbac-guide?tabs=azure-cli). In this mode, no default data plane permissions are set when creating the Key Vault.
+Then we need to add the access key from CS as a secret in Key Vault. There are several ways to do this: directly in the Portal, or using the CLI. What matters here is that the Identity (in this case, you) must have permissions to write secrets to Key Vault. We are using a new permission model in Key Vault, where [the data plane permissions are set as RBAC permissions](https://docs.microsoft.com/azure/key-vault/general/rbac-guide?tabs=azure-cli). In this mode, no default data plane permissions are set when creating the Key Vault.
 
 I am storing properties in variables for reuse in later steps. The `--output tsv` will ensure that the values do not have quotes. The `--query` parameter will allow me to return only a specific property.
 
@@ -95,7 +97,7 @@ cs_key1=$(az cognitiveservices account keys list --resource-group securebackends
 kv_secret_uri=$(az keyvault secret set --vault-name securekeyvault2021 --name cskey --value $cs_key1 --query id --output tsv)
 ```
 
-Next, let's create the private endpoints connecting the backend services into the vNet. We already have the needed Key Vault Resource ID `$kv_resource_id` in a variable from a previous step:
+Next, let's create the Private Endpoints to connect the backend services to the vNet. We already have the needed Key Vault Resource ID `$kv_resource_id` in a variable from a previous step:
 
 ```bash
 az network private-endpoint create --resource-group securebackendsetup --name securekeyvault-pe --location westeurope --connection-name securekeyvault-pc --private-connection-resource-id $kv_resource_id --group-id vault --vnet-name securebackend-vnet --subnet private-endpoint-subnet
@@ -124,7 +126,7 @@ az keyvault update --name securekeyvault2021 --default-action Deny
 
 Everything is locked down now and you cannot even get to the Key Vault secrets through the Azure portal. In the Key Vault Networking blade you can add the public IP of your client if you need to view or update the secrets.
 
-## 3. Create network integrated Web App
+## 3. Create Network Integrated Web App
 
 Now we get to creating the actual Web App. To use vNet Integration we need at least the Standard SKU. The vNet Integration feature allow **outbound** traffic to flow directly into the vNet. By default only local IP traffic defined in [RFC-1918](https://tools.ietf.org/html/rfc1918#section-3) is routed to the vNet and this is what we need since we are using private endpoint. But to resolve the private endpoint IP from the Private DNS Zones we need to get to Azure internal DNS, which is not in RFC-1918. Therefore the two settings for `WEBSITE_DNS_SERVER` and `WEBSITE_VNET_ROUTE_ALL` are needed. The latter can also be used if you want to route internet traffic through your vNet e.g. through a Managed NAT or a Firewall:
 
@@ -153,11 +155,11 @@ az webapp config appsettings set --resource-group securebackendsetup --name secu
 
 You can now browse to the Web App and all **outbound** traffic from the Web App will be routed through the vNet.
 
-## 4. Connect "the dots"
+## 4. Connect "The Dots"
 
 All the infrastructure is now in place and we just need a bit of code to glue it all together.
 
-I will be using php as it can run on both Windows and Linux workers and is easy to read and allows for a single file solution. Please do not mind the missing error handling, retry logic, etc. as this is a proof of concept. Copy the following code into a file called **index.php** and run these commands:
+I will be using php as it can run on both Windows and Linux App Service Plans,  is easy to read, and allows for a single-file solution. Please do not mind the missing error handling, retry logic, etc. as this is a proof-of-concept. Copy the following code into a file called **index.php** and run these commands:
 
 ```bash
 zip default.zip index.php
@@ -237,7 +239,7 @@ if (!empty($_GET['text'])) {
 
 You are now ready to test the service.
 
-### In closing
+## In Closing
 
 What language is "Rødgrød med fløde"? With this new solution you should be able to use the AI engine to determine that it is Danish - my native language. It is a well known challenge for foreigners to pronounce, and you can probably find videos of this online. You may also have noticed in the code, that I added the "classic" same font color debug output for convenience.
 
@@ -245,7 +247,7 @@ What language is "Rødgrød med fløde"? With this new solution you should be ab
 
 As a bonus challenge, you can try to extend the solution to be able to translate into English and find out what it means. You should find what you need for that [here](https://docs.microsoft.com/azure/cognitive-services/translator/reference/v3-0-reference).
 
-## Alternative approaches and advanced scenarios
+## Alternative Approaches and Advanced Scenarios
 
 In this section, I will discuss some alternative approaches and advanced scenarios.
 
