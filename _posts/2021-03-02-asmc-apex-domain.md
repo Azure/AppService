@@ -6,7 +6,7 @@ toc_sticky: true
 category: certsdomains
 ---
 
-App Service Managed Certificate (preview) now lets you secure your apex domains on your web apps at no additional charge. This feature is similar to the current App Service Managed Certificate sub-domain support where you can create a standard certificate valid for six months which will automatically renew a month prior expiration. Your TLS/SSL bindings will also be automatically updated. If you have several domains, you will need to separately create an App Service Managed Certificate for each of them; wildcard certificate is not supported for this feature.
+App Service Managed Certificate (preview) now lets you secure your apex domains on your web apps at no additional charge. This feature is similar to the current App Service Managed Certificate sub-domain support where you can create a standard certificate valid for six months which will automatically renew around 45 days before expiration. Your TLS/SSL bindings will also be automatically updated. If you have several domains, you will need to separately create an App Service Managed Certificate for each of them; wildcard certificate is not supported for this feature.
 
 ## Getting started
 

@@ -4,7 +4,7 @@ author_name: "Yutang Lin"
 category: certsdomains
 ---
 
-Free Transport Layer Security (TLS) for Azure App Service is now in preview! This has been one of the most highly requested features of the service since its inception. The feature is named App Service Managed Certificates and it will let you secure custom domains on your Windows and Linux apps at no additional charge. This provides developers a zero-cost option to work on their dev, test, and production sites. This feature is available for customers on an App Service Plan of Basic and above (free and shared tiers are not supported). The certificate issued will be a standard certificate and not a wildcard certificate. Each certificate will be valid for six months, and about a month before the certificate’s expiration date, App Service will renew the certificate.
+Free Transport Layer Security (TLS) for Azure App Service is now in preview! This has been one of the most highly requested features of the service since its inception. The feature is named App Service Managed Certificates and it will let you secure custom domains on your Windows and Linux apps at no additional charge. This provides developers a zero-cost option to work on their dev, test, and production sites. This feature is available for customers on an App Service Plan of Basic and above (free and shared tiers are not supported). The certificate issued will be a standard certificate and not a wildcard certificate. Each certificate will be valid for six months, and about 45 days before the certificate’s expiration date, App Service will renew the certificate.
 
 ## App Service Managed Certificates VS App Service Certificates
 
