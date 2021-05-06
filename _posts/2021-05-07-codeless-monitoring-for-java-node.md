@@ -56,14 +56,15 @@ Your application telemetry will be visible in the Application Insights resource.
 
 Codeless monitoring has been supported on App Service for other languages and operating systems. As of May 7th, this is the current support matrix for App Insights on App Service:
 
-| Language | Windows | Linux |
-|----------|---------|-------|
-| ASP.NET  |   ✔️    |  N/A  |
-| .NET 3.1, 5|   ✔️  |  🟠  |
-| Java     |     ✔️  |  ✔️  |
-| Node.js  |    ✔️   |  ✔️  |
-| Python   |    ❌   |  ❌  |
-| Ruby     |    ❌   |  ❌  |
-| PHP      |    ❌   |  ❌  |
+| Language        | Windows | Linux |
+|-----------------|---------|-------|
+| **ASP.NET**     |   ✔️    |  N/A  |
+| **.NET 3.1, 5** |   ✔️    |  ❌  |
+| **Java**        |     ✔️  |  ✔️  |
+| **Node.js**     |    ✔️   |  ✔️  |
+| **Python**      |    ❌   |  ❌  |
+| **Ruby**        |    ❌   |  ❌  |
+| **PHP**         |    ❌   |  ❌  |
 
-🟠: Application Insights support is planned.
+✔️ Application Insights codeless monitoring is supported
+❌ Application Insights codeless monitoring is **not** currently supported
