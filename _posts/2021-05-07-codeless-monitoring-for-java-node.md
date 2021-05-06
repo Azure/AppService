@@ -7,8 +7,6 @@ toc_sticky: true
 
 We are happy to share that Application Insights monitoring is now available for Java and Node.js apps on App Service for both Windows and Linux! To try it out, create a new Web App from the Portal and click the **Monitoring** tab to enable App Insights. If you already have a Java or Node.js app on App Service, then go to **Application Insights** on the web app menu to turn it on.
 
-// Put image here with the create tab, and the post-create menu item
-
 > This integration is currently in technical preview.
 
 ## Codeless Monitoring from Application Insights
@@ -17,10 +15,9 @@ Application Insights from Azure Monitor is a cloud native application monitoring
 
 Enabling Application Insights on your Azure web app will attach a monitoring agent to your Java or Node.js application and begin sending telemetry to App Insights... *no code changes required!* Application Insights help you better understand and monitor your applications with features like...
 
-- Application Map
-- Live Metrics
-- Failure Analysis
-- Custom alerts based on metrics
+- [Application Map](https://docs.microsoft.com/azure/azure-monitor/app/app-map)
+- [Live Metrics](https://docs.microsoft.com/azure/azure-monitor/app/live-stream)
+- [Failure Analysis](https://docs.microsoft.com/azure/azure-monitor/app/proactive-failure-diagnostics)
 
 ## Get Started
 
@@ -57,7 +54,7 @@ Your application telemetry will be visible in the Application Insights resource.
 
 ## Application Insights support on App Service
 
-Codeless monitoring has been supported on App Service for other languages and operating systems. As of May 7th, here is our current support matrix for App Insights on App Service:
+Codeless monitoring has been supported on App Service for other languages and operating systems. As of May 7th, this is the current support matrix for App Insights on App Service:
 
 | Language | Windows | Linux |
 |----------|---------|-------|
@@ -69,4 +66,4 @@ Codeless monitoring has been supported on App Service for other languages and op
 | Ruby     |    ❌   |  ❌  |
 | PHP      |    ❌   |  ❌  |
 
-> 🟠: Application Insights support is planned.
+🟠: Application Insights support is planned.
