@@ -59,7 +59,7 @@ Codeless monitoring has been supported on App Service for other languages and op
 | Language        | Windows | Linux |
 |-----------------|---------|-------|
 | **ASP.NET**     |   ✔️    |  N/A  |
-| **.NET 3.1, 5** |   ✔️    |  ❌  |
+| **.NET 2.1, 3.1, 5** |   ✔️    |  ❌  |
 | **Java**        |     ✔️  |  ✔️  |
 | **Node.js**     |    ✔️   |  ✔️  |
 | **Python**      |    ❌   |  ❌  |
@@ -67,4 +67,5 @@ Codeless monitoring has been supported on App Service for other languages and op
 | **PHP**         |    ❌   |  ❌  |
 
 ✔️ Application Insights codeless monitoring is supported
+
 ❌ Application Insights codeless monitoring is **not** currently supported
