@@ -14,7 +14,8 @@ We are happy to share that Application Insights monitoring is now available for 
 Azure Monitor application insights is a cloud native application monitoring service which enables customers to observe failures, bottlenecks, and usage patterns to improve application performance and reduce mean time to resolution (MTTR). With a few clicks, you can enable monitoring for your Node.js or Java apps, auto-collecting logs, metrics, and distributed traces, eliminating the need for including an SDK in your app.
 
 
-Enabling Application Insights on your Azure web app will attach a monitoring agent to your Java or Node.js application and begin sending telemetry to App Insights... *no code changes required!* Application Insights help you better understand and monitor your applications with features like...
+Enabling application insights for your Azure web app will auto-instrument your Java or Node.js application, and you will see the telemetry in Azure Portal *no code changes required!* Application insights will help you better understand and monitor your applications with features like...
+
 
 - [Application Map](https://docs.microsoft.com/azure/azure-monitor/app/app-map)
 - [Live Metrics](https://docs.microsoft.com/azure/azure-monitor/app/live-stream)
