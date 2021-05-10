@@ -58,7 +58,8 @@ Your application telemetry will be visible in the Application Insights resource.
 
 ## Application Insights support on App Service
 
-Codeless monitoring has been supported on App Service for other languages and operating systems. As of May 7th, this is the current support matrix for App Insights on App Service:
+App Service has been supporting auto-instrumentation to monitor the application in other languages and operating systems. As of May 7th, this is the current support matrix for App Insights on App Service:
+
 
 | Language        | Windows | Linux |
 |-----------------|---------|-------|
