@@ -28,7 +28,8 @@ Enabling application insights for your Azure web app will auto-instrument your J
 If you do not have a Java or Node.js web app, create a new one from the Azure Portal.
 
 1. Open the [Web App create page](https://portal.azure.com/#create/Microsoft.WebSite)
-1. Select Node.js or Java as your runtime stack (Java SE, Tomcat, and JBoss EAP are all applicable.)
+1. Select Node.js or Java as your runtime stack (Java SE, Tomcat, and JBoss EAP are all applicable)
+
 1. Enter your resource group, region, and App Service Plan
 1. Select the monitoring tab at the top, and select **Yes** for "Enable Application Insights"
 
