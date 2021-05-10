@@ -47,7 +47,8 @@ If you already have a Node.js or Java web app, navigate to it from the Portal.
 
     ![Enable App Insights from the Application Insights menu item]({{ site.baseurl }}/media/2021/05/app-insights-java-node-post-create.png)
 
-1. The blade will default to using a new Application Insights resource of the same name as your Web App. You can choose to use an existing AI resource, or change the name.
+1. By default, a new application insights resource of the same name as your Web App will be used. You can choose to use an existing application insights resource, or change the name.
+
 
     ![Enable App Insights from the Application Insights menu item]({{ site.baseurl }}/media/2021/05/app-insights-java-node-post-create2.png)
 
