@@ -1,21 +1,19 @@
 ---
-title: "Codeless Monitoring for Java and Node.js on App Service (Preview)"
-author_name: "Jason Freeberg"
+title: "Auto-instrumentation Monitoring for Java and Node.js on App Service (Preview)"
+author_name: "Jason Freeberg and Julia Goloshubina"
 toc: true
 toc_sticky: true
 ---
 
-We are happy to share that Application Insights monitoring is now available for Java and Node.js apps on App Service for both Windows and Linux! To try it out, create a new Web App from the Portal and click the **Monitoring** tab to enable App Insights. If you already have a Java or Node.js app on App Service, then go to **Application Insights** on the web app menu to turn it on.
+We are happy to share that Azure Monitor Application Insights monitoring is now available for Java and Node.js apps on App Service for both Windows and Linux! To try it out, create a new Web App from the Portal and click the **Monitoring** tab to enable App Insights. If you already have a Java or Node.js app on App Service, then go to **Application Insights** on the web app menu to turn it on. Keep reading for instructions on how to get started!
 
 > This integration is currently in technical preview.
 
-## Codeless Monitoring from Application Insights
+## Auto-instrumentation from Azure Monitor application insights
 
 Azure Monitor application insights is a cloud native application monitoring service which enables customers to observe failures, bottlenecks, and usage patterns to improve application performance and reduce mean time to resolution (MTTR). With a few clicks, you can enable monitoring for your Node.js or Java apps, auto-collecting logs, metrics, and distributed traces, eliminating the need for including an SDK in your app.
 
-
 Enabling application insights for your Azure web app will auto-instrument your Java or Node.js application, and you will see the telemetry in Azure Portal *no code changes required!* Application insights will help you better understand and monitor your applications with features like...
-
 
 - [Application Map](https://docs.microsoft.com/azure/azure-monitor/app/app-map)
 - [Live Metrics](https://docs.microsoft.com/azure/azure-monitor/app/live-stream)
@@ -37,7 +35,7 @@ If you do not have a Java or Node.js web app, create a new one from the Azure Po
 
 1. Go to **Review + Create**, review your selections, and click **Create**!
 
-The deployment will create the Web App and Application Insights resources. Once the deployment completes, your application telemetry will be visible in the Application Insights resource.
+The deployment will create the Web App and Azure Monitor application insights resources. Once the deployment completes, your application telemetry will be visible in the Application Insights resource.
 
 ### Existing Web App
 
@@ -49,17 +47,15 @@ If you already have a Node.js or Java web app, navigate to it from the Portal.
 
 1. By default, a new application insights resource of the same name as your Web App will be used. You can choose to use an existing application insights resource, or change the name.
 
-
     ![Enable App Insights from the Application Insights menu item]({{ site.baseurl }}/media/2021/05/app-insights-java-node-post-create2.png)
 
 1. Click **Apply** at the bottom.
 
 Your application telemetry will be visible in the Application Insights resource.
 
-## Application Insights support on App Service
+## Azure Monitor application insights support on App Service
 
-App Service has been supporting auto-instrumentation to monitor the application in other languages and operating systems. As of May 7th, this is the current support matrix for App Insights on App Service:
-
+App Service has supported auto-instrumentation monitoring for other languages and operating systems. As of May 10th, this is the current support matrix for App Insights on App Service:
 
 | Language        | Windows | Linux |
 |-----------------|---------|-------|
@@ -71,6 +67,6 @@ App Service has been supporting auto-instrumentation to monitor the application 
 | **Ruby**        |    ❌   |  ❌  |
 | **PHP**         |    ❌   |  ❌  |
 
-✔️ Application Insights codeless monitoring is supported
+✔️ Application insights auto-instrumentation monitoring is supported
 
-❌ Application Insights codeless monitoring is **not** currently supported
+❌ Application insights auto-instrumentation monitoring is **not** currently supported
