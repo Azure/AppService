@@ -8,13 +8,15 @@ The App Service Environment v3 (ASEv3) has been in preview since November 2020. 
 
 ## Upcoming changes
 
-The GA version of ASEv3 has a few enhancements that were not available earlier in preview. Some of the highlights include:
+The GA version of ASEv3 has a few enhancements that were not available earlier in preview. To be clear, this release is not available at the time of this blog but it is planned to be released soon. Some of the feature improvement highlights include:
 
-- You will be able to deploy an external VIP ASE. This would be an ASE with a public address for inbound traffic.
-- Maximum ASE instance count is 200. This is similar to ASEv2 where the maximum App Service plan instance count will be 100 and that the total number of instances across all App Service plans is 200
-- You will be able to deploy a zone redundant ASEv3.
+- You can deploy an external VIP ASE. This would be an ASE with a public address for inbound traffic.
+- Maximum ASE instance count is 200. This is the same as ASEv2 where the maximum App Service plan instance count is 100 and that the total number of instances across all App Service plans is 200
+- You can deploy a zone redundant ASEv3. 
 - Scaling times are improved from earlier in the preview
-- Your ASE will only require use of one subnet
+- Your ASE only requires use of one subnet
+
+That leads to the question then on how do you know you are making an ASEv3 that is on the GA version? You can easily tell the difference during the ASEv3 creation flow where you will not be prompted for two subnets anymore. That should be the clearest indicator you are using the newest version.
 
 ## Upgrade of preview ASEv3 instances 
 
@@ -34,7 +36,7 @@ To tell if your preview ASEv3 was upgraded to the GA release candidate, go into 
 
 ## GA limitations
 
-While there are numerous improvements with ASEv3 over earlier versions, there are a few things that are not available at GA.  Those items that are not available include:
+While there are numerous improvements with ASEv3 over earlier versions, there are a few things that are not available at GA that were available in ASEv2.  Those items that are not available include:
 
 - IP based SSL
 - Remote debug
@@ -44,5 +46,5 @@ While there are numerous improvements with ASEv3 over earlier versions, there ar
 
 ## Upgrade from ASEv2
 
-Upgrade from ASEv2 will come after GA.  In the first version of the upgrade you will be able to upgrade an ASEv2 that is either an external VIP ASEv2 or an internal VIP ASEv2 that has a domain suffix of .appserviceenvironment.net.  Initially it will not support internal ASEs with custom domain suffixes nor will it offer the ability initially to upgrade your ASEv2 to being a zone redundant ASEv3.  
+Upgrade from ASEv2 will come after GA.  In the first version of the upgrade you will be able to upgrade an ASEv2 that is either an external VIP ASEv2 or an internal VIP ASEv2 that has a domain suffix of .appserviceenvironment.net.  Initially the upgrade capability won't support internal ASEs with custom domain suffixes nor will it offer the ability initially to upgrade your ASEv2 to being a zone redundant ASEv3.
 
