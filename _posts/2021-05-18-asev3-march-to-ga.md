@@ -7,6 +7,7 @@ author_name: "Christina Compy"
 The App Service Environment v3 (ASEv3) has been in preview since November 2020. During this time it was made available across most regions, received numerous small improvements and was generally very well received.  Before GA we will be releasing the GA version into preview.  After that update completes, you will be able to make new preview ASEv3's that replace the private endpoint with an address in the ASE subnet. Also before GA, the preview versions that already exist will be upgraded.  
 
 ## Upcoming changes
+
 The GA version of ASEv3 has a few enhancements that were not available earlier in preview. Some of the highlights include:
 
 - You will be able to deploy an external VIP ASE. This would be an ASE with a public address for inbound traffic.
@@ -29,7 +30,7 @@ With the removal of the private endpoint to your ASEv3, your inbound address wil
 - Go into your ASE portal page and select the IP addresses UI
 - Change your DNS records that pointed to the private endpoint address to instead point to the new inbound address shown in the portal. 
 
-The clearest indicator that your ASEv3 has been upgraded to the load balancer version is that you will not be able to reach your apps over the private endpoint deployed with the ASEv3.  If you go into the portal you will also now see a new user experiences under the IP addresses UI.  The private endpoint based IP addresses UI will say private endpoint and provide a link to it.  The new UI will tell you if you have an internal or external facing VIP instead. 
+To tell if your preview ASEv3 was upgraded to the GA release candidate, go into the ASE portal and look at the IP addresses UI. You will no longer see private endpoint listed for the inbound address. You will see the Virtual IP is set to internal.  
 
 ## GA limitations
 
