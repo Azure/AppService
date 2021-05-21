@@ -32,7 +32,9 @@ With the removal of the private endpoint to your ASEv3, your inbound address wil
 - Go into your ASE portal page and select the IP addresses UI
 - Change your DNS records that pointed to the private endpoint address to instead point to the new inbound address shown in the portal. 
 
-To tell if your preview ASEv3 was upgraded to the GA release candidate, go into the ASE portal and look at the IP addresses UI. You will no longer see private endpoint listed for the inbound address. You will see the Virtual IP is set to internal.  
+To tell if your preview ASEv3 was upgraded to the GA release candidate, go into the ASE portal and look at the IP addresses UI. You will no longer see private endpoint listed for the inbound address. You will see the Virtual IP is set to internal. 
+
+![ASEv3 GA candidate IP address UI]({{ site.baseurl }}/media/2021/05/asev3-marchtoga-ip-addresses.png)
 
 ## GA limitations
 
