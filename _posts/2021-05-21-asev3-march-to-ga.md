@@ -25,7 +25,7 @@ If you have a preview version of ASEv3 before the upgrade to the GA version, you
 - Cause downtime to your ASEv3
 - Change the inbound address to your ASEv3
 
-The downtime to your ASEv3 happens as we remove the private endpoint used by your ASEv3 and redeploy the ASEv3 with an internal load balancer instead.  The use of the load balancer is completely internal to the ASE.  This is a one time event and there are no other expected system downtime events.
+The downtime to your ASEv3 happens as we switch from using the private endpoint provisioned with your ASEv3 and redeploy the ASEv3 with an internal load balancer.  The use of the load balancer is completely internal to the ASE.  This is a one time event and there are no other expected system downtime events. The private endpoint that was originally provisioned with your preview ASEv3 will still be there and should be deleted after the upgrade. 
 
 With the removal of the private endpoint to your ASEv3, your inbound address will change from the current private endpoint address to an address in your ASE subnet.  You will need to update DNS to reflect this.  Even if you are using Azure DNS private zones, it will not automatically pick this change up and it must be done manually.  After your ASEv3 is upgraded to the load balancer version:
 
