@@ -4,7 +4,7 @@ category: networking
 author_name: "Christina Compy"
 ---
 
-The App Service Environment v3 (ASEv3) has been in preview since November 2020. During this time it was made available across most regions, received numerous small improvements and was generally very well received.  Before GA we will be releasing the GA version into preview.  After that update completes, you will be able to make new preview ASEv3's that replace the private endpoint with an address in the ASE subnet. Also before GA, the preview versions that already exist will be upgraded.  
+The App Service Environment v3 (ASEv3) has been in preview since November 2020. During this time it was made available across most regions, received numerous small improvements and was generally very well received. Before GA (General Availability) we will be releasing the GA version into preview.  After that update completes, you will be able to make new preview ASEv3's that replace the private endpoint with an address in the ASE subnet. Also before GA, the preview versions that already exist will be upgraded.  
 
 ## Upcoming changes
 
