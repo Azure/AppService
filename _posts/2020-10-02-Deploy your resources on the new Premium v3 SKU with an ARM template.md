@@ -25,6 +25,17 @@ Premium v3 is an option in the regions below. Premium v3 will be available in mo
 - East US 2
 - Australia East
 - North Europe
+- Central US
+- East Asia
+- West US
+- Japan East
+- Brazil South
+- Canada Central
+- Austrailia Southeast
+- West Central US
+- UK West
+- Korea Central
+- France Central
 
 ## Create your JSON template
 

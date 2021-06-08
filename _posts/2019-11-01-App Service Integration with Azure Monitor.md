@@ -30,23 +30,23 @@ App Service now outputs the following log types into Azure Monitor.
 - **AppServiceAppLogs**: Any logs or exceptions written to the stack’s logging utility. Supports multi-line logs and exceptions
 - **AppServiceIPSecLogs**:  Logs request made to the web app with IP info if there were IP access restriction rules set up
 - **AppServicePlatformLogs**: Logs from containers (ie. "docker run")
+- **AppServiceAntivirusScanAuditLogs**: Logs from the anti-virus scan using Windows Defender (see [blog]({{site.baseurl}}/2020/12/09/AzMon-AppServiceAntiVirusScanLogs.html) for more information)
 
 The table below shows the current availability for the log categories.
 
-|    Log Name                          |    Windows         |    Linux |
-|--------------------------------------|--------------------|----------|
-|    AppServiceConsoleLogs             |    TBA             |    ✔️   |
-|    AppServiceHTTPLogs                |    ✔️              |    ✔️   |
-|    AppServiceEnvironmentPlatformLogs |    ✔️              |    ✔️   |
-|    AppServiceAuditLogs               |    ✔️              |    ✔️   |
-|    AppServiceFileAuditLogs           |    ✔️ <sup>1</sup> |   TBA   |
-|    AppServiceAppLogs                 |    TBA             |    ✔️ <sup>2</sup> |
-|    AppServiceIPSecLogs               |    ✔️              |    ✔️  |
-|    AppServicePlatformLogs            |    TBA             |    ✔️   |
+| Log type | Windows | Windows Container | Linux | Linux Container | Description |
+|-|-|-|-|-|-|
+| AppServiceConsoleLogs | Java SE & Tomcat | Yes | Yes | Yes | Standard output and standard error |
+| AppServiceHTTPLogs | Yes | Yes | Yes | Yes | Web server logs |
+| AppServiceEnvironmentPlatformLogs | Yes | N/A | Yes | Yes | App Service Environment: scaling, configuration changes, and status logs|
+| AppServiceAuditLogs | Yes | Yes | Yes | Yes | Login activity via FTP and Kudu |
+| AppServiceFileAuditLogs | Yes | Yes | TBA | TBA | File changes made to the site content; only available for Premium tier and above |
+| AppServiceAppLogs | ASP .NET | ASP .NET | Java SE & Tomcat <sup>1</sup> | Java SE & Tomcat  <sup>1</sup> | Application logs |
+| AppServiceIPSecAuditLogs  | Yes | Yes | Yes | Yes | Requests from IP Rules |
+| AppServicePlatformLogs  | TBA | Yes | Yes | Yes | Container operation logs |
+| AppServiceAntivirusScanAuditLogs | Yes | Yes | Yes | Yes | [Anti-virus scan logs]({{site.baseurl}}/2020/12/09/AzMon-AppServiceAntivirusScanAuditLogs.html) using Microsoft Defender; only available for Premium tier | 
 
-<sup>1</sup> Supported only on Premium, PremiumV2 and Isolated App Service Plans
-
-<sup>2</sup> Supported on Java SE and Tomcat
+<sup>1</sup> For Java SE apps, add the app setting `WEBSITE_AZMON_PREVIEW_ENABLED` and set it to `1` `true`.
 
 ## Getting Started
 

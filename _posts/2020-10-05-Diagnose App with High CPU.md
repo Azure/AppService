@@ -1,7 +1,7 @@
 ---
 title: "CPU Diagnostics Part 1: Identify and Diagnose High CPU issues"
 author_name: "Ellie Alume"
-category: 'Diagnositcs'
+category: 'Diagnostics'
 toc: true
 toc_sticky: true
 ---
@@ -82,4 +82,16 @@ After identifying the app causing high CPU, debug the app to identify why the CP
 
 In the example, we saw **demohighcpu** is consuming the maximum CPU. Next, we will debug the app further to identify the cause of the high CPU in the next post. If you want to watch an in-depth tutorial on this topic, click on the video below!
 
-[YouTube Video: How to identify and diagnose apps with high CPU: Part 1 \| Azure App Service](https://www.youtube.com/watch/tavdGmIX0xg)
+<div class="responsive-video-container">
+    <iframe 
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/tavdGmIX0xg"
+            frameborder="0" 
+            allow="accelerometer;
+                   autoplay; 
+                   encrypted-media;
+                   gyroscope; 
+                   picture-in-picture"
+            allowfullscreen></iframe>
+</div>

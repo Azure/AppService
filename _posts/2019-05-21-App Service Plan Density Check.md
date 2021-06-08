@@ -13,23 +13,26 @@ When you deploy multiple App Services in the same App Service plan, they all sha
 In order to verify if your apps are possibly competing for resources, run the App Service plan Density check detector by following these steps:
 <br>1) From the Azure Portal, go to on of your Apps
 <br>2) Go to the "Diagnose and solve problems" blade
-<br>3) In the search bar, you can search for "Best Practices for Availbility & Performance" to run multiple checks on your app or search for "App Service plan Density check" to run this check only
+<br>3) Then either select the 'Risk Assessments' category or you can search for "Best Practices for Availability & Performance" in the search bar
 
 You will see one of the following:
 <br>1) Your plan is within the recommended value
-![green]({{site.baseurl}}/media/2019/05/green.JPG)
-<br>2) Your plan is nearing exhaustion
+![green]({{site.baseurl}}/media/2019/05/Green.JPG)
+<br><br>2) Your plan is nearing exhaustion
 ![red]({{site.baseurl}}/media/2019/05/red.png)
 
 ## Recommended Solutions
 <b>1) Stop apps to decrease load</b><br>
 In the description, the detector will recommend stopping a number of apps to be within the recommended number of apps on the respective pricing tier. The number may actually be lower depending on how resource intensive the hosted applications are, however as a general guidance, you may refer to the table below.
 
-Worker Size | Max sites
+App Service Plan SKU | Max Apps
 ---|---
-Small | 8
-Medium | 16
-Large | 32
+B1, S1, P1v2, I1v1 | 8
+B2, S2, P2v2, I2v1 | 16
+B3, S3, P3v2, I3v1 | 32
+P1v3, I1v2 | 16
+P2v3, I2v2 | 32
+P3v3, I3v2 | 64
 
 <i><strong>Note :</strong> An <u>active slot</u> is also classified as an <u>active app</u> as it too is competing for resources on the same App Service Plan.</i><br>
 <br>

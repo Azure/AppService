@@ -7,15 +7,15 @@ toc_sticky: true
 
 App Service makes it easy to automatically scale your apps to multiple instances when traffic increases. This increases your app's throughput, but what if there is an uncaught exception on one of the instances? To address this situation, we began previewing Health Check last year. The Health Check feature allows you to specify a path on your application for App Service to ping. If an instance fails to respond to the ping, the system determines it is *unhealthy* and removes it from the load balancer rotation. This increases your application's average availability and resiliency. 
 
-Health Check is now Generally Available and ready for production applications. Set up Health Check on your applications today in the Azure Portal. Go to your web app and find **Health Check** under **Monitoring** in the left-side navigation menu. You may see "(Preview)" on the Portal blade. This is because the Portal blade uses the latest React libraries, but the feature itself is Generally Available.
+[Health Check](https://docs.microsoft.com/en-us/azure/app-service/monitor-instances-health-check) is now Generally Available and ready for production applications. Set up Health Check on your applications today in the Azure Portal. Go to your web app and find **Health Check** under **Monitoring** in the left-side navigation menu. You may see "(Preview)" on the Portal blade. This is because the Portal blade uses the latest React libraries, but the feature itself is Generally Available.
 
-![Health Check blade in the Portal]({{site.baseurl}}/media/2020/08/health-check/health-check-portal.png)
+[![Health Check blade in the Portal]({{site.baseurl}}/media/2020/08/health-check/health-check-portal.png)](https://docs.microsoft.com/en-us/azure/app-service/monitor-instances-health-check)
 
 ## Overview
 
 Once you specify a path on your site, App Service will ping it at regular intervals. If the path responds with an error HTTP status code or does not respond, then the instance is determined to be unhealthy and it is removed from the load balancer rotation. This prevents the load balancer from routing requests to the unhealthy instances.
 
-> For more details, please refer to the **[health check documentation](https://docs.microsoft.com/azure/azure-monitor/platform/autoscale-get-started#health-check-path)**
+> Looking for more information? Head to the **[health check documentation](https://docs.microsoft.com/en-us/azure/app-service/monitor-instances-health-check)**
 
 When the instance is unhealthy and removed from the load balancer, the service continues to ping it. If it begins responding with successful response codes then the instance is returned to the load balancer. If it continues to respond unsuccessfully, App Service will restart the underlying VM in an effort to return the instance to a healthy state.
 
@@ -33,7 +33,7 @@ After providing your application's health check path, you can monitor the health
 
 ## More resources
 
-See the [Health check documentation](https://docs.microsoft.com/en-us/azure/azure-monitor/platform/autoscale-get-started#health-check-path) for more information about this feature.
+See the [Health check documentation](https://docs.microsoft.com/en-us/azure/app-service/monitor-instances-health-check) for more information about this feature.
 
 ### Building and Managing .NET Core with App Service
 

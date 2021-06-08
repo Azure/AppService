@@ -79,13 +79,13 @@ We highly recommend using **Swap with Preview**. Swap with Preview allows you to
 
 App Service allows you to specify a health check path on your apps. The platform pings this path to determine if your application is healthy and responding to requests. When your site is scaled out to multiple instances, App Service will exclude any unhealthy instance(s) from serving requests, improving your overall availability. Your app's health check path should poll the critical components of your application, such as your database, cache, or messaging service. This ensures that the status returned by the health check path is an accurate picture of the overall health of your application.
 
-1. Go to *Development Tools* > *Resource Explorer* on the web app blade for Azure portal:
+1. Go to *Monitoring* > *Health Check* on the Web App blade for Azure portal:
 
-    ![health-check-1]({{site.baseurl}}/media/2020/04/health-check-1.jpg)
+    ![health-check-1]({{site.baseurl}}/media/2020/04/health-check-1.png)
 
-1. On the resource explorer page, expand the "config" section and click the "web" tab. Add an element with the name, "healthCheckPath", and value is the path of your health-check url that our service will ping.
+2. Set the value of the path that our service will ping.
 
-    ![health-check-2]({{site.baseurl}}/media/2020/04/health-check-2.png)
+3. Hit save to save the configuration.
 
 > Please note that the Health Check feature works only when you have two or more instances, which is a **very** strong recommendation. For a single instance web app, the traffic is never blocked even if that single instance is encountering issues.
 
@@ -119,14 +119,14 @@ External storage like storage containers, db or cosmosDB should be used for stor
 
 - [Azure App Service Local Cache overview](https://docs.microsoft.com/en-us/azure/app-service/overview-local-cache)
 
-## Auto Heal
+## Auto-Heal
 
-Sometimes your application might experience unexpected behaviors that could be resolved by a simple restart. The Auto Heal features allows you to do exactly that! It allows you to define the 'condition' that would trigger Auto Heal and the 'action' that Auto Heal will initiate when the condition is met.
+Sometimes your application might experience unexpected behaviors that could be resolved by a simple restart. The Auto-Heal features allows you to do exactly that! It allows you to define the 'condition' that would trigger Auto-Heal and the 'action' that Auto-Heal will initiate when the condition is met.
 
 
-You can create an auto heal mitigation rule by going to "Diagnose and Solve problems" section -> "Diagnostic Tools" tile and then "Auto Healing" under Proactive Tools section.
+You can create an Auto-Heal mitigation rule by going to "Diagnose and Solve problems" section -> "Diagnostic Tools" tile and then "Auto-Heal" under Proactive Tools section.
 
-![multiple-instances]({{site.baseurl}}/media/2020/04/autoheal.jpg)
+![multiple-instances]({{site.baseurl}}/media/2020/04/auto-heal.png)
 
 Below are example filter values to set up, however if some other value of error code and frequency suits your application, please modify accordingly:
 
@@ -148,14 +148,14 @@ and add an 'Override when Action Executes':
 
 **Learn More**
 
-- [Azure App Service Auto-Healing](https://stack247.wordpress.com/2019/05/20/azure-app-service-auto-healing/)
-- [Announcing the New Auto Healing Experience in App Service Diagnostics](https://azure.github.io/AppService/2018/09/10/Announcing-the-New-Auto-Healing-Experience-in-App-Service-Diagnostics.html)
+- [Azure App Service Auto-Heal](https://stack247.wordpress.com/2019/05/20/azure-app-service-auto-healing/)
+- [Announcing the New Auto-Heal Experience in App Service Diagnostics](https://azure.github.io/AppService/2018/09/10/Announcing-the-New-Auto-Healing-Experience-in-App-Service-Diagnostics.html)
 
 ## Minimize App Service Plan Density
 
-Ensure not more than 8 apps are running on the app service plan to ensure healthy performance. All the apps running on the app service plan can be seen on "Apps" under "Settings" section in your app service plan on azure portal.
+Running too many Apps in an App Service Plan can have a negative impact performance. All the apps running on the App Service Plan can be seen on "Apps" under "Settings" section in your App Service Plan on Azure portal.
 
-Learn more about App Service Plan Density Check here:
+You can verify the App Service Plan density with the App Service Plan Density Check. Learn more here:
 
 - [App Service Plan Density Check](https://azure.github.io/AppService/2019/05/21/App-Service-Plan-Density-Check.html)
 
@@ -216,9 +216,9 @@ There are additional benefits to using Front Door or Traffic Manager, such as ro
 
 ## Check App Service Diagnostics
 
-Finally, you can check the progress you've accomplished in making your app resilient by leverage the "Best Practices" detectors available in App Service Diagnostics here:
+Finally, you can check the progress you've accomplished in making your app resilient by leverage the "Risk Assessments" section available in App Service Diagnostics here:
 
-![bestpractices]({{site.baseurl}}/media/2020/04/bestpractices.jpg)
+![bestpractices]({{site.baseurl}}/media/2020/04/risk-alerts.png)
 
 You'll be presented by 2 options:
 
