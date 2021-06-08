@@ -13,4 +13,4 @@ Azure Functions has also added initial support for .NET 6 Preview.
 
 This is the first time that a pre-release stack is publicly available in the platform ahead of GA release and it makes good on our promise to accelerate FX availability made during the [.NET 5 GA release announcement](https://devblogs.microsoft.com/aspnet/announcing-asp-net-core-in-net-5/#deploy-net-5-web-apps-to-azure-app-service-today).
 
-Any app targeting the .NET 6 Early Access on App Service will be automatically updated to the latest .NET 6 Preview releases as they become available all the way op to RC and GA.
+Any app targeting the .NET 6 Early Access on App Service will be automatically updated to the latest .NET 6 Preview releases as they become available all the way up to RC and GA.
