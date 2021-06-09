@@ -51,7 +51,7 @@ When this feature is trying to capture a crash dump of your process, you may see
 
 ### Are we notified for unhandled exceptions recorded by this feature?
 
-We are currently notifying via Azure Email service only for Stack Overflow exceptions. In the future, recommendation emails will be sent for all other crashes too. Here is an example of an email that gets sent out as a result of this feature.
+We notify by sending emails to the "ServiceAdmin", "AccountAdmin" and "Owner" roles for the subscription when a crash is recorded by this feature.
 
 ![Crash Monitoring Email]({{site.baseurl}}/media/2021/03/crashmonitoringemail.png)
 
