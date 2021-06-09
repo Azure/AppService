@@ -1,6 +1,7 @@
 ---
 title: "Apps on Azure App Services may crash due to DiagnosticMonitorTraceListener"
 author_name: "Puneet Gupta"
+category: 'Diagnostics'
 ---
 
 Azure App Services has [proactive crash monitoring feature]({{site.baseurl}}/2021/03/01/Proactive-Crash-Monitoring-in-Azure-App-Service) that checks for process crashes and collects diagnostic data that helps you determine the root cause of the crash. After looking at this feature's telemetry, we identified a common reason that is causing a lot of apps hosted on Azure App Service to crash with this call-stack.
