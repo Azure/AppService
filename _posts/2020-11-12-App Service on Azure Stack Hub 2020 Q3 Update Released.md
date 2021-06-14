@@ -55,7 +55,7 @@ You can download the new installer and helper scripts:
 
 Please read the updated documentation prior to getting started with deployment:
 
-- [2020 Q3 Update Release Notes](https://docs.microsoft.com/azure-stack/operator/app-service-release-notes-2020-q3)
+- [2021 Q1 Update Release Notes](https://docs.microsoft.com/azure-stack/operator/app-service-release-notes-2020-q3)
 - [Prerequisites for deploying App Service on Azure Stack Hub](https://docs.microsoft.com/azure-stack/operator/azure-stack-app-service-before-you-get-started)
 - [Deploy the App Service Resource Provider](https://docs.microsoft.com/azure-stack/operator/azure-stack-app-service-deploy) for new deployments
 - [Update the App Service Resource Provider](https://docs.microsoft.com/azure-stack/operator/azure-stack-app-service-update) for updating existing deployments
