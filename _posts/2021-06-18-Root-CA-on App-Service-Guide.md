@@ -17,7 +17,7 @@ When an app hosted on Azure App Service, tries to connect to a remote endpoint o
 In this situtation, customers have two solutions:
 
 1. Use a certificate that is issued by one of the Trusted Root CA in App Service on the remote server. 
-    - [How to get a list of Trusted Root CA on App Service using Kudu](#How-to-get-a-list-of-Trusted-Root-CA-on-App-Service-using-Kudu)
+    - [How to get a list of Trusted Root CA on App Service using Kudu](#how-to-get-a-list-of-trusted-root-ca-on-app-service-using-kudu)
 1. If the remote service endpoint certificate could not be changed or there is a need to use a private CA certificate, host your app on an App Service Environment (ASE) and load your own CA certificate in the Trusted Root Store
     - [How to load your own CA certificate to the Trusted Root Store in ASE](https://docs.microsoft.com/en-us/azure/app-service/environment/certificates#private-client-certificate)
 
