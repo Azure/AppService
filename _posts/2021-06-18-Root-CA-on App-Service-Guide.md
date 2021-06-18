@@ -14,7 +14,7 @@ When an app hosted on Azure App Service, tries to connect to a remote endpoint o
 "Could not establish trust relationship for the SSL/TLS secure channel". 
 ```
 
-In this situtation, customers have two solutions:
+In this situtation, we have two solutions:
 
 1. Use a certificate that is issued by one of the Trusted Root CA in App Service on the remote server. 
     - [How to get a list of Trusted Root CA on App Service using Kudu](#how-to-get-a-list-of-trusted-root-ca-on-app-service-using-kudu)
