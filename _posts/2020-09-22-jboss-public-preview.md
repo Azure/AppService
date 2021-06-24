@@ -30,6 +30,7 @@ You can create a JBoss EAP 7.2 instance on App Service in the Azure Portal. Simp
 
 ## Helpful links
 
-- [Overview of Red Hat JBoss EAP on Azure](https://docs.microsoft.com/en-us/azure/developer/java/ee/jboss-on-azure)
+- [Overview of Red Hat JBoss EAP on Azure](https://docs.microsoft.com/azure/developer/java/ee/jboss-on-azure)
 - [Java on App Service documentation](https://docs.microsoft.com/azure/app-service/configure-language-java?pivots=platform-linux)
 - [JBoss EAP on App Service Tutorial](https://docs.microsoft.com/learn/modules/deploy-java-ee-app-to-jboss-app-service/) 
+- [JBoss EAP on App Service Migration Guide](https://docs.microsoft.com/azure/developer/java/migration/migrate-jboss-eap-to-jboss-eap-on-azure-app-service?toc=/azure/developer/java/ee/toc.json&bc=/azure/developer/breadcrumb/toc.json)
