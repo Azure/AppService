@@ -6,7 +6,9 @@ category: java
 
 For several years, Red Hat and Microsoft have [partnered](https://www.redhat.com/en/red-hat-microsoft-partnership) to create cloud solutions that enable enterprises to achieve more. Today, we are happy to announce that Red Hat JBoss Enterprise Application Platform (EAP) is now in Public Preview on Azure App Service. App Service has supported Tomcat and Java SE applications on Linux since 2018. Since then, our customers made it clear that they wanted an equivalent service for their Jakarta EE applications.
 
-> **[Try JBoss EAP on App Service](https://github.com/Azure-Samples/jboss-on-app-service) today** and [send us your feedback](mailto:java-on-app-service@microsoft.com).
+> JBoss EAP on App Service is now generally available! [Read more here](https://azure.microsoft.com/en-us/blog/deploy-apps-seamlessly-with-red-hat-jboss-eap-on-azure-app-service-now-generally-available/)
+
+> **[Try JBoss EAP on App Service](https://docs.microsoft.com/azure/app-service/quickstart-java?tabs=jbosseap&pivots=platform-linux) today** and [send us your feedback](mailto:java-on-app-service@microsoft.com).
 
 [![Create a JBoss EAP site from the Azure Portal]({{site.baseurl}}/media/2020/09/jboss-create.png)](https://portal.azure.com/#create/Microsoft.WebSite){: .align-center}
 
@@ -28,5 +30,6 @@ You can create a JBoss EAP 7.2 instance on App Service in the Azure Portal. Simp
 
 ## Helpful links
 
-- [Java on App Service documentation](https://docs.microsoft.com/en-us/azure/app-service/configure-language-java?pivots=platform-linux)
-- [JBoss EAP on App Service Tutorial](https://github.com/Azure-Samples/jboss-on-app-service) 
+- [Overview of Red Hat JBoss EAP on Azure](https://docs.microsoft.com/en-us/azure/developer/java/ee/jboss-on-azure)
+- [Java on App Service documentation](https://docs.microsoft.com/azure/app-service/configure-language-java?pivots=platform-linux)
+- [JBoss EAP on App Service Tutorial](https://docs.microsoft.com/learn/modules/deploy-java-ee-app-to-jboss-app-service/) 
