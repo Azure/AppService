@@ -1,5 +1,5 @@
 ---
-title: "Linux custom container from Azure Container Registry with private endpoint"
+title: "Deploying Linux custom container from private Azure Container Registry"
 author_name: "Mads Damgård"
 category: networking
 toc: true
@@ -8,9 +8,7 @@ toc_sticky: true
 
 Securing access to your site is one thing, but securing access to the source of your site is equally important.
 
-In this article I will walk you through setting up a Linux Web App with secure, network-isolated access to the container registry.
-
-The scenario is intentionally kept simple to focus on the architecture and configuration; but with a practical purpose I find it more easy to relate to. The backend services can be extended with the many other services supporting Private Endpoint like Azure SQL, Cosmos DB, App Configuration, and even another App Service Web Apps or Functions by following the same pattern.
+In this article I will walk you through setting up a Linux Web App with secure, network-isolated access to the container registry. The scenario is intentionally kept simple to focus on the architecture and configuration.
 
 ![ACR pull over private endpoint]({{site.baseurl}}/media/2021/07/linux-container-acr-pe.png){: .align-center}
 
@@ -21,7 +19,7 @@ This guide is organized into four steps:
 3. Create network integrated Web App
 4. Pull from private registry
 
-In closing, there are sections on alternative approaches, advanced scenarios, and FAQ.
+In closing, there are sections on advanced scenarios and FAQ.
 
 ## Getting Started
 
@@ -100,7 +98,7 @@ Now we get to creating the actual Web App. To use VNet Integration we need at le
 
 ```bash
 az appservice plan create --resource-group secureacrsetup --name secureacrplan --sku P1V3 --is-linux
-az webapp create --resource-group secureacrsetup --plan secureacrplan --name secureacrweb2021
+az webapp create --resource-group secureacrsetup --plan secureacrplan --name secureacrweb2021 --deployment-container-image-name 'mcr.microsoft.com/appsvc/staticsite:latest'
 az webapp update --resource-group secureacrsetup --name secureacrweb2021 --https-only
 az webapp vnet-integration add --resource-group secureacrsetup --name secureacrweb2021 --vnet secureacr-vnet --subnet vnet-integration-subnet
 az webapp config set --resource-group secureacrsetup --name secureacrweb2021 --generic-configurations '{"vnetRouteAllEnabled": true}'
