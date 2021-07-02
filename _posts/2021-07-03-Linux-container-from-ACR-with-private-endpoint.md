@@ -12,7 +12,7 @@ In this article I will walk you through setting up a Linux Web App with secure, 
 
 The scenario is intentionally kept simple to focus on the architecture and configuration; but with a practical purpose I find it more easy to relate to. The backend services can be extended with the many other services supporting Private Endpoint like Azure SQL, Cosmos DB, App Configuration, and even another App Service Web Apps or Functions by following the same pattern.
 
-![Final setup]({{site.baseurl}}/media/2021/07/linux-continer-acr-pe.png){: .align-center}
+![ACR pull over private endpoint]({{site.baseurl}}/media/2021/07/linux-container-acr-pe.png){: .align-center}
 
 This guide is organized into four steps:
 
