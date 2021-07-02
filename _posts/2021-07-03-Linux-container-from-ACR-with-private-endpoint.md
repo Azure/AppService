@@ -70,8 +70,6 @@ az network private-dns link vnet create --resource-group secureacrsetup --name a
 
 In this section, we will set up the Azure Container Registry account. We will also create the private endpoint and configure the service to block public traffic. First create the service. We need Premium SKU to enable private endpoint:
 
-> **Note:** If you are setting `--public-network-enabled` initially to false, you will also need a jump box or VPN to the VNet to push an image. If you are just testing, you can go to your ACR in the portal and under Networking change to "Selected networks" and use the "Add your client IP address" to allow your pc to push to the registry.
-
 ```bash
 az acr create --resource-group secureacrsetup --name secureacr2021 --location westeurope --sku Premium --public-network-enabled false
 ```
@@ -94,7 +92,7 @@ az network private-endpoint create --resource-group secureacrsetup --name secure
 az network private-endpoint dns-zone-group create --resource-group secureacrsetup --endpoint-name secureacr-pe --name secureacr-zg --private-dns-zone privatelink.azurecr.io --zone-name privatelink.azurecr.io
 ```
 
-Everything is locked down now and you cannot even get to the ACR repositories through the Azure portal. In the ACR Networking blade you can add the public IP of your client if you need to view the registries (images) and would like to push an image from your local client.
+Everything is locked down now and you cannot even get to the ACR repositories through the Azure portal. In the ACR Networking blade you can add the public IP of your client if you need to view the registries (images) and other IPs needed to to push an image from remote clients.
 
 ## 3. Create Network Integrated Web App
 
