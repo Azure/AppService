@@ -6,7 +6,7 @@ toc: true
 toc_sticky: true
 ---
 
-Securing access to your site is one thing, but securing access to the source of your site is equally important.
+Securing access to your site is important, but securing access to the source of your site is often equally important.
 
 In this article I will walk you through setting up a Linux Web App with secure, network-isolated access to the container registry. The scenario is intentionally kept simple to focus on the architecture and configuration.
 
@@ -144,10 +144,6 @@ az webapp config appsettings set --resource-group secureacrsetup --name secureac
 az webapp config appsettings set --resource-group secureacrsetup --name secureacrweb2021 --settings 'WEBSITE_PULL_IMAGE_OVER_VNET=true'
 az webapp config set --resource-group secureacrsetup --name secureacrweb2021 --linux-fx-version 'DOCKER|secureacr2021.azurecr.io/privateweb/site:v1'
 ```
-
-## Azure portal
-
-Notes on configuring in portal...
 
 ## FAQ
 
