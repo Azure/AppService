@@ -66,10 +66,10 @@ az network private-dns link vnet create --resource-group secureacrsetup --name a
 
 ## 2. Set Up Azure Container Registry
 
-In this section, we will set up the Azure Container Registry account. We will also create the private endpoint and configure the service to block public traffic. First create the service. We need Premium SKU to enable private endpoint:
+In this section, we will set up the Azure Container Registry account. We will also create the private endpoint and configure the service to block public traffic. First create the service. We need Premium SKU to enable private endpoint and currently admin access must be enabled:
 
 ```bash
-az acr create --resource-group secureacrsetup --name secureacr2021 --location westeurope --sku Premium --public-network-enabled false
+az acr create --resource-group secureacrsetup --name secureacr2021 --location westeurope --sku Premium --admin-enabled --public-network-enabled false
 ```
 
 Next, let's create the private endpoints to connect the backend services to the VNet. Get the Resource ID of the registry and store it in a variable:
@@ -90,7 +90,13 @@ az network private-endpoint create --resource-group secureacrsetup --name secure
 az network private-endpoint dns-zone-group create --resource-group secureacrsetup --endpoint-name secureacr-pe --name secureacr-zg --private-dns-zone privatelink.azurecr.io --zone-name privatelink.azurecr.io
 ```
 
-Everything is locked down now and you cannot even get to the ACR repositories through the Azure portal. In the ACR Networking blade you can add the public IP of your client if you need to view the registries (images) and other IPs needed to to push an image from remote clients.
+Everything is locked down now and you cannot even get to the ACR repositories through the Azure portal. In the ACR Networking blade you can add the public IP of your client if you need to view the registries (images) and other IPs needed to to push an image from remote clients. This will allow your local machine to access the registry:
+
+```bash
+my_ip=$(curl https://ifconfig.me)
+az acr update --resource-group secureacrsetup --name secureacr2021 --public-network-enabled --default-action Deny
+az acr network-rule add --resource-group secureacrsetup --name secureacr2021 --ip-address $my_ip
+```
 
 ## 3. Create Network Integrated Web App
 
@@ -104,17 +110,11 @@ az webapp vnet-integration add --resource-group secureacrsetup --name secureacrw
 az webapp config set --resource-group secureacrsetup --name secureacrweb2021 --generic-configurations '{"vnetRouteAllEnabled": true}'
 ```
 
-As a last step in this section we need to generate a Managed Identity, grant this identity pull permissions on the ACR. We will reuse the Resource ID variable from a previous step. Go back up if you missed that. The identity command can directly assign permissions as part of the command, so we will grant the Web App "AcrPull" permissions:
-
-```bash
-az webapp identity assign --resource-group secureacrsetup --name secureacrweb2021 --scope $acr_resource_id --role  'AcrPull'
-```
-
 You can now browse to the Web App and all **outbound** traffic from the Web App will be routed through the VNet.
 
 ## 4. Pull from private registry
 
-All the infrastructure is now in place and we just need a custom container to glue it all together. You might get in conflict with the ACR firewall again. If you are using docker locally, you will need to allow your local IP. If you are running the build from somewhere else, this location will also need access to the registry. 
+All the infrastructure is now in place and we just need a custom container to glue it all together. You might get in conflict with the ACR firewall again. If you are using docker locally, you will need to allow your local IP. If you are running the build from somewhere else, this location will also need access to the registry.
 
 I will create a simple static html site, add it to an nginx container and use ACR Tasks to build the container:
 
@@ -134,9 +134,13 @@ docker tag privateweb:v1 secureacr2021.azurecr.io/privateweb/site:v1
 docker push secureacr2021.azurecr.io/privateweb/site:v1
 ```
 
-Finally update the Web App to use the private image:
+Finally update the Web App to use the private image. The Web App needs some configuration values from the registry. The password will appear as null when you set it in CLI, but it will be set. For additional security, you can add it as a Key Vault reference - see the second article for steps to accomplish that.
 
 ```bash
+acr_server_url="https://$(az acr show --name secureacr2021 --query loginServer --output tsv)"
+acr_username=$(az acr credential show --name secureacr2021 --query username --output tsv)
+acr_password=$(az acr credential show --name secureacr2021 --query passwords[0].value --output tsv)
+az webapp config appsettings set --resource-group secureacrsetup --name secureacrweb2021 --settings DOCKER_REGISTRY_SERVER_URL=$acr_server_url DOCKER_REGISTRY_SERVER_USERNAME=$acr_username DOCKER_REGISTRY_SERVER_PASSWORD=$acr_password
 az webapp config appsettings set --resource-group secureacrsetup --name secureacrweb2021 --settings 'WEBSITE_PULL_IMAGE_OVER_VNET=true'
 az webapp config set --resource-group secureacrsetup --name secureacrweb2021 --linux-fx-version 'DOCKER|secureacr2021.azurecr.io/privateweb/site:v1'
 ```
