@@ -26,27 +26,25 @@ To create your web app using the portal:
 5.	The **Operating System** will need to be **Linux** since App Service on Kubernetes is currently Linux only. 
 6.	Go to the **Region** drop down menu and choose your custom location under **Custom Locations (Preview)**. You may notice when you choose your custom location, the appended domain under the **Name** option is updated to include your Kube environment name and Arc region.  Where you typically would see *azurewebsites.net*, you now see *k4apps.io*.  Keep in mind the custom location is the abstracted layer on top of your Azure Arc enabled cluster that enables you to use Azure services.
 
-![grpc web]({{ site.baseurl }}/media/2021/07/grpc_arc_1.png)
+    ![grpc web]({{ site.baseurl }}/media/2021/07/grpc_arc_1.png)
 
-7.	Next, click **Review + create** to create your resource
+7.	Next, click **Review + create** to create your resource. Once your resource is created, you can view that it is deployed to your custom location by visiting the custom location resource.
 
-Once your resource is created, you can view that it is deployed to your custom location by visiting the custom location resource.
-
-![grpc web]({{ site.baseurl }}/media/2021/07/grpc_arc_2.png)
+    ![grpc web]({{ site.baseurl }}/media/2021/07/grpc_arc_2.png)
 
 ## Deploy your application
 Once your web app resource is created you can use the [Zip Deploy](https://docs.microsoft.com/azure/app-service/quickstart-arc#5-deploy-some-code) method to push your application code to your web app.
 
 1.	Using the command line, navigate to the publish files. These will be the publish files in your Server project. The path should look similar to this:
 
-    ```cli
+    ```bash
     BlazorGrpcWebApp/Server/bin/Release/net5.0/publish
     ```
 
 2.	Select all of the files in the publish directory using **ctl+a**, then **Right-click**, navigate to **Send to**, select **Compressed (zipped) folder**. Name the file *blazorgrpcwebapp.zip* and save it. This will create the .zip file that you will use in the next step. 
 3.	Using the command line, navigate to the directory including the *blazorgrpcwebapp.zip* file you just created and run the following command
 
-    ```cli
+    ```bash
     az webapp deployment source config-zip --resource-group my-resource-group --name my-arc-app --src blazorgrpcwebapp.zip
     ```
 
