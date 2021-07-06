@@ -39,16 +39,16 @@ Once your web app resource is created you can use the [Zip Deploy](https://docs.
 
 1.	Using the command line, navigate to the publish files. These will be the publish files in your Server project. The path should look similar to this:
 
-```cli
-BlazorGrpcWebApp/Server/bin/Release/net5.0/publish
-```
+    ```cli
+    BlazorGrpcWebApp/Server/bin/Release/net5.0/publish
+    ```
 
 2.	Select all of the files in the publish directory using **ctl+a**, then **Right-click**, navigate to **Send to**, select **Compressed (zipped) folder**. Name the file *blazorgrpcwebapp.zip* and save it. This will create the .zip file that you will use in the next step. 
 3.	Using the command line, navigate to the directory including the *blazorgrpcwebapp.zip* file you just created and run the following command
 
-```cli
-az webapp deployment source config-zip --resource-group my-resource-group --name my-arc-app --src blazorgrpcwebapp.zip
-```
+    ```cli
+    az webapp deployment source config-zip --resource-group my-resource-group --name my-arc-app --src blazorgrpcwebapp.zip
+    ```
 
 This command will publish your code to the web app and you'll be able to re-visit your resource *my-arc-app* and select **Browse** to view your application in the browser. Notice your URL is appended with the .k4app.io domain. This deployment may take a few minutes so you may see the default deployment screen while you wait. 
 
