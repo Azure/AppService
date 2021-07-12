@@ -1,7 +1,7 @@
 ---
 title: "General Availability of new Azure App Service built-in policies"
 author_name: "Vivek Arya"
-category: 
+category: networking
 ---
 
 One of the tools that Azure provides to enforce governance and controls is [Azure Policies](https://docs.microsoft.com/azure/governance/policy/overview). By employing Azure policies, IT organizations are able to enforce controls around provisioning Azure resources to ensure adherence to security and  compliance standards. Along with the ability to allow users to create custom Azure policies, Azure platform provides built-in policies around the use of each Azure service which can be employed as it is or could be further customized based on the requirements. 
