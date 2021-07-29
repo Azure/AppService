@@ -15,3 +15,5 @@ The following mitigations should only be used as an interim. We suggest that you
 
 - If you cannot upgrade your .NET Core application to a newer version, you can [include the Application Insights SDK directly in your application](https://docs.microsoft.com/en-us/azure/azure-monitor/app/asp-net-core). Once you have updated your application to include the SDK, re-deploy your application to App Service.
 - Set the app setting, ApplicationInsightsAgent_EXTENSION_VERSION to a value of `??????`. This will trigger App Service to use the old Application Insights extension.
+
+> [.NET Core and .NET 5 Support Policy](https://dotnet.microsoft.com/platform/support/policy/dotnet-core)
