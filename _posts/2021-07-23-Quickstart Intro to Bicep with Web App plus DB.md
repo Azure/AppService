@@ -1,14 +1,14 @@
 ---
-title: "Quickstart: Intro to Bicep with Web App plus DB"
+title: "Quickstart: Intro to Bicep with Web App and DB"
 author_name: "Jordan Selig"
 toc: true
 toc_sticky: true
 tags:
-    - deployment
-    - bicep
+    - Deployment
+    - Bicep
 ---
 
-Get started with [Azure App Service](overview.md) by deploying an app to the cloud using a [Bicep](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/) file and [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/get-started-with-azure-cli) in Cloud Shell. Because you use a free App Service tier, you incur no costs to complete this quickstart.
+Get started with [Azure App Service](https://azure.microsoft.com/en-us/services/app-service/) by deploying an app to the cloud using a [Bicep](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/) file and [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/get-started-with-azure-cli) in Cloud Shell. Because you use a free App Service tier, you incur no costs to complete this quickstart.
 
 Bicep is a domain-specific language (DSL) that uses declarative syntax to deploy Azure resources. It provides concise syntax, reliable type safety, and support for code reuse. You can use Bicep instead of JSON to develop your Azure Resource Manager templates ([ARM templates](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/overview)). The JSON syntax to create an ARM template can be verbose and require complicated expressions. Bicep syntax reduces that complexity and improves the development experience. Bicep is a transparent abstraction over ARM template JSON and doesn't lose any of the JSON template capabilities. During deployment, the Bicep CLI transpiles a Bicep file into ARM template JSON.
 
@@ -16,7 +16,7 @@ Bicep is a domain-specific language (DSL) that uses declarative syntax to deploy
 
 If you don't have an [Azure subscription](https://docs.microsoft.com/en-us/azure/guides/developer/azure-developer-guide#understanding-accounts-subscriptions-and-billing), create a [free account](https://azure.microsoft.com/free/?ref=microsoft.com&utm_source=microsoft.com&utm_medium=docs&utm_campaign=visualstudio) before you begin.
 
-In order to effectively create resources with Bicep, you will need to set up a Bicep [development environment](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/install). The Bicep extension for [Visual Studio Code](https://code.visualstudio.com/) provides language support and resource autocompletion. The extension helps you create and validate Bicep files and is recommended for those that will continue to create resources using Bicep upon completing this quickstart.
+In order to effectively create resources with Bicep, you will need to [install Bicep](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/install). The Bicep extension for [Visual Studio Code](https://code.visualstudio.com/) provides language support and resource autocompletion. The extension helps you create and validate Bicep files and is recommended for those that will continue to create resources using Bicep upon completing this quickstart.
 
 ## Review the template
 
@@ -76,7 +76,7 @@ This template contains several parameters that are predefined for your convenien
 | webAppName | string  | "webApp-**`<uniqueString>`**" | App name |
 | location   | string  | "resourceGroup().location" | App region |
 | sku        | string  | "P1V2"                         | Instance size  |
-| linuxFxVersion   | string  | "NODE&#124;14-LTS"       | "Programming language stack &#124; Version" |
+| linuxFxVersion   | string  | "NODE&#124;14-LTS"       | A two-part string defining the runtime and version: "language&#124;Version" |
 | repositoryUrl    | string  | "https://github.com/Azure-Samples/nodejs-docs-hello-world"    | External Git repo (optional) |
 | branch    | string  | "master"    | Default branch for code sample |
 
@@ -104,7 +104,7 @@ To deploy a different language stack, update `linuxFxVersion` with appropriate v
 | **.NET**    | linuxFxVersion="DOTNETCORE&#124;3.0"                 |
 | **PHP**     | linuxFxVersion="PHP&#124;7.4"                        |
 | **Node.js** | linuxFxVersion="NODE&#124;10.15"                     |
-| **Java**    | linuxFxVersion="JAVA&#124;1.8 &#124;TOMCAT&#124;9.0" |
+| **Java**    | linuxFxVersion="JAVA&#124;1.8&#124;TOMCAT&#124;9.0"  |
 | **Python**  | linuxFxVersion="PYTHON&#124;3.7"                     |
 | **Ruby**    | linuxFxVersion="RUBY&#124;2.6"                       |
 
@@ -226,7 +226,7 @@ If you would like to continue with this app by adding a SSL binding and a custom
 
 In order to complete this sample, you will need to modify the above file or create a new Bicep file as well as create an additional Bicep file in the same directory for sni enablement. This is due to an ARM limitation that forbids using resources with this same type-name combination twice in one deployment.
 
-Create another bicep file named sni-enable.bicep in the same directory with the contents below.
+Create another bicep file named `sni-enable.bicep` in the same directory with the contents below.
 
 ```javascript
 param webAppName string
@@ -242,7 +242,7 @@ resource webAppCustomHostEnable 'Microsoft.Web/sites/hostNameBindings@2020-06-01
 }
 ```
 
-The following highlight the changes to the webapp-cosmosdb file for reference. Making these updates to your existing file will update your existing deployment if you did not already delete your app.
+The following highlight the changes to the `webapp-cosmosdb` file for reference. Making these updates to your existing file will update your existing deployment if you did not already delete your app.
 
 1. Add a parameter for dnsZone where you input your custom domain (i.e. "customdomain.com")
 1. Add a [**Microsoft.Network/dnsZones/TXT**](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/dnszones/txt?tabs=bicep) resource
