@@ -1,6 +1,6 @@
 ---
 title: 'Retiring App Insights codeless atttach for .NET Core 2.1'
-author: 'Jason Freeberg'
+author_name: 'Jason Freeberg'
 ---
 
 App Insights support for .NET Core 2.1 on App Service will be retired on August 31st, 2021. To continue using Application Insights for your .NET Core apps, update to .NET Core 3.1, or .NET 5. .NET Core 2.1 will reach End-of-Support [on August 21, 2021](https://devblogs.microsoft.com/dotnet/net-core-2-1-will-reach-end-of-support-on-august-21-2021/). 
