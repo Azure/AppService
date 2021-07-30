@@ -32,23 +32,23 @@ No additional prerequisites for this tutorial.
 
 ### Tutorial
 
-In my opinion, the most user friendly method for infrastructure deployment for those who are just starting with Azure or do not have much experience with cloud or infrastructure as code, the [Azure Portal](https://portal.azure.com/) is the place to start. It provides a user interface where you will get to explore the various available services and see step by step what is happening as you move through the infrastructure creation process.
+In my opinion, the [Azure Portal](https://portal.azure.com/) is the most user friendly method for infrastructure deployment, especially for those who are just starting with Azure or do not have much experience with the cloud or infrastructure-as-code. It provides a user interface where you will get to explore the various available services and see step-by-step what is happening as you move through the infrastructure creation process.
 
-Navigate to the [Azure Portal](https://portal.azure.com/). At this point, you should have already created an [Azure subscription](https://docs.microsoft.com/en-us/azure/guides/developer/azure-developer-guide#understanding-accounts-subscriptions-and-billing) and a [free account](https://azure.microsoft.com/free/?ref=microsoft.com&utm_source=microsoft.com&utm_medium=docs&utm_campaign=visualstudio). If not, navigate back to the General Prerequisites and complete those steps.
+Navigate to the [Azure Portal](https://portal.azure.com/). At this point, you should have already created an [Azure subscription](https://docs.microsoft.com/en-us/azure/guides/developer/azure-developer-guide#understanding-accounts-subscriptions-and-billing) and a [free account](https://azure.microsoft.com/free/?ref=microsoft.com&utm_source=microsoft.com&utm_medium=docs&utm_campaign=visualstudio). If not, navigate back to the [General Prerequisites](#general-prerequisites) and complete those steps.
 
 1. To start, you will need to create a [resource group](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/manage-resource-groups-portal) to hold and manage the resources related to this app. From the home page, click "Create a resource" and search for "resource group." Select and fill in the following details:
-    1. Subscription = the name of the subscription you created (or already had if you were an existing Azure user)
-    1. Resource Group = give your resource group a name that is unique in your account
-    1. Region = select your preferred region for where you would like the resource group to be located (typically you choose a region that is close to you to reduce latency or sometimes certain features/services are only available in certain regions - for the purposes of this article, it does not matter which region you choose)
+    1. **Subscription**: the name of the subscription you created (or already had if you were an existing Azure user)
+    1. **Resource Group**: give your resource group a name that is unique to your Subscription
+    1. **Region**: select your preferred region for where you would like the resource group to be located. (Typically you choose a region that is physically close to you to reduce latency, or sometimes certain features/services are only available in certain regions - for the purposes of this article, it does not matter which region you choose.)
 1. Select "Review + create" at the bottom left of your screen and wait for validation to complete. If you get an error, review and address as needed.
 1. Select "Create" at the bottom left and your resource group will be created
 1. Next, you will need to create a Cosmos DB account. For more details on how to do this, see [this](https://docs.microsoft.com/en-us/azure/cosmos-db/create-cosmosdb-resources-portal) doc. For this article, I will give quick step-by-step guidance. Navigate back to the "Create a resource" page and search for Cosmos DB. Select "Create" under "Azure Cosmos DB" ane then select "Azure Cosmos DB" again.
 1. On the following page, select create under "Core (SQL) - Recommended" as the account type
 1. Fill in the following details for your Cosmos DB account:
-    1. Subscription = the name of the subscription you created (or already had if you were an existing Azure user)
-    1. Resource Group = the resource group you created earlier
-    1. Account Name = a unique name to identify the account. The name can only contain lowercase letters, numbers, and the hyphen (-) character. It must be between 3-44 characters in length.
-    1. Location = a geographic location to host your Azure Cosmos DB account. Use the location that is closest to your users to give them the fastest access to the data. You can use the same or different location as you selected for your resource group since this is only a tutorial, however if you were to put this into production, you would want to think more carefully about this location as well as [geo-redundancy](https://docs.microsoft.com/en-us/azure/cosmos-db/distribute-data-globally) options.
+    1. **Subscription**: the name of the subscription you created (or already had if you were an existing Azure user)
+    1. **Resource Group**: the resource group you created earlier
+    1. **Account Name**: a unique name to identify the account. The name can only contain lowercase letters, numbers, and the hyphen (-) character. It must be between 3-44 characters in length.
+    1. **Location**: a geographic location to host your Azure Cosmos DB account. Use the location that is closest to your users to give them the fastest access to the data. You can use the same or different location as you selected for your resource group since this is only a tutorial, however if you were to put this into production, you would want to think more carefully about this location as well as [geo-redundancy](https://docs.microsoft.com/en-us/azure/cosmos-db/distribute-data-globally) options.
     1. To keep things as cheap as possible, for "Capacity mode", select "Provisioned throughput" which gives you the option to "Apply Free Tier Discount." Select "Apply" if this is your intention.
 1. Feel free to browse the remaining settings, but this tutorial will leave them as defaults
 1. Select "Review + create" at the bottom left of your screen and wait for validation to complete. If you get an error, review and address as needed.
@@ -56,16 +56,16 @@ Navigate to the [Azure Portal](https://portal.azure.com/). At this point, you sh
 1. While the Cosmos DB account is being provisioned, which can take 5-10 minutes, you can move on to creating the App Service. Navigate back to the "Create a resource" page and search for "Web App." Make sure you don't select any of the recommended options and just hit enter to search.
 1. Review the results and select "Create" under "Web App." This will take you to the Web App creation page.
 1. Fill in the following details for your Web App:
-    1. Subscription = the name of the subscription you created (or already had if you were an existing Azure user)
-    1. Resource Group = the resource group you created earlier
-    1. Name = a unique name to identify the web app. This will become part of the domain for the app.
-    1. Publish = "Code" - we will cover this in the next step
-    1. Runtime stack = ".NET Core 3.1"
-    1. Operating System = "Windows"
-    1. Region = a geographic location close to your Azure Cosmos DB account.
+    1. **Subscription**: the name of the subscription you created (or already had if you were an existing Azure user)
+    1. **Resource Group**: the resource group you created earlier
+    1. **Name**: a unique name to identify the web app. This will become part of the domain for the app.
+    1. **Publish**: "Code" - we will cover this in the next step
+    1. **Runtime stack**: ".NET Core 3.1"
+    1. **Operating System**: "Windows"
+    1. **Region**: a geographic location close to your Azure Cosmos DB account.
     1. You will now be selecting the details for the App Service Plan (ASP). Pay close attention here to avoid incurring any unwanted costs.
-        1. Windows Plan = select "Create new" and give the ASP a name
-        1. Sku and size = select "Change size" and choose the tier that fits your budget. "F1" is the free tier and should be sufficient for this tutorial. I would recommend using "S1" or higher for this however since it gives you more features to experiment with. Select your tier and hit "Apply."
+        1. **Windows Plan**: select "Create new" and give the A**: a name
+        1. **Sku and size**: select "Change size" and choose the**:ier that fits your budget. "F1" is the free tier and should be sufficient for this tutorial. I would recommend using "S1" or higher for this however since it gives you more features to experiment with. Select your tier and hit "Apply."
 1. Feel free to browse the remaining settings, but this tutorial will leave them as defaults.
 1. Select "Review + create" at the bottom left of your screen and wait for validation to complete. If you get an error, review and address as needed.
 1. Select "Create" at the bottom left and your web app will be created after a couple minutes
@@ -73,10 +73,10 @@ Navigate to the [Azure Portal](https://portal.azure.com/). At this point, you sh
 1. You will now create the container in the Cosmos DB account that will hold the data for our app
     1. Make sure you are on the "Overview" page and select "Add Container" at the top left
     1. Fill in the following values, leaving the remaining as default:
-        1. Database id = select "Create new" and call it `Tasks`
-        1. Database throughput = select "Manual" and change the value to `400` which should be sufficient for this tutorial
-        1. Container id = `Items`
-        1. Partition key = `/id`
+        1. **Database id**: select "Create new" and call it `Tasks`
+        1. **Database throughput**: select "Manual" and change the value to `400` which should be sufficient for this tutorial
+        1. **Container id**: `Items`
+        1. **Partition key**: = `/id`
     1. Select "OK" to close out the dialog. Your container and empty table will get provisioned after a couple seconds
 1. Now it is time to connect your database to your web app. Under "Settings" on the left hand side, select "Keys" to show the various keys and connection strings associated with your database. Copy and paste the following into a text editor:
     1. URI
@@ -91,10 +91,10 @@ Navigate to the [Azure Portal](https://portal.azure.com/). At this point, you sh
 1. Hit "Save" at the top and then "Continue" for the notification saying your app will be restarted
 1. Finally, your app is configured and you can upload your code. Head over to "Deployment Center" under "Deployment" on the left hand side
 1. Use the following settings:
-    1. Source = "External Git"
-    1. Repository = `https://github.com/Azure-Samples/cosmos-dotnet-core-todo-app.git`
-    1. Branch = `main`
-    1. Repository Type = "Public"
+    1. **Source**: "External Git"
+    1. **Repository**: `https://github.com/Azure-Samples/cosmos-dotnet-core-todo-app.git`
+    1. **Branch**: `main`
+    1. **Repository Type**: "Public"
 1. Hit "Save" at the top and give your app time to build and deploy the code. You can review the status by selecting "Logs" next to the "Settings" tab in the Deployment Center. When Status says "Success (Active)" your app should be up and running!
 1. Navigate to the "Overview" tab on the left hand side and find your app's URL. Hit that and it should open your app in a new tab. Feel free to play around with it and see what you've created! If your app doesn't open immediately or you get a generic landing page, wait a couple minutes and try again. If needed, restart your app by hitting "Restart" at the top of the "Overview" tab.
 1. When you are done, you can delete your resources. You can do this by [deleting the resource group](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/delete-resource-group?tabs=azure-portal).
