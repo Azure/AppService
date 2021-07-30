@@ -36,6 +36,9 @@ var webSiteName = toLower('wapp-${webAppName}')
 resource appServicePlan 'Microsoft.Web/serverfarms@2020-06-01' = {
   name: appServicePlanName
   location: location
+  properties: {
+    reserved: true
+  }
   sku: {
     name: sku
   }
@@ -125,6 +128,14 @@ If you would like to continue learning about Bicep and App Service, below are ad
 ### Webapp with CosmosDB
 
 ```javascript
+@description('Application Name')
+@maxLength(30)
+param applicationName string = 'to-do-app${uniqueString(resourceGroup().id)}'
+
+@description('Location for all resources.')
+param location string = resourceGroup().location
+
+@description('App Service Plan\'s pricing tier. Details at https://azure.microsoft.com/en-us/pricing/details/app-service/')
 param appServicePlanTier string = 'P1V2'
 
 @minValue(1)
@@ -185,7 +196,7 @@ resource appService 'Microsoft.Web/sites@2021-01-01' = {
     httpsOnly: true
     siteConfig: {
       http20Enabled: true
-      
+
       appSettings: [
         {
           name: 'CosmosDb:Account'
