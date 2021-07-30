@@ -76,7 +76,7 @@ Navigate to the [Azure Portal](https://portal.azure.com/). At this point, you sh
         1. **Database id**: select "Create new" and call it `Tasks`
         1. **Database throughput**: select "Manual" and change the value to `400` which should be sufficient for this tutorial
         1. **Container id**: `Items`
-        1. **Partition key**: = `/id`
+        1. **Partition key**: `/id`
     1. Select "OK" to close out the dialog. Your container and empty table will get provisioned after a couple seconds
 1. Now it is time to connect your database to your web app. Under "Settings" on the left hand side, select "Keys" to show the various keys and connection strings associated with your database. Copy and paste the following into a text editor:
     1. URI
