@@ -30,7 +30,7 @@ If you're more comfortable on the command line, you can now use the Azure CLI to
     telemetry                          1.0.6
     ```
 
-2. Next, run the following CLI command to set up GitHub Actions. 
+2. Next, run the following CLI command to set up GitHub Actions. Replace `<app-name>`, `<group-name>`, and `<owner>/<repository-name>` with your Web App name, resource group, and repository respectively.
 
     **Bash**
 
@@ -38,7 +38,8 @@ If you're more comfortable on the command line, you can now use the Azure CLI to
     az webapp deployment github-actions add
         --name '<app-name>' \
         --resource-group '<group-name>' \ 
-        --repo '<owner>/<repository-name>'
+        --repo '<owner>/<repository-name>' \
+        --login-with-github
     ```
 
     **PowerShell**
@@ -47,13 +48,19 @@ If you're more comfortable on the command line, you can now use the Azure CLI to
     az webapp deployment github-actions add `
         --name '<app-name>' `
         --resource-group '<group-name>' ` 
-        --repo '<owner>/<repository-name>'
+        --repo '<owner>/<repository-name>' `
+        --login-with-github
     ```
 
+3. In the command output there will be a login URL and user code. Open the URL in the command output, `https://github.com/login/device`, and enter the user code shown in the output.
 
+    ```text
+    Command group 'webapp deployment github-actions' is in preview and under development. Reference and support levels: https://aka.ms/CLI_refstatus
+    Please navigate to https://github.com/login/device and enter the user code 985C-11BD to activate and retrieve your github personal access token
+    Waiting up to '14' minutes for activation
+    ```
 
-    az webapp deployment github-actions add `
-        --name 'freeberg-test-app' `
-        --resource-group 'freebergDemo' `
-        --repo 'JasonFreeberg/my-spring-app' `
-        --login-with-github
+    ![Login to GitHub using the usercode in the command output]({{ site.baseurl }}/media/2021/08/github-usercode-login.png)
+
+4. Once you log in, the CLI command will continue, committing GitHub Actions workflow file to your repository under `.github/workflows`, setting the deployment credentials in your repository's secrets, and registering the repository with your Web App so you can view deployment logs in the Deployment Center.
+
