@@ -31,7 +31,7 @@ Create the following resources. You will need information from each resource tha
 
 ### Create a Service Principal
 
-Our workflow will use a Service Principal to authenticate with Azure when deploying the container to App Service. A service principal is an Active Directory Identity created for use with automation scenarios, such as GitHub Actions.
+Our workflow will use a Service Principal to authenticate with Azure when deploying the container to App Service. A service principal is an Active Directory Identity created for use with automation scenarios, such as GitHub Actions.  If you would like to use your **publish profile** credentials instead, please skip this section and see [Deploy to Azure App Service](#Deploy-to-azure-app-service) to see how.
 
 1. Run the following command in Azure CLI in powershell to get the credentials needed to run the login action.  The output of this command will be a collection of key value pairs that you'll need to add to your GitHub secrets.
 
@@ -52,18 +52,21 @@ Our workflow will use a Service Principal to authenticate with Azure when deploy
       }
     ```
 
+
 ## Secure Secrets
 
 Since we are using sensitive information that you don't want others to access, we will use GitHub secrets to protect our information. Create a secret by following the directions [here](https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets).  Add the github secrets variables below with your own secrets appropriate from each resource.
 
 - `APP_NAME`: web-app-name
 - `AZURE_CREDENTIALS`: the JSON output of the `az ad sp create-for-rbac` command
+- `PUBLISH_PROFILE`: content of your publish profile *(optional)* 
 - `IMAGE_NAME`: name-of-image
 - `CONTAINER_REGISTRY_USERNAME`: Your container registry username
 - `CONTAINER_REGISTRY_PASSWORD`: Your container registry password
 - `CONTAINER_NAME`: The hostname of the container registry (ACR only)
 - `AZURE_SQL_CONNECTION_STRING`: database-connection-string
 - `DATABASE_SERVER_NAME`: server-name
+
 
 ## The Dockerfile
 
@@ -220,7 +223,7 @@ Add the following secrets if you have not already:
 
 ### Authenticate with Azure
 
-In the [earlier section](#Create-a-Service-Principal) you created an Azure Service Principal and added it as a GitHub Secret. You can now add the [Azure login action](https://github.com/azure/login) to the workflow. This action will use the Service Principal to authenticate with Azure.
+In the [earlier section](#Create-a-Service-Principal) you created an Azure Service Principal and added it as a GitHub Secret. You can now add the [Azure login action](https://github.com/azure/login) to the workflow. This action will use the Service Principal to authenticate with Azure.  If you are using a **publish profile** to deploy your application instead of using a Service Principal, please skip this section.
 
 Add the following secrets if you have not already:
 
@@ -246,6 +249,7 @@ Add the following secrets if you have not already:
 - `APP_NAME`: The webapp name
 - `CONTAINER_REGISTRY_NAME`: The container registry name
 - `IMAGE_NAME`: The name of the container image
+- `PUBLISH_PROFILE`: content of your publish profile
 
 {% raw %}
 ```yaml
@@ -256,6 +260,26 @@ Add the following secrets if you have not already:
     images: ${{ secrets.CONTAINER_REGISTRY_NAME }}/${{ secrets.IMAGE_NAME }}:${{ github.sha }}
 ```
 {% endraw %}
+
+If you would like to deploy using your **publish profile** instead of using a Service Principal add the publish-profile line:
+
+{% raw %}
+```yaml
+ - name: Deploy container to Azure App Service
+      uses: Azure/webapps-deploy@v2
+      with: 
+        app-name: ${{ secrets.APP_NAME }}
+        publish-profile: ${{ secrets.PUBLISH_PROFILE }}
+        images: ${{ secrets.REGISTRY_USERNAME }}.azurecr.io/${{ secrets.IMAGE_NAME }}:${{ github.sha }}
+```
+{% endraw %}
+
+To obtain the contents of your publish profile:
+1. Go to the **Overview** page of your web app
+1. Click on the **Get publish profile** tab to download your publish profile
+1. Copy the entire contents of the xml file and add it to your GitHub secret `PUBLISH-PROFILE`
+
+See this [documentation](https://docs.microsoft.com/visualstudio/deployment/tutorial-import-publish-settings-azure?view=vs-2019#create-the-publish-settings-file-in-azure-app-service) for an example.
 
 ## Deploy to Azure SQL Database (Optional)
 
