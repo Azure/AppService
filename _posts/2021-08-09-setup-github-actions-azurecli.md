@@ -13,7 +13,7 @@ With GitHub Actions you can set up a workflow to build and deploy your applicati
 
 If you're more comfortable on the command line, you can now use the Azure CLI to set up GitHub Actions for your web apps. Just like the Deployment Center, this CLI command will put a curated workflow file in your target repository.
 
-## Instructions
+## CLI Instructions
 
 1. First, make sure you are using version 2.27.0 or greater.
 
@@ -32,7 +32,7 @@ If you're more comfortable on the command line, you can now use the Azure CLI to
 
 2. Next, run the following CLI command to set up GitHub Actions. Replace `<app-name>`, `<group-name>`, and `<owner>/<repository-name>` with your Web App name, resource group, and repository respectively.
 
-    **Bash**
+    **Bash:**
 
     ```bash
     az webapp deployment github-actions add
@@ -42,12 +42,12 @@ If you're more comfortable on the command line, you can now use the Azure CLI to
         --login-with-github
     ```
 
-    **PowerShell**
+    **PowerShell:**
 
     ```powershell
     az webapp deployment github-actions add `
         --name '<app-name>' `
-        --resource-group '<group-name>' ` 
+        --resource-group '<group-name>' `
         --repo '<owner>/<repository-name>' `
         --login-with-github
     ```
@@ -64,3 +64,4 @@ If you're more comfortable on the command line, you can now use the Azure CLI to
 
 4. Once you log in, the CLI command will continue, committing GitHub Actions workflow file to your repository under `.github/workflows`, setting the deployment credentials in your repository's secrets, and registering the repository with your Web App so you can view deployment logs in the Deployment Center.
 
+With a few CLI commands you're up-and-running with GitHub Actions. Keep in mind that every application is unique, so you may need to update the curated workflow file to correctly build your app if you're doing multi-step builds or using non-standard testing libraries. See the [GitHub Actions Reference Documentation](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions) for more information.
