@@ -1,5 +1,5 @@
 ---
-title: "Setup GitHub Actions with the Azure CLI"
+title: "Set up GitHub Actions with the Azure CLI"
 author_name: "Jason Freeberg"
 toc: true
 toc_sticky: true
