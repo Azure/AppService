@@ -7,7 +7,7 @@ tags:
     - Deployment
 ---
 
-There are a number of ways to deploy infrastructure to Azure, what you pick depends on a number of factors including skill level, experience, job requirement, or perhaps company policy. In the end, they'll essentially get you to the same place - infrastructure deployed to the cloud. This article will cover infrastructure deployment methods including using the [Azure Portal](https://portal.azure.com/), [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/get-started-with-azure-cli) in Cloud Shell or on your local machine, an [Azure Resource Manager (ARM)](https://docs.microsoft.com/azure/azure-resource-manager/management/overview) template, [Bicep](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/), and [Terraform](https://www.terraform.io/) by HashiCorp. Feel free to follow along with the samples as step-by-step guidance will be provided.
+There are a number of ways to deploy infrastructure to Azure, what you pick depends on a number of factors including skill level, experience, job requirement, or perhaps company policy. In the end, they'll essentially get you to the same place - infrastructure deployed to the cloud. This article will cover infrastructure deployment methods including using the [Azure Portal](https://portal.azure.com/), [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/get-started-with-azure-cli) in Cloud Shell or on your local machine, [PowerShell](https://docs.microsoft.com/en-us/powershell/), an [Azure Resource Manager (ARM)](https://docs.microsoft.com/azure/azure-resource-manager/management/overview) template, [Bicep](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/), and [Terraform](https://www.terraform.io/) by HashiCorp. Feel free to follow along with the samples as step-by-step guidance will be provided.
 
 ## General Prerequisites
 
@@ -107,7 +107,7 @@ Congratulations! You just deployed a web app connected to a database on Azure. C
 
 Azure hosts Azure Cloud Shell, an interactive shell environment that you can use through your browser. You can use either Bash or PowerShell with Cloud Shell to work with Azure services. You can use the Cloud Shell preinstalled commands to run the code in this article without having to install anything on your local environment. If you prefer to use your local environment, follow the steps [here](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) to install the latest version. 
 
-If you are using the Azure CLI from your local environment, you will need to login first with the [`az login`](https://docs.microsoft.com/en-us/cli/azure/get-started-with-azure-cli#sign-in) command. Proceed to the tutorial once logged in. If you would like to use the Azure Cloud Shell either navigate to the [Azure portal](https://portal.azure.com/) and select the **Cloud Shell** button on the menu bar at the upper right, or just navigate to [https://shell.azure.com/](https://shell.azure.com/).
+If you are using the Azure CLI from your local environment, you will need to login first with the [`az login`](https://docs.microsoft.com/en-us/cli/azure/get-started-with-azure-cli#sign-in) command. Proceed to the tutorial once logged in. If you would like to use the Azure Cloud Shell either navigate to the [Azure portal](https://portal.azure.com/) and select the **Cloud Shell** button on the menu bar at the upper right, or just navigate to [https://shell.azure.com/](https://shell.azure.com/). Confirm you have a Bash shell opened by checking the top left of the Cloud Shell and select "Bash" from the drop down.
 
 ### Tutorial
 
@@ -133,7 +133,7 @@ az group create --name $resourceGroupName --location $location
 # Create an App Service Plan
 az appservice plan create --resource-group $resourceGroupName --name $appServicePlanName --sku S1 --location $location
 
-# Create a Web App
+# Create a Web App in the App Service Plan
 az webapp create --name $appName --plan $appServicePlanName --resource-group $resourceGroupName
 
 # Create a Cosmos DB account
@@ -153,7 +153,75 @@ az webapp config appsettings set --name $appName --resource-group $resourceGroup
 az webapp deployment source config --resource-group $resourceGroupName --name $appName --repo-url https://github.com/Azure-Samples/cosmos-dotnet-core-todo-app.git --branch main --manual-integration
 ```
 
-And that's it! Give your app a couple minutes to deploy, and then navigate to your app's URL (`<https://APP-NAME.azurewebsites.net>`) to validate everything was created as intended.
+And that's it! Give your app a couple minutes to deploy, and then navigate to your app's URL (`<https://APP-NAME.azurewebsites.net>`) to validate everything was created as intended. When you are done, [delete the resource group](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/delete-resource-group?tabs=azure-cli) to delete the resources.
+
+## PowerShell
+
+The Az PowerShell module is a set of cmdlets for managing Azure resources directly from PowerShell. PowerShell provides powerful features for automation that can be leveraged for managing your Azure resources for examples in the context of a CI/CD pipeline.
+
+You can use the Az PowerShell module with one of the following methods:
+
+- [Install the Az PowerShell module via PowerShellGet](https://docs.microsoft.com/en-us/powershell/azure/install-az-ps?view=azps-6.3.0) (recommended option).
+- [Install the Az PowerShell module with MSI](https://docs.microsoft.com/en-us/powershell/azure/install-az-ps-msi?view=azps-6.3.0).
+- [Use Azure Cloud Shell](https://docs.microsoft.com/en-us/azure/cloud-shell/overview).
+- [Use the Az PowerShell Docker container](https://docs.microsoft.com/en-us/powershell/azure/azureps-in-docker?view=azps-6.3.0).
+
+### Prerequisites
+
+If needed, install the Azure PowerShell using the instruction found in the [Azure PowerShell guide](https://docs.microsoft.com/en-us/powershell/azure/), and then run `Connect-AzAccount` to create a connection with Azure. If you would like to use the Azure Cloud Shell either navigate to the [Azure portal](https://portal.azure.com/) and select the **Cloud Shell** button on the menu bar at the upper right, or just navigate to [https://shell.azure.com/](https://shell.azure.com/). Ensure you have a PowerShell type shell opened (not Bash) by selecting PowerShell from the top left corner of the Cloud Shell.
+
+### Tutorial
+
+Below is a commented script that will deploy the necessary resources for this application. Take some time to go through each cmdlet to understand what each is doing. You will notice that this script is very similar to the CLI script given previously.
+
+```powershell
+# Generates a Random Value
+$Random=(New-Guid).ToString().Substring(0,8)
+
+# Variables
+$ResourceGroup="MyResourceGroup$Random"
+$AppName="webappwithcosmosdb$Random"
+$Location="East US"
+$ServerName="$AppName-ASP"
+# Do not change these
+$DatabaseName="Tasks"
+$ContainerName="Items"
+
+# Create a Resource Group
+New-AzResourceGroup -Name $ResourceGroup -Location $Location
+
+# Create an App Service Plan
+New-AzAppservicePlan -Name $ServerName -ResourceGroupName $ResourceGroup -Location $Location -Tier Basic
+
+# Create a Web App in the App Service Plan
+New-AzWebApp -Name $AppName -ResourceGroupName $ResourceGroup -Location $Location -AppServicePlan $ServerName
+
+# Create a Cosmos DB account
+New-AzCosmosDBAccount -ResourceGroupName $ResourceGroup -Name $AppName -Location $Location -ApiKind GlobalDocumentDB
+
+# Get the database connection details and store them as variables. Make sure there is only one Cosmos DB account in your resource group. Otherwise, you will need to further parse the response from the below command to obtain the needed info.
+$DatabaseUri=(Get-AzCosmosDBAccount -ResourceGroupName $ResourceGroup).DocumentEndpoint
+$PrimaryMasterKey=(Get-AzCosmosDBAccountKey -ResourceGroupName $ResourceGroup -Name $AppName -Type Keys).PrimaryMasterKey
+
+# Assign the database details to App Settings in the Web App
+$hashtable = @{
+  "CosmosDb:Account" = $DatabaseUri
+  "CosmosDb:Key" = $PrimaryMasterKey
+  "CosmosDb:DatabaseName" = $DatabaseName
+  "CosmosDb:ContainerName" = $ContainerName
+}
+Set-AzWebApp -ResourceGroupName $ResourceGroup -Name $AppName -AppSettings $hashtable
+
+# Upload the code using External Git
+$PropertiesObject = @{
+  repoUrl = "https://github.com/Azure-Samples/cosmos-dotnet-core-todo-app.git";
+  branch = "main";
+  isManualIntegration = "true";
+}
+Set-AzResource -Properties $PropertiesObject -ResourceGroupName $ResourceGroup -ResourceType Microsoft.Web/sites/sourcecontrols -ResourceName $AppName/web -ApiVersion 2015-08-01 -Force
+```
+
+Give your app a couple minutes to deploy, and then navigate to your app's URL (`<https://APP-NAME.azurewebsites.net>`) to validate everything was created as intended. When you are done, [delete the resource group](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/delete-resource-group?tabs=azure-cli) to delete the resources.
 
 ## Azure Resource Manager (ARM) Template
 
@@ -211,10 +279,12 @@ Review the below template. You will recognize that all of the resources in the t
         "S1",
         "S2",
         "S3",
-        "P1",
-        "P2",
-        "P3",
-        "P4"
+        "P1V2",
+        "P2V2",
+        "P3V2",
+        "P1V3",
+        "P2V3",
+        "P3V3"
       ]
     },
     "appServicePlanInstances": {
