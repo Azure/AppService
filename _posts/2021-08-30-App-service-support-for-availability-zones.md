@@ -48,7 +48,7 @@ Currently, you need to use an [ARM templates](https://docs.microsoft.com/azure/a
 
 The only changes needed in an ARM template to specify a zone redundant App Service are the new ***zoneRedundant*** property (required) and optionally the App Service Plan instance count (i.e. ***capacity***) on the [Microsoft.Web/serverfarms](https://docs.microsoft.com/azure/templates/microsoft.web/2018-02-01/serverfarms?tabs=json) resource. If you don't specify a capacity, the platform defaults to 3. The ***zoneRedundant*** property should be set to ***true*** and ***capacity*** should be set based on the workload requirement, but no less than 3. Choosing the right capacity varies based on a number of factors as well as high availability/fault tolerance strategies, however a good rule of thumb is to ensure sufficient instances for the application such that losing one zone of instances leaves sufficient capacity to handle expected load.
 
-> [!Tip]
+> **TIP**
 > To decide instance capacity, you can use the following calculation:
 >
 > Since the platform spreads VMs across 3 zones and you need to account for at least the failure of 1 zone, multiply peak workload instance count by a factor of zones/(zones-1), or 3/2.
