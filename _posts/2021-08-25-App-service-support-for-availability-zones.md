@@ -5,7 +5,7 @@ category: networking
 toc: true
 ---
 
-Availability Zone (AZ) support for public multi-tenant App Service is now available. AZ support for App Service Environments (ASEs) is also available, see [Availability Zone support for App Service Environments](https://docs.microsoft.com/azure/app-service/environment/zone-redundancy).
+Availability Zone (AZ) support for public multi-tenant App Service is now available. AZ support for App Service Environments (ASEs) is also available, see [Availability Zone support for App Service Environments](https://docs.microsoft.com/en-us/azure/app-service/environment/overview#regions).
 
 ## Availability Zone Overview
 
