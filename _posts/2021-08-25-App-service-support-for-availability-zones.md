@@ -5,7 +5,7 @@ category: networking
 toc: true
 ---
 
-Availability Zone (AZ) support for public multi-tenant App Service (i.e. **not** App Service Environments (ASE), see [Availability Zone support for App Service Environments](https://docs.microsoft.com/azure/app-service/environment/zone-redundancy)) is now available.
+Availability Zone (AZ) support for public multi-tenant App Service is now available. AZ support for App Service Environments (ASEs) is also availab, see [Availability Zone support for App Service Environments](https://docs.microsoft.com/azure/app-service/environment/zone-redundancy).
 
 ## Availability Zone Overview
 
@@ -16,7 +16,7 @@ An [Availability Zone](https://docs.microsoft.com/azure/availability-zones/az-ov
 AZ support, otherwise known as zone redundancy, is a property of the App Service Plan (ASP). The following are the current requirements/limitations for enabling zone redundancy:
 
 - Both Windows and Linux are supported
-- Requires either **Pv2** or **Pv3** SKUs
+- Requires either **Premium v2** or **Premium v3** App Service Plans
 - Minimum instance count of 3
   - The platform will enforce this minimum count behind the scenes if you specify an instance count fewer than 3. This is due to the platform automatically spreading these VMs across 3 zones when zone redundancy is enabled.
 - Can be enabled in any of the following regions:
@@ -53,13 +53,10 @@ The only changes needed in an ARM template to specify a zone redundant App Servi
 > **TIP**
 > To decide instance capacity, you can use the following calculation:
 >
-> Since the platform spreads VMs across 3 zones and you need to account for at least the failure of 1 zone, multiply peak workload instance count by a factor of zones/(zones-1), or 3/2.
->
->> Customer's peak workload requires 4 instances
->>
->> Provision 6 instances: (2/3 * 6 instances) == 4 instances
+> Since the platform spreads VMs across 3 zones and you need to account for at least the failure of 1 zone, multiply peak workload instance count by a factor of zones/(zones-1), or 3/2. For example, if your typical peak workload requires 4 instances, you should provision 6 instances: (2/3 * 6 instances) = 4 instances.
+> 
 
-In the case of a zone down situation, the App Service platform (VM live-ness checks) will detect lost instances and automatically attempt to find new instances to replace the ones that were lost. Note that if auto-scale is also configured, and if it decides more instances are needed, auto-scale will also issue a request to App Service to add more instances (auto-scale behavior is independent of App Service platform behavior). It is important to note that there is no guarantee that requests for additional instances in a zone-down scenario will succeed since back filling lost instances occurs on a best-effort basis. The recommended solution is to provision your App Service Plans to account for losing a zone as described previously in this article.
+In the case when a zone goes down, the App Service platform will detect lost instances and automatically attempt to find new instances to replace the ones that were lost. Note that if auto-scale is also configured, and if it decides more instances are needed, auto-scale will also issue a request to App Service to add more instances (auto-scale behavior is independent of App Service platform behavior). It is important to note that there is no guarantee that requests for additional instances in a zone-down scenario will succeed since back filling lost instances occurs on a best-effort basis. The recommended solution is to provision your App Service Plans to account for losing a zone as described previously in this article.
 
 The ARM template snippet below shows the new ***zoneRedundant*** property and ***capacity*** specification.
 
@@ -68,8 +65,8 @@ The ARM template snippet below shows the new ***zoneRedundant*** property and **
   {
     "type": "Microsoft.Web/serverfarms",
     "apiVersion": "2018-02-01",
-    "name": “your-appserviceplan-name-here",
-    "location": “West US 3",
+    "name": "your-appserviceplan-name-here",
+    "location": "West US 3",
     "sku": {
         "name": "P1v3",
         "tier": "PremiumV3",
