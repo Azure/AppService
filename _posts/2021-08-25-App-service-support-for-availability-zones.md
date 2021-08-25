@@ -20,19 +20,21 @@ AZ support, otherwise known as zone redundancy, is a property of the App Service
 - Minimum instance count of 3
   - The platform will enforce this minimum count behind the scenes if you specify an instance count fewer than 3. This is due to the platform automatically spreading these VMs across 3 zones when zone redundancy is enabled.
 - Can be enabled in any of the following regions:
-  - West Europe
-  - North Europe
-  - Germany West Central
-  - Southeast Asia
-  - UK South
+  - West US 2
+  - West US 3
   - Central US
   - East US
   - East US 2
-  - West US 2
-  - West US 3
-  - Japan East
-  - Australia East
   - Canada Central
+  - Brazil South
+  - North Europe
+  - West Europe
+  - Germany West Central
+  - France Central
+  - UK South
+  - Japan East
+  - Southeast Asia
+  - Australia East
 - Zone redundancy can only be specified when creating a **new** App Service Plan
   - Currently you can not convert pre-existing App Service Plan. See next bullet for details on how to create a new App Service Plan that supports zone redundancy.
 - AZ is only supported in the newer portion of the App Service footprint
