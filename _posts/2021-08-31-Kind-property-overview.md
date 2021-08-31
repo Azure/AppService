@@ -1,5 +1,5 @@
 ---
-title: "Overview of the "kind" property for App Service"
+title: "Overview of the 'kind' property for App Service"
 author_name: "Jordan Selig"
 toc: false
 ---
