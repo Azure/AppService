@@ -14,4 +14,4 @@ The `kind` property of an app is set during the create flow and can't be modifie
 
 Note that the `kind` property also shows up in App Service Plans (ASP). At this time, the value of this property for the ASP is meaningless and has no impact on your resource. For example, you can set `kind` to "Linux" for the ASP, but that won't make your ASP a Linux ASP; the `reserved` property is what makes this distinction (if `reserved` = true, it's a Linux ASP, otherwise it's a Windows ASP).
 
-For more information on how App Service uses the `kind` property as well as a current list of valid values for the property, visit the [App Service Linux docs repo](https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md).
+For more information on how App Service uses the `kind` property as well as the current list of recommended values, visit the [App Service Linux docs repo](https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md).
