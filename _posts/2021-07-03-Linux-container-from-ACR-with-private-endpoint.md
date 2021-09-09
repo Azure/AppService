@@ -125,12 +125,12 @@ echo '<h1>Hello pull from secure Azure Container Registry</h1>' > index.html
 echo -e 'FROM nginx\nCOPY index.html /usr/share/nginx/html' > Dockerfile
 
 # Using ACR Tasks
-az acr build --registry secureacr2021 --image privateweb/site:v1 --file .
+az acr build --registry secureacr2021 --image privateweb/site:v1 .
 
 # Using docker daemon on local machine
 az acr login --name secureacr2021
 docker build -t privateweb/site:v1 .
-docker tag privateweb:v1 secureacr2021.azurecr.io/privateweb/site:v1
+docker tag privateweb/site:v1 secureacr2021.azurecr.io/privateweb/site:v1
 docker push secureacr2021.azurecr.io/privateweb/site:v1
 ```
 
