@@ -4,10 +4,8 @@ author_name: "Ignacio Alvarez Arenas"
 category: diagnostics
 toc: true
 toc_sticky: true
-    
----
 
-## Overview
+---
 
 This document covers some common operations that can be performed in an App Service and the effects in terms of availability and restart operations. Restarts on an App Service can be triggered either manually or by configuration changes. This document describes the effects only in App Services running on Windows operating system. 
 
@@ -78,22 +76,13 @@ HealthCheck feature also has some restart effects by design, as if a specific in
 
 Most of the configuration changes trigger some sort of restart. It is important to be aware that any config changes in sections such as the ones listed below can trigger a restart, so it is recommended to plan accordingly before any change. 
 
--Configuration (general settings, application settings, default documents) 
-
--Authentication/Authorization 
-
--Application Insights – Any modification to the settings will cause an app restart 
-
--Identity 
-
--Backup Configuration 
-
--Custom Domain Operations 
-
--CORS Settings 
-
--TLS Settings 
-
--Networking Features 
-
--App Service Logs 
+- Configuration (general settings, application settings, default documents) 
+- Authentication/Authorization 
+- Application Insights – Any modification to the settings will cause an app restart 
+- Identity 
+- Backup Configuration 
+- Custom Domain Operations 
+- CORS Settings 
+- TLS Settings 
+- Networking Features 
+- App Service Logs 
