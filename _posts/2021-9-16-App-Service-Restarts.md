@@ -25,7 +25,6 @@ Other App Services running on the same App Service Plan will not be restarted
 
 When restarting using the Advanced Application Restart feature in Diagnostic tools, the process of the specific instance selected will be restarted, and all the requests will be redirected to the other active instances if there were any.  If settings such as Application Initialization are applied, the application won’t be fully available until the initialization completes as expected. 
 
-
 ### Soft Restart 
 
 When applying soft restart, which you can learn about here: [Web Apps - Restart](https://docs.microsoft.com/en-us/rest/api/appservice/web-apps/restart), the process will be recycled but it won’t go through a full re-load Slowness in requests can be expected. All the instances will be restarted when this operation is applied.   
@@ -59,8 +58,8 @@ Scaling up operations will trigger a full restart of the application as it will 
 
 App Services provides two options to Auto-Heal your application: 
 
--[Proactive Auto-Heal](https://azure.github.io/AppService/2017/08/17/Introducing-Proactive-Auto-Heal.html#:~:text=Proactive%20Auto%20Heal%20looks%20for,outlined%20in%20the%20chart%20below.)
--[Custom Auto-Heal](https://azure.github.io/AppService/2018/09/10/Announcing-the-New-Auto-Healing-Experience-in-App-Service-Diagnostics.html)
+- [Proactive Auto-Heal](https://azure.github.io/AppService/2017/08/17/Introducing-Proactive-Auto-Heal.html#:~:text=Proactive%20Auto%20Heal%20looks%20for,outlined%20in%20the%20chart%20below.)
+- [Custom Auto-Heal](https://azure.github.io/AppService/2018/09/10/Announcing-the-New-Auto-Healing-Experience-in-App-Service-Diagnostics.html)
 
 These two options will restart the specific instance of your application if it matches the conditions. In the case of Custom Auto-heal, it will depend on the custom action that has been selected to be triggered, as some actions don’t really recycle the process. The restart applied will be a full restart cycle, so operations as Application Initialization will be expected. If the App Service only has one instance, 503 errors could be expected as well. 
 
@@ -70,7 +69,6 @@ Enabling/Disabling Auto-Heal rules (proactive or custom) will have a full restar
 Enabling HealthCheck will restart the application, so slowness can be expected. 
 
 HealthCheck feature also has some restart effects by design, as if a specific instance is having problems, it will try to restart the instance as explained in [Health Check Feature](https://docs.microsoft.com/en-us/azure/app-service/monitor-instances-health-check). Additionally, if an instance becomes unavailable for a long time, HealthCheck will replace the unhealthy instances, up to a maximum of 3 per day.  
-
 
 ## Configuration changes effects on Availability 
 
