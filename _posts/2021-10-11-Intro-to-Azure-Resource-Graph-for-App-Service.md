@@ -44,6 +44,10 @@ For a full list of supported resource types, review the [table and resource type
 
 Azure Resource Graph is currently receiving notifications for all resources tracked by ARM. If a resource or resource property changes outside of ARM (i.e. for resources not tracked by ARM), the team is currently working on onboarding these resources to enable users to have access to them. This is an ongoing process the ARG team is working through...
 
+### Querying resources
+
+### Change detection (preview)
+
 		○ Blog post
 			§ What is it
 			§ What can it do
