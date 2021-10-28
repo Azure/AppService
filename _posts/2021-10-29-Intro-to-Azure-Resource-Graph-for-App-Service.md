@@ -91,14 +91,18 @@ resources
 | summarize count() by location
 ```
 
-And to create a visual, you can select "Charts" under the query box and choose from the given visualization options. Below is a map of the distributions of sites in a demo account.
+And to create a visual, you can select "Charts" under the query box and choose from the given visualization options. Below is a map of the distribution of sites in a demo account.
 
 ![basic query]({{ site.baseurl }}/media/2021/10/regionquery.png)
 
 ### Change detection (preview)
 
-Change detection is now in public preview for all resources that support [complete mode deletion](https://docs.microsoft.com/azure/azure-resource-manager/templates/deployment-complete-mode-deletion). For App Service, as of writing this article, the relevant resources that are supported include `Microsoft.web/sites`, `Microsoft.web/sites/slots`, `Microsoft.Web/serverFarms` as well as a couple additional resources that can be found [here](https://docs.microsoft.com/azure/azure-resource-manager/templates/deployment-complete-mode-deletion#microsoftweb). 
+Change detection is now in public preview for all resources that support [complete mode deletion](https://docs.microsoft.com/azure/azure-resource-manager/templates/deployment-complete-mode-deletion). For App Service, as of writing this article, the relevant resources that are supported include `Microsoft.web/sites`, `Microsoft.web/sites/slots`, `Microsoft.Web/serverFarms` as well as a couple additional resources that can be found [here](https://docs.microsoft.com/azure/azure-resource-manager/templates/deployment-complete-mode-deletion#microsoftweb).
 
 With change detection, the last 14 days of change history (properties that are added, removed, or altered) for the supported resources are available and can be accessed from the [APIs directly](https://docs.microsoft.com/azure/governance/resource-graph/how-to/get-resource-changes) or from the Portal which provides a *visual diff* for each change. Change history can assist in determining causes of non-compliance and help you determine when a change was made and by who so further investigation can be conducted.
 
-For example, if you want to see when an app setting was modified:
+For example, if you want to see when an app setting was modified, head over to the "Activity log" and filter to your resource. Select the relevant "Operation name" and then "Change detection (preview)" in the flyout on the right. Clicking into the operation again will take you to a visual diff so you can see exactly what changed in the json config of the resource.
+
+## Wrapping up
+
+The Azure Resource Graph team is continuously adding additional support for App Service to give users access to more information about their resources. Make sure to continuously check the [table and resource type reference](https://docs.microsoft.com/azure/governance/resource-graph/reference/supported-tables-resources) for updates as additional resource types get supported.
