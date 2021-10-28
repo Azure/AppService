@@ -13,7 +13,7 @@ We are pleased to announce the public availability of Diagnostic tools for App S
 - Slow performance
 - High memory
 - High CPU
-- Runtime errors and exceptions.
+- Runtime errors and exceptions
 
 ## Collection in Diagnose and Solve
 
@@ -32,12 +32,12 @@ When you select the *Process Explorer* page, you can identify the process you wa
 ## Analyzing the problem
 With the latest version of [Visual Studio](https://devblogs.microsoft.com/visualstudio/linux-managed-memory-dump-debugging/) you now have the ability to open and analyze managed dumps collected on Linux and use the best in class debugging tools available in Visual Studio!
 
-### Opening Linux Core dumps in Visual Studio
+### Opening managed Linux Core dumps in Visual Studio
 Memory dumps created on Windows machines have well known extension (*.dmp) and thus have a straightforward association with your favorite memory analysis tools. By default, core dumps produced on Linux machines are created without an extension.
 
-If your managed core dump doesn’t have an extension you can use the **Open File** dialogue, or drag and drop the file into your IDE, and Visual Studio will automatically identify and open it as a Linux core managed memory dump.
+If your managed core dump doesn't have an extension you can use the **Open File** dialogue, or drag and drop the file into your IDE, and Visual Studio will automatically identify and open it as a Linux core managed memory dump.
 
-However, if the file was renamed to include the Windows dump extension (*.dmp) then use Visual Studio’s "Open with" feature in the "Open File" dialogue box, [more details here](https://devblogs.microsoft.com/visualstudio/linux-managed-memory-dump-debugging/#opening-the-linux-core-dump-in-visual-studio).
+However, if the file was renamed to include the Windows dump extension (*.dmp) then use Visual Studio's "Open with" feature in the "Open File" dialogue box, [more details here](https://devblogs.microsoft.com/visualstudio/linux-managed-memory-dump-debugging/#opening-the-linux-core-dump-in-visual-studio).
 
 ### Linux Core Dump File Summary
 Once opened the **Managed Linux Core Dump File Summary** window shows a summary and module information for the dump file, and a list of **Actions** you can take, this remains consistent with existing dump handling experiences in Visual Studio.
