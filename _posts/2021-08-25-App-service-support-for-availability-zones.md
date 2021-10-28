@@ -5,7 +5,7 @@ category: networking
 toc: true
 ---
 
-Availability Zone (AZ) support for public multi-tenant App Service is now available. AZ support for App Service Environments (ASEs) is also available, see [Availability Zone support for App Service Environments](https://docs.microsoft.com/en-us/azure/app-service/environment/overview#regions).
+Availability Zone (AZ) support for public multi-tenant App Service is now available. The [official doc](https://docs.microsoft.com/azure/app-service/how-to-zone-redundancy) has been published to [Microsoft Azure docs](https://docs.microsoft.com/azure). AZ support for App Service Environments (ASEs) is also available, see [Availability Zone support for App Service Environments](https://docs.microsoft.com/en-us/azure/app-service/environment/overview#regions). Additionally, AZ support for the Azure Functions Premium plan is now available, see [Azure Functions support for availability zone redundancy](https://docs.microsoft.com/azure/azure-functions/azure-functions-az-redundancy).
 
 ## Availability Zone Overview
 
