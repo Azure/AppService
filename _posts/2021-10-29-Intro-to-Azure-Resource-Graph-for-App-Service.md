@@ -93,7 +93,7 @@ resources
 
 And to create a visual, you can select "Charts" under the query box and choose from the given visualization options. Below is a map of the distribution of sites in a demo account.
 
-![basic query]({{ site.baseurl }}/media/2021/10/regionquery.png)
+![region query]({{ site.baseurl }}/media/2021/10/regionquery.png)
 
 ### Change detection (preview)
 
@@ -101,7 +101,15 @@ Change detection is now in public preview for all resources that support [comple
 
 With change detection, the last 14 days of change history (properties that are added, removed, or altered) for the supported resources are available and can be accessed from the [APIs directly](https://docs.microsoft.com/azure/governance/resource-graph/how-to/get-resource-changes) or from the Portal which provides a *visual diff* for each change. Change history can assist in determining causes of non-compliance and help you determine when a change was made and by who so further investigation can be conducted.
 
-For example, if you want to see when an app setting was modified, head over to the "Activity log" and filter to your resource. Select the relevant "Operation name" and then "Change detection (preview)" in the flyout on the right. Clicking into the operation again will take you to a visual diff so you can see exactly what changed in the json config of the resource.
+For example, if you want to see when an app setting was modified, head over to the "Activity log" for your App Service and filter to your resource. Select the relevant "Operation name" and then "Change detection (preview)" in the flyout on the right. Double clicking into the operation in the list will take you to a visual diff so you can see exactly what changed in the json config of the resource.
+
+![app setting change]({{ site.baseurl }}/media/2021/10/changeappsetting.png)
+
+Or if you want to see when someone modifies access restrictions for an app, you can see all changes to your firewall rules:
+
+![security change]({{ site.baseurl }}/media/2021/10/securitychange.png)
+
+Change detection should enable you to view changes for any field in the json config of the supported resources as long as the field does not have a "null" value. A value of "null" indicates the resource provider is either not exposing this information at this time, or the field does not apply for your resource.
 
 ## Wrapping up
 
