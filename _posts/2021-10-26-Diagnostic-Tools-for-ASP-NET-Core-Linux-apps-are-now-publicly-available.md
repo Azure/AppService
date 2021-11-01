@@ -15,6 +15,8 @@ We are pleased to announce the public availability of Diagnostic tools for App S
 
 These tools enable you to self-diagnose your apps to identify if application code is contributing to the problem.
 
+ > This tools are enabled with the **latest Azure App Service platform update (96)**. To check the current platform version for you linux app, please check the environment variable **PLATFORM_VERSION** from the [kudu console](https://docs.microsoft.com/azure/app-service/resources-kudu) for your app.
+
 ## Collection in Diagnose and Solve
 
 To access these new capabilities on your .NET Core apps hosted in Linux, navigate to the **Diagnose and Solve** Blade - > **Diagnostics Tools** and select either **Collect .NET Profiler Trace** or **Collect Memory Dump**.
@@ -22,7 +24,7 @@ To access these new capabilities on your .NET Core apps hosted in Linux, navigat
 
 ## Collection in Kudu
 
-The [Kudu service](https://docs.microsoft.com/azure/app-service/resources-kudu) for Linux app services has been updated to include new collection options for memory dumps and profiles on the Process Explorer page.
+The [Kudu console](https://docs.microsoft.com/azure/app-service/resources-kudu) for Linux app services has been updated to include new collection options for memory dumps and profiles on the Process Explorer page.
 
 To navigate to this new Kudu experience use the following (update &lt;**mysite**&gt with your app name): https://&lt;**mysite**&gt;.scm.azurewebsites.net/**newui** to check out the new experience.
 ![Process Explorer in Kudu]({{site.baseurl}}/media/2021/10/kudu-process-explorer-linux.png)
