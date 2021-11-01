@@ -124,7 +124,7 @@ Another way to verify that your webhook has worked is to view your container log
 
 ({{ site.baseurl }}/media/2021/11/acr_6.png)
 
-Once the newer image is downloaded and the container has started, you can browse to your application and view the code changes that you’ve committed from GitHub.  You have now setup continuous deployment via ACR Task that triggers a build and updates your container image on code commit.  Your scoped webhook to your specific image and tag will then continually update the image in App Service when a new image is recognized.  
+Once the newer image is downloaded and the container has started, you can browse to your application and view the code changes that youâ€™ve committed from GitHub.  You have now setup continuous deployment via ACR Task that triggers a build and updates your container image on code commit.  Your scoped webhook to your specific image and tag will then continually update the image in App Service when a new image is recognized.  
 
 ### Resources
 1.	[Creating GitHub Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-token)
