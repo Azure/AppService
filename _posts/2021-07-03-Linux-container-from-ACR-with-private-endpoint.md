@@ -6,16 +6,16 @@ toc: true
 toc_sticky: true
 ---
 
-> **Update 1. November 2021**: Since this article was written, we have been busy improving App Service platform in this area. These changes are rollout out now and should complete by the end of November, so be aware that we may have not upgraded your app yet. The article has been updated with some of these improvements. The improvements are:
+> **Update 1. November 2021**: Since this article was written, we have been busy improving App Service platform in this area. These changes are rollout out now and should complete by the end of November, so be aware that we may have not upgraded your app yet. The article has been updated to reflect many of these improvements. The improvements are:
 >
 > * No need for Route All when using Azure DNS Private Zones
 > * Support for using Managed Identity over VNet integration
 > * ARM support for deploying directly to secured registry
 > * Support for using Managed Identity for Windows containers*
-> * Support for custom docker registry v2
+> * Support for custom docker registry with v2 API
 > * Support for custom DNS servers**
 >
-> The default scenario for the article is now using managed identity. An "Alternative scenarios" section on using credentials, user-assigned managed identity and custom registries has been added.
+> The default scenario for the article is now using system-assigned managed identity. An "Alternative scenarios" section with step for using credentials, user-assigned managed identity and custom registries has been added.
 >
 >**Windows containers do not support pulling images over VNet integration*
 >
@@ -34,9 +34,9 @@ This guide is organized into four steps:
 3. Create network integrated web app
 4. Pull from private registry
 
-In closing, there are sections on advanced scenarios and FAQ.
+In closing, there are sections on alternative scenarios and FAQ.
 
-## Getting Started
+## Getting started
 
 This is the third article in a series focusing on network security. If you missed the first two, you can find them here:
 
@@ -49,7 +49,7 @@ This article will also use Azure CLI executed in bash shell on WSL to set up the
 
 > **Tip**: You can search/replace the word "secureacr" with something unique to make all the scripts unique.
 
-## 1. Create Network Infrastructure
+## 1. Create network infrastructure
 
 First set up a Resource Group with a Virtual Network. The VNet should have at least two subnets. One for the regional VNet integration and one for the private endpoints. The address-prefix size must be at least /28 for both subnets; small subnets can affect scaling limits and the number of private endpoints. Go with /24 for both subnets if you are not under constraints.
 
@@ -81,7 +81,7 @@ az network private-dns link vnet create --resource-group secureacrsetup --name a
 
 ... and now the core network setup is done.
 
-## 2. Set Up Azure Container Registry
+## 2. Set up Azure Container Registry
 
 In this section, we will set up the Azure Container Registry account. We will also create the private endpoint and configure the service to block public traffic. First create the service. We need Premium SKU to enable private endpoint:
 
