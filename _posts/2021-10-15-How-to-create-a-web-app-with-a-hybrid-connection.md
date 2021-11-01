@@ -115,10 +115,10 @@ const db = mysql.createConnection({
 
 ### Create a web app
 
-At this point, you are ready to deploy the app to App Service. Ensure you are in the root directory of your app and deploy your code using the `az webapp up` command. Pick a unique name for your app. You will be prompted if the name you choose is already in use.
+At this point, you are ready to deploy the app to App Service. Ensure you are in the root directory of your app and deploy your code using the `az webapp up` command. Pick a unique name for your app. You will be prompted if the name you choose is already in use. Note the addition of the `os-type` parameter. This is included here to create the app on App Service on Windows. If you want to create it on Linux, be aware that you need to modify the `host` parameter in your connection string to something other than "localhost" (i.e. if using Linux, don't use "localhost" and instead use a different host or try your machine name). On Linux, "localhost" is an entity in the hosts file of basically any Linux entity which means it never actually resolves the hybrid connection as it would on Windows.
 
 ```bash
-az webapp up --sku B1 --name <app-name>
+az webapp up --sku B1 --name <app-name> --os-type Windows
 ```
 
 The command may take a few minutes to complete. When finished, navigate to your App Service in the [Azure portal](https://portal.azure.com). At this point, you will have an App Service with deployed code, however your app will not function until you connect the database.
