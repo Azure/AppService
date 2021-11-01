@@ -135,8 +135,8 @@ Once the newer image is downloaded and the container has started, you can browse
 ### Resources
 
 1.	[Creating GitHub Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-token)
-2.	[az acr | Microsoft Docs](https://docs.microsoft.com/en-us/cli/azure/acr?view=azure-cli-latest#az_acr_build)
-3.	[Tutorial - Quick container image build - Azure Container Registry | Microsoft Docs](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-tutorial-quick-task)
+2.	[Azure Container Registry CLI Reference Docs](https://docs.microsoft.com/en-us/cli/azure/acr?view=azure-cli-latest#az_acr_build)
+3.	[Quick container image build](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-tutorial-quick-task)
 4.	[Create Azure Container Registry](https://docs.github.com/en/get-started/quickstart/create-a-repo)
 5.	[Create Windows container Web App](https://docs.microsoft.com/en-us/azure/app-service/quickstart-custom-container?tabs=dotnet&pivots=container-windows#create-a-windows-container-app)
 6.	[Create GitHub Repository](https://docs.github.com/en/get-started/quickstart/create-a-repo)
