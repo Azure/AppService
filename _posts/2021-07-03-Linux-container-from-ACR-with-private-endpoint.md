@@ -6,13 +6,15 @@ toc: true
 toc_sticky: true
 ---
 
-> **Update**: Since this article was written, we have been busy improving App Service platform in this area. These changes are rollout out now and should complete by the end of November, so be aware that we may have not upgraded your app yet. The article has been updated with some of these improvements. The improvements are:
+> **Update 1. November 2021**: Since this article was written, we have been busy improving App Service platform in this area. These changes are rollout out now and should complete by the end of November, so be aware that we may have not upgraded your app yet. The article has been updated with some of these improvements. The improvements are:
 > * No need for Route All when using Azure DNS Private Zones
 > * Support for using Managed Identity over VNet integration
 > * ARM support for deploying directly to secured registry
 > * Support for using Managed Identity for Windows containers*
 > * Support for custom docker registry v2
 > * Support for custom DNS servers**
+>
+> The default scenario for the article is now using managed identity. An "Alternative scenarios" section on using credentials and custom registries has been added.
 >
 >**Windows containers do not support pulling images over VNet integration*
 >
@@ -44,13 +46,15 @@ This article will also use Azure CLI executed in bash shell on WSL to set up the
 
 **Remember** in the scripts to replace all the resource names that need to be unique. This would be the name of the Web App and Azure Container Registry. You may also change location if you want something closer to home. All other changes are optional.
 
+> **Tip**: You can search/replace the word "secureacr" with something unique to make all the scripts unique.
+
 ## 1. Create Network Infrastructure
 
 First set up a Resource Group with a Virtual Network. The VNet should have at least two subnets. One for the regional VNet integration and one for the private endpoints. The address-prefix size must be at least /28 for both subnets; small subnets can affect scaling limits and the number of private endpoints. Go with /24 for both subnets if you are not under constraints.
 
 ```bash
-az group create --name secureacrsetup --location westeurope
-az network vnet create --resource-group secureacrsetup --location westeurope --name secureacr-vnet --address-prefixes 10.0.0.0/16
+az group create --name secureacrsetup --location westcentralus
+az network vnet create --resource-group secureacrsetup --location westcentralus --name secureacr-vnet --address-prefixes 10.0.0.0/16
 ```
 
 For the subnets, there are two settings that we need to pay attention to. This is often set by the portal or scripts, but here it is called out directly. [Delegation](https://docs.microsoft.com/azure/virtual-network/subnet-delegation-overview) "Microsoft.Web/serverfarms" informs the subnet that it is reserved for VNet integration. For private endpoint subnets you need to [disable private endpoint network policies](https://docs.microsoft.com/azure/private-link/disable-private-endpoint-network-policy):
@@ -81,7 +85,7 @@ az network private-dns link vnet create --resource-group secureacrsetup --name a
 In this section, we will set up the Azure Container Registry account. We will also create the private endpoint and configure the service to block public traffic. First create the service. We need Premium SKU to enable private endpoint:
 
 ```bash
-az acr create --resource-group secureacrsetup --name secureacr2021 --location westeurope --sku Premium
+az acr create --resource-group secureacrsetup --name secureacr2021 --location westcentralus --sku Premium
 ```
 
 Before we lock the registry down, let's push a few images to it for testing. After you lock it down, you might get in conflict with the ACR firewall. If you are using docker locally, you will need to allow your local IP. If you are running the build from somewhere else, this location will also need access to the registry.
@@ -109,7 +113,7 @@ acr_resource_id=$(az acr show --name secureacr2021 --query id --output tsv)
 Create the private endpoint:
 
 ```bash
-az network private-endpoint create --resource-group secureacrsetup --name secureacr-pe --location westeurope --connection-name secureacr-pc --private-connection-resource-id $acr_resource_id --group-id registry --vnet-name secureacr-vnet --subnet private-endpoint-subnet
+az network private-endpoint create --resource-group secureacrsetup --name secureacr-pe --location westcentralus --connection-name secureacr-pc --private-connection-resource-id $acr_resource_id --group-id registry --vnet-name secureacr-vnet --subnet private-endpoint-subnet
 ```
 
 ... and create a DNS Zone Group. This will create the DNS record for the private endpoint in the DNS Zone (and remove it if the private endpoint is deleted):
@@ -141,7 +145,7 @@ az webapp update --resource-group secureacrsetup --name secureacrweb2021 --https
 az webapp vnet-integration add --resource-group secureacrsetup --name secureacrweb2021 --vnet secureacr-vnet --subnet vnet-integration-subnet
 ```
 
-As the last configuration step, we will assign a Managed Identity to the Web App and grant the app access to pull images from the registry.
+As the last configuration step, we will assign a managed identity to the Web App and grant the app access to pull images from the registry.
 
 ```bash
 az webapp identity assign --resource-group secureacrsetup --name secureacrweb2021 --scope $acr_resource_id --role AcrPull
@@ -158,23 +162,25 @@ Images will by default be pulled over public route, but by setting `WEBSITE_PULL
 az webapp config appsettings set --resource-group secureacrsetup --name secureacrweb2021 --settings 'WEBSITE_PULL_IMAGE_OVER_VNET=true'
 ```
 
-And configure the container image and set image pull to use Managed Identity:
+And configure the container image and set image pull to use managed identity:
 ```bash
 az webapp config set --resource-group secureacrsetup --name secureacrweb2021 --linux-fx-version 'DOCKER|secureacr2021.azurecr.io/privatewebsite:lnx-v1'
 az resource update --resource-group secureacrsetup --name secureacrweb2021/config/web --set properties.acrUseManagedIdentityCreds=true --resource-type 'Microsoft.Web/sites/config'
 ```
 
-## Alternative solutions
+> **Note**: The app might attempt to pull the image before the configuration is complete which will show up as failed attempts in the logs. Giv it a minute or two and the pull will retry with the correct configuration.
+
+## Alternative scenarios
 
 ### Use credentials to pull images
-Instead fo using managed identity, you can use the admin credentials or an Azure AD Service Principal. These values can optionally be stored in Key Vault and configured as Key Vault referenced app settings.
+Instead of using managed identity, you can use the admin credentials or an Azure AD Service Principal. These values can optionally be stored in Key Vault and configured as Key Vault referenced app settings.
 
 Configure ACR to enable admin credentials:
 ```bash
 az acr update --resource-group secureacrsetup --name secureacr2021 --admin-enabled
 ```
 
-Set the registry credentials and disable using managed identity (remember to ensure the `WEBSITE_PULL_IMAGE_OVER_VNET=true` is configured if you want to pull the image over the VNet integration.
+Set the registry credentials and disable using managed identity (remember to ensure the `WEBSITE_PULL_IMAGE_OVER_VNET=true` is configured if you want to pull the image over the VNet integration).
 ```bash
 acr_server_url="https://$(az acr show --name secureacr2021 --query loginServer --output tsv)"
 acr_username=$(az acr credential show --name secureacr2021 --query username --output tsv)
@@ -184,7 +190,48 @@ az resource update --resource-group secureacrsetup --name secureacrweb2021/confi
 az webapp config set --resource-group secureacrsetup --name secureacrweb2021 --linux-fx-version 'DOCKER|secureacr2021.azurecr.io/privatewebsite:lnx-v1'
 ```
 
-### Using a custom registry
+### Using a custom private registry
+App Service also support pulling from a custom private registry using the v2 API. If you are using a custom private registry such as [Docker Registry](https://docs.docker.com/registry/), there are no specific changes you need to make except ensure that the registry is reachable and DNS resolvable from the integration VNet. Setting up a custom private registry depends on the chosen product and platform. Simple test configuration can be setup using App Service to actually host the registry and protect it with a private endpoint. Other apps can then pull from this registry.
+
+To set up a custom private registry in the existing setup:
+
+```bash
+az webapp create --resource-group secureacrsetup --plan secureacrplan --name secureacrwebregistry2021 --deployment-container-image-name 'registry:2'
+```
+
+Push a few images to the registry using the docker client:
+```bash
+echo -e 'FROM nginx\nCOPY index.html /usr/share/nginx/html' > Dockerfile
+
+echo '<html><head><title>Custom registry v1</title><link rel="shortcut icon" href="https://appservice.azureedge.net/images/app-service/v4/favicon.ico" type="image/x-icon"/></head><body bgcolor=lightblue><h1>Hello Linux v1 from custom registry</h1></body></html>' > index.html
+
+docker build -t customwebsite:lnx-v1 .
+docker tag customwebsite:lnx-v1 secureacrwebregistry2021.azurewebsites.net/customwebsite:lnx-v1
+docker push secureacrwebregistry2021.azurewebsites.net/customwebsite:lnx-v1
+
+echo '<html><head><title>Custom registry v2</title><link rel="shortcut icon" href="https://appservice.azureedge.net/images/app-service/v4/favicon.ico" type="image/x-icon"/></head><body bgcolor=lightblue><h1>Hello Linux v2 from custom registry</h1></body></html>' > index.html
+
+docker build -t customwebsite:lnx-v2 .
+docker tag customwebsite:lnx-v2 secureacrwebregistry2021.azurewebsites.net/customwebsite:lnx-v2
+docker push secureacrwebregistry2021.azurewebsites.net/customwebsite:lnx-v2
+```
+
+Secure the registry with a private endpoint and add private DNS zone to ensure DNS resolution is working:
+
+```bash
+az network private-dns zone create --resource-group secureacrsetup --name privatelink.azurewebsites.net
+az network private-dns link vnet create --resource-group secureacrsetup --name websites-zonelink --zone-name privatelink.azurewebsites.net --virtual-network secureacr-vnet --registration-enabled false
+webregistry_resource_id=$(az webapp show --resource-group secureacrsetup --name secureacrwebregistry2021 --query id --output tsv)
+az network private-endpoint create --resource-group secureacrsetup --name securewebregistry-pe --location westcentralus --connection-name securewebregistry-pc --private-connection-resource-id $webregistry_resource_id --group-id sites --vnet-name secureacr-vnet --subnet private-endpoint-subnet
+az network private-endpoint dns-zone-group create --resource-group secureacrsetup --endpoint-name securewebregistry-pe --name securewebregistry-zg --private-dns-zone privatelink.azurewebsites.net --zone-name privatelink.azurewebsites.net
+```
+
+Finally disable using managed identity and update the image:
+
+```bash
+az resource update --resource-group secureacrsetup --name secureacrweb2021/config/web --set properties.acrUseManagedIdentityCreds=false --resource-type 'Microsoft.Web/sites/config'
+az webapp config set --resource-group secureacrsetup --name secureacrweb2021 --linux-fx-version 'DOCKER|secureacrwebregistry2021.azurewebsites.net/customwebsite:lnx-v1'
+```
 
 ## FAQ
 
