@@ -19,14 +19,16 @@ These tools enable you to self-diagnose your apps to identify if application cod
 
 ## Collection in Diagnose and Solve
 
-To access these new capabilities on your .NET Core apps hosted in Linux, navigate to the **Diagnose and Solve** Blade - > **Diagnostics Tools** and select either **Collect .NET Profiler Trace** or **Collect Memory Dump**.
+To access these new capabilities on your .NET Core apps hosted in Linux, navigate to the **Diagnose and Solve** Blade > **Diagnostics Tools** and select either **Collect .NET Profiler Trace** or **Collect Memory Dump**.
+
 ![Linux Diagnostic Tools]({{site.baseurl}}/media/2021/10/linux-diagnostic-tools.png)
 
 ## Collection in Kudu
 
 The [Kudu console](https://docs.microsoft.com/azure/app-service/resources-kudu) for Linux app services has been updated to include new collection options for memory dumps and profiles on the Process Explorer page.
 
-To navigate to this new Kudu experience use the following (update &lt;**mysite**&gt with your app name): https://&lt;**mysite**&gt;.scm.azurewebsites.net/**newui** to check out the new experience.
+To navigate to this new Kudu experience use the following (update &lt;**mysite**&gt; with your app name): https://&lt;**mysite**&gt;.scm.azurewebsites.net/**newui** to check out the new experience.
+
 ![Process Explorer in Kudu]({{site.baseurl}}/media/2021/10/kudu-process-explorer-linux.png)
 
 When you select the *Process Explorer* page, you can identify the process you want to debug. Use the drop-downs to select the type of memory dump and click **Collect Dump**. Alternatively, you can select the length of a profile from the drop-down and click **Start Profiling**.
