@@ -20,10 +20,12 @@ In order for you to create the task you will need to include a GitHub Personal A
 3.	On the following page, click on **Personal access tokens**.
 4.	Then click **Generate new token** on the upper-right hand side of the page.
 5.	To generate a new token you will first need to fill out the required form. 
-Fill in the following:
-- Note: name your token
-- Expiration: 90 days
-- Scope: repo
+
+    Fill in the following:
+    
+    - Note: name your token
+    - Expiration: 90 days
+    - Scope: repo
 
     ({{ site.baseurl }}/media/2021/11/acr_1.png)
 
@@ -51,9 +53,9 @@ To run the command you will need the following:
 
 1.	Open Command Prompt or Azure Cloud Shell and enter the command below. Keep in mind, this is where you will define your image name and tag.
 
-```cli
-az acr build -r myacrregistry https://github.com/myusername/pdfsample.git -f PDFSample/Dockerfile --platform windows --image mypdfsample:latest
-```
+    ```cli
+    az acr build -r myacrregistry https://github.com/myusername/pdfsample.git -f PDFSample/Dockerfile --platform windows --image mypdfsample:latest
+    ```
 
 Once the command is finished running you'll notice a set of dependencies are found in the output. This includes your image and runtime information. You can now visit your container registry resource to verify that your repository has been pushed to ACR.
 
@@ -69,12 +71,11 @@ To run the command you will need the following:
 
 1.	In your Command Prompt or Azure Cloud Shell enter the command below. Keep in mind, this is where you will define the name of your task.
 
-```cli
-az acr task create --registry myacrtaskregistry --name taskmypdfsample --image mypdfsample:latest --context 
-https://github.com/myusername/pdfsample.git
---file PDFSample/Dockerfile --git-access-token <access-token> --platform windows
-
-```
+    ```cli
+    az acr task create --registry myacrtaskregistry --name taskmypdfsample --image mypdfsample:latest --context 
+    https://github.com/myusername/pdfsample.git
+    --file PDFSample/Dockerfile --git-access-token <access-token> --platform windows
+    ```
 
 Once you create the task you'll notice the json output has information about which triggers are enabled. By default, the base image trigger and the commit triggers are enabled. 
 
