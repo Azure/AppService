@@ -20,17 +20,17 @@ We understand the need to monitor the activity of the background certificate syn
 
 NOTE: This blog does not cover uploaded private certificates because this scenario requires you to upload a new certificate and to update SSL bindings with the new certificate afterwards. The background sync job does not support uploaded certificates. Refer to the documentation on [how to renew uploaded certificate](https://docs.microsoft.com/en-us/azure/app-service/configure-ssl-certificate#renew-an-uploaded-certificate).
 
-## Activity Log Events
+## Activity Log Operation Name
 
 ### Imported Certificates
 
 Both imported App Service Certificate and imported certificate from Key Vault rely on the background sync job of App Service to sync the copy of the new certificate thumbprint to the web app certificate and its associated bindings in the next 24 hours.
 
-When the background job sync happens, it will generate some Activity Logs. There are three Activity Log events to watch out for in regards to KV certificate sync tasks and we'll go through each of them.
+When the background job sync happens, it will generate some Activity Logs. There are three Activity Log operation name to watch out for in regards to KV certificate sync tasks and we'll go through each of them.
 
 
-| Activity Log Event Name | Description |  
-|-------------------------|-------------|
+| Activity Log Operation Name | Description |  
+|-----------------------------|-------------|
 | KeyVaultCertificateRotationStartedWebSite | The background job picked up a new version of a KV certificate. It will begin syncing and updating the certificate in your web app with the new version in KV. |
 | KeyVaultCertificateMigrationSucceededWebSite | The background job has successfully completed updating the certificate in your web app with a new version from KV.|
 | KeyVaultCertificateMigrationFailedWebSite | The background job failed to update the certificate in your web app with a new version from KV or the background job failed to updated the SSL binding with the new certificate thumbprint.  |
@@ -41,19 +41,19 @@ You can learn more about the different causes for the background job to fail in 
 
 App Service Managed Certificates is a certificate offering from App Service that is free of cost. You don't need to worry about having to renew your certificate on time because this is a managed offering.
 
-When we try to renew your certificates, we will generate some Activity Logs. There are a few Activity Events to watch out for in regards to the renewal of you App Service Managed Certificates.
+We will run a few checks to pre-emptively ensure that your certificates will renew successfully. There are a few Activity Log operation names to watch out for in regards to this pre-emptive checks for the renewal of your App Service Managed Certificates.
 
-| Activity Log Event Name | Description |  
-|-------------------------|-------------|
+| Activity Log Operation Name | Description |  
+|-----------------------------|-------------|
 | FailedCnamePeriodicCheckWebSite | Your managed certificate for your subdomain is at risk of not successfully renewing before the current certificate expires. |
 | AutoRenewHttpManagedCertificateFailedWebSite | Your managed certificate for your root domain is at risk of not successfully renewing before the current certificate expires |
 
 You can lear more about the different causes for you managed certificate to not successfuly renew in the [common errors failing App Service Managed Certificate renewal]() section of this article.
 
 
-## Common Errors Failing Certificate Sync Job
+## Common Scenarios Causing Certificate Sync Job to Fail
 
-When there's an error causing the background job to fail, you will get a `KeyVaultCertificateMigrationFailedWebSite` event. Activity Log will cover common scenarios causing certificate sync to fail. You can check the description section of your Activity Log to find out more information. 
+When there's an error causing the background job to fail, you will get a `KeyVaultCertificateMigrationFailedWebSite` operation. You can check the description section of your Activity Log to find out more information. This next section will go over a couple of the common scenarios that causes your imported App Service Certificate or imported certificate from Key Vault to fail.
 
 In the event that the background job fails, it will try to sync your certificate again later. You can opt to manually sync your certificates via portal if you needed to sync your certificate immediately.
 
@@ -89,18 +89,18 @@ This scenario happens when the background sync job couldn't finish because anoth
 "Message": "Failed to migrate certificate from thumbprint <ThumbprintOld> to thumbprint <ThumbprintNew> with error Cannot modify this site because another operation is in progress."
 ```
 
-## Common Errors Failing App Service Managed Certificate Renewal
+## Common Scenarios Causing App Service Managed Certificate to Fail Renewal
 
-To ensure a successful renewal of your App Service Managed Certificates, we will be running background jobs to ensure that your managed certificate is not at risk of failing the certificate renewal. If there were any potential issues, we will generate a `AutoRenewHttpManagedCertificateFailedWebSite` or a `AutoRenewHttpManagedCertificateFailedWebSite` Activity Log event. You can check the description section of your Activity Log to find out more information. 
+To ensure a successful renewal of your App Service Managed Certificates, we will be running background jobs to ensure that your managed certificate is not at risk of failing the certificate renewal. If there were any potential issues, we will generate a `FailedCnamePeriodicCheckWebSite` or a `AutoRenewHttpManagedCertificateFailedWebSite` Activity Log operation. You can check the description section of your Activity Log to find out more information. This next section will go over a couple of the common scenarios that causes your Managed Certificate to fail.
 
 ### Incorrect DNS Record Found
 
 A correct DNS Record is required for a successful App Service Managed Certificate renewal just as it was required to create a certificate. Depending if the certificate is for a root domain or a subdomain, you will need to ensure that you still have the correct DNS records set up so that your certificate can renew properly. You can refer to the chart below for more information on the expected DNS records for renewal.
 
-| Domain Type | Record Type  | Host         | Value                |
-|-------------|--------------|--------------|----------------------|
-| Root Domain | A Record     | @            | \<IPAddressOfWebApp> |
-| Subdomain   | CNAME Record | \<Subdomain> | \<Subdomain>         |
+| Domain Type | Record Type  | Host         | Value                        |
+|-------------|--------------|--------------|------------------------------|
+| Root Domain | A Record     | @            | \<IPAddressOfWebApp>         |
+| Subdomain   | CNAME Record | \<Subdomain> | \<AppName>.azurewebsites.net |
 
 You can refer to the documentation on [how to create a DNS records](https://docs.microsoft.com/en-us/azure/app-service/app-service-web-tutorial-custom-domain?tabs=cname#4-create-the-dns-records) for more information.
 
@@ -124,8 +124,11 @@ An App Service Managed Certificate will not renew if the domain of the certifica
 "Message": "App Service Managed Certificate named <CertName> is at risk of failing to auto renew. Its subject name <domain> is not added to any app service."
 ```
 
+### Managed certificate not used by a web app
 
-## Creating an Alert Using Activity Logs
-You can set up alerts for the different Activity Logs. The different events that we went through in this article are currently not on the predefined list of signals to create an alert for Activity Logs, however you can still be able to create an alert for it.
+An App Service Managed Certificate will not renew if the certificate is not currently used by one of the web apps. Depending if the certificate is for a root domain or a subdomain, you will find one of the messages below from your Activity Log.
 
-To be able to create an Alert for these events that are currently not in the list of Alerts signals, you will need to have a pre-existing Activity Log event show up first. The easiest way would be to look through the all the Activity Logs of the subscription. You can do so by first searching for "Activity Log" in the search bar of your Azure portal.
+``` js
+"Message": "App Service Managed Certificate named <CertName> is at risk of failing to auto renew. Its subject name <Domain> is not added to any app service."
+```
+
