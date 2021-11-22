@@ -265,6 +265,8 @@ After about a minute you should see the new image served from the web app.
 
 In this scenario, you will deploy an app with an ARM template from a registry that uses credentials (username/password) for authentication. If you are using ACR you can use either Admin credential or a Service Principal. Pulling over virtual network is optional, but if you are using Azure Container Registry with private endpoint, you will have to pull over virtual network.
 
+The template also assumes the app service plan and the virtual network exists. If not, you can add this to the template as well.
+
 ```json
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
@@ -288,7 +290,7 @@ In this scenario, you will deploy an app with an ARM template from a registry th
       "type": "Microsoft.Web/sites",
       "apiVersion": "2021-02-01",
       "location": "[variables('location')]",
-     "properties": {
+      "properties": {
         "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
         "virtualNetworkSubnetId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnetName'))]",
         "siteConfig": {
@@ -320,6 +322,8 @@ In this scenario, you will deploy an app with an ARM template from a registry th
 As an alternative to using credentials, you can use Managed Identity when pulling images from Azure Container Registry. Pulling over virtual network is again optional and is configured using the app setting `WEBSITE_PULL_IMAGE_OVER_VNET`, but is of course required if you registry is only visible from the virtual network.
 
 Since we need to grant the permissions ahead of creating the app, only User-Assigned Managed Identity will work, and you have to grant the identity AcrPull permissions on the registry. See [the section on using user-managed identity](#using-user-assigned-managed-identity).
+
+Even though the managed identity exists when deploying the template, the resource must be in the template to use the reference method to fetch the clientId. You can work around this by inserting the clientId manually.
 
 ```json
 {
