@@ -17,4 +17,4 @@ Check out the following docs to learn more about migrating to ASEv3:
 
 An Azure portal experience for migration will be available at the start of February, 2022. Be on the lookout for additional announcements.
 
-If your ASE [isn't supported for migration](https://aka.ms/asemigration#preview-limitations) using the migration tool and your ASE isn't listed under one of the [upcoming supported scenarios](https://aka.ms/asemigration#preview-limitations), you have the option to migrate to ASEv3 manually. See the [migration alternatives](https://aka.ms/asemigrationalternatives) for more details.
+If your ASE [isn't supported for migration](https://aka.ms/asemigration#preview-limitations) using the migration feature and your ASE isn't listed under one of the [upcoming supported scenarios](https://aka.ms/asemigration#preview-limitations), you have the option to migrate to ASEv3 manually. See the [migration alternatives](https://aka.ms/asemigrationalternatives) for more details.
