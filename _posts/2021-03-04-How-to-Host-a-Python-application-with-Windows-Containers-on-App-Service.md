@@ -3,6 +3,8 @@ title: "How-to Host a Python application with Windows containers on App Service"
 author_name: "Jeff Martinez"
 toc: true
 toc_sticky: true
+tags:
+    - windows containers
 ---
 
 Windows containers on App Service can help you easily modernize your application by making it easier to Lift-and-Shift to App Service and install custom dependencies that would otherwise not be available on App Service.  If your application is built with a language other than .NET, you can still create a custom container and take advantage of Windows cotnainers!  In this tutorial we will be using a Visual Studio templated Python 3.6 Flask application, containerizing it with Docker and publishing the image to Azure Container Registry so it can be deployed on App Service.  

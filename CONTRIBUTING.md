@@ -2,17 +2,19 @@
 
 Table of contents:
 
-- [Publishing an article](#publishing-an-article)
-  - [What content can I publish here?](#what-content-can-i-publish-here-)
-  - [Get access](#get-access)
-  - [Set up your environment](#set-up-your-environment)
-  - [Author your post](#author-your-post)
-    - [Add digital content](#add-digital-content)
-  - [Publish the article](#publish-the-article)
-- [The team pages](#the-team-pages)
-  - [Edit a team page](#edit-a-team-page)
-  - [Add a team page](#add-a-team-page)
-    - [Notes](#notes)
+- [Instructions for publishing content](#instructions-for-publishing-content)
+  - [Publishing an article](#publishing-an-article)
+    - [What content can I publish here?](#what-content-can-i-publish-here)
+    - [Get access](#get-access)
+    - [Set up your environment](#set-up-your-environment)
+    - [Author your post](#author-your-post)
+      - [Writing Tips](#writing-tips)
+      - [Add digital content](#add-digital-content)
+    - [Publish the article](#publish-the-article)
+  - [The team pages](#the-team-pages)
+    - [Edit a team page](#edit-a-team-page)
+    - [Add a team page](#add-a-team-page)
+      - [Notes](#notes)
 
 ## Publishing an article
 
@@ -154,8 +156,9 @@ There are team pages in the left sidebar to help organize content from that team
     ---
     ```
 
-1. Add content about your team, any relevant links, or team member photos to the body of the markdown document. See the other team pages for ideas.
-1. To add articles to your team's page like the others, go back to your team's articles and add `category: your-category-name` to the articles' front matter. This will add them to your team page's paginator.
+1. Add an entry for the team page in [`navigation.yaml`](_data/navigation.yml) 
+3. Add content about your team, any relevant links, or team member photos to the body of the markdown document. See the other team pages for ideas.
+4. To add articles to your team's page like the others, go back to your team's articles and add `category: your-category-name` to the articles' front matter. This will add them to your team page's paginator.
 
 ---------
 
