@@ -9,7 +9,7 @@ toc_sticky: true
 > **Update 1. November 2021**: Since this article was written, we have been busy improving App Service platform in this area. These changes are rollout out now and should complete by the end of November, so be aware that we may have not upgraded your app yet. The article has been updated to reflect many of these improvements. The improvements are:
 >
 > * No need for Route All when using Azure DNS Private Zones
-> * Support for using Managed Identity over VNet integration
+> * Support for using Managed Identity over virtual network integration
 > * ARM support for deploying directly to secured registry
 > * Support for using Managed Identity for Windows containers*
 > * Support for custom docker registry with v2 API
@@ -17,7 +17,7 @@ toc_sticky: true
 >
 > The default scenario for the article is now using system-assigned managed identity. An "Alternative scenarios" section with step for using credentials, user-assigned managed identity and custom registries has been added.
 >
->**Windows containers do not support pulling images over VNet integration*
+>**Windows containers do not support pulling images over virtual network integration*
 >
 >***ASEv2 do not support pulling images from a registry url that needs to be resolved in custom DNS servers*
 
@@ -34,7 +34,7 @@ This guide is organized into four steps:
 3. Create network integrated web app
 4. Pull from private registry
 
-In closing, there are sections on alternative scenarios and FAQ.
+In closing, there are sections on advanced scenarios and FAQ.
 
 ## Getting started
 
@@ -51,14 +51,14 @@ This article will also use Azure CLI executed in bash shell on WSL to set up the
 
 ## 1. Create network infrastructure
 
-First set up a Resource Group with a Virtual Network. The VNet should have at least two subnets. One for the regional VNet integration and one for the private endpoints. The address-prefix size must be at least /28 for both subnets; small subnets can affect scaling limits and the number of private endpoints. Go with /24 for both subnets if you are not under constraints.
+First set up a Resource Group with a Virtual Network. The virtual network should have at least two subnets. One for the regional virtual network integration and one for the private endpoints. The address-prefix size must be at least /28 for both subnets; small subnets can affect scaling limits and the number of private endpoints. Go with /24 for both subnets if you are not under constraints.
 
 ```bash
 az group create --name secureacrsetup --location westcentralus
 az network vnet create --resource-group secureacrsetup --location westcentralus --name secureacr-vnet --address-prefixes 10.0.0.0/16
 ```
 
-For the subnets, there are two settings that we need to pay attention to. This is often set by the portal or scripts, but here it is called out directly. [Delegation](https://docs.microsoft.com/azure/virtual-network/subnet-delegation-overview) "Microsoft.Web/serverfarms" informs the subnet that it is reserved for VNet integration. For private endpoint subnets you need to [disable private endpoint network policies](https://docs.microsoft.com/azure/private-link/disable-private-endpoint-network-policy):
+For the subnets, there are two settings that we need to pay attention to. This is often set by the portal or scripts, but here it is called out directly. [Delegation](https://docs.microsoft.com/azure/virtual-network/subnet-delegation-overview) "Microsoft.Web/serverfarms" informs the subnet that it is reserved for virtual network integration. For private endpoint subnets you need to [disable private endpoint network policies](https://docs.microsoft.com/azure/private-link/disable-private-endpoint-network-policy):
 
 ```bash
 az network vnet subnet create --resource-group secureacrsetup --vnet-name secureacr-vnet --name vnet-integration-subnet --address-prefixes 10.0.0.0/24 --delegations Microsoft.Web/serverfarms
@@ -73,7 +73,7 @@ Create the Private DNS Zone:
 az network private-dns zone create --resource-group secureacrsetup --name privatelink.azurecr.io
 ```
 
-Link the zone to the VNet:
+Link the zone to the virtual network:
 
 ```bash
 az network private-dns link vnet create --resource-group secureacrsetup --name acr-zonelink --zone-name privatelink.azurecr.io --virtual-network secureacr-vnet --registration-enabled false
@@ -105,7 +105,7 @@ echo '<html><head><title>Private ACR v2</title><link rel="shortcut icon" href="h
 az acr build --registry secureacr2021 --platform Linux --image privatewebsite:lnx-v2 .
 ```
 
-Next, let's create the private endpoints to connect the backend services to the VNet. Get the Resource ID of the registry and store it in a variable:
+Next, let's create the private endpoints to connect the backend services to the virtual network. Get the Resource ID of the registry and store it in a variable:
 
 ```bash
 acr_resource_id=$(az acr show --name secureacr2021 --query id --output tsv)
@@ -137,7 +137,7 @@ az acr network-rule add --resource-group secureacrsetup --name secureacr2021 --i
 
 ## 3. Create network integrated web app
 
-Now we get to creating the actual web app. To use VNet integration we need at least the Standard SKU, and then there are a few commands to configure secure the app and add the integration:
+Now we get to creating the actual web app. To use virtual network integration we need at least the Standard SKU, and then there are a few commands to configure secure the app and add the integration:
 
 ```bash
 az appservice plan create --resource-group secureacrsetup --name secureacrplan --sku P1V3 --is-linux
@@ -152,13 +152,13 @@ As the last configuration step, we will assign a managed identity to the web app
 az webapp identity assign --resource-group secureacrsetup --name secureacrweb2021 --scope $acr_resource_id --role AcrPull
 ```
 
-You can now browse to the web app and **outbound** traffic from the web app will be routed through the VNet.
+You can now browse to the web app and **outbound** traffic from the web app will be routed through the virtual network.
 
 ## 4. Pull from private registry
 
 All the infrastructure is now in place and we just need to glue it all together. The web app needs some configuration values from the registry.
 
-Images will by default be pulled over public route, but by setting `WEBSITE_PULL_IMAGE_OVER_VNET=true`, you tell the platform to use the VNet integration for pulling the image:
+Images will by default be pulled over public route, but by setting `WEBSITE_PULL_IMAGE_OVER_VNET=true`, you tell the platform to use the virtual network integration for pulling the image:
 ```bash
 az webapp config appsettings set --resource-group secureacrsetup --name secureacrweb2021 --settings 'WEBSITE_PULL_IMAGE_OVER_VNET=true'
 ```
@@ -171,7 +171,7 @@ az resource update --resource-group secureacrsetup --name secureacrweb2021/confi
 
 > **Note**: The app might attempt to pull the image before the configuration is complete which will show up as failed attempts in the logs. Giv it a minute or two and the pull will retry with the correct configuration.
 
-## Alternative scenarios
+## Advanced scenarios
 
 ### Using user-assigned managed identity
 
@@ -206,7 +206,7 @@ Configure ACR to enable admin credentials:
 az acr update --resource-group secureacrsetup --name secureacr2021 --admin-enabled
 ```
 
-Set the registry credentials and disable using managed identity (remember to ensure the `WEBSITE_PULL_IMAGE_OVER_VNET=true` is configured if you want to pull the image over the VNet integration).
+Set the registry credentials and disable using managed identity (remember to ensure the `WEBSITE_PULL_IMAGE_OVER_VNET=true` is configured if you want to pull the image over the virtual network integration).
 ```bash
 acr_server_url="https://$(az acr show --name secureacr2021 --query loginServer --output tsv)"
 acr_username=$(az acr credential show --name secureacr2021 --query username --output tsv)
@@ -217,7 +217,7 @@ az webapp config set --resource-group secureacrsetup --name secureacrweb2021 --l
 ```
 
 ### Using a custom private registry
-App Service also support pulling from a custom private registry using the v2 API. If you are using a custom private registry such as [Docker Registry](https://docs.docker.com/registry/), there are no specific changes you need to make except ensure that the registry is reachable and DNS resolvable from the integration VNet. Setting up a custom private registry depends on the chosen product and platform. Simple test configuration can be setup using App Service to actually host the registry and protect it with a private endpoint. Other apps can then pull from this registry.
+App Service also support pulling from a custom private registry using the v2 API. If you are using a custom private registry such as [Docker Registry](https://docs.docker.com/registry/), there are no specific changes you need to make except ensure that the registry is reachable and DNS resolvable from the integration virtual network. Setting up a custom private registry depends on the chosen product and platform. Simple test configuration can be setup using App Service to actually host the registry and protect it with a private endpoint. Other apps can then pull from this registry.
 
 To set up a custom private registry in the existing setup:
 
@@ -261,12 +261,137 @@ az webapp config set --resource-group secureacrsetup --name secureacrweb2021 --l
 
 After about a minute you should see the new image served from the web app.
 
+### Deploy from secure registry with ARM template using credentials
+
+In this scenario, you will deploy an app with an ARM template from a registry that uses credentials (username/password) for authentication. If you are using ACR you can use either Admin credential or a Service Principal. Pulling over virtual network is optional, but if you are using Azure Container Registry with private endpoint, you will have to pull over virtual network.
+
+The template also assumes the app service plan and the virtual network exists. If not, you can add this to the template as well.
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "webAppName": {
+      "defaultValue": "secureacrweb2021",
+      "type": "string"
+    }
+  },
+  "variables": {
+    "appServicePlanName": "secureacrplan",
+    "virtualNetworkName": "secureacr-vnet",
+    "subnetName": "vnet-integration-subnet",
+    "location": "westcentralus",
+    "webAppName": "[parameters('webAppName')]"
+  },
+  "resources": [
+    {
+      "name": "[variables('webAppName')]",
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2021-02-01",
+      "location": "[variables('location')]",
+      "properties": {
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
+        "virtualNetworkSubnetId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnetName'))]",
+        "siteConfig": {
+          "linuxFxVersion": "DOCKER|secureacr2021.azurecr.io/privatewebsite:lnx-v1",
+          "appSettings": [
+            {
+              "name":"DOCKER_REGISTRY_SERVER_USERNAME",
+              "value": "secureacr2021"
+            },
+            {
+              "name":"DOCKER_REGISTRY_SERVER_PASSWORD",
+              "value": "[INSERT_REGISTRY_PASSWORD]"
+            },
+            {
+              "name":"WEBSITE_PULL_IMAGE_OVER_VNET",
+              "value": "true"
+            }
+          ]
+        },
+        "httpsOnly": true
+      }
+    }
+  ]
+}
+```
+
+### Deploy from secure registry with ARM template using managed identity
+
+As an alternative to using credentials, you can use Managed Identity when pulling images from Azure Container Registry. Pulling over virtual network is again optional and is configured using the app setting `WEBSITE_PULL_IMAGE_OVER_VNET`, but is of course required if you registry is only visible from the virtual network.
+
+Since we need to grant the permissions ahead of creating the app, only User-Assigned Managed Identity will work, and you have to grant the identity AcrPull permissions on the registry. See [the section on using user-managed identity](#using-user-assigned-managed-identity).
+
+Even though the managed identity exists when deploying the template, the resource must be in the template to use the reference method to fetch the clientId. You can work around this by inserting the clientId manually.
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "webAppName": {
+      "defaultValue": "secureacrweb2021",
+      "type": "string"
+    }
+  },
+  "variables": {
+    "appServicePlanName": "secureacrplan",
+    "virtualNetworkName": "secureacr-vnet",
+    "subnetName": "vnet-integration-subnet",
+    "userAssignedIdentityName": "secureacr-identity",
+    "location": "westcentralus",
+    "webAppName": "[parameters('webAppName')]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+      "name": "[variables('userAssignedIdentityName')]",
+      "apiVersion": "2018-11-30",
+      "location": "[variables('location')]"
+    },
+    {
+      "name": "[variables('webAppName')]",
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2021-02-01",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('userAssignedIdentityName'))]"
+      ],
+      "properties": {
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
+        "virtualNetworkSubnetId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnetName'))]",
+        "siteConfig": {
+          "acrUseManagedIdentityCreds": true,
+          "acrUserManagedIdentityID": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('userAssignedIdentityName'))).clientId]",
+          "linuxFxVersion": "DOCKER|secureacr2021.azurecr.io/privatewebsite:lnx-v2",
+          "appSettings": [
+            {
+              "name":"WEBSITE_PULL_IMAGE_OVER_VNET",
+              "value": "true"
+            }
+          ]
+        },
+        "httpsOnly": true
+      },
+      "identity": {
+        "type": "UserAssigned",
+        "userAssignedIdentities": {
+          "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('userAssignedIdentityName'))]": {}
+        }
+      }
+    }
+  ]
+}
+
+```
+
 ## FAQ
 
 **Q: Can I apply the same steps to a function app?**
 
-Yes, but you will need a Premium Elastic plan or an App Service plan to use VNet integration with function apps.
+Yes, but you will need a Premium Elastic plan or an App Service plan to use virtual network integration with function apps.
 
 **Q: Can I apply the same steps to a Windows container app?**
 
-Windows container apps does not yet support pulling containers over VNet, but you can use managed identity to pull from Azure Container Registry and you can pull from custom registries, that are accessible from the internet.
+Windows container apps does not yet support pulling containers over virtual network, but you can use managed identity to pull from Azure Container Registry and you can pull from custom registries, that are accessible from the internet.
