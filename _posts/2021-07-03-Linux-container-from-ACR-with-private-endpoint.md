@@ -303,11 +303,11 @@ The template also assumes the app service plan and the virtual network exists. I
             {
               "name":"DOCKER_REGISTRY_SERVER_PASSWORD",
               "value": "[INSERT_REGISTRY_PASSWORD]"
-            }/*,
+            },
             {
               "name":"WEBSITE_PULL_IMAGE_OVER_VNET",
               "value": "true"
-            }*/
+            }
           ]
         },
         "httpsOnly": true
@@ -364,13 +364,13 @@ Even though the managed identity exists when deploying the template, the resourc
         "siteConfig": {
           "acrUseManagedIdentityCreds": true,
           "acrUserManagedIdentityID": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('userAssignedIdentityName'))).clientId]",
-          "linuxFxVersion": "DOCKER|secureacr2021.azurecr.io/privatewebsite:lnx-v2"/*,
+          "linuxFxVersion": "DOCKER|secureacr2021.azurecr.io/privatewebsite:lnx-v2",
           "appSettings": [
             {
               "name":"WEBSITE_PULL_IMAGE_OVER_VNET",
               "value": "true"
             }
-          ]*/
+          ]
         },
         "httpsOnly": true
       },
