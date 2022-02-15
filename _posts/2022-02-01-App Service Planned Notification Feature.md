@@ -1,5 +1,5 @@
 ---
-title: "Planned Maintenance Notifications for Azure App Service (Preview)"
+title: "Planned Maintenance Notifications for Azure App Service"
 author_name: "James Mulvey"
 category: diagnostics
 ---
