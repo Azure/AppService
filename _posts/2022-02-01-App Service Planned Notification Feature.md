@@ -4,9 +4,9 @@ author_name: "James Mulvey"
 category: diagnostics
 ---
 
-Azure App Service is regularly updated to provide new features, new runtime versions, performance improvements, and bug fixes. One of the top feature requests from our customers is the ability to receive notifications before one of the platform updates occurs. We are happy to announce that notifications for scheduled maintenance on Azure App Service are now available for App Service Environments (ASE) and multi-tenant applications.
+Azure App Service is regularly updated to provide new features, new runtime versions, performance improvements, and bug fixes. One of the top feature requests from our customers is the ability to receive notifications before one of the platform updates occurs. We are happy to announce that notifications for scheduled maintenance on Azure App Service are now available for App Service Environments V3 (ASEv3) and multi-tenant applications.
 
-With these notifications, you will be able to receive email or SMS text alerts before a platform upgrade starts, while it is in progress, and when the upgrade completes. We have also included a more advanced 7-day notification option allowing for more time to prepare for an upgrade. This 7-day notification will alert customers to an upcoming platform upgrade approximately 1 week before the event begins. You can also invoke Azure Functions or Logic Apps based on these notifications. This feature has been rolled out for App Service Environments and shared multi-tenant environments across our regions. This article shows how to set up email and SMS alerts, as well as Function and Logic Apps, to consume these events.
+With these notifications, you will be able to receive email or SMS text alerts before a platform upgrade starts, while it is in progress, and when the upgrade completes. We have also included a more advanced 7-day notification option allowing for more time to prepare for an upgrade. This 7-day notification will alert customers to an upcoming platform upgrade approximately 1 week before the event begins. You can also invoke Azure Functions or Logic Apps based on these notifications. This feature has been rolled out for App Service Environments V3 and shared multi-tenant environments across our regions. This article shows how to set up email and SMS alerts, as well as Function and Logic Apps, to consume these events.
 
 ## Overview
 
@@ -57,7 +57,10 @@ The first notifications will be created about 7 days before an actual upgrade op
 
 Once the upgrade starts, we send in-progress notifications every 12 hours until the operation completes. After it has finished, we send a notification of completion.
 
+**Will the upgrade happen in exactly 7 days?**  
+The exact timing of the maintenance may vary depending on several factors, but will not be before 7 days. You will still receive a notification shortly before maintenance begins.
+
 **Can I invoke my Azure Function when a notification comes?**  
-Yes, you can set up action to trigger your Azure Function or Logic App. Please see [Logic App sample for automatic traffic diversion for Azure App Service](https://github.com/Azure-Samples/azure-logic-app-traffic-update-samples) as an example.
+Yes, you can set up action to trigger your Azure Function or Logic App. It is recommended to not trigger automation based on the 7-day notiifcation as exact times may vary. The 7 day notification is for awareness and using the follow on notifications of before, during, and after completion will be more precise. Please see [Logic App sample for automatic traffic diversion for Azure App Service](https://github.com/Azure-Samples/azure-logic-app-traffic-update-samples) as an example.
 
 To see the data format of the notifications, refer to [Common alert schema definitions](https://docs.microsoft.com/azure/azure-monitor/alerts/alerts-common-schema-definitions).
