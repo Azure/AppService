@@ -60,6 +60,9 @@ Once the upgrade starts, we send in-progress notifications every 12 hours until 
 **Will the upgrade happen in exactly 7 days?**  
 The exact timing of the maintenance may vary depending on several factors, but will not be before 7 days. You will still receive a notification shortly before maintenance begins.
 
+**Does this notification apply to all Azure services?**  
+No, this notification covers only planned App Service upgrades. Networking, Compute, or Storage upgrades that may cause worker movement are not within the scope of these notifications.
+
 **Can I invoke my Azure Function when a notification comes?**  
 Yes, you can set up action to trigger your Azure Function or Logic App. It is recommended to not trigger automation based on the 7-day notiifcation as exact times may vary. The 7 day notification is for awareness and using the follow on notifications of before, during, and after completion will be more precise. Please see [Logic App sample for automatic traffic diversion for Azure App Service](https://github.com/Azure-Samples/azure-logic-app-traffic-update-samples) as an example.
 
