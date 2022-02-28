@@ -22,7 +22,7 @@ Java 17 on App Service is distributed via the Microsoft Build of OpenJDK, a no-c
    git clone https://github.com/spring-guides/gs-spring-boot
    ```
 
- 1. Change directories to the completed project
+1. Change directories to the completed project
 
    ```bash
    cd gs-spring-boot/complete
