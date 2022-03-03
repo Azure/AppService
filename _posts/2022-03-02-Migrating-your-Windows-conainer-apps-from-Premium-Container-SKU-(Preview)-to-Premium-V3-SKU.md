@@ -5,7 +5,6 @@ toc: true
 toc_sticky: true
 tags:
     - windows containers
-    - docker
 ---
 
 App Service’s Windows container feature on Premium Container SKU will **not** be moving out of Preview status.  If you want to continue running your Windows container workloads you will need to migrate your Windows container applications to Premium V3 which is SLA-backed and supports Windows containers.  In addition to general availabilty of support for Windows containers, Premium V3 provides enhanced performance for production applications, virtual network connectivity and new pricing options including Dev / Test, Pay-as-you-Go, 1-year and 3-year reserved instance pricing.  See additional details [here](https://docs.microsoft.com/azure/app-service/app-service-configure-premium-tier).
@@ -27,13 +26,13 @@ You will need your:
 
 1. To get started you will first need to connect your Azure account
 
-    ```cli
+    ```bash
     Connect-AzAccount
     ```
     
 1. Then, set your subscription in PowerShell to the context of your Web App
 
-    ```cli
+    ```bash
     Set-AzContext -Subscription "<subscription_id>" 
     ```
  
@@ -41,7 +40,7 @@ You will need your:
 
 Next, copy the Premium Container site information into a PowerShell variable. You will use this variable when you clone the app
 
-```cli
+```bash
 $myPCApp = Get-AzWebApp -ResourceGroupName "my-pc-resource-group" --Name "my-pc-web-app"
 ```
 
@@ -49,7 +48,7 @@ $myPCApp = Get-AzWebApp -ResourceGroupName "my-pc-resource-group" --Name "my-pc-
 
 Create the new App Service Plan that your site will be cloned to. Be sure to use the ''--hyper-v'' parameter so it will support your Windows container workload. Here you will also define your new resource group and app name.
 
-```cli
+```bash
 az appservice plan create --resource-group "my-pv3-resource-group" --name "my-pv3-app-service-plan" --hyper-v --location "East US" --sku p1v3 --subscription 
 <subscription-id>
 ```
@@ -57,7 +56,7 @@ az appservice plan create --resource-group "my-pv3-resource-group" --name "my-pv
 
 Use the following PowerShell command to clone your existing Premium Container app to your Hyper-V enabled Premium V3 App Service Plan. Here you will use the $myPCApp variable defined earlier as your -SourceWebApp value.
 
-```cli
+```bash
 New-AzWebApp -ResourceGroupName "my-pv3-resource-group" -Name "my-pv3-app" -Location "East US" -AppServicePlan "my-pv3-app-service-plan" -SourceWebApp $myPCApp
 ```
 
