@@ -39,10 +39,10 @@ First, go to the MySQL resource corresponding to your WordPress deployment, and 
  
 Then navigate to the Configuration section of your AppService and update the Application Settings corresponding to the database connection details. Once you update the values, click on Save and wait for app to get restarted. The settings are as follows 
  
-DATABASE_HOST 
-DATABASE_NAME 
-DATABASE_USERNAME 
-DATABASE_PASSWORD 
+- DATABASE_HOST 
+- DATABASE_NAME 
+- DATABASE_USERNAME 
+- DATABASE_PASSWORD 
  
 ## Changing WordPress Admin Password 
  
