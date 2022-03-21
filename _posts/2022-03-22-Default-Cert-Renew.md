@@ -7,8 +7,6 @@ tags:
     - certsdomains
 ---
 
-## What you need to know
-
 **This blog contains information about \*.azurewebsites.net TLS certificate changes for web apps, functions, and logic apps (standard). Customers should not be impacted by this change.** The scope of services affected includes web apps, functions, and logic apps (standard); logic apps (consumption) are not impacted. This change is limited to public Azure cloud; government clouds are not affected. 
 
 Every web apps, functions, or logic apps (standard) has its own default hostname that goes by *“\<resource-name>.azurewebsites.net”* where App Service secures it with a wildcard *\*.azurewebsites.net* TLS certificate. The current TLS certificate issued by Baltimore CyberTrust Root CA is set to expire on July 7th, 2022. Starting April 2022, App Service will begin renewing these TLS certificates and instead use certificates issued by DigiCert Global Root G2 CA. Due to the distributed asynchronous nature of the renewal process, there isn’t an exact date when the certificate will be rotated and visible to individual  web apps, functions, and logic apps (standard). 
