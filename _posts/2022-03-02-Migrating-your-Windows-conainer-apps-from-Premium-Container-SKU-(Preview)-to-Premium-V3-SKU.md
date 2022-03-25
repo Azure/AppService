@@ -7,9 +7,11 @@ tags:
     - windows containers
 ---
 
-App Service’s Windows container feature on Premium Container SKU will **not** be moving out of Preview status.  If you want to continue running your Windows container workloads you will need to migrate your Windows container applications to Premium V3 which is SLA-backed and supports Windows containers.  In addition to general availabilty of support for Windows containers, Premium V3 provides enhanced performance for production applications, virtual network connectivity and new pricing options including Dev / Test, Pay-as-you-Go, 1-year and 3-year reserved instance pricing.  See additional details [here](https://docs.microsoft.com/azure/app-service/app-service-configure-premium-tier).
+The Premium Container SKU will **not** be moving out of preview status and will be retired on **30th June 2022**.  Please move your applications to the **Premium V3 SKU** ahead of this date if you want to continue running your Windows container workloads.   The Premium V3 SKU is SLA-backed and supports Windows containers.  In addition to general availabilty of support for Windows containers, Premium V3 provides enhanced performance for production applications, virtual network connectivity and new pricing options including Dev / Test, Pay-as-you-Go, 1-year and 3-year reserved instance pricing.  See additional details [here](https://docs.microsoft.com/azure/app-service/app-service-configure-premium-tier).
 
-If you have an application that is using the Premium Container SKU (Preview) and you would like to move to the new Premium V3 SKU, you will need to copy and re-deploy your application to a Premium V3 App Service Plan. The following is an example on how to do this with PowerShell.
+ 
+
+If you have an application that is using the Premium Container SKU (Preview) and you would like to move to the new Premium V3 SKU, you will need to copy and re-deploy your application to a Premium V3 App Service Plan. The following is an example on how to do this using the clone functionality via Azure CLI in PowerShell.
 
 ## Tutorial
 
