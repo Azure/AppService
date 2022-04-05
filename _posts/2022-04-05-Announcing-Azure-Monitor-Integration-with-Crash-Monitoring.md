@@ -3,7 +3,7 @@ title: "Auto-Healing and Crash Monitoring integration with Azure Monitor"
 author_name: "Puneet Gupta"
 toc: true
 toc_sticky: true
-tags:
+category:
     - diagnostics
 ---
 
