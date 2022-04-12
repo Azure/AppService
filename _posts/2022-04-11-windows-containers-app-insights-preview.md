@@ -40,3 +40,8 @@ If you already have a Windows Container web app, open it in the Azure Portal and
 1. Click **Apply** to save your changes
 
 And you're done! Your web app will restart and Application Insights will attach automatically to begin sending metrics.
+
+## Resources
+
+- [Quickstart: Windows Containers on App Service](https://docs.microsoft.com/azure/app-service/quickstart-custom-container?tabs=dotnet&pivots=container-windows)
+- [Overview of Application Insights](https://docs.microsoft.com/azure/azure-monitor/app/app-insights-overview)
