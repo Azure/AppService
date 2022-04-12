@@ -20,6 +20,9 @@ You can enable Auto-Instrumentation from the **Create** blade, or from the **App
 1. Go to the [Create Web App blade](https://portal.azure.com/#create/Microsoft.WebSite)
 1. Provide a name for your web app, and select **Docker Container** as the Publish type, and **Windows** as the Operating System
 1. Go to the **Monitoring** tab, and select **Yes** to enable Application Insights
+
+    ![Enabling App Insights]({{site.baseurl}}/media/2022/04/windows-containers-create.png)
+
 1. Go to **Review + Create** and click **Create**
 
 That's it! Once your container is deployed, Application Insights will attach automatically and begin sending metrics.
@@ -30,6 +33,9 @@ If you already have a Windows Container web app, open it in the Azure Portal and
 
 1. Select **Turn on Application Insights**
 1. Select a **Location** for your Application Insights resource to be created. (It's suggested to create the resource in the same region as the Web App.)
+
+    ![Enabling App Insights]({{site.baseurl}}/media/2022/04/windows-containers-ai-blade.png)
+
 1. (Optional) use the language tabs at the bottom for **.NET**, **.NET Core**, and **Java** to configure the agent
 1. Click **Apply** to save your changes
 
