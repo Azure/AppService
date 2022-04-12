@@ -3,7 +3,7 @@ title: "Public Preview: Codeless Monitoring for Windows Containers"
 author_name: "Jason Freeberg"
 toc: true
 toc_sticky: true
-category:
+tags:
     - windows containers
 ---
 
