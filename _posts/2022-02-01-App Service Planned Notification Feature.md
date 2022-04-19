@@ -6,7 +6,7 @@ category: diagnostics
 
 Azure App Service is regularly updated to provide new features, new runtime versions, performance improvements, and bug fixes. One of the top feature requests from our customers is the ability to receive notifications before one of the platform updates occurs. We are happy to announce that, starting early March 2022, notifications for scheduled maintenance on Azure App Service will be available for App Service Environments V3 (ASEv3) and multi-tenant applications.
 
-With these notifications, you will be able to receive email or SMS text alerts before a platform upgrade starts, while it is in progress, and when the upgrade completes. We have also included a more advanced 7-day notification option allowing for more time to prepare for an upgrade. This 7-day notification will alert customers to an upcoming platform upgrade approximately 1 week before the event begins. You can also invoke Azure Functions or Logic Apps based on these notifications. This feature has been rolled out for App Service Environments V3 and shared multi-tenant environments across our regions. This article shows how to set up email and SMS alerts, as well as Function and Logic Apps, to consume these events.
+With these notifications, you will be able to receive email or SMS text alerts before a platform upgrade starts, while it is in progress, and when the upgrade completes. For multi-tenant applications, we have also included a more advanced 7-day notification option allowing for more time to prepare for an upgrade. This 7-day notification will alert customers to an upcoming platform upgrade approximately 1 week before the event begins. You can also invoke Azure Functions or Logic Apps based on these notifications. This 7-day addition has been rolled out for multi-tenant environments across our regions with App Service Environments V3 coming soon. This article shows how to set up email and SMS alerts, as well as Function and Logic Apps, to consume these events. For critical security or livesite updates, we may not be able to send notifications as these updates are time sensitive.
 
 ## Overview
 
@@ -59,6 +59,9 @@ Once the upgrade starts, we send in-progress notifications every 12 hours until 
 
 **Will the upgrade happen in exactly 7 days?**  
 The exact timing of the maintenance may vary depending on several factors, but will not be before 7 days. You will still receive a notification shortly before maintenance begins.
+
+**When will 7-day notifications be available for ASE?**  
+ASEv3 customers will have the option to opt in to 7-day notifications, in addition to the current notifications, in Q2 2022.
 
 **Does this notification apply to all Azure services?**  
 No, this notification covers only planned App Service upgrades. Networking, Compute, or Storage upgrades that may cause worker movement are not within the scope of these notifications.

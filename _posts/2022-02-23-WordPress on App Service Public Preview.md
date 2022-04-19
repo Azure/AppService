@@ -38,7 +38,7 @@ First, go to the MySQL resource corresponding to your WordPress deployment, and 
  
  
 Then navigate to the Configuration section of your AppService and update the Application Settings corresponding to the database connection details. Once you update the values, click on Save and wait for app to get restarted. The settings are as follows 
- 
+
 DATABASE_HOST 
 DATABASE_NAME 
 DATABASE_USERNAME 
@@ -59,7 +59,8 @@ Then navigate to Users section as shown below and move your cursor over the user
 Set the new password using the option provided there and click on “Update Profile” to save the changes.     
 
 ## Environment variables
-|Application Setting | Scope | Value | Max | Description
+
+|Application Setting | Scope | Value | Max | Description |
 |-------------|-------------|-------------|---------------|--------------------|
 |WEBSITES_CONTAINER_START_TIME_LIMIT |Web app | 900 | -  | The amount of time the platform will wait (for the site to come up) before it restarts your container. WP installation takes around 5-10 mins after the AppService is deployed. By default, timeout limit for Linux AppService is 240 seconds. So, overriding this value to 900 seconds for WordPress deployments to avoid container restarts during the setup process. This is a required setting, and it is recommended to not change this value.  |
 |WEBSITES_ENABLE_APP_SERVICE_STORAGE|Web App|true|-|When set to TRUE, file contents are preserved during restarts. |
