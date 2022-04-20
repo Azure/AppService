@@ -53,7 +53,7 @@ From the Azure portal, go to **Home** > **Monitor** > **Service Health** > **Pla
 ## FAQ
 
 **When do you send the upgrade notifications?**  
-For App Service Plans, he first notifications will be created about 7 days before an actual upgrade operation starts. A notification is then sent, to both ASEs and App Service Plans 60-90 minutes before maintenance starts and then again once upgrades are underway.  
+For App Service Plans, the first notifications will be created about 7 days before an actual upgrade operation starts. A notification is then sent, to both ASEs and App Service Plans, 60-90 minutes before maintenance starts and then again once upgrades are underway.  
 
 Once the upgrade starts, we send in-progress notifications every 12 hours until the operation completes. After it has finished, we send a notification of completion.
 
