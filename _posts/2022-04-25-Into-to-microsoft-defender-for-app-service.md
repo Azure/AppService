@@ -36,6 +36,8 @@ If you choose to use the enhanced security features, Defender for Cloud offers s
 
 If the built-in policies that make up the Azure Security Benchmark and other compliance standards don't meet your compliance standards, you can [create custom policies in Azure Policy](https://docs.microsoft.com/azure/governance/policy/tutorials/create-custom-policy-definition). Custom policies however will not show up under the recommendations in the Security blade and in your Defender compliance dashboard.
 
+You must visit the Microsoft Defender for Cloud dashboard in the portal or enable Defender programmatically via API for it to start monitoring your resources. Even if you are just using the free version, you still need complete one of those actions to see your recommendations in the Security blade.  
+
 Defender for App Service costs $15/month per instance. If cost is a limiting factor for you, take this into consideration when enabling the enhanced security features. Defender gives you the ability to select which resources you want to be in scope and therefore charged for, which can help you reduce costs as needed. If you don't enable Defender for App Service, you can still use the free version and have access to compliance against the Azure Security Benchmark.
 
 If you choose to not enable the enhanced security features, that doesn't mean your App Service isn't secure or that you don't have options to secure your apps. App Service as well as Azure have a number of built-in features and services that you can leverage to lock down and protect your apps based on your requirements. To learn more about App Service security, start with the [security recommendations for App Service](https://docs.microsoft.com/azure/app-service/security-recommendations).
