@@ -1,4 +1,13 @@
+{% if site.microsoft contains "://" %}
+  {% capture microsoft_path %}{{ site.microsoft }}{% endcapture %}
+{% else %}
+  {% capture microsoft_path %}{{ site.microsoft }}{% endcapture %}
+{% endif %}
+
 <div class="page__footer-follow">
+  {% unless microsoft_path == empty %}
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="{{ microsoft_path | relative_url }}" alt=""></a>
+  {% endunless %}
   <ul class="social-icons">
     {% if site.data.ui-text[site.locale].follow_label %}
       <li><strong>{{ site.data.ui-text[site.locale].follow_label }}</strong></li>
