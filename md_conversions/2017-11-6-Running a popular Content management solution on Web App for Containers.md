@@ -122,5 +122,5 @@ hide_excerpt: true
 --------------------
 
  Here are a few other configurations you can add to you application  - [Add a Custom domain](https://docs.microsoft.com/en-us/azure/app-service/app-service-web-tutorial-custom-domain?toc=%2fazure%2fapp-service%2fcontainers%2ftoc.json)
- - [Bind an SSL certificate ](https://docs.microsoft.com/en-us/azure/app-service/app-service-web-tutorial-custom-ssl?toc=%2fazure%2fapp-service%2fcontainers%2ftoc.json)
+ - [Bind an SSL certificate](https://docs.microsoft.com/en-us/azure/app-service/app-service-web-tutorial-custom-ssl?toc=%2fazure%2fapp-service%2fcontainers%2ftoc.json)
       
