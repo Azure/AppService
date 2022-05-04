@@ -3,8 +3,16 @@
 {% else %}
   {% capture logo_path %}{{ site.logo }}{% endcapture %}
 {% endif %}
+{% if site.microsoft contains "://" %}
+  {% capture microsoft_path %}{{ site.microsoft }}{% endcapture %}
+{% else %}
+  {% capture microsoft_path %}{{ site.microsoft }}{% endcapture %}
+{% endif %}
 
 <div class="masthead">
+  {% unless microsoft_path == empty %}
+    <a class="site-microsoft" href="https://www.azure.microsoft.com"><img src="{{ microsoft_path | relative_url }}" alt=""></a>
+  {% endunless %}
   <div class="masthead__inner-wrap">
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
