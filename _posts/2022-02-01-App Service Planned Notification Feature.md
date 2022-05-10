@@ -53,7 +53,7 @@ From the Azure portal, go to **Home** > **Monitor** > **Service Health** > **Pla
 ## FAQ
 
 **When do you send the upgrade notifications?**  
-The first notifications will be created about 7 days before an actual upgrade operation starts. A notification is then sent 60-90 minutes before maintenance starts and then again once upgrades are underway.  
+For App Service Plans, the first notifications will be created about 7 days before an actual upgrade operation starts. A notification is then sent, to both ASEs and App Service Plans, 60-90 minutes before maintenance starts and then again once upgrades are underway.  
 
 Once the upgrade starts, we send in-progress notifications every 12 hours until the operation completes. After it has finished, we send a notification of completion.
 
@@ -65,6 +65,9 @@ ASEv3 customers will have the option to opt in to 7-day notifications, in additi
 
 **Does this notification apply to all Azure services?**  
 No, this notification covers only planned App Service upgrades. Networking, Compute, or Storage upgrades that may cause worker movement are not within the scope of these notifications.
+
+**Why did I not receive a notification when my App Service was upgraded?**  
+There are two main reasons why customers may not receive notification of an upgrade. The first reason is that customers may not have followed the opt-in steps listed above. The second reason for not receiving upgrade notifications is the maintenance performed was part of a security patch or hotfix that may not have had enough lead time to provide notifications. These events should not cause any impact to current resources.
 
 **Can I invoke my Azure Function when a notification comes?**  
 Yes, you can set up action to trigger your Azure Function or Logic App. It is recommended to not trigger automation based on the 7-day notiifcation as exact times may vary. The 7 day notification is for awareness and using the follow on notifications of before, during, and after completion will be more precise. Please see [Logic App sample for automatic traffic diversion for Azure App Service](https://github.com/Azure-Samples/azure-logic-app-traffic-update-samples) as an example.
