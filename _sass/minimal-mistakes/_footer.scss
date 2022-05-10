@@ -52,6 +52,11 @@
   }
 }
 
+.page-microsoft img {
+  display: block;
+  max-height: 2rem;
+}
+
 .page__footer-copyright {
   font-family: $global-font-family;
   font-size: $type-size-7;
@@ -73,7 +78,7 @@
     text-transform: uppercase;
   }
 
-  li + li:before {
+  li+li:before {
     content: "";
     padding-right: 5px;
   }
