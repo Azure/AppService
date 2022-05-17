@@ -150,40 +150,6 @@ Networks to join. We don’t support additional “networks” as we run all con
 <strong>secrets</strong>
 
 Grant access to secrets on a per-service basis using the per-service secrets configuration. We don’t currently support it, but we plan to support this shortly after Public Preview.
-<h2>Kubernetes</h2>
-Supported configuration in Public Preview:
-
-<strong>spec</strong>
-
-Spec schema is a description of a pod. It’s the parent level object for containers.
-
-<strong>containers</strong>
-
-A list of containers belonging to the pod.
-
-<strong>name</strong>
-
-The name of this pod. If it’s within a containers object, it’s the name for container.
-
-<strong>image</strong>
-
-Docker container image name.
-
-<strong>command</strong>
-
-The entrypoint array, override the default entrypoint provided by container image.
-
-<strong>args</strong>
-
-A command array containing arguments to the entrypoint. The docker image’s cmd is used if this is not provided.
-
-<strong>ports</strong>
-
-A list of ports to expose from the container.
-
-Configuration not supported in Public Preview:
-
-Any other Kubernetes syntax not explicitly called out in the “Supported Configuration” section will not be supported in Public Preview.</div>
 </div></body>
 <script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
 <script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>
