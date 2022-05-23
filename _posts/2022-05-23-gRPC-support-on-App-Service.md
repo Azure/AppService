@@ -1,8 +1,6 @@
 ---
 title: "gRPC support on Azure App Service"
 author_name: "Jeff Martinez"
-toc: true
-toc_sticky: true
 category:
     - gRPC
 ---
