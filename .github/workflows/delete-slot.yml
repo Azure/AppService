@@ -4,9 +4,17 @@ on:
   pull_request:
     types: [closed]
 
+concurrency: 
+  group: ci-${{ github.event.number }}
+  cancel-in-progress: true
+
+env:
+  WEBAPP_NAME: antares-blog-staging
+  RESOURCE_GROUP: appserviceblogsite
+  SLOT_NAME: pr-${{ github.event.number }}
+
 jobs:
   delete-slot:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -16,4 +24,21 @@ jobs:
         creds: ${{ secrets.ANTARES_BLOG_SITE_SP }}
     
     - name: Delete slot on staging site
-      run: az webapp deployment slot delete --resource-group appserviceblogsite  --name antares-blog-staging --slot pr-${{ github.event.number }}
+      run: | 
+        az webapp deployment slot delete \
+          --resource-group $RESOURCE_GROUP \
+          --name $WEBAPP_NAME \
+          --slot $SLOT_NAME
+
+  delete-deployment:
+    runs-on: ubuntu-latest
+    permissions:
+      deployments: write
+
+    steps:
+      - name: Delete Deployment Environment
+        uses: strumwolf/delete-deployment-environment@v2.0.1
+        with:
+          environment: "PR #${{ github.event.number }}"
+          token: ${{ github.token }}
+          onlyRemoveDeployments: true
