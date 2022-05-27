@@ -90,6 +90,9 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: jekyll-app
+        
+    - run: echo "$(pwd)"
+    - run: echo "$(ls)"
 
     - name: Deploy to slot on staging site
       uses: azure/webapps-deploy@v1
