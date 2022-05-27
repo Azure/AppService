@@ -43,12 +43,15 @@ jobs:
       run: bundle exec jekyll build --future --baseurl=''
       env:
         JEKYLL_ENV: production
+
+    - name: zip up site
+      run: zip blog.zip ${{ github.workspace }}/_site/
     
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v2
       with:
         name: jekyll-app
-        path: '${{ github.workspace }}/_site/'
+        path: blog.zip
     
   set-up-test-env:
     name: Create test env
@@ -93,7 +96,7 @@ jobs:
       with: 
         app-name: ${{ env.WEBAPP_NAME }}
         slot-name: ${{ env.SLOT_NAME }}
-        package: _site/
+        package: blog.zip
     
     - name: Comment on PR with the preview link
       uses: mshick/add-pr-comment@v1
