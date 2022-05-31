@@ -19,24 +19,16 @@ jobs:
     steps:
     - name: Check out repo
       uses: actions/checkout@v1
-        
-    - name: Set up cache for Ruby Bundler
-      uses: actions/cache@v1
-      with:
-        path: vendor/bundle
-        key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-gems-
 
     - name: Set up Ruby 2.6
       uses: actions/setup-ruby@v1
       with:
         ruby-version: 2.6.x
+        bundler-cache: true
 
     - name: Install Ruby dependencies
       run: |
         gem install bundler
-        bundle config path vendor/bundle
         bundle install --jobs 4 --retry 3
 
     - name: Build site
@@ -45,7 +37,7 @@ jobs:
         JEKYLL_ENV: production
 
     - name: zip up site
-      run: zip blog.zip ${{ github.workspace }}/_site/
+      run: zip -r ../blog.zip .
     
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v2
@@ -90,9 +82,6 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: jekyll-app
-        
-    - run: echo "$(pwd)"
-    - run: echo "$(ls)"
 
     - name: Deploy to slot on staging site
       uses: azure/webapps-deploy@v1
