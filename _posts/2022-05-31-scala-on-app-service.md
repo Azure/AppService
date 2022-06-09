@@ -7,18 +7,26 @@ excerpt: "Run a Scala App using Java SE on App Service"
 category: java
 ---
 
+## Introduction to Scala and Play Framework
+
+Scala is an object-oriented programming language that can be compiled to run on the Java Runtime (JVM). Using the Java runtime allows you to integrate with the enormous Java ecosystem and execute Scala programs anywhere the JVM is available. This includes Azure App Service with the Java SE runtime.
+
+The Play Framework is a lightweight web application framework for Java and Scala that integrates all components and APIs needed for modern web application development.
+
+Follow the tutorial below to deploy a Play framework Scala app onto Azure App Service.
+
 ## Prerequisites
 
 This sample is based off of the [Play Framework Hello World Tutorial](https://github.com/playframework/play-samples/tree/2.8.x/play-scala-hello-world-tutorial). 
 
 To follow the steps in this tutorial, you will need the correct version of Java, sbt, and (optionally) Maven or the Azure CLI.
 
-* Java 11
-* sbt 1.3.4 or higher. Note: if you downloaded this project as a zip file from <https://developer.lightbend.com>, the file includes an sbt distribution for your convenience.
-* Maven (Optional)
-* Azure CLI (Optional)
+* [Java SE](https://docs.microsoft.com/en-us/java/openjdk/download#openjdk-11)
+* [sbt](http://www.scala-sbt.org/download.html)
+* [maven](https://maven.apache.org/install.html) (Optional)
+* [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) (Optional)
 
-To check your Java version, enter the following in a command window:
+Java 11 is needed for this tutorial. To check your Java version, enter the following in a command window:
 
 ```bash
 java -version
@@ -29,13 +37,6 @@ To check your sbt version, enter the following in a command window:
 ```bash
 sbt sbtVersion
 ```
-
-If you do not have the required versions, follow these links to obtain them:
-
-* [Java SE](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
-* [sbt](http://www.scala-sbt.org/download.html)
-* [maven](https://maven.apache.org/install.html) (Optional)
-* [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) (Optional)
 
 ## Build and Run the Project
 
@@ -71,6 +72,12 @@ To build a .jar file executable for a Java 11 runtime using sbt assembly:
     ```bash
     java -jar target/scala-2.13/<project-name>-assembly-<version>.jar
     ```
+
+    The application should now be running at `http://localhost:80`
+
+3. Review the application to ensure everything works locally before deploying to App Service.
+
+    Something interesting to note about creating an executable .jar using `sbt assembly` is that it will inject all necessary Scala dependencies according to the `assemblyMergeStrategy` defined in `build.sbt`. This allows a native Scala app like this one to be executed in a Java only environment. This also means that your webhost only needs to be running Java 11 and doesn't need any Scala runtime dependencies since they've all been injected into the .jar file.
 
 
 ## Deploy as JAR using Azure CLI
