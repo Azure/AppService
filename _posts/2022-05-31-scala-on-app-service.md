@@ -54,15 +54,15 @@ Follow these steps to build a .jar file executable for a Java 11 runtime using s
     sbt assembly
     ```
 
-    This command produces an executable .jar file in the `scala-on-app-service/target/scala-2.14` directory.
+    This command produces an executable .jar file in the `scala-on-app-service/target/scala-2.14/` directory.
 
 2. To test the app locally, run the previously created .jar file:  
 
     ```bash
-    java -jar target/scala-2.13/<project-name>-assembly-<version>.jar
+    java -jar target/scala-2.13/scala-play-example-assembly-1.0.jar
     ```
 
-    The application should now be running at <http://localhost:80>
+    The application should now be running at <http://localhost:80>. (Note that the port is now 80, as this is the default HTTP port expected on App Service when we deploy it in the next section.)
 
 3. Open the application in your browser to ensure it works locally as an executable .jar.
 
