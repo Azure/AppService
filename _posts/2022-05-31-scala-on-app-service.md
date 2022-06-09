@@ -13,9 +13,7 @@ Follow the tutorial below to deploy a Play framework Scala app onto Azure App Se
 
 ## Prerequisites
 
-This sample is based off of the [Play Framework Hello World Tutorial](https://github.com/playframework/play-samples/tree/2.8.x/play-scala-hello-world-tutorial). 
-
-To follow the steps in this tutorial you will need the following tools installed locally: 
+To follow the steps in this tutorial you will need the following tools installed locally. (You can use _either_ the Azure CLI _or_ the Maven plugin. You don't need both to complete this tutorial.)
 
 * [Java 11](https://docs.microsoft.com/en-us/java/openjdk/download#openjdk-11)
 * [sbt v1.3.4 or greater](http://www.scala-sbt.org/download.html)
@@ -30,7 +28,7 @@ sbt sbtVersion
 
 ## Build and Run the Project
 
-This example Play project was created from a seed template. It includes all Play components and an Akka HTTP server. The project is also configured with filters for Cross-Site Request Forgery (CSRF) protection and security headers.
+This example Play project was created from a [seed template](https://github.com/playframework/play-samples/tree/2.8.x/play-scala-hello-world-tutorial). It includes all Play components and an Akka HTTP server. The project is also configured with filters for Cross-Site Request Forgery (CSRF) protection and security headers.
 
 To build and run the project:
 
