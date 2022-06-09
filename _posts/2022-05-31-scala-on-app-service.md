@@ -40,7 +40,7 @@ To build and run the project:
 
 2. Build the project by running `sbt run`. The command builds and starts the embedded HTTP server. Since this downloads libraries and dependencies, the amount of time required depends partly on your internet connection speed.
 
-3. After the message `Server started, ...` displays, enter the following URL in a browser: <http://localhost:80>. The Play application will respond with: `Welcome to the Hello World Scala POC Tutorial!`.
+3. After the message `Server started, ...` displays, enter the following URL in a browser: <http://localhost:9000>. The Play application will respond with: `Welcome to the Hello World Scala POC Tutorial!`.
 
 Now that the application is working locally, let's package the application into an executable .jar file that we can deploy onto Azure App Service.
 
@@ -62,7 +62,7 @@ Follow these steps to build a .jar file executable for a Java 11 runtime using s
     java -jar target/scala-2.13/<project-name>-assembly-<version>.jar
     ```
 
-    The application should now be running at `http://localhost:80`
+    The application should now be running at <http://localhost:80>
 
 3. Open the application in your browser to ensure it works locally as an executable .jar.
 
