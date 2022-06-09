@@ -3,7 +3,7 @@ title: "Scala on App Service"
 toc: true
 toc_sticky: true
 author_name: Denver Brittain
-excerpt: "Run a Scala App using Java SE on App Service"
+excerpt: "Build and run a Scala App on Azure App Service"
 category: java
 ---
 
@@ -128,3 +128,9 @@ Once complete, you should be able to access your Play Framework app at `https://
     ```
 
 6. Update the application by running `sbt assembly` followed by `mvn azure-webapp:deploy` after making & testing changes locally.
+
+
+## Resources
+
+- [Config Guide for Java on Azure App Service](https://docs.microsoft.com/azure/app-service/configure-language-java)
+- [Akka Server Settings](https://www.playframework.com/documentation/2.8.x/SettingsAkkaHttp)
