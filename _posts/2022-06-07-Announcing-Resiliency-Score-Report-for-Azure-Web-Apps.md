@@ -1,7 +1,9 @@
 ---
 title: "Announcing Resiliency Score Report for Azure Web Apps"
 author_name: "Cristhian Uribe"                                  
-category: 'Diagnostics'                                         
+category: 'Diagnostics'
+toc: true
+toc_sticky: true
 ---
 
 Resiliency Score report is a downloadable report that checks whether your Azure Web App is implementing the best practices to make it less susceptible to availability issues.
