@@ -71,15 +71,14 @@ We include the steps even if the solution is implemented already, just in case y
 
 #### More information
 
-These are links to documents with more information about this feature.
+These are links to documents where you can find more details about this feature.
 
 ![Resiliency Score]({{site.baseurl}}/media/2022/06/ResiliencyScoreReport-Details-and-instructions-More_information.png){: .align-center}
-
-## Comments/Recommendations
-
-Let us know if you find it useful by leaving a comment below.
-If you have any recommendations, please add them under the [Web Apps forum in feedback.azure.com](https://feedback.azure.com/d365community/forum/b09330d1-c625-ec11-b6e6-000d3a4f0f1c "Web Apps forum in feedback.azure.com"), using the #ResiliencyScoreReport hashtag.
 
 ## Learn More
 
 * [The Ultimate Guide to Running Healthy Apps in the Cloud](https://azure.github.io/AppService/2020/05/15/Robust-Apps-for-the-cloud.html#use-multiple-instances "The Ultimate Guide to Running Healthy Apps in the Cloud")
+
+### Questions/Feedback
+
+If you have any questions or feedback, please reach out to our team at [diagnostics@microsoft.com](mailto:diagnostics@microsoft.com)
