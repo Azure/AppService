@@ -26,8 +26,8 @@ The example application is a simple guestbook app where visitors can write messa
 ### Optional packages for local development
 
 * [Visual Studio Code](https://code.visualstudio.com/) with the [Calva](https://marketplace.visualstudio.com/items?itemName=betterthantomorrow.calva) extension for Clojure
-* Docker, used to run PostgreSQL in a Docker container
-* GNU sed, used to replace some entries in the `pom.xml` file before deploying. This is installed by default in most Linux distributions, and also in Git for Windows
+* Docker, used to run PostgreSQL locally in a Docker container
+* GNU sed, used for text replacement on the command line before deploying (you can edit the file in a text/code editor though). Note that `sed` comes pre-installed by default in most Linux distributions, and also in Git for Windows
 
 ### Differences with the original `guestbook` application
 
