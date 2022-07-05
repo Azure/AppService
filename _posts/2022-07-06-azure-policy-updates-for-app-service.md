@@ -21,7 +21,7 @@ The App Service team recently underwent an effort to clean-up the App Service bu
   - All Function app policies now include the condition `{"field": "kind", "contains": "functionapp"}`.
   - All App Service policies now include the condition `{"field": "kind", "notContains": "functionapp"}` which scopes them to include all app types except Function apps and Logic Apps.
   - For more information on policy conditions, see [Azure Policy definition structure](https://docs.microsoft.com/azure/governance/policy/concepts/definition-structure#conditions).
-- Addition of App Service slots in policies scope where applicable.
+- Addition of App Service slots in policy's scope where applicable.
 
 For the full list of detailed updates, see the [release notes](https://docs.microsoft.com/azure/app-service/security-controls-policy#release-notes).
 
