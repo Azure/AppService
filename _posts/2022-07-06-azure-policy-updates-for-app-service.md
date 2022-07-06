@@ -13,7 +13,7 @@ The App Service team recently underwent an effort to clean-up the App Service bu
 - Deprecation of policies that no longer require dedicated policy definitions to simplify overall management of policy inventory.
 - Rename of policies to follow a standard naming convention. The naming convention is as follows:
   - Lead with the affected service, resource type, or feature.
-  - Include “should” to explain the unsecured element (“[A] should [B]”).
+  - Include "should" to explain the unsecured element (“[A] should [B]”).
   - For example, a policy name that follows the naming convention would be "App Service apps should only be accessible over HTTPS".
 - Removal of Logic Apps from the scope of all App Service policy definitions.
   - Logic Apps have their own dedicated policies.
