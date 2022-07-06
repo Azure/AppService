@@ -27,14 +27,14 @@ For the full list of detailed updates, see the [release notes](https://docs.micr
 
 ## Action needed
 
-There is no action required if you already have the updated policies assigned to your resources. The policies updates will automatically be applied. Be sure to review your new overall compliance status as the scope of some of the policies has been modified, which means additional resources may now be in scope for policy evaluation.
+There's no action required if you already have the updated policies assigned to your resources. The policies updates will automatically be applied. Be sure to review your new overall compliance status as the scope of some of the policies has been modified, which means additional resources may now be in scope for policy evaluation.
 
-Deprecated policies will no longer show up in the definitions list in the Azure portal. They will still be available via APIs. They will also still be evaluated if assigned. You will not receive a notification that these policies have been deprecated however you will see that their display names have changed to be prefixed with "[Deprecated]". If you no longer want these policies to be evaluated, you can unassign them. If you have assigned any of the initiatives which include these policies, they will be automatically removed from the initiative and will no longer be evaluated.
+Deprecated policies will no longer show up in the definitions list in the Azure portal. They'll still be available via APIs. They'll also still be evaluated if individually assigned. You won't receive a notification that these policies have been deprecated however you'll see that their display names have changed to be prefixed with "[Deprecated]". If you no longer want these policies to be evaluated, you can unassign them. If you've assigned any of the initiatives which include these policies, they'll automatically be removed from the initiative and will no longer be evaluated.
 
-If you use the specific policy display names in any reporting, upstream metrics, or alerting mechanism, you will need to update these values to the latest versions. Policy display name changes can be found in the [release notes](https://docs.microsoft.com/azure/app-service/security-controls-policy#release-notes).
+If you use the specific policy display names in any reporting, upstream metrics, or alerting mechanisms, you'll need to update these values to the latest versions. Policy display name changes can be found in the [release notes](https://docs.microsoft.com/azure/app-service/security-controls-policy#release-notes).
 
 ## What's next?
 
-This clean-up effort is ongoing. The [release notes](https://docs.microsoft.com/azure/app-service/security-controls-policy#release-notes) will continue to be updated as changes are rolled out.
+The clean-up effort is ongoing. The [release notes](https://docs.microsoft.com/azure/app-service/security-controls-policy#release-notes) will continue to be updated as changes are rolled out.
 
-We are continuously assessing the App Service policy inventory to ensure our built-in list includes policies that meet the latest security best practices and recommendations. We will also continue to add new policies to keep up with the latest App Service features.
+We are continuously assessing the App Service policy inventory to ensure our built-in list includes policies that meet the latest security best practices and recommendations. We'll also continue to add new policies to keep up with the latest App Service features.
