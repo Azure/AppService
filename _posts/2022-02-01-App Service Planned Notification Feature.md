@@ -70,7 +70,7 @@ Our typical time for completing updates worldwide is about 10 business days, whi
 There are two main reasons why customers may not receive notification of an upgrade. The first reason is that customers may not have followed the opt-in steps listed above. The second reason for not receiving upgrade notifications is the maintenance performed was part of a security patch or hotfix that may not have had enough lead time to provide notifications. These events should not cause any impact to current resources.
 
 **Why did I not receive a 7-day advance notification before receiving in-progress notifications** 
-This upgrade was likely an un-planned maintenance event, either a hotfix or critical security patch. As Microsft commits to ensuring security of resources, we may not always have 7 days lead time when pushing an update to address these concerns.
+This upgrade was likely an unplanned maintenance event, either a hotfix or critical security patch. As Microsft commits to ensuring security of resources, we may not always have 7 days lead time when pushing an update to address these concerns. These notifications will specify unplanned maintenance in the title.
 
 **We received notification for upgrade, but we do not see Application restarts/instance movements on the App service. What did we receive an alert for?** 
 Usually, this happens when upgrades are still working their way through a given region and not yet reached your App Service. App Service follows safe deployment practices, requiring segmented deployment of upgrades.
