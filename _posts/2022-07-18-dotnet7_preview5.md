@@ -1,7 +1,6 @@
 ---
 title: ".NET 7 Preview 5 available on App Service"
 author_name: "Byron Tardif"
-toc: true
 ---
 
 We are happy to announce that App Service now supports apps targeting [.NET 7 Preview 5](https://dotnet.microsoft.com/download/dotnet/7.0) across all public regions on both Windows and Linux App Service Plans through the [App Service Early Access feature](https://aka.ms/app-service-early-access).
