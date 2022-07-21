@@ -24,8 +24,8 @@ The workflow has two jobs. The first builds and tests the application and upload
 {: .notice--danger}
 
 ```bash
-az storage blob upload --account-name $STORAGE_ACCOUNT -c $CONTAINER -f ROOT.war
-APP_URL=$(az storage blob generate-sas --full-uri --permissions r --expiry $EXPIRY --account-name $STORAGE_ACCOUNT -c $CONTAINER -n ROOT.war | xargs)
+az storage blob upload --account-name $STORAGE_ACCOUNT -c $CONTAINER -f app.zip
+APP_URL=$(az storage blob generate-sas --full-uri --permissions r --expiry $EXPIRY --account-name $STORAGE_ACCOUNT -c $CONTAINER -n app.zip | xargs)
 az rest --method PUT \
         --uri https://management.azure.com/subscriptions/${SUBSCRIPTION}/resourceGroups/${RESOURCE_GROUP}/providers/Microsoft.Web/sites/${WEBAPP}/extensions/onedeploy?api-version=2020-12-01 \
         --body '{ 
