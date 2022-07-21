@@ -20,6 +20,23 @@ We will use GitHub Actions as the CI system to demonstrate this solution, but th
 
 The workflow has two jobs. The first builds and tests the application and uploads the artifact for the second job. Once the artifact is built, tested and uploaded, the second job pulls the artifact and runs an Azure CLI script to publish the files to an Azure Storage Account. Once the files are uploaded, we generate a SAS URL for the storage container with an expiration of 30-minutes. (This means the URL will be invalid 10 minutes after creation.) The web app then pulls the application from the storage account and deploys it. Behind the scenes, the Azure CLI commands are using [ZIP deploy](https://docs.microsoft.com/azure/app-service/deploy-zip#deploy-zip-file-with-azure-cli) to publish the application. Once your code is deployed to the web app, a final CLI command deletes the storage container that contained the ZIP file.
 
+**Note:** A bug has been identified in the CLI command below and a fix is underway. You can accomplish the same result by using `az rest` to send the deployment request directly to the ARM API. Example:
+```bash
+az storage blob upload --account-name $STORAGE_ACCOUNT -c $CONTAINER -f ROOT.war
+APP_URL=$(az storage blob generate-sas --full-uri --permissions r --expiry $EXPIRY --account-name $STORAGE_ACCOUNT -c $CONTAINER -n ROOT.war | xargs)
+az rest --method PUT \
+        --uri https://management.azure.com/subscriptions/${SUBSCRIPTION}/resourceGroups/${RESOURCE_GROUP}/providers/Microsoft.Web/sites/${WEBAPP}/extensions/onedeploy?api-version=2020-12-01 \
+        --body '{ 
+            "properties": { 
+                "properties": {
+                    "packageUri": "'"${APP_URL}"'"
+                }, 
+                "type": "zip",
+            }
+        }'
+```
+{: .notice--warning}
+
 {% raw %}
 ```yaml
 name: Deploy web app via Storage Account
