@@ -40,11 +40,11 @@ az group create --name securebackendsetup --location westeurope
 az network vnet create --resource-group securebackendsetup --location westeurope --name securebackend-vnet --address-prefixes 10.0.0.0/16
 ```
 
-For the subnets, there are two settings that we need to pay attention to. This is often set by the portal or scripts, but here it is called out directly. [Delegation](https://docs.microsoft.com/azure/virtual-network/subnet-delegation-overview) "Microsoft.Web/serverfarms" informs the subnet that it is reserved for virtual network integration. For private endpoint subnets you need to [disable private endpoint network policies](https://docs.microsoft.com/azure/private-link/disable-private-endpoint-network-policy):
+For the subnets, there are two settings that we need to pay attention to. This is often set by the portal or scripts, but here it is called out directly. [Delegation](https://docs.microsoft.com/azure/virtual-network/subnet-delegation-overview) "Microsoft.Web/serverfarms" informs the subnet that it is reserved for virtual network integration:
 
 ```bash
 az network vnet subnet create --resource-group securebackendsetup --vnet-name securebackend-vnet --name vnet-integration-subnet --address-prefixes 10.0.0.0/24 --delegations Microsoft.Web/serverfarms
-az network vnet subnet create --resource-group securebackendsetup --vnet-name securebackend-vnet --name private-endpoint-subnet --address-prefixes 10.0.1.0/24 --disable-private-endpoint-network-policies
+az network vnet subnet create --resource-group securebackendsetup --vnet-name securebackend-vnet --name private-endpoint-subnet --address-prefixes 10.0.1.0/24
 ```
 
 The last part of the network infrastructure is the Private DNS Zones. These zones are used to host the DNS records for private endpoints allowing the clients to find the backend services by name. We need a zone for Key Vault and a zone for Text Analytics (Cognitive Services). Go [here for a primer on Azure Private Endpoints](https://docs.microsoft.com/azure/private-link/private-endpoint-overview) and [go here for how DNS Zones fits into private endpoints](https://docs.microsoft.com/azure/private-link/private-endpoint-dns).

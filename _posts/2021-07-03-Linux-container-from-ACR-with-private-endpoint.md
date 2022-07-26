@@ -6,12 +6,6 @@ toc: true
 toc_sticky: true
 ---
 
-> The default scenario for the article is now using system-assigned managed identity. An "Alternative scenarios" section with step for using credentials, user-assigned managed identity and custom registries has been added.
->
->**Windows containers do not support pulling images over virtual network integration*
->
->***ASEv2 do not support pulling images from a registry url that needs to be resolved in custom DNS servers*
-
 Securing access to your site is important, but securing access to the source of your site is often equally important.
 
 In this article I will walk you through setting up a Linux web app with secure, network-isolated access to the container registry. The scenario is intentionally kept simple to focus on the architecture and configuration.
@@ -26,6 +20,12 @@ This guide is organized into four steps:
 4. Pull from private registry
 
 In closing, there are sections on advanced scenarios and FAQ.
+
+> The default scenario for the article is using system-assigned managed identity. An "Alternative scenarios" section with step for using credentials, user-assigned managed identity and custom registries has been added.
+>Notes:
+>
+> * Windows containers do not support pulling images over virtual network integration
+> * App Service Environment v2 (Isolated SKU) do not support pulling images from a registry url that needs to be resolved using custom DNS servers
 
 ## Getting started
 
@@ -128,7 +128,7 @@ az acr network-rule add --resource-group secureacrsetup --name secureacr2021 --i
 
 ## 3. Create network integrated web app
 
-Now we get to creating the actual web app. To use virtual network integration we need at least the Standard SKU, and then there are a few commands to configure secure the app and add the integration:
+Now we get to creating the actual web app. To use virtual network integration we need at least the Basic SKU, and then there are a few commands to configure secure the app and add the integration:
 
 ```bash
 az appservice plan create --resource-group secureacrsetup --name secureacrplan --sku P1V3 --is-linux
