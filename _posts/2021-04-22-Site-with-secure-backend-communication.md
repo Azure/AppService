@@ -6,9 +6,9 @@ toc: true
 toc_sticky: true
 ---
 
-*"Rød grød med fløde"* - hmm, what language is that? Keep reading if you want to find out. 
+*"Rød grød med fløde"* - hmm, what language is that? Keep reading if you want to find out.
 
-In this article I will walk you through setting up a Web App with secure, network-isolated communication to backend services. The Web App will allow you to type in a text, and using Cognitive Services Language Detection, you can detect the language of the given text. The authentication key for Cognitive Services will be stored in Key Vault, and App Service will authenticate with Key Vault using Managed Identity. All traffic will be isolated within your Virtual Network using VNet Integration and Private Endpoints.
+In this article I will walk you through setting up a Web App with secure, network-isolated communication to backend services. The Web App will allow you to type in a text, and using Cognitive Services Language Detection, you can detect the language of the given text. The authentication key for Cognitive Services will be stored in Key Vault, and App Service will authenticate with Key Vault using Managed Identity. All traffic will be isolated within your Virtual Network using virtual network integration and private endpoints.
 
 The scenario is intentionally kept simple to focus on the architecture and configuration; but with a practical purpose I find it more easy to relate to. The backend services can be extended with the many other services supporting Private Endpoint like Azure SQL, Cosmos DB, App Configuration, and even another App Service Web Apps or Functions by following the same pattern.
 
@@ -33,14 +33,14 @@ This article will also use Azure CLI executed in bash shell on WSL to set up the
 
 ## 1. Create Network Infrastructure
 
-First set up a Resource Group with a Virtual Network. The VNet should have at least two subnets. One for the VNet Integration and one for the private endpoints. The address-prefix size must be at least /28 for both subnets; small subnets can affect scaling limits and the number of private endpoints. Go with /24 for both subnets if you are not under constraints.
+First set up a Resource Group with a Virtual Network. The virtual network should have at least two subnets. One for the virtual network integration and one for the private endpoints. The address-prefix size must be at least /28 for both subnets; small subnets can affect scaling limits and the number of private endpoints. Go with /24 for both subnets if you are not under constraints.
 
 ```bash
 az group create --name securebackendsetup --location westeurope
 az network vnet create --resource-group securebackendsetup --location westeurope --name securebackend-vnet --address-prefixes 10.0.0.0/16
 ```
 
-For the subnets, there are two settings that we need to pay attention to. This is often set by the portal or scripts, but here it is called out directly. [Delegation](https://docs.microsoft.com/azure/virtual-network/subnet-delegation-overview) "Microsoft.Web/serverfarms" informs the subnet that it is reserved for VNet Integration. For private endpoint subnets you need to [disable private endpoint network policies](https://docs.microsoft.com/azure/private-link/disable-private-endpoint-network-policy):
+For the subnets, there are two settings that we need to pay attention to. This is often set by the portal or scripts, but here it is called out directly. [Delegation](https://docs.microsoft.com/azure/virtual-network/subnet-delegation-overview) "Microsoft.Web/serverfarms" informs the subnet that it is reserved for virtual network integration. For private endpoint subnets you need to [disable private endpoint network policies](https://docs.microsoft.com/azure/private-link/disable-private-endpoint-network-policy):
 
 ```bash
 az network vnet subnet create --resource-group securebackendsetup --vnet-name securebackend-vnet --name vnet-integration-subnet --address-prefixes 10.0.0.0/24 --delegations Microsoft.Web/serverfarms
@@ -56,7 +56,7 @@ az network private-dns zone create --resource-group securebackendsetup --name pr
 az network private-dns zone create --resource-group securebackendsetup --name privatelink.vaultcore.azure.net
 ```
 
-Link the zones to the VNet:
+Link the zones to the virtual network:
 
 ```bash
 az network private-dns link vnet create --resource-group securebackendsetup --name cognitiveservices-zonelink --zone-name privatelink.cognitiveservices.azure.com --virtual-network securebackend-vnet --registration-enabled False
@@ -97,7 +97,7 @@ cs_key1=$(az cognitiveservices account keys list --resource-group securebackends
 kv_secret_uri=$(az keyvault secret set --vault-name securekeyvault2021 --name cskey --value $cs_key1 --query id --output tsv)
 ```
 
-Next, let's create the Private Endpoints to connect the backend services to the VNet. We already have the needed Key Vault Resource ID `$kv_resource_id` in a variable from a previous step:
+Next, let's create the Private Endpoints to connect the backend services to the virtual network. We already have the needed Key Vault Resource ID `$kv_resource_id` in a variable from a previous step:
 
 ```bash
 az network private-endpoint create --resource-group securebackendsetup --name securekeyvault-pe --location westeurope --connection-name securekeyvault-pc --private-connection-resource-id $kv_resource_id --group-id vault --vnet-name securebackend-vnet --subnet private-endpoint-subnet
@@ -128,15 +128,12 @@ Everything is locked down now and you cannot even get to the Key Vault secrets t
 
 ## 3. Create Network Integrated Web App
 
-Now we get to creating the actual Web App. To use VNet Integration we need at least the Standard SKU. The VNet Integration feature allow **outbound** traffic to flow directly into the VNet. By default only local IP traffic defined in [RFC-1918](https://tools.ietf.org/html/rfc1918#section-3) is routed to the VNet and this is what we need since we are using private endpoint. Should you wish to route all your traffic to the VNet, you can enable the site config property - vnetRouteAllEnabled. Route all traffic can also be used if you want to route internet traffic through your VNet e.g. through a Managed NAT or a Firewall:
+Now we get to creating the actual Web App. To use virtual network integration we need at least the Basic SKU. The virtual network integration feature allow **outbound** traffic to flow directly into the virtual network:
 
 ```bash
 az appservice plan create --resource-group securebackendsetup --name securebackendplan --sku P1V2
-az webapp create --resource-group securebackendsetup --plan securebackendplan --name securebackend2021
-az webapp update --resource-group securebackendsetup --name securebackend2021 --https-only
+az webapp create --resource-group securebackendsetup --plan securebackendplan --name securebackend2021 --https-only
 az webapp vnet-integration add --resource-group securebackendsetup --name securebackend2021 --vnet securebackend-vnet --subnet vnet-integration-subnet
-# Linux Only for Private DNS Zone resolution
-az webapp config set --resource-group securebackendsetup --name securebackend2021 --generic-configurations '{"vnetRouteAllEnabled": true}'
 ```
 
 Now store the name of your CS account for the code to query. Replace `securecstext2021` with the name of your account:
@@ -152,7 +149,7 @@ az webapp identity assign --resource-group securebackendsetup --name securebacke
 az webapp config appsettings set --resource-group securebackendsetup --name securebackend2021 --settings CS_ACCOUNT_KEY="@Microsoft.KeyVault(SecretUri=$kv_secret_uri)"
 ```
 
-You can now browse to the Web App and all **outbound** traffic from the Web App will be routed through the VNet.
+You can now browse to the Web App and all **outbound** traffic from the Web App will be routed through the virtual network.
 
 ## 4. Connect "The Dots"
 
@@ -252,10 +249,10 @@ In this section, I will discuss some alternative approaches and advanced scenari
 
 ### Service endpoints
 
-[Service endpoint](https://docs.microsoft.com/azure/virtual-network/virtual-network-service-endpoints-overview) is an alternative Azure Networking technology you can use to secure your network traffic. Essentially you register specific service endpoints like Microsoft.KeyVault on the subnet where traffic originates from. In this case the VNet Integration subnet. With this registration, Azure will append metadata to the traffic towards the specific service to allow the service to restrict which subnet to accept traffic from, and to block all other traffic. Unlike private endpoint, it still uses the public IP of the service for routing, and therefore do not need the setup of Azure Private DNS Zones.
+[Service endpoint](https://docs.microsoft.com/azure/virtual-network/virtual-network-service-endpoints-overview) is an alternative Azure Networking technology you can use to secure your network traffic. Essentially you register specific service endpoints like Microsoft.KeyVault on the subnet where traffic originates from. In this case the virtual network integration subnet. With this registration, Azure will append metadata to the traffic towards the specific service to allow the service to restrict which subnet to accept traffic from, and to block all other traffic. Unlike private endpoint, it still uses the public IP of the service for routing, and therefore do not need the setup of Azure Private DNS Zones.
 
 ## FAQ
 
 **Q: Can I apply the same steps to a Function App?**
 
-You will need a Premium Elastic plan to use VNet Integration with Function Apps. Further, if you would like to also have the storage account, that Functions use for code and state, you will need to initially create it with the storage publicly available. [The steps and limitations are documented here.](https://docs.microsoft.com/azure/azure-functions/configure-networking-how-to#restrict-your-storage-account-to-a-virtual-network)
+You will need a Premium Elastic plan to use virtual network integration with Function Apps. Further, if you would like to also have the storage account, that Functions use for code and state, you will need to initially create it with the storage publicly available. [The steps and limitations are documented here.](https://docs.microsoft.com/azure/azure-functions/configure-networking-how-to#restrict-your-storage-account-to-a-virtual-network)

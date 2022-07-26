@@ -35,13 +35,7 @@ First setup a Resource Group and a Web App with Azure AD Authentication. Choose 
 ```bash
 az group create --name securewebsetup --location westeurope
 az appservice plan create --resource-group securewebsetup --name securewebplan --sku B1
-az webapp create --resource-group securewebsetup --plan securewebplan --name securewebapp2021 # Web App name must be globally unique
-```
-
-... and since the focus is security, configure the Web App to only allow HTTPS:
-
-```bash
-az webapp update --resource-group securewebsetup --name securewebapp2021 --https-only
+az webapp create --resource-group securewebsetup --plan securewebplan --name securewebapp2021 --https-only # Web App name must be globally unique
 ```
 
 ### Debug page (optional)
@@ -220,11 +214,11 @@ If you browse to the site now, you should be redirected to consent to the App pe
 
 [Azure Front Door](https://docs.microsoft.com/azure/frontdoor/standard-premium/overview) is a global, scalable entry-point that uses the Microsoft global edge network to create fast, secure, and widely scalable web applications. With Front Door, you can transform your global consumer and enterprise applications into robust, high-performing personalized modern applications with contents that reach a global audience through Azure.
 
-Public preview of Azure Front Door vNext was recently announced. It combines the existing features of Front Door with integrated CDN and WAF capabilities as well as some new advanced options to use private endpoints as origin (backend) and onboard Managed Certificates using TXT records, which can be helpful in a migration scenario.
+Azure Front Door (Standard and Premium) combines the existing features of Front Door (Classic) with integrated CDN and WAF capabilities as well as some new advanced options to use private endpoints as origin (backend) and onboard Managed Certificates using TXT records, which can be helpful in a migration scenario.
 
 ![Step 2]({{site.baseurl}}/media/2021/03/secureapp-step2.png){: .align-center}
 
-Open [Azure portal](https://portal.azure.com/). Create a new resource, search for Front Door and select "Front Door Standard/Premium (Preview)"
+Open [Azure portal](https://portal.azure.com/). Create a new resource, search for Front Door and select "Front Door and CDN profiles"
 
 ![Azure Front Door Standard/Premium]({{site.baseurl}}/media/2021/03/frontdoor-new.png){: .align-center}
 

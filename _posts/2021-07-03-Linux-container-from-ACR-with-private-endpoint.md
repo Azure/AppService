@@ -6,15 +6,6 @@ toc: true
 toc_sticky: true
 ---
 
-> **Update 1. November 2021**: Since this article was written, we have been busy improving App Service platform in this area. These changes are rollout out now and should complete by the end of November, so be aware that we may have not upgraded your app yet. The article has been updated to reflect many of these improvements. The improvements are:
->
-> * No need for Route All when using Azure DNS Private Zones
-> * Support for using Managed Identity over virtual network integration
-> * ARM support for deploying directly to secured registry
-> * Support for using Managed Identity for Windows containers*
-> * Support for custom docker registry with v2 API
-> * Support for custom DNS servers**
->
 > The default scenario for the article is now using system-assigned managed identity. An "Alternative scenarios" section with step for using credentials, user-assigned managed identity and custom registries has been added.
 >
 >**Windows containers do not support pulling images over virtual network integration*
@@ -58,11 +49,11 @@ az group create --name secureacrsetup --location westcentralus
 az network vnet create --resource-group secureacrsetup --location westcentralus --name secureacr-vnet --address-prefixes 10.0.0.0/16
 ```
 
-For the subnets, there are two settings that we need to pay attention to. This is often set by the portal or scripts, but here it is called out directly. [Delegation](https://docs.microsoft.com/azure/virtual-network/subnet-delegation-overview) "Microsoft.Web/serverfarms" informs the subnet that it is reserved for virtual network integration. For private endpoint subnets you need to [disable private endpoint network policies](https://docs.microsoft.com/azure/private-link/disable-private-endpoint-network-policy):
+For the subnets, there are two settings that we need to pay attention to. This is often set by the portal or scripts, but here it is called out directly. [Delegation](https://docs.microsoft.com/azure/virtual-network/subnet-delegation-overview) "Microsoft.Web/serverfarms" informs the subnet that it is reserved for virtual network integration:
 
 ```bash
 az network vnet subnet create --resource-group secureacrsetup --vnet-name secureacr-vnet --name vnet-integration-subnet --address-prefixes 10.0.0.0/24 --delegations Microsoft.Web/serverfarms
-az network vnet subnet create --resource-group secureacrsetup --vnet-name secureacr-vnet --name private-endpoint-subnet --address-prefixes 10.0.1.0/24 --disable-private-endpoint-network-policies
+az network vnet subnet create --resource-group secureacrsetup --vnet-name secureacr-vnet --name private-endpoint-subnet --address-prefixes 10.0.1.0/24
 ```
 
 The last part of the network infrastructure is the Private DNS Zone. The zone is used to host the DNS records for private endpoint allowing the web app to find the container registry by name. Go [here for a primer on Azure Private Endpoints](https://docs.microsoft.com/azure/private-link/private-endpoint-overview) and [go here for how DNS Zones fits into private endpoints](https://docs.microsoft.com/azure/private-link/private-endpoint-dns).
@@ -141,8 +132,7 @@ Now we get to creating the actual web app. To use virtual network integration we
 
 ```bash
 az appservice plan create --resource-group secureacrsetup --name secureacrplan --sku P1V3 --is-linux
-az webapp create --resource-group secureacrsetup --plan secureacrplan --name secureacrweb2021 --deployment-container-image-name 'mcr.microsoft.com/appsvc/staticsite:latest'
-az webapp update --resource-group secureacrsetup --name secureacrweb2021 --https-only
+az webapp create --resource-group secureacrsetup --plan secureacrplan --name secureacrweb2021 --https-only --deployment-container-image-name 'mcr.microsoft.com/appsvc/staticsite:latest'
 az webapp vnet-integration add --resource-group secureacrsetup --name secureacrweb2021 --vnet secureacr-vnet --subnet vnet-integration-subnet
 ```
 
@@ -222,7 +212,7 @@ App Service also support pulling from a custom private registry using the v2 API
 To set up a custom private registry in the existing setup:
 
 ```bash
-az webapp create --resource-group secureacrsetup --plan secureacrplan --name secureacrwebregistry2021 --deployment-container-image-name 'registry:2'
+az webapp create --resource-group secureacrsetup --plan secureacrplan --name secureacrwebregistry2021 --https-only --deployment-container-image-name 'registry:2'
 ```
 
 Push a few images to the registry using the docker client:
