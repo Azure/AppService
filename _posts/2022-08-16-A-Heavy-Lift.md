@@ -34,8 +34,9 @@ One of the key architectural pieces of this system is our **FrontEndRole**. The 
 
 ![FrontEndRole diagram]({{site.baseurl}}/media/2022/08/FE_Diagram.jpg)
 
-App Service was originally built as a Cloud Service and this role is just called FrontEndRole; now with our transition to VM Scale Sets, the FrontEndRole is a separate scale set which is part of each scale unit
-The original App Service FrontEndRole, which runs on Windows Server, previously consisted of:
+App Service was originally built as a Cloud Service and this role is just called FrontEndRole. With our transition to VM Scale Sets, the FrontEndRole is a separate scale set which is part of each scale unit.
+
+The original App Service FrontEndRole, which runs on Windows Server, originally consisted of:
 
 - IIS running on HTTP.sys, both operating system components of Windows Server
 - [Application Request Routing (ARR)](https://www.iis.net/downloads/microsoft/application-request-routing), which does request forwarding using WinHTTP
