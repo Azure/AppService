@@ -32,7 +32,7 @@ App Service was originally built as a Cloud Service and this role is just called
 The original App Service FrontEndRole, which runs on Windows Server, previously consisted of:
 
 - IIS running on HTTP.sys, both operating system components of Windows Server
-- [Application Request Routing (ARR)](https://www.iis.net/downloads/microsoft/application-request-routing) which does request forwarding using WinHTTP
+- [Application Request Routing (ARR)](https://www.iis.net/downloads/microsoft/application-request-routing), which does request forwarding using WinHTTP
 
 ### Kestrel and YARP in a nutshell
 
