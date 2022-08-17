@@ -3,8 +3,6 @@ title: "A Heavy Lift: Bringing Kestrel + YARP to Azure App Services"
 author_name: "David Fowler, Suwat Bodin, Chris Rosenblatt, Jenny Lawrance, Stephen Kou, Chris Ross, Miha Zupan, Aditya Mandaleeka, Bilal Alam"
 ---
 
-## Summary
-
 In this post, we get a behind-the-scenes look at the engineering work required to change a critical platform component with code paths that are exercised billions of times a day while minimizing service disruptions and maintaining SLA for our customers. We provide a brief introduction to help cover the basics, go over motivations for doing this work, explain some of the more interesting challenges, issues, and bugs encountered along the way, and close with the results and the new customers scenarios enabled.
 
 The challenge was huge, but we're excited about the benefits this brings to Azure App Services and our customers:
