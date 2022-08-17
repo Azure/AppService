@@ -51,7 +51,7 @@ The first release of .NET Core introduced the **Kestrel webserver**: an open-sou
 
 
 **YARP (“Yet Another Reverse Proxy”)** is a reverse proxy toolkit that enables building fast proxy servers using infrastructure from ASP.NET and .NET, focusing on easy customization. It is developed in the open at [https://github.com/microsoft/reverse-proxy](https://github.com/microsoft/reverse-proxy). YARP’s toolkit/extensibility model made it easy for us to incorporate our routing and TLS handling with its request forwarding capabilities. **YARP includes support for modern protocols like HTTP/2 & HTTP/3, which App Service customers can now expose.
-In addition, being based on the fast-evolving .NET platform means that every release, **Kestrel** and **YARP** benefit from improvements up and down the .NET stack, including everything from networking libraries all the way down to JIT compiler improvements that improve the quality of generated code. For a sampling of the types of improvements that went into just the .NET 6 release in 2021, see [Performance Improvements in .NET 6](https://devblogs.microsoft.com/dotnet/performance-improvements-in-net-6/#gc)
+In addition, being based on the fast-evolving .NET platform means that every release, **Kestrel** and **YARP** benefit from improvements up and down the .NET stack, including everything from networking libraries all the way down to JIT compiler improvements that improve the quality of generated code. For a sampling of the types of improvements that went into just the .NET 6 release in 2021, see [Performance Improvements in .NET 6](https://devblogs.microsoft.com/dotnet/performance-improvements-in-net-6/#gc).
 
 ## Betting on Kestrel + YARP for App Service: Why?
 
