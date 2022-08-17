@@ -36,7 +36,7 @@ The original App Service FrontEndRole, which runs on Windows Server, previously 
 
 ### Kestrel and YARP in a nutshell
 
-The **Kestrel webserver** was introduced in the early days of .NET Core as an open-source, cross-platform, and fast webserver implementation built using modern .NET. Performance is a key focus for the development team, and with each .NET release, **Kestrel** has gotten ever faster and more full-featured. As an example, recent changes made to **Kestrel** include:
+The first release of .NET Core introduced the **Kestrel webserver**: an open-source, cross-platform, and fast webserver implementation built using modern .NET. Performance is a key focus for the .NET team, and with each .NET release, **Kestrel** has gotten ever faster and more full-featured. As an example, recent changes made to **Kestrel** include:
 
 - Significant scalability improvements on many-core machines
 - Significant HTTP/2 performance enhancements when running with many concurrent streams
