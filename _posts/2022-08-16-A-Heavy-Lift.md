@@ -1,6 +1,6 @@
 ---
 title: "A Heavy Lift: Bringing Kestrel + YARP to Azure App Services"
-author_name: "Byron Tardif"
+author_name: "David Fowler, Suwat Bodin, Chris Rosenblatt, Jenny Lawrance, Stephen Kou, Chris Ross, Miha Zupan, Aditya Mandaleeka"
 ---
 
 ## Summary
