@@ -9,9 +9,9 @@ In this post, we get a small behind-the-scenes look at the engineering work requ
 
 The challenge was huge, but we're excited about the benefits this brings to Azure App Services and our customers:
 
-* Almost 80% improvement in throughput in performance tests designed to isolate the benefits
-* Greener Azure data centers from significantly decreased per-request CPU usage
-* Support for modern protocols like HTTP/3
+* Almost 80% improvement in throughput in performance tests designed to isolate the benefits.
+* Greener Azure data centers from significantly decreased per-request CPU usage.
+* Support for modern protocols like HTTP/3.
 * Support for new customer scenarios such as gRPC applications, per-host cipher suite configuration, custom error pages, and more.
 
 ## Introduction
