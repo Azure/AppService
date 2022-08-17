@@ -90,7 +90,7 @@ As you can see this journey took a lot of time. 6 months passed between the firs
 
 ## The Bugs Encountered
 
-We encountered multiple bugs on our journey to **Kestrel + YARP**. Apart from bugs in our business logic, one of the interesting classes of issue we encountered was the treatment of edge-cases in the HTTP specification. The vast diversity of clients that hit our **FrontEndRole** means that we need to be generous in accepting behavior that may not be exactly to the letter and intent of the spec.
+We encountered multiple bugs on our journey to **Kestrel + YARP**. Apart from bugs in our business logic, one of the interesting classes of issue we encountered was the treatment of edge-cases in the HTTP specification. A diversity of clients hit our **FrontEndRole**. We need to be generous in accepting behavior that may not be exactly the HTTP spec's letter and intent.
 
 A simple example of one of these cases is when a request has leading newline characters (CR and/or LF). Strictly speaking, this isn’t allowed, but it turns out that there are some clients that send requests that start like:
 
