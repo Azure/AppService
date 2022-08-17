@@ -7,6 +7,12 @@ author_name: "David Fowler, Suwat Bodin, Chris Rosenblatt, Jenny Lawrance, Steph
 
 In this post, we get a small behind-the-scenes look at the engineering work required to change a critical platform component with code paths that are exercised billions of times a day while minimizing service disruptions and maintaining SLA for our customers. We provide a brief introduction to help cover the basics, go over motivations for doing this work as well as some of the more interesting challenges, issues, and bugs encountered along the way, and finally close with results, and new customers scenarios enabled. 
 
+The challenge was huge, but we're excited about the benefits this brings to Azure App Services and our customers:
+
+* Almost 80% improvement in throughput in performance tests designed to isolate the benefits
+* Greener Azure data centers from significantly decreased per-request CPU usage
+* Support for modern protocols like HTTP/3
+* Support for new customer scenarios such as gRPC applications, per-host cipher suite configuration, custom error pages, and more.
 
 ## Introduction
 
