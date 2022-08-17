@@ -51,7 +51,7 @@ In addition, being based on the fast-evolving .NET platform means that every rel
 The previous **FrontEndRole** architecture of App Service built on IIS/HTTP.SYS has served us well, but the promise of a modern HTTP stack in **Kestrel + YARP** could deliver new benefits to all App Service customers.  Specifically:
 
 - Performance improvements, including significantly decreased per-request CPU cost and per-connection memory cost.  
-- More flexible extensibility points into SSL termination path allowing for easier dynamic SNI host selection.
+- More flexible extensibility points into SSL termination path, allowing for easier dynamic SNI host selection.
 - Enable new customer scenarios like support for gRPC, per-host cipher suite configuration, custom error pages, and more.
 
 With all that context and motivation, the goal of the V-Team was clear: 
