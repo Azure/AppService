@@ -10,7 +10,7 @@ In this post, we get a small behind-the-scenes look at the engineering work requ
 
 ## Introduction
 
-In 2021, a group of engineers across multiple teams including .NET and Azure got together to transition the **App Service Frontend** fleet to **Kestrel + [YARP](https://github.com/microsoft/reverse-proxy)**. As we celebrate the completion of this major lift and collaboration, we decided to write down the journey and describe some of the challenges of completing such a change to a live service, the wins we achieved, and the future work enabled by this transition. We hope you enjoy it.
+In 2021, a group of engineers across multiple teams, including .NET and Azure, got together to transition the **App Service Frontend** fleet to **Kestrel + [YARP](https://github.com/microsoft/reverse-proxy)**. As we celebrate the completion of this major lift and collaboration, we decided to write down the journey and describe some of the challenges of completing such a change to a live service, the wins we achieved, and the future work enabled by this transition. We hope you enjoy it.
 
 ### Azure App Service in a nutshell
 
