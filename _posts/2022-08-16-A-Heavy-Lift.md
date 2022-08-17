@@ -67,7 +67,7 @@ With all that context and motivation, the goal of the V-Team was clear:
 
 ## Challenge: Server Framework Diversity
 
-App Service is not the first Microsoft service to transition to Kestrel/YARP. Microsoft has already documented the journeys of Bing, Azure Active Directory (AAD), and Dynamics 365 to .NET; these efforts have proven out the stability and performance of .NET for critical service workloads. 
+App Service is not the first Microsoft service to transition to Kestrel and YARP. Microsoft has already documented the journeys of Bing, Azure Active Directory (AAD), and Dynamics 365 to .NET; these efforts have proven out the stability and performance of .NET for critical service workloads. 
 
 - [Bing.com runs on .NET Core 2.1!](https://devblogs.microsoft.com/dotnet/bing-com-runs-on-net-core-2-1/)
 - [Azure Active Directory's gateway is on .NET 6.0!](https://devblogs.microsoft.com/dotnet/azure-active-directorys-gateway-is-on-net-6-0/)
