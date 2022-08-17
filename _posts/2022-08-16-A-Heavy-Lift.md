@@ -72,7 +72,7 @@ The unique challenge that App Service adds to the mix is the diversity of server
 
 Because App Service enables customers to write their own applications, the concept of *“service health”* is a nuanced discussion.  App Service measures the health of the platform; we ensure that customers have a running VM which can connect to storage and can execute a simple canary request.  But App Service cannot easily measure the organic health (HTTP request success rate) since we do not control the application. As a result, we primarily focused on platform health as our main metric.  
 
-For our transition to **Kestrel + YARP**, we needed to broaden our measurement to include organic health.  Rather than looking for an absolute bar (say >99.99% success), we needed to compare *“before Kestrel + YARP”* and *“after Kestrel + YARP”* organic success and look for anomalies which would point out potential problems.     
+For our transition to **Kestrel + YARP**, we needed to broaden our measurement to include organic health.  Rather than looking for an absolute bar (say >99.99% success), we needed to compare *“before Kestrel + YARP”* and *“after Kestrel + YARP”* organic success and look for anomalies that would point out potential problems.     
 
 ## Challenge: Quick Rollback in Production
 
