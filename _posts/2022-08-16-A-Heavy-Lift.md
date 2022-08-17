@@ -52,7 +52,7 @@ The previous **FrontEndRole** architecture of App Service built on IIS/HTTP.SYS 
 
 - Performance improvements, including significantly decreased per-request CPU cost and per-connection memory cost.  
 - More flexible extensibility points into SSL termination path allowing for easier dynamic SNI host selection.
-- Enable new customer scenarios like support for gRPC, per-host cipher suite configuration, custom error pages and more.
+- Enable new customer scenarios like support for gRPC, per-host cipher suite configuration, custom error pages, and more.
 
 With all that context and motivation, the goal of the V-Team was clear: 
 >**“Transition the 200K+ dedicated cores running FrontEndRole to use Kestrel + YARP (and thus move away from IIS/HTTP.SYS/ARR)”**
