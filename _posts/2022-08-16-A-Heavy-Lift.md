@@ -86,7 +86,7 @@ With all the context and challenges described, here is how the journey looked li
 
 ![FrontEndRole Migration]({{site.baseurl}}/media/2022/08/FE_Migration.jpg)
 
-As you can see this journey took a lot of time; it took over 6 months to complete.
+As you can see this journey took a lot of time. 6 months passed between the first Kestrel/YARP deployment and 100%.
 
 ## The Bugs Encountered
 
