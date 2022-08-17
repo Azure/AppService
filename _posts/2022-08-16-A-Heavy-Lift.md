@@ -89,8 +89,6 @@ With a broadened approach to assessing organic health anomalies caused by a dive
 
 With all the context and challenges described, here is how the journey looked like in a picture.  
 
->**TODO:** Add FE Migration image
-
 ![FrontEndRole Migration]({{site.baseurl}}/media/2022/08/FE_Migration.jpg)
 
 As you can see this journey took a lot of time. 6 months passed between the first Kestrel/YARP deployment and 100%.
