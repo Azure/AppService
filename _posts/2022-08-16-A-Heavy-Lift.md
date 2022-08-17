@@ -28,7 +28,7 @@ Azure App Service recently celebrated its 10 year anniversary (we launched it on
 
 One of the key architectural pieces of this system is our **FrontEndRole**. The **FrontEndRole** main purposes are:
 
-- Receiving traffic on HTTP/HTTPS from public virtual IP addresses associated with scale unit
+- Receiving traffic on HTTP/HTTPS from public virtual IP addresses associated with a scale unit
 - Terminating SSL if required
 - Determining which set of VMs are the origin-servers for the application (called Workers) and then routing to them
 
