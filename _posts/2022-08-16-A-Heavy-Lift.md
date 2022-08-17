@@ -1,5 +1,5 @@
 ---
-title: "A Heavy Lift: Bringing Kestrel/YARP to Azure App Services"
+title: "A Heavy Lift: Bringing Kestrel + YARP to Azure App Services"
 author_name: "Byron Tardif"
 ---
 
@@ -26,7 +26,7 @@ One of the key architectural pieces of this system is our **FrontEndRole**. The 
 - Terminating SSL if required
 - Determining which set of VMs are the origin-servers for application (called Workers) and then routing to them
 
->**TODO:** Add FE Diagram image
+![FrontEndRole diagram]({{site.baseurl}}/media/2022/08/FE_Diagram.jpg)
 
 App Service was originally built as a Cloud Service and this role is just called FrontEndRole; now with our transition to VM Scale Sets, the FrontEndRole is a separate scale set which is part of each scale unit
 The original App Service FrontEndRole, which runs on Windows Server, previously consisted of:
@@ -83,6 +83,8 @@ With a broadened approach to assessing organic health anomalies caused by a dive
 With all the context and challenges described, here is how the journey looked like in a picture.  
 
 >**TODO:** Add FE Migration image
+
+![FrontEndRole Migration]({{site.baseurl}}/media/2022/08/FE_Migration.jpg)
 
 As you can see this journey took a lot of time; it took over 6 months to complete.
 
