@@ -5,7 +5,7 @@ author_name: "David Fowler, Suwat Bodin, Chris Rosenblatt, Jenny Lawrance, Steph
 
 ## Summary
 
-In this post, we get a small behind-the-scenes look at the engineering work required to change a critical platform component with code paths that are exercised billions of times a day while minimizing service disruptions and maintaining SLA for our customers. We provide a brief introduction to help cover the basics, go over motivations for doing this work as well as some of the more interesting challenges, issues, and bugs encountered along the way, and finally close with results, and new customers scenarios enabled. 
+In this post, we get a behind-the-scenes look at the engineering work required to change a critical platform component with code paths that are exercised billions of times a day while minimizing service disruptions and maintaining SLA for our customers. We provide a brief introduction to help cover the basics, go over motivations for doing this work, explain some of the more interesting challenges, issues, and bugs encountered along the way, and close with the results and the new customers scenarios enabled.
 
 The challenge was huge, but we're excited about the benefits this brings to Azure App Services and our customers:
 
@@ -20,7 +20,7 @@ In 2021, a group of engineers across multiple teams, including .NET and Azure, g
 
 ### Azure App Service in a nutshell
 
-Azure App Service recently celebrated its 10 year anniversary (we launched it on June 7th, 2012).  We are grateful and humbled by our customers who have helped us grow into a big service (affectionately called an XXL service in Azure internally, a designation only shared with 3 other services):
+Azure App Service recently celebrated its 10 year anniversary (we launched it on June 7th, 2012).  We are grateful and humbled by our customers who have helped us grow into a big service (affectionately called an XXL service in Azure internally, a designation only shared with 3 other services). Here are some numbers that provide a glimpse into our scale:
 
 - 160B+ daily HTTP requests served by applications
 - 14M+ host names
@@ -28,15 +28,15 @@ Azure App Service recently celebrated its 10 year anniversary (we launched it on
 
 One of the key architectural pieces of this system is our **FrontEndRole**. The **FrontEndRole** main purposes are:
 
-- Receiving traffic on HTTP/HTTPS from public virtual IP addresses associated with scale unit
+- Receiving traffic on HTTP/HTTPS from public virtual IP addresses associated with a scale unit
 - Terminating SSL if required
-- Determining which set of VMs are the origin-servers for application (called Workers) and then routing to them
+- Determining which set of VMs are the origin-servers for the application (called Workers) and then routing to them
 
 ![FrontEndRole diagram]({{site.baseurl}}/media/2022/08/FE_Diagram.jpg)
 
 App Service was originally built as a Cloud Service and this role is just called FrontEndRole. With our transition to VM Scale Sets, the FrontEndRole is a separate scale set which is part of each scale unit.
 
-The original App Service FrontEndRole, which runs on Windows Server, originally consisted of:
+The original App Service FrontEndRole, which runs on Windows Server, consisted of:
 
 - IIS running on HTTP.sys, both operating system components of Windows Server
 - [Application Request Routing (ARR)](https://www.iis.net/downloads/microsoft/application-request-routing), which does request forwarding using WinHTTP
@@ -47,11 +47,11 @@ The first release of .NET Core introduced the **Kestrel webserver**: an open-sou
 
 - Significant scalability improvements on many-core machines
 - Significant HTTP/2 performance enhancements when running with many concurrent streams
-- Support for new standards like HTTP/3. 
+- Support for new standards like HTTP/3
 
 
-**YARP (“Yet Another Reverse Proxy”)** is a reverse proxy toolkit that enables building fast proxy servers using infrastructure from ASP.NET and .NET, focusing on easy customization. It is developed in the open at [https://github.com/microsoft/reverse-proxy](https://github.com/microsoft/reverse-proxy). YARP’s toolkit/extensibility model made it easy for us to incorporate our routing and TLS handling with its request forwarding capabilities. **YARP includes support for modern protocols like HTTP/2 & HTTP/3, which App Service customers can now expose.
-In addition, being based on the fast-evolving .NET platform means that every release, **Kestrel** and **YARP** benefit from improvements up and down the .NET stack, including everything from networking libraries all the way down to JIT compiler improvements that improve the quality of generated code. For a sampling of the types of improvements that went into just the .NET 6 release in 2021, see [Performance Improvements in .NET 6](https://devblogs.microsoft.com/dotnet/performance-improvements-in-net-6/#gc)
+**YARP (“Yet Another Reverse Proxy”)** is a reverse proxy toolkit that enables building fast proxy servers using infrastructure from ASP.NET and .NET, focusing on easy customization. It is developed in the open at [https://github.com/microsoft/reverse-proxy](https://github.com/microsoft/reverse-proxy). YARP’s toolkit/extensibility model made it easy for us to incorporate our routing and TLS handling with its request forwarding capabilities. **YARP** includes support for modern protocols like HTTP/2 & HTTP/3, which App Service customers can now expose.
+In addition, being based on the fast-evolving .NET platform means that every release, **Kestrel** and **YARP** benefit from improvements up and down the .NET stack, including everything from networking libraries all the way down to JIT compiler improvements that improve the quality of generated code. For a sampling of the types of improvements that went into just the .NET 6 release in 2021, see [Performance Improvements in .NET 6](https://devblogs.microsoft.com/dotnet/performance-improvements-in-net-6/#gc).
 
 ## Betting on Kestrel + YARP for App Service: Why?
 
@@ -67,7 +67,7 @@ With all that context and motivation, the goal of the V-Team was clear:
 
 ## Challenge: Server Framework Diversity
 
-App Service is not the first Microsoft service to transition to Kestrel/YARP. Microsoft has already documented the journeys of Bing, Azure Active Directory (AAD), and Dynamics 365 to .NET; these efforts have proven out the stability and performance of .NET for critical service workloads. 
+App Service is not the first Microsoft service to transition to Kestrel and YARP. Microsoft has already documented the journeys of Bing, Azure Active Directory (AAD), and Dynamics 365 to .NET; these efforts have proven out the stability and performance of .NET for critical service workloads. 
 
 - [Bing.com runs on .NET Core 2.1!](https://devblogs.microsoft.com/dotnet/bing-com-runs-on-net-core-2-1/)
 - [Azure Active Directory's gateway is on .NET 6.0!](https://devblogs.microsoft.com/dotnet/azure-active-directorys-gateway-is-on-net-6-0/)
