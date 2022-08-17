@@ -30,7 +30,7 @@ One of the key architectural pieces of this system is our **FrontEndRole**. The 
 
 - Receiving traffic on HTTP/HTTPS from public virtual IP addresses associated with scale unit
 - Terminating SSL if required
-- Determining which set of VMs are the origin-servers for application (called Workers) and then routing to them
+- Determining which set of VMs are the origin-servers for the application (called Workers) and then routing to them
 
 ![FrontEndRole diagram]({{site.baseurl}}/media/2022/08/FE_Diagram.jpg)
 
