@@ -5,7 +5,7 @@ author_name: "David Fowler, Suwat Bodin, Chris Rosenblatt, Jenny Lawrance, Steph
 
 ## Summary
 
-In this post, we get a small behind-the-scenes look at the engineering work required to change a critical platform component with code paths that are exercised billions of times a day while minimizing service disruptions and maintaining SLA for our customers. We provide a brief introduction to help cover the basics, go over motivations for doing this work as well as some of the more interesting challenges, issues, and bugs encountered along the way, and finally close with results, and new customers scenarios enabled. 
+In this post, we get a behind-the-scenes look at the engineering work required to change a critical platform component with code paths that are exercised billions of times a day while minimizing service disruptions and maintaining SLA for our customers. We provide a brief introduction to help cover the basics, go over motivations for doing this work, explain some of the more interesting challenges, issues, and bugs encountered along the way, and close with the results and the new customers scenarios enabled.
 
 The challenge was huge, but we're excited about the benefits this brings to Azure App Services and our customers:
 
