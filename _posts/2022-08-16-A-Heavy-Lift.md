@@ -20,7 +20,7 @@ In 2021, a group of engineers across multiple teams, including .NET and Azure, g
 
 ### Azure App Service in a nutshell
 
-Azure App Service recently celebrated its 10 year anniversary (we launched it on June 7th, 2012).  We are grateful and humbled by our customers who have helped us grow into a big service (affectionately called an XXL service in Azure internally, a designation only shared with 3 other services):
+Azure App Service recently celebrated its 10 year anniversary (we launched it on June 7th, 2012).  We are grateful and humbled by our customers who have helped us grow into a big service (affectionately called an XXL service in Azure internally, a designation only shared with 3 other services). Here are some numbers that provide a glimpse into our scale:
 
 - 160B+ daily HTTP requests served by applications
 - 14M+ host names
