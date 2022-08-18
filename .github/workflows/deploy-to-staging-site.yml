@@ -5,37 +5,30 @@ on:
     branches:
     - master
 
-jobs:
-  build-and-deploy:
+concurrency: ci-${{ github.event.number }}
 
+env:
+  WEBAPP_NAME: antares-blog-staging
+  RESOURCE_GROUP: appserviceblogsite
+  SLOT_NAME: pr-${{ github.event.number }}
+
+jobs:
+  build:
     runs-on: ubuntu-latest
 
     steps:
     - name: Check out repo
       uses: actions/checkout@v1
 
-    - name: Log into Azure CLI with service principal
-      uses: azure/login@v1.1
-      with:
-        creds: ${{ secrets.ANTARES_BLOG_SITE_SP }}
-        
-    - name: Set up cache for Ruby Bundler
-      uses: actions/cache@v1
-      with:
-        path: vendor/bundle
-        key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-gems-
-
     - name: Set up Ruby 2.6
-      uses: actions/setup-ruby@v1
+      uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 2.6.x
+        ruby-version: '2.6'
+        bundler-cache: true
 
     - name: Install Ruby dependencies
       run: |
         gem install bundler
-        bundle config path vendor/bundle
         bundle install --jobs 4 --retry 3
 
     - name: Build site
@@ -43,24 +36,71 @@ jobs:
       env:
         JEKYLL_ENV: production
 
+    - name: zip up site
+      run: cd _site && zip -r ../blog.zip .
+    
+    - name: Upload artifact for deployment job
+      uses: actions/upload-artifact@v2
+      with:
+        name: jekyll-app
+        path: blog.zip
+    
+  set-up-test-env:
+    name: Create test env
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Log into Azure CLI with service principal
+      uses: azure/login@v1.1
+      with:
+        creds: ${{ secrets.ANTARES_BLOG_SITE_SP }}
+    
     - name: Create slot on staging site
-      run: az webapp deployment slot create --resource-group appserviceblogsite  --name antares-blog-staging --slot pr-${{ github.event.number }}
+      run: | 
+        az webapp deployment slot create \
+          --resource-group $RESOURCE_GROUP \
+          --name $WEBAPP_NAME \
+          --slot $SLOT_NAME
+
+  deploy-to-slot:
+    name: Deploy to test env
+    runs-on: ubuntu-latest
+    needs: [build, set-up-test-env]
+    environment:
+      name: "PR #${{ github.event.number }}"
+      url: "${{ steps.deploy-to-webapp.outputs.webapp-url }}"
+    permissions:
+      pull-requests: write
+    
+    steps:
+    - name: Log into Azure CLI with service principal
+      uses: azure/login@v1.1
+      with:
+        creds: ${{ secrets.ANTARES_BLOG_SITE_SP }}
+
+    - name: Download artifact from build job
+      uses: actions/download-artifact@v2
+      with:
+        name: jekyll-app
 
     - name: Deploy to slot on staging site
       uses: azure/webapps-deploy@v1
       with: 
-        app-name: antares-blog-staging
-        slot-name:  "pr-${{ github.event.number }}"
-        package: _site/
+        app-name: ${{ env.WEBAPP_NAME }}
+        slot-name: ${{ env.SLOT_NAME }}
+        package: blog.zip
     
     - name: Comment on PR with the preview link
-      uses: mshick/add-pr-comment@master
+      uses: mshick/add-pr-comment@v1
       with:
         message: |
-          ## [Preview link](https://antares-blog-staging-pr-${{ github.event.number }}.azurewebsites.net) 
+          ## Preview link: https://antares-blog-staging-pr-${{ github.event.number }}.azurewebsites.net
+
           - Your changes have been deployed to the preview site. The preview site will update as you add more commits to this branch. 
-          - The preview site shows any future-dated articles. Don't worry, if you are publishing a future-dated article, it will not show on the production site until the file's specified date.
-          - The preview link is shareable, but will be deleted when the pull request is merged or closed.
+          - The preview site shows any future-dated articles. If you are publishing a future-dated article, it will not show on the production site until the file's specified date.
+          - The preview link is shareable, but will be deleted when this pull request is merged or closed.
+
           > *This is an automated message.*
-        repo-token: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        repo-token-user-login: 'github-actions[bot]'
    

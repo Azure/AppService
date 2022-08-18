@@ -1,5 +1,5 @@
 ---
-title: "Connecting existing Web App to Azure database for MySQL (Preview)" 
+title: "Connecting existing Web App to Azure Database for MySQL (Preview)" 
 hide_excerpt: true
 ---
 <html><head>
@@ -13,7 +13,7 @@ hide_excerpt: true
 <hr/>
 <div id="content">The following steps show how to connect your existing web app on Azure App Service running on MySQL in-app or other MySQL solutions in Azure to <a href="https://azure.microsoft.com/en-us/services/mysql/">Azure database for MySQL (Preview)</a>.
 <h2>Before your begin</h2>
-Log in to the <a href="https://porta.azure.com">Azure portal</a> . Create a MySQL database on Azure database for MySQL (Preview) service . For details , refer to <a href="https://docs.microsoft.com/en-us/azure/mysql/quickstart-create-mysql-server-database-using-azure-portal">How to create MySQL database from Portal</a> or <a href="https://docs.microsoft.com/en-us/azure/mysql/quickstart-create-mysql-server-database-using-azure-cli">How to create MySQL database using CLI.</a>
+Log in to the <a href="https://porta.azure.com">Azure portal</a> . Create a MySQL database on Azure Database for MySQL (Preview) service . For details , refer to <a href="https://docs.microsoft.com/en-us/azure/mysql/quickstart-create-mysql-server-database-using-azure-portal">How to create MySQL database from Portal</a> or <a href="https://docs.microsoft.com/en-us/azure/mysql/quickstart-create-mysql-server-database-using-azure-cli">How to create MySQL database using CLI.</a>
 <h2 id="firewall">Firewall configuration</h2>
 Azure database for MySQL provides tighter security using Firewall to protect your data. When using this service with App Service Web Apps , you need to keep in mind that the outbound IPs are dynamic in nature .
 <ol>
@@ -27,14 +27,14 @@ Azure database for MySQL (Preview) has SSL <strong>Enabled</strong> . If your ap
 <img alt="ssldisable" class="alignnone size-large wp-image-4806" height="216" src="{{ site.baseurl }}/media/2017/05/ssldisable-1024x252.png" width="879"/>
 
 Note that some applications frameworks may not support SSL , hence check your application framework documentation on whether to disable or enable SSL.
-<h2 id="mysqlinapp">Migrating from MySQL in-app database to Azure database for MySQL (Preview)</h2>
+<h2 id="mysqlinapp">Migrating from MySQL in-app database to Azure Database for MySQL (Preview)</h2>
 You can migrate MySQL in-app database to Azure database for MySQL (Preview) using <a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/03/06/migrate-development-database-on-mysql-in-app-to-production-mysql-database/">Export feature</a>. Note in order to use this feature to export the database , you need to :
 <ul>
 <li>Disable SSL since the feature does not work with MySQL database connected via SSL.</li>
 <li>Allow all IPs is configured on your MySQL server</li>
 </ul>
 <h2>App Service Back up and Restore features</h2>
-Currently backup and restore feature does not work with SSL enabled for Azure database for MySQL (Preview). Disable SSL if you are planning to backup/restore the database using App service backup feature . Azure database for MySQL (Preview) also offers backup feature , for more details see <a href="https://docs.microsoft.com/en-us/azure/mysql/howto-restore-server-portal">here</a>.</div>
+Currently backup and restore feature does not work with SSL enabled for Azure Database for MySQL (Preview). Disable SSL if you are planning to backup/restore the database using App service backup feature . Azure database for MySQL (Preview) also offers backup feature , for more details see <a href="https://docs.microsoft.com/en-us/azure/mysql/howto-restore-server-portal">here</a>.</div>
 </div></body>
 <script src="{{ site.baseurl }}/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
 <script src="{{ site.baseurl }}/resource/replace.js" type="text/javascript"></script>

@@ -29,9 +29,11 @@ Create the following resources. You will need information from each resource tha
 3. .NET Framework application with supporting dockerfile in a GitHub repository
 4. Azure SQL Database (Optional)
 
-### Create a Service Principal
+### Create a Service Principal (optional) or use Publish Profile
 
-Our workflow will use a Service Principal to authenticate with Azure when deploying the container to App Service. A service principal is an Active Directory Identity created for use with automation scenarios, such as GitHub Actions.  If you would like to use your **publish profile** credentials instead, please skip this section and see [Deploy to Azure App Service](#Deploy-to-azure-app-service) to see how.
+In this step you have the choice of using a Service Principal or Publish Profile for authentication.  If you would like to use your **publish profile** credentials instead, please skip this section and see [Deploy to Azure App Service](#Deploy-to-azure-app-service) to see how.  To use a Service Principal, please continue here:
+
+Our workflow will use a Service Principal to authenticate with Azure when deploying the container to App Service. A service principal is an Active Directory Identity created for use with automation scenarios, such as GitHub Actions.  
 
 1. Run the following command in Azure CLI in powershell to get the credentials needed to run the login action.  The output of this command will be a collection of key value pairs that you'll need to add to your GitHub secrets.
 
