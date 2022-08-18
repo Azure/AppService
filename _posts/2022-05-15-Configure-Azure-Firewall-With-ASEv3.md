@@ -1,7 +1,12 @@
 ---
 title: "Configure Azure Firewall with ASEv3"
 author_name: "Hugo Girard"                           
-category: 'networking'                                 
+category: 'networking'
+toc: true
+toc_sticky: true
+tags:
+    - azure app service environment
+    - azure firewall                               
 ---
 
 Azure Firewall help you securize your egress traffic of you App Service Environment. This will provide only authorized flow going out of your ASE.
@@ -65,4 +70,45 @@ You can see the property **valueFromCache** return the value **FALSE** like expe
 
 ## Adding network rule in Azure Firewall
 
-Now before adding the network rule in Azure Firewall let's read the log from the firewall.  The log are saved in Azure Log Analytics
+Now before adding the network rule in Azure Firewall let's read the log from the firewall.  The log are saved in Azure Log Analytics.  Let's execute the following Kusto query in log analytic.
+
+```
+AzureDiagnostics
+| where ResourceGroup == 'RG-HUB-ASE-DEMO'
+| where Category == 'AzureFirewallNetworkRule'
+| order by TimeGenerated desc 
+```
+This should return you the reason why the ASE was not able to communicate with the Azure Redis Cache.
+
+![]({{ site.baseurl }}/media/2022/05/ase_azfw_rule_deny.png)
+
+As you can see, the TCP request from 10.1.1.254 to 11.0.1.4 was deny.
+
+The 10.1.1.254 correspond to the IP address of the Fibonacci Web App, you can see here the CIDR of the subnet allocated for the Application Service Environment.
+
+![]({{ site.baseurl }}/media/2022/05/asev3_snet.png)
+
+The 11.0.1.4 correspond to the **private endpoint** used for the Azure Redis Cache.
+
+Now you need to create a Network Rule in the Azure firewall to allow the communication between the ASE subnet and the private endpoint of the Azure Redis Cache.
+
+![]({{ site.baseurl }}/media/2022/05/azfw-network-rule.png)
+
+## Try again the Fibonacci Api
+
+Now, you should restart the Fibonacci Api, if the connection to Redis cache is not possible the Fibonacci won't try again, the circuit breaker pattern was not implemented here to keep the application simple.
+
+The first time you try with a len of 5 you will have the property **valueFromCache** with a value of **FALSE**.
+
+If you try again with the same parameter this time you will see the result will come faster and the **valueFromCache** property will be **TRUE**.
+
+![]({{ site.baseurl }}/media/2022/05/ase_cached_value.png)
+
+### Resources
+
+1.	[Reference application](https://github.com/hugogirard/asev3enterpriseDemo)
+2.	[Hub and spoke network topology](https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/hybrid-networking/hub-spoke?tabs=cli)
+3.	[Azure landing zone](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/)
+4.	[Azure App Service Environment](https://docs.microsoft.com/en-us/azure/app-service/environment/overview)
+5.	[Application Gateway with App Service Environment](https://docs.microsoft.com/en-us/azure/app-service/environment/integrate-with-application-gateway)
+6.	[Azure Firewall](https://docs.microsoft.com/en-us/azure/firewall/overview)
