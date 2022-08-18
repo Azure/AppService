@@ -9,9 +9,9 @@ tags:
     - azure firewall                               
 ---
 
-Azure Firewall help you securize your egress traffic of you App Service Environment. This will provide only authorized flow going out of your ASE.
+When deploying App Service Environment, one requierement you will probably want its to monitor and limit your egress traffic from the ASE. 
 
-This blog post walks you throught how to achieve this, this assume you have a [hub and spoke network topology](https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/hybrid-networking/hub-spoke?tabs=cli) in place in Azure with more than one [landing zone](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/).
+This blog post walks you throught how to achieve this using Azure Firewall, this assume you have an [hub and spoke network topology](https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/hybrid-networking/hub-spoke?tabs=cli) in place in Azure with more than one [landing zone](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/).
 
 A full implementation example is available in [Github](https://github.com/hugogirard/asev3enterpriseDemo).  This GitHub repository will create all the resources discussed in this article. 
 
