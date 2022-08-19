@@ -105,7 +105,7 @@ This is a case that IIS (and some other servers) allow, but because **Kestrel** 
 
 Some other *interesting* issues uncovered can be found [here](https://github.com/dotnet/aspnetcore/pull/40833), [here](https://github.com/dotnet/aspnetcore/pull/40633) and [here](https://github.com/microsoft/reverse-proxy/pull/1773).
 
-As a result of investigating and addressing this class of issues, we’ve made **Kestrel** a more capable server without compromising the on the core principle of security.
+As a result of investigating and addressing this class of issues, we’ve made **Kestrel** a more capable server without compromising the core principle of security.
 
 ## The Payoff: Performance and New Features, Now and in the Future
 
