@@ -66,6 +66,7 @@ You can create a database just for the `guestbook` application and grant all per
 postgres=# create database guestbook;
 postgres=# create user guestbookuser with encrypted password 'guestbookpass';
 postgres=# grant all privileges on database guestbook to guestbookuser;
+postgres=# \q
 ```
 
 The original example used SQL for an in-memory H2 database. In PostgreSQL the table definition has been updated to:
@@ -80,9 +81,73 @@ CREATE TABLE guestbook
 
 ### Build and run the application locally
 
+In order to tell our application where to access our database, we'll use the `DATABASE_URL` environment variable. In
+our example from the previous section, we've started a container running PostgreSQL, so we set the environment variable
+like this:
+
+Using Bash:
+
 ```
-To Be Completed
+export DATABASE_URL="jdbc:postgresql://localhost:5432/guestbook?user=guestbookuser&password=guestbookpass"
 ```
+
+Now, let's make sure the database's tables are using the most recent definition by running the following command:
+
+```
+lein run migrate
+```
+
+This will apply any changes to the database definition that could be pending, such as creating or modifying tables.
+
+You can use the `psql` utility to confirm the tables were created:
+
+```
+docker run -it --rm --network host postgres psql -h localhost -d guestbook -U guestbookuser
+Password for user guestbookuser:
+psql (14.5 (Debian 14.5-1.pgdg110+1))
+Type "help" for help.
+
+guestbook=> select * from guestbook;
+ id | name | message | timestamp
+----+------+---------+-----------
+(0 rows)
+
+guestbook=> select * from schema_migrations;
+       id       |         applied         |     description
+----------------+-------------------------+---------------------
+ 20190317085139 | 2022-08-24 16:28:02.528 | add-guestbook-table
+(1 row)
+
+guestbook=> \q
+```
+
+In order to run the application locally, we need to provide some configuration for your dev environment. Since each developer
+could have a different setup, this file is generally not checked-in with the rest of the source code. Copy the contents below
+and save them in a file called `dev-config.edn` on the root of the project:
+
+```json
+{
+ :dev true
+ :port 3000
+}
+```
+
+Finally, you can run the application locally with:
+
+```
+lein run
+```
+
+The server will start and after a while you should be able to access the application on http://localhost:3000/ and see
+guestbook form. If you need to use another port, you can use the `PORT` environment variable or pass it as a parameter
+in the command line as shown below:
+
+```
+lein run -p 8000
+```
+
+This is just the beginning. Clojure leans towards an interactive development style, so it's enjoyed best when using
+a live REPL console attached to the project. To learn more about it, see [REPL Driven Development](https://luminusweb.com/docs/repl.html) in the Luminus framework docs.
 
 ## Deployment on Azure
 
@@ -179,7 +244,7 @@ You will need to edit the file `pom.xml` and replace the values in the following
   </deployment>
 ```
 
-You replace the text described above from the command line using `sed`, using the following commands:
+You can perform the text replacements described above from the command line using `sed`, using the following commands:
 
 ```bash
 sed -i 's/\/target/\/target\/uberjar/' pom.xml
