@@ -3,7 +3,7 @@ title: "Clojure on App Service"
 toc: true
 toc_sticky: true
 author_name: Denis Fuenzalida
-excerpt: "Build and run a Clojure App on Azure App Service"
+excerpt: "Build and run a Web App written in Clojure, on Azure App Service"
 category: java
 ---
 
@@ -14,6 +14,8 @@ This article uses an example web app written in [Clojure](https://clojure.org/) 
 ## The `guestbook` application
 
 The example application is a simple guestbook app where visitors can write messages about a site they visited. The data is stored and read from a PostgreSQL database on Azure which is created by a helper script.
+
+![Screenshot of the guestbook web app showing a form to enter the visitor's name and message]({{site.baseurl}}/media/2022/08/guestbook-screenshot.png)
 
 ## Prerequisites
 
@@ -45,9 +47,13 @@ The following changes have been made from the [original guestbook app](https://g
 
 * Change directory with: `cd clojure-on-app-service`
 
-### Launch a PostgreSQL database for development
+## Build and run the application locally
 
-If you want to test this application locally before deploying to App Service, you can also run a PostgreSQL instance with Docker:
+If you want to test this application locally before deploying to App Service, follow the steps on this section, otherwise you can skip to the [Deployment on Azure](#deployment-on-azure) section.
+
+### Run a PostgreSQL database for development
+
+ you can also run a PostgreSQL instance with Docker:
 
 ```bash
 docker run --name postgres -e POSTGRES_PASSWORD=pgpassword -d -p 5432:5432 postgres
@@ -68,18 +74,6 @@ postgres=# create user guestbookuser with encrypted password 'guestbookpass';
 postgres=# grant all privileges on database guestbook to guestbookuser;
 postgres=# \q
 ```
-
-The original example used SQL for an in-memory H2 database. In PostgreSQL the table definition has been updated to:
-
-```sql
-CREATE TABLE guestbook
-(id SERIAL PRIMARY KEY,
- name VARCHAR(30),
- message VARCHAR(200),
- timestamp TIMESTAMP);
-```
-
-### Build and run the application locally
 
 In order to tell our application where to access our database, you need to use the `DATABASE_URL` environment variable. In
 our example from the previous section, we started a container running PostgreSQL, so you'll set the environment variable
@@ -126,6 +120,8 @@ guestbook=> select * from schema_migrations;
 
 guestbook=> \q
 ```
+
+### Launching the application
 
 In order to run the application locally, you'll need to provide some configuration for your dev environment. Since each developer
 could have a different setup, this file is generally not checked-in with the rest of the source code. Copy the contents below
@@ -311,7 +307,7 @@ $ mvn azure-webapp:deploy
 [INFO] ------------------------------------------------------------------------
 ```
 
-Give it a minute for the application to deploy and warm up. The first time you visit the application you may see an error 500 because the migrations might have not completed, but after refreshing the page it will work fine.
+Give it a minute for the application to deploy and warm up. The first time you visit the application you may see an error 500 if the database migrations have not completed, but after refreshing the page it will work fine.
 
 If you want to delete the application and all the related resources, go to your [Resource Groups](https://portal.azure.com/#blade/HubsExtension/BrowseResourceGroups) in the Azure Portal, then select the appropriate `guestbook` resource group and delete it.
 
