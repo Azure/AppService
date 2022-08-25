@@ -9,7 +9,7 @@ category: java
 
 Clojure is a dynamic, general-purpose programming language from the Lisp family that runs on the Java Virtual Machine. You can build web apps in Clojure and deploy them to Azure App Service as a JAR file.
 
-On this article we will use an example web app written in [Clojure](https://clojure.org/) based on the guestbook app from the [Luminus framework](https://luminusweb.com/), updated to use PostgreSQL and ready to deploy to Azure App Service in a few simple steps.
+This article uses an example web app written in [Clojure](https://clojure.org/) based on the guestbook app from the [Luminus framework](https://luminusweb.com/), updated to use PostgreSQL and ready to deploy to Azure App Service in a few simple steps.
 
 ## The `guestbook` application
 
@@ -81,14 +81,20 @@ CREATE TABLE guestbook
 
 ### Build and run the application locally
 
-In order to tell our application where to access our database, we'll use the `DATABASE_URL` environment variable. In
-our example from the previous section, we've started a container running PostgreSQL, so we set the environment variable
+In order to tell our application where to access our database, you need to use the `DATABASE_URL` environment variable. In
+our example from the previous section, we started a container running PostgreSQL, so you'll set the environment variable
 like this:
 
 Using Bash:
 
 ```
 export DATABASE_URL="jdbc:postgresql://localhost:5432/guestbook?user=guestbookuser&password=guestbookpass"
+```
+
+Using PowerShell:
+
+```
+$env:DATABASE_URL="jdbc:postgresql://localhost:5432/guestbook?user=guestbookuser&password=guestbookpass"
 ```
 
 Now, let's make sure the database's tables are using the most recent definition by running the following command:
@@ -121,7 +127,7 @@ guestbook=> select * from schema_migrations;
 guestbook=> \q
 ```
 
-In order to run the application locally, we need to provide some configuration for your dev environment. Since each developer
+In order to run the application locally, you'll need to provide some configuration for your dev environment. Since each developer
 could have a different setup, this file is generally not checked-in with the rest of the source code. Copy the contents below
 and save them in a file called `dev-config.edn` on the root of the project:
 
@@ -221,7 +227,7 @@ Confirm (Y/N) [Y]: Y <== CONFIRM THAT YOU WANT TO USE THE CURRENT SETTINGS
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
 [INFO] Total time:  19.405 s
-[INFO] Finished at: 2021-02-28T14:18:36-08:00
+[INFO] Finished at: 2022-08-24T14:18:36-08:00
 [INFO] ------------------------------------------------------------------------
 ```
 
@@ -301,7 +307,7 @@ $ mvn azure-webapp:deploy
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
 [INFO] Total time:  27.655 s
-[INFO] Finished at: 2022-06-22T23:49:22-07:00
+[INFO] Finished at: 2022-08-24T23:49:22-07:00
 [INFO] ------------------------------------------------------------------------
 ```
 
