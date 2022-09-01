@@ -13,7 +13,7 @@ This article uses an example web app written in [Clojure](https://clojure.org/) 
 
 ## The `guestbook` application
 
-The example application is a simple guestbook app where visitors can write messages about a site they visited. The data is stored and read from a PostgreSQL database on Azure which is created by a helper script.
+The [example application](https://github.com/Azure-Samples/clojure-on-app-service) is a simple guestbook app where visitors can write messages about a site they visited. The data is stored and read from a PostgreSQL database on Azure which is created by a helper script.
 
 ![Screenshot of the guestbook web app showing a form to enter the visitor's name and message]({{site.baseurl}}/media/2022/08/guestbook-screenshot.png)
 
@@ -159,7 +159,7 @@ This step needs to be run only once to create the required resources in Azure.
 
 If you haven't logged in before, login into your Azure account with `az login` and follow the prompts.
 
-Edit the script `create-resources.sh` provided. The beginning of the file contains a configuration section where you can adjust some parameters such as the deployment region, and the database username and password.
+The example application has a script, [`create-resources.sh`](https://github.com/Azure-Samples/clojure-on-app-service/blob/main/create-resources.sh). The beginning of the file contains a configuration section where you can adjust some parameters such as the deployment region, and the database username and password. Set enviornment variables for the keys in the script to your desired values, or edit the script.
 
 The script will create the following resources for you:
 
@@ -167,7 +167,7 @@ The script will create the following resources for you:
 * A server to run a PostgreSQL instance
 * A database in the PostgreSQL host
 * A configuration entry to allow connections from services hosted in Azure to the database server
-* An Application Service plan that can deploy Linux hosts
+* An App Service Plan that can deploy Linux hosts
 * A definition for the guestbook web application
 * A configuration entry with the JDBC URL to connect from the guestbook web app to the database 
 
