@@ -9,7 +9,7 @@ tags:
     - azure firewall                               
 ---
 
-When deploying App Service Environment, one requirement you will probably want its to monitor and limit your egress traffic from the ASE. 
+When deploying App Service Environment, one requirement you will probably want is to monitor and limit your egress traffic from the ASE. 
 
 This blog post walks you through how to achieve this using Azure Firewall, this assumes you have a [hub and spoke network topology](https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/hybrid-networking/hub-spoke?tabs=cli) in place in Azure with more than one [landing zone](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/).
 
@@ -21,17 +21,17 @@ This article focus on the configuration of the Azure Firewall and won't go into 
 
 ![]({{ site.baseurl }}/media/2022/08/asev3_with_firewall_architecture.png)
 
-In the provided implementation you have in place one hub and two spokes deployed in your Azure subscription.  All ingress will come into Application Gateway that is deployed with a [Web Application Firewall](https://docs.microsoft.com/en-us/azure/web-application-firewall/ag/ag-overview).  All egress traffic will be routed to the Azure Firewall.  Keep in mind, by default Azure Firewall blocks all traffic, this give you the possibility to be really granular which flow you want to allow.
+In the provided implementation you have in place one hub and two spokes deployed in your Azure subscription.  All ingress will come into Application Gateway that is deployed with a [Web Application Firewall](https://docs.microsoft.com/en-us/azure/web-application-firewall/ag/ag-overview).  All egress traffic will be routed to the Azure Firewall.  Keep in mind, by default Azure Firewall blocks all traffic, this give you the possibility to be really granular with which flow you want to allow.
 
-In this scenario, you have two APIs, the Weather API and the Fibonacci API.  The Weather API return fake data, this mean it doesn't communicate to the outside world and doesn't need to egress to the Azure Firewall even if a [User-Defined route](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-udr-overview#custom-routes) is present.
+In this scenario, you have two APIs, the Weather API and the Fibonacci API.  The Weather API return fake data, this means it doesn't communicate to the outside world and doesn't need to egress to the Azure Firewall even if a [User-Defined route](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-udr-overview#custom-routes) is present.
 
-The Fibonnacci API receive a Len in parameters and calculate a Fibonnacci sequence.  Before doing the calculation, the API tries to retrieve the result in Azure Redis Cache, if the result is not found the sequence is calculated, saved in the Redis Cache and return to the caller.
+The Fibonnacci API receive a Len in parameters and calculates a Fibonnacci sequence.  Before doing the calculation, the API tries to retrieve the result in Azure Redis Cache - if the result is not found the sequence is calculated, saved in the Redis Cache, and returned to the caller.
 
-The cache reside in another spoke from the ASE, this means the traffic will be routed to the Azure Firewall and filtered at this level.  You will need to allow the traffic coming from the ASE to reach the subnet where reside the Redis Cache.
+The cache reside in another spoke from the ASE, this means the traffic will be routed to the Azure Firewall and filtered at this level.  You will need to allow the traffic coming from the ASE to reach the subnet where the Redis Cache resides.
 
 ## User Defined Route on ASE Subnet
 
-To route all the egress traffic from the ASE to the Azure Firewall an User Defined route was created.  The route is associated to the subnet of the ASE.
+To route all the egress traffic from the ASE to the Azure Firewall, a User Defined route was created.  The route is associated to the subnet of the ASE.
 
 ![]({{ site.baseurl }}/media/2022/08/ase_udr_subnet.png)
 
@@ -39,19 +39,19 @@ By default, we redirect all traffic to the Azure Firewall private IP address.
 
 ![]({{ site.baseurl }}/media/2022/08/asev3_route_fw.png)
 
-## Testing the Weather Api
+## Testing the Weather API
 
-Like mentioned before, the Weather API doesn't communicate to any other Azure resources or the Internet.  It receives an HTTP request and send fake weather data.  
+As mentioned before, the Weather API doesn't communicate to any other Azure resources or the Internet.  It receives an HTTP request and sends fake weather data.  
 
-Even with the route in place calling the Weather API will work without any problems.
+Even with the route in place, calling the Weather API will work without any problems.
 
 ![]({{ site.baseurl }}/media/2022/08/weatherapi.png)
 
-We receive a status code 200 and some fake weather data like expected.
+We receive a status code 200 and some fake weather data as expected.
 
-## Testing the Fibonacci Api
+## Testing the Fibonacci API
 
-Let's take a look of the JSON schema of the result returned from the Fibonacci Api.
+Let's take a look of the JSON schema of the result returned from the Fibonacci API.
 
 ![]({{ site.baseurl }}/media/2022/08/fibonacci_schema_result.png)
 
@@ -70,7 +70,7 @@ You can see the property **valueFromCache** return the value **FALSE** like expe
 
 ## Adding network rule in Azure Firewall
 
-Now, before adding the network rule in Azure Firewall let's take a look at the log.  To consult the log go to your Azure Log Analytics associated with your firewall. Execute the following Kusto query in log analytic.
+Now, before adding the network rule in Azure Firewall let's take a look at the log.  To consult the log go to your Azure Log Analytics associated with your firewall. Execute the following Kusto query in log analytics.
 
 ```
 AzureDiagnostics
@@ -78,25 +78,25 @@ AzureDiagnostics
 | where Category == 'AzureFirewallNetworkRule'
 | order by TimeGenerated desc 
 ```
-This should return you the cause why the ASE was not able to communicate with the Azure Redis Cache.
+This should return the cause why the ASE was not able to communicate with the Azure Redis Cache.
 
 ![]({{ site.baseurl }}/media/2022/08/ase_azfw_rule_deny.png)
 
 As you can see, the TCP request from 10.1.1.254 to 11.0.1.4 was denied.
 
-The 10.1.1.254 correspond to the IP address of the Fibonacci Web App, you can see here the CIDR of the subnet allocated for the Application Service Environment.
+The 10.1.1.254 IP corresponds to the IP address of the Fibonacci Web App, you can see here the CIDR of the subnet allocated for the App Service Environment.
 
 ![]({{ site.baseurl }}/media/2022/08/asev3_snet.png)
 
-The 11.0.1.4 correspond to the **private endpoint** used for the Azure Redis Cache.
+The 11.0.1.4 IP corresponds to the **private endpoint** used for the Azure Redis Cache.
 
 Now, you need to create a Network Rule in the Azure firewall to allow the communication between the ASE subnet and the private endpoint of the Azure Redis Cache.
 
 ![]({{ site.baseurl }}/media/2022/08/azfw-network-rule.png)
 
-## Try again the Fibonacci Api
+## Try the Fibonacci API again
 
-Now, you should restart the Fibonacci Api, if the connection to Redis cache is not possible the Fibonacci won't try again.
+Now, you should restart the Fibonacci API, if the connection to Redis cache is not possible the Fibonacci won't try again.
 
 The first time you try with a len of 5 you will have the property **valueFromCache** with a value of **FALSE**.
 
@@ -106,7 +106,7 @@ Now try again with the same parameter, this time you will see the result will co
 
 ## Conclusion
 
-As you can see, adding Azure Firewall in Azure App Service Environment is really easy with the version 3.  You can control all egress going out from your ASE with the good old hub and spoke pattern.
+As you can see, adding Azure Firewall in Azure App Service Environment is really easy with version 3.  You can control all egress going out from your ASE with the good old hub and spoke pattern.
 
 ### Resources
 
