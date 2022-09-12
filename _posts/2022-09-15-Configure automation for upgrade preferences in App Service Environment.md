@@ -28,7 +28,7 @@ This is part 1 of a 2-part series about automation for upgrade in App Service En
 3. Deploy Logic App using ARM template
 4. Create Alert in *Monitor*
 
-**Decide where you will execute commands.**
+**Decide where you will execute commands**
 
 The best option to walk through this guide and execute commands would be to use Azure Cloud Shell with Bash environment. Azure Cloud Shell is an interactive, authenticated, browser-accessible shell for managing Azure resources. It provides the flexibility of choosing the shell experience that best suits the way you work, either Bash or PowerShell. For information on how to use Azure Cloud Shell, please visit this page [Azure Cloud Shell](https://docs.microsoft.com/azure/cloud-shell/overview). You can also install Azure CLI on your machine. The Azure CLI is available to install in Windows, macOS and Linux environments. It can also be run in a Docker container and Azure Cloud Shell. For information on how to install
 the Azure CLI, please visit this page [Azure Cli](https://docs.microsoft.com/cli/azure/install-azure-cli)
@@ -37,7 +37,7 @@ If you decided to use Azure Cloud Shell please type in the browser this page [Az
 
 ## Getting Started with the first scenario
 
-**Create folder for you data.**
+**Create folder for you data**
 
 You can use the name below for your folder. You just need to replace *asedemo* with your environment name.
 
@@ -46,7 +46,7 @@ mkdir asedemo-upgrade-preference-ase
 cd asedemo-upgrade-preference-ase
 ```
 
-**Choosing the right subscription.**
+**Choosing the right subscription**
 
 If you have many subscriptions you must select the subscription to which you want to deploy the resources.
 
@@ -64,7 +64,7 @@ az account set -s YourSubscriptionID
 
 You can find more information about *az account* command on this site [az account](https://docs.microsoft.com/cli/azure/account?view=azure-cli-latest).
 
-**Prepare parameters.**
+**Prepare parameters**
 
 When you construct your naming convention, identify the key pieces of information that you want to reflect in the resource names. Different information is relevant for different resource types. The following sites are useful when you construct resource names [Define your naming convention](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/azure-best-practices/resource-naming) and [Recommended abbreviations for Azure resource types](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/azure-best-practices/resource-abbreviations)
 
@@ -129,7 +129,7 @@ More information about Azure CLI for App Service Environment Plan, visit [Azure 
 
 ## Create and deploy sample application
 
-**Create a web app.**
+**Create a web app**
 
 To create a PHP app in your App Service Environment please use this command.
 
@@ -196,7 +196,7 @@ az resource update --name $ASENamePROD -g ASEResourceGroupNamePROD --resource-ty
 
 This sample code is intended to show you what the Logic App can do to automate your processes. This sample Logic App shows how to use various connectors and functions that you can use to build you own Logic App in production environment.
 
-**Logic App ARM Template.**
+**Logic App ARM Template**
 
 You can use the *curl* command in Azure Cloud Shell to download the template_scenario1.json file from the github repository.
 
@@ -212,7 +212,7 @@ code template_scenario_1.json
 
 Use ctrl + q to close *code* editor.
 
-**Logic App ARM Parameters file.**
+**Logic App ARM Parameters file**
 
 The *echo* command will create a parameters_scenario1.json file for you.
 
