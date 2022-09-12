@@ -279,7 +279,7 @@ Before you can use Office 365 connector in Logic App you must authorize Office36
 
 1. The Logic App starts when an alert occurs. You will configure the alert later in this article.
 2. The Logic App verifies that the alert applies to the Azure App Service Environment.
-3. Then, by using functions such as *split*, *json* and action such as *Filter array*, the Logic App will extract from the text, the information about the name of App Service Environment to which the alert relates and the URL of the App Service Environment.
+3. Using functions such as *split*, *json* and action such as *Filter array*, the Logic App will extract from the text, the information about the name of App Service Environment to which the alert relates and the URL of the App Service Environment.
 4. In the next step, the approval email is sent.
 5. If the *Approve* option is selected, the Logic App will go further. If the *Reject* option is selected the Logic App will stop working.
 6. After selecting *Approve*, the Logic App will check for an upgrade for the App Service Environment.
