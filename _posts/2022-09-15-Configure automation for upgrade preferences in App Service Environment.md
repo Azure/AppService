@@ -4,6 +4,7 @@ author_name: "Błażej Miśkiewicz"
 category: networking
 toc: true
 toc_sticky: true
+excerpt: "This is part 1 of a 2-part series about controlling and automating upgrade in App Service Environment v3."
 ---
 
 ## Introduction
@@ -273,6 +274,17 @@ Before you can use Office 365 connector in Logic App you must authorize Office36
 2. Go to your Logic App using for example search box at the top
 3. Click *Logic app designer*
 4. Familiarize yourself with the individual steps of Logic App workflow
+
+**Steps in Azure Logic App:**
+
+1. The Logic App starts when an alert occurs. You will configure the alert later in this article.
+2. The Logic App verifies that the alert applies to the Azure App Service Environment.
+3. Then, by using functions such as *split*, *json* and action such as *Filter array*, the Logic App will extract from the text, the information about the name of App Service Environment to which the alert relates and the URL of the App Service Environment.
+4. In the next step, the approval email is sent.
+5. If the *Approve* option is selected, the Logic App will go further. If the *Reject* option is selected the Logic App will stop working.
+6. After selecting *Approve*, the Logic App will check for an upgrade for the App Service Environment.
+7. If an upgrade is available, a *http request* will be sent which initiates the upgrade. As well, an e-mail will be sent with the information *The update of ase-asedemo-prod-01 has started*
+8. If the update is not available, an e-mail will be sent with the information *App Service Environment ase-asedemo-prod-01 does not currently have an upgrade available.*
 
 ![Logic App Designer]({{site.baseurl}}/media/2022/09/logic-app-designer.png){: .align-center}
 
