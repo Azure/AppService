@@ -9,7 +9,7 @@ excerpt: "This is part 1 of a 2-part series about controlling and automating upg
 
 ## Introduction
 
-This is part 1 of a 2-part series about automation for upgrade in App Service Environment v3. In this 2-part series, I will walk you through building a demo environment, setting up manual upgrade preference option for App Service Environment and configure automation using Logic App. In the first scenario you will deploy a simple environment, in the second scenario the environment will me more complex.
+This is part 1 of a 2-part series about automation for upgrade in App Service Environment v3. In this 2-part series, I will walk you through building a demo environment, setting up manual upgrade preference option for App Service Environment and configure automation using Logic App. In the first scenario you will deploy a simple environment, in the second scenario the environment will be more complex.
 
 **The first article** uses one Azure App Service Environment, which will be configured with the manual upgrade preference option. When an update is ready, an alert will be triggered that will start your Logic App. The Logic App will send you an email asking you to confirm the upgrade process.
 
@@ -34,7 +34,7 @@ This is part 1 of a 2-part series about automation for upgrade in App Service En
 The best option to walk through this guide and execute commands would be to use Azure Cloud Shell with Bash environment. Azure Cloud Shell is an interactive, authenticated, browser-accessible shell for managing Azure resources. It provides the flexibility of choosing the shell experience that best suits the way you work, either Bash or PowerShell. For information on how to use Azure Cloud Shell, please visit this page [Azure Cloud Shell](https://docs.microsoft.com/azure/cloud-shell/overview). You can also install Azure CLI on your machine. The Azure CLI is available to install in Windows, macOS and Linux environments. It can also be run in a Docker container and Azure Cloud Shell. For information on how to install
 the Azure CLI, please visit this page [Azure Cli](https://docs.microsoft.com/cli/azure/install-azure-cli)
 
-If you decided to use Azure Cloud Shell please type in the browser this page [Azure Cloud Shell](https://shell.azure.com) please use Bash environment.
+If you decide to use [Azure Cloud Shell](https://shell.azure.com), please use Bash environment.
 
 ## Getting Started with the first scenario
 
@@ -261,17 +261,17 @@ az deployment group create --name MyLogicAppDeployment --resource-group $ASEReso
 
 Before you can use Office 365 connector in Logic App you must authorize Office365 connection.
 
-1. Open Azure portal [Azure Portal](https://portal.azure.com), sign in with your credentials
+1. Open [Azure portal](https://portal.azure.com), sign in with your credentials
 2. Go to your Logic App using for example search box at the top
 3. Click *API connections* and then select *office365* API Connection
-4. Check the status, if status is *Connected* everything is ok if is *Unauthorized* click *Edit API connection* and then click *Authorize* button
+4. Check the status, if status is *Connected* everything is ok, if it's *Unauthorized*, click *Edit API connection* and then click *Authorize* button
 5. Sign in to your account
 6. Click *Save* button
 
 **Check out the app via Logic App designer:**
 
-1. Open Azure portal [Azure Portal](https://portal.azure.com), sign in with your credentials
-2. Go to your Logic App using for example search box at the top
+1. Open [Azure portal](https://portal.azure.com), sign in with your credentials
+2. Go to your Logic App using for example the search box at the top
 3. Click *Logic app designer*
 4. Familiarize yourself with the individual steps of Logic App workflow
 
@@ -288,7 +288,7 @@ Before you can use Office 365 connector in Logic App you must authorize Office36
 
 ![Logic App Designer]({{site.baseurl}}/media/2022/09/logic-app-designer.png){: .align-center}
 
-More information about Logic App, visit [Logic App Overview](https://docs.microsoft.com/azure/logic-apps/logic-apps-overview)
+For more information about Logic Apps, visit [Logic App Overview](https://docs.microsoft.com/azure/logic-apps/logic-apps-overview)
 
 **Steps to assign an Azure role contributor to App Service Environment instance:**
 
@@ -310,8 +310,8 @@ If you are at this stage, you have successfully created the demo environment. No
 
 ## Create an Alert
 
-1. Open Azure Portal [Azure Portal](https://portal.azure.com), sign in with your credentials
-2. Go to *Monitor* using for example search box at the top
+1. Open [Azure portal](https://portal.azure.com), sign in with your credentials
+2. Go to *Monitor* using for example the search box at the top
 3. From the menu, click *Service Health*
 4. Click *Planned maintenance*
 5. Click *Add service health alert*
@@ -325,15 +325,15 @@ If you are at this stage, you have successfully created the demo environment. No
     - select *Subscription* where you deployed you App Service Environment
     - select *Resource group* with *shared* in the name (rg-asedemo-shared-01)
     - Select *Global Region*
-    - Fill the filed *Action group name* and *Display name* for example use this name *ag-asedemo* - please change *asedemo* to your environment name
+    - Fill the fields *Action group name* and *Display name* for example using this name *ag-asedemo* - please change *asedemo* to your environment name
 13. In the *Actions* section, click *Action type* and select *Logic App*
 14. Fill the fields with information about *Subscription* (select Azure Subscription where you deployed your App Service Environment), *Resource group* (select Azure Resource group with *shared* in the name (rg-asedemo-shared-01)) and *Select a logic app* that you deployed in previous steps
 15. *Enable the common alert schema*
 16. Click "OK"
-17. Fill the *Name* filed for example use this name *action-logic-asedemo-prod-01* - please change *asedemo* to your environment name
+17. Fill the *Name* filed for example using the name *action-logic-asedemo-prod-01* - please change *asedemo* to your environment name
 18. Click *Review + create*
 19. Click *Create*
-20. Fill *Alert rule details* section, fill *Alert rule name* for example use this name *alert-asedemo-planned-maintenance* - please change *asedemo* to your environment name
+20. Fill *Alert rule details* section, fill *Alert rule name* for example using the name *alert-asedemo-planned-maintenance* - please change *asedemo* to your environment name
 21. Make sure that checkbox *Enable alert rule upon creation* is selected
 22. Click *Create alert rule*
 
@@ -360,8 +360,8 @@ Because this is test notification your Logic app will send you an email with inf
 
 Familiarize yourself with the Logic App run using Run history blade.
 
-1. Open Azure Portal [Azure Portal](https://portal.azure.com), sign in with your credentials
-2. Go to your Logic App using for example search box at the top
+1. Open [Azure portal](https://portal.azure.com), sign in with your credentials
+2. Go to your Logic App using for example using the search box at the top
 3. Click *Overview*
 4. Click *Run history*
 5. Select last *Succeeded* Logic App run
