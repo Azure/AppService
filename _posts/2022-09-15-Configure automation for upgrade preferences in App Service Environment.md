@@ -1,5 +1,5 @@
 ---
-title: "Configure automation for upgrade preferences in App Service Environment"
+title: "Control and automate upgrades for App Service Environment v3"
 author_name: "Błażej Miśkiewicz"
 category: networking
 toc: true
@@ -8,13 +8,13 @@ toc_sticky: true
 
 ## Introduction
 
-This is part 1 of a 2-part series about automation for upgrade preferences in App Service Environment. In this 2-part series, I will walk you through building demo environment, setting up manual upgrade preference option for App Service Environment and configure automation using Logic App. In the first scenario you will deploy simple environment, in second scenario environment will me more complex.
+This is part 1 of a 2-part series about automation for upgrade in App Service Environment v3. In this 2-part series, I will walk you through building a demo environment, setting up manual upgrade preference option for App Service Environment and configure automation using Logic App. In the first scenario you will deploy a simple environment, in the second scenario the environment will me more complex.
 
-**The first article** assumes deploying one Azure App Service Environment, which will be configured with a manual update preference option. When the update is ready, an alert will be triggered that will start your Logic App. Logic App will send you an email asking you to confirm the update process.
+**The first article** uses one Azure App Service Environment, which will be configured with the manual upgrade preference option. When an update is ready, an alert will be triggered that will start your Logic App. The Logic App will send you an email asking you to confirm the upgrade process.
 
-**The second article** assumes deploying two Azure App Service Environments in two different regions. First Azure App Service Environment will be for production workload, second for disaster recovery purposes. The Web App will be published using Azure Front Door Standard service. When the update is ready, an alert will be triggered that will start your Logic App. The Logic App will send you an email asking you to confirm traffic redirection from the primary region to the disaster recovery region, when you accept this workflow Logic App will redirect the traffic and start the upgrade process of your production Azure App Service Environment. Using this approach you can avoid cold start of the applications, usually upgrade process should be invisible for your application but If you have an application that needs more time to start or you want to decide when the upgrade should start then this approach will be perfect for you.
+**The second article** uses two Azure App Service Environments in two different regions. The first App Service Environment will be for the production workload, and the second for disaster recovery purposes. The Web App will be published using Azure Front Door Standard service. When an update is ready, an alert will be triggered that will start your Logic App. The Logic App will send you an email asking you to confirm traffic redirection from the primary region to the disaster recovery region, when you accept this workflow, Logic App will redirect the traffic and start the upgrade process of your production Azure App Service Environment. Using this approach you can avoid cold start of the applications. Usually the upgrade process should be invisible for your application but if you have an application that needs more time to start or you want to decide when the upgrade should start then this approach will be perfect for you.
 
->**Remember** Now you can change Upgrade preference option to Manual and decide for yourself when you want to upgrade App Service Environment. After the upgrade is available, you'll have 15 days to start the upgrade process. If you don't start the upgrade within the 15 days, the upgrade will be processed with the remaining automatic upgrades in the region. More information about upgrade preference for App Service Environments you can find on this site [upgrade preference for App Service Environments](https://docs.microsoft.com/azure/app-service/environment/how-to-upgrade-preference?pivots=experience-azp)
+>**Remember** Now you can change Upgrade preference option to Manual and decide for yourself when you want to upgrade App Service Environment v3. After an update is available, you'll have 15 days to start the upgrade process. If you don't start the upgrade within the 15 days, the upgrade will be processed with the remaining automatic upgrades in the region. You can find more information about upgrade preference for App Service Environments v3 on this site [upgrade preference for App Service Environments](https://docs.microsoft.com/azure/app-service/environment/how-to-upgrade-preference?pivots=experience-azp)
 
 **Requirements:**
 
@@ -48,7 +48,7 @@ cd asedemo-upgrade-preference-ase
 
 **Choosing the right subscription.**
 
-If you have many subscription you must select the subscription to which you want to deploy the resources.
+If you have many subscriptions you must select the subscription to which you want to deploy the resources.
 
 Using this command you can find and copy the *SubscriptionId* on which you want to create resources for this scenario.
 
@@ -62,11 +62,11 @@ Using this command you can set a subscription to be the current active subscript
 az account set -s YourSubscriptionID
 ```
 
-More information about *az account* command you can find on this site [az account](https://docs.microsoft.com/cli/azure/account?view=azure-cli-latest).
+You can find more information about *az account* command on this site [az account](https://docs.microsoft.com/cli/azure/account?view=azure-cli-latest).
 
 **Prepare parameters.**
 
-When you construct your naming convention, identify the key pieces of information that you want to reflect in a resource name. Different information is relevant for different resource types. The following sites are useful when you construct resource names [Define your naming convention](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/azure-best-practices/resource-naming) and [Recommended abbreviations for Azure resource types](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/azure-best-practices/resource-abbreviations)
+When you construct your naming convention, identify the key pieces of information that you want to reflect in the resource names. Different information is relevant for different resource types. The following sites are useful when you construct resource names [Define your naming convention](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/azure-best-practices/resource-naming) and [Recommended abbreviations for Azure resource types](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/azure-best-practices/resource-abbreviations)
 
 You can use the names below. You just need to replace *asedemo* with your environment name, change *SubscriptionId*, *EmailAddress* and change *LocationRegionPROD* parameters.
 
@@ -90,34 +90,34 @@ EmailAddress=YourEmailAddress
 
 ## Create basic infrastructure
 
-**Create Resource Groups.**
+**Create Resource Groups**
 
-The demo environment will be organized using two resource groups. First for App Service Environment, second for Logic App Automation.
+The demo environment will be organized using two resource groups. The first resource group is for App Service Environment, the second is for Logic App Automation.
 
 ```bash
 az group create -l $LocationRegionPROD -n $ASEResourceGroupNamePROD
 az group create -l $LocationRegionPROD -n $ResourceGroupNameSHARED
 ```
 
-**Create Virtual Network with subnet for App Service Environment.**
+**Create virtual network with subnet for App Service Environment**
 
-A virtual network is required to create an App Service Environment. This command allows will create a virtual network with a subnet.
+A virtual network is required to create an App Service Environment. This command will create a virtual network with a subnet.
 
 ```bash
 az network vnet create -g $ASEResourceGroupNamePROD -n $VirtualNetworkNamePROD --address-prefix $VnetPrefixPROD --subnet-name $SubnetNameVnetPROD --subnet-prefix $SubnetVnetPrefixPROD
 ```
 
-**Create App Service Environment - This process may take a while.**
+**Create App Service Environment - This process may take a while**
 
-An App Service Environment is a single-tenant deployment of Azure App Service that runs on your virtual network. This command will create an App Service Environment.
+An App Service Environment is a single-tenant deployment of Azure App Service that runs in your virtual network. This command will create an App Service Environment.
 
 ```bash
 az appservice ase create -n $ASENamePROD -g $ASEResourceGroupNamePROD --vnet-name $VirtualNetworkNamePROD --subnet $SubnetNameVnetPROD --kind asev3
 ```
 
-More information about Azure CLI for App Service Environment you can find on this link [Azure CLI ASE Create](https://docs.microsoft.com/cli/azure/appservice/ase?view=azure-cli-latest#az-appservice-ase-create).
+More information about Azure CLI for App Service Environment, visit [Azure CLI ASE Create](https://docs.microsoft.com/cli/azure/appservice/ase?view=azure-cli-latest#az-appservice-ase-create).
 
-**Create App Service Plan in App Service Environment - This process may take a while.**
+**Create App Service Plan in App Service Environment - This process may take a while**
 
 Applications are hosted in App Service plans, which are created in an App Service Environment. An App Service plan is essentially a provisioning profile for an application host. This command will create an App Service plan.
 
@@ -125,7 +125,7 @@ Applications are hosted in App Service plans, which are created in an App Servic
 az appservice plan create -g $ASEResourceGroupNamePROD -n $ASEPlanNamePROD --app-service-environment $ASENamePROD --is-linux --sku I1v2
 ```
 
-More information about Azure CLI for App Service Environment Plan you can find on this link [Azure CLI ASE Plan Create](https://docs.microsoft.com/cli/azure/appservice/plan?view=azure-cli-latest#az-appservice-plan-create)
+More information about Azure CLI for App Service Environment Plan, visit [Azure CLI ASE Plan Create](https://docs.microsoft.com/cli/azure/appservice/plan?view=azure-cli-latest#az-appservice-plan-create)
 
 ## Create and deploy sample application
 
@@ -150,7 +150,7 @@ You can also write down URL of your website.
 
 ![URL of your site]({{site.baseurl}}/media/2022/09/url-upgrade-preferences-in-App-Service-Environment.png){: .align-center}
 
-**Create index.php file for primary website.**
+**Create index.php file for primary website**
 
 Sample code for your primary website
 
@@ -160,7 +160,7 @@ echo '<?php
 ?>' > index.php
 ```
 
-**Create zip file for primary website.**
+**Create zip file for primary website**
 
 In the next step you will use *ZIP Deploy* to deploy the application. You need a ZIP utility for this. Fortunately, ZIP utility is pre-installed in Azure Cloud Shell.
 
@@ -168,25 +168,25 @@ In the next step you will use *ZIP Deploy* to deploy the application. You need a
 zip primaryapp.zip index.php
 ```
 
-**Deploy sample apps.**
+**Deploy sample app**
 
-To deploy a sample application using *ZIP Deploy* use this command.
+To deploy a sample application using *ZIP Deploy*, use this command:
 
 ```bash
 az webapp deployment source config-zip --resource-group $ASEResourceGroupNamePROD  --name $WEBAPPNamePROD --src ./primaryapp.zip
 ```
 
-**Check if you webapp is running.**
+**Check if your app is running**
 
-Use your browser or use *curl* command to check if you webapp is working correctly.
+Use your browser or use *curl* command to check if your app is working correctly.
 
 ```bash
 curl https://$URLofYourPrimaryWebsite
 ```
 
-## Update the upgrade preference option in your App Service Environment to Manual
+## Change the upgrade preference
 
-To change the setting *Upgrade preference* to manual use this command.
+To change the *Upgrade preference* setting to Manual on your App Service Environment v3, use this command:
 
 ```bash
 az resource update --name $ASENamePROD -g ASEResourceGroupNamePROD --resource-type "Microsoft.Web/hostingEnvironments" --set properties.upgradePreference=Manual
@@ -214,7 +214,7 @@ Use ctrl + q to close *code* editor.
 
 **Logic App ARM Parameters file.**
 
-This *echo* command will create for you parameters_scenario1.json file.
+The *echo* command will create a parameters_scenario1.json file for you.
 
 ```bash
 echo '{
@@ -240,7 +240,7 @@ echo '{
 }' > parameters_scenario1.json
 ```
 
-You can use *code* editor in Azure Cloud Shell to check parameters_scenario1.json file.
+You can use the *code* editor in Azure Cloud Shell to check parameters_scenario1.json file.
 
 ```bash
 code parameters_scenario1.json
@@ -248,7 +248,7 @@ code parameters_scenario1.json
 
 Use ctrl + q to close *code* editor.
 
-### Deploy logic app template
+### Deploy Logic App template
 
 To start the deployment, execute the command below.
 
@@ -267,7 +267,7 @@ Before you can use Office 365 connector in Logic App you must authorize Office36
 5. Sign in to your account
 6. Click *Save* button
 
-**Check out the logic app via Logic app designer:**
+**Check out the app via Logic App designer:**
 
 1. Open Azure portal [Azure Portal](https://portal.azure.com), sign in with your credentials
 2. Go to your Logic App using for example search box at the top
@@ -276,25 +276,25 @@ Before you can use Office 365 connector in Logic App you must authorize Office36
 
 ![Logic App Designer]({{site.baseurl}}/media/2022/09/logic-app-designer.png){: .align-center}
 
-More information about Logic App you can find on this site [Logic App Overview](https://docs.microsoft.com/azure/logic-apps/logic-apps-overview)
+More information about Logic App, visit [Logic App Overview](https://docs.microsoft.com/azure/logic-apps/logic-apps-overview)
 
 **Steps to assign an Azure role contributor to App Service Environment instance:**
 
-Your Logic App will be deployed with system assigned managed identity, before you can use your Logic App you must give your Logic App identity permission to your App Service Environment. Permissions are required to check if an update is available and to start the update process. If you want to know more about managed identities please go to this page [Managed identities for Azure resources](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview). Information about permissions that you need to configure managed identity you can find on this page [Managed identities for Azure resources frequently asked questions](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/managed-identities-faq#which-azure-rbac-permissions-are-required-to-use-a-managed-identity-on-a-resource).
+Your Logic App will be deployed with system assigned managed identity. Before you can use your Logic App you must give your Logic App identity permission to your App Service Environment. Permissions are required to check if an update is available and to start the update process. If you want to know more about managed identities please go to this page [Managed identities for Azure resources](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview). Information about permissions that you need to configure managed identity you can find on this page [Managed identities for Azure resources frequently asked questions](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/managed-identities-faq#which-azure-rbac-permissions-are-required-to-use-a-managed-identity-on-a-resource).
 
-Step1: Determine who needs access
+Step 1: Determine who needs access
 
 ```bash
 LogicAppIdentity=$(az resource show --name $LogicAppName --resource-group $ResourceGroupNameSHARED --resource-type "Microsoft.Logic/workflows" --query identity.principalId -o tsv)
 ```
 
-Step2: Assign contributor role
+Step 2: Assign contributor role
 
 ```bash
 az role assignment create --assignee $LogicAppIdentity --role "Contributor" --scope /subscriptions/$ASEsubscriptionID/resourceGroups/$ASEResourceGroupNamePROD/providers/Microsoft.Web/hostingEnvironments/$ASENamePROD
 ```
 
-If you are at this stage, you have successfully created the demo environment, now we need to create an alert that will trigger the Logic App.
+If you are at this stage, you have successfully created the demo environment. Now we need to create an alert that will trigger the Logic App.
 
 ## Create an Alert
 
@@ -329,28 +329,30 @@ If you are at this stage, you have successfully created the demo environment, no
 
 As you build your automation and notification logic, you may want to test it before the actual upgrade is available. The Azure portal and rest api has the ability to send a special test upgrade available notification, which you can use to verify your automation logic. The message will be similar to the real notification, but the title will be prefixed with "[Test]" and the description will be different. You can send test notifications after you've configured your upgrade preference to Manual. The test notifications are sent in batches every 15 minutes.
 
-To send a special test upgrade available notification please use this command
+To send a special test upgrade available notification please use this command:
 
 ```bash
 ASEidPROD=$(az appservice ase show --name $ASENamePROD --resource-group $ASEResourceGroupNamePROD --query id --output tsv)
 az rest --method POST --uri "${ASEidPROD}/testUpgradeAvailableNotification?api-version=2022-03-01"
 ```
 
-You can also use [Azure Portal](https://portal.azure.com) to send test notifications, more information about this you can find on this site [Send test notifications](https://docs.microsoft.com/azure/app-service/environment/how-to-upgrade-preference?pivots=experience-azp#send-test-notifications)
+You can also use [Azure portal](https://portal.azure.com) to send test notifications. You can find more information about test notifications on this site [Send test notifications](https://docs.microsoft.com/azure/app-service/environment/how-to-upgrade-preference?pivots=experience-azp#send-test-notifications)
 
-**Check your mailbox and approve update process.**
+**Check your mailbox and approve the upgrade process**
 
 ![Approve or reject email]({{site.baseurl}}/media/2022/09/aprove-or-reject-email.png){: .align-center}
 
-Because this is test notification your Logic app will send you a email with information that *App Service Environment NameOfYourASE does not currently have an upgrade available.* In a real-world scenario when an upgrade will be available your Logic App will send you information that *The update of NameOfYourASE has started.*
+Because this is test notification your Logic app will send you an email with information that *App Service Environment NameOfYourASE does not currently have an upgrade available.* In a real-world scenario when an upgrade will be available your Logic App will send you information that *The update of NameOfYourASE has started.*
 
-### Familiarize yourself with the Logic app run using Run history blade
+### Logic App run history blade
+
+Familiarize yourself with the Logic App run using Run history blade.
 
 1. Open Azure Portal [Azure Portal](https://portal.azure.com), sign in with your credentials
 2. Go to your Logic App using for example search box at the top
 3. Click *Overview*
 4. Click *Run history*
-5. Select last *Succeeded* Logic app run
-6. Familiarize yourself with the Logic app run
+5. Select last *Succeeded* Logic App run
+6. Familiarize yourself with the Logic App run
 
 You successfully completed the first scenario. The second scenario will be published soon.
