@@ -190,7 +190,7 @@ curl https://$URLofYourPrimaryWebsite
 To change the *Upgrade preference* setting to Manual on your App Service Environment v3, use this command:
 
 ```bash
-az resource update --name $ASENamePROD -g ASEResourceGroupNamePROD --resource-type "Microsoft.Web/hostingEnvironments" --set properties.upgradePreference=Manual
+az resource update --name $ASENamePROD -g $ASEResourceGroupNamePROD --resource-type "Microsoft.Web/hostingEnvironments" --set properties.upgradePreference=Manual
 ```
 
 ## Deploy Logic App
