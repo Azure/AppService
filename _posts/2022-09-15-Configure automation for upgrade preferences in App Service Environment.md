@@ -113,7 +113,7 @@ az network vnet create -g $ASEResourceGroupNamePROD -n $VirtualNetworkNamePROD -
 An App Service Environment is a single-tenant deployment of Azure App Service that runs in your virtual network. This command will create an App Service Environment.
 
 ```bash
-az appservice ase create -n $ASENamePROD -g $ASEResourceGroupNamePROD --vnet-name $VirtualNetworkNamePROD --subnet $SubnetNameVnetPROD --kind asev3
+az appservice ase create -n $ASENamePROD -g $ASEResourceGroupNamePROD --vnet-name $VirtualNetworkNamePROD --subnet $SubnetNameVnetPROD --kind asev3 --virtual-ip-type External
 ```
 
 More information about Azure CLI for App Service Environment, visit [Azure CLI ASE Create](https://docs.microsoft.com/cli/azure/appservice/ase?view=azure-cli-latest#az-appservice-ase-create).
@@ -190,7 +190,7 @@ curl https://$URLofYourPrimaryWebsite
 To change the *Upgrade preference* setting to Manual on your App Service Environment v3, use this command:
 
 ```bash
-az resource update --name $ASENamePROD -g ASEResourceGroupNamePROD --resource-type "Microsoft.Web/hostingEnvironments" --set properties.upgradePreference=Manual
+az resource update --name $ASENamePROD -g $ASEResourceGroupNamePROD --resource-type "Microsoft.Web/hostingEnvironments" --set properties.upgradePreference=Manual
 ```
 
 ## Deploy Logic App
@@ -199,7 +199,7 @@ This sample code is intended to show you what the Logic App can do to automate y
 
 **Logic App ARM Template**
 
-You can use the *curl* command in Azure Cloud Shell to download the template_scenario1.json file from the github repository.
+You can use the *curl* command in Azure Cloud Shell to download the template_scenario_1.json file from the github repository.
 
 ```bash
 curl https://raw.githubusercontent.com/bmis/azure-logic-app-upgrade-preference/main/templates/template_scenario_1.json --output template_scenario_1.json
@@ -215,7 +215,7 @@ Use ctrl + q to close *code* editor.
 
 **Logic App ARM Parameters file**
 
-The *echo* command will create a parameters_scenario1.json file for you.
+The *echo* command will create a parameters_scenario_1.json file for you.
 
 ```bash
 echo '{
@@ -238,13 +238,13 @@ echo '{
             "value": "'"$EmailAddress"'"
         }
     }
-}' > parameters_scenario1.json
+}' > parameters_scenario_1.json
 ```
 
-You can use the *code* editor in Azure Cloud Shell to check parameters_scenario1.json file.
+You can use the *code* editor in Azure Cloud Shell to check parameters_scenario_1.json file.
 
 ```bash
-code parameters_scenario1.json
+code parameters_scenario_1.json
 ```
 
 Use ctrl + q to close *code* editor.
@@ -254,7 +254,7 @@ Use ctrl + q to close *code* editor.
 To start the deployment, execute the command below.
 
 ```bash
-az deployment group create --name MyLogicAppDeployment --resource-group $ASEResourceGroupNamePROD  --template-file template_scenario1.json --parameters parameters_scenario1.json
+az deployment group create --name $LogicAppName --resource-group $ResourceGroupNameSHARED  --template-file template_scenario_1.json --parameters parameters_scenario_1.json
 ```
 
 ### Authorize Office 365 connection
