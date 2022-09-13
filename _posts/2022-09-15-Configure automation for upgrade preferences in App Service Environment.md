@@ -199,7 +199,7 @@ This sample code is intended to show you what the Logic App can do to automate y
 
 **Logic App ARM Template**
 
-You can use the *curl* command in Azure Cloud Shell to download the template_scenario1.json file from the github repository.
+You can use the *curl* command in Azure Cloud Shell to download the template_scenario_1.json file from the github repository.
 
 ```bash
 curl https://raw.githubusercontent.com/bmis/azure-logic-app-upgrade-preference/main/templates/template_scenario_1.json --output template_scenario_1.json
@@ -215,7 +215,7 @@ Use ctrl + q to close *code* editor.
 
 **Logic App ARM Parameters file**
 
-The *echo* command will create a parameters_scenario1.json file for you.
+The *echo* command will create a parameters_scenario_1.json file for you.
 
 ```bash
 echo '{
@@ -238,13 +238,13 @@ echo '{
             "value": "'"$EmailAddress"'"
         }
     }
-}' > parameters_scenario1.json
+}' > parameters_scenario_1.json
 ```
 
-You can use the *code* editor in Azure Cloud Shell to check parameters_scenario1.json file.
+You can use the *code* editor in Azure Cloud Shell to check parameters_scenario_1.json file.
 
 ```bash
-code parameters_scenario1.json
+code parameters_scenario_1.json
 ```
 
 Use ctrl + q to close *code* editor.
@@ -254,7 +254,7 @@ Use ctrl + q to close *code* editor.
 To start the deployment, execute the command below.
 
 ```bash
-az deployment group create --name MyLogicAppDeployment --resource-group $ASEResourceGroupNamePROD  --template-file template_scenario1.json --parameters parameters_scenario1.json
+az deployment group create --name $LogicAppName --resource-group $ResourceGroupNameSHARED  --template-file template_scenario_1.json --parameters parameters_scenario_1.json
 ```
 
 ### Authorize Office 365 connection
