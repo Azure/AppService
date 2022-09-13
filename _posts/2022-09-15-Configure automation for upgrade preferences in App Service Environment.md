@@ -113,7 +113,7 @@ az network vnet create -g $ASEResourceGroupNamePROD -n $VirtualNetworkNamePROD -
 An App Service Environment is a single-tenant deployment of Azure App Service that runs in your virtual network. This command will create an App Service Environment.
 
 ```bash
-az appservice ase create -n $ASENamePROD -g $ASEResourceGroupNamePROD --vnet-name $VirtualNetworkNamePROD --subnet $SubnetNameVnetPROD --kind asev3
+az appservice ase create -n $ASENamePROD -g $ASEResourceGroupNamePROD --vnet-name $VirtualNetworkNamePROD --subnet $SubnetNameVnetPROD --kind asev3 --virtual-ip-type External
 ```
 
 More information about Azure CLI for App Service Environment, visit [Azure CLI ASE Create](https://docs.microsoft.com/cli/azure/appservice/ase?view=azure-cli-latest#az-appservice-ase-create).
