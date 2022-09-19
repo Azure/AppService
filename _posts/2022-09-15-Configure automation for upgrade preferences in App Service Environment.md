@@ -1,15 +1,15 @@
 ---
-title: "Control and automate upgrades for App Service Environment v3"
+title: "Control and automate planned maintenance for App Service Environment v3"
 author_name: "Błażej Miśkiewicz"
 category: networking
 toc: true
 toc_sticky: true
-excerpt: "This is part 1 of a 2-part series about controlling and automating upgrade in App Service Environment v3."
+excerpt: "This is part 1 of a 2-part series about controlling and automating planned maintenance in App Service Environment v3."
 ---
 
 ## Introduction
 
-This is part 1 of a 2-part series about automation for upgrade in App Service Environment v3. In this 2-part series, I will walk you through building a demo environment, setting up manual upgrade preference option for App Service Environment and configure automation using Logic App. In the first scenario you will deploy a simple environment, in the second scenario the environment will be more complex.
+This is part 1 of a 2-part series about automation for planned maintenance in App Service Environment v3. In this 2-part series, I will walk you through building a demo environment, setting up manual upgrade preference option for App Service Environment and configure automation using Logic App. In the first scenario you will deploy a simple environment, in the second scenario the environment will be more complex.
 
 **The first article** uses one Azure App Service Environment, which will be configured with the manual upgrade preference option. When an update is ready, an alert will be triggered that will start your Logic App. The Logic App will send you an email asking you to confirm the upgrade process.
 
@@ -185,7 +185,7 @@ Use your browser or use *curl* command to check if your app is working correctly
 curl https://$URLofYourPrimaryWebsite
 ```
 
-## Change the upgrade preference
+## Planned maintenance - Change the upgrade preference
 
 To change the *Upgrade preference* setting to Manual on your App Service Environment v3, use this command:
 
