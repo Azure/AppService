@@ -11,7 +11,7 @@ excerpt: "This is part 2 of a 2-part series about controlling and automating pla
 
 This is part 2 of a 2-part series about automation for planned maintenance in App Service Environment v3. In this 2-part series, I will walk you through building a demo environment, setting up manual upgrade preference option for App Service Environment and configure automation using Logic App. In the first scenario you have deployed a simple environment, in the second scenario the environment will be more complex.
 
-**The first article** uses one Azure App Service Environment, which will be configured with the manual upgrade preference option. When an upgrade is ready, an alert will be triggered that will start your Logic App. The Logic App will send you an email asking you to confirm the upgrade process.
+[The first article](https://azure.github.io/AppService/2022/09/15/Configure-automation-for-upgrade-preferences-in-App-Service-Environment.html) uses one Azure App Service Environment, which will be configured with the manual upgrade preference option. When an upgrade is ready, an alert will be triggered that will start your Logic App. The Logic App will send you an email asking you to confirm the upgrade process.
 
 **The second article** uses two Azure App Service Environments in two different regions. The first App Service Environment will be for the production workload, and the second for disaster recovery purposes. The Web App will be published using Azure Front Door Standard service. When an upgrade is ready, an alert will be triggered that will start your Logic App. The Logic App will send you an email asking you to confirm traffic redirection from the primary region to the disaster recovery region, when you accept this workflow, Logic App will redirect the traffic and start the upgrade process of your production Azure App Service Environment. Using this approach you can avoid cold start of the applications. Usually the upgrade process should be invisible for your application but if you have an application that needs more time to start or you want to decide when the upgrade should start then this approach will be perfect for you.
 
@@ -35,15 +35,13 @@ This is part 2 of a 2-part series about automation for planned maintenance in Ap
 
 **Decide where you will execute commands**
 
-The best option to walk through this guide and execute commands would be to use Azure Cloud Shell with Bash environment. Azure Cloud Shell is an interactive, authenticated, browser-accessible shell for managing Azure resources. It provides the flexibility of choosing the shell experience that best suits the way you work, either Bash or PowerShell. For information on how to use Azure Cloud Shell, please visit this page [Azure Cloud Shell](https://docs.microsoft.com/azure/cloud-shell/overview). You can also install Azure CLI on your machine. The Azure CLI is available to install in Windows, macOS and Linux environments. It can also be run in a Docker container and Azure Cloud Shell. For information on how to install
-the Azure CLI, please visit this page [Azure Cli](https://docs.microsoft.com/cli/azure/install-azure-cli)
+The best option to walk through this guide and execute commands would be to use Azure Cloud Shell with Bash environment. Azure Cloud Shell is an interactive, authenticated, browser-accessible shell for managing Azure resources. It provides the flexibility of choosing the shell experience that best suits the way you work, either Bash or PowerShell. For information on how to use Azure Cloud Shell, please visit this page [Azure Cloud Shell](https://docs.microsoft.com/azure/cloud-shell/overview). You can also install Azure CLI on your machine. The Azure CLI is available to install in Windows, macOS and Linux environments. It can also be run in a Docker container. For information on how to install the Azure CLI, please visit this page [Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli).
 
 If you decide to use [Azure Cloud Shell](https://shell.azure.com), please use Bash environment.
 
 ## Getting Started with the second scenario
 
->**Remember** To deploy the second scenario, you must first go through the first scenario.
- [Control and automate planned maintenance for App Service Environment v3 part 1](https://azure.github.io/AppService/2022/09/15/Configure-automation-for-upgrade-preferences-in-App-Service-Environment.html)
+>**Remember** To deploy the second scenario, you must first go through the first scenario - [Control and automate planned maintenance for App Service Environment v3 part 1](https://azure.github.io/AppService/2022/09/15/Configure-automation-for-upgrade-preferences-in-App-Service-Environment.html).
 
 **Create folder for you data**
 
@@ -54,11 +52,11 @@ mkdir asedemo-upgrade-preference-ase-s2
 cd asedemo-upgrade-preference-ase-s2
 ```
 
-**Choosing the right subscription**
+**Choose the right subscription**
 
-If you have many subscriptions you must select the subscription to which you want to deploy the resources.
+If you have many subscriptions you must select the subscription in which you want to deploy the resources.
 
-Using this command you can find and copy the *SubscriptionId* on which you want to create resources for this scenario.
+Using this command you can find and copy the *SubscriptionId* in which you want to create resources for this scenario.
 
 ```bash
 az account list -o table
@@ -70,15 +68,15 @@ Using this command you can set a subscription to be the current active subscript
 az account set -s YourSubscriptionID
 ```
 
-You can find more information about *az account* command on this site [az account](https://docs.microsoft.com/cli/azure/account?view=azure-cli-latest).
+You can find more information about the *az account* command on this site [az account](https://docs.microsoft.com/cli/azure/account?view=azure-cli-latest).
 
 **Prepare parameters**
 
-When you construct your naming convention, identify the key pieces of information that you want to reflect in the resource names. Different information is relevant for different resource types. The following sites are useful when you construct resource names [Define your naming convention](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/azure-best-practices/resource-naming) and [Recommended abbreviations for Azure resource types](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/azure-best-practices/resource-abbreviations)
+When you construct your naming convention, identify the key pieces of information that you want to reflect in the resource names. Different information is relevant for different resource types. The following sites are useful when you construct resource names [Define your naming convention](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/azure-best-practices/resource-naming) and [Recommended abbreviations for Azure resource types](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/azure-best-practices/resource-abbreviations).
 
 You can use the names below. You just need to replace *asedemo* with your environment name **(please use the same environment name that you used in scenario 1)**, change *SubscriptionId*, *EmailAddress*, *LocationRegionPROD* and change *LocationRegionDR* parameters.
 
-Please copy and paste your parameters to your shell.
+Copy and paste your parameters to your shell.
 
 ```bash
 ASEsubscriptionID=11111111-1111-1111-1111-111111111111
@@ -113,7 +111,7 @@ OriginNameSecondary=secondary
 
 **Create Resource Group**
 
-The demo environment will be organized using three resource groups. The first resource group is for App Service Environment in primary region, the second is for App Service Environment in secondary region and the third resource group is for the *Logic App* automation. Two resource groups were created during the first scenario, now you need to create a resource group for Azure App Service Environment is secondary region.
+The demo environment will be organized using three resource groups. The first resource group is for App Service Environment in primary region, the second is for App Service Environment in secondary region and the third resource group is for the *Logic App* automation. Two resource groups were created during the first scenario, now you need to create a resource group for Azure App Service Environment is the secondary region.
 
 ```bash
 az group create -l $LocationRegionDR -n $ASEResourceGroupNameDR
@@ -127,7 +125,7 @@ A virtual network is required to create an App Service Environment. This command
 az network vnet create -g $ASEResourceGroupNameDR -n $VirtualNetworkNameDR --address-prefix $VnetPrefixDR --subnet-name $SubnetNameVnetDR --subnet-prefix $SubnetVnetPrefixDR
 ```
 
-**Create App Service Environment - This process may take a while**
+**Create App Service Environment - this process may take a while**
 
 An App Service Environment is a single-tenant deployment of Azure App Service that runs in your virtual network. This command will create an App Service Environment.
 
@@ -135,9 +133,9 @@ An App Service Environment is a single-tenant deployment of Azure App Service th
 az appservice ase create -n $ASENameDR -g $ASEResourceGroupNameDR --vnet-name $VirtualNetworkNameDR --subnet $SubnetNameVnetDR --kind asev3 --virtual-ip-type External
 ```
 
-More information about Azure CLI for App Service Environment, visit [Azure CLI ASE Create](https://docs.microsoft.com/cli/azure/appservice/ase?view=azure-cli-latest#az-appservice-ase-create).
+For more information about Azure CLI for App Service Environment, visit [Azure CLI ASE Create](https://docs.microsoft.com/cli/azure/appservice/ase?view=azure-cli-latest#az-appservice-ase-create).
 
-**Create App Service Plan in App Service Environment - This process may take a while**
+**Create App Service Plan in App Service Environment - this process may take a while**
 
 Applications are hosted in App Service plans, which are created in an App Service Environment. An App Service plan is essentially a provisioning profile for an application host. This command will create an App Service plan.
 
@@ -145,35 +143,34 @@ Applications are hosted in App Service plans, which are created in an App Servic
 az appservice plan create -g $ASEResourceGroupNameDR -n $ASEPlanNameDR --app-service-environment $ASENameDR --is-linux --sku I1v2
 ```
 
-More information about Azure CLI for App Service Environment Plan, visit [Azure CLI ASE Plan Create](https://docs.microsoft.com/cli/azure/appservice/plan?view=azure-cli-latest#az-appservice-plan-create)
+For more information about Azure CLI for App Service Environment Plan, visit [Azure CLI ASE Plan Create](https://docs.microsoft.com/cli/azure/appservice/plan?view=azure-cli-latest#az-appservice-plan-create)
 
 ## Create and deploy sample application
 
 **Create a web app**
 
-To create a PHP app in your App Service Environment please use this command.
+To create a PHP app in your App Service Environment, use this command.
 
 ```bash
 az webapp create -g $ASEResourceGroupNameDR -p $ASEPlanNameDR -n $WEBAPPNameDR --runtime "PHP:8.0"
 ```
 
-> **Tip:**  To check the list of available web runtime in format Framework:Version use this command ```bash
-az webapp list-runtimes```
+> **Tip:**  To check the list of available runtimes in format Framework:Version, use the command `az webapp list-runtimes`.
 
-Create a variables with the URL of your websites. You will use this variables later with *curl* command to check if your websites is working correctly.
+Create variables with the URLs of your websites. You will use these variables later with the *curl* command to check if your websites is working correctly.
 
 ```bash
 URLofYourPrimaryWebsite=$(az webapp show --name $WEBAPPNamePROD --resource-group $ASEResourceGroupNamePROD --query defaultHostName -o tsv)
 URLofYourSecondaryWebsite=$(az webapp show --name $WEBAPPNamePROD --resource-group $ASEResourceGroupNamePROD --query defaultHostName -o tsv)
 ```
 
-You can also write down URL of your websites.
+You can also write down the URL of your websites.
 
 ![URL of your site]({{site.baseurl}}/media/2022/09/url-upgrade-preferences-in-App-Service-Environment.png){: .align-center}
 
 **Create index.php file for primary website**
 
-Sample code for your secondary website
+Sample code for your secondary website:
 
 ```bash
 echo '<?php
@@ -205,7 +202,7 @@ Use your browser or use *curl* command to check if your secondary app is working
 curl https://$URLofYourSecondaryWebsite
 ```
 
-## Planned maintenance - Change the upgrade preference
+## Planned maintenance -cChange the upgrade preference
 
 To change the *Upgrade preference* setting to Manual on your App Service Environment v3, use this command:
 
@@ -215,9 +212,9 @@ az resource update --name $ASENameDR -g $ASEResourceGroupNameDR --resource-type 
 
 ## Deploy Azure Front Door
 
-**Create a Azure Front Door profile**
+**Create Azure Front Door profile**
 
-Run *az afd profile create* to create an Azure Front Door profile.
+Run `az afd profile create` to create an Azure Front Door profile.
 
 ```bash
 az afd profile create \
@@ -228,7 +225,7 @@ az afd profile create \
 
 **Add an endpoint**
 
-Run *az afd endpoint create* to create an endpoint in your profile.
+Run `az afd endpoint create` to create an endpoint in your profile.
 
 ```bash
 az afd endpoint create \
@@ -238,7 +235,7 @@ az afd endpoint create \
     --enabled-state Enabled
 ```
 
-Create a variable with the URL of your Azure Front Door endpoint. You will use this variable later with *curl* command to check if your Azure Front Door endpoint is working correctly.
+Create a variable with the URL of your Azure Front Door endpoint. You will use this variable later with the *curl* command to check if your Azure Front Door endpoint is working correctly.
 
 ```bash
 URLofYourFrontDoorEndpoint=$(az afd endpoint show \
@@ -248,13 +245,13 @@ URLofYourFrontDoorEndpoint=$(az afd endpoint show \
     --query hostName -o tsv)
 ```
 
-You can also write down URL of your Azure Front Door endpoint.
+You can also write down the URL of your Azure Front Door endpoint.
 
 ![URL of your site]({{site.baseurl}}/media/2022/10/url-front-door.png){: .align-center}
 
 **Create an origin group**
 
-Run *az afd origin-group create* to create an origin group that contains your two web apps.
+Run `az afd origin-group create` to create an origin group that contains your two web apps.
 
 ```bash
 az afd origin-group create \
@@ -272,7 +269,7 @@ az afd origin-group create \
 
 **Add an origin to the group - primary website**
 
-Run az afd origin create to add an origin to your origin group.
+Run `az afd origin create` to add an origin to your origin group.
 
 ```bash
 az afd origin create \
@@ -308,7 +305,7 @@ az afd origin create \
 
 **Add a route**
 
-Run *az afd route create* to map your endpoint to the origin group. This route forwards requests from the endpoint to your origin group.
+Run `az afd route create` to map your endpoint to the origin group. This route forwards requests from the endpoint to your origin group.
 
 ```bash
 az afd route create \
@@ -323,11 +320,11 @@ az afd route create \
     --link-to-default-domain Enabled
 ```
 
-More information about Azure CLI for Azure Front Door, visit [Front Door CLI](https://learn.microsoft.com/azure/frontdoor/create-front-door-cli)
+For more information about Azure CLI for Azure Front Door, visit [Front Door CLI](https://learn.microsoft.com/azure/frontdoor/create-front-door-cli).
 
-In a production environment you will probably need to implement a WAF policy for you application. More information about Azure CLI for Azure Front Door WAF Policy, visit [Front Door WAF Policy](https://learn.microsoft.com/azure/frontdoor/create-front-door-cli#create-a-new-security-policy)
+In a production environment you will probably need to implement a WAF policy for you application. For more information about Azure CLI for Azure Front Door WAF Policy, visit [Front Door WAF Policy](https://learn.microsoft.com/azure/frontdoor/create-front-door-cli#create-a-new-security-policy).
 
-**Check if your Azure Front Door Endpoint is running - This process may take a while** 
+**Check if your Azure Front Door Endpoint is running - this process may take a while** 
 
 Use your browser or use *curl* command to check if your app is working correctly.
 
@@ -337,11 +334,11 @@ curl https://$URLofYourFrontDoorEndpoint
 
 ## Deploy Logic App
 
-This sample code is intended to show you what the Logic App can do to automate your processes. This sample Logic App shows how to use various connectors and functions that you can use to build you own Logic App in production environment.
+This sample code is intended to show you what the Logic App can do to automate your processes. This sample Logic App shows how to use various connectors and functions to build you own Logic App in a production environment.
 
 **Logic App ARM Template**
 
-You can use the *curl* command in Azure Cloud Shell to download the template_scenario_2.json file from the github repository.
+You can use the *curl* command in Azure Cloud Shell to download the template_scenario_2.json file from the GitHub repository.
 
 ```bash
 curl https://raw.githubusercontent.com/bmis/azure-logic-app-upgrade-preference/main/templates/template_scenario_2.json --output template_scenario_2.json
@@ -353,11 +350,11 @@ You can use the *code* editor in Azure Cloud Shell to check the template_scenari
 code template_scenario_2.json
 ```
 
-Use ctrl + q to close *code* editor.
+Use `ctrl + q` to close *code* editor.
 
 **Logic App ARM Parameters file**
 
-The *echo* command will create a parameters_scenario_2.json file for you.
+The `echo` command will create a parameters_scenario_2.json file for you.
 
 ```bash
 echo '{
@@ -413,7 +410,7 @@ You can use the *code* editor in Azure Cloud Shell to check parameters_scenario_
 code parameters_scenario_2.json
 ```
 
-Use ctrl + q to close *code* editor.
+Use `ctrl + q` to close *code* editor.
 
 ### Deploy Logic App template
 
@@ -425,21 +422,21 @@ az deployment group create --name $LogicAppName --resource-group $ResourceGroupN
 
 ### Authorize Office 365 connection
 
-Before you can use Office 365 connector in your Logic App you must authorize Office365 connection.
+Before you can use the Office 365 connector in your Logic App you must authorize the Office365 connection.
 
 1. Open [Azure portal](https://portal.azure.com), sign in with your credentials
-2. Go to your Logic App using for example search box at the top, search for *logic-asedemo-prod-02* - please change *asedemo* to your environment name
+2. Go to your Logic App using for example the search box at the top, search for *logic-asedemo-prod-02* - change *asedemo* to your environment name
 3. Click *API connections* and then select *office365* API Connection
-4. Check the status, if status is *Connected* everything is ok, if it's *Unauthorized*, click *Edit API connection* and then click *Authorize* button
+4. Check the status, if status is *Connected* everything is ok, if it's *Unauthorized*, click *Edit API connection* and then click *Authorize*
 5. Sign in to your account
-6. Click *Save* button
+6. Click *Save*
 
 **Check out the app via Logic App designer:**
 
 1. Open [Azure portal](https://portal.azure.com), sign in with your credentials
-2. Go to your Logic App using for example the search box at the top, search for logic-asedemo-prod-02 - please change asedemo to your environment name
+2. Go to your Logic App using for example the search box at the top, search for logic-asedemo-prod-02 - change asedemo to your environment name
 3. Click *Logic app designer*
-4. Familiarize yourself with the individual steps of Logic App workflow
+4. Familiarize yourself with the individual steps of the Logic App workflow
 
 **Steps in Azure Logic App:**
 
@@ -451,14 +448,14 @@ Before you can use Office 365 connector in your Logic App you must authorize Off
 6. After selecting *Approve*, the Logic App will check for an upgrade for the App Service Environment.
 7. If an upgrade is available, a *http requests* will be sent which redirect the traffic from the primary region to the secondary region and initiates the upgrade. As well, an e-mail will be sent with the information that the traffic has been redirected and the upgrade has started.
 8. If the upgrade is not available, the second approval email is sent.
-9. If the *Approve* option is selected, the Logic App will go further. If the *Reject* option is selected the Logic App will stop working.
+9. If the *Approve* option is selected, the Logic App will continue. If the *Reject* option is selected the Logic App will stop working.
 10. After selecting *Approve*, the Logic App will only redirect the traffic from the primary region to the secondary region without starting upgrade process of App Service Environment. As well, an e-mail will be sent with the information that traffic has been redirected.
 
 ![Logic App Designer]({{site.baseurl}}/media/2022/10/logic-app-designer_s2.png){: .align-center}
 
-For more information about Logic Apps, visit [Logic App Overview](https://docs.microsoft.com/azure/logic-apps/logic-apps-overview)
+For more information about Logic Apps, visit [Logic App Overview](https://docs.microsoft.com/azure/logic-apps/logic-apps-overview).
 
-**Steps to assign an Azure role contributor to App Service Environment instance:**
+**Steps to assign a contibutor RBAC role to App Service Environment instance:**
 
 Your Logic App will be deployed with system assigned managed identity. Before you can use your Logic App you must give your Logic App identity permission to your App Service Environment and Azure Front Door. Permissions are required to:
 
@@ -466,7 +463,7 @@ Your Logic App will be deployed with system assigned managed identity. Before yo
 2. Starting the upgrade process
 3. Redirect traffic from the primary region to the secondary region
   
-If you want to know more about managed identities please go to this page [Managed identities for Azure resources](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview). Information about permissions that you need to configure managed identity you can find on this page [Managed identities for Azure resources frequently asked questions](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/managed-identities-faq#which-azure-rbac-permissions-are-required-to-use-a-managed-identity-on-a-resource).
+If you want to know more about managed identities please go to this page [Managed identities for Azure resources](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview). Information about permissions that you need to configure managed identity can be found on this page [Managed identities for Azure resources frequently asked questions](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/managed-identities-faq#which-azure-rbac-permissions-are-required-to-use-a-managed-identity-on-a-resource).
 
 Step 1: Determine who needs access
 
@@ -504,29 +501,29 @@ If you are at this stage, you have successfully created the demo environment. No
 
 As you build your automation and notification logic, you may want to test it before the actual upgrade is available. The Azure portal and rest api has the ability to send a special test upgrade available notification, which you can use to verify your automation logic. The message will be similar to the real notification, but the title will be prefixed with "[Test]" and the description will be different. You can send test notifications after you've configured your upgrade preference to Manual. The test notifications are sent in batches every 15 minutes.
 
-To send a special test upgrade available notification please use this command:
+To send a special test upgrade available notification, use this command:
 
 ```bash
 ASEidPROD=$(az appservice ase show --name $ASENamePROD --resource-group $ASEResourceGroupNamePROD --query id --output tsv)
 az rest --method POST --uri "${ASEidPROD}/testUpgradeAvailableNotification?api-version=2022-03-01"
 ```
 
-You can also use [Azure portal](https://portal.azure.com) to send test notifications. You can find more information about test notifications on this site [Send test notifications](https://docs.microsoft.com/azure/app-service/environment/how-to-upgrade-preference?pivots=experience-azp#send-test-notifications)
+You can also use [Azure portal](https://portal.azure.com) to send test notifications. You can find more information about test notifications at [Send test notifications](https://docs.microsoft.com/azure/app-service/environment/how-to-upgrade-preference?pivots=experience-azp#send-test-notifications).
 
 **Check your mailbox and approve the redirection traffic from the primary region to the secondary region and upgrade process**
 
 ![Approve or reject email]({{site.baseurl}}/media/2022/10/aprove-or-reject-email-s2.png){: .align-center}
 
-Because this is test notification your Logic app will send you second email asking you to confirm only the traffic redirection. Information from email *App Service Environment NameOfYourASE does not currently have an upgrade available but you can redirect the traffic without upgrade using approve button.* In a real-world scenario when an upgrade will be available your Logic App will send you information that *The traffic from NameOfYourWebAppPrimaryRegion to the NameOfYourWebAppSecondaryRegion has been redirected and the upgrade of NameOfYourASE has started.*
+Because this is a test notification your Logic App will send you a second email asking you to confirm only the traffic redirection. Information from email *App Service Environment NameOfYourASE does not currently have an upgrade available but you can redirect the traffic without upgrade using approve button.* In a real-world scenario when an upgrade will be available your Logic App will send you information that *The traffic from NameOfYourWebAppPrimaryRegion to the NameOfYourWebAppSecondaryRegion has been redirected and the upgrade of NameOfYourASE has started.*
 
-> **Tip:** You can also send a test notification from the App Service Environment in second region, the Logic App will redirect traffic from the second region to the primary region.
+> **Tip:** You can also send a test notification from the App Service Environment in the second region, the Logic App will redirect traffic from the second region to the primary region.
 
 ### Logic App run history blade
 
 Familiarize yourself with the Logic App run using Run history blade.
 
 1. Open [Azure portal](https://portal.azure.com), sign in with your credentials.
-2. Go to your Logic App using for example the search box at the top, search for *logic-asedemo-prod-02* - please change *asedemo* to your environment name.
+2. Go to your Logic App using for example the search box at the top, search for *logic-asedemo-prod-02* - change *asedemo* to your environment name.
 3. Click *Overview*.
 4. Click *Run history*.
 5. Select last *Succeeded* Logic App run.
