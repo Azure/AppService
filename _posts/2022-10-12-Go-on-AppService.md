@@ -11,4 +11,4 @@ Want to get started with Go? Follow these guides:
 
 1. [Download Go](https://go.dev/dl/)
 2. [Get Started with Go on App Services](https://learn.microsoft.com/en-us/azure/app-service/quickstart-go)
-3. [Use websockets with Go](https://github.com/Azure/app-service-linux-docs/tree/master/HowTo)
+3. [Use websockets with Go](https://github.com/Azure/app-service-linux-docs/tree/master/HowTo/use_websockets_with_go)
