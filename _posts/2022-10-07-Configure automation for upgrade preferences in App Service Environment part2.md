@@ -161,7 +161,7 @@ Create variables with the URLs of your websites. You will use these variables la
 
 ```bash
 URLofYourPrimaryWebsite=$(az webapp show --name $WEBAPPNamePROD --resource-group $ASEResourceGroupNamePROD --query defaultHostName -o tsv)
-URLofYourSecondaryWebsite=$(az webapp show --name $WEBAPPNamePROD --resource-group $ASEResourceGroupNamePROD --query defaultHostName -o tsv)
+URLofYourSecondaryWebsite=$(az webapp show --name $WEBAPPNameDR --resource-group $ASEResourceGroupNameDR --query defaultHostName -o tsv)
 ```
 
 You can also write down the URL of your websites.
@@ -202,7 +202,7 @@ Use your browser or use *curl* command to check if your secondary app is working
 curl https://$URLofYourSecondaryWebsite
 ```
 
-## Planned maintenance -cChange the upgrade preference
+## Planned maintenance - Change the upgrade preference
 
 To change the *Upgrade preference* setting to Manual on your App Service Environment v3, use this command:
 
