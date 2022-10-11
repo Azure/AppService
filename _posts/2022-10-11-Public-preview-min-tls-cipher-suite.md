@@ -1,5 +1,5 @@
 ---
-title: "Public Preview: Disabling Weaker TLS Cipher Suites for Web Apps on Mutli-tenant Premium App Service Plans"
+title: "Public Preview: Disabling Weaker TLS Cipher Suites for Web Apps on Multi-tenant Premium App Service Plans"
 author_name: "Yutang Lin"
 category: security
 toc: true
