@@ -67,7 +67,7 @@ PATCH https://management.azure.com/subscriptions/<subscriptionId>/resourceGroups
 
 After successfully updating the site config, we will see the value of the property `minTlsCipherSuite` change to the selected cipher suite, `TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA` from the example above. 
 
-We will also see the value of the property `supportedTlsCipherSuites` show a list of all the cipher suites that are enabled for the web app. In these case, the cipher suites that are weaker than the selected minimum cipher suite, `TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA`,  will not show up in the `supportedTlsCipherSuites` property because they have been disabled for the web app.
+We will also see the value of the property `supportedTlsCipherSuites` show a list of all the cipher suites that are enabled for the web app. In this case, the cipher suites that are weaker than the selected minimum cipher suite, `TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA`,  will not show up in the `supportedTlsCipherSuites` property because they have been disabled for the web app.
 
 ### What is the default behavior? 
 
