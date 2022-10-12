@@ -1,5 +1,5 @@
 ---
-title: "WrdPress on Azure App Service supports Azure Front Door Integration"
+title: "WordPress on Azure App Service supports Azure Front Door Integration"
 author_name: "Radhika Bollineni"
 ---
 
