@@ -10,5 +10,5 @@ Support for Go is being added as an Experimental feature. Experimental features 
 Want to get started with Go? Follow these guides:
 
 1. [Download Go](https://go.dev/dl/)
-2. [Get Started with Go on App Services](https://learn.microsoft.com/en-us/azure/app-service/quickstart-go)
-3. [Use websockets with Go](https://github.com/Azure/app-service-linux-docs/tree/master/HowTo/use_websockets_with_go)
+2. [Get Started with Go on App Services](https://github.com/Azure/app-service-linux-docs/blob/7a21800f4ff555c6a6e5c37d562ab9e1cb592812/HowTo/use_go_with_appservice.md)
+3. [Use websockets with Go](https://github.com/Azure/app-service-linux-docs/blob/1639ac367296feb62677c4c5a932f5ac95fac9bd/HowTo/WebSockets/use_websockets_with_go.md)
