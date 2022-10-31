@@ -5,19 +5,17 @@ category: networking
 toc: true
 ---
 
-## Introduction
-
 High availability and fault tolerance are key components of a well-architected solution. It's always best to prepare for the unexpected and having an emergency plan that can shorten downtime and keep your systems up an running automatically when something fails can help you do that.
 
 When you deploy your application to the cloud, you choose a region in that cloud where your application infrastructure is based. Regions are essentially data centers is various parts of the world. In a world where unpredictable severe weather events, natural disasters, or human errors are inevitable, there's the imminent possibility of events that may disturb the functionality of a region or take it down altogether for a period of time. If your application is deployed to a single region, and the region becomes unavailable, your application will also be unavailable. This may be unacceptable under the terms of your application's SLA. If so, deploying your application and its services across multiple regions is a good idea. A multi-region deployment can use an active-active or active-passive configuration. An active-active configuration distributes requests across multiple active regions. An active-passive configuration keeps warm instances in the secondary region, but doesn't send traffic there unless the primary region fails. For multi-region deployments, we recommend deploying to [paired regions](https://learn.microsoft.com/azure/availability-zones/cross-region-replication-azure#azure-cross-region-replication-pairings-for-all-geographies). For more information on this topic, see [Architect Azure applications for resiliency and availability](https://learn.microsoft.com/azure/architecture/reliability/architect).
 
 In this blog post, we'll walk through deploying a highly available multi-region web app. We'll have a look at some of the different offerings Azure provides to enable this architecture as well as go over best practices and recommendations. We'll keep the scenario simple by restricting our application components to just a web app, but the info shared here can definitely be expanded and applied to many other infrastructure patterns. For example, if your application connects to an Azure database offering or storage account, a quick search through the Azure docs will reveal built-in solutions as [active geo-replication for SQL databases](https://learn.microsoft.com/azure/azure-sql/database/active-geo-replication-overview) and [redundancy options for storage accounts](https://learn.microsoft.com/azure/storage/common/storage-redundancy). For a reference architecture for a more detailed scenario, see [Highly available multi-region web application](https://learn.microsoft.com/azure/architecture/reference-architectures/app-service-web-app/multi-region).
 
-*Download a [Visio file]({{ site.baseurl }}/media/2022/11/multi-region-app-service.vsdx) of this architecture.*
-
 ## Architecture
 
 ![]({{ site.baseurl }}/media/2022/11/multi-region-app-service.png)
+
+*Download a [Visio file]({{ site.baseurl }}/media/2022/11/multi-region-app-service.vsdx) of this architecture.*
 
 ### Workflow
 
@@ -79,27 +77,27 @@ I'm going to use a single resource group for all resources to make management an
 
 Run the following command to create your resource group. Replace the placeholder for "resource-group-name".
 
-```azurecli
+```bash
 az group create --name <resource-group-name> --location eastus
 ```
 
 Run the following commands to create the App Service plans. Replace the placeholders for App Service plan name and resource group name.
 
-```azurecli
+```bash
 az appservice plan create --name <app-service-plan-east-us> --resource-group <resource-group-name> --location eastus
 az appservice plan create --name <app-service-plan-west-us> --resource-group <resource-group-name> --location westus
 ```
 
 Once the App Service plans are created, run the following commands to create the web apps. Replace the placeholders and be sure to pay attention to the `--plan` parameter so that you place one app in each plan (and therefore region).
 
-```azurecli
+```bash
 az webapp create --name <web-app-east-us> --resource-group <resource-group-name> --plan <app-service-plan-east-us>
 az webapp create --name <web-app-west-us> --resource-group <resource-group-name> --plan <app-service-plan-west-us>
 ```
 
 Make note of the default host name of each web app so you can define the backend addresses when you deploy the Front Door in the next step. It should be in the format `<web-app-name>.azurewebsites.net`. This can be found by running the following command or by navigating to the app's "Overview" page in the [Azure portal](https://portal.azure.com).
 
-```azurecli
+```bash
 az webapp show --name <web-app-name> --resource-group <resource-group-name> --query "hostNames"
 ```
 
@@ -209,6 +207,9 @@ param frontDoorEndpointName string = 'afd-${uniqueString(resourceGroup().id)}'
 ])
 param frontDoorSkuName string = 'Standard_AzureFrontDoor'
 
+@description('The IP range used to restrict access to the SCM/advanced tool site. Be sure to change this to your IP address.')
+param ipRange string = '0.0.0.0/0'
+
 var appServicePlanName = 'AppServicePlan'
 var secondaryAppServicePlanName = 'SecondaryAppServicePlan'
 
@@ -276,6 +277,22 @@ resource app 'Microsoft.Web/sites@2020-06-01' = {
           name: 'Allow traffic from Front Door'
         }
       ]
+      scmIpSecurityRestrictions: [
+        {
+          tag: 'Default'
+          ipAddress: ipRange
+          action: 'Allow'
+          priority: 100
+          name: 'myIp'
+        }
+        {
+          ipAddress: 'Any'
+          action: 'Deny'
+          priority: 2147483647
+          name: 'Deny all'
+          description: 'Deny all access'
+        }
+      ]
     }
   }
 }
@@ -308,6 +325,22 @@ resource secondaryApp 'Microsoft.Web/sites@2020-06-01' = {
             ]
           }
           name: 'Allow traffic from Front Door'
+        }
+      ]
+      scmIpSecurityRestrictions: [
+        {
+          tag: 'Default'
+          ipAddress: ipRange
+          action: 'Allow'
+          priority: 100
+          name: 'myIp'
+        }
+        {
+          ipAddress: 'Any'
+          action: 'Deny'
+          priority: 2147483647
+          name: 'Deny all'
+          description: 'Deny all access'
         }
       ]
     }
