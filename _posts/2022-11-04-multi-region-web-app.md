@@ -117,8 +117,8 @@ Front Door will be configured with priority routing where East US will be our pr
     |Setting  |Description  |
     |---------|---------|
     |Subscription     |*select your subscription*         |
-    |Resource group     |<resource-group-name>         |
-    |Name     |<unique-name>         |
+    |Resource group     |`<resource-group-name>`     |
+    |Name     |`<unique-name>`         |
     |Tier     |Standard         |
 
 1. In the "Endpoint" tab, select **Add an endpoint** and give your endpoint a globally unique name.
