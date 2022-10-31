@@ -28,11 +28,11 @@ There are several general approaches to achieve high availability across regions
 
 ## Recommendations and considerations
 
-Your requirements might differ from the architecture described here, however you can sse the recommendations and considerations in this section as a starting point as they apply to almost all multi-region scenarios. The considerations come from the [Microsoft Azure Well-Architected Framework](https://learn.microsoft.com/azure/architecture/framework/), which is a set of guiding tenets that can be used to improve the quality of a workload.
+Your requirements might differ from the architecture described here, however you can use the recommendations and considerations in this section as a starting point as they apply to almost all multi-region scenarios. The considerations come from the [Microsoft Azure Well-Architected Framework](https://learn.microsoft.com/azure/architecture/framework/), which is a set of guiding tenets that can be used to improve the quality of a workload.
 
 ### Regional pairing
 
-Deciding on your primary region is relatively straightforward - pick the region that supports the features your using and is closest to you/your customers to reduce latency. When deciding on your secondary region, consider using the [region Azure paired with your primary](https://learn.microsoft.com/azure/availability-zones/cross-region-replication-azure#azure-cross-region-replication-pairings-for-all-geographies).
+Deciding on your primary region is relatively straightforward - pick the region that supports the features you're using and is closest to you/your customers to reduce latency. When deciding on your secondary region, consider using the [region Azure paired with your primary](https://learn.microsoft.com/azure/availability-zones/cross-region-replication-azure#azure-cross-region-replication-pairings-for-all-geographies).
 
 ### Resource groups
 
@@ -63,7 +63,7 @@ Additionally, if you're using an active/passive multi-region deployment, conside
 
 ## Tutorial
 
-In this tutorial, you'll deploy the scenario shown in the [workflow](#workflow) which includes two web apps behind Azure Front Door with access restrictions that only give Front Door direct access to the apps. We'll use the Azure CLI to create the initial web apps and we'll use the portal to create the Azure Front Door profile.
+In this tutorial, you'll deploy the scenario shown in the [workflow](#workflow) which includes two web apps behind Azure Front Door with access restrictions that only give Front Door direct access to the apps. We'll use the Azure CLI to create the initial web apps and we'll use the portal to create the Azure Front Door.
 
 ### Prerequisites
 
@@ -88,7 +88,7 @@ az appservice plan create --name <app-service-plan-east-us> --resource-group <re
 az appservice plan create --name <app-service-plan-west-us> --resource-group <resource-group-name> --location westus
 ```
 
-Once the App Service plans are created, run the following commands to create the web apps. Replace the placeholders and be sure to pay attention to the `--plan` parameter so that you place one app in each plan (and therefore region).
+Once the App Service plans are created, run the following commands to create the web apps. Replace the placeholders and be sure to pay attention to the `--plan` parameter so that you place one app in each plan (and therefore each region).
 
 ```bash
 az webapp create --name <web-app-east-us> --resource-group <resource-group-name> --plan <app-service-plan-east-us>
@@ -107,7 +107,7 @@ I'm going to use the portal to create the Front Door since it will help us visua
 
 Front Door will be configured with priority routing where East US will be our primary region and West US will be the secondary. We'll use the standard tier which gives us the option to use a Web Application Firewall (WAF) policy for enhanced security.
 
-1. From the home page or the Azure menu in the portal, select **+ Create a resource**. Search for Front Door and CDN profiles. Then select **Create**.
+1. From the home page or the Azure menu in the portal, select **+ Create a resource**. Search for "Front Door and CDN profiles". Then select **Create**.
 1. On the Compare offerings page, select **Custom create**. Then select **Continue** to create a Front Door.
 
     ![]({{ site.baseurl }}/media/2022/11/afd-create-1.png)
@@ -125,7 +125,7 @@ Front Door will be configured with priority routing where East US will be our pr
 1. Next, select **+ Add a route** to configure routing to your Web App origin.
 1. On the "Add a route" page, enter the following information and select **Add** to add the route to the endpoint configuration.
 
-    ![]({{ site.baseurl }}/media/2022/11/afd-create-1.png)
+    ![]({{ site.baseurl }}/media/2022/11/afd-create-2.png)
 
     | Setting | Description |
     |--|--|
@@ -134,7 +134,7 @@ Front Door will be configured with priority routing where East US will be our pr
     | Patterns to match | Set all the URLs this route will accept. This example will use the default, and accept all URL paths. |
     | Accepted protocols | Select the protocol the route will accept. This example will accept both HTTP and HTTPS requests. |
     | Redirect | Enable this setting to redirect all HTTP traffic to the HTTPS endpoint. |
-    | Origin group | Select **Add a new origin group**. For the origin group name, enter **myOriginGroup**. Then select **+ Add an origin**. For the first origin (primary region), enter the name of one of the web apps you are using for this tutorial for the *Name* and then for the *Origin Type* select **App services**. In the *Host name*, select the hostname you queried/found in the portal earlier. Leave the rest of the default values the same. Select **Add** to add the origin to the origin group. Repeat the steps to add the second web app as an origin, however when adding the second origin, set the *Priority* to "2". This will direct all traffic to the other origin (primary region). Once both web app origins have been added, select **Add** to save the origin group configuration. |
+    | Origin group | Select **Add a new origin group**. For the origin group name, enter **myOriginGroup**. Then select **+ Add an origin**. For the first origin (primary region), enter the name of one of the web apps you're using for this tutorial for the *Name* and then for the *Origin Type* select **App services**. In the *Host name*, select the hostname you queried/found in the portal earlier. Leave the rest of the default values the same. Select **Add** to add the origin to the origin group. Repeat the steps to add the second web app as an origin, however when adding the second origin, set the *Priority* to "2". This will direct all traffic to the primary origin unless the primary goes down. Once both web app origins have been added, select **Add** to save the origin group configuration. |
     | Origin path | Leave blank. |
     | Forwarding protocol | Select the protocol that will be forwarded to the origin group. This example will match the incoming requests to origins. |
     | Caching | Select the check box if you want to cache contents closer to your users globally using Azure Front Door's edge POPs and the Microsoft network. |
@@ -148,7 +148,7 @@ Front Door will be configured with priority routing where East US will be our pr
 
 Traffic from Azure Front Door to your application originates from a well known set of IP ranges defined in the AzureFrontDoor.Backend service tag. Using a service tag restriction rule, you can [restrict traffic to only originate from Azure Front Door](https://learn.microsoft.com/azure/frontdoor/origin-security).
 
-Before setting up the App Service access restriction, take note of the *Front Door ID* which can be found on the "Overview" page for the Front Door instance in the essentials section. This will be needed to ensure traffic only originates from your specific Front Door instance by further filtering the incoming requests based on the unique http header that Azure Front Door sends.
+Before setting up the App Service access restriction, take note of the *Front Door ID* which can be found on the "Overview" page for the Front Door instance in the "Essentials" section. This will be needed to ensure traffic only originates from your specific Front Door instance by further filtering the incoming requests based on the unique http header that your Azure Front Door sends.
 
 For your first web app, navigate to the "Access restriction (preview)" page.
 
@@ -166,9 +166,9 @@ Repeat these same steps for the other web app.
 
 At this point, you've configured all the resources for this tutorial. To confirm access to your apps is restricted to Front Door, try navigating to your apps directly using their endpoints. If you are able to access them, review their access restrictions and ensure access is limited to only Front Door.
 
-Now that a couple minutes have passed since the Front Door instance has been created, it should be ready and deployed globally. In a browser, enter the endpoint hostname for the Front Door. This endpoint can be found on the "Overview" page for your Front Door. If everything has been configured correctly, you should be hitting your app in your primary region.
+Now that a couple minutes have passed since the Front Door instance has been created, it should be ready and deployed globally. In a browser, enter the endpoint hostname for the Front Door. This endpoint can be found on the "Overview" page for your Front Door. If everything has been configured correctly, you should be reaching your app in your primary region.
 
-You can test failover by stopping the app in your primary region and then navigating to your Front Door endpoint again. Note that there may be a delay between when the traffic will be directed to the second web app depending on your health check interval. You may need to refresh the page a couple times. Try stopping the second web app as well and you should see an error page. This proves it redirected to the secondary region. Deploy some apps to your web apps to test seeing different versions of an app when simulating fail-overs.
+You can test failover by stopping the app in your primary region and then navigating to your Front Door endpoint again. Note that there may be a delay between when the traffic will be directed to the second web app depending on your health probe frequency. You may need to refresh the page a couple times. Try stopping the second web app as well and you should see an error page. This proves it redirected to the secondary region. Deploy some apps to your web apps to test seeing different versions of an app when simulating fail-overs.
 
 ### Clean up resources
 
@@ -176,7 +176,7 @@ After you're done, you can remove all the items you created. Deleting a resource
 
 ## Deploy from ARM/Bicep
 
-All of the resources in this post can be deployed using an ARM/Bicep template. A sample template is shown below. To learn how to deploy ARM/Bicep templates, see [How to deploy resources with Bicep and Azure CLI](https://learn.microsoft.com/azure/azure-resource-manager/bicep/deploy-cli).
+All of the resources in this post can be deployed using an ARM/Bicep template. A sample template is shown below. To learn how to deploy ARM/Bicep templates, see [How to deploy resources with Bicep and Azure CLI](https://learn.microsoft.com/azure/azure-resource-manager/bicep/deploy-cli). If using this template, be sure to pay attention to the `ipRange` parameter and insert your specific range.
 
 ```yml
 @description('The location into which regionally scoped resources should be deployed. Note that Front Door is a global resource.')
