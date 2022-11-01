@@ -245,7 +245,7 @@ If you want to validate this feature as part of this tutorial, it will take some
 
 ### Slot swap
 
-Once you're done testing and validating, you can perform a [slot swap](https://learn.microsoft.com/azure/app-service/deploy-staging-slots#swap-two-slots) from your staging site to your production site. During a slot swap, the App Service platform [ensures the target slot doesn't experience downtime](https://learn.microsoft.com/azure/app-service/deploy-staging-slots#swap-operation-steps).
+Once you're done testing and validating, you can perform a [slot swap](https://learn.microsoft.com/azure/app-service/deploy-staging-slots#swap-two-slots) from your staging site to your production site. You'll need to do this for both instances of you app. During a slot swap, the App Service platform [ensures the target slot doesn't experience downtime](https://learn.microsoft.com/azure/app-service/deploy-staging-slots#swap-operation-steps).
 
 To perform the swap:
 
@@ -265,7 +265,7 @@ At this point, your apps are up and running and any changes you make to your sou
 
 ### Additional guidance
 
-If you're concerned about potential disruptions or issues with continuity across regions, or if you're making significant changes to your apps, you can temporarily remove the site that's undergoing the slot swap from your Front Door's origin group and all traffic will be directed to the other origin. To do this, navigate to the **Update origin group** pane as shown below and Delete the origin that is undergoing the change. Once you've made all of your changes and are ready to serve traffic there again, you can return to the same pane and select **+ Add an origin** to re-add the origin.
+If you're concerned about potential disruptions or issues with continuity across regions, as in some customers seeing one version of your app while others see another, or if you're making significant changes to your apps, you can temporarily remove the site that's undergoing the slot swap from your Front Door's origin group and all traffic will be directed to the other origin. To do this, navigate to the **Update origin group** pane as shown below and Delete the origin that is undergoing the change. Once you've made all of your changes and are ready to serve traffic there again, you can return to the same pane and select **+ Add an origin** to re-add the origin.
 
 ![]({{ site.baseurl }}/media/2022/11/removeorigin.png)
 
