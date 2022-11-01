@@ -99,7 +99,7 @@ Make note of the default host name of each web app so you can define the backend
 az webapp show --name <web-app-name> --resource-group <resource-group-name> --query "hostNames"
 ```
 
-## Create Azure Front Door
+### Create Azure Front Door
 
 I'm going to use the portal to create the Front Door since it will help us visualize the various components, however the [CLI or templates](https://learn.microsoft.com/azure/frontdoor/create-front-door-cli) can just as easily be used.
 
@@ -162,7 +162,7 @@ Be sure to repeat these same steps for the other web app.
 
 ### Verify Azure Front Door
 
-At this point, you've configured all the infrastructure resources for this tutorial. To confirm access to your apps is restricted to Front Door, try navigating to your apps directly using their endpoints. If you are able to access them, review their access restrictions and ensure access is limited to only Front Door.
+To confirm access to your apps is restricted to Front Door, try navigating to your apps directly using their endpoints. If you are able to access them, review their access restrictions and ensure access is limited to only Front Door.
 
 Now that a couple minutes have passed since the Front Door instance has been created, it should be ready and deployed globally. In a browser, enter the endpoint hostname for the Front Door. This endpoint can be found on the "Overview" page for your Front Door. If everything has been configured correctly, you should be reaching your app in your primary region.
 
@@ -204,7 +204,7 @@ We'll create a staging branch now so we can focus on slots and slot swapping lat
     <h1 class="display-4">Hello World from .Net 6 staging branch</h1>
     ```
 
-At this point, our source code is all set up and ready to be deployed to our apps.
+At this point, your source code is all set up and ready to be deployed to your apps.
 
 ### Configure the deployment source
 
@@ -216,7 +216,7 @@ You'll need to quickly update your app's stack's settings to match the source co
 1. Select **Save** and then **Continue** to confirm the update.
 1. Repeat the above steps for your other app.
 
-You're now ready to deploy the code. Ensure that if you've locked down access to your SCM/advanced tool site, you enable sufficient access for GitHub to be able to deploy.
+You're now ready to deploy the code. Ensure that if you've locked down access to your SCM/advanced tool site, you enable sufficient access for GitHub to be able to reach your apps.
 
 1. Go to one of your apps.
 1. In the left pane, select **Deployment Center** and make sure you're on the **Settings** tab.
@@ -252,11 +252,11 @@ We'll create some deployment slots and walk through one approach to achieving th
 1. Input "stage" for *Name* and to keep things simple, we'll clone the settings from the production slot by selecting the app's name from the *Clone settings from:* dropdown.
 1. Select **Close** at the bottom of the slot configuration pane.
 1. Select the newly create stage slot.
-1. You'll need to configure the deployment source again as you did before. This time however, for **Branch**, select "stage" which we created early in GitHub.
+1. You'll need to configure the deployment source again as you did before. This time however, for **Branch**, select "stage" which we created earlier in GitHub.
 1. Select **Save**.
 1. Repeat the above steps for your other app.
 
-After a couple minutes once the deployments to the staging slots complete, at this point, if you try accessing your slot's endpoint directly, you'll receive a "Error 403 - Forbidden" because the access restrictions were cloned from the production site. There are a couple strategies that can be used to review the staging site and then eventually get it into production. To quickly validate that your staging site is working, you can temporarily update its access restrictions by adding your IP to the allow list for example. Be sure to remove that rule once you are done validating.
+After a couple minutes once the deployments to the staging slots complete, at this point, if you try accessing your slot's endpoint directly, you'll receive an "Error 403 - Forbidden" because the access restrictions were cloned from the production site. There are a couple strategies that can be used to review the staging site and then eventually get it into production. To quickly validate that your staging site is working, you can temporarily update its access restrictions by adding your IP to the allow list for example. Be sure to remove that rule once you are done validating.
 
 If that's all the validation you require, you can skip this step and move on to the next. However, if you want to actually test your staging slot in production and allow your users to access it, you can configure traffic routing between your slots. For example, you can send 10% of your traffic to your staging slot, so when users try to access your app, 10% of them will automatically be routed there. No changes are needed on your Front Door instance to accomplish this. To learn more about slot swaps and staging environments in App Service see [Set up staging environments in Azure App Service](https://learn.microsoft.com/azure/app-service/deploy-staging-slots).
 
@@ -284,9 +284,9 @@ If you're concerned about potential disruptions or issues with continuity across
 
 ![]({{ site.baseurl }}/media/2022/11/removeorigin.png)
 
-If you'd prefer to not delete and then add re-add origins, you can create additional origin groups for your Front Door instance and then associate the route to the origin group pointing to the intended origin. For example, you can create two new origin groups, one for your primary region and one for your secondary region. When your primary region is undergoing a change, associate the route with your secondary region and vice versa when your secondary region is undergoing a change. When all changes are complete, you can associate the route with your original origin group which contains both regions. This method works because a route can only be associated with one origin group at a time.
+If you'd prefer to not delete and then add re-add origins, you can create additional origin groups for your Front Door instance. You can then associate the route to the origin group pointing to the intended origin. For example, you can create two new origin groups, one for your primary region and one for your secondary region. When your primary region is undergoing a change, associate the route with your secondary region and vice versa when your secondary region is undergoing a change. When all changes are complete, you can associate the route with your original origin group which contains both regions. This method works because a route can only be associated with one origin group at a time.
 
-In the screenshot below, there are three origin groups. "MyOriginGroup" consists of both web apps and the other two origin groups each consist of the web app in their respective region. In the example here, the app in the primary region is undergoing a change, so before I started that change, I associated the route with "MySecondaryRegion" so all traffic would be sent to the app in my secondary region during the change period. You can update the route by selecting "Unassociated" which will bring up the **Associate routes** pane.
+To demonstrate working with multiple origins, in the screenshot below, there are three origin groups. "MyOriginGroup" consists of both web apps and the other two origin groups each consist of the web app in their respective region. In the example here, the app in the primary region is undergoing a change, so before I started that change, I associated the route with "MySecondaryRegion" so all traffic would be sent to the app in my secondary region during the change period. You can update the route by selecting "Unassociated" which will bring up the **Associate routes** pane.
 
 ![]({{ site.baseurl }}/media/2022/11/associateroutes.png)
 
@@ -296,7 +296,7 @@ After you're done, you can remove all the items you created. Deleting a resource
 
 ## Deploy from ARM/Bicep
 
-All of the resources in this post can be deployed using an ARM/Bicep template. A sample template is shown below, which creates empty apps without slots. The template can be modified to include slots and configure your deployment, or this can be done later. To learn how to deploy ARM/Bicep templates, see [How to deploy resources with Bicep and Azure CLI](https://learn.microsoft.com/azure/azure-resource-manager/bicep/deploy-cli). If using this template, be sure to pay attention to the `ipRange` parameter and insert your specific range.
+All of the resources in this post can be deployed using an ARM/Bicep template. A sample template is shown below, which creates empty apps without slots. The template can be modified to include slots and configure your deployment, or this can be done later once deployment is complete as was done in this post. To learn how to deploy ARM/Bicep templates, see [How to deploy resources with Bicep and Azure CLI](https://learn.microsoft.com/azure/azure-resource-manager/bicep/deploy-cli). If using this template, be sure to pay attention to the `ipRange` parameter and insert your specific range.
 
 ```yml
 @description('The location into which regionally scoped resources should be deployed. Note that Front Door is a global resource.')
