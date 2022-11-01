@@ -9,13 +9,11 @@ High availability and fault tolerance are key components of a well-architected s
 
 When you deploy your application to the cloud, you choose a region in that cloud where your application infrastructure is based. Regions are essentially data centers is various parts of the world. In a world where unpredictable severe weather events, natural disasters, or human errors are inevitable, there's the imminent possibility of events that may disturb the functionality of a region or take it down altogether for a period of time. If your application is deployed to a single region, and the region becomes unavailable, your application will also be unavailable. This may be unacceptable under the terms of your application's SLA. If so, deploying your application and its services across multiple regions is a good idea. A multi-region deployment can use an active-active or active-passive configuration. An active-active configuration distributes requests across multiple active regions. An active-passive configuration keeps warm instances in the secondary region, but doesn't send traffic there unless the primary region fails. For multi-region deployments, we recommend deploying to [paired regions](https://learn.microsoft.com/azure/availability-zones/cross-region-replication-azure#azure-cross-region-replication-pairings-for-all-geographies). For more information on this topic, see [Architect Azure applications for resiliency and availability](https://learn.microsoft.com/azure/architecture/reliability/architect).
 
-In this blog post, we'll walk through deploying a highly available multi-region web app. We'll have a look at some of the different offerings Azure provides to enable this architecture as well as go over best practices and recommendations. We'll keep the scenario simple by restricting our application components to just a web app, but the info shared here can definitely be expanded and applied to many other infrastructure patterns. For example, if your application connects to an Azure database offering or storage account, a quick search through the Azure docs will reveal built-in solutions as [active geo-replication for SQL databases](https://learn.microsoft.com/azure/azure-sql/database/active-geo-replication-overview) and [redundancy options for storage accounts](https://learn.microsoft.com/azure/storage/common/storage-redundancy). For a reference architecture for a more detailed scenario, see [Highly available multi-region web application](https://learn.microsoft.com/azure/architecture/reference-architectures/app-service-web-app/multi-region).
+In this blog post, we'll walk through deploying a highly available multi-region web app. We'll start with deploying the necessary infrastructure, and then move into managing the application source code. We'll have a look at some of the different offerings Azure provides to enable this architecture as well as go over best practices and recommendations. We'll keep the scenario simple by restricting our application components to just a web app, but the info shared here can definitely be expanded and applied to many other infrastructure patterns. For example, if your application connects to an Azure database offering or storage account, a quick search through the Azure docs will reveal built-in solutions as [active geo-replication for SQL databases](https://learn.microsoft.com/azure/azure-sql/database/active-geo-replication-overview) and [redundancy options for storage accounts](https://learn.microsoft.com/azure/storage/common/storage-redundancy). For a reference architecture for a more detailed scenario, see [Highly available multi-region web application](https://learn.microsoft.com/azure/architecture/reference-architectures/app-service-web-app/multi-region).
 
 ## Architecture
 
 ![]({{ site.baseurl }}/media/2022/11/multi-region-app-service.png)
-
-*Download a [Visio file]({{ site.baseurl }}/media/2022/11/multi-region-app-service.vsdx) of this architecture.*
 
 ### Workflow
 
@@ -45,9 +43,9 @@ Consider placing the primary region, secondary region, and Front Door into separ
 - **Load balancing options**. Azure provides multiple load balancing options to help direct traffic for your applications. Choosing the most appropriate one for your scenario can be based on a number of factors including traffic type, cost, features, and limitations. To help you decide, see the [Decision tree for load balancing in Azure](https://learn.microsoft.com/azure/architecture/guide/technology-choices/load-balancing-overview#decision-tree-for-load-balancing-in-azure). We will be using Azure Front Door for this scenario because we are deploying an internet facing web application (HTTP/HTTPS) deployed to multiple regions hosted on App Service.
 - **Reliability**. Azure Front Door automatically fails over if the primary region becomes unavailable. When Front Door fails over, there is a period of time (usually about 20-60 seconds) when clients cannot reach the application. The duration is affected by the frequency of health probes and sample size configuration. For more information on Front Door reliability, see [Azure Front Door reliability](https://learn.microsoft.com/azure/architecture/reference-architectures/app-service-web-app/multi-region#azure-front-door).
 
-### Deployment
+### Infrastructure deployment
 
-Consider configuring a continuous deployment mechanism to manage your application source code as well as application infrastructure. Since you're deploying resources in different regions, you'll need to independently manage those resources. To ensure the resources are in sync and assuming you want essentially identical applications and infrastructures in each region, infrastructure as code such as [Azure Resource Manager templates](https://azure.microsoft.com/get-started/azure-portal/resource-manager/) or [Terraform](https://learn.microsoft.com/azure/developer/terraform/overview) should be used with deployment pipelines such as [Azure DevOps pipelines](https://learn.microsoft.com/azure/devops/pipelines/get-started/what-is-azure-pipelines?view=azure-devops) or [GitHub Actions](https://docs.github.com/actions). This way, if configured appropriately, any change to resources or source code would trigger updates across all regions you're deployed to. See [Continuous deployment to Azure App Service](https://learn.microsoft.com/azure/app-service/deploy-continuous-deployment) for recommendations on how to manage your source code.
+Consider configuring a continuous deployment mechanism to manage your application source code as well as application infrastructure. Since you're deploying resources in different regions, you'll need to independently manage those resources. To ensure the resources are in sync and assuming you want essentially identical applications and infrastructures in each region, infrastructure as code (IaC) such as [Azure Resource Manager templates](https://azure.microsoft.com/get-started/azure-portal/resource-manager/) or [Terraform](https://learn.microsoft.com/azure/developer/terraform/overview) should be used with deployment pipelines such as [Azure DevOps pipelines](https://learn.microsoft.com/azure/devops/pipelines/get-started/what-is-azure-pipelines?view=azure-devops) or [GitHub Actions](https://docs.github.com/actions). This way, if configured appropriately, any change to resources or source code would trigger updates across all regions you're deployed to. See [Continuous deployment to Azure App Service](https://learn.microsoft.com/azure/app-service/deploy-continuous-deployment) for recommendations on how to manage your source code. We'll go over in detail how to do this for a multi-region deployment later on in this post.
 
 ### Security
 
@@ -61,7 +59,7 @@ Choose the Azure Front Door tier that meets your data transfer, routing, and sec
 
 Additionally, if you're using an active/passive multi-region deployment, consider scaling down your App Services in the secondary region and configuring autoscale rules to handle the traffic when traffic is re-directed there. For more details, see the [App Service scaling docs](https://learn.microsoft.com/azure/app-service/manage-scale-up).
 
-## Tutorial
+## Infrastructure deployment tutorial
 
 In this tutorial, you'll deploy the scenario shown in the [workflow](#workflow) which includes two web apps behind Azure Front Door with access restrictions that only give Front Door direct access to the apps. We'll use the Azure CLI to create the initial web apps and we'll use the portal to create the Azure Front Door.
 
@@ -71,9 +69,9 @@ An Azure account with an active subscription. [Create an account for free](https
 
 ### Create two instances of a web app
 
-You'll need two instances of a web app that run in different Azure regions for this tutorial. We'll use the region pair East US/West US as our two regions and create two quick web apps. Feel free to choose you're own regions or use existing web apps if you already have some deployed.
+You'll need two instances of a web app that run in different Azure regions for this tutorial. We'll use the region pair East US/West US as our two regions and create two quick empty web apps. Feel free to choose you're own regions or use existing web apps if you already have some deployed.
 
-I'm going to use a single resource group for all resources to make management and clean-up simpler, however consider using separate resource groups for each region as this will further isolate your resources.
+I'm going to use a single resource group for all resources to make management and clean-up simpler, however consider using separate resource groups for each region/resource as this will further isolate your resources.
 
 Run the following command to create your resource group. Replace the placeholder for "resource-group-name".
 
@@ -160,23 +158,145 @@ For the *Main site* add the following rule. Insert the Front Door ID which you c
 
 You can optionally [configure access restrictions to the SCM site](https://learn.microsoft.com/azure/app-service/app-service-ip-restrictions#restrict-access-to-an-scm-site) for the app. To do so, navigate to the *Advanced tool site* tab and add any needed rules such as only allowing traffic from your IP range.
 
-Repeat these same steps for the other web app.
+Be sure to repeat these same steps for the other web app.
 
 ### Verify Azure Front Door
 
-At this point, you've configured all the resources for this tutorial. To confirm access to your apps is restricted to Front Door, try navigating to your apps directly using their endpoints. If you are able to access them, review their access restrictions and ensure access is limited to only Front Door.
+At this point, you've configured all the infrastructure resources for this tutorial. To confirm access to your apps is restricted to Front Door, try navigating to your apps directly using their endpoints. If you are able to access them, review their access restrictions and ensure access is limited to only Front Door.
 
 Now that a couple minutes have passed since the Front Door instance has been created, it should be ready and deployed globally. In a browser, enter the endpoint hostname for the Front Door. This endpoint can be found on the "Overview" page for your Front Door. If everything has been configured correctly, you should be reaching your app in your primary region.
 
-You can test failover by stopping the app in your primary region and then navigating to your Front Door endpoint again. Note that there may be a delay between when the traffic will be directed to the second web app depending on your health probe frequency. You may need to refresh the page a couple times. Try stopping the second web app as well and you should see an error page. This proves it redirected to the secondary region. Deploy some apps to your web apps to test seeing different versions of an app when simulating fail-overs.
+You can test failover by stopping the app in your primary region and then navigating to your Front Door endpoint again. Note that there may be a delay between when the traffic will be directed to the second web app depending on your health probe frequency. You may need to refresh the page a couple times. Try stopping the second web app as well and you should see an error page. This proves it redirected to the secondary region.
 
-### Clean up resources
+## Managing source code
+
+At this point, you've provisioned all of the resources you need to run a highly available multi-region web app. All that's left is deploying the actual web app source code as well as understanding how to keep the app updated across the various regions over time as changes and updates are made. As mentioned in the [infrastructure deployment](#infrastructure-deployment) section, just like for your infrastructure, it's a good idea to use a CI/CD tool to manage your source code as well so any changes you make can automatically get deployed across all instances of your app. If you don't have continuous deployment configured, you'll need to manually update each app in each region every time there is a code change.
+
+App Service supports [continuous deployment from GitHub, Bitbucket, and Azure Repos](https://learn.microsoft.com/azure/app-service/deploy-continuous-deployment). For this tutorial, we'll use GitHub and a repo that already [meets the requirements for continuous deployment with App Service](https://learn.microsoft.com/azure/app-service/deploy-continuous-deployment?tabs=github#prepare-your-repository). Feel free to use an app of your choosing, but be sure it meets the defined requirements.
+
+We're going to go over the following concepts in this next section including:
+
+- Configuring the deployment source for each app
+- Keeping the apps updated over time across multiple regions
+- Best practices for making source code updates by using deployment slots, slot swap, and updating Azure Front Door's route/origin groups
+
+### Prerequisites for source code deployment
+
+We'll be using a .NET 6.0 sample app from GitHub. If you don't already have a GitHub account, [create an account for free](https://github.com/).
+
+1. Go to the [.NET 6.0 sample app](https://github.com/Azure-Samples/dotnetcore-docs-hello-world).
+1. Select the **Fork** button in the upper right on the GitHub page.
+1. Select the **Owner** and leave the default Repository name.
+1. Select **Create** fork.
+
+We'll create a staging branch now so we can focus on slots and slot swapping later on. Feel free to clone the app down to your local machine if you are comfortable doing so, however the guidance here will utilize the GitHub interface.
+
+1. Go to your fork of the .NET 6.0 sample app in GitHub.
+1. Select the **1 branch** button towards the upper left of the page next to the branch selector.
+1. Select the **New branch** in the upper right hand corner.
+1. Input "stage" for the **Branch name**.
+1. Select **Create branch**.
+1. Go to the "stage" branch and navigate to *dotnetcore-docs-hello-world/Pages/Index.cshtml*.
+1. Select the "pencil" button to edit the file.
+1. Change the text in line 8 to the following and commit the change directly to the `stage` branch.
+
+    ```html
+    <h1 class="display-4">Hello World from .Net 6 staging branch</h1>
+    ```
+
+At this point, our source code is all set up and ready to be deployed to our apps.
+
+### Configure the deployment source
+
+You'll need to quickly update your app's stack's settings to match the source code if you've been following along in this tutorial.
+
+1. Go to one of your apps.
+1. In the left pane, select **Configuration** and then select the **General settings** tab.
+1. Under **Stack settings**, set the *Stack* to ".NET" and the *.NET version* to ".NET 6 (LTS)".
+1. Select **Save** and then **Continue** to confirm the update.
+1. Repeat the above steps for your other app.
+
+You're now ready to deploy the code. Ensure that if you've locked down access to your SCM/advanced tool site, you enable sufficient access for GitHub to be able to deploy.
+
+1. Go to one of your apps.
+1. In the left pane, select **Deployment Center** and make sure you're on the **Settings** tab.
+
+    ![]({{ site.baseurl }}/media/2022/11/deployment-source.png)
+
+1. For **Source**, select "GitHub".
+1. If you're deploying from GitHub for the first time, select **Authorize** and follow the authorization prompts.
+1. After you authorize your Azure account with GitHub, select the Organization, Repository, and Branch to configure CI/CD as shown below. If you can’t find an organization or repository, you might need to enable more permissions on GitHub. For more information, see [Managing access to your organization's repositories](https://docs.github.com/organizations/managing-user-access-to-your-organizations-repositories).
+
+    |Setting  |Description  |
+    |---------|---------|
+    |Organization     |`<your GitHub username>`         |
+    |Repository     |dotnetcore-docs-hello-world         |
+    |Branch     |master         |
+
+1. Leave the remaining defaults and select **Save**. You can track the deployment and commits in the **Logs** tab in the **Deployment Center** to monitor progress.
+1. Repeat the above steps for your other app.
+
+After a few minutes, your apps will be deployed. You can try reaching your Front Door endpoint again to confirm your app is functioning. You may need to clear your browser's cache or open up a new private/incognito window to ensure you see the latest version of the app. You can also purge Front Door's cache if you're still not seeing your deployed app, but this will take a couple minutes to propagate globally.
+
+![]({{ site.baseurl }}/media/2022/11/purge-cache.png)
+
+### Best practices for source code updates
+
+At this point, your apps are up and running and any changes you make to your source code will automatically trigger an update to both of your running apps. However, pushing code directly to your production application isn't ideal - you want to be able to test changes first in a production-like environment and when ready, direct traffic accordingly. To do this, you can use a combination of [App Service deployment slots](https://learn.microsoft.com/azure/app-service/deploy-staging-slots) and Front Door's routing capabilities.
+
+We'll create some deployment slots and walk through one approach to achieving this.
+
+1. Go to one of your apps.
+1. In the left pane, select **Deployment slots**.
+1. Select **+ Add Slot**.
+1. Input "stage" for *Name* and to keep things simple, we'll clone the settings from the production slot by selecting the app's name from the *Clone settings from:* dropdown.
+1. Select **Close** at the bottom of the slot configuration pane.
+1. Select the newly create stage slot.
+1. You'll need to configure the deployment source again as you did before. This time however, for **Branch**, select "stage" which we created early in GitHub.
+1. Select **Save**.
+1. Repeat the above steps for your other app.
+
+After a couple minutes once the deployments to the staging slots complete, at this point, if you try accessing your slot's endpoint directly, you'll receive a "Error 403 - Forbidden" because the access restrictions were cloned from the production site. There are a couple strategies that can be used to review the staging site and then eventually get it into production. To quickly validate that your staging site is working, you can temporarily update its access restrictions by adding your IP to the allow list for example. Be sure to remove that rule once you are done validating.
+
+If that's all the validation you require, you can skip this step and move on to the next. However, if you want to actually test your staging slot in production and allow your users to access it, you can configure traffic routing between your slots. For example, you can send 10% of your traffic to your staging slot, so when users try to access your app, 10% of them will automatically be routed there. No changes are needed on your Front Door instance to accomplish this. To learn more about slot swaps and staging environments in App Service see [Set up staging environments in Azure App Service](https://learn.microsoft.com/azure/app-service/deploy-staging-slots).
+
+![]({{ site.baseurl }}/media/2022/11/routetraffic.png)
+
+Once you're done testing and validating, you can perform a [slot swap](https://learn.microsoft.com/azure/app-service/deploy-staging-slots#swap-two-slots) from your staging site to your production site. During a slot swap, the App Service platform [ensures the target slot doesn't experience downtime](https://learn.microsoft.com/azure/app-service/deploy-staging-slots#swap-operation-steps).
+
+To perform the swap:
+
+1. Go to your app's **Deployment slots** page and select **Swap**. The **Swap** dialog box shows settings in the selected source and target slots that will be changed.
+
+    ![]({{ site.baseurl }}/media/2022/11/swapbuttonbar.png)
+
+1. Select the desired **Source** and **Target** slots. Also, select the **Source Changes** and **Target Changes** tabs and verify that the configuration changes are expected. When you're finished, you can swap the slots immediately by selecting **Swap**.
+
+    ![]({{ site.baseurl }}/media/2022/11/swapimmediately.png)
+
+1. Repeat the process for your other app.
+
+After a few minutes, you can navigate to your Front Door's endpoint to validate the slot swap succeeded. You may need to clear your browser's cache, refresh the page, or purge Front Door's cache if you're still not seeing your deployed changes.
+
+### Additional recommendations
+
+If you're concerned about potential disruptions or issues with continuity across regions, you can temporarily remove the site that's undergoing the slot swap from your Front Door's origin group and all traffic will be directed to the other origin. To do this, navigate to the **Update origin group** pane as shown below and Delete the origin that is undergoing the change. Once you've made all of your changes and are ready to serve traffic there again, you can return to the same pane and select **+ Add an origin** to re-add the origin.
+
+![]({{ site.baseurl }}/media/2022/11/removeorigin.png)
+
+If you'd prefer to not delete and then add re-add origins, you can create additional origin groups for your Front Door instance and then associate the route to the origin group pointing to the intended origin. For example, you can create two new origin groups, one for your primary region and one for your secondary region. When your primary region is undergoing a change, associate the route with your secondary region and vice versa when your secondary region is undergoing a change. When all changes are complete, you can associate the route with your original origin group which contains both regions. This method works because a route can only be associated with one origin group at a time.
+
+In the screenshot below, there are three origin groups. "MyOriginGroup" consists of both web apps and the other two origin groups each consist of the web app in their respective region. In the example here, the app in the primary region is undergoing a change, so before I started that change, I associated the route with "MySecondaryRegion" so all traffic would be sent to the app in my secondary region during the change period. You can update the route by selecting "Unassociated" which will bring up the **Associate routes** pane.
+
+![]({{ site.baseurl }}/media/2022/11/associateroutes.png)
+
+## Clean up resources
 
 After you're done, you can remove all the items you created. Deleting a resource group also deletes its contents. If you don't intend to use this Azure Front Door, you should remove these resources to avoid unnecessary charges.
 
 ## Deploy from ARM/Bicep
 
-All of the resources in this post can be deployed using an ARM/Bicep template. A sample template is shown below. To learn how to deploy ARM/Bicep templates, see [How to deploy resources with Bicep and Azure CLI](https://learn.microsoft.com/azure/azure-resource-manager/bicep/deploy-cli). If using this template, be sure to pay attention to the `ipRange` parameter and insert your specific range.
+All of the resources in this post can be deployed using an ARM/Bicep template. A sample template is shown below, which creates empty apps without slots. The template can be modified to include slots and configure your deployment, or this can be done later. To learn how to deploy ARM/Bicep templates, see [How to deploy resources with Bicep and Azure CLI](https://learn.microsoft.com/azure/azure-resource-manager/bicep/deploy-cli). If using this template, be sure to pay attention to the `ipRange` parameter and insert your specific range.
 
 ```yml
 @description('The location into which regionally scoped resources should be deployed. Note that Front Door is a global resource.')
