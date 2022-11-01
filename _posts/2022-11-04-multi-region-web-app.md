@@ -229,7 +229,7 @@ We'll create deployment slots for each instance of our app and then walk through
 1. Leave the remaining defaults and select **Save**. You can track the deployment and commits in the **Logs** tab in the **Deployment Center** to monitor progress.
 1. Repeat the above steps for your other app.
 
-After a couple minutes, once the deployments to the staging slots complete, if you try accessing your slot's endpoint directly, you'll receive an "Error 403 - Forbidden" because the access restrictions were cloned from the production site. There are a couple strategies that can be used to review the staging site and then eventually get it into production. To quickly validate that your staging site is working, you can temporarily update its access restrictions by adding your IP to the allow list for example and then attempt to reach it's endpoint again. Be sure to remove that rule once you are done validating.
+After a couple minutes, once the deployments to the staging slots complete, if you try accessing your slot's endpoint directly, you'll receive an "Error 403 - Forbidden" because the access restrictions were cloned from the production site. There are a couple strategies that can be used to review the staging site and then eventually get it into production. To quickly validate that your staging site is working, you can temporarily update its access restrictions by adding your IP to the allow list for example and then attempt to reach it's endpoint again. Be sure to remove that rule once you are done validating. Alternatively, if you don't plan on using slot traffic routing as described in the next section, you can update the access restrictions to meet your testing specifications.
 
 Since your Front Door is still pointing to your production apps, if you go to your Front Door's endpoint now, you'll still see the initial empty apps that were created earlier. You have a couple options here - you can either slot swap and your new code will move into production all at once, or you can try a variation of A/B testing using slot traffic routing. We'll go over both of these features.
 
@@ -269,7 +269,7 @@ If you're concerned about potential disruptions or issues with continuity across
 
 ![]({{ site.baseurl }}/media/2022/11/removeorigin.png)
 
-If you'd prefer to not delete and then add re-add origins, you can create additional origin groups for your Front Door instance. You can then associate the route to the origin group pointing to the intended origin. For example, you can create two new origin groups, one for your primary region and one for your secondary region. When your primary region is undergoing a change, associate the route with your secondary region and vice versa when your secondary region is undergoing a change. When all changes are complete, you can associate the route with your original origin group which contains both regions. This method works because a route can only be associated with one origin group at a time.
+If you'd prefer to not delete and then add re-add origins, you can create additional origin groups for your Front Door instance. You can then associate the route to the origin group pointing to the intended origin. For example, you can create two new origin groups, one for your primary region and one for your secondary region. When your primary region is undergoing a change, associate the route with your secondary region and vice versa when your secondary region is undergoing a change. When all changes are complete, you can associate the route with your original origin group which contains both regions. This method works because a route can only be associated with one origin group at a time, however, it will get messy if you are using many regions since you'll need one origin group per region.
 
 To demonstrate working with multiple origins, in the screenshot below, there are three origin groups. "MyOriginGroup" consists of both web apps, and the other two origin groups each consist of the web app in their respective region. In the example here, the app in the primary region is undergoing a change, so before I started that change, I associated the route with "MySecondaryRegion" so all traffic would be sent to the app in my secondary region during the change period. You can update the route by selecting "Unassociated" which will bring up the **Associate routes** pane.
 
@@ -281,7 +281,7 @@ After you're done, you can remove all the items you created. Deleting a resource
 
 ## Deploy from ARM/Bicep
 
-All of the resources in this post can be deployed using an ARM/Bicep template. A sample template is shown below, which creates empty apps without slots. The template can be modified to include slots and configure your deployment, or this can be done later once deployment is complete as was done in this post. To learn how to deploy ARM/Bicep templates, see [How to deploy resources with Bicep and Azure CLI](https://learn.microsoft.com/azure/azure-resource-manager/bicep/deploy-cli). If using this template, be sure to pay attention to the `ipRange` parameter and insert your specific range.
+All of the resources in this post can be deployed using an ARM/Bicep template. A sample template is shown below, which creates empty apps and staging slots. To learn how to deploy ARM/Bicep templates, see [How to deploy resources with Bicep and Azure CLI](https://learn.microsoft.com/azure/azure-resource-manager/bicep/deploy-cli). If using this template, be sure to pay attention to the `ipRange` parameter and insert your specific range if needed.
 
 ```yml
 @description('The location into which regionally scoped resources should be deployed. Note that Front Door is a global resource.')
@@ -402,6 +402,59 @@ resource app 'Microsoft.Web/sites@2020-06-01' = {
   }
 }
 
+resource appSlot 'Microsoft.Web/sites/slots@2020-06-01' = {
+  name: '${appName}/stage'
+  location: location
+  kind: 'app'
+  identity: {
+    type: 'SystemAssigned'
+  }
+  properties: {
+    serverFarmId: appServicePlan.id
+    httpsOnly: true
+    siteConfig: {
+      detailedErrorLoggingEnabled: true
+      httpLoggingEnabled: true
+      requestTracingEnabled: true
+      ftpsState: 'Disabled'
+      minTlsVersion: '1.2'
+      ipSecurityRestrictions: [
+        {
+          tag: 'ServiceTag'
+          ipAddress: 'AzureFrontDoor.Backend'
+          action: 'Allow'
+          priority: 100
+          headers: {
+            'x-azure-fdid': [
+              frontDoorProfile.properties.frontDoorId
+            ]
+          }
+          name: 'Allow traffic from Front Door'
+        }
+      ]
+      scmIpSecurityRestrictions: [
+        {
+          tag: 'Default'
+          ipAddress: ipRange
+          action: 'Allow'
+          priority: 100
+          name: 'myIp'
+        }
+        {
+          ipAddress: 'Any'
+          action: 'Deny'
+          priority: 2147483647
+          name: 'Deny all'
+          description: 'Deny all access'
+        }
+      ]
+    }
+  }
+  dependsOn: [
+    app
+  ]
+}
+
 resource secondaryApp 'Microsoft.Web/sites@2020-06-01' = {
   name: secondaryAppName
   location: secondaryLocation
@@ -450,6 +503,59 @@ resource secondaryApp 'Microsoft.Web/sites@2020-06-01' = {
       ]
     }
   }
+}
+
+resource secondaryAppSlot 'Microsoft.Web/sites/slots@2020-06-01' = {
+  name: '${secondaryAppName}/stage'
+  location: secondaryLocation
+  kind: 'app'
+  identity: {
+    type: 'SystemAssigned'
+  }
+  properties: {
+    serverFarmId: secondaryAppServicePlan.id
+    httpsOnly: true
+    siteConfig: {
+      detailedErrorLoggingEnabled: true
+      httpLoggingEnabled: true
+      requestTracingEnabled: true
+      ftpsState: 'Disabled'
+      minTlsVersion: '1.2'
+      ipSecurityRestrictions: [
+        {
+          tag: 'ServiceTag'
+          ipAddress: 'AzureFrontDoor.Backend'
+          action: 'Allow'
+          priority: 100
+          headers: {
+            'x-azure-fdid': [
+              frontDoorProfile.properties.frontDoorId
+            ]
+          }
+          name: 'Allow traffic from Front Door'
+        }
+      ]
+      scmIpSecurityRestrictions: [
+        {
+          tag: 'Default'
+          ipAddress: ipRange
+          action: 'Allow'
+          priority: 100
+          name: 'myIp'
+        }
+        {
+          ipAddress: 'Any'
+          action: 'Deny'
+          priority: 2147483647
+          name: 'Deny all'
+          description: 'Deny all access'
+        }
+      ]
+    }
+  }
+  dependsOn: [
+    secondaryApp
+  ]
 }
 
 resource frontDoorEndpoint 'Microsoft.Cdn/profiles/afdEndpoints@2021-06-01' = {
@@ -529,5 +635,7 @@ resource frontDoorRoute 'Microsoft.Cdn/profiles/afdEndpoints/routes@2021-06-01' 
 
 output appServiceHostName string = app.properties.defaultHostName
 output secondaryAppServiceHostName string = secondaryApp.properties.defaultHostName
+output appServiceSlotHostName string = appSlot.properties.defaultHostName
+output secondaryAppServiceSlotHostName string = secondaryAppSlot.properties.defaultHostName
 output frontDoorEndpointHostName string = frontDoorEndpoint.properties.hostName
 ```
