@@ -5,18 +5,16 @@ tags:
 author_name: "Andrew Westgarth"
 ---
 
-# Azure App Service and Azure Functions on Azure Stack Hub 2022 H1 Released
-
-The 2022 H1 update to Azure App Service on Azure Stack Hub is now available. This release is a major update in terms of underlying infrastructure and topology.  We highly recommend operators read through the **[release notes]**(https://learn.microsoft.com/azure-stack/operator/app-service-release-notes-2022-h1) for further details and review the operational documentation in order to be aware of all changes.
+The 2022 H1 update to Azure App Service on Azure Stack Hub is now available. This release is a major update in terms of underlying infrastructure and topology.  We highly recommend operators read through the [release notes](https://learn.microsoft.com/azure-stack/operator/app-service-release-notes-2022-h1) for further details and review the operational documentation in order to be aware of all changes.
 
 ## What's New?
 
 - All roles are now powered by **Windows Server 2022 Datacenter**.
-- Administrators can isolate the platform image for use by App Service on Azure Stack Hub, by setting the SKU to AppService.
+- Administrators can isolate the platform image for use by App Service on Azure Stack Hub, by setting the SKU to [AppService](https://learn.microsoft.com/azure-stack/operator/azure-stack-app-service-before-you-get-started?view=azs-2206&tabs=2022H1-connected%2C2022H1-disconnected&pivots=state-disconnected#download-items-from-the-azure-marketplace).
 - Networking design update for all worker virtual machine scale sets, addressing customers faced with SNAT port exhaustion issues.
 - Increase number of outbound address for all applications.
 - Administrators can set a three character deployment prefix for the individual instances in each Virtual Machine Scale Set that are deployed as part of the App Service on Azure Stack Hub Resource provider.
-- Deployment Center is enabled for tenants, replacing the Deployment Options experience - **IMPORTANT** - Operators will need to reconfigure their deployment sources as the redirect urls have changed with this update.
+- Deployment Center is enabled for tenants, replacing the Deployment Options experience - **IMPORTANT** - Operators will need to reconfigure their [deployment sources](https://learn.microsoft.com/azure-stack/operator/azure-stack-app-service-configure-deployment-sources) as the redirect urls have changed with this update.
 
 - Updates to **App Service Tenant, Admin, Functions portals and Kudu tools**. Consistent with Azure Stack Portal SDK version.
 - Updates to core service to improve reliability and error messaging enabling easier diagnosis of common issues.
