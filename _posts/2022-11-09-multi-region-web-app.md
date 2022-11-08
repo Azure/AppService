@@ -51,7 +51,9 @@ Consider configuring a continuous deployment mechanism to manage your applicatio
 
 For this scenario, you'll want to ensure [the only principal that can access your applications is Front Door](https://learn.microsoft.com/azure/frontdoor/origin-security?tabs=app-service-functions&pivots=front-door-standard-premium). Front Door's features work best when traffic only flows through Front Door. You should configure your origin to block traffic that hasn't been sent through Front Door. Otherwise, traffic might bypass Front Door's web application firewall, DDoS protection, and other security features. We'll configure this as part of the tutorial later on in this post.
 
-Additionally, for scenarios using App Services, consider [locking down the SCM/advanced tools site](https://learn.microsoft.com/azure/app-service/app-service-ip-restrictions#restrict-access-to-an-scm-site) as this site will not likely need to be reached through Front Door.
+Additionally, for scenarios using App Services, consider [locking down the SCM/advanced tools site](https://learn.microsoft.com/azure/app-service/app-service-ip-restrictions#restrict-access-to-an-scm-site) as this site will not likely need to be reached through Front Door. You'll likely want to set up access restrictions that only allow you to conduct your testing as well as enable continuous deployment from your tool of choice. We'll go into more detail on how to do this during the tutorial later on in this post.
+
+Lastly, for scenarios using App Services, consider [disabling basic auth on App Service](https://azure.github.io/AppService/2020/08/10/securing-data-plane-access.html), which limits access to the FTP and SCM endpoints to users that are backed by Azure Active Directory (AAD). Disabling basic auth will require additional steps to configure continuous deployment. We'll go through this as well later on in this post.
 
 ### Cost optimization
 
@@ -82,8 +84,8 @@ az group create --name <resource-group-name> --location eastus
 Run the following commands to create the App Service plans. Replace the placeholders for App Service plan name and resource group name.
 
 ```bash
-az appservice plan create --name <app-service-plan-east-us> --resource-group <resource-group-name> --location eastus
-az appservice plan create --name <app-service-plan-west-us> --resource-group <resource-group-name> --location westus
+az appservice plan create --name <app-service-plan-east-us> --resource-group <resource-group-name> --is-linux --location eastus
+az appservice plan create --name <app-service-plan-west-us> --resource-group <resource-group-name> --is-linux --location westus
 ```
 
 Once the App Service plans are created, run the following commands to create the web apps. Replace the placeholders and be sure to pay attention to the `--plan` parameter so that you place one app in each plan (and therefore each region).
@@ -98,6 +100,22 @@ Make note of the default host name of each web app so you can define the backend
 ```bash
 az webapp show --name <web-app-name> --resource-group <resource-group-name> --query "hostNames"
 ```
+
+### Disable basic auth for the web apps
+
+To disable FTP access to the site, run the following CLI command. Replace the placeholders with your resource group and site name. Be sure to run this command for each of your apps.
+
+```bash
+az resource update --resource-group <resource-group-name> --name ftp --namespace Microsoft.Web --resource-type basicPublishingCredentialsPolicies --parent sites/<web-app-east-us> --set properties.allow=false
+```
+
+To disable basic auth access to the WebDeploy port and SCM site, run the following CLI command. Replace the placeholders with your resource group and site name.
+
+```bash
+az resource update --resource-group <resource-group-name> --name scm --namespace Microsoft.Web --resource-type basicPublishingCredentialsPolicies --parent sites/<web-app-east-us> --set properties.allow=false
+```
+
+For more information on disabling basic auth including how to test and monitor logins, see [Disabling basic auth on App Service](https://azure.github.io/AppService/2020/08/10/securing-data-plane-access.html).
 
 ### Create Azure Front Door
 
@@ -156,9 +174,13 @@ For the *Main site* add the following rule. Insert the Front Door ID which you c
 
 ![]({{ site.baseurl }}/media/2022/11/web-app-access-restrictions-2.png)
 
-You can optionally [configure access restrictions to the SCM site](https://learn.microsoft.com/azure/app-service/app-service-ip-restrictions#restrict-access-to-an-scm-site) for the app. To do so, navigate to the *Advanced tool site* tab and add any needed rules such as only allowing traffic from your IP range.
-
 Be sure to repeat these same steps for the other web app.
+
+### Lock down SCM/advanced tool site
+
+Earlier on when you were creating the web apps, you disabled basic authentication to the WebDeploy port and SCM site. You'll want to also disable all public access to the SCM site. Doing this, however, limits how code can be deployed to your app. Later on, we'll walk through how to give a service principal access to deploy your source code. To disable public access, navigate to the "Access restriction (preview)" page for your app and select the *Advanced tool site* tab. For the *Unmatched rule action*, select "Deny" and then **Save**. Repeat this process for the other app.
+
+You can optionally [configure access restrictions to the SCM site](https://learn.microsoft.com/azure/app-service/app-service-ip-restrictions#restrict-access-to-an-scm-site) as well for the app if you need to give other principals access. To do so, navigate to the *Advanced tool site* tab and add any needed rules. The access restrictions you apply to the SCM site will depend on how you're managing and deploying your source code and conducting your testing.
 
 ### Verify Azure Front Door
 
@@ -172,7 +194,7 @@ You can test failover by stopping the app in your primary region and then naviga
 
 At this point, you've provisioned all of the resources you need to run a highly available multi-region web app. All that's left is deploying the actual web app source code as well as understanding how to keep the app updated across the various regions over time as changes and updates are made. As mentioned in the [infrastructure deployment](#infrastructure-deployment) section, just like for your infrastructure, it's a good idea to use a CI/CD tool to manage your source code as well so any changes you make can automatically get deployed across all instances of your app. If you don't configure continuous deployment, you'll need to manually update each app in each region every time there is a code change.
 
-App Service supports [continuous deployment from GitHub, Bitbucket, and Azure Repos](https://learn.microsoft.com/azure/app-service/deploy-continuous-deployment). For this tutorial, we'll use GitHub and a repo that already [meets the requirements for continuous deployment with App Service](https://learn.microsoft.com/azure/app-service/deploy-continuous-deployment?tabs=github#prepare-your-repository). Feel free to use an app of your choosing, but be sure it meets the defined requirements.
+App Service supports [continuous deployment from GitHub and Azure Repos](https://learn.microsoft.com/azure/app-service/deploy-continuous-deployment). For this tutorial, we'll use GitHub and a repo that already [meets the requirements for continuous deployment with App Service](https://learn.microsoft.com/azure/app-service/deploy-continuous-deployment?tabs=github#prepare-your-repository). Feel free to use an app of your choosing, but be sure it meets the defined requirements.
 
 We're going to go over the following concepts in this next section including:
 
@@ -201,6 +223,60 @@ You'll need to update your app's stack's settings to match the source code if yo
 1. Select **Save** and then **Continue** to confirm the update.
 1. Repeat the above steps for your other app.
 
+As mentioned earlier, since you locked down the SCM site and disabled basic auth, the default method for deploying code with GitHub Actions isn't going to work. This is because the default method uses a publishing profile. Instead, you have two options to authenticate with App Service for GitHub Actions - using a service principal or OpenID Connect. We have a detailed doc that goes through how to do this for each of your options - [Deploy to App Service using GitHub Actions](https://learn.microsoft.com/azure/app-service/deploy-github-actions?tabs=userlevel). We also have guidance for [Azure DevOps using Azure Pipelines](https://learn.microsoft.com/azure/app-service/deploy-azure-pipelines?tabs=yaml). Additionally, for more info on this topic as well as additional examples, we have a series of blog posts that walk through scenarios you may be interested in.
+
+- [Deploying to Network-secured sites](https://github.com/Azure/reliable-web-app-pattern-dotnet/blob/main/assets/Guide/WebAppHomePage.png)
+- [Deploying to Network-secured sites, Part 2](https://azure.github.io/AppService/2021/03/01/deploying-to-network-secured-sites-2.html)
+
+For this blog post, we'll walk through how to authenticate with App Service for GitHub Actions with the most secure option, which is OpenID Connect. You can choose to use a service principal which follows the same general process but omits a couple steps.
+
+### Configure authentication with App Service for GitHub Actions with OpenID Connect
+
+1. Run the following command to create the Active Directory application.
+
+    ```bash
+    az ad app create --display-name myApp
+    ```
+
+    This command will output JSON with an `appId`. Copy this, you'll need it in the next step.
+1. Run the following command to create a service principal. Replace the `appId` placeholder with the value you copied in the previous step.
+
+    ```bash
+    az ad sp create --id <appId>
+    ```
+
+1. You'll now need to create a new role assignment for your newly created service principal so that it has access to your resources. You'll need to grant access at the subscription level and give it the "Contributor" role. You can scope the role assignment down further based on your use case. To create this role assignment, search for "Subscriptions" in the search box at the top of the portal and select your subscription.
+1. Select **Access Control (IAM)** in the left-hand menu.
+1. Select **+ Add** at the top and then **Add role assignment**.
+1. Select the **Contributor** role and then go to the **Members** tab.
+1. Select **+ Select members** and then find your service principal.
+1. Select **Review + assign**.
+1. Once the service principal has the needed role assignment, [create a new federated identity credential](https://learn.microsoft.com/graph/api/application-post-federatedidentitycredentials?view=graph-rest-beta&preserve-view=true&tabs=http) for your active directory application. For detailed guidance, see [Add federated credentials](https://learn.microsoft.com/azure/developer/github/connect-from-azure?tabs=azure-portal%2Clinux#add-federated-credentials).
+    1. In the portal, go to **App Registrations** and then select the app you created earlier.
+    1. Select **Certificates & secrets** in the left-hand menu.
+    1. In the **Federated credentials** tab, select **Add credential**.
+    1. Select the credential scenario **GitHub Actions deploying Azure resources**. Generate your credential by entering your credential details.
+
+        |Field  |Description  |Example  |
+        |---------|---------|---------|
+        |Organization     |Your GitHub organization name or GitHub username.         |contoso         |
+        |Repository     |Your GitHub Repository name.         |dotnetcore-docs-hello-world         |
+        |Entity type     |The filter used to scope the OIDC requests from GitHub workflows. This field is used to generate the **subject** claim.         |Branch         |
+        |GitHub branch name     |The name of the environment, branch, or tag.         |master         |
+        |Name     |Identifier for the federated credential.         |myCredential         |
+
+1. You need to provide your application's **Client ID**, **Tenant ID**, and **Subscription ID** to the login action as part of the GitHub Action workflow we will be working on. These values can either be provided directly in the workflow or can be stored in GitHub secrets and referenced in your workflow. Saving the values as GitHub secrets is the more secure option.
+    1. Open your GitHub repository and go to **Settings** > **Security** > **Secrets and variables** > **Actions** > **New repository secret**.
+    1. Create the following secrets. To find the values for **Client ID** and **Tenant ID**, go back to **App Registrations** in the portal and select the app you created earlier. The values will be under the **Essentials** on the **Overview** page.
+
+        |Name  |Value  |
+        |---------|---------|
+        |AZURE_CLIENT_ID     |`<application/client-id>`          |
+        |AZURE_TENANT_ID     |`<directory/tenant-id>`          |
+        |AZURE_SUBSCRIPTION_ID     |`<subscription-id>`         |
+
+### Deploy the code
+
 You're now ready to deploy the code. However, configuring continuous deployment for production apps is not recommended because it makes testing and validation more complicated. Instead, use a combination of staging slots and slot swap to move code from your testing environment to production.
 
 We'll create deployment slots for each instance of our app and then walk through how to slot swap to get the code into production.
@@ -211,7 +287,6 @@ We'll create deployment slots for each instance of our app and then walk through
 1. Input "stage" for *Name* and to keep things simple, we'll clone the settings from the production slot by selecting the app's name from the *Clone settings from:* dropdown.
 1. Select **Close** at the bottom of the slot configuration pane.
 1. Select the newly create stage slot.
-1. Ensure that if you've locked down access to your SCM/advanced tool site, you enable sufficient access to your staging slot for GitHub to be able to reach your apps.
 1. In the left pane, select **Deployment Center** and make sure you're on the **Settings** tab.
 
     ![]({{ site.baseurl }}/media/2022/11/deployment-source.png)
@@ -228,6 +303,71 @@ We'll create deployment slots for each instance of our app and then walk through
 
 1. Leave the remaining defaults and select **Save**. You can track the deployment and commits in the **Logs** tab in the **Deployment Center** to monitor progress.
 1. Repeat the above steps for your other app.
+
+### Create the GitHub Actions workflow
+
+If you wait a couple minutes and review the deployment logs, you'll see that the deployment to your apps failed. This is because the default workflow created in the previous step when you were configuring continuous deployment with GitHub Actions uses a publishing profile to authenticate. This level of access was disabled. You need to edit the workflow so that it uses your OpenID Connect credentials. For sample workflows, see the OpenID Connect tab in [Deploy to App Service](https://learn.microsoft.com/azure/app-service/deploy-github-actions?tabs=openid#deploy-to-app-service). If you've been following along, use the below workflow.
+
+1. Open your GitHub repository and go to the `dotnetcore-docs-hello-world/.github/workflows/` directory. You'll see two autogenerated workflows, one for each app you created. Repeat the next step for each of them.
+1. Select the "pencil" button in the top right to edit the file. Replace the contents with the below, which assumes you created the GitHub secrets earlier, and then commit directly to the master branch. This commit will trigger the GitHub Action to run again and deploy your code, this time using OpenID Connect to authenticate.
+
+    ```yml
+    name: .NET Core
+
+    on: 
+      push:
+        branches:
+          - master
+      workflow_dispatch:
+    
+    permissions:
+          id-token: write
+          contents: read
+    
+    env:
+      AZURE_WEBAPP_NAME: <web-app-name>    # set this to your application's name
+      AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
+      DOTNET_VERSION: '6.0.x'           # set this to the dot net version to use
+    
+    jobs:
+      build:
+        runs-on: ubuntu-latest
+    
+        steps:
+          # Checkout the repo
+          - uses: actions/checkout@main
+          - uses: azure/login@v1
+            with:
+              client-id: ${{ secrets.AZURE_CLIENT_ID }}
+              tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+              subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+    
+          
+          # Setup .NET Core SDK
+          - name: Setup .NET Core
+            uses: actions/setup-dotnet@v1
+            with:
+              dotnet-version: ${{ env.DOTNET_VERSION }} 
+          
+          # Run dotnet build and publish
+          - name: dotnet build and publish
+            run: |
+              dotnet restore
+              dotnet build --configuration Release
+              dotnet publish -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp' 
+              
+          # Deploy to Azure Web apps
+          - name: 'Run Azure webapp deploy action using publish profile credentials'
+            uses: azure/webapps-deploy@v2
+            with: 
+              app-name: ${{ env.AZURE_WEBAPP_NAME }}
+              slot-name: 'stage' # replace with your slot name
+              package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp'
+          
+          - name: logout
+            run: |
+              az logout
+    ```
 
 After a couple minutes, once the deployments to the staging slots complete, if you try accessing your slot's endpoint directly, you'll receive an "Error 403 - Forbidden" because the access restrictions were cloned from the production site. There are a couple strategies that can be used to review the staging site and then eventually get it into production. To quickly validate that your staging site is working, you can temporarily update its access restrictions by adding your IP to the allow list for example and then attempt to reach it's endpoint again. Be sure to remove that rule once you are done validating. Alternatively, if you don't plan on using slot traffic routing as described in the next section, you can update the access restrictions to meet your testing specifications.
 
@@ -281,7 +421,7 @@ After you're done, you can remove all the items you created. Deleting a resource
 
 ## Deploy from ARM/Bicep
 
-All of the resources in this post can be deployed using an ARM/Bicep template. A sample template is shown below, which creates empty apps and staging slots. To learn how to deploy ARM/Bicep templates, see [How to deploy resources with Bicep and Azure CLI](https://learn.microsoft.com/azure/azure-resource-manager/bicep/deploy-cli). If using this template, be sure to pay attention to the `ipRange` parameter and insert your specific range if needed.
+All of the resources in this post can be deployed using an ARM/Bicep template. A sample template is shown below, which creates empty apps and staging slots. To learn how to deploy ARM/Bicep templates, see [How to deploy resources with Bicep and Azure CLI](https://learn.microsoft.com/azure/azure-resource-manager/bicep/deploy-cli).
 
 ```yml
 @description('The location into which regionally scoped resources should be deployed. Note that Front Door is a global resource.')
@@ -312,7 +452,7 @@ param frontDoorEndpointName string = 'afd-${uniqueString(resourceGroup().id)}'
 ])
 param frontDoorSkuName string = 'Standard_AzureFrontDoor'
 
-@description('The IP range used to restrict access to the SCM/advanced tool site. Be sure to change this to your IP address.')
+@description('The IP range used to restrict access to the SCM/advanced tool site.')
 param ipRange string = '0.0.0.0/0'
 
 var appServicePlanName = 'AppServicePlan'
@@ -382,23 +522,25 @@ resource app 'Microsoft.Web/sites@2020-06-01' = {
           name: 'Allow traffic from Front Door'
         }
       ]
-      scmIpSecurityRestrictions: [
-        {
-          tag: 'Default'
-          ipAddress: ipRange
-          action: 'Allow'
-          priority: 100
-          name: 'myIp'
-        }
-        {
-          ipAddress: 'Any'
-          action: 'Deny'
-          priority: 2147483647
-          name: 'Deny all'
-          description: 'Deny all access'
-        }
-      ]
     }
+  }
+}
+
+resource ftpPolicy 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022-03-01' = {
+  name: 'ftp'
+  kind: 'string'
+  parent: app
+  properties: {
+    allow: false
+  }
+}
+
+resource scmPolicy 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022-03-01' = {
+  name: 'scm'
+  kind: 'string'
+  parent: app
+  properties: {
+    allow: false
   }
 }
 
@@ -432,27 +574,29 @@ resource appSlot 'Microsoft.Web/sites/slots@2020-06-01' = {
           name: 'Allow traffic from Front Door'
         }
       ]
-      scmIpSecurityRestrictions: [
-        {
-          tag: 'Default'
-          ipAddress: ipRange
-          action: 'Allow'
-          priority: 100
-          name: 'myIp'
-        }
-        {
-          ipAddress: 'Any'
-          action: 'Deny'
-          priority: 2147483647
-          name: 'Deny all'
-          description: 'Deny all access'
-        }
-      ]
     }
   }
   dependsOn: [
     app
   ]
+}
+
+resource ftpPolicySlot 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022-03-01' = {
+  name: 'ftp'
+  kind: 'string'
+  parent: appSlot
+  properties: {
+    allow: false
+  }
+}
+
+resource scmPolicySlot 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022-03-01' = {
+  name: 'scm'
+  kind: 'string'
+  parent: appSlot
+  properties: {
+    allow: false
+  }
 }
 
 resource secondaryApp 'Microsoft.Web/sites@2020-06-01' = {
@@ -485,23 +629,25 @@ resource secondaryApp 'Microsoft.Web/sites@2020-06-01' = {
           name: 'Allow traffic from Front Door'
         }
       ]
-      scmIpSecurityRestrictions: [
-        {
-          tag: 'Default'
-          ipAddress: ipRange
-          action: 'Allow'
-          priority: 100
-          name: 'myIp'
-        }
-        {
-          ipAddress: 'Any'
-          action: 'Deny'
-          priority: 2147483647
-          name: 'Deny all'
-          description: 'Deny all access'
-        }
-      ]
     }
+  }
+}
+
+resource secondaryFtpPolicy 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022-03-01' = {
+  name: 'ftp'
+  kind: 'string'
+  parent: secondaryApp
+  properties: {
+    allow: false
+  }
+}
+
+resource secondaryScmPolicy 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022-03-01' = {
+  name: 'scm'
+  kind: 'string'
+  parent: secondaryApp
+  properties: {
+    allow: false
   }
 }
 
@@ -535,27 +681,29 @@ resource secondaryAppSlot 'Microsoft.Web/sites/slots@2020-06-01' = {
           name: 'Allow traffic from Front Door'
         }
       ]
-      scmIpSecurityRestrictions: [
-        {
-          tag: 'Default'
-          ipAddress: ipRange
-          action: 'Allow'
-          priority: 100
-          name: 'myIp'
-        }
-        {
-          ipAddress: 'Any'
-          action: 'Deny'
-          priority: 2147483647
-          name: 'Deny all'
-          description: 'Deny all access'
-        }
-      ]
     }
   }
   dependsOn: [
     secondaryApp
   ]
+}
+
+resource secondaryFtpPolicy 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022-03-01' = {
+  name: 'ftp'
+  kind: 'string'
+  parent: secondaryAppSlot
+  properties: {
+    allow: false
+  }
+}
+
+resource secondaryScmPolicy 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022-03-01' = {
+  name: 'scm'
+  kind: 'string'
+  parent: secondaryAppSlot
+  properties: {
+    allow: false
+  }
 }
 
 resource frontDoorEndpoint 'Microsoft.Cdn/profiles/afdEndpoints@2021-06-01' = {
