@@ -421,7 +421,7 @@ After you're done, you can remove all the items you created. Deleting a resource
 
 ## Deploy from ARM/Bicep
 
-All of the resources in this post can be deployed using an ARM/Bicep template. A sample template is shown below, which creates empty apps and staging slots. To learn how to deploy ARM/Bicep templates, see [How to deploy resources with Bicep and Azure CLI](https://learn.microsoft.com/azure/azure-resource-manager/bicep/deploy-cli).
+All of the resources in this post can be deployed using an ARM/Bicep template. A sample template is shown below, which creates empty apps and staging slots behind Front Door. You'll need to configure the deployment source as well as update your basic auth preference. To learn how to deploy ARM/Bicep templates, see [How to deploy resources with Bicep and Azure CLI](https://learn.microsoft.com/azure/azure-resource-manager/bicep/deploy-cli).
 
 ```yml
 @description('The location into which regionally scoped resources should be deployed. Note that Front Door is a global resource.')
@@ -526,24 +526,6 @@ resource app 'Microsoft.Web/sites@2020-06-01' = {
   }
 }
 
-resource ftpPolicy 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022-03-01' = {
-  name: 'ftp'
-  kind: 'string'
-  parent: app
-  properties: {
-    allow: false
-  }
-}
-
-resource scmPolicy 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022-03-01' = {
-  name: 'scm'
-  kind: 'string'
-  parent: app
-  properties: {
-    allow: false
-  }
-}
-
 resource appSlot 'Microsoft.Web/sites/slots@2020-06-01' = {
   name: '${appName}/stage'
   location: location
@@ -581,24 +563,6 @@ resource appSlot 'Microsoft.Web/sites/slots@2020-06-01' = {
   ]
 }
 
-resource ftpPolicySlot 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022-03-01' = {
-  name: 'ftp'
-  kind: 'string'
-  parent: appSlot
-  properties: {
-    allow: false
-  }
-}
-
-resource scmPolicySlot 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022-03-01' = {
-  name: 'scm'
-  kind: 'string'
-  parent: appSlot
-  properties: {
-    allow: false
-  }
-}
-
 resource secondaryApp 'Microsoft.Web/sites@2020-06-01' = {
   name: secondaryAppName
   location: secondaryLocation
@@ -630,24 +594,6 @@ resource secondaryApp 'Microsoft.Web/sites@2020-06-01' = {
         }
       ]
     }
-  }
-}
-
-resource secondaryFtpPolicy 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022-03-01' = {
-  name: 'ftp'
-  kind: 'string'
-  parent: secondaryApp
-  properties: {
-    allow: false
-  }
-}
-
-resource secondaryScmPolicy 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022-03-01' = {
-  name: 'scm'
-  kind: 'string'
-  parent: secondaryApp
-  properties: {
-    allow: false
   }
 }
 
@@ -686,24 +632,6 @@ resource secondaryAppSlot 'Microsoft.Web/sites/slots@2020-06-01' = {
   dependsOn: [
     secondaryApp
   ]
-}
-
-resource secondaryFtpPolicy 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022-03-01' = {
-  name: 'ftp'
-  kind: 'string'
-  parent: secondaryAppSlot
-  properties: {
-    allow: false
-  }
-}
-
-resource secondaryScmPolicy 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022-03-01' = {
-  name: 'scm'
-  kind: 'string'
-  parent: secondaryAppSlot
-  properties: {
-    allow: false
-  }
 }
 
 resource frontDoorEndpoint 'Microsoft.Cdn/profiles/afdEndpoints@2021-06-01' = {
