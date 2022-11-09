@@ -313,7 +313,7 @@ If you wait a couple minutes and review the deployment logs, you'll see that the
 
     ```yml
     name: .NET Core
-
+    
     on: 
       push:
         branches:
@@ -357,9 +357,9 @@ If you wait a couple minutes and review the deployment logs, you'll see that the
               
           # Deploy to Azure Web apps
           - name: 'Run Azure webapp deploy action using publish profile credentials'
-            uses: azure/webapps-deploy@v2
-            with: 
-              app-name: ${{ env.AZURE_WEBAPP_NAME }}
+                uses: azure/webapps-deploy@v2
+                with: 
+                  app-name: ${{ env.AZURE_WEBAPP_NAME }}
               slot-name: 'stage' # replace with your slot name
               package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp'
           
@@ -475,6 +475,9 @@ resource appServicePlan 'Microsoft.Web/serverFarms@2020-06-01' = {
     name: appServicePlanSkuName
     capacity: appServicePlanCapacity
   }
+  properties: {
+    reserved: true
+  }
   kind: 'app'
 }
 
@@ -484,6 +487,9 @@ resource secondaryAppServicePlan 'Microsoft.Web/serverFarms@2020-06-01' = {
   sku: {
     name: appServicePlanSkuName
     capacity: appServicePlanCapacity
+  }
+  properties: {
+    reserved: true
   }
   kind: 'app'
 }
