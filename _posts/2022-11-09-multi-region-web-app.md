@@ -421,14 +421,14 @@ After you're done, you can remove all the items you created. Deleting a resource
 
 ## Deploy from ARM/Bicep
 
-All of the resources in this post can be deployed using an ARM/Bicep template. A sample template is shown below, which creates empty apps and staging slots behind Front Door. You'll need to configure the deployment source as well as update your basic auth preference. To learn how to deploy ARM/Bicep templates, see [How to deploy resources with Bicep and Azure CLI](https://learn.microsoft.com/azure/azure-resource-manager/bicep/deploy-cli).
+All of the resources in this post can be deployed using an ARM/Bicep template. A sample template is shown below, which creates empty apps and staging slots behind Front Door following the security best practices outlined in this post. You'll need to configure the deployment source once the template resources are created. To learn how to deploy ARM/Bicep templates, see [How to deploy resources with Bicep and Azure CLI](https://learn.microsoft.com/azure/azure-resource-manager/bicep/deploy-cli).
 
 ```yml
 @description('The location into which regionally scoped resources should be deployed. Note that Front Door is a global resource.')
-param location string = 'eastus'
+param location string = 'canadacentral'
 
 @description('The location into which regionally scoped resources for the secondary should be deployed.')
-param secondaryLocation string = 'westus'
+param secondaryLocation string = 'canadaeast'
 
 @description('The name of the App Service application to create. This must be globally unique.')
 param appName string = 'myapp-${uniqueString(resourceGroup().id)}'
@@ -451,9 +451,6 @@ param frontDoorEndpointName string = 'afd-${uniqueString(resourceGroup().id)}'
   'Premium_AzureFrontDoor'
 ])
 param frontDoorSkuName string = 'Standard_AzureFrontDoor'
-
-@description('The IP range used to restrict access to the SCM/advanced tool site.')
-param ipRange string = '0.0.0.0/0'
 
 var appServicePlanName = 'AppServicePlan'
 var secondaryAppServicePlanName = 'SecondaryAppServicePlan'
@@ -522,7 +519,28 @@ resource app 'Microsoft.Web/sites@2020-06-01' = {
           name: 'Allow traffic from Front Door'
         }
       ]
+      scmIpSecurityRestrictionsUseMain: true
     }
+  }
+}
+
+resource ftpPolicy 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022-03-01' = {
+  name: 'ftp'
+  kind: 'string'
+  parent: app
+  location: location
+  properties: {
+    allow: false
+  }
+}
+
+resource scmPolicy 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022-03-01' = {
+  name: 'scm'
+  kind: 'string'
+  parent: app
+  location: location
+  properties: {
+    allow: false
   }
 }
 
@@ -556,11 +574,32 @@ resource appSlot 'Microsoft.Web/sites/slots@2020-06-01' = {
           name: 'Allow traffic from Front Door'
         }
       ]
+      scmIpSecurityRestrictionsUseMain: true
     }
   }
   dependsOn: [
     app
   ]
+}
+
+resource ftpPolicySlot 'Microsoft.Web/sites/slots/basicPublishingCredentialsPolicies@2022-03-01' = {
+  name: 'ftp'
+  kind: 'string'
+  parent: appSlot
+  location: location
+  properties: {
+    allow: false
+  }
+}
+
+resource scmPolicySlot 'Microsoft.Web/sites/slots/basicPublishingCredentialsPolicies@2022-03-01' = {
+  name: 'scm'
+  kind: 'string'
+  parent: appSlot
+  location: location
+  properties: {
+    allow: false
+  }
 }
 
 resource secondaryApp 'Microsoft.Web/sites@2020-06-01' = {
@@ -593,7 +632,28 @@ resource secondaryApp 'Microsoft.Web/sites@2020-06-01' = {
           name: 'Allow traffic from Front Door'
         }
       ]
+      scmIpSecurityRestrictionsUseMain: true
     }
+  }
+}
+
+resource secondaryFtpPolicy 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022-03-01' = {
+  name: 'ftp'
+  kind: 'string'
+  parent: secondaryApp
+  location: secondaryLocation
+  properties: {
+    allow: false
+  }
+}
+
+resource secondaryScmPolicy 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022-03-01' = {
+  name: 'scm'
+  kind: 'string'
+  parent: secondaryApp
+  location: secondaryLocation
+  properties: {
+    allow: false
   }
 }
 
@@ -627,11 +687,32 @@ resource secondaryAppSlot 'Microsoft.Web/sites/slots@2020-06-01' = {
           name: 'Allow traffic from Front Door'
         }
       ]
+      scmIpSecurityRestrictionsUseMain: true
     }
   }
   dependsOn: [
     secondaryApp
   ]
+}
+
+resource secondaryFtpPolicySlot 'Microsoft.Web/sites/slots/basicPublishingCredentialsPolicies@2022-03-01' = {
+  name: 'ftp'
+  kind: 'string'
+  parent: secondaryAppSlot
+  location: secondaryLocation
+  properties: {
+    allow: false
+  }
+}
+
+resource secondaryScmPolicySlot 'Microsoft.Web/sites/slots/basicPublishingCredentialsPolicies@2022-03-01' = {
+  name: 'scm'
+  kind: 'string'
+  parent: secondaryAppSlot
+  location: secondaryLocation
+  properties: {
+    allow: false
+  }
 }
 
 resource frontDoorEndpoint 'Microsoft.Cdn/profiles/afdEndpoints@2021-06-01' = {
