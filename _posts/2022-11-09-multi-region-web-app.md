@@ -57,7 +57,7 @@ Lastly, for scenarios using App Services, consider [disabling basic auth on App 
 
 ### Cost optimization
 
-Choose the Azure Front Door tier that meets your data transfer, routing, and security requirements. See the [Azure Front Door pricing](https://azure.microsoft.com/pricing/details/frontdoor/) for more details.
+Choose the Azure Front Door tier that meets your data transfer, routing, and security requirements. See [Azure Front Door pricing](https://azure.microsoft.com/pricing/details/frontdoor/) for more details.
 
 Additionally, if you're using an active/passive multi-region deployment, consider scaling down your App Services in the secondary region and configuring autoscale rules to handle the traffic when traffic is re-directed there. For more details, see the [App Service scaling docs](https://learn.microsoft.com/azure/app-service/manage-scale-up).
 
@@ -95,7 +95,7 @@ az webapp create --name <web-app-east-us> --resource-group <resource-group-name>
 az webapp create --name <web-app-west-us> --resource-group <resource-group-name> --plan <app-service-plan-west-us>
 ```
 
-Make note of the default host name of each web app so you can define the backend addresses when you deploy the Front Door in the next step. It should be in the format `<web-app-name>.azurewebsites.net`. This can be found by running the following command or by navigating to the app's "Overview" page in the [Azure portal](https://portal.azure.com).
+Make note of the default host name of each web app so you can define the backend addresses when you deploy the Front Door in the next step. It should be in the format `<web-app-name>.azurewebsites.net`. This can be found by running the following command or by navigating to the app's **Overview** page in the [Azure portal](https://portal.azure.com).
 
 ```bash
 az webapp show --name <web-app-name> --resource-group <resource-group-name> --query "hostNames"
@@ -139,7 +139,7 @@ Front Door will be configured with priority routing where East US will be our pr
 
 1. In the "Endpoint" tab, select **Add an endpoint** and give your endpoint a globally unique name.
 1. Next, select **+ Add a route** to configure routing to your Web App origin.
-1. On the "Add a route" page, enter the following information and select **Add** to add the route to the endpoint configuration.
+1. On the **Add a route** page, enter the following information and select **Add** to add the route to the endpoint configuration.
 
     ![]({{ site.baseurl }}/media/2022/11/afd-create-2.png)
 
@@ -150,7 +150,7 @@ Front Door will be configured with priority routing where East US will be our pr
     | Patterns to match | Set all the URLs this route will accept. This example will use the default, and accept all URL paths. |
     | Accepted protocols | Select the protocol the route will accept. This example will accept both HTTP and HTTPS requests. |
     | Redirect | Enable this setting to redirect all HTTP traffic to the HTTPS endpoint. |
-    | Origin group | Select **Add a new origin group**. For the origin group name, enter **myOriginGroup**. Then select **+ Add an origin**. For the first origin (primary region), enter the name of one of the web apps you're using for this tutorial for the *Name* and then for the *Origin Type* select **App services**. In the *Host name*, select the hostname you queried/found in the portal earlier. Leave the rest of the default values the same. Select **Add** to add the origin to the origin group. Repeat the steps to add the second web app as an origin, however when adding the second origin, set the *Priority* to "2". This will direct all traffic to the primary origin unless the primary goes down. Once both web app origins have been added, select **Add** to save the origin group configuration. |
+    | Origin group | Select **Add a new origin group**. For the origin group name, enter **myOriginGroup**. Then select **+ Add an origin**. For the first origin (primary region), enter the name of one of the web apps you're using for this tutorial for the *Name* and then for the *Origin Type* select **App Services**. For the *Host name*, select the hostname you queried/found in the portal earlier. Leave the rest of the default values the same. Select **Add** to add the origin to the origin group. Repeat the steps to add the second web app as an origin, however when adding the second origin, set the *Priority* to "2". This will direct all traffic to the primary origin unless the primary goes down. Once both web app origins have been added, select **Add** to save the origin group configuration. |
     | Origin path | Leave blank. |
     | Forwarding protocol | Select the protocol that will be forwarded to the origin group. This example will match the incoming requests to origins. |
     | Caching | Select the check box if you want to cache contents closer to your users globally using Azure Front Door's edge POPs and the Microsoft network. |
@@ -162,11 +162,11 @@ Front Door will be configured with priority routing where East US will be our pr
 
 ### Restrict access to web apps to the Azure Front Door instance
 
-Traffic from Azure Front Door to your application originates from a well known set of IP ranges defined in the AzureFrontDoor.Backend service tag. Using a service tag restriction rule, you can [restrict traffic to only originate from Azure Front Door](https://learn.microsoft.com/azure/frontdoor/origin-security).
+Traffic from Azure Front Door to your application originates from a well known set of IP ranges defined in the AzureFrontDoor.Backend service tag. By using a service tag restriction rule, you can [restrict traffic to only originate from Azure Front Door](https://learn.microsoft.com/azure/frontdoor/origin-security).
 
-Before setting up the App Service access restriction, take note of the *Front Door ID* which can be found on the "Overview" page for the Front Door instance in the "Essentials" section. This will be needed to ensure traffic only originates from your specific Front Door instance by further filtering the incoming requests based on the unique http header that your Azure Front Door sends.
+Before setting up the App Service access restriction, take note of the *Front Door ID* which can be found on the **Overview** page for the Front Door instance in the **Essentials** section. This will be needed to ensure traffic only originates from your specific Front Door instance by further filtering the incoming requests based on the unique http header that your Azure Front Door sends.
 
-For your first web app, navigate to the "Access restriction (preview)" page.
+For your first web app, navigate to the **Access restriction (preview)** page.
 
 ![]({{ site.baseurl }}/media/2022/11/web-app-access-restrictions-1.png)
 
@@ -178,7 +178,7 @@ Be sure to repeat these same steps for the other web app.
 
 ### Lock down SCM/advanced tool site
 
-Earlier on when you were creating the web apps, you disabled basic authentication to the WebDeploy port and SCM site. You'll want to also disable all public access to the SCM site. Doing this, however, limits how code can be deployed to your app. Later on, we'll walk through how to give a service principal access to deploy your source code. To disable public access, navigate to the "Access restriction (preview)" page for your app and select the *Advanced tool site* tab. For the *Unmatched rule action*, select "Deny" and then **Save**. Repeat this process for the other app.
+Earlier on when you were creating the web apps, you disabled basic authentication to the WebDeploy port and SCM site. You'll want to also disable all public access to the SCM site. Doing this, however, limits how code can be deployed to your app. Later on, we'll walk through how to give a service principal access to deploy your source code. To disable public access, navigate to the **Access restriction (preview)** page for your app and select the *Advanced tool site* tab. For the *Unmatched rule action*, select "Deny" and then **Save**. Repeat this process for the other app.
 
 You can optionally [configure access restrictions to the SCM site](https://learn.microsoft.com/azure/app-service/app-service-ip-restrictions#restrict-access-to-an-scm-site) as well for the app if you need to give other principals access. To do so, navigate to the *Advanced tool site* tab and add any needed rules. The access restrictions you apply to the SCM site will depend on how you're managing and deploying your source code and conducting your testing.
 
@@ -186,7 +186,7 @@ You can optionally [configure access restrictions to the SCM site](https://learn
 
 To confirm access to your apps is restricted to Front Door, try navigating to your apps directly using their endpoints. If you are able to access them, review their access restrictions and ensure access is limited to only Front Door.
 
-Now that a couple minutes have passed since the Front Door instance has been created, it should be ready and deployed globally. In a browser, enter the endpoint hostname for the Front Door. This endpoint can be found on the "Overview" page for your Front Door. If everything has been configured correctly, you should be reaching your app in your primary region.
+Now that a couple minutes have passed since the Front Door instance has been created, it should be ready and deployed globally. In a browser, enter the endpoint hostname for the Front Door. This endpoint can be found on the **Overview** page for your Front Door. If everything has been configured correctly, you should be reaching your app in your primary region.
 
 You can test failover by stopping the app in your primary region and then navigating to your Front Door endpoint again. Note that there may be a delay between when the traffic will be directed to the second web app depending on your health probe frequency. You may need to refresh the page a couple times. Try stopping the second web app as well and you should see an error page. This proves it redirected to the secondary region.
 
@@ -215,7 +215,7 @@ At this point, your source code is all set up and ready to be deployed to your a
 
 ### Configure the deployment source
 
-You'll need to update your app's stack's settings to match the source code if you've been following along in this tutorial.
+You'll need to update your app's stack settings to match the source code if you've been following along in this tutorial.
 
 1. Go to one of your apps.
 1. In the left pane, select **Configuration** and then select the **General settings** tab.
@@ -252,7 +252,7 @@ For this blog post, we'll walk through how to authenticate with App Service for 
 1. Select **+ Select members** and then find your service principal.
 1. Select **Review + assign**.
 1. Once the service principal has the needed role assignment, [create a new federated identity credential](https://learn.microsoft.com/graph/api/application-post-federatedidentitycredentials?view=graph-rest-beta&preserve-view=true&tabs=http) for your active directory application. For detailed guidance, see [Add federated credentials](https://learn.microsoft.com/azure/developer/github/connect-from-azure?tabs=azure-portal%2Clinux#add-federated-credentials).
-    1. In the portal, go to **App Registrations** and then select the app you created earlier.
+    1. In the portal, search for in the search box and then go to **App Registrations** and then select the app you created earlier.
     1. Select **Certificates & secrets** in the left-hand menu.
     1. In the **Federated credentials** tab, select **Add credential**.
     1. Select the credential scenario **GitHub Actions deploying Azure resources**. Generate your credential by entering your credential details.
@@ -306,10 +306,10 @@ We'll create deployment slots for each instance of our app and then walk through
 
 ### Create the GitHub Actions workflow
 
-If you wait a couple minutes and review the deployment logs, you'll see that the deployment to your apps failed. This is because the default workflow created in the previous step when you were configuring continuous deployment with GitHub Actions uses a publishing profile to authenticate. This level of access was disabled. You need to edit the workflow so that it uses your OpenID Connect credentials. For sample workflows, see the OpenID Connect tab in [Deploy to App Service](https://learn.microsoft.com/azure/app-service/deploy-github-actions?tabs=openid#deploy-to-app-service). If you've been following along, use the below workflow.
+If you wait a couple minutes and review the deployment logs, you'll see that the deployment to your apps failed. This is because the default workflow created in the previous step when you were configuring continuous deployment with GitHub Actions uses a publishing profile to authenticate. This level of access was disabled. You need to edit the workflow so that it uses your OpenID Connect credentials instead. For sample workflows, see the OpenID Connect tab in [Deploy to App Service](https://learn.microsoft.com/azure/app-service/deploy-github-actions?tabs=openid#deploy-to-app-service). If you've been following along, use the below workflow.
 
 1. Open your GitHub repository and go to the `dotnetcore-docs-hello-world/.github/workflows/` directory. You'll see two autogenerated workflows, one for each app you created. Repeat the next step for each of them.
-1. Select the "pencil" button in the top right to edit the file. Replace the contents with the below, which assumes you created the GitHub secrets earlier, and then commit directly to the master branch. This commit will trigger the GitHub Action to run again and deploy your code, this time using OpenID Connect to authenticate.
+1. Select the "pencil" button in the top right to edit the file. Replace the contents with the below, which assumes you created the GitHub secrets earlier, update the placeholder for `AZURE_WEBAPP_NAME` for your apps, and then commit directly to the master branch. This commit will trigger the GitHub Action to run again and deploy your code, this time using OpenID Connect to authenticate.
 
     ```yml
     name: .NET Core
@@ -321,8 +321,8 @@ If you wait a couple minutes and review the deployment logs, you'll see that the
       workflow_dispatch:
     
     permissions:
-          id-token: write
-          contents: read
+      id-token: write
+      contents: read
     
     env:
       AZURE_WEBAPP_NAME: <web-app-name>    # set this to your application's name
@@ -342,7 +342,6 @@ If you wait a couple minutes and review the deployment logs, you'll see that the
               tenant-id: ${{ secrets.AZURE_TENANT_ID }}
               subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
     
-          
           # Setup .NET Core SDK
           - name: Setup .NET Core
             uses: actions/setup-dotnet@v1
@@ -405,11 +404,11 @@ At this point, your apps are up and running and any changes you make to your sou
 
 ### Additional guidance
 
-If you're concerned about potential disruptions or issues with continuity across regions, as in some customers seeing one version of your app while others see another, or if you're making significant changes to your apps, you can temporarily remove the site that's undergoing the slot swap from your Front Door's origin group and all traffic will be directed to the other origin. To do this, navigate to the **Update origin group** pane as shown below and Delete the origin that is undergoing the change. Once you've made all of your changes and are ready to serve traffic there again, you can return to the same pane and select **+ Add an origin** to re-add the origin.
+If you're concerned about potential disruptions or issues with continuity across regions, as in some customers seeing one version of your app while others see another, or if you're making significant changes to your apps, you can temporarily remove the site that's undergoing the slot swap from your Front Door's origin group and all traffic will be directed to the other origin. To do this, navigate to the **Update origin group** pane as shown below and **Delete** the origin that is undergoing the change. Once you've made all of your changes and are ready to serve traffic there again, you can return to the same pane and select **+ Add an origin** to re-add the origin.
 
 ![]({{ site.baseurl }}/media/2022/11/removeorigin.png)
 
-If you'd prefer to not delete and then add re-add origins, you can create additional origin groups for your Front Door instance. You can then associate the route to the origin group pointing to the intended origin. For example, you can create two new origin groups, one for your primary region and one for your secondary region. When your primary region is undergoing a change, associate the route with your secondary region and vice versa when your secondary region is undergoing a change. When all changes are complete, you can associate the route with your original origin group which contains both regions. This method works because a route can only be associated with one origin group at a time, however, it will get messy if you are using many regions since you'll need one origin group per region.
+If you'd prefer to not delete and then add re-add origins, you can create additional origin groups for your Front Door instance. You can then associate the route to the origin group pointing to the intended origin. For example, you can create two new origin groups, one for your primary region and one for your secondary region. When your primary region is undergoing a change, associate the route with your secondary region and vice versa when your secondary region is undergoing a change. When all changes are complete, you can associate the route with your original origin group which contains both regions. This method works because a route can only be associated with one origin group at a time. However, if you have many regions and apps, it will get messy since you'll need one origin group per region and potentially additional origin groups if you have multiple apps.
 
 To demonstrate working with multiple origins, in the screenshot below, there are three origin groups. "MyOriginGroup" consists of both web apps, and the other two origin groups each consist of the web app in their respective region. In the example here, the app in the primary region is undergoing a change, so before I started that change, I associated the route with "MySecondaryRegion" so all traffic would be sent to the app in my secondary region during the change period. You can update the route by selecting "Unassociated" which will bring up the **Associate routes** pane.
 
@@ -425,10 +424,10 @@ All of the resources in this post can be deployed using an ARM/Bicep template. A
 
 ```yml
 @description('The location into which regionally scoped resources should be deployed. Note that Front Door is a global resource.')
-param location string = 'canadacentral'
+param location string = 'eastus'
 
 @description('The location into which regionally scoped resources for the secondary should be deployed.')
-param secondaryLocation string = 'canadaeast'
+param secondaryLocation string = 'westus'
 
 @description('The name of the App Service application to create. This must be globally unique.')
 param appName string = 'myapp-${uniqueString(resourceGroup().id)}'
