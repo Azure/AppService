@@ -225,7 +225,7 @@ You'll need to update your app's stack settings to match the source code if you'
 
 As mentioned earlier, since you locked down the SCM site and disabled basic auth, the default method for deploying code with GitHub Actions isn't going to work. This is because the default method uses a publishing profile. Instead, you have two options to authenticate with App Service for GitHub Actions - using a service principal or OpenID Connect. We have a detailed doc that goes through how to do this for each of your options - [Deploy to App Service using GitHub Actions](https://learn.microsoft.com/azure/app-service/deploy-github-actions?tabs=userlevel). We also have guidance for [Azure DevOps using Azure Pipelines](https://learn.microsoft.com/azure/app-service/deploy-azure-pipelines?tabs=yaml). Additionally, for more info on this topic as well as additional examples, we have a series of blog posts that walk through scenarios you may be interested in.
 
-- [Deploying to Network-secured sites](https://github.com/Azure/reliable-web-app-pattern-dotnet/blob/main/assets/Guide/WebAppHomePage.png)
+- [Deploying to Network-secured sites](https://azure.github.io/AppService/2021/01/04/deploying-to-network-secured-sites.html)
 - [Deploying to Network-secured sites, Part 2](https://azure.github.io/AppService/2021/03/01/deploying-to-network-secured-sites-2.html)
 
 For this blog post, we'll walk through how to authenticate with App Service for GitHub Actions with the most secure option, which is OpenID Connect. You can choose to use a service principal which follows the same general process but omits a couple steps.
@@ -420,14 +420,14 @@ After you're done, you can remove all the items you created. Deleting a resource
 
 ## Deploy from ARM/Bicep
 
-All of the resources in this post can be deployed using an ARM/Bicep template. A sample template is shown below, which creates empty apps and staging slots behind Front Door following the security best practices outlined in this post. You'll need to configure the deployment source once the template resources are created. To learn how to deploy ARM/Bicep templates, see [How to deploy resources with Bicep and Azure CLI](https://learn.microsoft.com/azure/azure-resource-manager/bicep/deploy-cli).
+All of the resources in this post can be deployed using an ARM/Bicep template. A sample template is shown below, which creates empty apps and staging slots behind Front Door following the security best practices outlined in this post. You'll need to configure the deployment source as well as the service principal once the template resources are created. To learn how to deploy ARM/Bicep templates, see [How to deploy resources with Bicep and Azure CLI](https://learn.microsoft.com/azure/azure-resource-manager/bicep/deploy-cli).
 
 ```yml
 @description('The location into which regionally scoped resources should be deployed. Note that Front Door is a global resource.')
-param location string = 'eastus'
+param location string = 'canadacentral'
 
 @description('The location into which regionally scoped resources for the secondary should be deployed.')
-param secondaryLocation string = 'westus'
+param secondaryLocation string = 'canadaeast'
 
 @description('The name of the App Service application to create. This must be globally unique.')
 param appName string = 'myapp-${uniqueString(resourceGroup().id)}'
@@ -524,7 +524,7 @@ resource app 'Microsoft.Web/sites@2020-06-01' = {
           name: 'Allow traffic from Front Door'
         }
       ]
-      scmIpSecurityRestrictionsUseMain: true
+      scmIpSecurityRestrictionsDefaultAction: 'Deny'
     }
   }
 }
@@ -579,7 +579,7 @@ resource appSlot 'Microsoft.Web/sites/slots@2020-06-01' = {
           name: 'Allow traffic from Front Door'
         }
       ]
-      scmIpSecurityRestrictionsUseMain: true
+      scmIpSecurityRestrictionsDefaultAction: 'Deny'
     }
   }
   dependsOn: [
@@ -637,7 +637,7 @@ resource secondaryApp 'Microsoft.Web/sites@2020-06-01' = {
           name: 'Allow traffic from Front Door'
         }
       ]
-      scmIpSecurityRestrictionsUseMain: true
+      scmIpSecurityRestrictionsDefaultAction: 'Deny'
     }
   }
 }
@@ -692,7 +692,7 @@ resource secondaryAppSlot 'Microsoft.Web/sites/slots@2020-06-01' = {
           name: 'Allow traffic from Front Door'
         }
       ]
-      scmIpSecurityRestrictionsUseMain: true
+      scmIpSecurityRestrictionsDefaultAction: 'Deny'
     }
   }
   dependsOn: [
