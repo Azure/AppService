@@ -3,6 +3,7 @@ title: "How to deploy a highly available multi-region web app"
 author_name: "Jordan Selig"
 category: networking
 toc: true
+toc_sticky: true
 ---
 
 High availability and fault tolerance are key components of a well-architected solution. It's always best to prepare for the unexpected and having an emergency plan that can shorten downtime and keep your systems up an running automatically when something fails can help you do that.
