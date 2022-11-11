@@ -339,30 +339,30 @@ If you wait a couple minutes and review the deployment logs, you'll see that the
           - uses: actions/checkout@main
           - uses: azure/login@v1
             with:
-              client-id: `${{ secrets.AZURE_CLIENT_ID }}`
-              tenant-id: `${{ secrets.AZURE_TENANT_ID }}`
-              subscription-id: `${{ secrets.AZURE_SUBSCRIPTION_ID }}`
+              client-id: ${{ secrets.AZURE_CLIENT_ID }}
+              tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+              subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
     
           # Setup .NET Core SDK
           - name: Setup .NET Core
             uses: actions/setup-dotnet@v1
             with:
-              dotnet-version: `${{ env.DOTNET_VERSION }}`
+              dotnet-version: ${{ env.DOTNET_VERSION }} 
           
           # Run dotnet build and publish
           - name: dotnet build and publish
             run: |
               dotnet restore
               dotnet build --configuration Release
-              dotnet publish -c Release -o `'${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp'`
+              dotnet publish -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp' 
               
           # Deploy to Azure Web apps
           - name: 'Run Azure webapp deploy action using publish profile credentials'
                 uses: azure/webapps-deploy@v2
                 with: 
-                  app-name: `${{ env.AZURE_WEBAPP_NAME }}`
+                  app-name: ${{ env.AZURE_WEBAPP_NAME }}
               slot-name: 'stage' # replace with your slot name
-              package: `'${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp'`
+              package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp'
           
           - name: logout
             run: |
