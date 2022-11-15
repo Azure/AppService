@@ -21,7 +21,7 @@ This post is organized into the following steps:
 
 ## Architecture
 
-![]({{ site.baseurl }}/media/2022/11/multi-region-app-service.png)
+![]({{ site.baseurl }}/media/2022/11/n-tier-app-service.png)
 
 ### Workflow
 
@@ -141,11 +141,11 @@ Earlier on when you were creating the web apps, you disabled basic authenticatio
 
 At this point, all of the baseline infrastructure has been deployed and you are ready to deploy your source code. We'll walk through how to do that securely in the next part of the blog post, but first, let's validate our connections and app access.
 
-Starting with the backend, try navigating directly to your backend's endpoint. This can be found on the **Overview** page for the backend web app and should be in the format *https://<backend-web-app-name>.azurewebsites.net*. If you've configured things correctly, public access should be blocked and you should get an error page.
+Starting with the backend, try navigating directly to your backend's endpoint. This can be found on the **Overview** page for the backend web app and should be in the format *<https://backend-web-app-name.azurewebsites.net>*. If you've configured things correctly, public access should be blocked and you should get an error page.
 
 ![]({{ site.baseurl }}/media/2022/11/backend-forbidden.png)
 
-You should see a similar error page when trying to navigate to the backend's SCM site. The endpoint for that is in the format *https://<backend-web-app-name>.scm.azurewebsites.net*.
+You should see a similar error page when trying to navigate to the backend's SCM site. The endpoint for that is in the format *<https://backend-web-app-name.scm.azurewebsites.net>*.
 
 To validate the frontend, we'll need to ensure it is publicly accessible and that it can reach the backend only using the private endpoint.
 
@@ -157,7 +157,7 @@ To validate the connection between the frontend and the backend, you'll need acc
 
 ![]({{ site.baseurl }}/media/2022/11/scm-ip-access.png)
 
-Navigate to the SCM site for your frontend by going to *https://<frontend-web-app-name>.scm.azurewebsites.net/*. If you can't access it, make sure you've added the rule for your IP as shown above. Select **SSH** from the menu bar at the top. Doing this creates an SSH session on your frontend's instances. Once that loads, you're going to do an "nslookup" on your backend to confirm that it can be reached from the frontend using the private endpoint. Type "nslookup <backend-web-app-name>.azurewebsites.net". Under the "Non-authoritative answer", it should resolve the private IP address you noted earlier. You can also do a "curl" on your backend's endpoint to display the backend's current site contents. For now, curl will display the html for the empty web app site.
+Navigate to the SCM site for your frontend by going to *<https://frontend-web-app-name.scm.azurewebsites.net/>*. If you can't access it, make sure you've added the rule for your IP as shown above. Select **SSH** from the menu bar at the top. Doing this creates an SSH session on your frontend's instances. Once that loads, you're going to do an "nslookup" on your backend to confirm that it can be reached from the frontend using the private endpoint. Type "nslookup backend-web-app-name.azurewebsites.net". Under the "Non-authoritative answer", it should resolve the private IP address you noted earlier. You can also do a "curl" on your backend's endpoint to display the backend's current site contents. For now, curl will display the html for the empty web app site.
 
 ![]({{ site.baseurl }}/media/2022/11/frontend-ssh.png)
 
