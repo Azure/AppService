@@ -289,7 +289,7 @@ You can also write down the URL of your Azure Front Door endpoint.
 
 **Create an origin group**
 
-Run `az afd origin-group create` to create an origin group that contains your two web apps.
+Run `az afd origin-group create` to create an origin group that contains your web apps.
 
 ```bash
 az afd origin-group create \
@@ -454,7 +454,7 @@ curl https://$URLofYourWebsite
 
 **Second example - add multiple service tags to network restriction rule**
 
-This example show you how you can add multiple service tags to network restriction rule. In this example we will allow connection form Logic Apps, Application Insight and Api Management form West europe. You can test this rule in multiple ways in this example you will test this rule using Application Insight availability test.
+This example show you how you can add multiple service tags to network restriction rule. In this example we will allow connection from Logic Apps, Application Insight and Api Management from West europe. You can test this rule in multiple ways in this example you will test this rule using Application Insight availability test.
 
 **Prepare to run the second example**
 
