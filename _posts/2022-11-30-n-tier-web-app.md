@@ -65,14 +65,14 @@ You'll need two instances of a web app for this tutorial. You'll need to use at 
 Run the following command to create the App Service plan. Replace the placeholders for App Service plan name and resource group name.
 
 ```bash
-az appservice plan create --name <app-service-plan-name> --resource-group <resource-group-name> --is-linux --location eastus --sku B1
+az appservice plan create --name <app-service-plan-name> --resource-group <resource-group-name> --is-linux --location eastus --sku P1V2
 ```
 
-Once the App Service plan is created, run the following commands to create the web apps. Replace the placeholders with your globally distinct web app names and your App Service plan name. If you're following along in this tutorial, you'll be deploying a TODO: app later on, so we'll set the runtime now. Feel free to change this value based on the app you want to deploy. Run `az webapp list-runtimes` for a list of the possible runtimes you can choose from.
+Once the App Service plan is created, run the following commands to create the web apps. Replace the placeholders with your globally distinct web app names and your App Service plan name. If you're following along in this tutorial, you'll be deploying a Node.js app later on, so we'll set the runtime now. Feel free to change this value based on the app you want to deploy. Run `az webapp list-runtimes` for a list of the possible runtimes you can choose from.
 
 ```bash
-az webapp create --name <frontend-web-app-name> --resource-group <resource-group-name> --plan <app-service-plan-name> --runtime "TODO:"
-az webapp create --name <backend-web-app-name> --resource-group <resource-group-name> --plan <app-service-plan-name> --runtime "TODO:"
+az webapp create --name <frontend-web-app-name> --resource-group <resource-group-name> --plan <app-service-plan-name> --runtime "NODE:18-lts"
+az webapp create --name <backend-web-app-name> --resource-group <resource-group-name> --plan <app-service-plan-name> --runtime "NODE:18-lts"
 ```
 
 ## Disable basic auth for the web apps
@@ -157,14 +157,134 @@ To validate the connection between the frontend and the backend, you'll need acc
 
 ![]({{ site.baseurl }}/media/2022/11/scm-ip-access.png)
 
-Navigate to the SCM site for your frontend by going to *<https://frontend-web-app-name.scm.azurewebsites.net/>*. If you can't access it, make sure you've added the rule for your IP as shown above. Select **SSH** from the menu bar at the top. Doing this creates an SSH session on your frontend's instances. Once that loads, you're going to do an "nslookup" on your backend to confirm that it can be reached from the frontend using the private endpoint. Type "nslookup backend-web-app-name.azurewebsites.net". Under the "Non-authoritative answer", it should resolve the private IP address you noted earlier. You can also do a "curl" on your backend's endpoint to display the backend's current site contents. For now, curl will display the html for the empty web app site.
+Navigate to the SCM site for your frontend by going to *<https://frontend-web-app-name.scm.azurewebsites.net/>*. If you can't access it, make sure you've added the rule for your IP as shown above. Select **SSH** from the menu bar at the top. Doing this creates an SSH session on your frontend's instances. Once that loads, you're going to do an "nslookup" on your backend to confirm that it can be reached from the frontend using the private endpoint. Type "nslookup backend-web-app-name.azurewebsites.net". Under the "Non-authoritative answer", it should resolve the private IP address you noted earlier. You can also do a "curl" on your backend's endpoint to display the backend's current site contents. For now, curl will display the HTML for the empty web app.
 
 ![]({{ site.baseurl }}/media/2022/11/frontend-ssh.png)
 
-Repeat the same nslookup and curl commands from another terminal (one that is not an SSH session from your frontend's instances). The nslookup will return the public IP for the backend web app. Since we blocked public access to the backend web app, if you try to reach the public IP, you will get an access denied which means this site will not be accessible from the public internet, which is what we want. The nslookup doesn't resolve the private IP because that can only be reached from within the virtual network using the private endpoint and only the frontend web app is within the virtual network. If you try to run a curl on the backend from an external terminal, you'll see the HTML returns "Web App - Unavailable", which is the HTML for the error page you saw earlier when you tried navigating to the backend in your browser.
+Repeat the same nslookup and curl commands from another terminal (one that is not an SSH session from your frontend's instances). The nslookup will return the public IP for the backend web app. Since we blocked public access to the backend web app, if you try to reach the public IP, you will get an access denied error which means this site will not be accessible from the public internet, which is what we want. The nslookup doesn't resolve the private IP because that can only be reached from within the virtual network using the private endpoint and only the frontend web app is within the virtual network. If you try to do a curl on the backend from an external terminal, you'll see the HTML returns "Web App - Unavailable", which is the HTML for the error page you saw earlier when you tried navigating to the backend in your browser.
 
 ![]({{ site.baseurl }}/media/2022/11/frontend-ssh-ext.png)
 
 Now that you've validated your connections, you're all set to deploy some code. Make sure you remove the rule that allows access to your frontend's SCM site if you no longer need it.
 
 ## Source code management
+
+A number of best practices were described in the previous [blog post](TODO:) which went over how to manage source code across multiple regions. Those same concepts can be applied here. For completeness, we'll go over the important parts to get your n-tier app up and running.
+
+### Prerequisites for source code deployment
+
+We'll be using a two Node.js apps hosted on GitHub. If you don't already have a GitHub account, [create an account for free](https://github.com/).
+
+1. Go to the [Node.js backend sample app](https://github.com/seligj95/nodejs-backend). This is a simple Hello World app.
+1. Select the **Fork** button in the upper right on the GitHub page.
+1. Select the **Owner** and leave the default Repository name.
+1. Select **Create** fork.
+1. Repeat the same process for the [Node.js frontend sample app](https://github.com/seligj95/nodejs-frontend). This is a basic web scraping app that I built specifically for this blog post.
+
+At this point, your source code is all set up and ready to be deployed to your apps.
+
+### Create staging slots and configure continuous deployment
+
+Configuring continuous deployment for production apps is not recommended because it makes testing and validation more complicated. Instead, use a combination of staging slots and slot swap to move code from your testing/staging environment to production.
+
+We'll create deployment slots for each of our apps and then walk through how to slot swap to get the code into production.
+
+1. Go to one of your apps.
+1. In the left pane, select **Deployment slots**.
+1. Select **+ Add Slot**.
+1. Input "stage" for *Name* and to keep things simple, we'll clone the settings from the production slot by selecting the app's name from the *Clone settings from:* dropdown.
+1. Select **Close** at the bottom of the slot configuration pane.
+1. Select the newly created stage slot.
+
+Cloning settings to a slot doesn't clone every possible setting. In this case, you'll need to disable basic auth for both apps and create another private endpoint for the backend slot.
+
+To disable basic auth for the slots, run the following commands.
+
+```bash
+TODO:
+```
+
+To create a private endpoint for the backend slot, run the following commands.
+
+```bash
+TODO:
+```
+
+Now that the staging slots are properly configured and locked down, you can configure continuous deployment.
+
+1. In the left pane, select **Deployment Center** and make sure you're on the **Settings** tab.
+
+    ![]({{ site.baseurl }}/media/2022/11/deployment-source.png)
+
+1. For **Source**, select "GitHub".
+1. If you're deploying from GitHub for the first time, select **Authorize** and follow the authorization prompts.
+1. After you authorize your Azure account with GitHub, select the Organization, Repository, and Branch to configure CI/CD as shown below. If you can’t find an organization or repository, you might need to enable more permissions on GitHub. For more information, see [Managing access to your organization's repositories](https://docs.github.com/organizations/managing-user-access-to-your-organizations-repositories).
+
+    |Setting  |Description  |
+    |---------|---------|
+    |Organization     |`<your GitHub username>`         |
+    |Repository     |nodejs-backend        |
+    |Branch     |main         |
+
+1. Leave the remaining defaults and select **Save**. You can track the deployment and commits in the **Logs** tab in the **Deployment Center** to monitor progress.
+1. Repeat the above steps for your other app.
+
+Since you locked down the SCM sites and disabled basic auth for your apps, the default method for deploying code with GitHub Actions isn't going to work. You'll see that the deployment failed if you review the logs. This is because the default method uses a publishing profile. Instead, you have two options to authenticate with App Service for GitHub Actions - using a service principal or OpenID Connect. We have a detailed doc that goes through how to do this for each of your options - [Deploy to App Service using GitHub Actions](https://learn.microsoft.com/azure/app-service/deploy-github-actions?tabs=userlevel). We also have guidance for [Azure DevOps using Azure Pipelines](https://learn.microsoft.com/azure/app-service/deploy-azure-pipelines?tabs=yaml). Additionally, for more info on this topic as well as additional examples, we have a series of blog posts that walk through scenarios you may be interested in.
+
+- [Deploying to Network-secured sites](https://azure.github.io/AppService/2021/01/04/deploying-to-network-secured-sites.html)
+- [Deploying to Network-secured sites, Part 2](https://azure.github.io/AppService/2021/03/01/deploying-to-network-secured-sites-2.html)
+
+For this blog post, we'll walk through how to authenticate with App Service for GitHub Actions using a service principal.
+
+### Configure authentication with App Service for GitHub Actions with a service principal
+
+...create service principal, configure GH secrets
+
+### Create the GitHub Actions workflow
+
+Now that you have a service principal that can access your App Services, you need to edit the default workflow that was created for your apps when you configured continuous deployment so that it uses your service principal to authenticate instead of the publishing profile. For sample workflows, see the "Service principal" tab in [Deploy to App Service](https://learn.microsoft.com/azure/app-service/deploy-github-actions?tabs=userlevel#deploy-to-app-service). If you've been following along, use the below workflow.
+
+1. Open your GitHub repository and go to the `nodejs-backend/.github/workflows/` directory. You'll see the autogenerated workflow.
+1. Select the "pencil" button in the top right to edit the file. Replace the contents with the below, which assumes you created the GitHub secrets earlier, update the placeholder for `AZURE_WEBAPP_NAME` for your apps, and then commit directly to the master branch. This commit will trigger the GitHub Action to run again and deploy your code, this time using the service principal to authenticate.
+
+    ```yml
+    TODO:
+    ```
+
+1. Repeat this process for the frontend app. The workflow can be found in `nodejs-frontend/.github/workflows/`.
+
+After a couple minutes, the deployments to the two app's staging slots will finish. Your backend web app slot is locked down, but you can update the access restrictions for it if you want to validate that the code was deployed. Alternatively, you can skip that and go straight to the frontend app slot and test from there.
+
+Navigate to your frontend in a browser. The URL should look like *<https://frontend-web-app-name-stage.azurewebsites.net>*. The frontend app is a simple web scraper that will display the HTML body of a website. All it's doing is calling the backend app and if it can reach the backend, it will display the site contents of the backend web app. I designed this site to work specifically with the provided backend web app. The web scraper will work with other sites, but the HTML it will return will be messy. Get your backend slot's URL and paste that into the textbox. Hit "Go", and after a couple seconds, you should see "Hello from the backend web app!" which is the site contents for the backend. If the app crashes, that means your access restrictions or private endpoint are misconfigured. If all goes well, you're ready to slot swap into production.
+
+### Slot swap
+
+Once you're done testing and validating, you can perform a [slot swap](https://learn.microsoft.com/azure/app-service/deploy-staging-slots#swap-two-slots) from your staging site to your production site for each of your apps. During a slot swap, the App Service platform [ensures the target slot doesn't experience downtime](https://learn.microsoft.com/azure/app-service/deploy-staging-slots#swap-operation-steps).
+
+To perform the swap:
+
+1. Go to your app's **Deployment slots** page and select **Swap**. The **Swap** dialog box shows settings in the selected source and target slots that will be changed.
+
+    ![]({{ site.baseurl }}/media/2022/11/swapbuttonbar.png)
+
+1. Select the desired **Source** and **Target** slots. Also, select the **Source Changes** and **Target Changes** tabs and verify that the configuration changes are expected. When you're finished, you can swap the slots immediately by selecting **Swap**.
+
+    ![]({{ site.baseurl }}/media/2022/11/swapimmediately.png)
+
+1. Repeat the process for your other app.
+
+After a few minutes, you can navigate to your production frontend app to validate the slot swap succeeded. You should copy and paste your production backend app's URL into the textbox and confirm you get the message "Hello from the backend web app!". If you do, congrats, you completed the tutorial! If the app crashes, go back through this post to ensure your connections are configured appropriately.
+
+At this point, your apps are up and running and any changes you make to your source code will automatically trigger an update to both of your staging apps. You can then repeat the slot swap process described above when you're ready to move that code into production.
+
+## Clean up resources
+
+After you're done, you can remove all the items you created. Deleting a resource group also deletes its contents.
+
+## Deploy from ARM/Bicep
+
+All of the resources in this post can be deployed using an ARM/Bicep template. A sample template is shown below, which creates empty apps and staging slots following the security best practices outlined in this post. You'll need to configure the deployment source as well as the service principal once the template resources are created. To learn how to deploy ARM/Bicep templates, see [How to deploy resources with Bicep and Azure CLI](https://learn.microsoft.com/azure/azure-resource-manager/bicep/deploy-cli).
+
+```yml
+TODO:
+```

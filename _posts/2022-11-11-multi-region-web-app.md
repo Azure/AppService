@@ -287,7 +287,7 @@ We'll create deployment slots for each instance of our app and then walk through
 1. Select **+ Add Slot**.
 1. Input "stage" for *Name* and to keep things simple, we'll clone the settings from the production slot by selecting the app's name from the *Clone settings from:* dropdown.
 1. Select **Close** at the bottom of the slot configuration pane.
-1. Select the newly create stage slot.
+1. Select the newly created stage slot.
 1. In the left pane, select **Deployment Center** and make sure you're on the **Settings** tab.
 
     ![]({{ site.baseurl }}/media/2022/11/deployment-source.png)
