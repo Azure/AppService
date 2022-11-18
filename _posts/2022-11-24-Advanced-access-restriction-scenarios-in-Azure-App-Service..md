@@ -20,24 +20,23 @@ This article will walk you through building a demo environment where you will te
 1. Filter by http header
 2. Multi-source rules
 3. Block a single IP address
-4. Restrict access to an SCM site
+4. Restrict access to the SCM site
 
 For more information about *App Service access restrictions*, visit [this page](https://learn.microsoft.com/azure/app-service/app-service-ip-restrictions)
 
 **Requirements:**
 
-Access to Azure Subscription
+Access to an Azure subscription.
 
 **Decide where you will execute commands**
 
-The best option to walk through this guide and execute commands would be using Azure Cloud Shell with Bash environment. Azure Cloud Shell is an interactive, authenticated, browser-accessible shell for managing Azure resources. It provides the flexibility of choosing the shell experience that best suits the way you work, either Bash or PowerShell. For information on how to use Azure Cloud Shell, please visit this page [Azure Cloud Shell](https://docs.microsoft.com/azure/cloud-shell/overview). You can also install Azure CLI on your machine. The Azure CLI is available to install in Windows, macOS and Linux environments. It can also be run in a Docker container and Azure Cloud Shell. For information on how to install
-the Azure CLI, please visit this page [Azure Cli](https://docs.microsoft.com/cli/azure/install-azure-cli)
+The best option to walk through this guide and execute commands would be using Azure Cloud Shell with Bash environment. Azure Cloud Shell is an interactive, authenticated, browser-accessible shell for managing Azure resources. It provides the flexibility of choosing the shell experience that best suits the way you work, either Bash or PowerShell. For information on how to use Azure Cloud Shell, visit [Azure Cloud Shell](https://docs.microsoft.com/azure/cloud-shell/overview). You can also install Azure CLI on your machine. The Azure CLI is available to install in Windows, macOS and Linux environments. It can also be run in a Docker container and Azure Cloud Shell. For information on how to install the Azure CLI, please visit [Azure CLI installation](https://docs.microsoft.com/cli/azure/install-azure-cli).
 
 If you decide to use [Azure Cloud Shell](https://shell.azure.com), please use Bash environment.
 
 ## Getting Started
 
-**Create folder for you data**
+**Create folder for your data**
 
 You can use the name below for your folder. You just need to replace *aredemo* with your environment name.
 
@@ -48,7 +47,7 @@ cd aredemo
 
 **Choosing the right subscription**
 
-If you have many subscriptions you must select the subscription to which you want to deploy the resources.
+If you have many subscriptions, you must select the subscription to which you want to deploy the resources.
 
 Using this command you can find and copy the *SubscriptionId* on which you want to create resources for this scenario.
 
@@ -66,7 +65,7 @@ You can find more information about *az account* command on this site [az accoun
 
 **Prepare parameters**
 
-When you construct your naming convention, identify the key pieces of information that you want to reflect in the resource names. Different information is relevant for different resource types. The following sites are useful when you construct resource names [Define your naming convention](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/azure-best-practices/resource-naming) and [Recommended abbreviations for Azure resource types](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/azure-best-practices/resource-abbreviations)
+When you construct your naming convention, identify the key pieces of information that you want to reflect in the resource names. Different information is relevant for different resource types. The following sites are useful when you construct resource names - [Define your naming convention](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/azure-best-practices/resource-naming) and [Recommended abbreviations for Azure resource types](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/azure-best-practices/resource-abbreviations).
 
 You can use the names below. You just need to replace *ardemo* with your environment name and change *LocationRegion* parameter.
 
@@ -113,7 +112,7 @@ az network vnet create -g $ResourceGroupName -n $VirtualNetworkName --address-pr
 
 An App Service plan defines a set of compute resources for a web app to run. 
 
-For more information about *Azure App Service plan*, visit [this page](https://learn.microsoft.com/azure/app-service/overview-hosting-plans)
+For more information about *Azure App Service plan*, visit [this page](https://learn.microsoft.com/azure/app-service/overview-hosting-plans).
 
 ```bash
 az appservice plan create -n $AppServicePlanName -g $ResourceGroupName --location $LocationRegion --sku P1V2 --is-linux --number-of-workers 1
@@ -133,9 +132,9 @@ Create a variable with the URL of your website. You will use this variable later
 URLofYourWebsite=$(az webapp show --name $WebAppName --resource-group $ResourceGroupName --query defaultHostName -o tsv)
 ```
 
-**Create index.php file for your website**
+**Create index.php file for your web app**
 
-Sample code for your secondary website:
+Sample code for your web app:
 
 ```bash
 echo '<?php
@@ -143,9 +142,9 @@ echo '<?php
 ?>' > index.php
 ```
 
-**Create zip file for primary website**
+**Create zip file for your web app code**
 
-In the next step you will use *ZIP Deploy* to deploy the application. You need a ZIP utility for this. Fortunately, ZIP utility is pre-installed in Azure Cloud Shell.
+In the next step you will use *ZIP Deploy* to deploy the application. You need a ZIP utility for this. If you're using Azure Cloud Shell, ZIP utility is pre-installed and already available.
 
 ```bash
 zip YourWebSite.zip index.php
@@ -171,14 +170,14 @@ curl https://$URLofYourWebsite
 
 A private endpoint is a network interface that uses a private IP address from your virtual network. This network interface connects you privately and securely to a service that's powered by Azure Private Link. By enabling a private endpoint, you're bringing the service into your virtual network.
 
-For more information about *private endpoint*, visit [this page](https://learn.microsoft.com/azure/private-link/private-endpoint-overview)
+For more information about *private endpoint*, visit [this page](https://learn.microsoft.com/azure/private-link/private-endpoint-overview).
 
 ```bash
 id=$(az webapp show --name $WebAppName --resource-group $ResourceGroupName --query '[id]' --output tsv)
 az network private-endpoint create -n $PrivateEndpointName -g $ResourceGroupName --vnet-name $VirtualNetworkName --subnet $SubnetNameVnet --connection-name $PrivateEndpointConnectionName --private-connection-resource-id $id --group-id sites
 ```
 
-Configure the private DNS zone
+**Configure the private DNS zone**
 
 ```bash
 az network private-dns zone create --name privatelink.azurewebsites.net --resource-group $ResourceGroupName
@@ -186,11 +185,11 @@ az network private-dns link vnet create --name myDNSLink --resource-group $Resou
 az network private-endpoint dns-zone-group create --name myZoneGroup --resource-group $ResourceGroupName --endpoint-name $PrivateEndpointName --private-dns-zone privatelink.azurewebsites.net --zone-name privatelink.azurewebsites.net
 ```
 
-**Check if your website is unavailable.**
+**Check if your website is unavailable**
 
-After enabling private endpoint, the webapp should be unavailable from the Internet.
+After enabling private endpoint, the web app should not be reachable from the Internet.
 
-Use your browser or use *curl* command to check if your app is not available.
+Use your browser or use *curl* command to check if your app is not reachable.
 
 ```bash
 curl https://$URLofYourWebsite
@@ -202,20 +201,20 @@ The result should look similar to this.
 
 **Optional test**
 
-You can create a VM in the same virtual network as the private endpoint for Azure App Service and run a network connection test using private IP address. The name of the Azure App Service, should resolve to a private IP address, you can check it using the *ping* or *nslookup* command. To check if the website is working properly by using the private IP address, please use *curl* command or a browser on a VM that you will deploy.
+You can create a VM in the same virtual network as the private endpoint for Azure App Service and run a network connection test using private IP address. The name of the Azure App Service should resolve to a private IP address. You can check this using the *ping* or *nslookup* command. To check if the website is working properly by using the private IP address, use *curl* command or a browser on a VM that you will deploy.
 
 >**Remember** to use the standard App Service URL. Thanks to the integration with private DNS zone, the name will be translated into a private IP address.
-> For more information about *Azure App Service private endpoint DNS*, visit [this page](https://learn.microsoft.com/azure/app-service/networking/private-endpoint#dns)
+> For more information about *Azure App Service private endpoint DNS*, visit [this page](https://learn.microsoft.com/azure/app-service/networking/private-endpoint#dns).
 
 ## First advanced scenario - Filter by http header
 
 Currently, you can run Azure App Service with a private endpoint as well as allow traffic from the Internet to Azure App Service. Thanks to this, you can use, for example, Azure Front Door Standard SKU to make Azure App Service available from the Internet. Previously, when using a private endpoint for Azure App Service, it was required to use the Azure Front Door Premium SKU.
 
-For more information about *Secure Origin with Private Link in Azure Front Door Premium*, visit [this page](https://learn.microsoft.com/azure/frontdoor/private-link)
+For more information about *Secure Origin with Private Link in Azure Front Door Premium*, visit [this page](https://learn.microsoft.com/azure/frontdoor/private-link).
 
-In this guide you will add *rule* that will allow access from Azure Front Door Standard instance to your Azure App Service using *X-Azure-FDID*. 
+In this guide you will add a *rule* that will allow access from Azure Front Door Standard instance to your Azure App Service using *X-Azure-FDID*. 
 
->**Tip** In Access restriction you can use the following headers:
+>**Tip** Access restrictions can use the following headers:
 >1. X-Forwarded-Host - You can specify hostnames of the originating request to limit traffic if a load balancer or HTTP proxy supports hostname forwarding. Enter up to 8 hostnames separated by a comma.
 >2. X-Forwarded-For - You can specify IP addresses of the originating client if a load balancer or HTTP proxy supports IP forwarding when the traffic is passing >through. Enter up to 8 CIDR addresses separated by a comma.
 >3. X-Azure-FDID - You can specify a unique instance id of Azure Front Door or reverse proxies supporting unique header identification. Enter up to 8 ids >separated by a comma.
@@ -224,7 +223,7 @@ In this guide you will add *rule* that will allow access from Azure Front Door S
 
 **Enable public access**
 
-To allow traffic from the Internet please use this command.
+To allow traffic from the Internet, use this command.
 
 ```bash
 az resource update --resource-group $ResourceGroupName --name $WebAppName --resource-type "Microsoft.Web/sites" --set properties.publicNetworkAccess=Enabled
@@ -234,7 +233,7 @@ You can also enable *Allow public access* from the GUI.
 
 ![Allow public access]({{site.baseurl}}/media/2022/11/access_restrictions_allow_public_access.png){: .align-center}
 
-**Check if your website is available.**
+**Check if your website is available**
 
 After enabling public access, the webapp should be available from the Internet and from the private endpoint.
 
@@ -248,7 +247,7 @@ curl https://$URLofYourWebsite
 
 Azure Front Door is Microsoft’s modern cloud Content Delivery Network (CDN) that provides fast, reliable, and secure access between your users and your applications’ static and dynamic web content across the globe. Azure Front Door delivers your content using the Microsoft’s global edge network with hundreds of global and local POPs distributed around the world close to both your enterprise and consumer end users.
 
-For more information about *Azure Front Door*, visit [this page](https://learn.microsoft.com/azure/frontdoor/front-door-overview)
+For more information about *Azure Front Door*, visit [this page](https://learn.microsoft.com/azure/frontdoor/front-door-overview).
 
 **Create Azure Front Door profile**
 
@@ -347,7 +346,7 @@ In a production environment you will probably need to implement a WAF policy for
 
 **Check if your Azure Front Door Endpoint is running - this process may take a while** 
 
-Use your browser or *curl* command to check if your app is working correctly.
+Use your browser or *curl* command to check if your app is working correctly. It may take 10-15 minutes for your app to be accessible using Front Door.
 
 ```bash
 curl https://$URLofYourFrontDoorEndpoint
@@ -370,17 +369,17 @@ Add a rule that only allows communication from the specific Azure Front Door pro
 az webapp config access-restriction add --resource-group $ResourceGroupName --name $WebAppName --rule-name FrontDoor --action Allow --priority 100 --service-tag AzureFrontDoor.Backend --http-header x-azure-fdid=$YourFrontDoorID
 ```
 
-**Check if your app allow connections using Azure Front Door url**
+**Check if your app allow connections using Azure Front Door URL**
 
-Use your browser or *curl* command to check if your app is working correctly using Azure Front Door url.
+Use your browser or *curl* command to check if your app is working correctly using Azure Front Door URL.
 
 ```bash
 curl https://$URLofYourFrontDoorEndpoint
 ```
 
-**Check if your app is blocked by network restriction**
+**Check if your app is blocked by network restrictions**
 
-Use your browser or *curl* command to check if your app is not available via direct url access.
+Use your browser or *curl* command to check if your app is not available via direct URL access.
 
 ```bash
 curl https://$URLofYourWebsite
@@ -408,9 +407,9 @@ To change the default behavior *Unmatched rule action* to *Deny*, please run the
 az resource update --resource-group $ResourceGroupName --name $WebAppName --resource-type "Microsoft.Web/sites" --set properties.siteConfig.ipSecurityRestrictionsDefaultAction=Deny
 ```
 
-**Check if your app is blocked by network restriction**
+**Check if your app is blocked by network restrictions**
 
-Use your browser or *curl* command to check if your app is blocked by network restriction
+Use your browser or *curl* command to check if your app is blocked by network restrictions.
 
 ```bash
 curl https://$URLofYourWebsite
@@ -418,13 +417,13 @@ curl https://$URLofYourWebsite
 
 **Check your public IP addresses and create variable**
 
->**Remember** If you are using Azure Cloud Shell, please remember that you will have a different public IP address every time you will restart your console.
+>**Remember** If you are using Azure Cloud Shell, remember that you will have a different public IP address every time you restart your console.
 
 ```bash
 YourPublicIPaddress=$(curl icanhazip.com)
 ```
 
->**TIP** You can also use Powershell command to check your public IP address.
+>**TIP** You can also use a Powershell command to check your public IP address.
 >
 >```bash
 >(Invoke-WebRequest -uri "http://ifconfig.me/ip").Content
@@ -438,13 +437,13 @@ YourPublicIPaddress=$(curl icanhazip.com)
 
 **Add IP addresses to multi-source rule**
 
-To add a rule that will block traffic from several IP ranges, please run the command below.
+To add a rule that will block traffic from several IP ranges, run the below command.
 
 ```bash
 az webapp config access-restriction add --resource-group $ResourceGroupName --name $WebAppName --rule-name AllowBranchWarsawIPaddresses --action Allow --priority 200 --ip-address 192.168.1.0/24,192.168.10.0/24,192.168.100.0/24,$YourPublicIPaddress
 ```
 
-**Check if your app allow connections**
+**Check if your app allows connections**
 
 Use your browser or *curl* command to check if your app is working correctly.
 
@@ -452,13 +451,13 @@ Use your browser or *curl* command to check if your app is working correctly.
 curl https://$URLofYourWebsite
 ```
 
-**Second example - add multiple service tags to network restriction rule**
+**Second example - add multiple service tags to a network restriction rule**
 
-This example show you how you can add multiple service tags to network restriction rule. In this example we will allow connection from Logic Apps, Application Insight and Api Management from West europe. You can test this rule in multiple ways in this example you will test this rule using Application Insight availability test.
+This example show you how you can add multiple service tags to a network restriction rule. In this example we will allow connections from Logic Apps, Application Insights and API Management from West Europe. In this example you will test this rule using Application Insights availability test.
 
 **Prepare to run the second example**
 
-The following command will create *Application Insight* and *Log Analytics Workspace* for you.
+The following command will create *Application Insights* and *Log Analytics Workspace* for you.
 
 ```bash
 az monitor log-analytics workspace create --resource-group $ResourceGroupName --workspace-name $LogAnalyticsName
@@ -469,14 +468,14 @@ ApplicationInsightId=$(az monitor app-insights component show --app $Application
 az monitor app-insights web-test create --web-test-kind "standard" --enabled true --location $LocationRegion --resource-group $ResourceGroupName --name $ApplicationInsightsWebTestName --defined-web-test-name $ApplicationInsightsWebTestName --tags "hidden-link:$ApplicationInsightId=Resource" --http-verb "GET" --request-url "https://$URLofYourWebsite" --timeout 30 --frequency 300 --retry-enabled true --locations Id="emea-nl-ams-azr" --locations Id="us-fl-mia-edge"
 ```
 
-**Show Application Insight availability test result**
+**Show Application Insights availability test result**
 
-After running the command below, you should get a result from *Application Insight* that the tests failed.
+After running the command below, you should get a result from *Application Insights* that the tests failed.
 
 ```bash
 az monitor log-analytics query -w $LogAnalyticsWorkspaceId --analytics-query "AppAvailabilityResults | project TimeGenerated, Message, Location | order by TimeGenerated desc" -t P0DT1H -o table
 ```
->**Tip** If you will have multiple availability tests in one *Application Insight*, you can use *Name* field for filtering.
+>**Tip** If you have multiple availability tests in one *Application Insight*, you can use the *Name* field for filtering.
 
 The result should look similar to this.
 
@@ -484,7 +483,7 @@ The result should look similar to this.
 
 **Add service tags to multi-source rule**
 
-To add a rule that will allow traffic from several service tags, please run the command below.
+To add a rule that will allow traffic from several service tags, run the following command.
 
 ```bash
 az webapp config access-restriction add --resource-group $ResourceGroupName --name $WebAppName --rule-name AllowMultipleServiceTags --action Allow --priority 300 --service-tag LogicApps,ApiManagement.WestEurope,ApplicationInsightsAvailability
@@ -494,7 +493,7 @@ az webapp config access-restriction add --resource-group $ResourceGroupName --na
 
 After running the command below, you should get a result from *Application Insight* that the tests passed.
 
->**Tip** Please wait 5-10 minutes before you will run this command. Availability tests are run every 5 minutes.
+>**Tip** Please wait 5-10 minutes before you run this command. Availability tests are run every 5 minutes.
 
 ```bash
 az monitor log-analytics query -w $LogAnalyticsWorkspaceId --analytics-query "AppAvailabilityResults | project TimeGenerated, Message, Location | order by TimeGenerated desc" -t P0DT1H -o table
@@ -508,7 +507,7 @@ The result should look similar to this.
 
 **Remove previous rules**
 
-To remove the rules from the previous scenario, please run the command below.
+To remove the rules from the previous scenario, run the command below.
 
 ```bash
 az webapp config access-restriction remove --resource-group $ResourceGroupName --name $WebAppName --rule-name AllowBranchWarsawIPaddresses
@@ -517,7 +516,7 @@ az webapp config access-restriction remove --resource-group $ResourceGroupName -
 
 **Change default behavior for *Unmatched rule action* to *Allow***
 
-To change the default behavior to *Allow*, please run the command below.
+To change the default behavior to *Allow*, run the command below.
 
 ```bash
 az resource update --resource-group $ResourceGroupName --name $WebAppName --resource-type "Microsoft.Web/sites" --set properties.siteConfig.ipSecurityRestrictionsDefaultAction=Allow
@@ -525,35 +524,35 @@ az resource update --resource-group $ResourceGroupName --name $WebAppName --reso
 
 **Check if your app allow connections**
 
-Use your browser or *curl* command to check if your app allow connections.
+Use your browser or *curl* command to check if your app allows connections.
 
 ```bash
 curl https://$URLofYourWebsite
 ```
 
-**Block your public ip address**
+**Block your public IP address**
 
-To add a rule that will block traffic from your ip address, please run the command below.
+To add a rule that will block traffic from your IP address, run the command below.
 
 ```bash
 az webapp config access-restriction add --resource-group $ResourceGroupName --name $WebAppName --rule-name BlockSingleIpAddress --action Deny --priority 200 --ip-address $YourPublicIPaddress
 ```
 
-**Check if your app is blocked by network restriction**
+**Check if your app is blocked by network restrictions**
 
-Use your browser or *curl* command to check if your app is blocked by network restriction
+Use your browser or *curl* command to check if your app is blocked by network restriction.
 
 ```bash
 curl https://$URLofYourWebsite
 ```
 
-## Fourth advanced scenario - Restrict access to an SCM site
+## Fourth advanced scenario - Restrict access to the SCM site
 
-You can use the same access restriction rules from the *Main site* or create your own rule for SCM site - *Advanced tool site*. SCM site is responsible for *Web Deploy* and *Kudu console*.
+You can use the same access restriction rules from the *Main site* or create your own rule for the SCM (Advanced tool) site. The SCM site is responsible for *Web Deploy* and *Kudu console*.
 
 **Verify that you can deploy your sample app**
 
-To verify that you can deploy your sample app via *Web Deploy*, please run the command below.
+To verify that you can deploy your sample app via *Web Deploy*, run the command below.
 
 ```bash
 az webapp deployment source config-zip --resource-group $ResourceGroupName  --name $WebAppName --src ./YourWebSite.zip
@@ -561,7 +560,7 @@ az webapp deployment source config-zip --resource-group $ResourceGroupName  --na
 
 **Use the same access restrictions rules from *Main site* in *Advanced tool site***
 
-To use the same rules from the *Main site* in the *Advanced tool site*, please run this command.
+To use the same rules from the *Main site* in the *Advanced tool site*, run this command.
 
 ```bash
 az webapp config access-restriction set --resource-group $ResourceGroupName  --name $WebAppName --use-same-restrictions-for-scm-site true
@@ -577,13 +576,13 @@ az webapp deployment source config-zip --resource-group $ResourceGroupName  --na
 
 **Configure different rules for *Advanced tool site**
 
-To configure other rules for *Advanced tool site*, please run below command.
+To configure other rules for *Advanced tool site*, run below command.
 
 ```bash
 az webapp config access-restriction set --resource-group $ResourceGroupName  --name $WebAppName --use-same-restrictions-for-scm-site false
 ```
 
-To add a rule for an *SCM* site, please run bellow command.
+To add a rule for the *SCM* site, run bellow command.
 
 ```bash
 az webapp config access-restriction add --resource-group $ResourceGroupName --name $WebAppName --rule-name BlockSingleIpAddress --action Deny --scm-site true --priority 200 --ip-address $YourPublicIPaddress
