@@ -578,7 +578,7 @@ To verify that you can't deploy your sample app via *Web Deploy*, please run the
 az webapp deployment source config-zip --resource-group $ResourceGroupName  --name $WebAppName --src ./YourWebSite.zip
 ```
 
-**Configure different rules for *Advanced tool site**
+**Configure different rules for Advanced tool site**
 
 To configure other rules for *Advanced tool site*, run below command.
 
