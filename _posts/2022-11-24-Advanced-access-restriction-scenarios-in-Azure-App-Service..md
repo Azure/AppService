@@ -38,11 +38,11 @@ If you decide to use [Azure Cloud Shell](https://shell.azure.com), please use Ba
 
 **Create folder for your data**
 
-You can use the name below for your folder. You just need to replace *aredemo* with your environment name.
+You can use the name below for your folder. You just need to replace *ardemo* with your environment name.
 
 ```bash
-mkdir aredemo
-cd aredemo
+mkdir ardemo
+cd ardemo
 ```
 
 **Choosing the right subscription**
@@ -472,6 +472,8 @@ az monitor app-insights web-test create --web-test-kind "standard" --enabled tru
 
 After running the command below, you should get a result from *Application Insights* that the tests failed.
 
+>**Tip** Please wait 5-10 minutes before you run this command. Availability tests are run every 5 minutes.
+
 ```bash
 az monitor log-analytics query -w $LogAnalyticsWorkspaceId --analytics-query "AppAvailabilityResults | project TimeGenerated, Message, Location | order by TimeGenerated desc" -t P0DT1H -o table
 ```
@@ -550,6 +552,8 @@ curl https://$URLofYourWebsite
 
 You can use the same access restriction rules from the *Main site* or create your own rule for the SCM (Advanced tool) site. The SCM site is responsible for *Web Deploy* and *Kudu console*.
 
+For more information about *Kudu*, visit [Kudu service overview](https://learn.microsoft.com/azure/app-service/resources-kudu).
+
 **Verify that you can deploy your sample app**
 
 To verify that you can deploy your sample app via *Web Deploy*, run the command below.
@@ -582,10 +586,18 @@ To configure other rules for *Advanced tool site*, run below command.
 az webapp config access-restriction set --resource-group $ResourceGroupName  --name $WebAppName --use-same-restrictions-for-scm-site false
 ```
 
-To add a rule for the *SCM* site, run bellow command.
+To add a rule that will allow traffic from your IP address to the *SCM* site, run the bellow command.
 
 ```bash
-az webapp config access-restriction add --resource-group $ResourceGroupName --name $WebAppName --rule-name BlockSingleIpAddress --action Deny --scm-site true --priority 200 --ip-address $YourPublicIPaddress
+az webapp config access-restriction add --resource-group $ResourceGroupName --name $WebAppName --rule-name BlockSingleIpAddress --action Allow --scm-site true --priority 200 --ip-address $YourPublicIPaddress
+```
+
+**Verify that you can deploy your sample app**
+
+To verify that you can deploy your sample app via *Web Deploy*, please run the command below.
+
+```bash
+az webapp deployment source config-zip --resource-group $ResourceGroupName  --name $WebAppName --src ./YourWebSite.zip
 ```
 
 You successfully completed the article.
