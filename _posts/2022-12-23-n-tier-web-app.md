@@ -232,7 +232,16 @@ For this blog post, we'll walk through how to authenticate with App Service for 
 
 ### Configure authentication with App Service for GitHub Actions with a service principal
 
-...create service principal, configure GH secrets
+1. Run the following command to create the [service principal](https://learn.microsoft.com/azure/active-directory/develop/app-objects-and-service-principals#service-principal-object). Replace the placeholders with your subscription ID, resource group name, and frontend and backend app names. The output is a JSON object with the role assignment credentials that provide access to your App Service app similar to below. Copy this JSON object for the next step. It is always a good practice to grant minimum access. The scope in this example is limited to the specific frontend and backend web apps and not the entire resource group.
+
+    ```bash
+    az ad sp create-for-rbac --name "myApp" --role contributor --scopes /subscriptions/<subscription-id>/resourceGroups/<group-name>/providers/Microsoft.Web/sites/<frontend-web-app-name> /subscriptions/<subscription-id>/resourceGroups/<group-name>/providers/Microsoft.Web/sites/<backend-web-app-name> --sdk-auth
+    ```
+
+1. You need to provide your service principal's credentials to the login action as part of the GitHub Action workflow you will be using. These values can either be provided directly in the workflow or can be stored in a GitHub secret and referenced in your workflow. Saving the values as a GitHub secret is the more secure option.
+    1. Open one of your GitHub repositories and go to **Settings** > **Security** > **Secrets and variables** > **Actions** > **New repository secret**.
+    1. Paste the entire JSON output from the Azure CLI command from the initial step into the secret's value field. Give the secret the name `AZURE_CREDENTIALS`. When you configure the workflow file later, you use the secret for the input `creds` of the Azure Login action.
+    1. Repeat this process for your other repository.
 
 ### Create the GitHub Actions workflow
 
@@ -273,7 +282,7 @@ Now that you have a service principal that can access your App Services, you nee
             with:
               node-version: ${{ env.NODE_VERSION }}
     
-          - name: npm install, build, and test
+          - name: npm install, build
             run: |
               npm install
               npm run build --if-present
@@ -310,7 +319,7 @@ Now that you have a service principal that can access your App Services, you nee
               az logout
     ```
 
-1. Repeat this process for the frontend app. The workflow can be found in `nodejs-frontend/.github/workflows/`.
+1. Repeat this process for for the frontend app. The workflow can be found in `nodejs-frontend/.github/workflows/`.
 
 After a couple minutes, the deployments to the two app's staging slots will finish. Your backend web app slot is locked down, but you can update the access restrictions for it if you want to validate that the code was deployed. Alternatively, you can skip that and go straight to the frontend app slot and test from there.
 
