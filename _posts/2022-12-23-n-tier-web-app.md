@@ -34,7 +34,7 @@ The architecture is shown in the diagram above.
 
 ## Getting started
 
-This is the second article in a series focusing on App Service patterns. If you missed the first one on secure multi-region deployments, you can [find it here](TODO:https://azure.github.io/AppService/2022/...).
+This is the second article in a series focusing on App Service patterns. If you missed the first one on secure multi-region deployments, you can [find it here](https://azure.github.io/AppService/2022/12/16/multi-region-web-app.html).
 
 This guide will use the Azure CLI to set up the environment and deploy the web apps. Additional configurations will be done using the Azure portal as it is easier to demonstrate what is going on there. Keep in mind that everything that is being done in this blog post can be done using the Azure CLI, Azure PowerShell, Azure portal, and Azure Resource Manager (ARM) templates. A complete ARM template that deploys all of the resources in this post is given at the end of this post.
 
@@ -169,7 +169,7 @@ Now that you've validated your connections, you're all set to deploy some code. 
 
 ## Source code management
 
-A number of best practices were described in the previous [blog post](TODO:) which went over how to manage source code across multiple regions. Those same concepts can be applied here. For completeness, we'll go over the important parts to get your n-tier app up and running.
+A number of best practices were described in the previous [blog post](https://azure.github.io/AppService/2022/12/16/multi-region-web-app.html), which went over how to manage source code across multiple regions. Those same concepts can be applied here. For completeness, we'll go over the important parts to get your n-tier app up and running.
 
 ### Prerequisites for source code deployment
 
@@ -305,7 +305,6 @@ Now that you have a service principal that can access your App Services, you nee
               slot-name: ${{ env.AZURE_WEBAPP_SLOT_NAME }}
               package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
               
-          # Azure logout 
           - name: logout
             run: |
               az logout
@@ -343,8 +342,287 @@ After you're done, you can remove all the items you created. Deleting a resource
 
 ## Deploy from ARM/Bicep
 
-All of the resources in this post can be deployed using an ARM/Bicep template. A sample template is shown below, which creates empty apps and staging slots following the security best practices outlined in this post. You'll need to configure the deployment source as well as the service principal once the template resources are created. To learn how to deploy ARM/Bicep templates, see [How to deploy resources with Bicep and Azure CLI](https://learn.microsoft.com/azure/azure-resource-manager/bicep/deploy-cli).
+All of the resources in this post can be deployed using an ARM/Bicep template. A sample template is shown below, which creates empty apps following the security best practices outlined in this post. You'll need to configure the slots and deployment source as well as the service principal once the template resources are created. To learn how to deploy ARM/Bicep templates, see [How to deploy resources with Bicep and Azure CLI](https://learn.microsoft.com/azure/azure-resource-manager/bicep/deploy-cli).
 
 ```yml
-TODO:
+@description('Name of the VNet')
+param virtualNetworkName string = 'vnet-ntier'
+
+@description('Name of the Web Farm')
+param serverFarmName string = 'serverfarm-ntier'
+
+@description('Backend name must be unique DNS name worldwide')
+param site1_Name string = 'backend-${uniqueString(resourceGroup().id)}'
+
+@description('Frontend name must be unique DNS name worldwide')
+param site2_Name string = 'frontend-${uniqueString(resourceGroup().id)}'
+
+@description('CIDR of your VNet')
+param virtualNetwork_CIDR string = '10.200.0.0/16'
+
+@description('Name of the subnet')
+param subnet1Name string = 'PrivateEndpointSubnet'
+
+@description('Name of the subnet')
+param subnet2Name string = 'VnetIntegrationSubnet'
+
+@description('CIDR of your subnet')
+param subnet1_CIDR string = '10.200.1.0/24'
+
+@description('CIDR of your subnet')
+param subnet2_CIDR string = '10.200.2.0/24'
+
+@description('Location for all resources.')
+param location string = resourceGroup().location
+
+@description('SKU name, must be minimum P1v2')
+@allowed([
+  'P1v2'
+  'P2v2'
+  'P3v2'
+])
+param skuName string = 'P1v2'
+
+@description('SKU size, must be minimum P1v2')
+@allowed([
+  'P1v2'
+  'P2v2'
+  'P3v2'
+])
+param skuSize string = 'P1v2'
+
+@description('SKU family, must be minimum P1v2')
+@allowed([
+  'P1v2'
+  'P2v2'
+  'P3v2'
+])
+param skuFamily string = 'P1v2'
+
+@description('Name of your Private Endpoint')
+param privateEndpointName string = 'PrivateEndpoint1'
+
+@description('Link name between your Private Endpoint and your Web App')
+param privateLinkConnectionName string = 'PrivateEndpointLink1'
+
+var webapp_dns_name = '.azurewebsites.net'
+var privateDNSZoneName = 'privatelink.azurewebsites.net'
+var SKU_tier = 'PremiumV2'
+
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2020-06-01' = {
+  name: virtualNetworkName
+  location: location
+  properties: {
+    addressSpace: {
+      addressPrefixes: [
+        virtualNetwork_CIDR
+      ]
+    }
+    subnets: [
+      {
+        name: subnet1Name
+        properties: {
+          addressPrefix: subnet1_CIDR
+          privateEndpointNetworkPolicies: 'Disabled'
+        }
+      }
+      {
+        name: subnet2Name
+        properties: {
+          addressPrefix: subnet2_CIDR
+          delegations: [
+            {
+              name: 'delegation'
+              properties: {
+                serviceName: 'Microsoft.Web/serverfarms'
+              }
+            }
+          ]
+          privateEndpointNetworkPolicies: 'Enabled'
+        }
+      }
+    ]
+  }
+}
+
+resource serverFarm 'Microsoft.Web/serverfarms@2020-06-01' = {
+  name: serverFarmName
+  location: location
+  sku: {
+    name: skuName
+    tier: SKU_tier
+    size: skuSize
+    family: skuFamily
+    capacity: 1
+  }
+  kind: 'app'
+  properties: {
+    reserved: true
+  }
+}
+
+resource webApp1 'Microsoft.Web/sites@2020-06-01' = {
+  name: site1_Name
+  location: location
+  kind: 'app'
+  properties: {
+    serverFarmId: serverFarm.id
+  }
+}
+
+resource ftpPolicy1 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022-03-01' = {
+  name: 'ftp'
+  kind: 'string'
+  parent: webApp1
+  location: location
+  properties: {
+    allow: false
+  }
+}
+
+resource scmPolicy1 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022-03-01' = {
+  name: 'scm'
+  kind: 'string'
+  parent: webApp1
+  location: location
+  properties: {
+    allow: false
+  }
+}
+
+resource webApp2 'Microsoft.Web/sites@2020-06-01' = {
+  name: site2_Name
+  location: location
+  kind: 'app'
+  properties: {
+    serverFarmId: serverFarm.id
+  }
+}
+
+resource ftpPolicy2 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022-03-01' = {
+  name: 'ftp'
+  kind: 'string'
+  parent: webApp2
+  location: location
+  properties: {
+    allow: false
+  }
+}
+
+resource scmPolicy2 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022-03-01' = {
+  name: 'scm'
+  kind: 'string'
+  parent: webApp2
+  location: location
+  properties: {
+    allow: false
+  }
+}
+
+resource webApp2AppSettings 'Microsoft.Web/sites/config@2020-06-01' = {
+  parent: webApp2
+  name: 'appsettings'
+  properties: {
+    WEBSITE_DNS_SERVER: '168.63.129.16'
+    WEBSITE_VNET_ROUTE_ALL: '1'
+  }
+}
+
+resource webApp1Config 'Microsoft.Web/sites/config@2020-06-01' = {
+  parent: webApp1
+  name: 'web'
+  properties: {
+    ftpsState: 'AllAllowed'
+  }
+}
+
+resource webApp2Config 'Microsoft.Web/sites/config@2020-06-01' = {
+  parent: webApp2
+  name: 'web'
+  properties: {
+    ftpsState: 'AllAllowed'
+  }
+}
+
+resource webApp1Binding 'Microsoft.Web/sites/hostNameBindings@2019-08-01' = {
+  parent: webApp1
+  name: '${webApp1.name}${webapp_dns_name}'
+  properties: {
+    siteName: webApp1.name
+    hostNameType: 'Verified'
+  }
+}
+
+resource webApp2Binding 'Microsoft.Web/sites/hostNameBindings@2019-08-01' = {
+  parent: webApp2
+  name: '${webApp2.name}${webapp_dns_name}'
+  properties: {
+    siteName: webApp2.name
+    hostNameType: 'Verified'
+  }
+}
+
+resource webApp2NetworkConfig 'Microsoft.Web/sites/networkConfig@2020-06-01' = {
+  parent: webApp2
+  name: 'virtualNetwork'
+  properties: {
+    subnetResourceId: resourceId('Microsoft.Network/virtualNetworks/subnets', virtualNetwork.name, subnet2Name)
+  }
+}
+
+resource privateEndpoint 'Microsoft.Network/privateEndpoints@2020-06-01' = {
+  name: privateEndpointName
+  location: location
+  properties: {
+    subnet: {
+      id: resourceId('Microsoft.Network/virtualNetworks/subnets', virtualNetwork.name, subnet1Name)
+    }
+    privateLinkServiceConnections: [
+      {
+        name: privateLinkConnectionName
+        properties: {
+          privateLinkServiceId: webApp1.id
+          groupIds: [
+            'sites'
+          ]
+        }
+      }
+    ]
+  }
+}
+
+resource privateDnsZones 'Microsoft.Network/privateDnsZones@2018-09-01' = {
+  name: privateDNSZoneName
+  location: 'global'
+  dependsOn: [
+    virtualNetwork
+  ]
+}
+
+resource privateDnsZoneLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2018-09-01' = {
+  parent: privateDnsZones
+  name: '${privateDnsZones.name}-link'
+  location: 'global'
+  properties: {
+    registrationEnabled: false
+    virtualNetwork: {
+      id: virtualNetwork.id
+    }
+  }
+}
+
+resource privateDnsZoneGroup 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-03-01' = {
+  parent: privateEndpoint
+  name: 'dnsgroupname'
+  properties: {
+    privateDnsZoneConfigs: [
+      {
+        name: 'config1'
+        properties: {
+          privateDnsZoneId: privateDnsZones.id
+        }
+      }
+    ]
+  }
+}
 ```
