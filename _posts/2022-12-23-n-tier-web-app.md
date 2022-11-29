@@ -6,7 +6,7 @@ toc: true
 toc_sticky: true
 ---
 
-Many applications will consist of more than just a single component. For example, you may have a frontend which is publicly accessible that connects to a backend database, storage account, key vault, another VM, or a combination of these, which makes up what's known as an n-tier application. It's important that applications like this are architected so that access is limited to privileged individuals and any component that is not intended for public consumptions is locked down to the greatest extent available for your use case.
+Many applications will consist of more than just a single component. For example, you may have a frontend which is publicly accessible that connects to a backend database, storage account, key vault, another VM, or a combination of these, which make up what's known as an n-tier application. It's important that applications like this are architected so that access is limited to privileged individuals and any component that is not intended for public consumptions is locked down to the greatest extent available for your use case.
 
 In this blog post, we'll walk through setting up a web app with a secure, network-isolated communication to a backend web app. All traffic will be isolated within your virtual network using virtual network integration and private endpoints. This configuration can be used for a number of use cases and it's architecture can be extended or modified, for example in [this blog post](https://azure.github.io/AppService/2021/04/22/Site-with-secure-backend-communication.html) where a web app securely connects to a backend cognitive service that detects the language of input text. For more information on n-tier applications including additional scenarios and multi-region considerations, see [Multi-region N-tier application](https://learn.microsoft.com/azure/architecture/reference-architectures/n-tier/multi-region-sql-server). Also, see the [Reliable Web App Pattern](https://github.com/Azure/reliable-web-app-pattern-dotnet) for additional context and details on deploying more complex scenarios.
 
@@ -36,7 +36,7 @@ The architecture is shown in the diagram above.
 
 This is the second article in a series focusing on App Service patterns. If you missed the first one on secure multi-region deployments, you can [find it here](https://azure.github.io/AppService/2022/12/16/multi-region-web-app.html).
 
-This guide will use the Azure CLI to set up the environment and deploy the web apps. Additional configurations will be done using the Azure portal as it is easier to demonstrate what is going on there. Keep in mind that everything that is being done in this blog post can be done using the Azure CLI, Azure PowerShell, Azure portal, and Azure Resource Manager (ARM) templates. A complete ARM template that deploys all of the resources in this post is given at the end of this post.
+This guide will use the Azure CLI to set up the environment and deploy the web apps. Additional configurations will be done using the Azure portal as it is easier to demonstrate what is going on there. Keep in mind that everything that is being done in this blog post can be done using the Azure CLI, Azure PowerShell, Azure portal, and Azure Resource Manager (ARM) templates. A complete ARM template that deploys the core resources in this post is given at the end of this post.
 
 An Azure account with an active subscription is required. [Create an account for free](https://azure.microsoft.com/free).
 
@@ -60,7 +60,7 @@ The last part of the network infrastructure is the Private DNS Zone. Private DNS
 
 ## Create two instances of a web app
 
-You'll need two instances of a web app for this tutorial. You'll need to use at least the Basic SKU in order to be able to use virtual network integration and private endpoints. You'll take care of the vnet integration and additional configurations later on - first you'll get them deployed. You'll first deploy a single App Service plan. You'll then deploy two web apps in that App Service plan.
+You'll need two instances of a web app for this tutorial. You'll need to use at least the Basic SKU in order to be able to use virtual network integration and private endpoints. You'll take care of the vnet integration and additional configurations later on - first you'll get the apps deployed. You'll first deploy a single App Service plan. You'll then deploy two web apps in that App Service plan.
 
 Run the following command to create the App Service plan. Replace the placeholders for App Service plan name and resource group name.
 
@@ -120,12 +120,12 @@ The last part of the core infrastructure setup is to create the [private endpoin
 
 1. Select **+ Add**.
 1. Give your private endpoint a name, select the virtual network you created earlier, and select the "private-endpoint-subnet".
-1. Make sure **Integrate with private DNS zone** is set to "Yes". If you want to set up your own Private DNS Zone, you can find details [here](https://learn.microsoft.com/azure/app-service/networking/private-endpoint#dns).
+1. Make sure **Integrate with private DNS zone** is set to "Yes". If you want to set up your own Private DNS Zone, you can find details for that [here](https://learn.microsoft.com/azure/app-service/networking/private-endpoint#dns).
 1. Select **OK** to save your configuration.
 
 Creating the private endpoint from the portal is the simplest method as it does a number of actions in the background for you including linking the zone to your virtual network. If you create the Private DNS Zone manually, you will need to create the link manually.
 
-If you go back to the **Networking** page for your backend web app, you'll see that the inbound address has changed to a private IP address from your virtual network. You'll also see that access restrictions have turned on. If you view the **Access restriction (preview)**, you see public access has been disabled. Denying public network access blocks all incoming traffic except that comes from private endpoints.
+If you go back to the **Networking** page for your backend web app, you'll see that the inbound address has changed to a private IP address from your virtual network. You'll also see that access restrictions have turned on. If you view the **Access restriction (preview)**, you see public access has been disabled. Disabling public network access blocks all incoming traffic except the traffic that comes from private endpoints.
 
 ![]({{ site.baseurl }}/media/2022/11/private-endpoint-2.png)
 
@@ -149,7 +149,7 @@ You should see a similar error page when trying to navigate to the backend's SCM
 
 To validate the frontend, we'll need to ensure it is publicly accessible and that it can reach the backend only using the private endpoint.
 
-Try navigating to your frontend's endpoint. You should see content similar to what is shown below. This means your frontend is publicly accessible and ready for source code as intended. Try navigating to your frontend's SCM site as well and confirm that access is denied.
+Try navigating to your frontend's endpoint. You should see content similar to what is shown below. This means your frontend is publicly accessible and ready for your source code as intended. Try navigating to your frontend's SCM site as well and confirm that access is denied.
 
 ![]({{ site.baseurl }}/media/2022/11/frontend-available.png)
 
@@ -232,7 +232,7 @@ For this blog post, we'll walk through how to authenticate with App Service for 
 
 ### Configure authentication with App Service for GitHub Actions with a service principal
 
-1. Run the following command to create the [service principal](https://learn.microsoft.com/azure/active-directory/develop/app-objects-and-service-principals#service-principal-object). Replace the placeholders with your subscription ID, resource group name, and frontend and backend app names. The output is a JSON object with the role assignment credentials that provide access to your App Service app similar to below. Copy this JSON object for the next step. It is always a good practice to grant minimum access. The scope in this example is limited to the specific frontend and backend web apps and not the entire resource group.
+1. Run the following command to create the [service principal](https://learn.microsoft.com/azure/active-directory/develop/app-objects-and-service-principals#service-principal-object). Replace the placeholders with your subscription ID, resource group name, and frontend and backend app names. The output is a JSON object with the role assignment credentials that provide access to your App Service app. Copy this JSON object for the next step. It is always a good practice to grant minimum access. The scope in this example is limited to the specific frontend and backend web apps and not the entire resource group.
 
     ```bash
     az ad sp create-for-rbac --name "myApp" --role contributor --scopes /subscriptions/<subscription-id>/resourceGroups/<group-name>/providers/Microsoft.Web/sites/<frontend-web-app-name> /subscriptions/<subscription-id>/resourceGroups/<group-name>/providers/Microsoft.Web/sites/<backend-web-app-name> --sdk-auth
@@ -247,7 +247,7 @@ For this blog post, we'll walk through how to authenticate with App Service for 
 
 Now that you have a service principal that can access your App Services, you need to edit the default workflow that was created for your apps when you configured continuous deployment so that it uses your service principal to authenticate instead of the publishing profile. For sample workflows, see the "Service principal" tab in [Deploy to App Service](https://learn.microsoft.com/azure/app-service/deploy-github-actions?tabs=userlevel#deploy-to-app-service). If you've been following along, use the below workflow.
 
-1. Open your GitHub repository and go to the `nodejs-backend/.github/workflows/` directory. You'll see the autogenerated workflow.
+1. Open your backend app's GitHub repository and go to the `nodejs-backend/.github/workflows/` directory. You'll see the autogenerated workflow.
 1. Select the "pencil" button in the top right to edit the file. Replace the contents with the below, which assumes you created the GitHub secret earlier for your credential, update the placeholders under "env", and then commit directly to the main branch. This commit will trigger the GitHub Action to run again and deploy your code, this time using the service principal to authenticate.
 
     ```yml
@@ -341,7 +341,7 @@ To perform the swap:
 
 1. Repeat the process for your other app.
 
-After a few minutes, you can navigate to your production frontend app to validate the slot swap succeeded. You should copy and paste your production backend app's URL into the textbox and confirm you get the message "Hello from the backend web app!". If you do, congrats, you completed the tutorial! If the app crashes, go back through this post to ensure your connections are configured appropriately.
+After a few minutes, you can navigate to your production frontend app to validate the slot swap succeeded. You should copy and paste your production backend app's URL into the textbox and confirm you get the message "Hello from the backend web app!". If you do, congrats, you completed the tutorial! If the app crashes, go back through this post to ensure your connections are configured properly.
 
 At this point, your apps are up and running and any changes you make to your source code will automatically trigger an update to both of your staging apps. You can then repeat the slot swap process described above when you're ready to move that code into production.
 
@@ -550,6 +550,7 @@ resource webApp2Config 'Microsoft.Web/sites/config@2020-06-01' = {
   name: 'web'
   properties: {
     ftpsState: 'AllAllowed'
+    scmIpSecurityRestrictionsDefaultAction: 'Deny'
   }
 }
 
