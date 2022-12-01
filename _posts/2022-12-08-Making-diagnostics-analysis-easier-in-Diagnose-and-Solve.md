@@ -43,7 +43,9 @@ In addition to this initial summary you also have the results of the analyzers t
 
 ## Analysis Report: Advanced call stacks
 
-One of the most important diagnostics artifacts for production debugging is the call stack. During a typical dump debugging session reviewing the list of threads and the associated call stacks is great way to understand what was happening at that moment the dump was captured. Given the importance of the call stack the Diagnostics Analysis report provides an improved in browser experience for call stacks analysis. The advanced call stacks are explicitly designed to accurately reflect the call stack names and layout you have become accustomed to in Visual Studio.
+One of the most important diagnostics artifacts for production debugging is the call stack. During a typical dump debugging session reviewing the list of threads and the associated call stacks is great way to understand what was happening at that moment the dump was captured.
+
+Given the importance of the call stack the Diagnostics Analysis report provides an improved in browser experience for call stacks analysis. The advanced call stacks are explicitly designed to accurately reflect the call stack names and layout you have become accustomed to in Visual Studio.
 
 You can initiate the advanced call stack view by clicking on any of the stack frame hyperlinks. It then also allows you to filter larger call stacks using method or namespace names, as well as quickly switch between viewing **Just My Code** and the entire framework call stack.
 
@@ -57,7 +59,7 @@ What is Source Link? Source Link is a set of packages and a specification for de
 
 ![]({{ site.baseurl }}/media/2022/12/diagnostics-analysis-sourcelink-to-github.gif)
 
-While Source Link is on by default .NET source, to enable this for your own code today requires a couple of additional steps.
+While Source Link is on by default for .NET source, to enable this for your own code today requires a couple of additional steps.
 
 ## Setting up Source Link
 
