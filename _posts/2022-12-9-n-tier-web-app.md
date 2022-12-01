@@ -232,7 +232,7 @@ For this blog post, we'll walk through how to authenticate with App Service for 
 
 ### Configure authentication with App Service for GitHub Actions with a service principal
 
-1. Run the following command to create the [service principal](https://learn.microsoft.com/azure/active-directory/develop/app-objects-and-service-principals#service-principal-object). Replace the placeholders with your subscription ID, resource group name, and frontend and backend app names. The output is a JSON object with the role assignment credentials that provide access to your App Service app. Copy this JSON object for the next step. It is always a good practice to grant minimum access. The scope in this example is limited to the specific frontend and backend web apps and not the entire resource group.
+1. Run the following command to create the [service principal](https://learn.microsoft.com/azure/active-directory/develop/app-objects-and-service-principals#service-principal-object). Replace the placeholders with your subscription ID, resource group name, and frontend and backend app names. The output is a JSON object with the role assignment credentials that provide access to your App Service app. Copy this JSON object for the next step. It will include your client secret which will only be visible at this one time. It is always a good practice to grant minimum access. The scope in this example is limited to the specific frontend and backend web apps and not the entire resource group.
 
     ```bash
     az ad sp create-for-rbac --name "myApp" --role contributor --scopes /subscriptions/<subscription-id>/resourceGroups/<group-name>/providers/Microsoft.Web/sites/<frontend-web-app-name> /subscriptions/<subscription-id>/resourceGroups/<group-name>/providers/Microsoft.Web/sites/<backend-web-app-name> --sdk-auth
@@ -241,6 +241,15 @@ For this blog post, we'll walk through how to authenticate with App Service for 
 1. You need to provide your service principal's credentials to the login action as part of the GitHub Action workflow you will be using. These values can either be provided directly in the workflow or can be stored in a GitHub secret and referenced in your workflow. Saving the values as a GitHub secret is the more secure option.
     1. Open one of your GitHub repositories and go to **Settings** > **Security** > **Secrets and variables** > **Actions** > **New repository secret**.
     1. Paste the entire JSON output from the Azure CLI command from the initial step into the secret's value field. Give the secret the name `AZURE_CREDENTIALS`. When you configure the workflow file later, you use the secret for the input `creds` of the Azure Login action.
+    1. Create the following secrets.
+
+        |Name  |Value  |
+        |---------|---------|
+        |AZURE_APP_ID     |`<application/client-id>`          |
+        |AZURE_PASSWORD   |`<client-secret>`          |
+        |AZURE_TENANT_ID    |`<tenant-id>`         |
+        |AZURE_SUBSCRIPTION_ID    |`<subscription-id>`         |
+
     1. Repeat this process for your other repository.
 
 ### Create the GitHub Actions workflow
@@ -272,10 +281,6 @@ Now that you have a service principal that can access your App Services, you nee
     
         steps:
           - uses: actions/checkout@v2
-    
-          - uses: azure/login@v1
-            with:
-              creds: ${{ secrets.AZURE_CREDENTIALS }}
             
           - name: Set up Node.js version
             uses: actions/setup-node@v1
@@ -305,6 +310,16 @@ Now that you have a service principal that can access your App Services, you nee
             uses: actions/download-artifact@v2
             with:
               name: node-app
+
+          - uses: azure/login@v1
+            with:
+              creds: |
+                {
+                  "clientId": "${{ secrets.AZURE_APP_ID }}",
+                  "clientSecret":  "${{ secrets.AZURE_PASSWORD }}",
+                  "subscriptionId": "${{ secrets.AZURE_SUBSCRIPTION_ID }}",
+                  "tenantId": "${{ secrets.AZURE_TENANT_ID }}"
+                }
     
           - name: 'Deploy to Azure Web App'
             id: deploy-to-webapp
