@@ -31,5 +31,5 @@ jobs:
         chmod 750 deployment-script.sh
         ./deployment-script.sh
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
         JEKYLL_ENV: production
