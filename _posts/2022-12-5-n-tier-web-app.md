@@ -34,7 +34,7 @@ The architecture is shown in the diagram above.
 
 ## Getting started
 
-This is the second article in a series focusing on App Service patterns. If you missed the first one on secure multi-region deployments, you can [find it here](https://azure.github.io/AppService/2022/12/16/multi-region-web-app.html).
+This is the second article in a series focusing on App Service patterns. If you missed the first one on secure multi-region deployments, you can [find it here](https://azure.github.io/AppService/2022/12/5/multi-region-web-app.html).
 
 This guide will use the Azure CLI to set up the environment and deploy the web apps. Additional configurations will be done using the Azure portal as it is easier to demonstrate what is going on there. Keep in mind that everything that is being done in this blog post can be done using the Azure CLI, Azure PowerShell, Azure portal, and Azure Resource Manager (ARM) templates. A complete ARM template that deploys the core resources in this post is given at the end of this post.
 
@@ -169,7 +169,7 @@ Now that you've validated your connections, you're all set to deploy some code. 
 
 ## Source code management
 
-A number of best practices were described in the previous [blog post](https://azure.github.io/AppService/2022/12/16/multi-region-web-app.html), which went over how to manage source code across multiple regions. Those same concepts can be applied here. For completeness, we'll go over the important parts to get your n-tier app up and running.
+A number of best practices were described in the previous [blog post](https://azure.github.io/AppService/2022/12/5/multi-region-web-app.html), which went over how to manage source code across multiple regions. Those same concepts can be applied here. For completeness, we'll go over the important parts to get your n-tier app up and running.
 
 ### Prerequisites for source code deployment
 
