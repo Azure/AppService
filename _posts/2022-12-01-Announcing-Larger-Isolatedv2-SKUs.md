@@ -18,7 +18,7 @@ All the bits are in progress of rolling out, but we wanted to grant you early ac
 | I5v2 | 32 vCPUs | 128 GB |
 | I6v2 | 64 vCPUs | 256 GB |
 
-For now, the new SKUs are available in West Central US. More regions will follow early in the new year.
+For now, the new SKUs are available in West Central US and North Central US. More regions will follow early in the new year.
 
 You will be able to create new plans and scale in the Azure portal starting 10. December, and in addition you can get a sneak peak of the new SKU picker by using this link: [Azure Portal](https://aka.ms/previewlargeskus)
 
