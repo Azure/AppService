@@ -24,7 +24,6 @@ In closing, there are sections on advanced scenarios and FAQ.
 > The default scenario for the article is using system-assigned managed identity. An "Alternative scenarios" section with step for using credentials, user-assigned managed identity, and custom registries has been added.
 >Notes:
 >
-> * Windows containers do not support pulling images over virtual network integration
 > * App Service Environment v2 (Isolated SKU) do not support pulling images from a registry url that needs to be resolved using custom DNS servers
 
 ## Getting started
@@ -148,10 +147,10 @@ You can now browse to the web app and **outbound** traffic from the web app will
 
 All the infrastructure is now in place and we just need to glue it all together. The web app needs some configuration values from the registry.
 
-Images will by default be pulled over public route, but by setting `WEBSITE_PULL_IMAGE_OVER_VNET=true`, you tell the platform to use the virtual network integration for pulling the image:
+Images will by default be pulled over public route, but by setting `vnetImagePullEnabled` site property to true, you tell the platform to use the virtual network integration for pulling the image:
 
 ```bash
-az webapp config appsettings set --resource-group secureacrsetup --name secureacrweb2021 --settings 'WEBSITE_PULL_IMAGE_OVER_VNET=true'
+az resource update --resource-group secureacrsetup --name secureacrweb2021 --set properties.vnetImagePullEnabled=true --resource-type 'Microsoft.Web/sites'
 ```
 
 Configure the container image and set image pull to use managed identity:
@@ -203,7 +202,7 @@ Configure ACR to enable admin credentials:
 az acr update --resource-group secureacrsetup --name secureacr2021 --admin-enabled
 ```
 
-Set the registry credentials and disable using managed identity (remember to ensure the `WEBSITE_PULL_IMAGE_OVER_VNET=true` is configured if you want to pull the image over the virtual network integration).
+Set the registry credentials and disable using managed identity (remember to ensure the `vnetImagePullEnabled` is configured if you want to pull the image over the virtual network integration).
 
 ```bash
 acr_server_url="https://$(az acr show --name secureacr2021 --query loginServer --output tsv)"
@@ -293,6 +292,7 @@ The template also assumes the App Service plan and the virtual network exist. If
       "properties": {
         "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
         "virtualNetworkSubnetId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnetName'))]",
+        "vnetImagePullEnabled": true,
         "siteConfig": {
           "linuxFxVersion": "DOCKER|secureacr2021.azurecr.io/privatewebsite:lnx-v1",
           "appSettings": [
@@ -303,10 +303,6 @@ The template also assumes the App Service plan and the virtual network exist. If
             {
               "name":"DOCKER_REGISTRY_SERVER_PASSWORD",
               "value": "[INSERT_REGISTRY_PASSWORD]"
-            },
-            {
-              "name":"WEBSITE_PULL_IMAGE_OVER_VNET",
-              "value": "true"
             }
           ]
         },
@@ -319,7 +315,7 @@ The template also assumes the App Service plan and the virtual network exist. If
 
 ### Deploy from secure registry with ARM template using managed identity
 
-As an alternative to using credentials, you can use Managed Identity when pulling images from Azure Container Registry. Pulling over virtual network is again optional and is configured using the app setting `WEBSITE_PULL_IMAGE_OVER_VNET`, but is of course required if your registry is only visible from the virtual network.
+As an alternative to using credentials, you can use Managed Identity when pulling images from Azure Container Registry. Pulling over virtual network is again optional and is configured using the `vnetImagePullEnabled` site config, but is of course required if your registry is only visible from the virtual network.
 
 Since we need to grant the permissions ahead of creating the app, only User-Assigned Managed Identity will work, and you have to grant the identity AcrPull permissions on the registry. See [the section on using user-managed identity](#using-user-assigned-managed-identity).
 
@@ -364,14 +360,9 @@ Even though the managed identity exists when deploying the template, the resourc
         "siteConfig": {
           "acrUseManagedIdentityCreds": true,
           "acrUserManagedIdentityID": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('userAssignedIdentityName'))).clientId]",
-          "linuxFxVersion": "DOCKER|secureacr2021.azurecr.io/privatewebsite:lnx-v2",
-          "appSettings": [
-            {
-              "name":"WEBSITE_PULL_IMAGE_OVER_VNET",
-              "value": "true"
-            }
-          ]
+          "linuxFxVersion": "DOCKER|secureacr2021.azurecr.io/privatewebsite:lnx-v2"
         },
+        "vnetImagePullEnabled": true,
         "httpsOnly": true
       },
       "identity": {
