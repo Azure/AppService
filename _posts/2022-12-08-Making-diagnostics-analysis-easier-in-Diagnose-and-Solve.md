@@ -6,19 +6,19 @@ toc_sticky: true
 category: diagnostics
 ---
 
-We are happy to announce that our most recent improvements to **Diagnose and Solve** allows you to begin the analysis on a collected memory dump immediately in the Azure portal!
+We are happy to announce that our most recent improvements to **Diagnose and Solve** allow you to begin the analysis on a collected memory dump immediately in the Azure portal!
 
-For problems that do not manifest in logs or that you cannot investigate by debugging locally you might attempt to capture a diagnostics artifact, like a memory dump, while the issue is active in your production environment. Diagnose and Solve diagnostics tools have enabled you to [capture artifacts like memory dumps on demand or by using **Custom Auto Heal** for both Linux and Windows](https://azure.github.io/AppService/2021/11/01/Diagnostic-Tools-for-ASP-NET-Core-Linux-apps-are-now-publicly-available.html).
+For problems that do not manifest in logs or that you cannot investigate by debugging locally, you might attempt to capture a diagnostics artifact, like a memory dump, while the issue is active in your production environment. Diagnose and Solve diagnostics tools have enabled you to [capture artifacts like memory dumps on demand or by using **Custom Auto Heal** for both Linux and Windows](https://azure.github.io/AppService/2021/11/01/Diagnostic-Tools-for-ASP-NET-Core-Linux-apps-are-now-publicly-available.html).
 
 However, capturing the right memory dump at the right time is only half the battle, you also have to have the right tools and experience to interpret the memory dump. Thankfully **Diagnostics Analysis** can be configured to run immediately following the capture of a memory dump, the report analysis report will provide a summary of the most pertinent information in the memory dump, and will also highlight several important data points and even potential red flags that might require a code fix.
 
 ## Analysis Report: The dump summary
 
-The first step in analysis is confirming the fundamentals. In the following image you can see the summary presented by the analysis report, highlighting common helpful information like the process name, process architecture, or how long the process has been running. It also includes information on the platform version as well as the reason for the collection.
+The first step in the analysis is confirming the fundamentals. In the following image, you can see the summary presented by the analysis report, highlighting common helpful information like the process name, process architecture, or how long the process has been running. It also includes information on the platform version as well as the reason for the collection.
 
 ![]({{ site.baseurl }}/media/2022/12/diagnostics-analysis-dump-summary.png)
 
-In future version of the report we will also support opening the memory dump in Visual Studio with one click (will require the appropriate permissions to the Azure storage location).
+In future versions of the report we will also support opening the memory dump in Visual Studio with one click (will require the appropriate permissions to the Azure storage location).
 
 ## Analysis Report: Dump analyzers
 
@@ -35,17 +35,17 @@ In addition to this initial summary you also have the results of the analyzers t
 - Outbound HTTP requests
 - Socket connections
 - Unique call stacks
-- Symbol analysis
-- Source Link analysis
+- Symbol detection
+- Source Link detection
 - Synchronization objects that are blocking threads
 
 ![]({{ site.baseurl }}/media/2022/12/diagnostics-analysis-findings.png)
 
 ## Analysis Report: Advanced call stacks
 
-One of the most important diagnostics artifacts for production debugging is the call stack. During a typical dump debugging session reviewing the list of threads and the associated call stacks is great way to understand what was happening at that moment the dump was captured.
+One of the most important diagnostics artifacts for production debugging is the call stack. During a typical dump debugging session reviewing the list of threads and the associated call stacks is a great way to understand what was happening at the moment the dump was captured.
 
-Given the importance of the call stack the Diagnostics Analysis report provides an improved in browser experience for call stacks analysis. The advanced call stacks are explicitly designed to accurately reflect the call stack names and layout you have become accustomed to in Visual Studio.
+Given the importance of the call stack, the Diagnostics Analysis report provides an improved in-browser experience for call stacks analysis. The advanced call stacks are explicitly designed to accurately reflect the call stack names and layout you have become accustomed to in Visual Studio.
 
 You can initiate the advanced call stack view by clicking on any of the stack frame hyperlinks. It then also allows you to filter larger call stacks using method or namespace names, as well as quickly switch between viewing **Just My Code** and the entire framework call stack.
 
@@ -53,13 +53,13 @@ You can initiate the advanced call stack view by clicking on any of the stack fr
 
 ## Getting to source code with Source Link
 
-For many scenarios the call stack provides enough clues to the source of the problem, however, by taking advantage of [Source Link](https://github.com/dotnet/sourcelink/blob/main/README.md) it is possible for your analysis to be even more precise.
+For many scenarios, the call stack provides enough clues to the source of the problem, however, by taking advantage of [Source Link](https://github.com/dotnet/sourcelink/blob/main/README.md) your analysis can be even more precise.
 
-What is Source Link? Source Link is a set of packages and a specification for describing source control metadata that can be embedded in symbols, binaries and packages. Once Source Link is setup your analysis reports will produce active links that navigate directly to your source code. In the following example an active link in the call stack is pointing directly at a specific file, line and commit on GitHub.
+What is Source Link? Source Link is a set of packages and a specification for describing source control metadata that can be embedded in symbols, binaries, and packages. Once Source Link is set up your analysis reports will produce active links that navigate directly to your source code. In the following example, an active link in the call stack is pointing directly at a specific file, line, and commit on GitHub.
 
 ![]({{ site.baseurl }}/media/2022/12/diagnostics-analysis-sourcelink-to-github.gif)
 
-While Source Link is on by default for .NET source, to enable this for your own code today requires a couple of additional steps.
+While Source Link is on by default for .NET source, enabling this for your code today requires a couple of additional steps.
 
 ## Setting up Source Link
 
@@ -79,7 +79,7 @@ Debugging and diagnostics tools work best when symbols are available, typically 
 </PropertyGroup>
 ```
 
-For source hosted by GitHub or GitHub Enterprise you also need to include the following Nuget package:
+For source code hosted by GitHub or GitHub Enterprise you also need to include the following Nuget package:
 
 ```xml
 <ItemGroup>
@@ -87,7 +87,7 @@ For source hosted by GitHub or GitHub Enterprise you also need to include the fo
 </ItemGroup>
 ```
 
-There is also source code link support for Azure Repos, Azure DevOps, GitLab, Bitbucket, gitweb and gitea.
+There is also source code link support for Azure Repos, Azure DevOps, GitLab, Bitbucket, gitweb, and gitea.
 
 ## Summary
 
