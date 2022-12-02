@@ -30,11 +30,11 @@ The architecture is shown in the diagram above.
 - **Frontend web app**. This architecture uses two web apps - a frontend that is accessible over the public internet, and a private backend web app. The frontend web app is integrated into the virtual network in the subnet with the feature regional VNet integration and it is configured to consume a DNS private zone.
 - **Backend web app**. The backend web app is only exposed through a private endpoint via another subnet in the virtual network. Direct communication to the backend web app is explicitly blocked. The only resource or principal that is allowed to connect to the backend is the frontend web app using the private endpoint.
 
-*Note that virtual network integration and private endpoints are now available all the way down to the Basic SKU. App Services using the Free tier are not supported at this time.*
+*Note that virtual network integration and private endpoints are now available all the way down to the Basic SKU. App Services using the Free tier don't support this at this time.*
 
 ## Getting started
 
-This is the second article in a series focusing on App Service patterns. If you missed the first one on secure multi-region deployments, you can [find it here](https://azure.github.io/AppService/2022/12/5/multi-region-web-app.html).
+This is the second article in a series focusing on App Service patterns. If you missed the first one on secure multi-region deployments, you can [find it here](https://azure.github.io/AppService/2022/12/2/multi-region-web-app.html).
 
 This guide will use the Azure CLI to set up the environment and deploy the web apps. Additional configurations will be done using the Azure portal as it is easier to demonstrate what is going on there. Keep in mind that everything that is being done in this blog post can be done using the Azure CLI, Azure PowerShell, Azure portal, and Azure Resource Manager (ARM) templates. A complete ARM template that deploys the core resources in this post is given at the end of this post.
 
@@ -169,7 +169,7 @@ Now that you've validated your connections, you're all set to deploy some code. 
 
 ## Source code management
 
-A number of best practices were described in the previous [blog post](https://azure.github.io/AppService/2022/12/5/multi-region-web-app.html), which went over how to manage source code across multiple regions. Those same concepts can be applied here. For completeness, we'll go over the important parts to get your n-tier app up and running.
+A number of best practices were described in the previous [blog post](https://azure.github.io/AppService/2022/12/2/multi-region-web-app.html), which went over how to manage source code across multiple regions. Those same concepts can be applied here. For completeness, we'll go over the important parts to get your n-tier app up and running.
 
 ### Prerequisites for source code deployment
 
@@ -196,7 +196,7 @@ We'll create deployment slots for each of our apps and then walk through how to 
 1. Select **Close** at the bottom of the slot configuration pane.
 1. Select the newly created stage slot.
 
-Cloning settings to a slot doesn't clone every possible setting. In this case, depending on how you'll be using the slots, you'll need to disable basic auth for both app slots, create another private endpoint for the backend slot, and implement virtual network integration for the frontend slot. The process for this is the same as before.
+Cloning settings to a slot doesn't clone every possible setting. In this case, depending on how you'll be using the slots, you'll need to disable basic auth for both app slots, create another private endpoint for the backend slot, and implement virtual network integration for the frontend slot. The process for this is the same as before. Pay attention to the access restrictions on the SCM sites if you do recreate the private endpoint as that will disable public access to it and prevent GitHub from reaching your staging slots. You'll need to allow public access to the Advanced tools site as was done in the previous [blog post](https://azure.github.io/AppService/2022/12/2/multi-region-web-app.html#create-the-gitHub-actions-workflow).
 
 To disable basic auth for the slots, make sure you update the `--parent` parameter as shown in the below example. Repeat the same command for "ftp" and for your other app as you did previously.
 
@@ -232,13 +232,13 @@ For this blog post, we'll walk through how to authenticate with App Service for 
 
 ### Configure authentication with App Service for GitHub Actions with a service principal
 
-1. Run the following command to create the [service principal](https://learn.microsoft.com/azure/active-directory/develop/app-objects-and-service-principals#service-principal-object). Replace the placeholders with your subscription ID, resource group name, and frontend and backend app names. The output is a JSON object with the role assignment credentials that provide access to your App Service app. Copy this JSON object for the next step. It will include your client secret which will only be visible at this one time. It is always a good practice to grant minimum access. The scope in this example is limited to the specific frontend and backend web apps and not the entire resource group.
+1. Run the following command to create the [service principal](https://learn.microsoft.com/azure/active-directory/develop/app-objects-and-service-principals#service-principal-object). Replace the placeholders with your subscription ID, resource group name, and frontend and backend app names. The output is a JSON object with the role assignment credentials that provide access to your App Service apps. Copy this JSON object for the next step. It will include your client secret which will only be visible at this time. It is always a good practice to grant minimum access. The scope in this example is limited to the specific frontend and backend web apps and not the entire resource group.
 
     ```bash
     az ad sp create-for-rbac --name "myApp" --role contributor --scopes /subscriptions/<subscription-id>/resourceGroups/<group-name>/providers/Microsoft.Web/sites/<frontend-web-app-name> /subscriptions/<subscription-id>/resourceGroups/<group-name>/providers/Microsoft.Web/sites/<backend-web-app-name> --sdk-auth
     ```
 
-1. You need to provide your service principal's credentials to the login action as part of the GitHub Action workflow you will be using. These values can either be provided directly in the workflow or can be stored in a GitHub secret and referenced in your workflow. Saving the values as a GitHub secret is the more secure option.
+1. You need to provide your service principal's credentials to the login action as part of the GitHub Action workflow you will be using. These values can either be provided directly in the workflow or can be stored in a GitHub secret and referenced in your workflow. Saving the values as GitHub secrets is the more secure option.
     1. Open one of your GitHub repositories and go to **Settings** > **Security** > **Secrets and variables** > **Actions** > **New repository secret**.
     1. Paste the entire JSON output from the Azure CLI command from the initial step into the secret's value field. Give the secret the name `AZURE_CREDENTIALS`. When you configure the workflow file later, you use the secret for the input `creds` of the Azure Login action.
     1. Create the following secrets.
@@ -257,7 +257,7 @@ For this blog post, we'll walk through how to authenticate with App Service for 
 Now that you have a service principal that can access your App Services, you need to edit the default workflow that was created for your apps when you configured continuous deployment so that it uses your service principal to authenticate instead of the publishing profile. For sample workflows, see the "Service principal" tab in [Deploy to App Service](https://learn.microsoft.com/azure/app-service/deploy-github-actions?tabs=userlevel#deploy-to-app-service). If you've been following along, use the below workflow.
 
 1. Open your backend app's GitHub repository and go to the `nodejs-backend/.github/workflows/` directory. You'll see the autogenerated workflow.
-1. Select the "pencil" button in the top right to edit the file. Replace the contents with the below, which assumes you created the GitHub secret earlier for your credential, update the placeholders under "env", and then commit directly to the main branch. This commit will trigger the GitHub Action to run again and deploy your code, this time using the service principal to authenticate.
+1. Select the "pencil" button in the top right to edit the file. Replace the contents with the below, which assumes you created the GitHub secrets earlier for your credential, update the placeholders under "env", and then commit directly to the main branch. This commit will trigger the GitHub Action to run again and deploy your code, this time using the service principal to authenticate.
 
     ```yml
 
@@ -338,7 +338,7 @@ Now that you have a service principal that can access your App Services, you nee
 
 After a couple minutes, the deployments to the two app's staging slots will finish. Your backend web app slot is locked down, but you can update the access restrictions for it if you want to validate that the code was deployed. Alternatively, you can skip that and go straight to the frontend app slot and test from there.
 
-Navigate to your frontend in a browser. The URL should look like *<https://frontend-web-app-name-stage.azurewebsites.net>*. The frontend app is a simple web scraper that will display the HTML body of a website. All it's doing is calling the backend app and if it can reach the backend, it will display the site contents of the backend web app. I designed this site to work specifically with the provided backend web app. The web scraper will work with other sites, but the HTML it will return will be messy. Get your backend slot's URL and paste that into the textbox. Hit "Go", and after a couple seconds, you should see "Hello from the backend web app!" which is the site contents for the backend. If the app crashes, that means your access restrictions or private endpoint are misconfigured. If all goes well, you're ready to slot swap into production.
+Navigate to your frontend in a browser. The URL should look like *<https://frontend-web-app-name-stage.azurewebsites.net>*. The frontend app is a simple web scraper that will display the HTML body of a website. All it's doing is calling the backend app and if it can reach the backend, it will display the site contents of the backend web app. I designed this site to work specifically with the provided backend web app. The web scraper will work with other sites, but the HTML it will return will be messy. Get your backend slot's URL and paste that into the textbox. Hit "Go", and after a couple seconds, you should see "Hello from the backend web app!" which is the site contents for the backend. If the app crashes, that means your access restrictions or private endpoint are misconfigured. If you didn't set up the private endpoint and virtual network infrastructure for your slots, you can skip this testing as you've already validated it works in production. If all goes well, you're ready to slot swap into production.
 
 ### Slot swap
 
