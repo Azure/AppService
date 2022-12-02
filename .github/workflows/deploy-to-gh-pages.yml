@@ -7,6 +7,10 @@ on:
   schedule:
     - cron:  '0 0 * * *'  # Run build every day at 00:00 UTC every day for future-dated articles
 
+permissions:
+  contents: write
+  pages: write
+
 jobs:
   build:
 
@@ -31,5 +35,5 @@ jobs:
         chmod 750 deployment-script.sh
         ./deployment-script.sh
       env:
-        GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         JEKYLL_ENV: production
