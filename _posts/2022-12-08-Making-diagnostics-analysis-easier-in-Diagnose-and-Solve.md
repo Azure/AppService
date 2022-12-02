@@ -18,7 +18,7 @@ The first step in the analysis is confirming the fundamentals. In the following 
 
 ![]({{ site.baseurl }}/media/2022/12/diagnostics-analysis-dump-summary.png)
 
-In future versions of the report we will also support opening the memory dump in Visual Studio with one click (will require the appropriate permissions to the Azure storage location).
+In future versions of the report, we will also support opening the memory dump in Visual Studio with one click (will require the appropriate permissions to the Azure storage location).
 
 ## Analysis Report: Dump analyzers
 
@@ -43,9 +43,9 @@ In addition to this initial summary you also have the results of the analyzers t
 
 ## Analysis Report: Advanced call stacks
 
-One of the most important diagnostics artifacts for production debugging is the call stack. During a typical dump debugging session reviewing the list of threads and the associated call stacks is a great way to understand what was happening at the moment the dump was captured.
+One of the most important diagnostics artifacts for production debugging is the call stack. During a typical dump debugging session reviewing the list of threads and the associated call stacks are a great way to understand what was happening at the moment the dump was captured.
 
-Given the importance of the call stack, the Diagnostics Analysis report provides an improved in-browser experience for call stacks analysis. The advanced call stacks are explicitly designed to accurately reflect the call stack names and layout you have become accustomed to in Visual Studio.
+Given the importance of the call stack, the Diagnostics Analysis report provides an improved in-browser experience for call stack analysis. The advanced call stacks are explicitly designed to accurately reflect the call stack names and layout you have become accustomed to in Visual Studio.
 
 You can initiate the advanced call stack view by clicking on any of the stack frame hyperlinks. It then also allows you to filter larger call stacks using method or namespace names, as well as quickly switch between viewing **Just My Code** and the entire framework call stack.
 
