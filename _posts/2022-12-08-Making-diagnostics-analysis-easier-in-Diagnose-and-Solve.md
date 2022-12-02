@@ -63,7 +63,7 @@ While Source Link is on by default for .NET source, enabling this for your code 
 
 ## Setting up Source Link
 
-Debugging and diagnostics tools work best when symbols are available, typically the way to do that would be to ensure the PDBs are alongside the DLLs or, as I prefer, use embedded PDBs so they're quite literally in the DLL already. You can [enable Source Link experience in your own .NET project](https://github.com/dotnet/sourcelink/blob/main/README.md#using-source-link-in-net-projects) by adding the following optional items to the property group:
+Debugging and diagnostics tools work best when symbols are available, typically the way to do that would be to ensure the PDBs are alongside the DLLs or, as I prefer, use embedded PDBs so they're quite literally in the DLL already. You can [enable Source Link experiences in your own .NET project](https://github.com/dotnet/sourcelink/blob/main/README.md#using-source-link-in-net-projects) by adding the following optional items to the property group:
 
 ```xml
 <PropertyGroup>
