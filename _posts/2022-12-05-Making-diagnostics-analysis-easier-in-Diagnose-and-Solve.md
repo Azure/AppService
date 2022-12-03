@@ -53,7 +53,7 @@ You can initiate the advanced call stack view by clicking on any of the stack fr
 
 ## Getting to source code with Source Link
 
-For many scenarios, the call stack provides enough clues to the source of the problem, however, by taking advantage of [Source Link](https://github.com/dotnet/sourcelink/blob/main/README.md) your analysis can be even more precise.
+For many scenarios, the call stack provides enough clues to the source of the problem, however, by taking advantage of [Source Link](https://learn.microsoft.com/visualstudio/debugger/how-to-improve-diagnostics-debugging-with-sourcelink) your analysis can be even more precise.
 
 What is Source Link? Source Link is a set of packages and a specification for describing source control metadata that can be embedded in symbols, binaries, and packages. Once Source Link is set up your analysis reports will produce active links that navigate directly to your source code. In the following example, an active link in the call stack is pointing directly at a specific file, line, and commit on GitHub.
 
@@ -63,7 +63,7 @@ While Source Link is on by default for .NET source, enabling this for your code 
 
 ## Setting up Source Link
 
-Debugging and diagnostics tools work best when symbols are available, typically the way to do that would be to ensure the PDBs are alongside the DLLs or, as I prefer, use embedded PDBs so they're quite literally in the DLL already. You can [enable Source Link experiences in your own .NET project](https://github.com/dotnet/sourcelink/blob/main/README.md#using-source-link-in-net-projects) by adding the following optional items to the property group:
+Debugging and diagnostics tools work best when symbols are available, typically the way to do that would be to ensure the PDBs are alongside the DLLs or, as I prefer, use embedded PDBs so they're quite literally in the DLL already. You can [enable Source Link experiences in your own .NET project](https://learn.microsoft.com/visualstudio/debugger/how-to-improve-diagnostics-debugging-with-sourcelink) by adding the following optional items to the property group:
 
 ```xml
 <PropertyGroup>
@@ -87,7 +87,7 @@ For source code hosted by GitHub or GitHub Enterprise you also need to include t
 </ItemGroup>
 ```
 
-There is also source code link support for Azure Repos, Azure DevOps, GitLab, Bitbucket, gitweb, and gitea.
+There is also source code link support for [Azure Repos, Azure DevOps, GitLab, Bitbucket, gitweb, and gitea](https://learn.microsoft.com/visualstudio/debugger/how-to-improve-diagnostics-debugging-with-sourcelink#alternative-source-control-providers).
 
 ## Summary
 
