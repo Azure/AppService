@@ -34,7 +34,7 @@ The architecture is shown in the diagram above.
 
 ## Getting started
 
-This is the second article in a series focusing on App Service patterns. If you missed the first one on secure multi-region deployments, you can [find it here](https://azure.github.io/AppService/2022/12/2/multi-region-web-app.html).
+This is the second article in a series focusing on App Service patterns. If you missed the first one on secure multi-region deployments, you can [find it here](https://azure.github.io/AppService/2022/12/02/multi-region-web-app.html).
 
 This guide will use the Azure CLI to set up the environment and deploy the web apps. Additional configurations will be done using the Azure portal as it is easier to demonstrate what is going on there. Keep in mind that everything that is being done in this blog post can be done using the Azure CLI, Azure PowerShell, Azure portal, and Azure Resource Manager (ARM) templates. A complete ARM template that deploys the core resources in this post is given at the end of this post.
 
@@ -169,7 +169,7 @@ Now that you've validated your connections, you're all set to deploy some code. 
 
 ## Source code management
 
-A number of best practices were described in the previous [blog post](https://azure.github.io/AppService/2022/12/2/multi-region-web-app.html), which went over how to manage source code across multiple regions. Those same concepts can be applied here. For completeness, we'll go over the important parts to get your n-tier app up and running.
+A number of best practices were described in the previous [blog post](https://azure.github.io/AppService/2022/12/02/multi-region-web-app.html), which went over how to manage source code across multiple regions. Those same concepts can be applied here. For completeness, we'll go over the important parts to get your n-tier app up and running.
 
 ### Prerequisites for source code deployment
 
@@ -196,7 +196,7 @@ We'll create deployment slots for each of our apps and then walk through how to 
 1. Select **Close** at the bottom of the slot configuration pane.
 1. Select the newly created stage slot.
 
-Cloning settings to a slot doesn't clone every possible setting. In this case, depending on how you'll be using the slots, you'll need to disable basic auth for both app slots, create another private endpoint for the backend slot, and implement virtual network integration for the frontend slot. The process for this is the same as before. Pay attention to the access restrictions on the SCM sites if you do recreate the private endpoint as that will disable public access to it and prevent GitHub from reaching your staging slots. You'll need to allow public access to the Advanced tools site as was done in the previous [blog post](https://azure.github.io/AppService/2022/12/2/multi-region-web-app.html#create-the-gitHub-actions-workflow).
+Cloning settings to a slot doesn't clone every possible setting. In this case, depending on how you'll be using the slots, you'll need to disable basic auth for both app slots, create another private endpoint for the backend slot, and implement virtual network integration for the frontend slot. The process for this is the same as before. Pay attention to the access restrictions on the SCM sites if you do recreate the private endpoint as that will disable public access to it and prevent GitHub from reaching your staging slots. You'll need to allow public access to the Advanced tools site as was done in the previous [blog post](https://azure.github.io/AppService/2022/12/02/multi-region-web-app.html#create-the-gitHub-actions-workflow).
 
 To disable basic auth for the slots, make sure you update the `--parent` parameter as shown in the below example. Repeat the same command for "ftp" and for your other app as you did previously.
 
@@ -524,6 +524,8 @@ resource webApp2 'Microsoft.Web/sites@2020-06-01' = {
   kind: 'app'
   properties: {
     serverFarmId: serverFarm.id
+    virtualNetworkSubnetId: resourceId('Microsoft.Network/virtualNetworks/subnets', virtualNetwork.name, subnet2Name)
+    vnetRouteAllEnabled: true
   }
 }
 
@@ -544,15 +546,6 @@ resource scmPolicy2 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022
   location: location
   properties: {
     allow: false
-  }
-}
-
-resource webApp2AppSettings 'Microsoft.Web/sites/config@2020-06-01' = {
-  parent: webApp2
-  name: 'appsettings'
-  properties: {
-    WEBSITE_DNS_SERVER: '168.63.129.16'
-    WEBSITE_VNET_ROUTE_ALL: '1'
   }
 }
 
@@ -588,14 +581,6 @@ resource webApp2Binding 'Microsoft.Web/sites/hostNameBindings@2019-08-01' = {
   properties: {
     siteName: webApp2.name
     hostNameType: 'Verified'
-  }
-}
-
-resource webApp2NetworkConfig 'Microsoft.Web/sites/networkConfig@2020-06-01' = {
-  parent: webApp2
-  name: 'virtualNetwork'
-  properties: {
-    subnetResourceId: resourceId('Microsoft.Network/virtualNetworks/subnets', virtualNetwork.name, subnet2Name)
   }
 }
 
