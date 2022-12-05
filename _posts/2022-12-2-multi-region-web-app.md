@@ -425,7 +425,9 @@ After you're done, you can remove all the items you created. Deleting a resource
 
 ## Next steps
 
-If you're interested in learning about another web app pattern for n-tier web applications, see the next post in this series called [How to deploy a secure n-tier web app](https://azure.github.io/AppService/2022/12/2/n-tier-web-app.html).
+If you're interested in learning about another web app pattern for n-tier web applications, see the next post in this series called [How to deploy a secure n-tier web app](https://azure.github.io/AppService/2022/12/02/n-tier-web-app.html).
+
+Zone redundancy is another infrastructure pattern that can provide high availability by replicating your services and data across availability zones to protect against single points of failure. For a detailed reference architecture on this for App Service, see [Highly available zone-redundant web application](https://learn.microsoft.com/azure/architecture/reference-architectures/app-service-web-app/zone-redundant).
 
 ## Deploy from ARM/Bicep
 
