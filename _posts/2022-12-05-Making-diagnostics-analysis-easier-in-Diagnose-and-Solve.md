@@ -6,11 +6,11 @@ toc_sticky: true
 category: diagnostics
 ---
 
-We are happy to announce that our most recent improvements to **Diagnose and Solve** allow you to begin the analysis on a collected memory dump immediately in the Azure portal!
+We are happy to announce that our most recent improvements to **Diagnose and Solve Problems** allow you to begin the analysis on a collected memory dump immediately in the Azure portal!
 
-For problems that do not manifest in logs or that you cannot investigate by debugging locally, you might attempt to capture a diagnostics artifact, like a memory dump, while the issue is active in your production environment. Diagnose and Solve diagnostics tools have enabled you to [capture artifacts like memory dumps on demand or by using **Custom Auto Heal** for both Linux and Windows](https://azure.github.io/AppService/2021/11/01/Diagnostic-Tools-for-ASP-NET-Core-Linux-apps-are-now-publicly-available.html).
+For problems that do not manifest in logs or that you cannot investigate by debugging locally, you might attempt to capture a diagnostics artifact, like a memory dump, while the issue is active in your production environment. Diagnostics tools found under Diagnose and Solve Problems have enabled you to [capture artifacts like memory dumps on demand or by using **Custom Auto Heal** for both Linux and Windows](https://azure.github.io/AppService/2021/11/01/Diagnostic-Tools-for-ASP-NET-Core-Linux-apps-are-now-publicly-available.html).
 
-However, capturing the right memory dump at the right time is only half the battle, you also have to have the right tools and experience to interpret the memory dump. Thankfully **Diagnostics Analysis** can be configured to run immediately following the capture of a memory dump, the report analysis report will provide a summary of the most pertinent information in the memory dump, and will also highlight several important data points and even potential red flags that might require a code fix.
+However, capturing the right memory dump at the right time is only half the battle, you also have to have the right tools and experience to interpret the memory dump. Thankfully **Diagnostics Analysis** can be configured to run immediately following the capture of a memory dump. The analysis report will provide a summary of the most pertinent information in the memory dump, and will also highlight several important data points and even potential red flags that might require a code fix.
 
 ## Analysis Report: The dump summary
 
@@ -43,7 +43,7 @@ In addition to this initial summary you also have the results of the analyzers t
 
 ## Analysis Report: Advanced call stacks
 
-One of the most important diagnostics artifacts for production debugging is the call stack. During a typical dump debugging session reviewing the list of threads and the associated call stacks are a great way to understand what was happening at the moment the dump was captured.
+One of the most important diagnostics artifacts for production debugging is the call stack. During a typical dump debugging session, reviewing the list of threads and the associated call stacks is a great way to understand what was happening at the moment the dump was captured.
 
 Given the importance of the call stack, the Diagnostics Analysis report provides an improved in-browser experience for call stack analysis. The advanced call stacks are explicitly designed to accurately reflect the call stack names and layout you have become accustomed to in Visual Studio.
 
@@ -91,5 +91,5 @@ There is also source code link support for [Azure Repos, Azure DevOps, GitLab, B
 
 ## Summary
 
-Please check out the improved Diagnose and Solve experiences for App Services for Windows and App Services for Linux! We are actively working on Diagnostics Analysis for traces and we are always interested in your feedback.
+Please check out the improved Diagnose and Solve Problem experiences for App Services for Windows and App Services for Linux! We are actively working on Diagnostics Analysis for traces and we are always interested in your feedback.
 
