@@ -7,7 +7,7 @@ toc_sticky: true
 
 Our engineering teams have been hard at work to deliver the new larger SKUs on App Service Environment v3. While it seems simple, as it is multiples of the existing SKU sizes, we took the opportunity to make some major adjustments, and build a more flexible backend to allow us to introduce more compute options in the future.
 
-All the bits are in progress of rolling out, but we wanted to grant you early access to give it a test run. With the addition of these new Isolated V2 SKUs, this will be the SKUs available for App Service Environment v3.
+All the bits are in progress of rolling out, but we wanted to grant you early access to the first complete regions to give it a test run. With the addition of these new Isolated V2 SKUs, this will be the SKUs available for App Service Environment v3.
 
 |  **SKU Name** | **vCPUs** | **Memory** |
 |---|---|---|
@@ -20,12 +20,12 @@ All the bits are in progress of rolling out, but we wanted to grant you early ac
 
 For now, the new SKUs are available in West Central US and North Central US. More regions will follow early in the new year.
 
-You will be able to create new plans and scale in the Azure portal starting 10. December, and in addition you can get a sneak peak of the new SKU picker by using this link: [Azure Portal](https://aka.ms/previewlargeskus)
+You can create new plans and scale in the Azure portal, and in addition you can get a sneak peak of the new SKU picker by using this link: [Azure Portal](https://aka.ms/previewlargeskus)
 
-Official Azure CLI support using `az appservice create/update` will be available with the next CLI release (2.43.0) on 6. December. Until the official CLI is released, you can use this command to scale existing App Service plans up to the new SKUs. Note that the command will take about 40 minutes for Windows and 15 minutes for Linux to complete the scale operation:
+Download the latest Azure CLI (2.43.0) to have support for the new SKUs using `az appservice create/update`. Note that the command will take about 40 minutes for Windows and 15 minutes for Linux to complete the create/update operation:
 
 ```bash
-az resource update --name <plan name> --set sku.name="I5v2" -g <resource-group-name> --resource-type "Microsoft.Web/serverFarms"
+az appservice plan create/update --name <plan name> --sku I5v2 -g <resource-group-name> -e <ase-name or resource-id>
 ```
 
 To deploy a new plan or update an existing plan using ARM, you can simply just specify the new SKU names. If you use the template below, just replace the values prefixed with REPLACE. For the `reserved` property, true = Linux, false = Windows.
