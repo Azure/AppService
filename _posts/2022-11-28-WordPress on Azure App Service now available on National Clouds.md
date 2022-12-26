@@ -30,8 +30,8 @@ It is important to remember that each national cloud is unique and different fro
 
 ### Support and Feedback ###
 
-In case you need any support, you can open a support request at [New support request - Microsoft Azure](https://ms.portal.azure.com/#view/Microsoft_Azure_Support/NewSupportRequestV3Blade).
+In case you need any support, you can open a support request at [New support request - Microsoft Azure](https://portal.azure.com/#view/Microsoft_Azure_Support/NewSupportRequestV3Blade).
 
-Visit [QuickStart: Create a WordPress site - Azure App Service \| Microsoft Docs](https://docs.microsoft.com/en-us/azure/app-service/quickstart-wordpress) for a step-by-step guide on how to create your WordPress website on Azure.
+Visit [QuickStart: Create a WordPress site - Azure App Service \| Microsoft Docs](https://docs.microsoft.com/azure/app-service/quickstart-wordpress) for a step-by-step guide on how to create your WordPress website on Azure.
 
 For more details about the offering, please visit [Announcing the General Availability of WordPress on Azure App Service - Microsoft Tech Community](https://techcommunity.microsoft.com/t5/apps-on-azure-blog/announcing-the-general-availability-of-wordpress-on-azure-app/ba-p/3593481).
