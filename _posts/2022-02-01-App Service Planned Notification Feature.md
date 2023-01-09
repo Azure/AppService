@@ -61,7 +61,7 @@ Once the upgrade starts, we send in-progress notifications every 12 hours until 
 The exact timing of the maintenance may vary depending on several factors, but will not be before 7 days. You will still receive a notification shortly before maintenance begins.
 
 **When will 7-day notifications be available for ASE?**  
-ASEv3 customers will have the option to opt in to 7-day notifications, in addition to the current notifications, in Q2 2022.
+While the 7-day notifications will not be applicable for ASEs, ASEv3 Customers will have the option to manually upgrade their resources on-demand via manual deployment preferences starting end of Q1 2023.
 
 **How long do App service Upgrades take?**  
 Our typical time for completing updates worldwide is about 10 business days, which allows us to deploy during each region’s off hours and also avoid deploying to Paired Regions at the same time (for example, East US and West US). Throughout this duration, you may receive multiple in-progress notifications - this is expected.
@@ -70,7 +70,7 @@ Our typical time for completing updates worldwide is about 10 business days, whi
 There are two main reasons why customers may not receive notification of an upgrade. The first reason is that customers may not have followed the opt-in steps listed above. The second reason for not receiving upgrade notifications is the maintenance performed was part of a security patch or hotfix that may not have had enough lead time to provide notifications. These events should not cause any impact to current resources.
 
 **Why did I not receive a 7-day advance notification before receiving in-progress notifications** 
-This upgrade was likely an unplanned maintenance event, either a hotfix or critical security patch. As Microsft commits to ensuring security of resources, we may not always have 7 days lead time when pushing an update to address these concerns. These notifications will specify unplanned maintenance in the title.
+This upgrade was likely an unplanned maintenance event, either a hotfix or critical security patch. As Microsoft commits to ensuring security of resources, we may not always have 7 days lead time when pushing an update to address these concerns. These notifications will specify unplanned maintenance in the title.
 
 **We received notification for upgrade, but we do not see Application restarts/instance movements on the App service. What did we receive an alert for?** 
 Usually, this happens when upgrades are still working their way through a given region and not yet reached your App Service. App Service follows safe deployment practices, requiring segmented deployment of upgrades.
