@@ -22,15 +22,27 @@ For now, the new SKUs are available in the following regions:
 
 * West Central US
 * North Central US
+* West US
+* West US 2
 * Canada East
+* Brazil South
 * Australia Central 2
+* Australia Southeast
+* Southeast Asia
 * Japan West
+* Korea Central
 * Korea South
 * Central India
 * West India
 * South India
 * Germany North
+* Germany West Central
+* France Central
+* Norway East
+* Sweden Central
 * UK South
+* UAE North
+* Qatar Central
 
 More regions will follow early in the new year.
 
