@@ -44,7 +44,7 @@ For now, the new SKUs are available in the following regions:
 * UAE North
 * Qatar Central
 
-More regions will follow early in the next few weeks.
+More regions will follow in the next few weeks.
 
 You can create new plans and scale in the Azure portal, and in addition you can get a sneak peak of the new SKU picker by using this link: [Azure Portal](https://aka.ms/previewlargeskus)
 
