@@ -22,6 +22,8 @@ For now, the new SKUs are available in the following regions:
 
 * West Central US
 * North Central US
+* East US
+* East US 2
 * West US
 * West US 2
 * Canada East
@@ -35,18 +37,19 @@ For now, the new SKUs are available in the following regions:
 * Central India
 * West India
 * South India
+* North Europe
 * Germany North
 * Germany West Central
 * France Central
-* Norway East
-* Sweden Central
+* Sweden South
 * UK South
 * UAE North
-* Qatar Central
 
 More regions will follow in the next few weeks.
 
-You can create new plans and scale in the Azure portal, and in addition you can get a sneak peak of the new SKU picker by using this link: [Azure Portal](https://aka.ms/previewlargeskus)
+You can create new plans and scale in the Azure portal with the new SKUs. The new SKUs are not available if you create both App Service Environment and plan as part of creating a new app. Prices may also not be visible in all regions, but are 2x increments as shown in this screenshot.
+
+![Larger SKUs on App Service Environment in Azure portal]({{site.baseurl}}/media/2022/12/ase-larger-skus-portal.png){: .align-center}
 
 Download the latest Azure CLI (2.43.0) to have support for the new SKUs using `az appservice create/update`. Note that the command will take about 40 minutes for Windows and 15 minutes for Linux to complete the create/update operation:
 
