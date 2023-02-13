@@ -7,7 +7,7 @@ toc_sticky: true
 
 Our engineering teams have been hard at work to deliver the new larger SKUs on App Service Environment v3. While it seems simple, as it is multiples of the existing SKU sizes, we took the opportunity to make some major adjustments, and build a more flexible backend to allow us to introduce more compute options in the future.
 
-All the bits are in progress of rolling out, but we wanted to grant you early access to the first complete regions to give it a test run. With the addition of these new Isolated V2 SKUs, this will be the SKUs available for App Service Environment v3.
+With the addition of these new Isolated V2 SKUs, these are the SKUs available for App Service Environment v3.
 
 |  **SKU Name** | **vCPUs** | **Memory** |
 |---|---|---|
@@ -18,43 +18,14 @@ All the bits are in progress of rolling out, but we wanted to grant you early ac
 | I5v2 | 32 vCPUs | 128 GB |
 | I6v2 | 64 vCPUs | 256 GB |
 
-For now, the new SKUs are available in the following regions:
-
-* West Central US
-* North Central US
-* East US
-* East US 2
-* West US
-* West US 2
-* Canada East
-* Brazil South
-* Australia Central 2
-* Australia Southeast
-* Southeast Asia
-* Japan West
-* Korea Central
-* Korea South
-* Central India
-* West India
-* South India
-* North Europe
-* Germany North
-* Germany West Central
-* France Central
-* Sweden South
-* UK South
-* UAE North
-
-More regions will follow in the next few weeks.
-
-You can create new plans and scale in the Azure portal with the new SKUs. The new SKUs are not available if you create both App Service Environment and plan as part of creating a new app. Prices may also not be visible in all regions, but are 2x increments as shown in this screenshot.
+You can create new plans and scale in the Azure portal with the new SKUs. The new SKUs are not available if you create both App Service Environment and plan as part of creating a new app in the portal, but you can scale up after creating it. Prices may also not be visible in all regions, but are 2x increments as shown in this screenshot.
 
 ![Larger SKUs on App Service Environment in Azure portal]({{site.baseurl}}/media/2022/12/ase-larger-skus-portal.png){: .align-center}
 
-Download the latest Azure CLI (2.43.0) to have support for the new SKUs using `az appservice create/update`. Note that the command will take about 40 minutes for Windows and 15 minutes for Linux to complete the create/update operation:
+Download the latest Azure CLI to have support for the new SKUs using `az appservice create/update`. Note that the command will take about 40 minutes for Windows and 15 minutes for Linux to complete the create/update operation (use the `--no-wait` parameter to avoid having to wait for the command to finish in the console):
 
 ```bash
-az appservice plan create/update --name <plan name> --sku I5v2 -g <resource-group-name> -e <ase-name or resource-id>
+az appservice plan create/update --name <plan name> --sku I5v2 -g <resource-group-name> -e <ase-name or resource-id> --no-wait
 ```
 
 To deploy a new plan or update an existing plan using ARM, you can simply just specify the new SKU names. If you use the template below, just replace the values prefixed with REPLACE. For the `reserved` property, true = Linux, false = Windows.
@@ -91,7 +62,7 @@ To deploy a new plan or update an existing plan using ARM, you can simply just s
 }
 ```
 
-We will update this blog post as regions become available. Looking forward to see what you will do with all that power!
+Looking forward to see what you will do with all that power!
 
 ### Questions/Feedback
 
