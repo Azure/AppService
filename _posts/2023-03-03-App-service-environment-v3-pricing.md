@@ -4,7 +4,7 @@ author_name: "Jordan Selig"
 toc: true
 ---
 
-If you weren't already aware, App Service Environment v1 and v2 is [retiring on 31 August, 2024](https://azure.microsoft.com/updates/app-service-environment-version-1-and-version-2-will-be-retired-on-31-august-2024/). There are many reasons to migrate to App Service Environment v3 including better performance, faster scaling, and reduced overhead since networking dependency management has been greatly simplified. One benefit that stands out that we understand might need some additional explanation is that App Service Environment v3 can be cheaper than previous versions. With the removal of the stamp fee and larger instance sizes per respective SKU with previous versions, App Service Environment v3 can help you do more with less and reduce your monthly spend if you're familiar with the updates.
+If you weren't already aware, App Service Environment v1 and v2 is [retiring on 31 August, 2024](https://azure.microsoft.com/updates/app-service-environment-version-1-and-version-2-will-be-retired-on-31-august-2024/). There are many reasons to [migrate to App Service Environment v3](https://aka.ms/asemigration) including better performance, faster scaling, and reduced overhead since networking dependency management has been greatly simplified. One benefit that stands out that we understand might need some additional explanation is that App Service Environment v3 can be cheaper than previous versions. With the removal of the stamp fee and larger instance sizes per respective SKU with previous versions, App Service Environment v3 can help you do more with less and reduce your monthly spend if you're familiar with the updates.
 
 In this post, we'll go over a couple common scenarios that will help you better understand App Service Environment v3 pricing and how it compares to your pricing model on App Service Environment v1 or v2. We know there are many scenarios out there, so hopefully one of the ones shared here can be used as an example for you to better understand your situation. [The Azure Pricing Calculator](https://azure.microsoft.com/pricing/calculator/) is a great resource and will be referenced throughout this post for each scenario. Note that estimates here are based on the prices applicable on the day the estimate was created. Actual total estimates may vary. For the most up-to-date estimate, click the link for each scenario. Refer to the [App Service pricing page](https://azure.microsoft.com/pricing/details/app-service/windows/) for more information.
 
@@ -12,7 +12,7 @@ In this post, we'll go over a couple common scenarios that will help you better 
 
 ## Basic scenarios
 
-### Scenario 1: Scale down your App Service plans with pay as you go pricing
+### Scenario 1: Scale down your App Service plans with pay-as-you-go pricing
 
 The App Service plan SKUs available for App Service Environment v3 run on the Isolated v2 tier. This is not to be confused with the tier used by App Service Environment v1 and v2, which is the Isolated tier. Below are the corresponding service plans for each available tier. Notice that for the Isolated v2 tier, the number of cores and amount of RAM is effectively doubled. We'll use this information in this scenario. Additionally, there are [new larger SKUs available with the Isolated v2 tier](https://azure.github.io/AppService/2022/12/01/Announcing-Larger-Isolatedv2-SKUs.html) that were not previously available on the older version.
 
@@ -25,7 +25,7 @@ The App Service plan SKUs available for App Service Environment v3 run on the Is
 |         |         |         |         |I5v2       |32       |128      |
 |         |         |         |         |I6v2       |64       |256      |
 
-In this scenario, you are currently using an App Service Environment v2 with 1 I2 plan. You require 2 cores and 7 GB RAM. You are using pay as you go pricing.
+In this scenario, you are using an App Service Environment v2 with 1 I2 plan. You require 2 cores and 7 GB RAM. You are using pay-as-you-go pricing.
 
 On App Service Environment v2, your monthly cost is:
 
@@ -39,9 +39,9 @@ As you can see, this is a significant cost savings since you were able to use a 
 
 ### Scenario 2: 3 year reserved instance pricing and savings plan
 
-[Reservations or reserved instance pricing](https://azure.microsoft.com/reservations/) is a discount you can receive if you know what your usage will look like for the next 1 to 3 years. One App Service Environment v2, reservations are supported for the stamp fee. On App Service Environment v3, there is no stamp fee and reservations are supported on the instances themselves.
+[Reservations or reserved instance pricing](https://azure.microsoft.com/reservations/) is a discount you can receive if you know what your usage will look like for the next 1 to 3 years. On App Service Environment v2, reservations are supported for the stamp fee. On App Service Environment v3, there is no stamp fee and reservations are supported on the instances themselves.
 
-The following scenario will use the same requirements as Scenario 1, but instead of using pay as you go pricing, you will now use 3 year reserved instance pricing since you know your requirements will stay relatively flat over the next 3 years. With reservations, you can pay upfront or monthly. For ease of comparison between the scenarios, monthly payments will be used.
+The following scenario will use the same requirements as Scenario 1, but instead of using pay-as-you-go pricing, you will now use 3 year reserved instance pricing since you know your requirements will stay relatively flat over the next 3 years. With reservations, you can pay upfront or monthly. For ease of comparison between the scenarios, monthly payments will be used.
 
 [Stamp fee + 1(I2) = $594.77 + $416.10 = **$1,010.87**](https://azure.com/e/062d229d8ccb4f48a6d5415d0a25d3b3)
 
@@ -59,11 +59,11 @@ For this scenario, your savings on App Service Environment v3 with a 3 year savi
 
 ## Advanced scenarios
 
-The first two scenarios were basic and were intended to give you a quick sense of how pricing works on App Service Environment v3. Realistically, you'll have many more instances and probably be using a combination of the SKUs. The following scenarios will give you a better sense of the cost saving opportunities for those cases.
+The first two scenarios were basic and were intended to give you a quick sense of how pricing works on App Service Environment v3. Realistically, you'll have many more instances and probably be using a combination of the SKUs. The following scenarios will give you a better sense of the cost saving opportunities for these use cases.
 
 ### Scenario 3: SKU mix
 
-To accommodate various app types in your App Service Environment v2, you use a combination of the tiers in various quantities. The first estimate will be using pay as you go pricing, and the second will use a 3 year reservation on the stamp fee.
+To accommodate various app types in your App Service Environment v2, you use a combination of the tiers in various quantities. The first estimate will be using pay-as-you-go pricing, and the second will use a 3 year reservation on the stamp fee.
 
 [Stamp fee + 20(I1) + 10(I2) + 5(I3) = $991.34 + $12,483.00 = **$13,474.34**](https://azure.com/e/6139e2a572ab4d82a263278e08f61eaa)
 
@@ -73,41 +73,41 @@ With a 3 year reservation, this becomes:
 
 You can start to see here that as you consume more resources, the reservations available on App Service Environment v2 don't significantly reduce monthly costs since they only apply to the stamp fee.
 
-On ASEv3, you require the same respective core and RAM quantities. There are various paths you can take here depending on your specific requirements - you can keep the same number of instances and just scale them down, or you can reduce the total number instance you are using. For this scenario, we'll do the following:
+On App Service Environment v3, you require the same respective core and RAM quantities. There are various paths you can take here depending on your specific requirements - you can keep the same number of instances and just scale them down, or you can reduce the total number instance you are using. For this scenario, we'll do the following:
 
 - 20 I1 &rarr; 10 I1v2
 - 10 I2 &rarr; 10 I1v2
-- 5 I3 &rarr; 10 I2v2
+- 5 I3 &rarr; 5 I2v2
 
-With pay as you go pricing, this would be:
+With pay-as-you-go pricing, this would be:
 
-[20(I1v2) + 10(I2v2)= **$11,271.20**](https://azure.com/e/55982aad6df143cb99e8e610dc9d697a)
+[20(I1v2) + 5(I2v2)= **$8,453.40**](https://azure.com/e/5ee52694f6e041f2aebfc34d2f14416f)
 
 And with a 3 year reservation:
 
-[20(I1v2) + 10(I2v2)= **$5,080.00**](https://azure.com/e/9d874879f0ba428299ab2d915ae88f75)
+[20(I1v2) + 10(I2v2)= **$3,809.98**](https://azure.com/e/61f8c3d76fef4352a59164204bef3a19)
 
-At this point, you're reducing your costs by over 55%. This is where the cost saving benefits of App Service Environment v3 really start to become significant. Even if you were to use pay as you go pricing, you still see cost savings in the form of thousands of dollars per month.
+At this point, you're reducing your costs by over 70%. This is where the cost saving benefits of App Service Environment v3 really start to become significant. Even if you were to use pay-as-you-go pricing, you still see cost savings in the form of thousands of dollars per month.
 
 ### Scenario 4: reduce total number of App Service Environments
 
 App Service Environments are a great choice for customers that need to scale beyond the limits of the App Service public multi-tenant offering of 30 App Service plan instances. But even the 100 instance limit with App Service Environments may not be enough for some customers. In that case, they need to create multiple App Service Environments.
 
-For this scenario, you have 3 App Service Environment v2s all at max capacity with 100 I3 instances. Your monthly cost with pay as you go pricing is:
+For this scenario, you have 3 App Service Environment v2s all at max capacity with 100 I3 instances. Your monthly cost with pay-as-you-go pricing is:
 
-[3(Stamp fee + 100(I3) = $991.34 + $83,220.00) = **$252,634.02**](https://azure.com/e/930630bbf5ea43dea11ce0261e839431)
+[3(Stamp fee + 100(I3)) = 3($991.34 + $83,220.00) = **$252,634.02**](https://azure.com/e/930630bbf5ea43dea11ce0261e839431)
 
-With App Service Environment v3, you have a couple options on how to proceed. You can continue using 3 App Service Environment and just scale down to a smaller SKU, or you can reduce the number of environments by taking advantage of the new larger SKUs.
+With App Service Environment v3, you have a couple options for how to proceed. You can continue using 3 App Service Environment and just scale down to a smaller SKU, or you can reduce the number of environments by taking advantage of the new larger SKUs.
 
-Keeping the same number of environments would lead to a monthly cost with pay as you go pricing of:
+Keeping the same number of environments would lead to a monthly cost with pay-as-you-go pricing of:
 
 [3(100(I2v2))= **$169,068.00**](https://azure.com/e/eeae5f8633514fe7bf90dd13f69bbac8)
 
 This would be further reduced if you were to use a reservation or savings plan.
 
-If you wanted to reduce the total number of App Service Environments, this would be possible by using the larger SKUs that are only offered on App Service Environment v3. In addition to the potential cost savings you would see by reducing your instance counts and number of environments, you would also realize additional cost savings in the form of overhead since management would be over fewer resources. At the time of writing this blog post, the larger SKUs are not available for estimates in the Azure pricing calculator, so a quick sample will be given instead using pay as you go pricing. Note that with the larger SKUs, since they are so expensive, using a reservation or a savings plan is a great idea that can save you up to 55% of your monthly cost.
+If you wanted to reduce the total number of App Service Environments, this would be possible by using the larger SKUs that are only offered on App Service Environment v3. In addition to the potential cost savings you would see by reducing your instance counts and number of environments, you would also realize additional cost savings in the form of overhead since management would be over fewer resources. At the time of writing this blog post, the larger SKUs are not available for estimates in the Azure pricing calculator, so a quick sample will be given instead. Note that with the larger SKUs, since they are so expensive, using a reservation or a savings plan is a great idea that can save you up to 55% of your monthly cost.
 
-For this scenario, the requirement is to have the equivalent of 300 I3 instances, or 1200 cores and 4200GB RAM. With App Service Environment v3, this can be accomplished with a single App Service Environment with 19 I6v2 instances. The pay as you go monthly cost would be:
+For this scenario, the requirement is to have the equivalent of 300 I3 instances, or 1200 cores and 4,200GB RAM. With App Service Environment v3, this can be accomplished with a single App Service Environment with 19 I6v2 instances. The pay-as-you-go monthly cost would be:
 
 19(I6v2) = 19($9,016.96) **$171,322.24**
 
@@ -121,8 +121,8 @@ This is just over the cost of the equivalently sized environments for App Servic
 
 [Zone redundant App Service Environment](https://learn.microsoft.com/azure/reliability/migrate-app-service-environment) deployments are only supported on App Service Environment v3. The pricing for this type of deployment is a bit confusing, so it will be detailed here.
 
-There is no additional charge for enabling zone redundancy if you have more than 9 instances. These 9 instances can be made up of any combination of the available SKUs. For example you can have 9 I1v2s or 3 I1v2s, 3 I2v2s, and 3 I3v2s. You will only be charged for those 9 instances and however many others you consume.
+There is no additional charge for enabling zone redundancy if you have more than 9 instances. These 9 instances can be made up of any combination of the available SKUs. For example, you can have 9 I1v2s or 3 I1v2s, 3 I2v2s, and 3 I3v2s. You will only be charged for those 9 instances.
 
-If you enable zone redundancy, and if your environment has fewer than 9 total instances, you'll be charged the difference if the form of a minimum instance fee which uses the Windows I1v2 instance rate. For example, if you have a zone redundant App Service Environment v3 with 3 Linux I3v2 instances, you will be charged for those 3 I3v2 instances at the standard Linux rate plus 6 Windows I1v2 instances.
+If you enable zone redundancy, and if your environment has fewer than 9 total instances, you'll be charged the difference if the form of a minimum instance fee which uses the Windows I1v2 instance rate. For example, if you have a zone redundant App Service Environment v3 with 3 Linux I3v2 instances, you will be charged for those 3 I3v2 instances at the standard Linux rate, plus 6 Windows I1v2 instances.
 
-To learn more about App Service Environment v3 and how to migrate, visit <https://aka.ms/asemigration>.
+To learn more about App Service Environment v3 and how to migrate, visit the [ASE Migration Overview](https://aka.ms/asemigration).
