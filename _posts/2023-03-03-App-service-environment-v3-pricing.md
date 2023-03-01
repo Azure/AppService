@@ -109,11 +109,11 @@ If you wanted to reduce the total number of App Service Environments, this would
 
 For this scenario, the requirement is to have the equivalent of 300 I3 instances, or 1200 cores and 4,200GB RAM. With App Service Environment v3, this can be accomplished with a single App Service Environment with 19 I6v2 instances. The pay-as-you-go monthly cost would be:
 
-19(I6v2) = 19($9,016.96) **$171,322.24**
+19(I6v2) = 19($9,016.96) = **$171,322.24**
 
-This is just over the cost of the equivalently sized environments for App Service Environment v2, but this doesn't take into account the extra overhead involved in managing multiple App Service Environment v2s. With 3 year reserved instance pricing, this monthly cost would be reduced significantly.
+This is just over the cost of the maintaining 3 App Service Environment v3s, but this doesn't take into account the extra overhead involved in managing multiple resources. With 3 year reserved instance pricing, this monthly cost would be reduced significantly.
 
-19(I6v2) = 19($3,831.055) **$72,790.05**
+19(I6v2) = 19($3,831.055) = **$72,790.05**
 
 ## Useful information
 
