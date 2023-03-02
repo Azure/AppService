@@ -61,6 +61,8 @@ For this scenario, your cost on App Service Environment v3 with a 3 year savings
 
 [1(I1v2) = **$154.98**](https://azure.com/e/5b2d0d5044854f768191ed502afe8362)
 
+TODO: add chart
+
 ## Advanced scenarios
 
 The first two scenarios were basic and were intended to give you a quick sense of how pricing works on App Service Environment v3. Realistically, you'll have many more instances and probably be using a combination of the SKUs. The following scenarios will give you a better sense of the cost saving opportunities for these use cases.
@@ -93,6 +95,8 @@ And with a 3 year reservation:
 
 At this point, you're reducing your costs by over 70%. This is where the cost saving benefits of App Service Environment v3 really start to become significant. Even if you were to use pay-as-you-go pricing, you still see cost savings in the form of thousands of dollars per month.
 
+TODO: add chart
+
 ### Scenario 4: Migration to App Service Environment v3 using the migration feature
 
 The [migration feature](https://aka.ms/asemigration) was developed to automate the migration of App Service Environments to v3. It's an in-place migration, meaning it uses the same subnet your current environment is in. During the migration, your current environment is deleted and an App Service Environment v3 is spun up. All of your Isolated instances are automatically converted to their Isolated v2 counterparts (for example I2 is converted to I2v2). Since the Isolated v2 instances are larger, you'll be over-provisioned if you're still expecting the same traffic volume. This is a direct scenario where you have the opportunity to scale your instances down similar to what was done in [Scenario 3](#scenario-3-sku-mix).
@@ -119,7 +123,11 @@ You're significantly over-provisioned, so you scale down and immediately reduce 
 
 You should plan how you will scale down prior to migrating to ensure you don't get hit with unexpected costs due to being over-provisioned. You'll be able to scale down immediately after the migration finishes.
 
+TODO: add chart
+
 ### Scenario 5: reduce total number of App Service Environments
+
+TODO: rewrite for 200 instances instead of 100
 
 App Service Environments are a great choice for customers that need to scale beyond the limits of the App Service public multi-tenant offering of 30 App Service plan instances. But even the 200 instance limit with App Service Environments may not be enough for some customers. In that case, they need to create multiple App Service Environments.
 
@@ -144,6 +152,8 @@ For this scenario, the requirement is to have the equivalent of 300 I3 instances
 This is just over the cost of the maintaining 3 App Service Environment v3s, but this doesn't take into account the extra overhead involved in managing multiple resources. With 3 year reserved instance pricing, this monthly cost would be reduced significantly.
 
 19(I6v2) = 19($3,831.055) = **$72,790.05**
+
+TODO: add chart
 
 ## Zone redundant App Service Environment v3 pricing
 
