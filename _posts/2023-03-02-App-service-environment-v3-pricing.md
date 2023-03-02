@@ -16,8 +16,6 @@ In this post, we'll go over a couple common scenarios that will help you better 
 
 The App Service plan SKUs available for App Service Environment v3 run on the Isolated v2 tier. This is not to be confused with the tier used by App Service Environment v1 and v2, which is the Isolated tier. Below are the corresponding service plans for each available tier. Notice that for the Isolated v2 tier, the number of cores and amount of RAM is effectively doubled. We'll use this information in this scenario. Additionally, there are [new larger SKUs available with the Isolated v2 tier](https://azure.github.io/AppService/2022/12/01/Announcing-Larger-Isolatedv2-SKUs.html) that were not previously available on the older version.
 
-<div align="center">
-
 |Isolated |Cores    |RAM (GB) |         |Isolated v2|Cores    |RAM (GB) |
 |:-------:|:-------:|:-------:|:-------:|:---------:|:-------:|:-------:|
 |I1       |1        |3.5      |&rarr;   |I1v2       |2        |8        |
@@ -26,8 +24,6 @@ The App Service plan SKUs available for App Service Environment v3 run on the Is
 |         |         |         |         |I4v2       |16       |64       |
 |         |         |         |         |I5v2       |32       |128      |
 |         |         |         |         |I6v2       |64       |256      |
-
-</div>
 
 In this scenario, you are using an App Service Environment v2 with 1 I2 plan. You require 2 cores and 7 GB RAM. You are using pay-as-you-go pricing.
 
