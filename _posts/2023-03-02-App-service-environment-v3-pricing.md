@@ -86,7 +86,7 @@ As you can see, your App Service Environment v3 is slightly more expensive than 
 
 The following chart visually depicts the break even point where App Service Environment v3 becomes more expensive than v2. If you need more than 13 of our smallest instance offering, you fall into this scenario. There may be other scenarios where this is also the case.
 
-![]({{ site.baseurl }}/media/2023/03/scale-down-asp.png)
+![]({{ site.baseurl }}/media/2023/03/break-even-point.png)
 
 ## Advanced scenarios
 
