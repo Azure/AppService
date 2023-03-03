@@ -2,6 +2,7 @@
 title: "Estimate your cost savings by migrating to App Service Environment v3"
 author_name: "Jordan Selig"
 toc: true
+toc_sticky: true
 ---
 
 If you weren't already aware, App Service Environment v1 and v2 is [retiring on 31 August, 2024](https://azure.microsoft.com/updates/app-service-environment-version-1-and-version-2-will-be-retired-on-31-august-2024/). There are many reasons to [migrate to App Service Environment v3](https://aka.ms/asemigration) including better performance, faster scaling, and reduced overhead since networking dependency management has been greatly simplified. One benefit that stands out that we understand might need some additional explanation is that App Service Environment v3 is often cheaper than previous versions. With the removal of the stamp fee and larger instance sizes per respective SKU with previous versions, App Service Environment v3 can help you do more with less and reduce your monthly spend if you're familiar with the updates.
