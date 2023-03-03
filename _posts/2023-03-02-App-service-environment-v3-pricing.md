@@ -138,7 +138,7 @@ Immediately after migrating using the migration feature, your instances have bee
 
 [20(I1v2) + 10(I2v2) + 5(I3v2) = **$16,906.80**](https://azure.com/e/6d6230900cba4e5d9c0e117b75ed5b91)
 
-You're significantly over-provisioned, so you scale down and immediately reduce your monthly cost by over 50%.
+You're significantly over-provisioned, so you scale down and immediately reduce your monthly cost by 50%.
 
 - 20 I1v2 &rarr; 10 I1v2
 - 10 I2v2 &rarr; 10 I1v2
