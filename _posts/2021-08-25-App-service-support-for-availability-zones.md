@@ -5,6 +5,8 @@ category: networking
 toc: true
 ---
 
+> NOTE! The content in this post may be outdated. For the latest information on Availability Zone support for App Service, see [Azure App Service and reliability](https://learn.microsoft.com/azure/architecture/framework/services/compute/azure-app-service/reliability) and [Migrate App Service to availability zone support](https://learn.microsoft.com/azure/reliability/migrate-app-service).
+
 Availability Zone (AZ) support for public multi-tenant App Service is now available. The [official doc](https://docs.microsoft.com/azure/app-service/how-to-zone-redundancy) has been published to [Microsoft Azure docs](https://docs.microsoft.com/azure). AZ support for App Service Environments (ASEs) is also available, see [Availability Zone support for App Service Environments](https://docs.microsoft.com/en-us/azure/app-service/environment/overview#regions). Additionally, AZ support for the Azure Functions Premium plan is now available, see [Azure Functions support for availability zone redundancy](https://docs.microsoft.com/azure/azure-functions/azure-functions-az-redundancy).
 
 ## Availability Zone Overview
@@ -54,7 +56,7 @@ The only changes needed in an ARM template to specify a zone redundant App Servi
 > To decide instance capacity, you can use the following calculation:
 >
 > Since the platform spreads VMs across 3 zones and you need to account for at least the failure of 1 zone, multiply peak workload instance count by a factor of zones/(zones-1), or 3/2. For example, if your typical peak workload requires 4 instances, you should provision 6 instances: (2/3 * 6 instances) = 4 instances.
-> 
+>
 
 In the case when a zone goes down, the App Service platform will detect lost instances and automatically attempt to find new instances to replace the ones that were lost. Note that if auto-scale is also configured, and if it decides more instances are needed, auto-scale will also issue a request to App Service to add more instances (auto-scale behavior is independent of App Service platform behavior). It is important to note that there is no guarantee that requests for additional instances in a zone-down scenario will succeed since back filling lost instances occurs on a best-effort basis. The recommended solution is to provision your App Service Plans to account for losing a zone as described previously in this article.
 
