@@ -34,7 +34,7 @@ On App Service Environment v2, your monthly cost is:
 
 If you were to migrate this exact workload to App Service Environment v3, you would be able to scale down from I2 to I1v2 since the Isolated v2 equivalent tier has double the cores and RAM. Your monthly cost on App Service Environment v3 would be:
 
-[1(I1v2) = **$281.78**](https://azure.com/e/b739976aec9a4fec9294500019bef81d)
+[1(I1v2) = **$281.78**](https://azure.com/e/e88da9f9cacb4e3ab0a0179f7521f316)
 
 As you can see, this is a significant cost savings since you were able to use a smaller tier and the stamp fee is no longer applicable. If you don't scale down after migrating to v3, you will be over-provisioned and incur unnecessary charges, some of which may make your App Service Environment v3 more expensive than your old environment.
 
@@ -50,7 +50,7 @@ On App Service Environment v2 with a 3 year reservation, your monthly cost would
 
 Notice the 40% reduction in the stamp fee by using reservations. On App Service Environment v3, your monthly cost would be:
 
-[1(I1v2) = **$127.00**](https://azure.com/e/a5e5c3e3c6b24952b38ad5c0f73317a5)
+[1(I1v2) = **$127.00**](https://azure.com/e/43b6f63e28004295bce5b7bfc921a83c)
 
 There's a 55% reduction in the monthly cost as a result of using reserved instance pricing.
 
@@ -58,7 +58,7 @@ There's a 55% reduction in the monthly cost as a result of using reserved instan
 
 For this scenario, your cost on App Service Environment v3 with a 3 year savings plan would be:
 
-[1(I1v2) = **$154.98**](https://azure.com/e/5b2d0d5044854f768191ed502afe8362)
+[1(I1v2) = **$154.98**](https://azure.com/e/486568f1ea9747fea19199c2ec9be559)
 
 ![]({{ site.baseurl }}/media/2023/03/scale-down-asp.png)
 
@@ -70,7 +70,7 @@ So far we've demonstrated the ways migrating to App Service Environment v3 can s
 
 If you migrate this environment to v3, your monthly cost would be:
 
-[1(I1v2) = **$281.78**](https://azure.com/e/4c247282128746898ef4cfe1ef0f1070)
+[1(I1v2) = **$281.78**](https://azure.com/e/e88da9f9cacb4e3ab0a0179f7521f316)
 
 This is a significant cost reduction, just know that you're now over-provisioned since you now have double the cores and RAM, which you may not need. This is not an issue since the new environment is so much cheaper. However, when you start to have many I1 instances in a single App Service Environment, for example because you use this environment for dev or test workloads across multiple different apps and teams, you need to consider the break even point if you migrate to App Service Environment v3.
 
@@ -80,7 +80,7 @@ For this scenario, your App Service Environment v2 has 14 I1 instances. Because 
 
 A migration of this environment to v3 would lead to the following monthly cost:
 
-[14(I1v2) = **$3,944.92**](https://azure.com/e/750b78d9e34a43dc9c8c8c400d4628bf)
+[14(I1v2) = **$3,944.92**](https://azure.com/e/95a729b2ee2849c6847d88ef63140617)
 
 As you can see, your App Service Environment v3 is slightly more expensive than your v2. As you start adding more I1 instances, and therefore need more I1v2 instances when you migrate, the difference in price becomes even more significant and your v3 will get more and more expensive than your v2. Unfortunately, if you're in this situation, you may have to plan for a higher monthly cost.
 
@@ -114,11 +114,11 @@ On App Service Environment v3, you require the same respective core and RAM capa
 
 With pay-as-you-go pricing, this would be:
 
-[20(I1v2) + 5(I2v2) = **$8,453.40**](https://azure.com/e/5ee52694f6e041f2aebfc34d2f14416f)
+[20(I1v2) + 5(I2v2) = **$8,453.40**](https://azure.com/e/43a72b6bf449498f822a82cb0396e0ba)
 
 And with a 3 year reservation:
 
-[20(I1v2) + 5(I2v2) = **$3,809.98**](https://azure.com/e/61f8c3d76fef4352a59164204bef3a19)
+[20(I1v2) + 5(I2v2) = **$3,809.98**](https://azure.com/e/99b162b41e944bbabfabf7f2d4d424bb)
 
 At this point, you're reducing your costs by over 70%. This is where the cost saving benefits of App Service Environment v3 really start to become significant. Even if you were to use pay-as-you-go pricing, you still see cost savings in the form of thousands of dollars per month.
 
@@ -138,7 +138,7 @@ Immediately after migrating using the migration feature, your instances have bee
 - 10 I2 &rarr; 10 I2v2
 - 5 I3 &rarr; 5 I3v2
 
-[20(I1v2) + 10(I2v2) + 5(I3v2) = **$16,906.80**](https://azure.com/e/6d6230900cba4e5d9c0e117b75ed5b91)
+[20(I1v2) + 10(I2v2) + 5(I3v2) = **$16,906.80**](https://azure.com/e/34c240000f004539bbf921bd2b5813c8)
 
 You're significantly over-provisioned, so you scale down and immediately reduce your monthly cost by 50%.
 
@@ -146,7 +146,7 @@ You're significantly over-provisioned, so you scale down and immediately reduce 
 - 10 I2v2 &rarr; 10 I1v2
 - 5 I3v2 &rarr; 5 I2v2
 
-[20(I1v2) + 5(I2v2) = **$8,453.40**](https://azure.com/e/5ee52694f6e041f2aebfc34d2f14416f)
+[20(I1v2) + 5(I2v2) = **$8,453.40**](https://azure.com/e/84abb76b9de64bd6bd639a0dcc846545)
 
 You should plan how you will scale down prior to migrating to ensure you don't get hit with unexpected costs due to being over-provisioned. You'll be able to scale down immediately after the migration finishes.
 
@@ -164,19 +164,19 @@ With App Service Environment v3, you have a couple options for how to proceed. Y
 
 Keeping the same number of environments and scaling down would lead to a monthly cost with pay-as-you-go pricing of:
 
-[3(200(I2v2)) = **$338,136.00**](https://azure.com/e/be4cb53de4ba4f3c8c64795cba0f1d34)
+[3(200(I2v2)) = **$338,136.00**](https://azure.com/e/58a00f7ada9746339bb09f8bf20f87a0)
 
 This would be further reduced if you were to use a reservation or savings plan.
 
-If you wanted to reduce the total number of App Service Environments, this would be possible by using the larger SKUs that are only offered on App Service Environment v3. In addition to the potential cost savings you would see by reducing your instance counts and number of environments, you would also realize additional cost savings in the form of overhead since management would be over fewer resources. At the time of writing this blog post, the larger SKUs are not available for estimates in the Azure pricing calculator, so samples will be given instead.
+If you wanted to reduce the total number of App Service Environments, this would be possible by using the larger SKUs that are only offered on App Service Environment v3. In addition to the potential cost savings you would see by reducing your instance counts and number of environments, you would also realize additional cost savings in the form of overhead since management would be over fewer resources.
 
 For this scenario, the requirement is to have the equivalent of 600 I3 instances, or 2400 cores and 8,400 GB RAM. With App Service Environment v3, this can be accomplished with a single App Service Environment with 38 I6v2 instances. The pay-as-you-go monthly cost would be:
 
-38(I6v2) = 38($9,016.96) = **$342,644.48**
+[38(I6v2) = 38($9,016.96) = **$342,644.48**](https://azure.com/e/8be70aee48704f0aa7fc2ef9e909b017)
 
 This is just over the cost of the maintaining 3 App Service Environment v3s, but this doesn't take into account the extra overhead involved in managing multiple resources. With 3 year reserved instance pricing, this monthly cost would be reduced significantly.
 
-38(I6v2) = 38($3,831.055) = **$145,580.09**
+[38(I6v2) = 38($3,831.055) = **$145,580.07**](https://azure.com/e/7baef8ad75444c43bba7dd42b0492532)
 
 ![]({{ site.baseurl }}/media/2023/03/reduce-number-ase.png)
 
