@@ -32,15 +32,15 @@ To avoid a single point-of-failure, run your app with **at least 2-3 instances**
 
 App Service has many settings for developers to configure the web app to their use case. **Always-On** keeps your VM instances alive even when no requests have been received in the last 20 minutes. By default, Always-On is disabled; enabling Always-On will limit application cold starts.
 
-**ARR Affinity** creates sticky sessions so that clients will connect to the same app instance on subsequent requests. However, ARR Affinity can cause unequal distribution of requests between your instances and possibly overload an instance.Disabling ARR Affinity assumes that your application is either stateless, or the session state is stored on a remote service such as a cache or database.
+**ARR Affinity** creates sticky sessions so that clients will connect to the same app instance on subsequent requests. However, ARR Affinity can cause unequal distribution of requests between your instances and possibly overload an instance. Disabling ARR Affinity assumes that your application is either stateless, or the session state is stored on a remote service such as a cache or database.
 
-Lastly, please set the **Platform** setting from 32 bitness to 64 bitness. The maximum available amount of memory for a 32-bit process (even on a 64-bit operating system) is 2 GB. By default, the worker process is set to 32-bit in App Service (for compatibility with legacy web applications). Consider switching to 64-bit processes so you can take advantage of the additional memory available in your Web Worker role.
+Lastly, please set the **Platform** setting from 32 Bit to 64 Bit. The maximum available amount of memory for a 32-bit process (even on a 64-bit operating system) is 2 GB. By default, the worker process is set to 32-bit in App Service (for compatibility with legacy web applications). Consider switching to 64-bit processes so you can take advantage of the additional memory available in your Web Worker role.
 
-For production apps that are aiming to be robust, it is recommended to set **Always on to On**, **ARR Affinity to Off** and **Platform to 64 bit**.
+For production apps that are aiming to be robust, it is recommended to set **Always on to On**, **ARR Affinity to Off** and **Platform to 64 Bit**.
 
 You can change these settings in the configurations section of the Azure Portal, under the *General Settings* tab:
 
-![alwayson]({{site.baseurl}}/media/2020/04/alwayson.jpg)
+![alwayson]({{site.baseurl}}/media/2020/04/alwayson.png)
 
 **Learn More**
 
