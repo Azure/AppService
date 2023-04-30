@@ -191,7 +191,7 @@ zip secondaryapp.zip index.php
 To deploy a sample application using *ZIP Deploy*, use this command:
 
 ```bash
-az webapp deployment source config-zip --resource-group $ASEResourceGroupNamePROD  --name $WEBAPPNamePROD --src ./secondaryapp.zip
+az webapp deployment source config-zip --resource-group $ASEResourceGroupNameDR  --name $WEBAPPNameDR --src ./secondaryapp.zip
 ```
 
 **Check if your app is running**
