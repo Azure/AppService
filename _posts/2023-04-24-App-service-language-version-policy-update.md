@@ -42,3 +42,11 @@ There are also a couple limitations to be aware of when using these policies.
 ## Required actions
 
 These policy updates will have no impact on existing policy assignments. If you have the old version of these policies assigned, they will continue to function without interruption. In order to use the new versions of these policies, you must create new policy assignments. We encourage you to take this action as soon as possible as the old versions of these policies are prone to false negatives.
+
+## How to use the new policies
+
+The new policies can be assigned in the Azure portal. For more information on how to assign policies, see [Assign a policy to a resource group](https://docs.microsoft.com/azure/governance/policy/assign-policy-portal).
+
+When assigning these policies in the Azure portal, you won't automatically be prompted to specify a language version. You must go to the Parameters tab and uncheck the box "Only show parameters that need input or review" in order to see the language version parameter. This is a required parameter that defaults to an empty string so if you don't specify a value, the policy will always evaluate to non-compliant.
+
+![]({{ site.baseurl }}/media/2023/04/parameter-specification.png)
