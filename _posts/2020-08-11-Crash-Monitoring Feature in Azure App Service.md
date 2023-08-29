@@ -27,10 +27,10 @@ To access Crash Monitoring, browse to your App Service in the [Azure Portal](htt
 
 Crash Monitoring operates based on 4 conditions that you can configure to your needs. Enabling crash monitoring might incur slight performance impact on your app because a debugger is always attached to your process. The delay would vary depending upon the number of exceptions that your application code is throwing. 
 
-- **Storage account**: The selected storage account will store the memory dumps captured via Crash Monitoring. **It is strongly advised that you use one storage account per app.** Selecting a storage account already in use for another app may cause Crash Monitoring to fail. Also, do not change the storage account for your app if there is a crash monitoring session in progress.
+- **Storage account**: The selected storage account will store the memory dumps captured via Crash Monitoring. Avoid changing the storage account for your app if there is an active crash monitoring session in progress.
 - **Start time**: Crash Monitoring session will begin at the selected time.
 - **Stop time**: Crash Monitoring session will end at the selected time regardless of the maximum of memory dumps captured. To completely disable the agent after the Crash Monitoring session, click on the **Disable Agent** link.
-- **Max No. of memory dump**: Crash Monitoring session will end after the maximum number of dumps are collected. To completely disable the agent after the Crash Monitoring session, click on the **Disable Agent** link.
+- **Max No. of memory dump**: The Crash Monitoring session concludes once the maximum number of dumps has been gathered. If you want to fully deactivate the agent after the Crash Monitoring session, simply click the **Disable Agent** link. Before connecting the debugger to the process, the crash monitoring agent verifies the current number of dumps in the storage account. Once the necessary amount of memory dumps has been created, the agent will cease to gather more unless you remove the current dumps from storage or relocate them to another location.
 
 > The Crash Monitoring configurations are saved in your app’s app settings. Each time a new configuration is saved, your app will restart.
 
