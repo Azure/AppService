@@ -4,9 +4,7 @@ author_name: "Tulika Chaudharie"
 toc: true
 ---
 
-We are happy to announce that App Service now supports apps targeting [.Net 8 Preview 7](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) across all public regions on Linux App Service Plans.
-
-In the coming weeks, as our deployment progresses, .Net 8 Preview 7 would also be available on Windows App Service Plans.
+We are happy to announce that App Service now supports apps targeting [.Net 8 Preview 7](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) across all public regions on Azure App Service. It is available for both Windows and Linux App Service Plans.
 
 Want to get started with .Net 8? Follow these:
 
