@@ -69,4 +69,6 @@ When scaling out though, you can add multiple instances to the cluster simultane
 
 * [JBoss EAP on Azure App Service](https://learn.microsoft.com/en-us/azure/developer/java/ee/jboss-on-azure#jboss-eap-on-azure-app-service)
 
-* [Clustering in Web Applications | Red Hat Customer Portal](https://access.redhat.com/documentation/en-us/red_hat_jboss_enterprise_application_platform/7.4/html/development_guide/clustering_in_web_applications)
+* [Clustering in Web Applications - Red Hat Customer Portal](https://access.redhat.com/documentation/en-us/red_hat_jboss_enterprise_application_platform/7.4/html/development_guide/clustering_in_web_applications)
+
+* [Recently Announced: Advanced Clustering Features for JBoss EAP on Azure App Service](https://techcommunity.microsoft.com/t5/apps-on-azure-blog/recently-announced-advanced-clustering-features-for-jboss-eap-on/ba-p/3939672)
