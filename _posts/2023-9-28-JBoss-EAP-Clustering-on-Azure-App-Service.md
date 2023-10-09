@@ -18,7 +18,7 @@ Enabling VNet integration is required for communication between servers that for
 
 ## What’s Included 
 
-* Clustering of web applications, including HTTP session replication, HA (high availability), and Singleton Service. For more information, see [Chapter 6. Clustering in Web Applications Red Hat JBoss Enterprise Application Platform 7.4 | Red Hat Customer Portal](https://access.redhat.com/documentation/en-us/red_hat_jboss_enterprise_application_platform/7.4/html/development_guide/clustering_in_web_applications) 
+* Clustering of web applications, including HTTP session replication, HA (high availability), and Singleton Service. For more information, see [Chapter 6. Clustering in Web Applications - Red Hat Customer Portal](https://access.redhat.com/documentation/en-us/red_hat_jboss_enterprise_application_platform/7.4/html/development_guide/clustering_in_web_applications) 
 * High-availability support 
 * Transaction recovery support 
 
@@ -57,7 +57,7 @@ When scaling out though, you can add multiple instances to the cluster simultane
 
 * The App Service platform waits up to 120 seconds before stopping a server, not indefinitely for transactions to complete. Any pending transactions remaining after stopping the server are recovered when a new server is added, according to the number of instances defined in the Scale Out configuration. 
 
-* If a customer manually resizes down a cluster, there’s a potential for nodes to be stopped before they complete their transactions. In that case a warning is emitted, and manual intervention is needed to commit the transactions from that node. The process is documented in section 5.2. “Migrating Logs to a New JBoss EAP Server” of the guide [Managing Transactions on JBoss EAP Red Hat JBoss Enterprise Application Platform 7.4 | Red Hat Customer Portal](https://access.redhat.com/documentation/en-us/red_hat_jboss_enterprise_application_platform/7.4/html-single/managing_transactions_on_jboss_eap/index#migrating_logs_to_new_server). 
+* If a customer manually resizes down a cluster, there’s a potential for nodes to be stopped before they complete their transactions. In that case a warning is emitted, and manual intervention is needed to commit the transactions from that node. The process is documented in section 5.2. “Migrating Logs to a New JBoss EAP Server” of the guide [Managing Transactions - Red Hat Customer Portal](https://access.redhat.com/documentation/en-us/red_hat_jboss_enterprise_application_platform/7.4/html-single/managing_transactions_on_jboss_eap/index#migrating_logs_to_new_server). 
 
 * In the case of a movement to different hardware (for example, scaling up or hardware faults), when a cluster node cannot complete its transactions, a warning will be emitted, and manual intervention is needed to commit any transactions that were not committed.  
  
