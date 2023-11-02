@@ -11,7 +11,7 @@ MPSJ reduces subnet sprawl when dealing with many apps across many plans and sim
 
 You many still want to use individual subnets if you plan to differentiate on Network Security Group configuration, NAT gateway or other subnet specific configurations.
 
-When using MPSJ you will need to pay extra attention to the subnet size. Each instance from each App Service plan requires one IP address. When scaling up/down, the IP address requirement is still doubled for that specific plan, and when scaling in it may take some time before the IP addresses are released.
+When using MPSJ you will need to pay extra attention to the subnet size. Each instance from each App Service plan requires one IP address. When scaling up/down, the IP address requirement is still doubled for that specific plan, and when scaling in it may take some time before the IP addresses are released. There is no limit on the number of App Service plans you can join with a single subnet, but you will be limited by the number of available IPs.
 
 MPSJ is initially available in West Central US and France Central. More regions will be added in the coming weeks, and we expect MPSJ to be available in all regions early next year.
 
