@@ -83,11 +83,20 @@ jobs:
       with:
         name: jekyll-app
 
-    - name: Deploy to slot on staging site
-      uses: azure/webapps-deploy@v1
-      with: 
+    # - name: Deploy to slot on staging site
+    #  uses: azure/webapps-deploy@v1
+    #  with: 
+     #   app-name: ${{ env.WEBAPP_NAME }}
+      #  slot-name: ${{ env.SLOT_NAME }}
+       # package: blog.zip
+
+    #### new deploy to slot staging
+    - name: Deploy to slot on staging site-2
+      uses: Azure/webapps-deploy@v3.0.0
+      with:
         app-name: ${{ env.WEBAPP_NAME }}
         slot-name: ${{ env.SLOT_NAME }}
+        # Applies to Web App only: Path to package or folder. *.zip, *.war, *.jar or a folder to deploy..default path is .
         package: blog.zip
     
     - name: Comment on PR with the preview link
