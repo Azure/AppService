@@ -51,7 +51,7 @@ jobs:
 
     steps:
     - name: Log into Azure CLI with service principal
-      uses: azure/login@v1.1
+      uses: azure/login@v1.4.6
       with:
         creds: ${{ secrets.ANTARES_BLOG_SITE_SP }}
     
