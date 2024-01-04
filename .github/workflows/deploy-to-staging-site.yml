@@ -80,7 +80,7 @@ jobs:
     - name: Log into Azure CLI with service principal
       uses: azure/login@v1.4.6
       with:
-       creds: ${{ secrets.ANTARES_BLOG_SITE_SP }}
+        creds: ${{ secrets.ANTARES_BLOG_SITE_SP }}
 
     - name: Download artifact from build job
       uses: actions/download-artifact@v2
