@@ -50,19 +50,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # - name: Log into Azure CLI with service principal
-    #   uses: azure/login@v1
-    #   with:
-    #     creds: ${{ secrets.ANTARES_BLOG_SITE_SP }}
-
-    # attempt with latest version - adding new GH secrets individually
-    # - name: Log into Azure CLI with service principal
-    #   uses: azure/login@v1
-    #   with:
-    #     client-id: ${{ secrets.AZURE_CLIENT_ID }}
-    #     tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-    #     subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
+    # attempt with creds
     - uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
@@ -92,11 +80,6 @@ jobs:
       pull-requests: write
     
     steps:
-    # - name: Log into Azure CLI with service principal
-    #   uses: azure/login@v1
-    #   with:
-    #     creds: ${{ secrets.ANTARES_BLOG_SITE_SP }}
-
     # attempt with latest version - adding new GH secrets individually
     - name: Log into Azure CLI with service principal
       uses: azure/login@v1
