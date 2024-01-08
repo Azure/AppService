@@ -21,7 +21,7 @@ DNS configuration and name resolution now has its own article in the public docu
 
 ## Parity between Windows and Linux
 
-When DNS servers are explicitly configured in App Service using App Settings or site properties, there were no different in behavior of how Windows and Linux handled the configured servers, but when using DNS servers configured in the virtual network, Windows apps had a behavior that would sort the list of DNS servers and only select the first two IP addresses to be used for name resolution. This could impact the name resolution behavior if you had more than two configured servers and/or the order of the servers mattered.
+When DNS servers are explicitly configured in App Service using App Settings or site properties, there were no different in behavior of how Windows and Linux handled the configured servers, but when using DNS servers configured in the virtual network, Windows apps had a behavior that would sort the list of DNS servers and only select the first two IP addresses to be used for name resolution. This could impact the name resolution behavior if you had more than two servers configured and/or the order of the servers mattered.
 
 About a year ago we aligned the behavior with Linux allowing up to five servers to be used and remove the sorting. To prevent breaking changes to customers that intentionally or unintentionally had taken a dependency on the sorting, we only made no sorting the default behavior for new sites created and an opt in option for existing sites. For most customers this won't have an impact. The combination of using DNS servers from the virtual network, having more than two DNS servers configured and the order having an impact is very rare.
 
