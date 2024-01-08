@@ -21,9 +21,9 @@ DNS configuration and name resolution now has its own article in the public docu
 
 ## Parity between Windows and Linux
 
-When DNS servers are explicitly configured in App Service using App Settings or site properties, there were no difference in behavior of how Windows and Linux handled the configured servers, but when using DNS servers configured in the virtual network, Windows apps had a behavior that would sort the list of DNS servers and only select the first two DNS server IP addresses to be used for name resolution. This could impact the name resolution behavior if you had more than two servers configured and/or the order of the servers mattered.
+When DNS servers are explicitly configured in App Service using App Settings or site properties, there was no difference in behavior of how Windows and Linux handled the configured servers. However, when using DNS servers configured in the virtual network, Windows apps had a behavior that would sort the list of DNS servers and only select the first two DNS server IP addresses to be used for name resolution. This could impact the name resolution behavior if you had more than two servers configured and/or the order of the servers mattered.
 
-About a year ago we aligned the behavior with Linux allowing up to five servers to be used and removed the sorting. To prevent breaking changes to customers that intentionally or unintentionally had taken a dependency on the sorting, we only made no sorting the default behavior for new sites created and an opt in option for existing sites. For most customers this won't have an impact. The combination of using DNS servers from the virtual network, having more than two DNS servers configured and the order having an impact is very rare.
+About a year ago we aligned the behavior with Linux allowing up to five servers to be used and removed the sorting. To prevent breaking changes to customers that intentionally or unintentionally had taken a dependency on the sorting, we made "no sorting" the default behavior for new sites created and an opt-in option for existing sites. For most customers this doesn't have an impact. The combination of using DNS servers from the virtual network, having more than two DNS servers configured and the order having an impact is very rare.
 
 Should you however have this exact scenario, you can validate if your site is still using DNS server sorting by calling this command:
 
@@ -49,7 +49,11 @@ Another difference that existed between Windows and Linux was the default behavi
 
 ## Configuration using site properties
 
-Currently, the most common way of configuring DNS settings is to use App Settings. However, App Settings have some challenges that make them less appealing. They are subject to spelling mistakes and there is no API level validation. You cannot control/audit using Azure Policy. You need write permissions to read the values (because App Settings often contain secrets, they have this extra layer of security).
+Currently, the most common way of configuring DNS settings is to use App Settings. However, App Settings have some challenges that make them less appealing: 
+
+* They are subject to spelling mistakes and there is no API level validation.
+* You can't control/audit using Azure Policy.
+* You need write permissions to read the values (because App Settings often contain secrets, they have this extra layer of security).
 
 To meet these challenges we are introducing site properties for all DNS configurations. The App Settings will continue to work, but the site properties will take precedence if configured. The properties are grouped under the `dnsConfiguration` property.
 
@@ -65,7 +69,7 @@ To meet these challenges we are introducing site properties for all DNS configur
 
 ## Azure Portal configuration
 
-Based on the new properties, we have started to build UX to support the configuration. This will give you one place to view and configure all DNS options. The configuration page will be available from the networking hub page and we aim to have it ready in Q2 2024.
+Based on the new properties, we have started to build UX to support the configurations. This will give you one place to view and configure all DNS options. The configuration page will be available from the networking hub page and we aim to have it ready in Q2 2024.
 
 ## Logging capabilities
 
