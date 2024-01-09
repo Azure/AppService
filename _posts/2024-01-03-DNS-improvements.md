@@ -49,7 +49,7 @@ Another difference that existed between Windows and Linux was the default behavi
 
 ## Configuration using site properties
 
-Currently, the most common way of configuring DNS settings is to use App Settings. However, App Settings have some challenges that make them less appealing: 
+Currently, the most common way of configuring DNS settings is to use App Settings. However, App Settings have some challenges that make them less appealing:
 
 * They are subject to spelling mistakes and there is no API level validation.
 * You can't control/audit using Azure Policy.
@@ -60,10 +60,10 @@ To meet these challenges we are introducing site properties for all DNS configur
 |  **Property name** | **App Setting** | **Allowed values** | **Default value** | **Description** |
 |---|---|---|---|---|
 | DnsServers | WEBSITE_DNS_SERVER | IPv4 addresses | none | Overrides Azure default DNS or DNS servers inherited from virtual network. Allows up to five servers. |
-| DnsAltServer | WEBSITE_ALT_DNS_SERVER | IPv4 address | none | Appends this specific DNS server to the list of DNS servers configured. This will be appended to both explicitly configured DNS servers and DNS servers inherited from the virtual network. |
-| DnsMaxCacheTimeout | N/A | 0-60 | 30 | Cache timeout defined in seconds. Setting cache to zero means you've disabled caching. |
+| DnsAltServer | WEBSITE_DNS_ALT_SERVER | IPv4 address | none | Appends this specific DNS server to the list of DNS servers configured. This will be appended to both explicitly configured DNS servers and DNS servers inherited from the virtual network. |
+| DnsMaxCacheTimeout | WEBSITE_DNS_MAX_CACHE_TIMEOUT | 0-60 | 30 | Cache timeout defined in seconds. Setting cache to zero means you've disabled caching. |
 | DnsRetryAttemptTimeout | WEBSITE_DNS_TIMEOUT | 1-30 | 3 | Timeout before retrying or failing. Timeout also defines the time to wait for secondary server results if the primary doesn't respond. |
-| DnsRetryAttemptCount | WEBSITE_DNS_ATTEMPTS | 1-5 | 1 | Defines the number of attempts to resolve where one means no retries. |
+| DnsRetryAttemptCount | WEBSITE_DNS_ATTEMPTS | 1-5 | 3 | Defines the number of attempts to resolve where one means no retries. |
 
 `DnsAltServer` and, as mentioned before, the new default values are currently rolling out. All other properties are available today.
 
