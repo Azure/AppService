@@ -4,8 +4,9 @@ on:
   push:
     branches:
     - master
+  # Run build every day at 00:00 UTC every day for future-dated articles
   schedule:
-    - cron:  '0 0 * * *'  # Run build every day at 00:00 UTC every day for future-dated articles
+    - cron:  '0 0 * * *' 
 
 permissions:
   contents: write
@@ -13,17 +14,16 @@ permissions:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
     - name: Check out repo
       uses: actions/checkout@v1
 
-    - name: Set up Ruby 2.6
+    - name: Set up Ruby 3.0
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 2.6.0
+        ruby-version: '3.0'
 
     - name: Install Ruby dependencies
       run: |
