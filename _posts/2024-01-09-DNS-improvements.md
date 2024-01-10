@@ -61,7 +61,7 @@ To meet these challenges we are introducing site properties for all DNS configur
 |---|---|---|---|---|
 | DnsServers | WEBSITE_DNS_SERVER | IPv4 addresses | none | Overrides Azure default DNS or DNS servers inherited from virtual network. Allows up to five servers. |
 | DnsAltServer | WEBSITE_DNS_ALT_SERVER | IPv4 address | none | Appends this specific DNS server to the list of DNS servers configured. This will be appended to both explicitly configured DNS servers and DNS servers inherited from the virtual network. |
-| DnsMaxCacheTimeout | WEBSITE_DNS_MAX_CACHE_TIMEOUT | 0-60 | 30 | Cache timeout defined in seconds. Setting cache to zero means you've disabled caching. |
+| DnsMaxCacheTimeout | WEBSITE_DNS_MAX_CACHE_TIMEOUT | 0-60 | 30 | DNS results will be cached according to the individual records TTL, but no longer than the defined max cache timeout. Setting cache to zero means you've disabled caching. |
 | DnsRetryAttemptTimeout | WEBSITE_DNS_TIMEOUT | 1-30 | 3 | Timeout before retrying or failing. Timeout also defines the time to wait for secondary server results if the primary doesn't respond. |
 | DnsRetryAttemptCount | WEBSITE_DNS_ATTEMPTS | 1-5 | 3 | Defines the number of attempts to resolve where one means no retries. |
 
