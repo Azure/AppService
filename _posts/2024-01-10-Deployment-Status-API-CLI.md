@@ -1,5 +1,5 @@
 ---
-title: "Track the status of your deployment in Azure CLI"
+title: "Use Azure CLI to track the status of your code deployments"
 author_name: "Tulika Chaudharie"
 toc: true
 toc_sticky: true
@@ -7,11 +7,7 @@ tags:
     - Deployment
 ---
 
-We're thrilled to announce an upgraded capability within Azure CLI for App Service, now equipped with seamless integration to a Deployment Status backend API. This integration empowers you to effortlessly track your code deployment progress in real-time.
-
-By leveraging this integration, Azure CLI polls for ongoing deployment updates every 10 seconds. The status returned by the backend API is shown as messages tracking the current state of the deployment.
-
-This functionality eliminates ambiguity during code pushes, providing you with a precise understanding of the deployment process. It offers a transparent view into the progression of deployments, enabling informed decision-making and enhancing overall operational efficiency.
+We are adding new capability to `az webapp deploy` allowing you to track the status of your code deployments. You can take advantage of more detailed information about the stages of your deployment using the `--track-status` option.
 
 Here are the steps to use it
 
@@ -19,15 +15,6 @@ Here are the steps to use it
 
     ```bash
     az --version
-    ```
-
-    The first line in the output will show the CLI version:
-
-    ```text
-    azure-cli                         2.56.0
-
-    core                              2.56.0
-    telemetry                          1.1.0
     ```
 
     If your version is lower, you can upgrade using this command.
@@ -50,7 +37,14 @@ Here are the steps to use it
 
     For more information about [az webapp deploy](https://learn.microsoft.com/en-us/cli/azure/webapp?view=azure-cli-latest#az-webapp-deploy), please refer to the documentation.
 
-These are some snippets of the output for `--track-status`
+To give an example, this is the message you get if you run without the tracking option.
+
+**Without tracking**
+![Deployment without tracking]({{site.baseurl}}/media/2024/01/deployment-without-tracking.jpg)
+
+Deployment has various steps to it - copying the code to our servers, building the code and copying the binaries and finally restarting the website so that it runs with the new binaries. From the message above, it was hard to determine which step failed.
+
+Now these are some snippets of the output for `--track-status`
 
 **Deployment Succeeded:**
 ![Deployment Successful]({{site.baseurl}}/media/2024/01/deployment-successful.jpg)
@@ -66,4 +60,4 @@ Once the build is done, the API checks to see if the site is restarted. It keeps
 ![Runtime Failed]({{site.baseurl}}/media/2024/01/deployment-runtime-failed.jpg)
 
 **Conclusion:**
-At present, this feature is available only for Linux App Service code deployments. Nevertheless, our team is actively engaged in expanding its reach to custom containers and beyond. Our roadmap includes extending this functionality to encompass various deployment clients such as GitHub and Visual Studio. Stay tuned for forthcoming updates as we continue our efforts to smoothen your deployment journey on Azure App Service.
+At present, this feature is available only for Linux App Service code deployments. This is a platform improvement and our roadmap includes extending this functionality to other deployment clients such as GitHub and Visual Studio. Stay tuned for forthcoming updates as we continue our efforts to smoothen your deployment journey on Azure App Service.
