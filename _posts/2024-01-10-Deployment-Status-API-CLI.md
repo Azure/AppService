@@ -55,7 +55,7 @@ Here, the build of my code failed and therefore, deployment failed. The error me
 ![Build Failed]({{site.baseurl}}/media/2024/01/deployment-build-failed.jpg)
 
 **Site startup failed after deployment:**
-Once the build is done, the API checks to see if the site is restarted. It keeps polling for 10 mins for the site to startup and gives an error if it does not start in that time. Currently, there is no way to alter the timeout but we are working on a way in which you can configure the timeout for site startup after deployment.
+Once the build is done, the API checks to see if the site is restarted. It keeps polling for 10 minutes for the site to startup and gives an error if it does not start in that time. You can look at your site logs to determine why your site failed to startup in 10 minutes.
 
 ![Runtime Failed]({{site.baseurl}}/media/2024/01/deployment-runtime-failed.jpg)
 
