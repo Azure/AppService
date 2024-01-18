@@ -44,6 +44,8 @@ When you click **Connect**, an *API* key for your Application Insights is genera
 
 Using this information, App Services Diagnostics can query the Application Insights resource and is able to merge both the experiences together. For Microsoft support and engineering teams, an equivalent internal tool is available and engineers and engineering teams assisting you on your incidents opened with Microsoft can access this information in similar unified troubleshooting experience.
 
+>`WEBSITE_APPINSIGHTS_ENCRYPTEDAPIKEY` is a special environment variable and adding this environment variable does not restart the app.
+
 ## How to disable App Insights Integration
 
 We are working on a user interface that allows you to disable this feature easily under **Diagnose and Solve problems**. Until then, you can delete the AppSetting `WEBSITE_APPINSIGHTS_ENCRYPTEDAPIKEY` to simple disable the AppInsights integration feature.
