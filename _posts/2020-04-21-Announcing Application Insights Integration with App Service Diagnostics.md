@@ -38,37 +38,18 @@ And drilling down into the HTTP Server Errors view, you can find all details abo
 
 ## What happens after you Integrate Application Insights with App Service Diagnostics
 
-When you click **Connect**, an *API* key for your Application Insights is generated with read-only access to the telemetry and this *API key* along with the *AppId* for the Application Insights resource are stored as a hidden tag in ARM at the Azure App Service app level. At the App Insights Resource level, you may see something like this.
+When you click **Connect**, an *API* key for your Application Insights is generated with read-only access to the telemetry. This API key gets encrypted and this *encrypted API key* along with the *AppId* for the Application Insights resource are stored in an environment variable `WEBSITE_APPINSIGHTS_ENCRYPTEDAPIKEY` at the Azure App Service app level. At the App Insights Resource level, you may see something like this.
 
 ![Application Insights API Access]({{site.baseurl}}/media/2020/04/AppServiceDiagnostics-APIKey.png)
 
-On the App Services side, you should see a new tag created at the app level with the name **hidden-related:diagnostics/applicationInsightsSettings**. You can view this tag by going to Azure Resource Explorer ([https://resources.azure.com](https://resources.azure.com)). The *AppId* is stored as is, but the API Key is encrypted using an internal key, so it is kept protected and not left as clear text.
-
 Using this information, App Services Diagnostics can query the Application Insights resource and is able to merge both the experiences together. For Microsoft support and engineering teams, an equivalent internal tool is available and engineers and engineering teams assisting you on your incidents opened with Microsoft can access this information in similar unified troubleshooting experience.
+
+>`WEBSITE_APPINSIGHTS_ENCRYPTEDAPIKEY` is a special environment variable and adding this environment variable does not restart the app.
 
 ## How to disable App Insights Integration
 
-We are working on a user interface that allows you to disable this feature easily under **Diagnose and Solve problems**. Until then, you can use a PowerShell Script example like this to simple disable the AppInsights integration feature.
+We are working on a user interface that allows you to disable this feature easily under **Diagnose and Solve problems**. Until then, you can delete the AppSetting `WEBSITE_APPINSIGHTS_ENCRYPTEDAPIKEY` to simple disable the AppInsights integration feature.
 
-```powershell
-Login-AzureRmAccount
-$subId = "<Azure_Subscription_ID>"
-$rg ="<ResourceGroupName>"
-$appName = "AppName"
-$resourceId = "/subscriptions/$subId/resourceGroups/$rg/providers/Microsoft.Web/sites/$appName"
-$webApp = Get-AzureRmResource -ResourceId $resourceId
-$updatedTags = @{}
-
-foreach($t in $webApp.Tags.GetEnumerator())
-{
-    if ($t.Key -ne "hidden-related:diagnostics/applicationInsightsSettings")
-    {
-        $updatedTags.Add($t.Key, $t.Value)
-    }
-}
-
-Set-AzureRmResource -ResourceId $resourceId -Tag $updatedTags
-```
 
 ## Next steps
 
