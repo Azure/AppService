@@ -17,6 +17,8 @@ One of the most asked features for both these features was the ability to view h
 
 *We are happy to announce the integration of App Services Auto-Healing and Crash Monitoring feature with Azure Monitor*. With this integration, you can identify when an app was recycled, the number of times it was recycled and due to what condition. You can also identify application code that leads to a crash for your app. Azure Monitor integration allows you to configure alerts and actions to be taken when any of these events are triggered. You can choose for how long you want this data to be retained and use **Log Analytics** to query this data and setup alerts as per your requirement.
 
+> This integration is available only for App Services Windows web apps.
+
 ### Integrating Auto-Healing and Crash Monitoring with Azure Monitor
 
 1. To integrate Azure Monitor with these diagnostic tools, navigate to **Diagnostic Settings** for your App in the Azure Portal and click on **Add Diagnostic Setting**.
