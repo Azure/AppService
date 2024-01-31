@@ -15,7 +15,21 @@ On the overview page that you land on when opening an App Service app in the Azu
 
 ## Networking hub
 
+The networking hub or networking landing page is where you can get an overview of your network configuration. We gave this page an overhaul to align it with similar pages and include the essential information.
+
+![Azure portal networking hub]({{site.baseurl}}/media/2024/02/networking-hub.png)
+
+These improvements are worth mentioning:
+
+* Public network access/Access restrictions. It will show you the current setting and if you have restrictions configured. We also added visibility of the special configuration of `null` where it uses implicit/default behavior.
+* Private endpoint IP shows up in inbound addresses.
+* Status of NAT gateway, NSG and UDR configured on integration subnet and links for fast inspection/configuration.
+
 ## Domain names
+
+Domain names are now visible in the overview page and you will see both default and custom domain name. We also added a link for easy configuration of custom domain.
+
+![Azure portal domain names]({{site.baseurl}}/media/2024/02/domains.png)
 
 ## Virtual network integration
 
