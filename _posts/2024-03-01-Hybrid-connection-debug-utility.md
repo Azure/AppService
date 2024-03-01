@@ -45,24 +45,28 @@ Setup a Hybrid Connection in the Azure Portal as per usual, e.g. under the App -
 
 You'll need to retrieve the connection string from this Hybrid Connection which can be done in the portal:
 
-![Hybrid Connection gateway connection string]({{site.baseurl}}/media/2024/02/GatewayConnectionString.png)
+![Hybrid Connection gateway connection string]({{site.baseurl}}/media/2024/03/GatewayConnectionString.png)
 
-The connection string will be in the following format `Endpoint=sb://**\[ServiceBusNamespace\]**.servicebus.windows.net/;SharedAccessKeyName=defaultListener;SharedAccessKey=**\[KeyValue\]**;EntityPath=**\[RelayName\]**`
+The connection string will be in the following format:
+
+```bash
+Endpoint=sb://**\[ServiceBusNamespace\]**.servicebus.windows.net/;SharedAccessKeyName=defaultListener;SharedAccessKey=**\[KeyValue\]**;EntityPath=**\[RelayName\]**
+```
 
 To launch the Hybrid Connection Debug Utility in it's most basic configuration:
 
 ```bash
-    HybridConnectionDebugUtility.exe listener [connectionstring] 
+HybridConnectionDebugUtility.exe listener [connectionstring] 
 ```
 
 By default, this listener will forward traffic to the endpoint that is configured on the Hybrid Connection itself (set when creating it through App Service Hybrid Connections UI). If no endpoint is set or to override this endpoint, use the parameters `/overrideEndpointHost:[host]` and `/overrideEndpointPort:[port]`.
 
 Depending on what you're investigating, it's recommended to include either `/traceLevel:connections` or `/traceLevel:verbose`. Connections will show data about all connections being made and when they are opened and closed:
 
-![Hybrid Connection Debug Utility connections-only tracing mode]({{site.baseurl}}/media/2024/02/ConnectionsOutput.png)
+![Hybrid Connection Debug Utility connections-only tracing mode]({{site.baseurl}}/media/2024/03/ConnectionsOutput.png)
 
 For Verbose traffic, it will include packet captures (though these are difficult to read and incompatible with tools like WireShark and Netmon):
 
-![Hybrid Connection Debug Utility verbose tracing mode]({{site.baseurl}}/media/2024/02/VerboseOutput.png)
+![Hybrid Connection Debug Utility verbose tracing mode]({{site.baseurl}}/media/2024/03/VerboseOutput.png)
 
 If additional support is needed, you can reach out to customer support and share the output from the tool. To write all data to a file, run the command with `/log:[filename]`.
