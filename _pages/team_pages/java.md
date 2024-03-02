@@ -13,7 +13,7 @@ pagination:
     after: 2
 ---
 
-App Service supports Java SE and Tomcat applications on Windows and Linux. Use the REST APIs to deploy your .jar or .war files. You can also use the [Zulu OpenJDK for Azure Docker images](https://hub.docker.com/_/microsoft-java-jdk) to deploy a custom container, fully supported by Azure.
+App Service supports Java SE and Tomcat applications on Windows and Linux. Use the REST APIs to deploy your .jar or .war files. You can also use the [Container images for the Microsoft Build of OpenJDK](https://learn.microsoft.com/en-us/java/openjdk/containers) to deploy a custom container, fully supported by Azure.
 
 ## Helpful resources
 
