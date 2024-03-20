@@ -19,19 +19,22 @@ must only appear once per config file. See the help topic <location> for excepti
 <Binary>B7000000</Binary>
 ```
 
-This issue arises when a site extension (or [custom XDT Transform](https://github.com/projectkudu/kudu/wiki/Xdt-transform-samples)) contains an incorrect XDT Transform utilizing **Insert** (instead of **InsertIfMissing**) to add a custom environment variable within the <environmentVariables> collection in the resulting applicationHost.config file. This leads to duplicate 'system.webServer/runtime' tags, triggering the error. Notably, the following site extensions have updates available to address this issue:
+This issue arises when a site extension (or [custom XDT Transform](https://github.com/projectkudu/kudu/wiki/Xdt-transform-samples)) contains an incorrect XDT Transform utilizing **Insert** (instead of **InsertIfMissing**) to add a custom environment variable within the <environmentVariables> collection in the resulting applicationHost.config file. This leads to duplicate **'system.webServer/runtime'** tags, triggering the error. Notably, the following site extensions have updates available to address this issue:
 
-1.  NewRelic
-2.  Composer
+1. NewRelic
+2. Composer
 
 It must be noted that error could surface while using custom XDT transforms or any other site extension that is using **Insert** instead of **InsertIfMissing** XDT transform.
 
 ### How to Resolve
 To resolve this problem, follow these steps:
-1.  Access the **Kudu Console** for your Web App (available at YourSiteName.scm.azurewebsites.net).
-2.  Navigate to the **Site Extensions** tab.
-3.  Locate the respective site extension and click on the **Update** button.
-4.  Restart the site to ensure the site extension update takes effect.
+1. Get the FTP/S endpoing for your app. (Details in [Get FTP/S endpoint](https://learn.microsoft.com/en-us/azure/app-service/deploy-ftp?tabs=portal#get-ftps-endpoint)).
+2. Navigate to **/SiteExtensions** folder.
+3. Locate the respective site extension and delete the SiteExtension folder (e.g. Composer, NewRelic).
+4. **Restart** the site from Azure Portal to ensure the site extension update takes effect.
+5. Navigate back to the **Kudu Console** (<yoursitename>.azurewebsites.net) of your app and go to **Site Extensions** tab and install the latest version of the Site Extension from the gallery.
+
+> Please execute the mentioned steps only if you have identified that you are experiencing the issue described in the symptoms provided above.
 
 If the app is utilizing a [custom XDT Transform](https://github.com/projectkudu/kudu/wiki/Xdt-transform-samples), ensure to use **InsertIfMissing** instead of **Insert** transform.
 
