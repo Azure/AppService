@@ -16,7 +16,7 @@ The following article addresses an issue that may arise within your application,
 <Data>1150</Data>
 <Binary>B7000000</Binary>
 ```
-This issue arises when a site extension (or custom XDT Transform) contains an incorrect XDT Transform utilizing **Insert** (instead of **InsertIfMissing**) to add a custom environment variable within the <environmentVariables> collection in the resulting applicationHost.config file. This leads to duplicate 'system.webServer/runtime' tags, triggering the error. Notably, the following site extensions have updates available to address this issue:
+This issue arises when a site extension (or [custom XDT Transform](https://github.com/projectkudu/kudu/wiki/Xdt-transform-samples)) contains an incorrect XDT Transform utilizing **Insert** (instead of **InsertIfMissing**) to add a custom environment variable within the <environmentVariables> collection in the resulting applicationHost.config file. This leads to duplicate 'system.webServer/runtime' tags, triggering the error. Notably, the following site extensions have updates available to address this issue:
 
 1.  NewRelic
 2.  Composer
@@ -30,6 +30,8 @@ To resolve this problem, follow these steps:
 2.  Navigate to the **Site Extensions** tab.
 3.  Locate the respective site extension and click on the **Update** button.
 4.  Restart the site to ensure the site extension update takes effect.
+
+If the app is utilizing a [custom XDT Transform](https://github.com/projectkudu/kudu/wiki/Xdt-transform-samples), ensure to use **InsertIfMissing** instead of **Insert** transform.
 
 ### Additional Information
 
