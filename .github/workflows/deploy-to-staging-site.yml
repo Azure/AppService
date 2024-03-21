@@ -50,7 +50,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: azure/login@v1
+    - uses: Azure/login@v2.0.0
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     
@@ -79,7 +79,7 @@ jobs:
       pull-requests: write
     
     steps:
-    - uses: azure/login@v1
+    - uses: Azure/login@v2.0.0
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     
