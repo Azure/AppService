@@ -85,7 +85,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build, set-up-test-env]
     environment:
-      name: "PR #${{ github.event.number }}"
+      #name: "PR #${{ github.event.number }}"
+      name: "production"
       url: "${{ steps.deploy-to-webapp.outputs.webapp-url }}"
     permissions:
       id-token: write
