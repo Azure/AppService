@@ -53,6 +53,8 @@ jobs:
   set-up-test-env:
     name: Create test env
     runs-on: ubuntu-latest
+    permissions:
+     id-token: write
 
     # OIDC
     steps:
