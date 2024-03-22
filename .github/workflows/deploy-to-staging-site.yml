@@ -12,7 +12,6 @@ env:
   RESOURCE_GROUP: appserviceblogsite
   SLOT_NAME: pr-${{ github.event.number }}
 
-# OIDC
 permissions:
     id-token: write
     contents: read
@@ -57,7 +56,6 @@ jobs:
      id-token: write
      contents: read
 
-    # OIDC
     steps:
     - name: Run Azure Login with OIDC
       uses: azure/login@v2
@@ -85,7 +83,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build, set-up-test-env]
     environment:
-      #name: "PR #${{ github.event.number }}"
       name: "production"
       url: "${{ steps.deploy-to-webapp.outputs.webapp-url }}"
     permissions:
@@ -93,7 +90,6 @@ jobs:
       contents: read
       pull-requests: write
 
-    # OIDC#
     steps:
     - name: Run Azure Login with OIDC
       uses: azure/login@v2
