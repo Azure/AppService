@@ -1,0 +1,599 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en_US"><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://azure.github.io/AppService/feed.xml" rel="self" type="application/atom+xml" /><link href="https://azure.github.io/AppService/" rel="alternate" type="text/html" hreflang="en_US" /><updated>2024-03-28T00:09:06+00:00</updated><id>https://azure.github.io/AppService/feed.xml</id><title type="html">Azure App Service</title><subtitle>Announcements, updates, and release notes from the Azure App Service product team.</subtitle><author><name>Azure App Service</name></author><entry><title type="html">Prevent crashes due to ‘system.webServer/runtime’ already defined</title><link href="https://azure.github.io/AppService/2024/03/20/Azure-WebApp-crashing-due-to-duplicate-runtime-section.html" rel="alternate" type="text/html" title="Prevent crashes due to ‘system.webServer/runtime’ already defined" /><published>2024-03-20T00:00:00+00:00</published><updated>2024-03-20T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2024/03/20/Azure%20WebApp%20crashing%20due%20to%20duplicate%20runtime%20section</id><content type="html" xml:base="https://azure.github.io/AppService/2024/03/20/Azure-WebApp-crashing-due-to-duplicate-runtime-section.html"><![CDATA[<p>The following article addresses an issue that may arise within your application, particularly when utilizing XDT transforms or older versions of Site extensions from the App Service Site extension gallery. The symptoms include:</p>
+
+<ol>
+  <li>The SCM site enters a crashing loop and fails to recover.</li>
+  <li>The EventLog.xml file (present in %HOME%\LogFiles folder) records an error concerning a duplicate <strong>‘system.webServer/runtime’</strong> section:</li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;Data&gt;~1YourSiteName&lt;/Data&gt;
+&lt;Data&gt;Config section 'system.webServer/runtime' already defined. Sections 
+must only appear once per config file. See the help topic &lt;location&gt; for exceptions.
+&lt;/Data&gt;
+&lt;Data&gt;\\?\D:\DWASFiles\Sites\#1YourSiteName\Config\applicationhost.config&lt;/Data&gt;
+&lt;Data&gt;1150&lt;/Data&gt;
+&lt;Binary&gt;B7000000&lt;/Binary&gt;
+</code></pre></div></div>
+
+<p>This issue arises when a site extension (or <a href="https://github.com/projectkudu/kudu/wiki/Xdt-transform-samples">custom XDT Transform</a>) contains an incorrect XDT Transform utilizing <strong>Insert</strong> (instead of <strong>InsertIfMissing</strong>) to add a custom environment variable within the <environmentVariables> collection in the resulting applicationHost.config file. This leads to duplicate **'system.webServer/runtime'** tags, triggering the error. Notably, the following site extensions have updates available to address this issue:</environmentVariables></p>
+
+<ol>
+  <li>NewRelic</li>
+  <li>Composer</li>
+</ol>
+
+<p>It must be noted that error could surface while using custom XDT transforms or any other site extension that is using <strong>Insert</strong> instead of <strong>InsertIfMissing</strong> XDT transform.</p>
+
+<h3 id="how-to-resolve">How to Resolve</h3>
+<p>To resolve this problem, follow these steps:</p>
+<ol>
+  <li>Get the FTP/S endpoing for your app. (Details in <a href="https://learn.microsoft.com/en-us/azure/app-service/deploy-ftp?tabs=portal#get-ftps-endpoint">Get FTP/S endpoint</a>).</li>
+  <li>Navigate to <strong>/SiteExtensions</strong> folder.</li>
+  <li>Locate the respective site extension and delete the SiteExtension folder (e.g. Composer, NewRelic).</li>
+  <li><strong>Restart</strong> the site from Azure Portal to ensure the site extension update takes effect.</li>
+  <li>Navigate back to the <strong>Kudu Console</strong> (<yoursitename>.azurewebsites.net) of your app and go to **Site Extensions** tab and install the latest version of the Site Extension from the gallery.</yoursitename></li>
+</ol>
+
+<blockquote>
+  <p>Please execute the mentioned steps only if you have identified that you are experiencing the issue described in the symptoms provided above.</p>
+</blockquote>
+
+<p>If the app is utilizing a <a href="https://github.com/projectkudu/kudu/wiki/Xdt-transform-samples">custom XDT Transform</a>, ensure to use <strong>InsertIfMissing</strong> instead of <strong>Insert</strong> transform.</p>
+
+<h3 id="additional-information">Additional Information</h3>
+<p>The emergence of this issue coincided with an update to the Diagnostic as a Service (DaaS) site extension by App Service. The rollout of this update commenced in February 2024. Notably, the latest iteration of the site extension introduced a new environment variable utilized by DaaS for diagnostic purposes. It is important to highlight that while the DaaS site extension appropriately employed the InsertIfMissing transform, the insertion of the system.webServer/runtime section conflicted with other XDT Transforms utilizing the Insert transform, resulting in failures due to the preexistence of the section.</p>]]></content><author><name>Azure App Service</name></author><category term="Diagnostics" /><summary type="html"><![CDATA[The following article addresses an issue that may arise within your application, particularly when utilizing XDT transforms or older versions of Site extensions from the App Service Site extension gallery. The symptoms include:]]></summary></entry><entry><title type="html">Troubleshoot your App Service Hybrid Connections with the Hybrid Connection Debug Utility</title><link href="https://azure.github.io/AppService/2024/03/01/Hybrid-connection-debug-utility.html" rel="alternate" type="text/html" title="Troubleshoot your App Service Hybrid Connections with the Hybrid Connection Debug Utility" /><published>2024-03-01T00:00:00+00:00</published><updated>2024-03-01T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2024/03/01/Hybrid-connection-debug-utility</id><content type="html" xml:base="https://azure.github.io/AppService/2024/03/01/Hybrid-connection-debug-utility.html"><![CDATA[<p>The Hybrid Connection Debug utility is provided to perform captures and troubleshooting of issues with the Hybrid Connection Manager.</p>
+
+<p>This utility acts as a mini-Hybrid Connection Manager and must be used <em>instead of</em> the existing Hybrid Connection Manager you have installed on your client. If you have production environments that use Hybrid Connections, you should create a new Hybrid Connection that only gets served by this utility and repro your issue with the new Hybrid Connection.</p>
+
+<p>The tool can be downloaded here: <a href="https://hybridconnectiondebugutility.azurewebsites.net/HybridConnectionDebugUtility.zip">Hybrid Connection Debug Utility</a>.</p>
+
+<h2 id="usage">Usage</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>USAGE:
+HybridConnectionDebugUtility client <span class="o">[</span>connectionString] <span class="o">[</span>listenPort] <span class="o">[</span>options]
+HybridConnectionDebugUtility listener <span class="o">[</span>connectionString] <span class="o">[</span>options]
+
+options:
+    /traceLevel:[level] - Specifies the trace-level to use <span class="o">(</span>none, connections, verbose<span class="o">)</span>
+    /keepAlive - Enables TCP keep-alive on endpoint connection socket
+    /overrideEndpointHost:[host] - Specifies an endpoint host to use instead of the one defined <span class="k">in </span>the Hybrid Connection
+    /overrideEndpointPort:[port] - Specifies an endpoint port to use instead of the one defined <span class="k">in </span>the Hybrid Connection
+    /log:[file] - Specifies a file to log all activity to.
+    /connectionStats - Logs connection statistics <span class="o">(</span><span class="c"># of connections, bytes written/read)</span>
+
+traceLevel allowed values:
+    none
+    connections: <span class="o">(</span>default<span class="o">)</span> trace all connections opened and closed.
+    verbose: trace all connections and packet data.
+</code></pre></div></div>
+
+<p>The debug utility can function in two modes - as a client or listener:</p>
+
+<ul>
+  <li>Client: This mimics the behavior of Hybrid Connections in the app itself in App Service - e.g. this will forward connections <em>to</em> Service Bus.</li>
+  <li>Listener: This mimics the behavior of the Hybrid Connection Manager - e.g. this will receive connections <em>from</em> Service Bus.</li>
+</ul>
+
+<p>Typically, for any troubleshooting of Hybrid Connections issues, <strong>Listener</strong> should be the only mode that is necessary.</p>
+
+<h2 id="using-the-tool">Using the tool</h2>
+
+<p>Setup a Hybrid Connection in the Azure Portal as per usual, e.g. under the App -&gt; Networking -&gt; Hybrid Connections -&gt; Add a Hybrid Connection. It’s highly recommended that you use a <em>new</em> Hybrid Connection with this tool (e.g. a Hybrid Connection that is not being served by <em>any</em> Hybrid Connection Managers currently and shows in the Portal as “Not Connected”). To use an existing one instead, the Hybrid Connection must first be removed from <em>all</em> Hybrid Connection Managers (and thus show <strong>“Not Connected”</strong> - this will break connectivity).</p>
+
+<p>You’ll need to retrieve the connection string from this Hybrid Connection which can be done in the portal:</p>
+
+<p><img src="/AppService/media/2024/03/GatewayConnectionString.png" alt="Hybrid Connection gateway connection string" /></p>
+
+<p>The connection string will be in the following format:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">Endpoint</span><span class="o">=</span>sb://<span class="k">**</span><span class="se">\[</span>ServiceBusNamespace<span class="se">\]</span><span class="k">**</span>.servicebus.windows.net/<span class="p">;</span><span class="nv">SharedAccessKeyName</span><span class="o">=</span>defaultListener<span class="p">;</span><span class="nv">SharedAccessKey</span><span class="o">=</span><span class="k">**</span><span class="se">\[</span>KeyValue<span class="se">\]</span><span class="k">**</span><span class="p">;</span><span class="nv">EntityPath</span><span class="o">=</span><span class="k">**</span><span class="se">\[</span>RelayName<span class="se">\]</span><span class="k">**</span>
+</code></pre></div></div>
+
+<p>To launch the Hybrid Connection Debug Utility in it’s most basic configuration:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>HybridConnectionDebugUtility.exe listener <span class="o">[</span>connectionstring] 
+</code></pre></div></div>
+
+<p>By default, this listener will forward traffic to the endpoint that is configured on the Hybrid Connection itself (set when creating it through App Service Hybrid Connections UI). If no endpoint is set or to override this endpoint, use the parameters <code class="language-plaintext highlighter-rouge">/overrideEndpointHost:[host]</code> and <code class="language-plaintext highlighter-rouge">/overrideEndpointPort:[port]</code>.</p>
+
+<p>Depending on what you’re investigating, it’s recommended to include either <code class="language-plaintext highlighter-rouge">/traceLevel:connections</code> or <code class="language-plaintext highlighter-rouge">/traceLevel:verbose</code>. Connections will show data about all connections being made and when they are opened and closed:</p>
+
+<p><img src="/AppService/media/2024/03/ConnectionsOutput.png" alt="Hybrid Connection Debug Utility connections-only tracing mode" /></p>
+
+<p>For Verbose traffic, it will include packet captures (though these are difficult to read and incompatible with tools like WireShark and Netmon):</p>
+
+<p><img src="/AppService/media/2024/03/VerboseOutput.png" alt="Hybrid Connection Debug Utility verbose tracing mode" /></p>
+
+<p>If additional support is needed, you can reach out to customer support and share the output from the tool. To write all data to a file, run the command with <code class="language-plaintext highlighter-rouge">/log:[filename]</code>.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[The Hybrid Connection Debug utility is provided to perform captures and troubleshooting of issues with the Hybrid Connection Manager.]]></summary></entry><entry><title type="html">Improvements to configuring networking in Azure portal</title><link href="https://azure.github.io/AppService/2024/02/01/Networking-UX-improvements.html" rel="alternate" type="text/html" title="Improvements to configuring networking in Azure portal" /><published>2024-02-01T00:00:00+00:00</published><updated>2024-02-01T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2024/02/01/Networking-UX-improvements</id><content type="html" xml:base="https://azure.github.io/AppService/2024/02/01/Networking-UX-improvements.html"><![CDATA[<p>We have gradually been making improvements to the Azure portal experience for managing network configuration in App Service. In this blog post I’ll go through some highlights that you may or may not have noticed.</p>
+
+<h2 id="overview-page">Overview page</h2>
+
+<p>On the overview page that you land on when opening an App Service app in the Azure portal, we have added some essential networking info and provided “deep links”. You can click the Networking header to go to the Networking hub and you can see your virtual network integration status and go directly to the configuration. You’ll also see the IP configuration of your app.</p>
+
+<p><img src="/AppService/media/2024/02/app-overview.png" alt="Azure portal app overview" /></p>
+
+<h2 id="networking-hub">Networking hub</h2>
+
+<p>The networking hub or networking landing page is where you can get an overview of your network configuration. We gave this page an overhaul to align it with similar pages and include the essential information.</p>
+
+<p><img src="/AppService/media/2024/02/networking-hub.png" alt="Azure portal networking hub" /></p>
+
+<p>These improvements are worth mentioning:</p>
+
+<ul>
+  <li>Public network access/Access restrictions will show you the current setting and if you have restrictions configured. We also added visibility into the special configuration of <code class="language-plaintext highlighter-rouge">null</code>, where access restrictions use implicit/default behavior.</li>
+  <li>Private endpoint IP shows up in inbound addresses.</li>
+  <li>Status of NAT gateway, NSG and UDR configured on integration subnet and links for fast inspection/configuration.</li>
+</ul>
+
+<h2 id="domain-names">Domain names</h2>
+
+<p>Domain names are now visible in the overview page and you will see both the default and custom domain name. We also added a link for easy configuration of the custom domain.</p>
+
+<p><img src="/AppService/media/2024/02/domains.png" alt="Azure portal domain names" /></p>
+
+<h2 id="virtual-network-integration">Virtual network integration</h2>
+
+<p>App Service has two types of <a href="https://learn.microsoft.com/azure/app-service/overview-vnet-integration">virtual network integration</a>: Regional and Gateway-based. Gateway-based is only available on Windows App Service and only accounts for about 2% of our network integrations, so we decided to create a brand new page focusing only on regional integration. It is much faster and we can include all the relevant information that does not apply to gateway-based integrations. Don’t worry, you can still access the gateway-based integration page from the link at the top of the page.</p>
+
+<p><img src="/AppService/media/2024/02/virtual-network-integration.png" alt="Azure portal virtual network integration" /></p>
+
+<p>Key improvements to this page:</p>
+
+<ul>
+  <li>Information about subnet IP availability.</li>
+  <li>Ability to configure connections to more than one subnet per App Service plan.</li>
+  <li>Manage configuration routing.</li>
+  <li>Direct configuration of NAT gateway.</li>
+</ul>
+
+<h2 id="public-network-accessaccess-restrictions">Public network access/Access restrictions</h2>
+
+<p>The <a href="https://learn.microsoft.com/azure/app-service/overview-access-restrictions">access restriction</a> page is also brand new. Public network access (app access) is now front and center and is aligned with the experience from other Azure services. When you allow public network access, the configuration of access restriction rules (site access) is also improved with filtering options, and we included an option to configure the unmatched rule behavior to for example easily lock down the advanced tools site.</p>
+
+<p><img src="/AppService/media/2024/02/access-restrictions.png" alt="Azure portal access restrictions" /></p>
+
+<h2 id="dns-configuration">DNS configuration</h2>
+
+<p>We are almost ready with our <a href="https://learn.microsoft.com/azure/app-service/overview-name-resolution">DNS</a> configuration page. We are making the final changes and you should start seeing this in the Azure portal by the end of Q1 2024. I’ll give you a sneak peek here of what to expect.</p>
+
+<p>From the networking hub, you will quickly see if you have custom servers or settings configured.</p>
+
+<p><img src="/AppService/media/2024/02/dns-overview.png" alt="Azure portal DNS overview" /></p>
+
+<p>When you open the new DNS configuration page, you can configure custom DNS servers and override the default name resolution behavior.</p>
+
+<p><img src="/AppService/media/2024/02/dns-configuration.png" alt="Azure portal DNS configuration" /></p>
+
+<h2 id="roadmap">Roadmap</h2>
+
+<p>We hope all of these improvements makes your work with networking in App Service easier. We are always looking for ways to improve and some of the next focus areas are more networking information at the App Service plan level and an overhaul of the Hybrid connections page. Feel free to give feedback through comments here or through the docs/portal feedback channels.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[We have gradually been making improvements to the Azure portal experience for managing network configuration in App Service. In this blog post I’ll go through some highlights that you may or may not have noticed.]]></summary></entry><entry><title type="html">Harnessing the Power of Network Trace Analysis in Azure App Service</title><link href="https://azure.github.io/AppService/2024/01/29/Harnessing-the-Power-of-Network-Trace-Analysis-in-Azure-App-Service.html" rel="alternate" type="text/html" title="Harnessing the Power of Network Trace Analysis in Azure App Service" /><published>2024-01-29T00:00:00+00:00</published><updated>2024-01-29T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2024/01/29/Harnessing-the-Power-of-Network-Trace-Analysis-in-Azure-App-Service</id><content type="html" xml:base="https://azure.github.io/AppService/2024/01/29/Harnessing-the-Power-of-Network-Trace-Analysis-in-Azure-App-Service.html"><![CDATA[<p>We are thrilled to announce the public preview of a powerful new feature in Azure App Service: the <strong>Network Trace Analyzer</strong>. Designed to simplify the often-complex task of network trace analysis, this tool is set to revolutionize your troubleshooting process.</p>
+
+<p>Capturing the right network trace at the right time is only half the battle. The major challenge often lies in interpreting the network trace, a task that requires not only the right tools but also a deep understanding of network protocols and behaviors. This innovative addition is now available in the Diagnose and Solve Problems blade in the Azure portal and is designed to streamline the process of analyzing network traces and troubleshooting issues within your web application.</p>
+
+<h3 id="getting-started">Getting Started</h3>
+
+<p>To access the Network Trace Analysis tool, navigate to the <strong>Diagnose and Solve</strong> Blade &gt; <strong>Diagnostics Tools</strong> and select <strong>Network Trace Analyzer</strong>.</p>
+
+<p><img src="/AppService/media/2024/01/upload-network-trace.png" alt="" /></p>
+
+<p>Upload your network trace file and let our tool do the heavy lifting. Once uploaded, our tool begins the background process of identifying the source and destination IPs and ports.</p>
+
+<p><img src="/AppService/media/2024/01/retrieving-ips-ports.png" alt="" /></p>
+
+<p>You will be required to select a destination IP and port for analysis. In cases where multiple source IPs are present, you will also need to choose a source IP.</p>
+
+<p><img src="/AppService/media/2024/01/select-dest-ips-ports.png" alt="" /></p>
+
+<p>After providing the necessary information, click on the <strong>Get Analysis Report</strong> button to generate the detailed report.</p>
+
+<h3 id="interpreting-the-network-trace-analysis-graph">Interpreting the Network Trace Analysis Graph</h3>
+
+<p>The Analysis Report presents a comprehensive network trace analysis graph depicting the current state of the basic network connectivity between your web app and various remote endpoints it is connected to.</p>
+
+<p><img src="/AppService/media/2024/01/network-analysis-graph.png" alt="" /></p>
+
+<p>By clicking on any of the nodes for the remote endpoints, you can view a detailed analysis report. This report provides a summary of the most pertinent information in the network trace and highlights potential red flags which could be the root cause of the network-related issues on your web app. It also provides recommendations on how to resolve them, simplifying the process of troubleshooting network-related issues on your web app.</p>
+
+<p><img src="/AppService/media/2024/01/network-trace-analysis-report.png" alt="" /></p>
+
+<h3 id="key-features">Key Features</h3>
+
+<ul>
+  <li>
+    <p><strong>Basic Network Connectivity</strong>: This feature analyzes the initiation of a TCP connection, helping you troubleshoot issues arising during the establishment of a connection between your web app and the destination endpoint.</p>
+  </li>
+  <li>
+    <p><strong>Transmission Control Protocol (TCP) Reset Errors</strong>: Identify and address TCP reset errors that may be disrupting your web application’s connectivity.</p>
+  </li>
+  <li>
+    <p><strong>TCP SYN Retransmissions</strong>: Detect and troubleshoot TCP SYN retransmission errors that can degrade your web application’s performance.</p>
+  </li>
+  <li>
+    <p><strong>TCP Reset Errors</strong>: Checks for TCP reset errors which occur when a TCP connection is abruptly closed by the receiving end of the connection.</p>
+  </li>
+  <li>
+    <p><strong>Transport Layer Security (TLS) Handshake</strong>: This tool checks the TLS “handshake” process, which is the initial step in establishing a TLS connection</p>
+  </li>
+  <li>
+    <p><strong>TLS Alerts</strong>: Monitor for TLS alerts, which are warning or error messages that can be sent at any time during the TLS connection process. These alerts can indicate issues like an unknown certificate authority, a decryption error, or a protocol version mismatch.</p>
+  </li>
+</ul>
+
+<p>Future updates will introduce scenarios like TCP Packet Loss, TCP Zero Window Dead, and more.</p>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>The Network Trace Analyzer in Azure App Service is a significant leap forward in simplifying network trace analysis. This tool not only makes it easier for you to identify potential issues but also provides actionable recommendations for resolving them.</p>
+
+<p>We’re excited for you to try out this new feature and look forward to your valuable feedback. As always, our commitment is to continually enhance your experience within Azure App Service.</p>
+
+<h3 id="questionsfeedback">Questions/Feedback</h3>
+
+<p>If you have any questions or feedback, please reach out to our team at <a href="mailto:diagnostics@microsoft.com">diagnostics@microsoft.com</a></p>]]></content><author><name>Azure App Service</name></author><category term="diagnostics" /><category term="network trace analysis" /><summary type="html"><![CDATA[We are thrilled to announce the public preview of a powerful new feature in Azure App Service: the Network Trace Analyzer. Designed to simplify the often-complex task of network trace analysis, this tool is set to revolutionize your troubleshooting process.]]></summary></entry><entry><title type="html">Use Azure CLI to track the status of your code deployments</title><link href="https://azure.github.io/AppService/2024/01/10/Deployment-Status-API-CLI.html" rel="alternate" type="text/html" title="Use Azure CLI to track the status of your code deployments" /><published>2024-01-10T00:00:00+00:00</published><updated>2024-01-10T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2024/01/10/Deployment-Status-API-CLI</id><content type="html" xml:base="https://azure.github.io/AppService/2024/01/10/Deployment-Status-API-CLI.html"><![CDATA[<p>We are adding new capability to <code class="language-plaintext highlighter-rouge">az webapp deploy</code> allowing you to track the status of your code deployments. You can take advantage of more detailed information about the stages of your deployment using the <code class="language-plaintext highlighter-rouge">--track-status</code> option.</p>
+
+<p>Here are the steps to use it</p>
+
+<ol>
+  <li>
+    <p>First, make sure you are using Azure CLI version <a href="https://github.com/MicrosoftDocs/azure-docs-cli/blob/main/docs-ref-conceptual/release-notes-azure-cli.md">2.56.0</a> or greater.</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> az <span class="nt">--version</span>
+</code></pre></div>    </div>
+
+    <p>If your version is lower, you can upgrade using this command.</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> az upgrade
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Now, you can deploy your code and track status using the following command. The option <code class="language-plaintext highlighter-rouge">--track-status</code> will ensure that the polling API is setup for your deployment. Replace <code class="language-plaintext highlighter-rouge">&lt;app-name&gt;</code>, <code class="language-plaintext highlighter-rouge">&lt;group-name&gt;</code>, <code class="language-plaintext highlighter-rouge">&lt;repository-path&gt;</code>, <code class="language-plaintext highlighter-rouge">&lt;zip/war/jar/script&gt;</code> and <code class="language-plaintext highlighter-rouge">&lt;true/false&gt;</code> with your Web App name, resource group, repository path, the repository type and whether you want to run the deployment synchronously or not respectively.</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>     az webapp deploy 
+         <span class="nt">--name</span> <span class="s1">'&lt;app-name&gt;'</span> <span class="se">\</span>
+         <span class="nt">--resource-group</span> <span class="s1">'&lt;group-name&gt;'</span> <span class="se">\ </span>
+         <span class="nt">--src-path</span> <span class="s1">'&lt;repository-path&gt;'</span> <span class="se">\</span>
+         <span class="nt">--type</span><span class="o">=</span><span class="s1">'&lt;zip/war/jar/script&gt;'</span> <span class="se">\</span>
+         <span class="nt">--async</span> <span class="s1">'&lt;true/false&gt;'</span>  <span class="se">\</span>
+         <span class="nt">--track-status</span> 
+</code></pre></div>    </div>
+
+    <p>For more information about <a href="https://learn.microsoft.com/en-us/cli/azure/webapp?view=azure-cli-latest#az-webapp-deploy">az webapp deploy</a>, please refer to the documentation.</p>
+  </li>
+</ol>
+
+<p>To give an example, this is the message you get if you run without the tracking option.</p>
+
+<p><strong>Without tracking</strong>
+<img src="/AppService/media/2024/01/deployment-without-tracking.jpg" alt="Deployment without tracking" /></p>
+
+<p>Deployment has various steps to it - copying the code to our servers, building the code and copying the binaries and finally restarting the website so that it runs with the new binaries. From the message above, it was hard to determine which step failed.</p>
+
+<p>Now these are some snippets of the output for <code class="language-plaintext highlighter-rouge">--track-status</code></p>
+
+<p><strong>Deployment Succeeded:</strong>
+<img src="/AppService/media/2024/01/deployment-successful.jpg" alt="Deployment Successful" /></p>
+
+<p><strong>Build Failed:</strong>
+Here, the build of my code failed and therefore, deployment failed. The error message also gives you a link to the build logs for more detailed errors about the failure.</p>
+
+<p><img src="/AppService/media/2024/01/deployment-build-failed.jpg" alt="Build Failed" /></p>
+
+<p><strong>Site startup failed after deployment:</strong>
+Once the build is done, the API checks to see if the site is restarted. It keeps polling for 10 minutes for the site to startup and gives an error if it does not start in that time. You can look at your site logs to determine why your site failed to startup in 10 minutes.</p>
+
+<p><img src="/AppService/media/2024/01/deployment-runtime-failed.jpg" alt="Runtime Failed" /></p>
+
+<p><strong>Conclusion:</strong>
+At present, this feature is available only for Linux App Service code deployments. This is a platform improvement and our roadmap includes extending this functionality to other deployment clients such as GitHub and Visual Studio. Stay tuned for forthcoming updates as we continue our efforts to smoothen your deployment journey on Azure App Service.</p>]]></content><author><name>Azure App Service</name></author><category term="Deployment" /><summary type="html"><![CDATA[We are adding new capability to az webapp deploy allowing you to track the status of your code deployments. You can take advantage of more detailed information about the stages of your deployment using the --track-status option.]]></summary></entry><entry><title type="html">Improvements to DNS configuration and name resolution in App Service</title><link href="https://azure.github.io/AppService/2024/01/09/DNS-improvements.html" rel="alternate" type="text/html" title="Improvements to DNS configuration and name resolution in App Service" /><published>2024-01-09T00:00:00+00:00</published><updated>2024-01-09T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2024/01/09/DNS-improvements</id><content type="html" xml:base="https://azure.github.io/AppService/2024/01/09/DNS-improvements.html"><![CDATA[<p>More than a year ago we started a journey to improve the DNS configuration and name resolution in App Service. The mission was and is to improve in several areas:</p>
+
+<ul>
+  <li>Documentation improvements</li>
+  <li>Parity between Windows and Linux</li>
+  <li>Configuration using site properties</li>
+  <li>Azure Portal configuration</li>
+  <li>Logging capabilities</li>
+</ul>
+
+<p>In this blog post I wanted to share some details of what we are building and the current progress of each area.</p>
+
+<h2 id="documentation-improvements">Documentation improvements</h2>
+
+<p>DNS configuration and name resolution now has its own article in the public documentation. This documentation goes into details with how the name resolution works and what configuration options exist. If you have not yet seen this <a href="https://learn.microsoft.com/azure/app-service/overview-name-resolution">article</a>, I suggest you start by reading it to provide context for the rest of this post.</p>
+
+<h2 id="parity-between-windows-and-linux">Parity between Windows and Linux</h2>
+
+<p>When DNS servers are explicitly configured in App Service using App Settings or site properties, there was no difference in behavior of how Windows and Linux handled the configured servers. However, when using DNS servers configured in the virtual network, Windows apps had a behavior that would sort the list of DNS servers and only select the first two DNS server IP addresses to be used for name resolution. This could impact the name resolution behavior if you had more than two servers configured and/or the order of the servers mattered.</p>
+
+<p>About a year ago we aligned the behavior with Linux allowing up to five servers to be used and removed the sorting. To prevent breaking changes to customers that intentionally or unintentionally had taken a dependency on the sorting, we made “no sorting” the default behavior for new sites created and an opt-in option for existing sites. For most customers this doesn’t have an impact. The combination of using DNS servers from the virtual network, having more than two DNS servers configured and the order having an impact is very rare.</p>
+
+<p>Should you however have this exact scenario, you can validate if your site is still using DNS server sorting by calling this command:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az rest <span class="nt">--method</span> GET <span class="nt">--uri</span> /subscriptions/&lt;sub-id&gt;/resourceGroups/&lt;resource group&gt;/providers/Microsoft.Web/sites/&lt;site name&gt;?api-version<span class="o">=</span>2022-03-01 <span class="nt">--query</span> <span class="s1">'properties.dnsConfiguration'</span>
+</code></pre></div></div>
+
+<p>and look for the following property:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+   <span class="dl">"</span><span class="s2">dnsLegacySortOrder</span><span class="dl">"</span><span class="p">:</span> <span class="kc">true</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>If the property is returned, you can opt in to the new “no sorting” behavior by calling this command:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az rest <span class="nt">--method</span> POST <span class="nt">--uri</span> /subscriptions/&lt;sub-id&gt;/resourceGroups/&lt;resource group&gt;/providers/Microsoft.Web/sites/&lt;site name&gt;/disableVirtualNetworkDnsSorting?api-version<span class="o">=</span>2022-03-01
+</code></pre></div></div>
+
+<p>Another difference that existed between Windows and Linux was the default behavior of name resolution. You can configure retry timeout, retry count and cache timeout, but all of them have default values. You can see the current values in the documentation and we are currently rolling out a change to align the default values. Once the current update is rolled out, the defaults will be as listed in the next section.</p>
+
+<h2 id="configuration-using-site-properties">Configuration using site properties</h2>
+
+<p>Currently, the most common way of configuring DNS settings is to use App Settings. However, App Settings have some challenges that make them less appealing:</p>
+
+<ul>
+  <li>They are subject to spelling mistakes and there is no API level validation.</li>
+  <li>You can’t control/audit using Azure Policy.</li>
+  <li>You need write permissions to read the values (because App Settings often contain secrets, they have this extra layer of security).</li>
+</ul>
+
+<p>To meet these challenges we are introducing site properties for all DNS configurations. The App Settings will continue to work, but the site properties will take precedence if configured. The properties are grouped under the <code class="language-plaintext highlighter-rouge">dnsConfiguration</code> property.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>Property name</strong></th>
+      <th><strong>App Setting</strong></th>
+      <th><strong>Allowed values</strong></th>
+      <th><strong>Default value</strong></th>
+      <th><strong>Description</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>DnsServers</td>
+      <td>WEBSITE_DNS_SERVER</td>
+      <td>IPv4 addresses</td>
+      <td>none</td>
+      <td>Overrides Azure default DNS or DNS servers inherited from virtual network. Allows up to five servers.</td>
+    </tr>
+    <tr>
+      <td>DnsAltServer</td>
+      <td>WEBSITE_DNS_ALT_SERVER</td>
+      <td>IPv4 address</td>
+      <td>none</td>
+      <td>Appends this specific DNS server to the list of DNS servers configured. This will be appended to both explicitly configured DNS servers and DNS servers inherited from the virtual network.</td>
+    </tr>
+    <tr>
+      <td>DnsMaxCacheTimeout</td>
+      <td>WEBSITE_DNS_MAX_CACHE_TIMEOUT</td>
+      <td>0-60</td>
+      <td>30</td>
+      <td>DNS results will be cached according to the individual records TTL, but no longer than the defined max cache timeout. Setting cache to zero means you’ve disabled caching.</td>
+    </tr>
+    <tr>
+      <td>DnsRetryAttemptTimeout</td>
+      <td>WEBSITE_DNS_TIMEOUT</td>
+      <td>1-30</td>
+      <td>3</td>
+      <td>Timeout before retrying or failing. Timeout also defines the time to wait for secondary server results if the primary doesn’t respond.</td>
+    </tr>
+    <tr>
+      <td>DnsRetryAttemptCount</td>
+      <td>WEBSITE_DNS_ATTEMPTS</td>
+      <td>1-5</td>
+      <td>3</td>
+      <td>Defines the number of attempts to resolve where one means no retries.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><code class="language-plaintext highlighter-rouge">DnsAltServer</code> and, as mentioned before, the new default values are currently rolling out. All other properties are available today.</p>
+
+<h2 id="azure-portal-configuration">Azure Portal configuration</h2>
+
+<p>Based on the new properties, we have started to build UX to support the configurations. This will give you one place to view and configure all DNS options. The configuration page will be available from the networking hub page and we aim to have it ready in Q2 2024.</p>
+
+<h2 id="logging-capabilities">Logging capabilities</h2>
+
+<p>Finally, we have been working on improved logging capabilities. We started by adding logging capabilities to our support staff to help them help you troubleshoot DNS behavior issues. Building on the learnings from our internal use, we will be adding a new logging category to Diagnostics logs to allow you to send name resolution logs to Azure Monitor. We expect this capability to land in H2 2024.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[More than a year ago we started a journey to improve the DNS configuration and name resolution in App Service. The mission was and is to improve in several areas:]]></summary></entry><entry><title type="html">General availability of Diagnostics tools for App Service on Linux Node.js apps</title><link href="https://azure.github.io/AppService/2024/01/05/Diagnose-Tools-for-NodeJs-Linux-apps.html" rel="alternate" type="text/html" title="General availability of Diagnostics tools for App Service on Linux Node.js apps" /><published>2024-01-05T00:00:00+00:00</published><updated>2024-01-05T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2024/01/05/Diagnose-Tools-for-NodeJs-Linux-apps</id><content type="html" xml:base="https://azure.github.io/AppService/2024/01/05/Diagnose-Tools-for-NodeJs-Linux-apps.html"><![CDATA[<p>We are pleased to announce the public availability of Diagnostic tools for App Services Linux for Node.js apps. With this capability, we now offer built-in support for collecting deep diagnostic artifacts that can help you debug application code issues. These artifacts include memory dumps and profiler traces. These tools empower developers to diagnose a variety of Node.js code scenarios on Linux including:</p>
+
+<ul>
+  <li>High memory</li>
+  <li>High CPU</li>
+</ul>
+
+<p>The experience uses <a href="https://v8.dev/docs/profile">V8 sample-based profiler</a> to collect diagnostic traces/snapshots to identify if application code is contributing to the problem.</p>
+
+<h2 id="collection-in-diagnose-and-solve">Collection in Diagnose and Solve</h2>
+
+<p>To access these new capabilities on your .NET Core apps hosted in Linux, navigate to the <strong>Diagnose and Solve</strong> Blade &gt; <strong>Diagnostics Tools</strong> and select either <strong>Collect Node Heap Dump</strong> or <strong>Collect Node CPU Profiler</strong>.</p>
+
+<p><img src="/AppService/media/2024/01/node-diagnostics.jpg" alt="Linux Diagnostic Tools" /></p>
+
+<h2 id="collection-in-kudu">Collection in Kudu</h2>
+
+<p>The <a href="https://docs.microsoft.com/azure/app-service/resources-kudu">Kudu console</a> for Linux app services has been updated to include new collection options for memory dumps and profiles on the Process Explorer page.</p>
+
+<p>To navigate to this new Kudu experience use the following (update &lt;<strong>mysite</strong>&gt; with your app name): https://&lt;<strong>mysite</strong>&gt;.scm.azurewebsites.net/<strong>newui</strong> to check out the new experience.</p>
+
+<p><img src="/AppService/media/2024/01/node-process-explorer.jpg" alt="Process Explorer in Kudu" /></p>
+
+<p>When you select the <em>Process Explorer</em> page, you can identify the process you want to debug. Use the drop-downs to select the type of memory dump and click <strong>Collect Dump</strong>. Alternatively, you can select the length of a profile from the drop-down and click <strong>Start Profiling</strong>.</p>
+
+<h2 id="analyzing-a-heapsnapshot-for-memory-issues">Analyzing a heapsnapshot for Memory Issues</h2>
+
+<p>Heap dumps are created using the extension *.heapsnapshot. Once the dump has been created, you will get a link to download it on your local machine. You can analyze the dump using any Chromium browser.</p>
+
+<p>Since Chrome and Edge use the same Javascript runtime (V8 engine), heap snapshots can be read using Chrome or Edge DevTools for Node.<br />
+<strong>Chrome</strong>: Navigate in Chrome Browser and type <code class="language-plaintext highlighter-rouge">chrome://inspect/</code>, then click on <strong>Open dedicated DevTools for Node</strong><br />
+<strong>Edge</strong>: Navigate in Chrome Browser and type <code class="language-plaintext highlighter-rouge">edge://inspect/</code>, then click on <strong>Open dedicated DevTools for Node</strong></p>
+
+<p>You can chose the Memory tab and load a Heap Snapshot here for analysis. You will find several columns, the most important ones are <strong>Shallow Size</strong> and <strong>Retained Size</strong>.</p>
+
+<blockquote>
+  <p><strong>Shallow Size</strong>: This is the size of memory that is held by the object itself. Usually, only arrays and strings can have a significant shallow size.<br />
+<strong>Retained Size</strong>: This is the size of memory that is freed once the object itself is deleted due it becoming unreachable from GC roots. Held by object implicitly.</p>
+</blockquote>
+
+<p>You will be looking for the highest percentage in Retained Size comparing as well with Shallow Size.</p>
+
+<p><img src="/AppService/media/2024/01/heapsnapshot.jpg" alt="Heap snapshot" /></p>
+
+<p>More information on how to analyze heapsnapshot dumps in Chromium browsers can be found here - <a href="https://developer.chrome.com/docs/devtools/memory-problems/heap-snapshots/">Chrome - Devtools - Heapsnapshot - Reference</a>.</p>
+
+<h2 id="analyzing-a-cpuprofile-for-high-cpu-issues">Analyzing a cpuprofile for High CPU Issues</h2>
+
+<p>Profiler traces are created using the extension *.cpuprofile. Once the trace has been created, you will get a link to download it on your local machine. You can analyze the trace using any Chromium browser.</p>
+
+<p><strong>Chrome</strong>: Navigate in Chrome Browser and type <code class="language-plaintext highlighter-rouge">chrome://inspect/</code>, then click on <strong>Open dedicated DevTools for Node</strong><br />
+<strong>Edge</strong>: Navigate in Chrome Browser and type <code class="language-plaintext highlighter-rouge">edge://inspect/</code>, then click on <strong>Open dedicated DevTools for Node</strong></p>
+
+<p>Chose the Performance tab and you can drag and drop your trace here.</p>
+
+<p><img src="/AppService/media/2024/01/node-cpu-profile.jpg" alt="CPU Profile" /></p>
+
+<p>You can use different views like Call Tree or Bottom-Up. You can also zoom into any of the frames to get more detailed information.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Summing up, within Azure App Service, we’re dedicated to consistently enhancing the in-built diagnostic experience, providing an extensive array of tools that empower you to meticulously analyze and troubleshoot the health of your production applications.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[We are pleased to announce the public availability of Diagnostic tools for App Services Linux for Node.js apps. With this capability, we now offer built-in support for collecting deep diagnostic artifacts that can help you debug application code issues. These artifacts include memory dumps and profiler traces. These tools empower developers to diagnose a variety of Node.js code scenarios on Linux including:]]></summary></entry><entry><title type="html">Node 20 and Python 3.12 now available on App Service</title><link href="https://azure.github.io/AppService/2023/11/14/Node-20-Python-312-available-on-app-service.html" rel="alternate" type="text/html" title="Node 20 and Python 3.12 now available on App Service" /><published>2023-11-14T00:00:00+00:00</published><updated>2023-11-14T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2023/11/14/Node-20-Python-312-available-on-app-service</id><content type="html" xml:base="https://azure.github.io/AppService/2023/11/14/Node-20-Python-312-available-on-app-service.html"><![CDATA[<p>We are happy to announce that App Service now supports apps targeting <a href="https://nodejs.org/en/download/">Node 20</a> and <a href="https://www.python.org/downloads/">Python 3.12</a> across all public regions on Linux App Service Plans.</p>
+
+<p>Want to get started with building apps on Node and Python? Follow these guides:</p>
+
+<ol>
+  <li><a href="https://learn.microsoft.com/azure/app-service/quickstart-nodejs?tabs=linux&amp;pivots=development-environment-cli">Create a Node.js web app in Azure</a></li>
+  <li><a href="https://learn.microsoft.com/azure/app-service/tutorial-nodejs-mongodb-app">Deploy a Node.js + MongoDB web app to Azure</a></li>
+  <li><a href="https://learn.microsoft.com/azure/app-service/quickstart-python">Quickstart: Deploy a Python (Django or Flask) web app to Azure App Service</a></li>
+  <li><a href="https://learn.microsoft.com/azure/app-service/tutorial-python-postgresql-app">Deploy a Python (Django or Flask) web app with PostgreSQL in Azure</a></li>
+</ol>
+
+<p>We also rolled out support for <a href="https://aka.ms/appservice-dotnet8">.NET 8 GA on App Service</a></p>
+
+<p>You can also checkout all the new Azure App Service features and capabilities that we are announcing at <a href="https://aka.ms/appserviceignite2023whatsnew">Ignite 2023</a></p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[We are happy to announce that App Service now supports apps targeting Node 20 and Python 3.12 across all public regions on Linux App Service Plans.]]></summary></entry><entry><title type="html">.NET 8 GA available on App Service</title><link href="https://azure.github.io/AppService/2023/11/14/dotnet8-ga.html" rel="alternate" type="text/html" title=".NET 8 GA available on App Service" /><published>2023-11-14T00:00:00+00:00</published><updated>2023-11-14T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2023/11/14/dotnet8-ga</id><content type="html" xml:base="https://azure.github.io/AppService/2023/11/14/dotnet8-ga.html"><![CDATA[<p>We have completed the rollout for <a href="https://dotnet.microsoft.com/en-us/download/dotnet/8.0">.NET 8 GA</a> support on App Service.</p>
+
+<p>Like in previous years we are using the <a href="https://aka.ms/app-service-early-access">App Service Early Access feature</a> to enable day-0 support on the platform across all public regions on Windows App Service Plans. The early access release will be followed by additional deployments to fully integrate the new bits across our fleet, expecting to be fully done by the end of the week.</p>
+
+<p>On Linux App Service Plans, .NET 8 GA will be fully integrated on day-0 across all public regions without any additional deployments.</p>
+
+<p>If you already have an app targeting and earlier preview of .NET 8.0 on the platform, there is no need to take action as the new runtime will be picked up on the next application restart once the update is available for your app. You can trigger this manually by starting and stopping your app.</p>
+
+<p>Self-contained .NET apps will <em>not</em> be auto-updated since they have no dependency on the runtime provided by App Service.</p>
+
+<p><a href="https://aka.ms/af-dotnet-isolated-net8">Azure Functions</a> and <a href="https://aka.ms/swa-dotnet8">Azure Static Webapps</a> are also enabling .NET 8 workloads across their scenarios.</p>
+
+<p>If you want to learn more, be sure to checkout our sessions during <a href="https://www.dotnetconf.net/agenda">.NET Conf 2023</a>:</p>
+
+<ul>
+  <li>Tuesday 11/14 @ 4:30PM PST Join <a href="https://twitter.com/coolcsh">Scott Hunter</a> to talk about “Building and scaling cloud-native, intelligent applications on Azure and .NET”</li>
+  <li>Wednesday 11/15 @ 10:00am PST Join <a href="https://twitter.com/bktv99">Byron Tardif</a> will be taking the stage talk about  “App Service the best place to host your .NET 8 Web Apps”.</li>
+  <li>Thursday 11/16 @ 3:30PM PST Join <a href="https://twitter.com/segaurav">Gaurav Seth</a> will show you how to migrate your apps to Azure App Service in the session “From Zero to Hero: Quickly Migrate Web Apps with Azure App Service”</li>
+</ul>
+
+<p>You can also checkout all the new Azure App Service features and capabilities that we are announcing at <a href="https://aka.ms/appserviceignite2023whatsnew">Ignite 2023</a></p>
+
+<p>Next steps:</p>
+
+<ul>
+  <li><a href="https://dotnet.microsoft.com/en-us/download/dotnet/8.0">Download .NET 8</a></li>
+  <li><a href="https://aka.ms/dotnet8blog">Anouncing .NET 8.0 </a></li>
+  <li><a href="https://aka.ms/aspnet-blog-8">ASP.NET Core in .NET 8</a></li>
+  <li><a href="https://docs.microsoft.com/azure/app-service/quickstart-dotnetcore?tabs=net60&amp;pivots=development-environment-vs">Deploy a .NET application to App Service</a></li>
+</ul>
+
+<p>You can also follow us on twitter for more updates and news: <a href="https://twitter.com/AzAppService/">@AzAppService</a></p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[We have completed the rollout for .NET 8 GA support on App Service.]]></summary></entry><entry><title type="html">Recently Announced: Advanced Clustering Features for JBoss EAP on Azure App Service</title><link href="https://azure.github.io/AppService/2023/09/28/JBoss-EAP-Clustering-on-Azure-App-Service.html" rel="alternate" type="text/html" title="Recently Announced: Advanced Clustering Features for JBoss EAP on Azure App Service" /><published>2023-09-28T00:00:00+00:00</published><updated>2023-09-28T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2023/09/28/JBoss-EAP-Clustering-on-Azure-App-Service</id><content type="html" xml:base="https://azure.github.io/AppService/2023/09/28/JBoss-EAP-Clustering-on-Azure-App-Service.html"><![CDATA[<h2 id="a-new-era-of-high-availability-and-scalability">A new era of high availability and scalability</h2>
+
+<p>If you’re running distributed applications on <a href="https://learn.microsoft.com/en-us/azure/developer/java/ee/jboss-on-azure">JBoss EAP</a>, you know that clustering is essential for data consistency and fault tolerance. We’ve taken this a step further on <a href="https://azure.microsoft.com/en-us/products/app-service/">Azure App Service</a>. Now, when you integrate JBoss EAP with an <a href="https://learn.microsoft.com/en-us/azure/virtual-network/">Azure Virtual Network (VNet)</a>, clustering isn’t just an option; it’s a built-in feature that kicks in automatically.</p>
+
+<p>What does this mean for your apps? For starters, it improves fault tolerance and enables more efficient data sharing across multiple instances. Your application can now handle traffic spikes and server failures better. The service scales based on your configured settings in Azure App Service, providing both vertical and horizontal options.</p>
+
+<p>One key update in this release is the automatic enablement of clustering when you activate VNet Integration for your web application. This results in a high-availability setup right from the get-go. We’ll delve into the technical specifics below.</p>
+
+<p><img src="/AppService/media/2023/09/jboss-clustering.png" alt="JBOSS Clustering on App Service Architecture" /></p>
+
+<p>Enabling VNet integration is required for communication between servers that form the cluster. Clustering is enabled automatically but can be disabled using an Application Setting (WEBSITE_DISABLE_CLUSTERING).</p>
+
+<h2 id="whats-included">What’s Included</h2>
+
+<ul>
+  <li>Clustering of web applications, including HTTP session replication, HA (high availability), and Singleton Service. For more information, see <a href="https://access.redhat.com/documentation/en-us/red_hat_jboss_enterprise_application_platform/7.4/html/development_guide/clustering_in_web_applications">Chapter 6. Clustering in Web Applications - Red Hat Customer Portal</a></li>
+  <li>High-availability support</li>
+  <li>Transaction recovery support</li>
+</ul>
+
+<h2 id="configuration">Configuration</h2>
+<p>You can configure the behavior of the clustering-related features using these Application Settings:</p>
+
+<ul>
+  <li>
+    <p>WEBSITE_JBOSS_SERVER_DIR defines the parent location of the JBoss state and transaction files. If customers use a location mounted from Azure Storage, this setting improves the availability of the application by avoiding using the /home directory, which becomes read-only during platform upgrades.</p>
+  </li>
+  <li>
+    <p>WEBSITE_JBOSS_CLUSTER_DIR defines the location of the cluster definition files. Similar to the previous setting, if you use a location mounted from Azure Storage, this setting improves the availability of the application by avoiding using the /home directory which becomes read-only during platform upgrades.</p>
+  </li>
+  <li>
+    <p>JBOSS_LAUNCHER_OPTS passes options directly to the JBoss launcher script (standalone.sh) to allow changes such as enabling the JBoss web administration interface.</p>
+  </li>
+  <li>
+    <p>WEBSITE_DISABLE_CLUSTERING prevents the clustering behavior from starting, even if the application is used with VNet integration enabled.</p>
+  </li>
+  <li>
+    <p>WEBSITES_CONTAINER_STOP_TIME_LIMIT sets how long to wait for pending transactions before stopping the server forcefully (in seconds). Its default value is 120 seconds.</p>
+  </li>
+</ul>
+
+<h2 id="how-to-get-started">How to Get Started</h2>
+
+<p>Get started with Clustering Support on App Service for JBOSS EAP today! It is now generally available. To get your hands on it, go through our detailed guide: <a href="https://github.com/Azure-Samples/clustered-jboss-demo">Clustered JBoss EAP on Azure App Service Quickstart</a>. This guide walks you through the deployment of a basic distributed application to JBoss EAP, demonstrating how clustering operates seamlessly on Azure App Service.</p>
+
+<h2 id="additional-information">Additional Information</h2>
+
+<h3 id="auto-scale-rules">Auto-scale rules</h3>
+
+<p>When configuring auto-scale rules for horizontal scaling it is important to remove instances one at a time to ensure each removed instance transfers its activity (for example, handling a database transaction) to another member of the cluster. When configuring your auto-scale rules in the Portal to scale down, use the following options:</p>
+
+<ul>
+  <li>
+    <p>Operation: “Decrease count by”</p>
+  </li>
+  <li>
+    <p>Cool down: “5 minutes” or greater</p>
+  </li>
+  <li>
+    <p>Instance count: 1</p>
+  </li>
+</ul>
+
+<p>When scaling out though, you can add multiple instances to the cluster simultaneously.</p>
+
+<h3 id="limitations-on-clustering">Limitations on Clustering</h3>
+
+<ul>
+  <li>
+    <p>The App Service platform waits up to 120 seconds before stopping a server, not indefinitely for transactions to complete. Any pending transactions remaining after stopping the server are recovered when a new server is added, according to the number of instances defined in the Scale Out configuration.</p>
+  </li>
+  <li>
+    <p>If a customer manually resizes down a cluster, there’s a potential for nodes to be stopped before they complete their transactions. In that case a warning is emitted, and manual intervention is needed to commit the transactions from that node. The process is documented in section 5.2. “Migrating Logs to a New JBoss EAP Server” of the guide <a href="https://access.redhat.com/documentation/en-us/red_hat_jboss_enterprise_application_platform/7.4/html-single/managing_transactions_on_jboss_eap/index#migrating_logs_to_new_server">Managing Transactions - Red Hat Customer Portal</a>.</p>
+  </li>
+  <li>
+    <p>In the case of a movement to different hardware (for example, scaling up or hardware faults), when a cluster node cannot complete its transactions, a warning will be emitted, and manual intervention is needed to commit any transactions that were not committed.</p>
+  </li>
+</ul>
+
+<h3 id="learn-more">Learn more</h3>
+
+<ul>
+  <li>
+    <p><a href="https://www.redhat.com/en/about/press-releases/red-hat-expands-capabilities-jboss-enterprise-application-platform-offerings-microsoft-azure">Red Hat Expands Capabilities of JBoss Enterprise Application Platform Offerings on Microsoft Azure</a></p>
+  </li>
+  <li>
+    <p><a href="https://github.com/Azure-Samples/clustered-jboss-demo">Clustered JBoss EAP on Azure App Service Quickstart</a></p>
+  </li>
+  <li>
+    <p><a href="https://learn.microsoft.com/en-us/azure/developer/java/ee/jboss-on-azure#jboss-eap-on-azure-app-service">JBoss EAP on Azure App Service</a></p>
+  </li>
+  <li>
+    <p><a href="https://access.redhat.com/documentation/en-us/red_hat_jboss_enterprise_application_platform/7.4/html/development_guide/clustering_in_web_applications">Clustering in Web Applications - Red Hat Customer Portal</a></p>
+  </li>
+  <li>
+    <p><a href="https://techcommunity.microsoft.com/t5/apps-on-azure-blog/recently-announced-advanced-clustering-features-for-jboss-eap-on/ba-p/3939672">Recently Announced: Advanced Clustering Features for JBoss EAP on Azure App Service</a></p>
+  </li>
+</ul>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[A new era of high availability and scalability]]></summary></entry></feed>
