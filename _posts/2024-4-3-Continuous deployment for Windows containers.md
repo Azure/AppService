@@ -82,7 +82,7 @@ trigger:
           $(tag)
 ```
 
-**Deploy to Azure App Service**
+### Deploy to Azure App Service
 
 Next, you’ll need to setup the deploy task.  This will require your subscription name, application name, and container registry.  Add a new stage to the yaml file by pasting the code below.
 
