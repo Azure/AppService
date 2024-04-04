@@ -27,4 +27,4 @@ To learn more about webjobs and how to use it, please refer to [Run background t
 
 Exciting times lie ahead for Linux App Service, and we're thrilled to have you along for the ride. We are actively working to add more experiences to the service and we are always interested in your feedback.
 
-Remember to checkout our Community Stanup on 10th April 2024 to learn more about both features. <iframe width="560" height="315" src=https://www.youtube.com/embed/s7pT0oX7jcs?si=Xc8mqctmhug8Jblv&amp;controls=0 title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+Remember to checkout our [Community Standup on 10th April 2024](https://www.youtube.com/live/s7pT0oX7jcs?si=QKTRLYbMuS18kHy4) to learn more about both features. 
