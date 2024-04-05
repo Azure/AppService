@@ -19,7 +19,9 @@ Currently, the feature is enabled scenarios where you want to use a custom Conta
 
 ## Webjobs for Linux App Service
 
-Another feature that we are enabling for Linux App Service is the ability to create Webjobs. Designed to streamline the execution of background tasks and scheduled processes, Webjobs offer a solution for automating routine operations within your applications hosted on the Linux App Service. We have always had the feature for our Windows offerings and now we are bringing the same convenience to Linux App Service. 
+Another feature that we are enabling for Linux App Service is the ability to create Webjobs. Designed to streamline the execution of background tasks and scheduled processes, Webjobs offer a solution for automating routine operations within your applications hosted on the Linux App Service. We have always had the feature for our Windows offerings and now we are bringing the same convenience to Linux App Service.
+
+We are also introducing the feature for [Windows Containers](https://learn.microsoft.com/en-us/azure/app-service/quickstart-custom-container?tabs=dotnet&pivots=container-windows-azure-portal). 
 
 To learn more about webjobs and how to use it, please refer to [Run background tasks with WebJobs in Azure App Service](https://learn.microsoft.com/en-us/azure/app-service/webjobs-create).
 
