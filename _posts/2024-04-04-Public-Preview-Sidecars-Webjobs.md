@@ -17,11 +17,13 @@ We now have a rich experience on the Azure portal which allows you to create a s
 
 Currently, the feature is enabled scenarios where you want to use a custom Container image. We are working to enable it for our pre-defined application stacks as well. More on that is coming soon.
 
-## Webjobs for Linux App Service
+## Webjobs for Linux App Service and Windows Containers
 
-Another feature that we are enabling for Linux App Service is the ability to create Webjobs. Designed to streamline the execution of background tasks and scheduled processes, Webjobs offer a solution for automating routine operations within your applications hosted on the Linux App Service. We have always had the feature for our Windows offerings and now we are bringing the same convenience to Linux App Service. 
+Another feature that we are enabling for Linux App Service is the ability to create Webjobs. Designed to streamline the execution of background tasks and scheduled processes, Webjobs offer a solution for automating routine operations within your applications hosted on the Linux App Service. We have always had the feature for our Windows offerings and now we are bringing the same convenience to Linux App Service.
 
-To learn more about webjobs and how to use it, please refer to [Run background tasks with WebJobs in Azure App Service](https://learn.microsoft.com/en-us/azure/app-service/webjobs-create).
+We are also introducing the feature for [Windows Containers](https://learn.microsoft.com/azure/app-service/quickstart-custom-container?tabs=dotnet&pivots=container-windows-azure-portal). 
+
+To learn more about webjobs and how to use it, please refer to [Run background tasks with WebJobs in Azure App Service](https://learn.microsoft.com/azure/app-service/webjobs-create).
 
 **Conclusion**
 
