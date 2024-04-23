@@ -1,11 +1,11 @@
 ---
-title: "Improvements to controlling networking configurations"
+title: "Improving App Service networking configuration control"
 author_name: "Mads Damgård"
 toc: true
 toc_sticky: true
 ---
 
-Networking as part of an application architecture continues to grow and we have seen and heard a need to invest in more control and insights. Networking involves joining a network and controlling routing of networking. You may already have seen some of the improvements we have made to the [user experience in Azure portal](), but we have also been making changes to the backend to help help control and ensure compliance of networking configurations. In this blog post I'll go through some changes you will see light up in the next 3-6 months.
+Networking as part of an application architecture continues to grow and we have seen and heard a need to invest in more control and insights. Networking involves joining a network and controlling routing of networking. You may already have seen some of the improvements we have made to the [user experience in Azure portal](https://azure.github.io/AppService/2024/02/01/Networking-UX-improvements.html), but we have also been making changes to the backend to help control and ensure compliance of networking configurations. In this blog post I'll go through some changes you will see light up in the next 3-6 months.
 
 ## Policy compliance
 
