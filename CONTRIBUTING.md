@@ -33,8 +33,8 @@ The App Service Team Blog is a great place to share content with our users. Befo
 
 1. Get contributor access to the repository. Email Jeff Martinez with your GitHub username. This will allow you to submit pull requests without creating and maintaining your own fork of the repository.
 
-> NOTE
-> You cannot contribute from a forked repository
+> **NOTE**
+You cannot contribute from a forked repository
 
 ### Set up your environment
 
