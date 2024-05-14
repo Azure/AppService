@@ -20,17 +20,17 @@ With the addition of these new Memory Intensive Isolated V2 SKUs, these are the 
 | I4v2 | 16 vCPUs | 64 GB |
 | **I4mv2** | 16 vCPUs | 128 GB |
 | I5v2 | 32 vCPUs | 128 GB |
-| **I5mv2** | 32 vCPUs | 1256 GB |
+| **I5mv2** | 32 vCPUs | 256 GB |
 | I6v2 | 64 vCPUs | 256 GB |
 
 At launch, you'll need to use CLI or ARM to create and scale App Service plans. Portal support will be added early June.
 
 ## Create or update using CLI
 
-Download the latest Azure CLI to have support for the new SKUs using `az appservice create/update`. Note that the command will take about 40 minutes for Windows and 15 minutes for Linux to complete the create/update operation (use the `--no-wait` parameter to avoid having to wait for the command to finish in the console):
+Download the latest Azure CLI (2.61.0) to have support for the new SKUs using `az appservice create/update`. Note that the command will take about 40 minutes for Windows and 15 minutes for Linux to complete the create/update operation (use the `--no-wait` parameter to avoid having to wait for the command to finish in the console):
 
 ```bash
-az appservice plan create/update --name <plan name> --sku I5v2 -g <resource-group-name> -e <ase-name or resource-id> --no-wait
+az appservice plan create/update --name <plan name> --sku I2mv2 -g <resource-group-name> -e <ase-name or resource-id> --no-wait
 ```
 
 ## Create or update using Azure Resource Manager templates
