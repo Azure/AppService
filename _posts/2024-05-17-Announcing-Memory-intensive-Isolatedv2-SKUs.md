@@ -23,19 +23,27 @@ With the addition of these new Memory Intensive Isolated V2 SKUs, these are the 
 | **I5mv2** | 32 vCPUs | 256 GB |
 | I6v2 | 64 vCPUs | 256 GB |
 
-At launch, you'll need to use CLI or ARM to create and scale App Service plans. Portal support will be added early June.
+While the offering as a whole is officially in public preview, there are some regions where they runtime is GA and you can use this in production. Marked with (GA) in the table below. In the remaining regions we recommend to start using the new SKUs in your pre-production environments first. Currently, you'll need to use CLI or ARM to create and scale App Service plans, but you can use portal to create apps based on the memory intensive plans. Portal support for handling App Service plans will be added in June.
+
+This blog will be regularly updated as we expand to more regions and OS types and complete portal support.
 
 ## Create or update using CLI
 
-Download the latest Azure CLI (2.61.0) to have support for the new SKUs using `az appservice create/update`. Note that the command will take about 40 minutes for Windows and 15 minutes for Linux to complete the create/update operation (use the `--no-wait` parameter to avoid having to wait for the command to finish in the console):
+Download the latest Azure CLI (2.61.0) to have support for the new SKUs using `az appservice create/update`. Note that the command will take about 35 minutes for Windows and 15 minutes for Linux to complete the create/update operation (use the `--no-wait` parameter to avoid having to wait for the command to finish in the console):
 
 ```bash
-az appservice plan create/update --name <plan name> --sku I2mv2 -g <resource-group-name> -e <ase-name or resource-id> --no-wait
+az appservice plan create/update --name <plan name> --sku I2MV2 -g <resource-group-name> -e <ase-name or resource-id> --no-wait
+```
+
+If you have an existing App Service Environment v3 (Isolated V2) plan, you can also use this command to scale to the new SKUs without updating the CLI:
+
+```bash
+az resource update --name <app-service-plan-name> --set sku.name="I3MV2" -g <resource-group-name> --resource-type "Microsoft.Web/serverFarms"
 ```
 
 ## Create or update using Azure Resource Manager templates
 
-To deploy a new plan or update an existing plan using ARM, you can simply just specify the new SKU names. If you use the template below, just replace the values prefixed with REPLACE. For the `reserved` property, true = Linux, false = Windows.
+To deploy a new plan or update an existing plan using ARM, you can just use the new SKU names. If you use the template below, replace the values prefixed with REPLACE. For the `reserved` property, true = Linux, false = Windows.
 
 ```javascript
 {
@@ -71,56 +79,56 @@ To deploy a new plan or update an existing plan using ARM, you can simply just s
 
 ## Regions and OS support
 
-
+This is the current list of supported regions. Regions marked with (GA) have production ready runtime. More regions and Linux/Windows Container support will be added in the coming months.
 
 | Region               | Windows                      | Linux                       | Windows Container         |
 | -------------------- | :--------------------------: | :-------------------------: | :-------------------------: |
 | Australia Central    |                            |                             |                            |
-| Australia Central 2  |                            |                             |                            |
-| Australia East       |                            |                           |                            |
-| Australia Southeast  |                            |                             |                            |
+| Australia Central 2  | ✅                           |                             |                            |
+| Australia East       | ✅                           |                           |                            |
+| Australia Southeast  | ✅                           |                             |                            |
 | Brazil South         |                            |                           |                            |
 | Brazil Southeast     |                            |                             |                            |
-| Canada Central       |                            |                           |                            |
-| Canada East          |                            |                             |                            |
-| Central India        |                            |                           |                            |
+| Canada Central       | ✅                           |                           |                            |
+| Canada East          | ✅                           |                             |                            |
+| Central India        | ✅                           |                           |                            |
 | Central US           |                            |                           |                            |
-| East Asia            | ✅                           |                           |                            |
-| East US              | ✅                           |                           |                            |
-| East US 2            |                            |                           |                            |
+| East Asia            | ✅ (GA)                          |                           |                            |
+| East US              | ✅ (GA)                          |                           |                            |
+| East US 2            | ✅                           |                           |                            |
 | France Central       |                            |                           |                            |
 | France South         |                            |                             |                            |
-| Germany North        |                            |                             |                            |
-| Germany West Central |                            |                           |                            |
+| Germany North        | ✅                           |                             |                            |
+| Germany West Central | ✅                           |                           |                            |
 | Italy North          |                            |                           |                              |
-| Japan East           |                            |                           |                            |
-| Japan West           |                            |                             |                            |
+| Japan East           | ✅                           |                           |                            |
+| Japan West           | ✅                           |                             |                            |
 | Jio India West       |                              |                             |                            |
 | Korea Central        |                            |                           |                            |
-| Korea South          |                            |                             |                            |
-| North Central US     | ✅                           |                             |                            |
-| North Europe         | ✅                           |                           |                            |
-| Norway East          |                            |                           |                            |
+| Korea South          | ✅                           |                             |                            |
+| North Central US     | ✅ (GA)                          |                             |                            |
+| North Europe         | ✅ (GA)                          |                           |                            |
+| Norway East          | ✅                           |                           |                            |
 | Norway West          |                            |                             |                            |
 | Poland Central       |                            |                           |                               |
 | Qatar Central        |                            |                           |                              |
-| South Africa North   |                            |                           |                            |
+| South Africa North   | ✅                           |                           |                            |
 | South Africa West    |                            |                             |                            |
-| South Central US     |                           |                           |                            |
+| South Central US     | ✅                          |                           |                            |
 | South India          |                            |                             |                            |
-| Southeast Asia       |                            |                           |                            |
-| Sweden Central       |                            |                           |                              |
-| Switzerland North    |                            |                           |                            |
+| Southeast Asia       | ✅                           |                           |                            |
+| Sweden Central       | ✅                           |                           |                              |
+| Switzerland North    | ✅                           |                           |                            |
 | Switzerland West     |                            |                             |                            |
 | UAE Central          |                            |                             |                            |
-| UAE North            |                            |                          |                            |
-| UK South             |                            |                           |                            |
-| UK West              |                            |                             |                            |
+| UAE North            | ✅                           |                          |                            |
+| UK South             | ✅                           |                           |                            |
+| UK West              | ✅                           |                             |                            |
 | West Central US      |                            |                             |                            |
 | West Europe          |                            |                           |                            |
 | West India           |                           |                             |                            |
-| West US              |                            |                             |                            |
-| West US 2            | ✅                           |                           |                            |
+| West US              | ✅                           |                             |                            |
+| West US 2            | ✅ (GA)                          |                           |                            |
 | West US 3            |                            |                           |                            |
 
 Looking forward to see what you will do with all that power!
