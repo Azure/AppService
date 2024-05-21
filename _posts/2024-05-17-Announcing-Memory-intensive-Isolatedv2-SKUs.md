@@ -5,7 +5,7 @@ toc: true
 toc_sticky: true
 ---
 
-You may have seen memory intensive SKUs added to our Premium V3 offering. We have been working on bringing this SKU type to App Service Environment v3 as well and I am happy to announce that the wait is over. The rollout will be in waves of regions and App Service plan types. We start with Windows in a selected set of regions. Over the coming months we will add support for Linux and Windows Containers as well, and add more regions to the list.
+You may have seen memory intensive SKUs added to our Premium V3 offering. We have been working on bringing this SKU type to App Service Environment v3 as well and I am happy to announce that the wait is over and memory intensive SKUs are now in public preview. The rollout will be in waves of regions and App Service plan types. We start with Windows in a selected set of regions. Over the coming months we will add support for Linux and Windows Containers as well, and add more regions to the list. To help you onboard this faster, we will also gradually mark runtime in regions as GA allowing you to run production workloads.
 
 With the addition of these new Memory Intensive Isolated V2 SKUs, these are the SKUs available for App Service Environment v3.
 
@@ -23,7 +23,7 @@ With the addition of these new Memory Intensive Isolated V2 SKUs, these are the 
 | **I5mv2** | 32 vCPUs | 256 GB |
 | I6v2 | 64 vCPUs | 256 GB |
 
-While the offering as a whole is officially in public preview, there are some regions where they runtime is GA and you can use this in production. Marked with (GA) in the table below. In the remaining regions we recommend to start using the new SKUs in your pre-production environments first. Currently, you'll need to use CLI or ARM to create and scale App Service plans, but you can use portal to create apps based on the memory intensive plans. Portal support for handling App Service plans will be added in June.
+Currently we recommend you to start using the new SKUs in your pre-production environments. You'll need to use CLI or ARM to create and scale App Service plans, but you can use portal to create apps based on the memory intensive plans. The first regions will start to support production workloads shortly after //BUILD and portal support for handling App Service plans will be added in June.
 
 This blog will be regularly updated as we expand to more regions and OS types and complete portal support.
 
@@ -79,7 +79,7 @@ To deploy a new plan or update an existing plan using ARM, you can just use the 
 
 ## Regions and OS support
 
-This is the current list of supported regions. Regions marked with (GA) have production ready runtime. More regions and Linux/Windows Container support will be added in the coming months.
+This is the current list of supported regions in preview. More regions in preview, regions moving to GA and Linux/Windows Container support will be added in the coming months.
 
 | Region               | Windows                      | Linux                       | Windows Container         |
 | -------------------- | :--------------------------: | :-------------------------: | :-------------------------: |
@@ -93,8 +93,8 @@ This is the current list of supported regions. Regions marked with (GA) have pro
 | Canada East          | ✅                           |                             |                            |
 | Central India        | ✅                           |                           |                            |
 | Central US           |                            |                           |                            |
-| East Asia            | ✅ (GA)                          |                           |                            |
-| East US              | ✅ (GA)                          |                           |                            |
+| East Asia            | ✅                           |                           |                            |
+| East US              | ✅                        |                           |                            |
 | East US 2            | ✅                           |                           |                            |
 | France Central       |                            |                           |                            |
 | France South         |                            |                             |                            |
@@ -106,8 +106,8 @@ This is the current list of supported regions. Regions marked with (GA) have pro
 | Jio India West       |                              |                             |                            |
 | Korea Central        |                            |                           |                            |
 | Korea South          | ✅                           |                             |                            |
-| North Central US     | ✅ (GA)                          |                             |                            |
-| North Europe         | ✅ (GA)                          |                           |                            |
+| North Central US     | ✅                           |                             |                            |
+| North Europe         | ✅                           |                           |                            |
 | Norway East          | ✅                           |                           |                            |
 | Norway West          |                            |                             |                            |
 | Poland Central       |                            |                           |                               |
@@ -128,7 +128,7 @@ This is the current list of supported regions. Regions marked with (GA) have pro
 | West Europe          |                            |                           |                            |
 | West India           |                           |                             |                            |
 | West US              | ✅                           |                             |                            |
-| West US 2            | ✅ (GA)                          |                           |                            |
+| West US 2            | ✅                           |                           |                            |
 | West US 3            |                            |                           |                            |
 
 Looking forward to see what you will do with all that power!
