@@ -5,6 +5,16 @@ toc: true
 toc_sticky: true
 ---
 
+## Update 2
+
+We have now resolved the issue with outbound connections and have further progressed with the runtime of many regions so they can be marked with GA runtime.
+
+## Update 1
+
+Public preview is where we give our customers the chance to validate new features and it is also where we uncover edge cases that would not have been found in our initial testing. We found an issue that impacts outbound connections when scaling to a memory optimized SKU. While it would not be all customers that would be affected, we are not taking any chances since this could break your app. We'll keep a few regions open that are not affected while we are getting a fix out to the remaining regions. We should be able to open the other regions again early June.
+
+## Introduction
+
 You may have seen memory intensive SKUs added to our Premium V3 offering. We have been working on bringing this SKU type to App Service Environment v3 as well and I am happy to announce that the wait is over and memory intensive SKUs are now in public preview. The rollout will be in waves of regions and App Service plan types. We start with Windows in a selected set of regions. Over the coming months we will add support for Linux and Windows Containers as well, and add more regions to the list. To help you onboard this faster, we will also gradually mark runtime in regions as GA allowing you to run production workloads.
 
 With the addition of these new Memory Intensive Isolated V2 SKUs, these are the SKUs available for App Service Environment v3.
@@ -84,30 +94,30 @@ This is the current list of supported regions in preview. More regions in previe
 | Region               | Windows                      | Linux                       | Windows Container         |
 | -------------------- | :--------------------------: | :-------------------------: | :-------------------------: |
 | Australia Central    |                            |                             |                            |
-| Australia Central 2  | ✅                           |                             |                            |
-| Australia East       | ✅                           |                           |                            |
-| Australia Southeast  | ✅                           |                             |                            |
+| Australia Central 2  | :heavy_check_mark:                           |                             |                            |
+| Australia East       | :large_blue_diamond:                           |                           |                            |
+| Australia Southeast  | :heavy_check_mark:                           |                             |                            |
 | Brazil South         |                            |                           |                            |
 | Brazil Southeast     |                            |                             |                            |
 | Canada Central       | ✅                           |                           |                            |
-| Canada East          | ✅                           |                             |                            |
-| Central India        | ✅                           |                           |                            |
+| Canada East          | :heavy_check_mark:                           |                             |                            |
+| Central India        | :heavy_check_mark:                           |                           |                            |
 | Central US           |                            |                           |                            |
-| East Asia            | ✅                           |                           |                            |
-| East US              | ✅                        |                           |                            |
+| East Asia            | :heavy_check_mark:                           |                           |                            |
+| East US              | :heavy_check_mark:                       |                           |                            |
 | East US 2            | ✅                           |                           |                            |
 | France Central       |                            |                           |                            |
 | France South         |                            |                             |                            |
 | Germany North        | ✅                           |                             |                            |
-| Germany West Central | ✅                           |                           |                            |
+| Germany West Central | :heavy_check_mark:                           |                           |                            |
 | Italy North          |                            |                           |                              |
 | Japan East           | ✅                           |                           |                            |
-| Japan West           | ✅                           |                             |                            |
+| Japan West           | :heavy_check_mark:                           |                             |                            |
 | Jio India West       |                              |                             |                            |
 | Korea Central        |                            |                           |                            |
 | Korea South          | ✅                           |                             |                            |
-| North Central US     | ✅                           |                             |                            |
-| North Europe         | ✅                           |                           |                            |
+| North Central US     | :heavy_check_mark:                           |                             |                            |
+| North Europe         | :heavy_check_mark:                           |                           |                            |
 | Norway East          | ✅                           |                           |                            |
 | Norway West          |                            |                             |                            |
 | Poland Central       |                            |                           |                               |
@@ -121,14 +131,14 @@ This is the current list of supported regions in preview. More regions in previe
 | Switzerland North    | ✅                           |                           |                            |
 | Switzerland West     |                            |                             |                            |
 | UAE Central          |                            |                             |                            |
-| UAE North            | ✅                           |                          |                            |
-| UK South             | ✅                           |                           |                            |
+| UAE North            | :heavy_check_mark:                           |                          |                            |
+| UK South             | :heavy_check_mark:                           |                           |                            |
 | UK West              | ✅                           |                             |                            |
 | West Central US      |                            |                             |                            |
 | West Europe          |                            |                           |                            |
 | West India           |                           |                             |                            |
 | West US              | ✅                           |                             |                            |
-| West US 2            | ✅                           |                           |                            |
+| West US 2            | :heavy_check_mark:                           |                           |                            |
 | West US 3            |                            |                           |                            |
 
 Looking forward to see what you will do with all that power!
