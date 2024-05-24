@@ -29,7 +29,7 @@ Limitations in public preview:
 If you have an existing App Service Environment v3 (Isolated V2) plan, you can also use this command to scale to the new SKUs without updating the CLI:
 
 ```bash
-az resource update --name <app-service-plan-name> --set sku.name="I3MV2" -g <resource-group-name> --resource-type "Microsoft.Web/serverFarms"
+az resource update --name <app-name> --set ipMode="IPv6" -g <resource-group-name> --resource-type "Microsoft.Web/sites"
 ```
 
 ## Create or update using Azure Resource Manager templates
