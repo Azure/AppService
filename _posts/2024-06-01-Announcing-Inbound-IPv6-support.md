@@ -7,7 +7,7 @@ toc_sticky: true
 
 ## Introduction
 
-I am happy to announce the first part of our IPv6 implementation in App Service. Public preview of inbound IPv6 support for multi-tenant (Premium SKUs. Functions Consumption and Elastic Premium. Logic Apps Standard). We'll be adding IPv6 support in four stages.
+I am happy to announce the first part of our IPv6 implementation in App Service. Public preview of inbound IPv6 support for multi-tenant apps (Premium SKUs. Functions Consumption and Elastic Premium. Logic Apps Standard). We'll be adding IPv6 support in four stages.
 
 1. IPv6 inbound support (multi-tenant)
 1. IPv6 non-vnet outbound support (multi-tenant)
@@ -20,13 +20,22 @@ Limitations in public preview:
 * Basic and Standard tier is not supported.
 * Functions Consumption may temporarily have extra IP addresses.
 * Functions Consumption and Elastic Premium may not remove the IPv4 address in IPv6 mode.
+* The IPv6 address is not visible in the API.
 * IP-SSL bindings are not supported.
 
+## How does it work
 
+IPv6 inbound requires two things. An IPv6 address that accepts traffic coming in, and a DNS record that returns an IPv6 (AAAA) record. Finally you'll also need a client that can send and receive IPv6 traffic. This means that you may not be able to test it from you local machine since many networks today only support IPv4.
 
-## Create or update using CLI
+Our stamps (deployment units) will all have IPv6 addresses added. When these are added, you can start sending traffic to both the IPv4 and IPv6 address. To ensure backwards compatibility, the DNS response for the default host name (<app-name>.azurewebsites.net) will return only the IPv4 address. If you want to change that, we have added a site property called `IPMode` that you can configure to `IPv6` or `IPv4AndIPv6`. If you set it to only IPv6, your client will need to "understand" IPv6 in order to get a response. Setting it to IPv4 and IPv6 will allow you to have existing clients use IPv4, but allow capable clients to use IPv6.
 
-If you have an existing App Service Environment v3 (Isolated V2) plan, you can also use this command to scale to the new SKUs without updating the CLI:
+If you are using custom domain, you can define your custom DNS records the same way. If you only add an IPv6 (AAAA) record, your clients will need to support IPv6. You can also choose to add both, and finally you can use a CNAME in which case you will use the behavior of `IPMode`.
+
+Do make a note of some of the limitations and especially behavior of Functions plans. We will be working on fixing those issues before General Availability. Do also note that DNS tends to have multiple layers of caching, and sometimes it can take 5-10 minutes for DNS to return the right records.
+
+## Update using CLI
+
+To update an app to return IPv6 DNS records:
 
 ```bash
 az resource update --name <app-name> --set ipMode="IPv6" -g <resource-group-name> --resource-type "Microsoft.Web/sites"
@@ -34,7 +43,7 @@ az resource update --name <app-name> --set ipMode="IPv6" -g <resource-group-name
 
 ## Create or update using Azure Resource Manager templates
 
-To deploy a new app or update an existing app using ARM, you can just set the IPMode to either IPv6 or IPv4AndIPv6. use the new SKU names. If you use the template below, replace the values prefixed with REPLACE. For the `reserved` property, true = Linux, false = Windows.
+To deploy a new app or update an existing app using ARM, you can just set the IPMode to either IPv6 or IPv4AndIPv6. use the new SKU names. In this template, you are also creating an App Service plan. If you use the template below, replace the values prefixed with REPLACE. For the `reserved` property, true = Linux, false = Windows.
 
 ```javascript
 {
@@ -42,8 +51,9 @@ To deploy a new app or update an existing app using ARM, you can just set the IP
     "contentVersion": "1.0.0.0",
     "variables": {
         "appName": "REPLACE-APP-NAME",
+        "appIPMode": "IPv6",
         "appServicePlanName": "REPLACE-PLAN-NAME",
-        "appServicePlanSize": "I2mv2",
+        "appServicePlanSize": "P1v3",
         "appServicePlanInstanceCount": 1,
         "location": "[resourceGroup().location]"
     },
@@ -54,11 +64,25 @@ To deploy a new app or update an existing app using ARM, you can just set the IP
             "apiVersion": "2021-03-01",
             "location": "[variables('location')]",
             "properties": {
-                "reserved": false,
+                "reserved": false
             },
             "sku": {
                 "name": "[variables('appServicePlanSize')]",
                 "capacity": "[variables('appServicePlanInstanceCount')]"
+            }
+        },
+        {
+            "name": "[variables('appName')]",
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2021-03-01",
+            "location": "[variables('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
+            ],
+            "properties": {
+              "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
+              "httpsOnly": true,
+              "ipMode": "[variables('appIPMode')]"
             }
         }
      ]
