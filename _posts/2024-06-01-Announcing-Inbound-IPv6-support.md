@@ -5,8 +5,6 @@ toc: true
 toc_sticky: true
 ---
 
-## Introduction
-
 I am happy to announce the first part of our IPv6 implementation in App Service. Public preview of inbound IPv6 support for multi-tenant apps (Premium SKUs. Functions Consumption and Elastic Premium. Logic Apps Standard). We'll be adding IPv6 support in four stages.
 
 1. IPv6 inbound support (multi-tenant)
@@ -96,55 +94,49 @@ This is the current list of supported regions in preview.
 | Region               | IPv6 supported        |
 | -------------------- | :-------------------: |
 | Australia Central    | :heavy_check_mark:    |
-| Australia Central 2  |                            |
-| Australia East       | ✅                           |
-| Australia Southeast  |                            |
-| Brazil South         |                            |
-| Brazil Southeast     |                            |
-| Canada Central       | ✅                           |
-| Canada East          |                            |
-| Central India        |                            |
-| Central US           |                            |
-| East Asia            |                            |
-| East US              |                        |
-| East US 2            | ✅                           |
-| France Central       |                            |
-| France South         |                            |
-| Germany North        | ✅                           |
-| Germany West Central |                            |
-| Italy North          |                            |
-| Japan East           | ✅                           |
-| Japan West           |                            |
-| Jio India West       |                              |
-| Korea Central        |                            |
-| Korea South          | ✅                           |
-| North Central US     |                            |
-| North Europe         |                            |
-| Norway East          | ✅                           |
-| Norway West          |                            |
-| Poland Central       |                            |
-| Qatar Central        |                            |
-| South Africa North   | ✅                           |
-| South Africa West    |                            |
-| South Central US     | ✅                          |
-| South India          |                            |
-| Southeast Asia       | ✅                           |
-| Sweden Central       | ✅                           |
-| Switzerland North    | ✅                           |
-| Switzerland West     |                            |
-| UAE Central          |                            |
-| UAE North            |                            |
-| UK South             |                            |
-| UK West              | ✅                           |
-| West Central US      |                            |
-| West Europe          |                            |
-| West India           |                           |
-| West US              | ✅                           |
-| West US 2            |                            |
-| West US 3            |                            |
-
-Looking forward to see what you will do with all that power!
-
-### Questions/Feedback
-
-If you have any questions or feedback, please reach out to our team at [AppServiceEnvPM@microsoft.com](mailto:appserviceenvpm@microsoft.com)
+| Australia Central 2  | :heavy_check_mark:    |
+| Australia East       |                       |
+| Australia Southeast  | :heavy_check_mark:    |
+| Brazil South         |                       |
+| Brazil Southeast     | :heavy_check_mark:    |
+| Canada Central       | :heavy_check_mark:    |
+| Canada East          | :heavy_check_mark:    |
+| Central India        | :heavy_check_mark:    |
+| Central US           | :heavy_check_mark:    |
+| East Asia            |                       |
+| East US              |                       |
+| East US 2            |                       |
+| France Central       |                       |
+| France South         | :heavy_check_mark:    |
+| Germany North        | :heavy_check_mark:    |
+| Germany West Central |                       |
+| Italy North          | :heavy_check_mark:    |
+| Japan East           | :heavy_check_mark:    |
+| Japan West           | :heavy_check_mark:    |
+| Jio India West       |                       |
+| Korea Central        | :heavy_check_mark:    |
+| Korea South          | :heavy_check_mark:    |
+| North Central US     |                       |
+| North Europe         |                       |
+| Norway East          | :heavy_check_mark:    |
+| Norway West          | :heavy_check_mark:    |
+| Poland Central       | :heavy_check_mark:    |
+| Qatar Central        | :heavy_check_mark:    |
+| South Africa North   |                       |
+| South Africa West    | :heavy_check_mark:    |
+| South Central US     |                       |
+| South India          |                       |
+| Southeast Asia       |                       |
+| Sweden Central       |                       |
+| Switzerland North    | :heavy_check_mark:    |
+| Switzerland West     | :heavy_check_mark:    |
+| UAE Central          | :heavy_check_mark:    |
+| UAE North            | :heavy_check_mark:    |
+| UK South             |                       |
+| UK West              | :heavy_check_mark:    |
+| West Central US      |                       |
+| West Europe          |                       |
+| West India           |                       |
+| West US              | :heavy_check_mark:    |
+| West US 2            |                       |
+| West US 3            |                       |
