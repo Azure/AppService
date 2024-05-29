@@ -7,27 +7,31 @@ toc_sticky: true
 
 I am happy to announce the first part of our IPv6 implementation in App Service. Public preview of inbound IPv6 support for multi-tenant apps on Premium SKUs, Functions Consumption, Functions Elastic Premium, and Logic Apps Standard). We'll be adding IPv6 support in four stages.
 
-1. IPv6 inbound support (multi-tenant)
-1. IPv6 non-vnet outbound support (multi-tenant)
-1. IPv6 vnet outbound support (multi-tenant and App Service Environment v3)
-1. IPv6 vnet inbound support (App Service Environment v3 - both internal and external)
+1. This announcement: IPv6 inbound support (multi-tenant)
+1. In development: IPv6 non-vnet outbound support (multi-tenant)
+1. Backlog: IPv6 vnet outbound support (multi-tenant and App Service Environment v3)
+1. Backlog: IPv6 vnet inbound support (App Service Environment v3 - both internal and external)
 
-Limitations in public preview:
+Limitations in this public preview:
 
 * Only a subset of regions are supported - see the list below.
-* Basic and Standard tier is currently not supported.
-* Functions Consumption may temporarily have extra IP addresses in the DNS result.
+* Basic and Standard tier currently does not support changing the `IPMode` property.
+* Functions Consumption may have multiple IP addresses in the DNS result.
 * Functions Consumption and Elastic Premium may not remove the IPv4 address in IPv6 mode.
-* The IPv6 address is not visible in the API.
+* The IPv6 address is not visible in the `inboundIpAddress` or `possibleInboundIpAddresses` properties.
 * IP-SSL IPv6 bindings are not supported.
 
 ## How does it work
 
-IPv6 inbound requires two things. An IPv6 address that accepts traffic coming in, and a DNS record that returns an IPv6 (AAAA) record. Finally you'll also need a client that can send and receive IPv6 traffic. This means that you may not be able to test it from you local machine since many networks today only support IPv4.
+IPv6 inbound requires two things. An IPv6 address that accepts traffic coming in, and a DNS record that returns an IPv6 (AAAA) record. Finally you'll also need a client that can send and receive IPv6 traffic. This means that you may not be able to test it from your local machine since many networks today only support IPv4.
 
-Our stamps (deployment units) will all have IPv6 addresses added. When these are added, you can start sending traffic to both the IPv4 and IPv6 address. To ensure backwards compatibility, the DNS response for the default host name (_app-name_.azurewebsites.net) will return only the IPv4 address. If you want to change that, we have added a site property called `IPMode` that you can configure to `IPv6` or `IPv4AndIPv6`. If you set it to IPv6 only, your client will need to "understand" IPv6 in order to get a response. Setting it to IPv4 and IPv6 will allow you to have existing clients use IPv4, but allow capable clients to use IPv6.
+Our stamps (deployment units) will all have IPv6 addresses added. When these are added, you can start sending traffic to both the IPv4 and IPv6 address. To ensure backwards compatibility, the DNS response for the default host name (_app-name_.azurewebsites.net) will return only the IPv4 address. If you want to change that, we have added a site property called `IPMode` that you can configure to `IPv6` or `IPv4AndIPv6`. If you set it to IPv6 only, your client will need to "understand" IPv6 in order to get a response. Setting it to IPv4 and IPv6 will allow you to have existing clients use IPv4, but allow capable clients to use IPv6. If your client does support IPv6, you can test the IPv6 connection using curl:
 
-If you are using custom domain, you can define your custom DNS records the same way. If you only add an IPv6 (AAAA) record, your clients will need to support IPv6. You can also choose to add both, and finally you can use a CNAME in which case you will use the behavior of `IPMode`.
+```bash
+curl -6 https://<app-name>.azurewebsites.net
+```
+
+If you are using custom domain, you can define your custom DNS records the same way. If you only add an IPv6 (AAAA) record, your clients will need to support IPv6. You can also choose to add both, and finally you can use a CNAME to the default hostname of the site in which case you will use the behavior of `IPMode`.
 
 Do make a note of some of the limitations and especially behavior of Functions plans. We will be working on fixing those issues before General Availability. Do also note that DNS tends to have multiple layers of caching, and sometimes it can take 5-10 minutes for DNS to return the right records.
 
