@@ -101,7 +101,7 @@ This is the current list of supported regions in preview.
 | Australia Central 2  | :heavy_check_mark:    |
 | Australia East       |                       |
 | Australia Southeast  | :heavy_check_mark:    |
-| Brazil South         |                       |
+| Brazil South         | :heavy_check_mark:    |
 | Brazil Southeast     | :heavy_check_mark:    |
 | Canada Central       | :heavy_check_mark:    |
 | Canada East          | :heavy_check_mark:    |
