@@ -95,17 +95,17 @@ This is the current list of supported regions in preview. More regions in previe
 | -------------------- | :--------------------------: | :-------------------------: | :-------------------------: |
 | Australia Central    |                            |                             |                            |
 | Australia Central 2  | :heavy_check_mark:                           |                             |                            |
-| Australia East       | :large_blue_diamond:                           |                           |                            |
+| Australia East       | :curly_loop:                           |                           |                            |
 | Australia Southeast  | :heavy_check_mark:                           |                             |                            |
 | Brazil South         |                            |                           |                            |
 | Brazil Southeast     |                            |                             |                            |
-| Canada Central       | :o:                           |                           |                            |
+| Canada Central       | :beginner:                           |                           |                            |
 | Canada East          | :heavy_check_mark:                           |                             |                            |
 | Central India        | :heavy_check_mark:                           |                           |                            |
 | Central US           |                            |                           |                            |
 | East Asia            | :heavy_check_mark:                           |                           |                            |
 | East US              | :heavy_check_mark:                       |                           |                            |
-| East US 2            | :black_square_button:                           |                           |                            |
+| East US 2            | :curly_loop:                           |                           |                            |
 | France Central       |                            |                           |                            |
 | France South         |                            |                             |                            |
 | Germany North        | ✅                           |                             |                            |
