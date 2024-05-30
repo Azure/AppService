@@ -5,7 +5,7 @@ toc: true
 toc_sticky: true
 ---
 
-I am happy to announce the first part of our IPv6 implementation in App Service. Public preview of inbound IPv6 support for multi-tenant apps on Premium SKUs, Functions Consumption, Functions Elastic Premium, and Logic Apps Standard). We'll be adding IPv6 support in four stages.
+I am happy to announce the first part of our IPv6 implementation in App Service. Public preview of inbound IPv6 support for multi-tenant apps on Premium SKUs, Functions Consumption, Functions Elastic Premium, and Logic Apps Standard. We'll be adding IPv6 support in four stages.
 
 1. This announcement: IPv6 inbound support (multi-tenant)
 1. In development: IPv6 non-vnet outbound support (multi-tenant)
@@ -23,7 +23,7 @@ Limitations in this public preview:
 
 ## How does it work
 
-IPv6 inbound requires two things. An IPv6 address that accepts traffic coming in, and a DNS record that returns an IPv6 (AAAA) record. Finally you'll also need a client that can send and receive IPv6 traffic. This means that you may not be able to test it from your local machine since many networks today only support IPv4.
+IPv6 inbound requires two things: an IPv6 address that accepts traffic coming in, and a DNS record that returns an IPv6 (AAAA) record. You'll also need a client that can send and receive IPv6 traffic. This means that you may not be able to test it from your local machine since many networks today only support IPv4.
 
 Our stamps (deployment units) will all have IPv6 addresses added. When these are added, you can start sending traffic to both the IPv4 and IPv6 address. To ensure backwards compatibility, the DNS response for the default host name (_app-name_.azurewebsites.net) will return only the IPv4 address. If you want to change that, we have added a site property called `IPMode` that you can configure to `IPv6` or `IPv4AndIPv6`. If you set it to IPv6 only, your client will need to "understand" IPv6 in order to get a response. Setting it to IPv4 and IPv6 will allow you to have existing clients use IPv4, but allow capable clients to use IPv6. If your client does support IPv6, you can test the IPv6 connection using curl:
 
