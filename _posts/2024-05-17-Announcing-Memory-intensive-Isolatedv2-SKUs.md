@@ -99,13 +99,13 @@ This is the current list of supported regions in preview. More regions in previe
 | Australia Southeast  | :heavy_check_mark:                           |                             |                            |
 | Brazil South         |                            |                           |                            |
 | Brazil Southeast     |                            |                             |                            |
-| Canada Central       | ✅                           |                           |                            |
+| Canada Central       | :o:                           |                           |                            |
 | Canada East          | :heavy_check_mark:                           |                             |                            |
 | Central India        | :heavy_check_mark:                           |                           |                            |
 | Central US           |                            |                           |                            |
 | East Asia            | :heavy_check_mark:                           |                           |                            |
 | East US              | :heavy_check_mark:                       |                           |                            |
-| East US 2            | ✅                           |                           |                            |
+| East US 2            | :black_square_button:                           |                           |                            |
 | France Central       |                            |                           |                            |
 | France South         |                            |                             |                            |
 | Germany North        | ✅                           |                             |                            |
