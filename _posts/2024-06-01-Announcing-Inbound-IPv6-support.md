@@ -21,6 +21,8 @@ Limitations in this public preview:
 * The IPv6 address is not visible in the `inboundIpAddress` or `possibleInboundIpAddresses` properties.
 * IP-SSL IPv6 bindings are not supported.
 
+For GA we will work on including Basic and Standard tier, adding all regions, include the IPv6 addresses in new properties and stabilize the DNS results to not show extra addresses.
+
 ## How does it work
 
 IPv6 inbound requires two things. An IPv6 address that accepts traffic coming in, and a DNS record that returns an IPv6 (AAAA) record. Finally you'll also need a client that can send and receive IPv6 traffic. This means that you may not be able to test it from your local machine since many networks today only support IPv4.
