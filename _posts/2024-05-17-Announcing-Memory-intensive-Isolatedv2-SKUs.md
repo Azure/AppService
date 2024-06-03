@@ -91,55 +91,55 @@ To deploy a new plan or update an existing plan using ARM, you can just use the 
 
 This is the current list of supported regions. Regions marked with * has runtime in preview and should only be used for dev/test environments. More regions and Linux/Windows Container support will be added in the coming months.
 
-| Region               | Windows                      | Linux                       | Windows Container         |
-| -------------------- | :--------------------------: | :-------------------------: | :-------------------------: |
+| Region               | Windows                    | Linux                       | Windows Container          |
+| -------------------- | :------------------------: | :-------------------------: | :------------------------: |
 | Australia Central    |                            |                             |                            |
-| Australia Central 2  | :heavy_check_mark:                           |                             |                            |
-| Australia East       | :heavy_check_mark: *                           |                           |                            |
-| Australia Southeast  | :heavy_check_mark:                           |                             |                            |
-| Brazil South         |                            |                           |                            |
+| Australia Central 2  | :heavy_check_mark:         |                             |                            |
+| Australia East       | :heavy_check_mark: *       |                             |                            |
+| Australia Southeast  | :heavy_check_mark:         |                             |                            |
+| Brazil South         |                            |                             |                            |
 | Brazil Southeast     |                            |                             |                            |
-| Canada Central       | :heavy_check_mark: *                           |                           |                            |
-| Canada East          | :heavy_check_mark:                           |                             |                            |
-| Central India        | :heavy_check_mark:                           |                           |                            |
-| Central US           |                            |                           |                            |
-| East Asia            | :heavy_check_mark:                           |                           |                            |
-| East US              | :heavy_check_mark:                       |                           |                            |
-| East US 2            | :heavy_check_mark: *                           |                           |                            |
-| France Central       |                            |                           |                            |
+| Canada Central       | :heavy_check_mark: *       |                             |                            |
+| Canada East          | :heavy_check_mark:         |                             |                            |
+| Central India        | :heavy_check_mark:         |                             |                            |
+| Central US           |                            |                             |                            |
+| East Asia            | :heavy_check_mark:         |                             |                            |
+| East US              |          |                             |                            |
+| East US 2            | :heavy_check_mark: *       |                             |                            |
+| France Central       |                            |                             |                            |
 | France South         |                            |                             |                            |
-| Germany North        | :heavy_check_mark: *                           |                             |                            |
-| Germany West Central | :heavy_check_mark:                           |                           |                            |
-| Italy North          |                            |                           |                              |
-| Japan East           | :heavy_check_mark: *                           |                           |                            |
-| Japan West           | :heavy_check_mark:                           |                             |                            |
-| Jio India West       |                              |                             |                            |
-| Korea Central        |                            |                           |                            |
-| Korea South          | :heavy_check_mark: *                           |                             |                            |
-| North Central US     | :heavy_check_mark:                           |                             |                            |
-| North Europe         | :heavy_check_mark:                           |                           |                            |
-| Norway East          | :heavy_check_mark: *                           |                           |                            |
+| Germany North        | :heavy_check_mark: *       |                             |                            |
+| Germany West Central | :heavy_check_mark:         |                             |                            |
+| Italy North          |                            |                             |                            |
+| Japan East           | :heavy_check_mark: *       |                             |                            |
+| Japan West           | :heavy_check_mark:         |                             |                            |
+| Jio India West       |                            |                             |                            |
+| Korea Central        |                            |                             |                            |
+| Korea South          | :heavy_check_mark: *       |                             |                            |
+| North Central US     | :heavy_check_mark:         |                             |                            |
+| North Europe         | :heavy_check_mark:         |                             |                            |
+| Norway East          | :heavy_check_mark: *       |                             |                            |
 | Norway West          |                            |                             |                            |
-| Poland Central       |                            |                           |                               |
-| Qatar Central        |                            |                           |                              |
-| South Africa North   | :heavy_check_mark: *                           |                           |                            |
+| Poland Central       |                            |                             |                            |
+| Qatar Central        |                            |                             |                            |
+| South Africa North   | :heavy_check_mark: *       |                             |                            |
 | South Africa West    |                            |                             |                            |
-| South Central US     | :heavy_check_mark: *                          |                           |                            |
+| South Central US     | :heavy_check_mark: *       |                             |                            |
 | South India          |                            |                             |                            |
-| Southeast Asia       | :heavy_check_mark: *                           |                           |                            |
-| Sweden Central       | :heavy_check_mark: *                           |                           |                              |
-| Switzerland North    | :heavy_check_mark: *                           |                           |                            |
+| Southeast Asia       | :heavy_check_mark: *       |                             |                            |
+| Sweden Central       | :heavy_check_mark: *       |                             |                            |
+| Switzerland North    | :heavy_check_mark: *       |                             |                            |
 | Switzerland West     |                            |                             |                            |
 | UAE Central          |                            |                             |                            |
-| UAE North            | :heavy_check_mark:                           |                          |                            |
-| UK South             | :heavy_check_mark:                           |                           |                            |
-| UK West              | :heavy_check_mark: *                           |                             |                            |
+| UAE North            | :heavy_check_mark:         |                             |                            |
+| UK South             | :heavy_check_mark:         |                             |                            |
+| UK West              | :heavy_check_mark: *       |                             |                            |
 | West Central US      |                            |                             |                            |
-| West Europe          |                            |                           |                            |
-| West India           |                           |                             |                            |
-| West US              | :heavy_check_mark: *                           |                             |                            |
-| West US 2            | :heavy_check_mark:                           |                           |                            |
-| West US 3            |                            |                           |                            |
+| West Europe          |                            |                             |                            |
+| West India           |                            |                             |                            |
+| West US              | :heavy_check_mark: *       |                             |                            |
+| West US 2            | :heavy_check_mark:         |                             |                            |
+| West US 3            |                            |                             |                            |
 
 Looking forward to see what you will do with all that power!
 
