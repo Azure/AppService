@@ -5,11 +5,11 @@ toc: true
 toc_sticky: true
 ---
 
-Update 5. June: We have now resolved the issue with outbound connections and have further progressed with the runtime of many regions so they can be marked with GA runtime.
+Update - June 4, 2024: We have now resolved the issue with outbound connections and have further progressed with the runtime of many regions so they can be marked with GA runtime.
 
 ## Previous updates
 
-Update 24. May: Public preview is where we give our customers the chance to validate new features and it is also where we uncover edge cases that would not have been found in our initial testing. We found an issue that impacts outbound connections when scaling to a memory optimized SKU. While it would not be all customers that would be affected, we are not taking any chances since this could break your app. We'll keep a few regions open that are not affected while we are getting a fix out to the remaining regions. We should be able to open the other regions again early June.
+Update - May 24, 2024: Public preview is where we give our customers the chance to validate new features and it is also where we uncover edge cases that would not have been found in our initial testing. We found an issue that impacts outbound connections when scaling to a memory optimized SKU. While it would not be all customers that would be affected, we are not taking any chances since this could break your app. We'll keep a few regions open that are not affected while we are getting a fix out to the remaining regions. We should be able to open the other regions again early June.
 
 ## Introduction
 
