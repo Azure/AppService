@@ -5,9 +5,11 @@ toc: true
 toc_sticky: true
 ---
 
-## Update 1
+Update - June 4, 2024: We have now resolved the issue with outbound connections and have further progressed with the runtime of many regions so they can be marked with GA runtime.
 
-Public preview is where we give our customers the chance to validate new features and it is also where we uncover edge cases that would not have been found in our initial testing. We found an issue that impacts outbound connections when scaling to a memory optimized SKU. While it would not be all customers that would be affected, we are not taking any chances since this could break your app. We'll keep a few regions open that are not affected while we are getting a fix out to the remaining regions. We should be able to open the other regions again early June.
+## Previous updates
+
+Update - May 24, 2024: Public preview is where we give our customers the chance to validate new features and it is also where we uncover edge cases that would not have been found in our initial testing. We found an issue that impacts outbound connections when scaling to a memory optimized SKU. While it would not be all customers that would be affected, we are not taking any chances since this could break your app. We'll keep a few regions open that are not affected while we are getting a fix out to the remaining regions. We should be able to open the other regions again early June.
 
 ## Introduction
 
@@ -85,57 +87,57 @@ To deploy a new plan or update an existing plan using ARM, you can just use the 
 
 ## Regions and OS support
 
-This is the current list of supported regions in preview. More regions in preview, regions moving to GA and Linux/Windows Container support will be added in the coming months.
+This is the current list of supported regions. Regions marked with * has runtime in preview and should only be used for dev/test environments. More regions and Linux/Windows Container support will be added in the coming months.
 
-| Region               | Windows                      | Linux                       | Windows Container         |
-| -------------------- | :--------------------------: | :-------------------------: | :-------------------------: |
+| Region               | Windows                    | Linux                       | Windows Container          |
+| -------------------- | :------------------------: | :-------------------------: | :------------------------: |
 | Australia Central    |                            |                             |                            |
-| Australia Central 2  | (Suspended)                           |                             |                            |
-| Australia East       | ✅                           |                           |                            |
-| Australia Southeast  | (Suspended)                           |                             |                            |
-| Brazil South         |                            |                           |                            |
+| Australia Central 2  | :heavy_check_mark:         |                             |                            |
+| Australia East       | :heavy_check_mark: *       |                             |                            |
+| Australia Southeast  | :heavy_check_mark:         |                             |                            |
+| Brazil South         |                            |                             |                            |
 | Brazil Southeast     |                            |                             |                            |
-| Canada Central       | ✅                           |                           |                            |
-| Canada East          | (Suspended)                           |                             |                            |
-| Central India        | (Suspended)                           |                           |                            |
-| Central US           |                            |                           |                            |
-| East Asia            | (Suspended)                           |                           |                            |
-| East US              | (Suspended)                       |                           |                            |
-| East US 2            | ✅                           |                           |                            |
-| France Central       |                            |                           |                            |
+| Canada Central       | :heavy_check_mark: *       |                             |                            |
+| Canada East          | :heavy_check_mark:         |                             |                            |
+| Central India        | :heavy_check_mark:         |                             |                            |
+| Central US           |                            |                             |                            |
+| East Asia            | :heavy_check_mark:         |                             |                            |
+| East US              |          |                             |                            |
+| East US 2            | :heavy_check_mark: *       |                             |                            |
+| France Central       |                            |                             |                            |
 | France South         |                            |                             |                            |
-| Germany North        | ✅                           |                             |                            |
-| Germany West Central | (Suspended)                           |                           |                            |
-| Italy North          |                            |                           |                              |
-| Japan East           | ✅                           |                           |                            |
-| Japan West           | (Suspended)                           |                             |                            |
-| Jio India West       |                              |                             |                            |
-| Korea Central        |                            |                           |                            |
-| Korea South          | ✅                           |                             |                            |
-| North Central US     | (Suspended)                           |                             |                            |
-| North Europe         | (Suspended)                           |                           |                            |
-| Norway East          | ✅                           |                           |                            |
+| Germany North        | :heavy_check_mark: *       |                             |                            |
+| Germany West Central | :heavy_check_mark:         |                             |                            |
+| Italy North          |                            |                             |                            |
+| Japan East           | :heavy_check_mark: *       |                             |                            |
+| Japan West           | :heavy_check_mark:         |                             |                            |
+| Jio India West       |                            |                             |                            |
+| Korea Central        |                            |                             |                            |
+| Korea South          | :heavy_check_mark: *       |                             |                            |
+| North Central US     | :heavy_check_mark:         |                             |                            |
+| North Europe         | :heavy_check_mark:         |                             |                            |
+| Norway East          | :heavy_check_mark: *       |                             |                            |
 | Norway West          |                            |                             |                            |
-| Poland Central       |                            |                           |                               |
-| Qatar Central        |                            |                           |                              |
-| South Africa North   | ✅                           |                           |                            |
+| Poland Central       |                            |                             |                            |
+| Qatar Central        |                            |                             |                            |
+| South Africa North   | :heavy_check_mark: *       |                             |                            |
 | South Africa West    |                            |                             |                            |
-| South Central US     | ✅                          |                           |                            |
+| South Central US     | :heavy_check_mark: *       |                             |                            |
 | South India          |                            |                             |                            |
-| Southeast Asia       | ✅                           |                           |                            |
-| Sweden Central       | ✅                           |                           |                              |
-| Switzerland North    | ✅                           |                           |                            |
+| Southeast Asia       | :heavy_check_mark: *       |                             |                            |
+| Sweden Central       | :heavy_check_mark: *       |                             |                            |
+| Switzerland North    | :heavy_check_mark: *       |                             |                            |
 | Switzerland West     |                            |                             |                            |
 | UAE Central          |                            |                             |                            |
-| UAE North            | (Suspended)                           |                          |                            |
-| UK South             | (Suspended)                           |                           |                            |
-| UK West              | ✅                           |                             |                            |
+| UAE North            | :heavy_check_mark:         |                             |                            |
+| UK South             | :heavy_check_mark:         |                             |                            |
+| UK West              | :heavy_check_mark: *       |                             |                            |
 | West Central US      |                            |                             |                            |
-| West Europe          |                            |                           |                            |
-| West India           |                           |                             |                            |
-| West US              | ✅                           |                             |                            |
-| West US 2            | (Suspended)                           |                           |                            |
-| West US 3            |                            |                           |                            |
+| West Europe          |                            |                             |                            |
+| West India           |                            |                             |                            |
+| West US              | :heavy_check_mark: *       |                             |                            |
+| West US 2            | :heavy_check_mark:         |                             |                            |
+| West US 3            |                            |                             |                            |
 
 Looking forward to see what you will do with all that power!
 
