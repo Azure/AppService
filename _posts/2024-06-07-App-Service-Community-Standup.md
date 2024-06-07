@@ -18,3 +18,5 @@ For more information on ASE Upgrade check out the following resources:
 You can also catch up on demand on our **//Build 2024** session:
 
 * [Using AI with App Service to deploy differentiated web apps and APIs](https://build.microsoft.com/sessions/2d3bac21-85b9-4a33-8293-78536984cb6e?source=/speakers/59c88939-51ca-470b-a25d-3aec108025df)
+
+Our next community standup is scheduled for [July 3rd](https://www.youtube.com/live/bYJ2w97E2q8) but until then be sure to catch up on all past episodes of the [App Service Community Standup](https://www.youtube.com/watch?v=sjT0y0vQ4RU&list=PLI7iePan8aH75bqCGA_LDtURqAmer8gSc)
