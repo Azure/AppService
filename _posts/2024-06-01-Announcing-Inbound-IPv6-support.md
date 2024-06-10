@@ -42,7 +42,7 @@ Do make a note of some of the limitations and especially behavior of Functions p
 To update an app to return IPv6 DNS records:
 
 ```bash
-az resource update --name <app-name> --set ipMode="IPv6" -g <resource-group-name> --resource-type "Microsoft.Web/sites"
+az resource update --name <app-name> --set properties.ipMode="IPv6" -g <resource-group-name> --resource-type "Microsoft.Web/sites"
 ```
 
 ## Create or update using Azure Resource Manager templates
