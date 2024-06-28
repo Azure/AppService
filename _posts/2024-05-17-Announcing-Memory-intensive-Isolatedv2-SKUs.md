@@ -5,9 +5,11 @@ toc: true
 toc_sticky: true
 ---
 
-Update - June 4, 2024: We have now resolved the issue with outbound connections and have further progressed with the runtime of many regions so they can be marked with GA runtime.
+Update - June 26, 2024: The first Linux and Windows Container regions are opened and Azure portal support has been added.
 
 ## Previous updates
+
+Update - June 4, 2024: We have now resolved the issue with outbound connections and have further progressed with the runtime of many regions so they can be marked with GA runtime.
 
 Update - May 24, 2024: Public preview is where we give our customers the chance to validate new features and it is also where we uncover edge cases that would not have been found in our initial testing. We found an issue that impacts outbound connections when scaling to a memory optimized SKU. While it would not be all customers that would be affected, we are not taking any chances since this could break your app. We'll keep a few regions open that are not affected while we are getting a fix out to the remaining regions. We should be able to open the other regions again early June.
 
@@ -106,17 +108,17 @@ This is the current list of supported regions. Regions marked with * has runtime
 | East US 2            | :heavy_check_mark: *       |                             |                            |
 | France Central       |                            |                             |                            |
 | France South         |                            |                             |                            |
-| Germany North        | :heavy_check_mark: *       |                             |                            |
+| Germany North        | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark:         |
 | Germany West Central | :heavy_check_mark:         |                             |                            |
 | Italy North          |                            |                             |                            |
 | Japan East           | :heavy_check_mark: *       |                             |                            |
 | Japan West           | :heavy_check_mark:         |                             |                            |
 | Jio India West       |                            |                             |                            |
 | Korea Central        |                            |                             |                            |
-| Korea South          | :heavy_check_mark: *       |                             |                            |
+| Korea South          | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark:         |
 | North Central US     | :heavy_check_mark:         |                             |                            |
 | North Europe         | :heavy_check_mark:         |                             |                            |
-| Norway East          | :heavy_check_mark: *       |                             |                            |
+| Norway East          | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark:         |
 | Norway West          |                            |                             |                            |
 | Poland Central       |                            |                             |                            |
 | Qatar Central        |                            |                             |                            |
@@ -125,7 +127,7 @@ This is the current list of supported regions. Regions marked with * has runtime
 | South Central US     | :heavy_check_mark: *       |                             |                            |
 | South India          |                            |                             |                            |
 | Southeast Asia       | :heavy_check_mark: *       |                             |                            |
-| Sweden Central       | :heavy_check_mark: *       |                             |                            |
+| Sweden Central       | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark:         |
 | Switzerland North    | :heavy_check_mark: *       |                             |                            |
 | Switzerland West     |                            |                             |                            |
 | UAE Central          |                            |                             |                            |
