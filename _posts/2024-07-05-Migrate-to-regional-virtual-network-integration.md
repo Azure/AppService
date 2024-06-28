@@ -12,7 +12,7 @@ A small subset of customers are still using gateway-based virtual network integr
 
 |          | Regional| Gateway-based |
 | -------- | :------------: | :------------: |
-| Gateway required | Yes   |  No   |
+| Gateway required | No   |  Yes   |
 | Bandwidth limit | VM limit |  SSTP Point-to-site VPN limit |
 | Connect up to  | 2 subnets per plan | 5 virtual networks per plan  |
 | Route tables, NSG, NAT gateway support | Yes |  No |
