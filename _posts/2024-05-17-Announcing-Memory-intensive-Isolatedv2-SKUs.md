@@ -5,7 +5,7 @@ toc: true
 toc_sticky: true
 ---
 
-Update - June 26, 2024: The first Linux and Windows Container regions are opened and Azure portal support has been added.
+Update - June 26, 2024: The first Linux regions are opened and in the same regions Windows Container is adding support for large SKUs (I4v2, I5v2 and I6v2). Azure portal support has been added.
 
 ## Previous updates
 
@@ -108,17 +108,17 @@ This is the current list of supported regions. Regions marked with * has runtime
 | East US 2            | :heavy_check_mark: *       |                             |                            |
 | France Central       |                            |                             |                            |
 | France South         |                            |                             |                            |
-| Germany North        | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark:         |
+| Germany North        | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark: **      |
 | Germany West Central | :heavy_check_mark:         |                             |                            |
 | Italy North          |                            |                             |                            |
 | Japan East           | :heavy_check_mark: *       |                             |                            |
 | Japan West           | :heavy_check_mark:         |                             |                            |
 | Jio India West       |                            |                             |                            |
 | Korea Central        |                            |                             |                            |
-| Korea South          | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark:         |
+| Korea South          | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark: **      |
 | North Central US     | :heavy_check_mark:         |                             |                            |
 | North Europe         | :heavy_check_mark:         |                             |                            |
-| Norway East          | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark:         |
+| Norway East          | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark: **      |
 | Norway West          |                            |                             |                            |
 | Poland Central       |                            |                             |                            |
 | Qatar Central        |                            |                             |                            |
@@ -127,7 +127,7 @@ This is the current list of supported regions. Regions marked with * has runtime
 | South Central US     | :heavy_check_mark: *       |                             |                            |
 | South India          |                            |                             |                            |
 | Southeast Asia       | :heavy_check_mark: *       |                             |                            |
-| Sweden Central       | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark:         |
+| Sweden Central       | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark: **      |
 | Switzerland North    | :heavy_check_mark: *       |                             |                            |
 | Switzerland West     |                            |                             |                            |
 | UAE Central          |                            |                             |                            |
@@ -140,6 +140,8 @@ This is the current list of supported regions. Regions marked with * has runtime
 | West US              | :heavy_check_mark: *       |                             |                            |
 | West US 2            | :heavy_check_mark:         |                             |                            |
 | West US 3            |                            |                             |                            |
+
+** Windows Container is adding support for large SKUs (I4v2, I5v2 and I6v2). Memory intensive SKUs will follow later.
 
 Looking forward to see what you will do with all that power!
 
