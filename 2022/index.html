@@ -1,0 +1,1506 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Azure App Service</title>
+<meta name="description" content="Announcements, updates, and release notes from the Azure App Service product team.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Azure App Service">
+<meta property="og:url" content="https://azure.github.io/AppService/2022/">
+
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2022-01-01T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2022/">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--archive-year">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+
+  <div class="archive">
+    
+      
+        <h1 id="page-title" class="page__title"></h1>
+      
+    
+    
+
+<h1>Posts from 2022</h1>
+<section id="year" class="taxonomy__section">
+    <div class="entries-list">
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/12/05/Making-diagnostics-analysis-easier-in-Diagnose-and-Solve.html" rel="permalink">Improving the dump analysis journey in Diagnose and Solve
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+        
+        
+          • By Mark Downie, Puneet Gupta
+        
+        • December 5, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We are happy to announce that our most recent improvements to Diagnose and Solve Problems allow you to begin the analysis on a collected memory dump immediat...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/12/02/n-tier-web-app.html" rel="permalink">How to deploy a secure n-tier web app
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  24 minute read
+
+        
+        
+          • By Jordan Selig
+        
+        • December 2, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Many applications will consist of more than just a single component. For example, you may have a frontend which is publicly accessible that connects to a bac...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/12/02/multi-region-web-app.html" rel="permalink">How to deploy a highly available multi-region web app
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  32 minute read
+
+        
+        
+          • By Jordan Selig
+        
+        • December 2, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">High availability and fault tolerance are key components of a well-architected solution. It’s always best to prepare for the unexpected and having an emergen...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/12/01/Announcing-Larger-Isolatedv2-SKUs.html" rel="permalink">Announcing Larger SKUs for App Service Environment v3
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • December 1, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Our engineering teams have been hard at work to deliver the new larger SKUs on App Service Environment v3. While it seems simple, as it is multiples of the e...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/11/24/Advanced-access-restriction-scenarios-in-Azure-App-Service.html" rel="permalink">Advanced access restriction scenarios in Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  15 minute read
+
+        
+        
+          • By Błażej Miśkiewicz
+        
+        • November 24, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Currently, you can use two options when configuring Azure App Service access restrictions. The preview feature provides some new scenarios that you should kn...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/11/08/dotnet7_ga.html" rel="permalink">.NET 7 GA available on App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Byron Tardif
+        
+        • November 8, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the initial rollout for .NET 7 GA support on App Service. Like in previous years we are using the App Service Early Access feature to enabl...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/11/02/App-Service-on-Azure-Stack-Hub-2022-H1-Released.html" rel="permalink">Azure App Service and Azure Functions on Azure Stack Hub 2022 H1 Released
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+          • By Andrew Westgarth
+        
+        • November 2, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The 2022 H1 update to Azure App Service on Azure Stack Hub is now available. This release is a major update in terms of underlying infrastructure and topolog...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/10/28/WebSockets-Available-on-Free-Tier.html" rel="permalink">WebSockets Available on App Service Free Tier
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+          • By Denver Brittain
+        
+        • October 28, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">App Service free SKU has been around for over 10 years, and we continue to improve on it with every release. Today, we are pleased to announce that App Servi...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/10/12/New-Language-Stacks-available-on-AppService.html" rel="permalink">Node 18, PHP 8.1 and Python 3.10 now available on App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • October 12, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We are happy to announce that App Service now supports apps targeting Node 18, PHP 8.1 and Python 3.10 across all public regions on Linux App Service Plans t...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/10/12/Go-on-AppService.html" rel="permalink">Go available on App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • October 12, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We are happy to announce that App Service now supports apps targeting Go 1.18 and 1.19 across all public regions on Linux App Service Plans through the App S...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/10/12/Announcing-Preview-of-Azure-Front-Door-integration-with-Azure-App-Service.html" rel="permalink">WordPress on Azure App Service supports Azure Front Door Integration
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+          • By Radhika Bollineni
+        
+        • October 12, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We are happy to announce the preview of WordPress on Azure App Service powered by Azure Front Door which enables faster page loads, enhanced security, and in...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/10/11/Public-preview-min-tls-cipher-suite.html" rel="permalink">Public Preview: Disabling Weaker TLS Cipher Suites for Web Apps on Multi-tenant Premium App Service Plans
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+        
+        
+          • By Yutang Lin
+        
+        • October 11, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Public preview of the minimum TLS cipher suite feature that allows customers to disable weaker TLS cipher suites for their App Service web apps
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/10/07/Configure-automation-for-upgrade-preferences-in-App-Service-Environment-part2.html" rel="permalink">Control and automate planned maintenance for App Service Environment v3 part 2
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  15 minute read
+
+        
+        
+          • By Błażej Miśkiewicz
+        
+        • October 7, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">This is part 2 of a 2-part series about controlling and automating planned maintenance in App Service Environment v3.
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/09/15/Configure-automation-for-upgrade-preferences-in-App-Service-Environment.html" rel="permalink">Control and automate planned maintenance for App Service Environment v3
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  12 minute read
+
+        
+        
+          • By Błażej Miśkiewicz
+        
+        • September 15, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">This is part 1 of a 2-part series about controlling and automating planned maintenance in App Service Environment v3.
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/08/24/Clojure-on-AppService.html" rel="permalink">Clojure on App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  7 minute read
+
+        
+        
+          • By Denis Fuenzalida
+        
+        • August 24, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Build and run a Web App written in Clojure, on Azure App Service
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/08/18/Configure-Azure-Firewall-With-ASEv3.html" rel="permalink">Configure Azure Firewall with ASEv3
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+        
+        
+          • By Hugo Girard
+        
+        • August 18, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">When deploying App Service Environment, one requirement you will probably want is to monitor and limit your egress traffic from the ASE.
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/08/16/A-Heavy-Lift.html" rel="permalink">A Heavy Lift: Bringing Kestrel + YARP to Azure App Services
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  8 minute read
+
+        
+        
+          • By David Fowler, Suwat Bodin, Chris Rosenblatt, Jenny Lawrance, Stephen Kou, Chris Ross, Miha Zupan, Aditya Mandaleeka, Bilal Alam
+        
+        • August 16, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">In this post, we get a behind-the-scenes look at the engineering work required to change a critical platform component with code paths that are exercised bil...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/08/11/gRPC-support-on-App-Service-now-in-Public-Preview.html" rel="permalink">gRPC support on App Service now in Public Preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • August 11, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We are pleased to announce that gRPC (public preview) is now available in most regions.  gRPC is supported for Linux applications using .NET Core 3.1 or .NET...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/08/08/Announcing-GA-WordPress-on-Azure-App-Service.html" rel="permalink">Announcing GA: WordPress on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+          • By Abhishek Reddy
+        
+        • August 8, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We are thrilled to announce that WordPress on App Service that was under public preview since February 15, 2022, is now generally available. With advanced fe...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/07/18/dotnet7_preview5.html" rel="permalink">.NET 7 Preview 5 available on App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+          • By Byron Tardif
+        
+        • July 18, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We are happy to announce that App Service now supports apps targeting .NET 7 Preview 5 across all public regions on both Windows and Linux App Service Plans ...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/07/06/azure-policy-updates-for-app-service.html" rel="permalink">Azure Policy Updates for App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+          • By Jordan Selig
+        
+        • July 6, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Regulatory Compliance in Azure Policy provides Microsoft created and managed initiative definitions, known as built-ins, for the compliance domains and secur...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/06/16/Into-to-microsoft-defender-for-app-service.html" rel="permalink">Intro to Microsoft Defender for App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Jordan Selig
+        
+        • June 16, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">If you’re an Azure portal user with App Service, you’ve most likely seen the Security item in the left-hand menu. This item comes from our partners from the ...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/06/16/Announcing-Resiliency-Score-Report-for-Azure-Web-Apps.html" rel="permalink">Announcing Resiliency Score Report for Azure Web Apps
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+          • By Cristhian Uribe
+        
+        • June 16, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Resiliency Score report is a downloadable report that checks whether your Azure Web App is implementing the best practices to make it less susceptible to ava...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/05/31/scala-on-app-service.html" rel="permalink">Scala on App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+        
+        
+          • By Denver Brittain
+        
+        • May 31, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Build and run a Scala App on Azure App Service
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/05/23/gRPC-support-on-App-Service.html" rel="permalink">gRPC support on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • May 23, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We are pleased to announce that gRPC is coming to Azure App Service for Linux workloads.
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/04/14/networking-tab-web-app-service-create-preview.html" rel="permalink">Public preview: Networking configuration options during Web App creation in the Azure Portal
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+          • By Jordan Selig
+        
+        • April 14, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We are happy to announce that you can now enable Virtual Network integration as well as private endpoints for inbound access when creating Web Apps using the...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/04/14/Enhanced-security-for-basic-sku.html" rel="permalink">Generally available: Enhanced network security features for App Service Basic SKU
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+          • By Jordan Selig
+        
+        • April 14, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">App Service now supports VNet integration (outbound) and private endpoints (inbound) all the way down to the Basic SKU. The App Service VNet integration feat...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/04/11/windows-containers-app-insights-preview.html" rel="permalink">Public Preview: Codeless Monitoring for Windows Containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jason Freeberg
+        
+        • April 11, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We are happy to share that Auto-Instrumentation of Application Insights for Windows Container applications is now in public preview! Auto-Instrumentation all...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/04/05/Announcing-Azure-Monitor-Integration-with-Crash-Monitoring-copy.html" rel="permalink">Auto-Healing and Crash Monitoring integration with Azure Monitor
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+        
+        
+          • By Puneet Gupta
+        
+        • April 5, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Auto-healing is a heavily used diagnostic feature of Azure App Service that allows end-users to configure a rich set of triggers that can be used to mitigate...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/03/22/Default-Cert-Renew.html" rel="permalink">App Service Web Apps, Functions, and Logic Apps (Standard) *.azurewebsites.net TLS certificate changes and what you need to know
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+          • By Yutang Lin
+        
+        • March 22, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">This blog contains information about *.azurewebsites.net TLS certificate changes for web apps, functions, and logic apps (standard). Customers should not be ...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/03/02/Migrating-your-Windows-conainer-apps-from-Premium-Container-SKU-(Preview)-to-Premium-V3-SKU.html" rel="permalink">Migrating your Windows container apps from the Premium Container SKU (Preview) to Premium V3 SKU
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • March 2, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The Premium Container SKU will not be moving out of preview status and will be retired on 30th June 2022.  Please move your applications to the Premium V3 SK...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/02/23/WordPress-on-App-Service-Public-Preview.html" rel="permalink">WordPress on App Service Public Preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+        
+        
+          • By Abhishek Reddy
+        
+        • February 23, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We are happy to announce the public preview of the WordPress offering on App Service. This offering will enable you to deploy and host new WordPress websites...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/02/01/App-Service-Planned-Notification-Feature.html" rel="permalink">Routine Planned Maintenance Notifications for Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  6 minute read
+
+        
+        
+          • By James Mulvey
+        
+        • February 1, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Azure App Service is regularly updated to provide new features, new runtime versions, performance improvements, and bug fixes. One of the top feature request...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/01/18/ASE-migration-feature-public-preview.html" rel="permalink">App Service Environment v3 Migration Feature Public Preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jordan Selig
+        
+        • January 18, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We are happy to announce the availability of the public preview of the App Service Environment (ASE) v3 migration feature. With this feature, you’ll be able ...</p>
+  </article>
+</div>
+
+        
+    </div>
+    <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+</section>
+  </div>
+</div>
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

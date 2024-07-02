@@ -1,0 +1,1121 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en_US"><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://azure.github.io/AppService/feed.xml" rel="self" type="application/atom+xml" /><link href="https://azure.github.io/AppService/" rel="alternate" type="text/html" hreflang="en_US" /><updated>2024-07-02T00:09:49+00:00</updated><id>https://azure.github.io/AppService/feed.xml</id><title type="html">Azure App Service</title><subtitle>Announcements, updates, and release notes from the Azure App Service product team.</subtitle><author><name>Azure App Service</name></author><entry><title type="html">Azure App Service Community Standup: App Service Environment Migration</title><link href="https://azure.github.io/AppService/2024/06/07/App-Service-Community-Standup.html" rel="alternate" type="text/html" title="Azure App Service Community Standup: App Service Environment Migration" /><published>2024-06-07T00:00:00+00:00</published><updated>2024-06-07T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2024/06/07/App-Service-Community-Standup</id><content type="html" xml:base="https://azure.github.io/AppService/2024/06/07/App-Service-Community-Standup.html"><![CDATA[<p>Watch the latest Azure App Service Community Standup on ASE migration.</p>
+
+<p><a href="https://www.youtube.com/watch?v=rjeVKFZHeb4"><img src="https://img.youtube.com/vi/rjeVKFZHeb4/hqdefault.jpg" alt="Azure App Service Community Standup" /></a></p>
+
+<p>If you’re currently using App Service Environment v1 or v2, you must migrate your workloads to App Service Environment v3. App Service Environment v1 and v2 will be retired on 31 August 2024. Failure to migrate by that date will result in loss of the environments, running applications, and all application data.</p>
+
+<p>For more information on ASE Upgrade check out the following resources:</p>
+
+<ul>
+  <li><a href="https://learn.microsoft.com/azure/app-service/environment/upgrade-to-asev3">Upgrade to App Service Environment v3</a></li>
+</ul>
+
+<p>You can also catch up on demand on our <strong>//Build 2024</strong> session:</p>
+
+<ul>
+  <li><a href="https://build.microsoft.com/sessions/2d3bac21-85b9-4a33-8293-78536984cb6e?source=/speakers/59c88939-51ca-470b-a25d-3aec108025df">Using AI with App Service to deploy differentiated web apps and APIs</a></li>
+</ul>
+
+<p>Our next community standup is scheduled for <a href="https://www.youtube.com/live/bYJ2w97E2q8">July 3rd</a> but until then be sure to catch up on all past episodes of the <a href="https://www.youtube.com/watch?v=sjT0y0vQ4RU&amp;list=PLI7iePan8aH75bqCGA_LDtURqAmer8gSc">App Service Community Standup</a></p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[Watch the latest Azure App Service Community Standup on ASE migration.]]></summary></entry><entry><title type="html">Announcing inbound IPv6 support in public preview</title><link href="https://azure.github.io/AppService/2024/06/01/Announcing-Inbound-IPv6-support.html" rel="alternate" type="text/html" title="Announcing inbound IPv6 support in public preview" /><published>2024-06-01T00:00:00+00:00</published><updated>2024-06-01T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2024/06/01/Announcing-Inbound-IPv6-support</id><content type="html" xml:base="https://azure.github.io/AppService/2024/06/01/Announcing-Inbound-IPv6-support.html"><![CDATA[<p>I am happy to announce the first part of our IPv6 implementation in App Service. Public preview of inbound IPv6 support for multi-tenant apps on Premium SKUs, Functions Consumption, Functions Elastic Premium, and Logic Apps Standard. We’ll be adding IPv6 support in four stages.</p>
+
+<ol>
+  <li>This announcement: IPv6 inbound support (multi-tenant)</li>
+  <li>In development: IPv6 non-vnet outbound support (multi-tenant)</li>
+  <li>Backlog: IPv6 vnet outbound support (multi-tenant and App Service Environment v3)</li>
+  <li>Backlog: IPv6 vnet inbound support (App Service Environment v3 - both internal and external)</li>
+</ol>
+
+<p>Limitations in this public preview:</p>
+
+<ul>
+  <li>Only a subset of regions are supported - see the list below.</li>
+  <li>Basic and Standard tier currently does not support changing the <code class="language-plaintext highlighter-rouge">IPMode</code> property.</li>
+  <li>Functions Consumption may have multiple IP addresses in the DNS result.</li>
+  <li>Functions Consumption and Elastic Premium may not remove the IPv4 address in IPv6 mode.</li>
+  <li>The IPv6 address is not visible in the <code class="language-plaintext highlighter-rouge">inboundIpAddress</code> or <code class="language-plaintext highlighter-rouge">possibleInboundIpAddresses</code> properties.</li>
+  <li>IP-SSL IPv6 bindings are not supported.</li>
+</ul>
+
+<p>For GA we will work on including Basic and Standard tier, adding all regions, include the IPv6 addresses in new properties and stabilize the DNS results to not show extra addresses.</p>
+
+<h2 id="how-does-it-work">How does it work</h2>
+
+<p>IPv6 inbound requires two things: an IPv6 address that accepts traffic coming in, and a DNS record that returns an IPv6 (AAAA) record. You’ll also need a client that can send and receive IPv6 traffic. This means that you may not be able to test it from your local machine since many networks today only support IPv4.</p>
+
+<p>Our stamps (deployment units) will all have IPv6 addresses added. When these are added, you can start sending traffic to both the IPv4 and IPv6 address. To ensure backwards compatibility, the DNS response for the default host name (<em>app-name</em>.azurewebsites.net) will return only the IPv4 address. If you want to change that, we have added a site property called <code class="language-plaintext highlighter-rouge">IPMode</code> that you can configure to <code class="language-plaintext highlighter-rouge">IPv6</code> or <code class="language-plaintext highlighter-rouge">IPv4AndIPv6</code>. If you set it to IPv6 only, your client will need to “understand” IPv6 in order to get a response. Setting it to IPv4 and IPv6 will allow you to have existing clients use IPv4, but allow capable clients to use IPv6. If your client does support IPv6, you can test the IPv6 connection using curl:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-6</span> https://&lt;app-name&gt;.azurewebsites.net
+</code></pre></div></div>
+
+<p>If you are using custom domain, you can define your custom DNS records the same way. If you only add an IPv6 (AAAA) record, your clients will need to support IPv6. You can also choose to add both, and finally you can use a CNAME to the default hostname of the site in which case you will use the behavior of <code class="language-plaintext highlighter-rouge">IPMode</code>.</p>
+
+<p>Do make a note of some of the limitations and especially behavior of Functions plans. We will be working on fixing those issues before General Availability. Do also note that DNS tends to have multiple layers of caching, and sometimes it can take 5-10 minutes for DNS to return the right records.</p>
+
+<h2 id="update-using-cli">Update using CLI</h2>
+
+<p>To update an app to return IPv6 DNS records:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az resource update <span class="nt">--name</span> &lt;app-name&gt; <span class="nt">--set</span> properties.ipMode<span class="o">=</span><span class="s2">"IPv6"</span> <span class="nt">-g</span> &lt;resource-group-name&gt; <span class="nt">--resource-type</span> <span class="s2">"Microsoft.Web/sites"</span>
+</code></pre></div></div>
+
+<h2 id="create-or-update-using-azure-resource-manager-templates">Create or update using Azure Resource Manager templates</h2>
+
+<p>To deploy a new app or update an existing app using ARM, you can just set the IPMode to either IPv6 or IPv4AndIPv6. In this template, you are also creating an App Service plan. If you use the template below, replace the values prefixed with REPLACE. For the <code class="language-plaintext highlighter-rouge">reserved</code> property, true = Linux, false = Windows.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+    <span class="dl">"</span><span class="s2">$schema</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">contentVersion</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">1.0.0.0</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">variables</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="dl">"</span><span class="s2">appName</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">REPLACE-APP-NAME</span><span class="dl">"</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">appIPMode</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">IPv6</span><span class="dl">"</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">appServicePlanName</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">REPLACE-PLAN-NAME</span><span class="dl">"</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">appServicePlanSize</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">P1v3</span><span class="dl">"</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">appServicePlanInstanceCount</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">location</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">[resourceGroup().location]</span><span class="dl">"</span>
+    <span class="p">},</span>
+    <span class="dl">"</span><span class="s2">resources</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">[variables('appServicePlanName')]</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">type</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Microsoft.Web/serverfarms</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">apiVersion</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">2021-03-01</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">location</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">[variables('location')]</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">properties</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+                <span class="dl">"</span><span class="s2">reserved</span><span class="dl">"</span><span class="p">:</span> <span class="kc">false</span>
+            <span class="p">},</span>
+            <span class="dl">"</span><span class="s2">sku</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+                <span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">[variables('appServicePlanSize')]</span><span class="dl">"</span><span class="p">,</span>
+                <span class="dl">"</span><span class="s2">capacity</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">[variables('appServicePlanInstanceCount')]</span><span class="dl">"</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">[variables('appName')]</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">type</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Microsoft.Web/sites</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">apiVersion</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">2021-03-01</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">location</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">[variables('location')]</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">dependsOn</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span>
+                <span class="dl">"</span><span class="s2">[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]</span><span class="dl">"</span>
+            <span class="p">],</span>
+            <span class="dl">"</span><span class="s2">properties</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+              <span class="dl">"</span><span class="s2">serverFarmId</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]</span><span class="dl">"</span><span class="p">,</span>
+              <span class="dl">"</span><span class="s2">httpsOnly</span><span class="dl">"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+              <span class="dl">"</span><span class="s2">ipMode</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">[variables('appIPMode')]</span><span class="dl">"</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+     <span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="supported-regions">Supported regions</h2>
+
+<p>This is the current list of supported regions in preview.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Region</th>
+      <th style="text-align: center">IPv6 supported</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Australia Central</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Australia Central 2</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Australia East</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>Australia Southeast</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Brazil South</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Brazil Southeast</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Canada Central</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Canada East</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Central India</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Central US</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>East Asia</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>East US</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>East US 2</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>France Central</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>France South</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Germany North</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Germany West Central</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>Italy North</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Japan East</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Japan West</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Jio India West</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>Korea Central</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Korea South</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>North Central US</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>North Europe</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>Norway East</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Norway West</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Poland Central</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Qatar Central</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>South Africa North</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>South Africa West</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>South Central US</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>South India</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>Southeast Asia</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>Sweden Central</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>Switzerland North</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Switzerland West</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>UAE Central</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>UAE North</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>UK South</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>UK West</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>West Central US</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>West Europe</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>West India</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>West US</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>West US 2</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>West US 3</td>
+      <td style="text-align: center"> </td>
+    </tr>
+  </tbody>
+</table>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[I am happy to announce the first part of our IPv6 implementation in App Service. Public preview of inbound IPv6 support for multi-tenant apps on Premium SKUs, Functions Consumption, Functions Elastic Premium, and Logic Apps Standard. We’ll be adding IPv6 support in four stages.]]></summary></entry><entry><title type="html">Announcing Memory intensive SKUs for App Service Environment v3</title><link href="https://azure.github.io/AppService/2024/05/17/Announcing-Memory-intensive-Isolatedv2-SKUs.html" rel="alternate" type="text/html" title="Announcing Memory intensive SKUs for App Service Environment v3" /><published>2024-05-17T00:00:00+00:00</published><updated>2024-05-17T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2024/05/17/Announcing-Memory-intensive-Isolatedv2-SKUs</id><content type="html" xml:base="https://azure.github.io/AppService/2024/05/17/Announcing-Memory-intensive-Isolatedv2-SKUs.html"><![CDATA[<p>Update - June 26, 2024: The first Linux and Windows Container regions are opened and Azure portal support has been added.</p>
+
+<h2 id="previous-updates">Previous updates</h2>
+
+<p>Update - June 4, 2024: We have now resolved the issue with outbound connections and have further progressed with the runtime of many regions so they can be marked with GA runtime.</p>
+
+<p>Update - May 24, 2024: Public preview is where we give our customers the chance to validate new features and it is also where we uncover edge cases that would not have been found in our initial testing. We found an issue that impacts outbound connections when scaling to a memory optimized SKU. While it would not be all customers that would be affected, we are not taking any chances since this could break your app. We’ll keep a few regions open that are not affected while we are getting a fix out to the remaining regions. We should be able to open the other regions again early June.</p>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>You may have seen memory intensive SKUs added to our Premium V3 offering. We have been working on bringing this SKU type to App Service Environment v3 as well and I am happy to announce that the wait is over and memory intensive SKUs are now in public preview. The rollout will be in waves of regions and App Service plan types. We start with Windows in a selected set of regions. Over the coming months we will add support for Linux and Windows Containers as well, and add more regions to the list. To help you onboard this faster, we will also gradually mark runtime in regions as GA allowing you to run production workloads.</p>
+
+<p>With the addition of these new Memory Intensive Isolated V2 SKUs, these are the SKUs available for App Service Environment v3.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>SKU Name</strong></th>
+      <th><strong>vCPUs</strong></th>
+      <th><strong>Memory</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>I1v2</td>
+      <td>2 vCPUs</td>
+      <td>8 GB</td>
+    </tr>
+    <tr>
+      <td><strong>I1mv2</strong></td>
+      <td>2 vCPUs</td>
+      <td>16 GB</td>
+    </tr>
+    <tr>
+      <td>I2v2</td>
+      <td>4 vCPUs</td>
+      <td>16 GB</td>
+    </tr>
+    <tr>
+      <td><strong>I2mv2</strong></td>
+      <td>4 vCPUs</td>
+      <td>32 GB</td>
+    </tr>
+    <tr>
+      <td>I3v2</td>
+      <td>8 vCPUs</td>
+      <td>32 GB</td>
+    </tr>
+    <tr>
+      <td><strong>I3mv2</strong></td>
+      <td>8 vCPUs</td>
+      <td>64 GB</td>
+    </tr>
+    <tr>
+      <td>I4v2</td>
+      <td>16 vCPUs</td>
+      <td>64 GB</td>
+    </tr>
+    <tr>
+      <td><strong>I4mv2</strong></td>
+      <td>16 vCPUs</td>
+      <td>128 GB</td>
+    </tr>
+    <tr>
+      <td>I5v2</td>
+      <td>32 vCPUs</td>
+      <td>128 GB</td>
+    </tr>
+    <tr>
+      <td><strong>I5mv2</strong></td>
+      <td>32 vCPUs</td>
+      <td>256 GB</td>
+    </tr>
+    <tr>
+      <td>I6v2</td>
+      <td>64 vCPUs</td>
+      <td>256 GB</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Currently we recommend you to start using the new SKUs in your pre-production environments. You’ll need to use CLI or ARM to create and scale App Service plans, but you can use portal to create apps based on the memory intensive plans. The first regions will start to support production workloads shortly after //BUILD and portal support for handling App Service plans will be added in June.</p>
+
+<p>This blog will be regularly updated as we expand to more regions and OS types and complete portal support.</p>
+
+<h2 id="create-or-update-using-cli">Create or update using CLI</h2>
+
+<p>Download the latest Azure CLI (2.61.0) to have support for the new SKUs using <code class="language-plaintext highlighter-rouge">az appservice create/update</code>. Note that the command will take about 35 minutes for Windows and 15 minutes for Linux to complete the create/update operation (use the <code class="language-plaintext highlighter-rouge">--no-wait</code> parameter to avoid having to wait for the command to finish in the console):</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az appservice plan create/update <span class="nt">--name</span> &lt;plan name&gt; <span class="nt">--sku</span> I2MV2 <span class="nt">-g</span> &lt;resource-group-name&gt; <span class="nt">-e</span> &lt;ase-name or resource-id&gt; <span class="nt">--no-wait</span>
+</code></pre></div></div>
+
+<p>If you have an existing App Service Environment v3 (Isolated V2) plan, you can also use this command to scale to the new SKUs without updating the CLI:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az resource update <span class="nt">--name</span> &lt;app-service-plan-name&gt; <span class="nt">--set</span> sku.name<span class="o">=</span><span class="s2">"I3MV2"</span> <span class="nt">-g</span> &lt;resource-group-name&gt; <span class="nt">--resource-type</span> <span class="s2">"Microsoft.Web/serverFarms"</span>
+</code></pre></div></div>
+
+<h2 id="create-or-update-using-azure-resource-manager-templates">Create or update using Azure Resource Manager templates</h2>
+
+<p>To deploy a new plan or update an existing plan using ARM, you can just use the new SKU names. If you use the template below, replace the values prefixed with REPLACE. For the <code class="language-plaintext highlighter-rouge">reserved</code> property, true = Linux, false = Windows.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+    <span class="dl">"</span><span class="s2">$schema</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">contentVersion</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">1.0.0.0</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">variables</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="dl">"</span><span class="s2">appServicePlanName</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">REPLACE-PLAN-NAME</span><span class="dl">"</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">appServicePlanSize</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">I2mv2</span><span class="dl">"</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">appServicePlanInstanceCount</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">location</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">[resourceGroup().location]</span><span class="dl">"</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">appServiceEnvironmentResourceId</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">/subscriptions/REPLACE-SUB-ID/resourceGroups/REPLACE-RG-NAME/providers/Microsoft.Web/hostingEnvironments/REPLACE-ASE-NAME</span><span class="dl">"</span>
+    <span class="p">},</span>
+    <span class="dl">"</span><span class="s2">resources</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">[variables('appServicePlanName')]</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">type</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Microsoft.Web/serverfarms</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">apiVersion</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">2021-03-01</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">location</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">[variables('location')]</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">properties</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+                <span class="dl">"</span><span class="s2">reserved</span><span class="dl">"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+                <span class="dl">"</span><span class="s2">hostingEnvironmentProfile</span><span class="dl">"</span> <span class="p">:{</span>
+                    <span class="dl">"</span><span class="s2">id</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">[variables('appServiceEnvironmentResourceId')]</span><span class="dl">"</span>
+                <span class="p">}</span>
+            <span class="p">},</span>
+            <span class="dl">"</span><span class="s2">sku</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+                <span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">[variables('appServicePlanSize')]</span><span class="dl">"</span><span class="p">,</span>
+                <span class="dl">"</span><span class="s2">capacity</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">[variables('appServicePlanInstanceCount')]</span><span class="dl">"</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+     <span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="regions-and-os-support">Regions and OS support</h2>
+
+<p>This is the current list of supported regions. Regions marked with * has runtime in preview and should only be used for dev/test environments. More regions and Linux/Windows Container support will be added in the coming months.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Region</th>
+      <th style="text-align: center">Windows</th>
+      <th style="text-align: center">Linux</th>
+      <th style="text-align: center">Windows Container</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Australia Central</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>Australia Central 2</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>Australia East</td>
+      <td style="text-align: center">:heavy_check_mark: *</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>Australia Southeast</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>Brazil South</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>Brazil Southeast</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>Canada Central</td>
+      <td style="text-align: center">:heavy_check_mark: *</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>Canada East</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>Central India</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>Central US</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>East Asia</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>East US</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>East US 2</td>
+      <td style="text-align: center">:heavy_check_mark: *</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>France Central</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>France South</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>Germany North</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Germany West Central</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>Italy North</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>Japan East</td>
+      <td style="text-align: center">:heavy_check_mark: *</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>Japan West</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>Jio India West</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>Korea Central</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>Korea South</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>North Central US</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>North Europe</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>Norway East</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Norway West</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>Poland Central</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>Qatar Central</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>South Africa North</td>
+      <td style="text-align: center">:heavy_check_mark: *</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>South Africa West</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>South Central US</td>
+      <td style="text-align: center">:heavy_check_mark: *</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>South India</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>Southeast Asia</td>
+      <td style="text-align: center">:heavy_check_mark: *</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>Sweden Central</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Switzerland North</td>
+      <td style="text-align: center">:heavy_check_mark: *</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>Switzerland West</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>UAE Central</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>UAE North</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>UK South</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>UK West</td>
+      <td style="text-align: center">:heavy_check_mark: *</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>West Central US</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>West Europe</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>West India</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>West US</td>
+      <td style="text-align: center">:heavy_check_mark: *</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>West US 2</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>West US 3</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Looking forward to see what you will do with all that power!</p>
+
+<h3 id="questionsfeedback">Questions/Feedback</h3>
+
+<p>If you have any questions or feedback, please reach out to our team at <a href="mailto:appserviceenvpm@microsoft.com">AppServiceEnvPM@microsoft.com</a></p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[Update - June 26, 2024: The first Linux and Windows Container regions are opened and Azure portal support has been added.]]></summary></entry><entry><title type="html">PHP 8.3 now available on App Service</title><link href="https://azure.github.io/AppService/2024/05/14/PHP83-available-on-app-service.html" rel="alternate" type="text/html" title="PHP 8.3 now available on App Service" /><published>2024-05-14T00:00:00+00:00</published><updated>2024-05-14T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2024/05/14/PHP83-available-on-app-service</id><content type="html" xml:base="https://azure.github.io/AppService/2024/05/14/PHP83-available-on-app-service.html"><![CDATA[<p>We are happy to announce that App Service now supports apps targeting <a href="https://www.php.net/releases/8.3/en.php">PHP 8.3</a> across all public regions on Linux App Service Plans.</p>
+
+<p>Want to get started with building apps on PHP? Follow these guides:</p>
+
+<ol>
+  <li><a href="https://learn.microsoft.com/en-us/azure/app-service/quickstart-php?tabs=cli&amp;pivots=platform-linux">Create a PHP web app in Azure App Service</a></li>
+  <li><a href="https://learn.microsoft.com/en-us/azure/app-service/configure-language-php?pivots=platform-linux">Configure a PHP app for Azure App Service</a></li>
+</ol>
+
+<p>You can also checkout the Azure App Service session at <a href="https://build.microsoft.com/en-US/sessions/2d3bac21-85b9-4a33-8293-78536984cb6e">Microsoft Build 2024</a>.</p>
+
+<p>Watch the latest updates on App Service at <a href="https://www.youtube.com/playlist?list=PLI7iePan8aH75bqCGA_LDtURqAmer8gSc">Azure App Service Community Standups</a></p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[We are happy to announce that App Service now supports apps targeting PHP 8.3 across all public regions on Linux App Service Plans.]]></summary></entry><entry><title type="html">Azure App Service Community Standup: Autoscale and Load Testing</title><link href="https://azure.github.io/AppService/2024/05/01/App-Service-Community-Standup.html" rel="alternate" type="text/html" title="Azure App Service Community Standup: Autoscale and Load Testing" /><published>2024-05-01T00:00:00+00:00</published><updated>2024-05-01T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2024/05/01/App-Service-Community-Standup</id><content type="html" xml:base="https://azure.github.io/AppService/2024/05/01/App-Service-Community-Standup.html"><![CDATA[<p>Watch the latest <a href="https://www.youtube.com/live/ZbnIf_Tzjhs?si=yyxebOdd8xQz976c">Azure App Service Community Standup</a>, featuring Autoscale and Load Testing.</p>
+
+<p>For more information on Autoscale and Load Testing, check out the following resources:</p>
+
+<ul>
+  <li>
+    <p><a href="https://techcommunity.microsoft.com/t5/apps-on-azure-blog/announcing-general-availability-of-azure-app-service-automatic/ba-p/4066251">Announcing General Availability of Azure App Service Automatic Scaling</a></p>
+  </li>
+  <li>
+    <p><a href="https://techcommunity.microsoft.com/t5/apps-on-azure-blog/run-azure-load-testing-on-azure-app-service-web-apps/ba-p/4117175">Run Azure Load Testing on App Service Web Apps</a></p>
+  </li>
+  <li>
+    <p><a href="https://learn.microsoft.com/en-us/azure/load-testing/concept-load-test-app-service">Load Testing for Azure App Service</a></p>
+  </li>
+  <li>
+    <p><a href="https://learn.microsoft.com/en-us/azure/app-service/manage-automatic-scaling?tabs=azure-portal">How to Enable Automatic Scaling</a></p>
+  </li>
+</ul>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[Watch the latest Azure App Service Community Standup, featuring Autoscale and Load Testing.]]></summary></entry><entry><title type="html">Improving App Service networking configuration control</title><link href="https://azure.github.io/AppService/2024/04/23/Networking-compliance-improvements.html" rel="alternate" type="text/html" title="Improving App Service networking configuration control" /><published>2024-04-23T00:00:00+00:00</published><updated>2024-04-23T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2024/04/23/Networking-compliance-improvements</id><content type="html" xml:base="https://azure.github.io/AppService/2024/04/23/Networking-compliance-improvements.html"><![CDATA[<p>Networking as part of an application architecture continues to grow and we have seen and heard a need to invest in more control and insights. Networking involves joining a network and controlling routing of networking. You may already have seen some of the improvements we have made to the <a href="https://azure.github.io/AppService/2024/02/01/Networking-UX-improvements.html">user experience in Azure portal</a>, but we have also been making changes to the backend to help control and ensure compliance of networking configurations. In this blog post I’ll go through some changes you will see light up in the next 3-6 months.</p>
+
+<h2 id="policy-compliance">Policy compliance</h2>
+
+<p>Azure policy is a popular way to audit desired configurations and even modify or deny specific configurations. In App Service you have configurations in site properties, site config properties and app settings. App settings does not allow for policy auditing or control and site config properties only allow for auditing and reactive modification. Only site properties allow the full suite of Azure policy control. To allow full Policy compliance configuration we have been introducing site property equivalents to some important networking app settings such as <code class="language-plaintext highlighter-rouge">WEBSITE_VNET_ROUTE_ALL</code>, <code class="language-plaintext highlighter-rouge">WEBSITE_CONTENTOVERVNET</code>, <code class="language-plaintext highlighter-rouge">WEBSITE_PULL_IMAGE_OVER_VNET</code>, <code class="language-plaintext highlighter-rouge">WEBSITE_DNS_SERVER</code> and <a href="https://learn.microsoft.com/azure/app-service/overview-name-resolution#configuring-dns-servers">other DNS related settings</a>.</p>
+
+<p>All these properties have been introduced as site properties, including a new property for controlling backup/restore. The <a href="https://learn.microsoft.com/azure/app-service/overview-vnet-integration#routing-app-settings">app settings</a> continue to work, but the site properties will take precedence. Here is the overview of the settings:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+    <span class="dl">"</span><span class="s2">properties</span><span class="dl">"</span><span class="p">:</span>
+    <span class="p">{</span>
+        <span class="dl">"</span><span class="s2">vnetRouteAllEnabled</span><span class="dl">"</span><span class="p">:</span> <span class="kc">true</span><span class="o">/</span><span class="kc">false</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">vnetImagePullEnabled</span><span class="dl">"</span><span class="p">:</span> <span class="kc">true</span><span class="o">/</span><span class="kc">false</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">vnetContentShareEnabled</span><span class="dl">"</span><span class="p">:</span> <span class="kc">true</span><span class="o">/</span><span class="kc">false</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">vnetBackupRestoreEnabled</span><span class="dl">"</span><span class="p">:</span> <span class="kc">true</span><span class="o">/</span><span class="kc">false</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">dnsConfiguration</span><span class="dl">"</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="dl">"</span><span class="s2">dnsServers</span><span class="dl">"</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="dl">"</span><span class="s2">dnsAltServer</span><span class="dl">"</span><span class="p">:</span> <span class="dl">""</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">dnsRetryAttemptCount</span><span class="dl">"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">dnsRetryAttemptTimeout</span><span class="dl">"</span> <span class="mi">30</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">dnsMaxCacheTimeout</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Historically, we have also had two of the networking settings in site config properties, namely <code class="language-plaintext highlighter-rouge">vnetRouteAllEnabled</code> and <code class="language-plaintext highlighter-rouge">publicNetworkAccess</code>. Again, because of the limitations to control via policy, we have been introducing these properties as site properties. For a while they have been modifiable in both places, but we will start enforcing that you can only modify the setting using the site property and you may see an error message like this: “SiteConfig.PublicNetworkAccess cannot be modified. Please modify the Site.PublicNetworkAccess property”. If you see this error you will need to update your scripts or templates to use the site property equivalent.</p>
+
+<h2 id="simplify-configuration">Simplify configuration</h2>
+
+<p>It can be difficult to maintain an overview of the <code class="language-plaintext highlighter-rouge">vnetXxxEnabled</code> properties or controlling routing and as new features are added to App Service, we will be introducing new properties. To help simplify the configuration, we will also be introducing a new property called <code class="language-plaintext highlighter-rouge">outboundVnetRouting</code> which will capture all of the above settings and introduce a new “all traffic” setting if you just want both existing and new traffic to travel over the virtual network. When introducing new properties, we will be announcing them and will be giving you a few months to adapt your configurations before enabling it under “all traffic”. If all traffic is enabled, individual routing configurations will be ignored. Initially, the schema will look like this:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+    <span class="dl">"</span><span class="s2">properties</span><span class="dl">"</span><span class="p">:</span>
+    <span class="p">{</span>
+        <span class="dl">"</span><span class="s2">outboundVnetRouting</span><span class="dl">"</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="dl">"</span><span class="s2">allTraffic</span><span class="dl">"</span><span class="p">:</span> <span class="kc">true</span><span class="o">/</span><span class="kc">false</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">applicationTraffic</span><span class="dl">"</span><span class="p">:</span> <span class="kc">true</span><span class="o">/</span><span class="kc">false</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">contentShareTraffic</span><span class="dl">"</span><span class="p">:</span> <span class="kc">true</span><span class="o">/</span><span class="kc">false</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">imagePullTraffic</span><span class="dl">"</span> <span class="kc">true</span><span class="o">/</span><span class="kc">false</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">backupRestoreTraffic</span><span class="dl">"</span><span class="p">:</span> <span class="kc">true</span><span class="o">/</span><span class="kc">false</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="permissions-needed">Permissions needed</h2>
+
+<p>When modifying certain networking configurations, you need permissions on the linked resource. Examples of this is when joining a virtual network by setting the <code class="language-plaintext highlighter-rouge">virtualNetworkSubnetId</code> property you need <em>subnet/join/action</em> permission on the subnet you are joining, or adding access restrictions rules with service endpoints enabled you need <em>subnet/joinViaServiceEndpoint/action</em> permission on the subnet in addition to the permission to change the site itself. Whenever these configurations exist, they are currently revalidated on every update of the site, even if you are modifying something different. This is also something we have been working on improving and will slowly be changing the behavior to only validate the permission if the property changes.</p>
+
+<h2 id="roadmap">Roadmap</h2>
+
+<p>We hope all of these improvements makes your work with networking in App Service easier. We are always looking for ways to improve. Feel free to give feedback through comments here or through the docs/portal feedback channels.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[Networking as part of an application architecture continues to grow and we have seen and heard a need to invest in more control and insights. Networking involves joining a network and controlling routing of networking. You may already have seen some of the improvements we have made to the user experience in Azure portal, but we have also been making changes to the backend to help control and ensure compliance of networking configurations. In this blog post I’ll go through some changes you will see light up in the next 3-6 months.]]></summary></entry><entry><title type="html">Unlocking Possibilities: Introducing Sidecar Pattern and Webjobs for Linux App Service in Public Preview!</title><link href="https://azure.github.io/AppService/2024/04/04/Public-Preview-Sidecars-Webjobs.html" rel="alternate" type="text/html" title="Unlocking Possibilities: Introducing Sidecar Pattern and Webjobs for Linux App Service in Public Preview!" /><published>2024-04-04T00:00:00+00:00</published><updated>2024-04-04T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2024/04/04/Public-Preview-Sidecars-Webjobs</id><content type="html" xml:base="https://azure.github.io/AppService/2024/04/04/Public-Preview-Sidecars-Webjobs.html"><![CDATA[<p>Today marks an important milestone in the evolution of our Linux App Service offering as we announce the launch of two powerful features, both now available in Public Preview: the Sidecar Pattern and Webjobs.</p>
+
+<h2 id="introducing-the-sidecar-pattern">Introducing the Sidecar Pattern</h2>
+
+<p>As highlighted in our recent blog post <a href="https://techcommunity.microsoft.com/t5/apps-on-azure-blog/a-glimpse-into-the-future-the-sidecar-pattern-on-linux-app/ba-p/4045680">A Glimpse into the Future: The Sidecar Pattern on Linux App Service</a>, the Sidecar pattern allows you to co-locate a cohesive set of tasks with the primary application but place them inside their own process or container. This allows you to seamlessly extend the functionality of your primary application by attaching companion containers, or “sidecars,” each serving a specific purpose or function.</p>
+
+<p>We now have a rich experience on the Azure portal which allows you to create a sidecar-enabled Linux web app. To delve deeper into the feature and create your first Sidecar application, please refer to <a href="https://go.microsoft.com/fwlink/?linkid=2257512">Tutorial: Configure a sidecar container for custom container in Azure App Service (preview)</a></p>
+
+<p>Currently, the feature is enabled scenarios where you want to use a custom Container image. We are working to enable it for our pre-defined application stacks as well. More on that is coming soon.</p>
+
+<h2 id="webjobs-for-linux-app-service-and-windows-containers">Webjobs for Linux App Service and Windows Containers</h2>
+
+<p>Another feature that we are enabling for Linux App Service is the ability to create Webjobs. Designed to streamline the execution of background tasks and scheduled processes, Webjobs offer a solution for automating routine operations within your applications hosted on the Linux App Service. We have always had the feature for our Windows offerings and now we are bringing the same convenience to Linux App Service.</p>
+
+<p>We are also introducing the feature for <a href="https://learn.microsoft.com/azure/app-service/quickstart-custom-container?tabs=dotnet&amp;pivots=container-windows-azure-portal">Windows Containers</a>.</p>
+
+<p>To learn more about webjobs and how to use it, please refer to <a href="https://learn.microsoft.com/azure/app-service/webjobs-create">Run background tasks with WebJobs in Azure App Service</a>.</p>
+
+<p><strong>Conclusion</strong></p>
+
+<p>Exciting times lie ahead for Linux App Service, and we’re thrilled to have you along for the ride. We are actively working to add more experiences to the service and we are always interested in your feedback.</p>
+
+<p>Remember to checkout our <a href="https://www.youtube.com/live/s7pT0oX7jcs?si=QKTRLYbMuS18kHy4">Community Standup on 10th April 2024</a> to learn more about both features.</p>]]></content><author><name>Azure App Service</name></author><category term="Linux App Service" /><summary type="html"><![CDATA[Today marks an important milestone in the evolution of our Linux App Service offering as we announce the launch of two powerful features, both now available in Public Preview: the Sidecar Pattern and Webjobs.]]></summary></entry><entry><title type="html">Continuous Deployment for Windows Containers with Azure Pipelines</title><link href="https://azure.github.io/AppService/2024/04/03/Continuous-deployment-for-Windows-containers.html" rel="alternate" type="text/html" title="Continuous Deployment for Windows Containers with Azure Pipelines" /><published>2024-04-03T00:00:00+00:00</published><updated>2024-04-03T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2024/04/03/Continuous%20deployment%20for%20Windows%20containers</id><content type="html" xml:base="https://azure.github.io/AppService/2024/04/03/Continuous-deployment-for-Windows-containers.html"><![CDATA[<p>Azure DevOps enables you to host, build, plan and test your code with complimentary workflows. Using Azure Pipelines as one of these workflows allows you to deploy your application with CI/CD that works with any platform and cloud.  A pipeline is defined as a YAML file in the root directory of your repository.</p>
+
+<p>In this article, we will use Azure Pipelines to deploy a Windows container application to App Service from a Git repository in Azure DevOps.  It assumes you already have a .NET application with supporting dockerfile in Azure DevOps.</p>
+
+<h3 id="pre-requisites">Pre-requisites</h3>
+
+<ol>
+  <li>An <a href="https://learn.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal?tabs=azure-cli">Azure Container Registry</a></li>
+  <li>App Service Web App (Windows container) resource</li>
+  <li>.NET application with dockerfile in Azure DevOps</li>
+</ol>
+
+<h3 id="add-a-service-connection">Add a Service Connection</h3>
+
+<p>Before you create your pipeline, you should first create your Service Connection since you will be asked to choose and verify your connection when creating your template. A Service Connection will allow you to connect to your registry of choice (ACR or Docker Hub) when using the task templates. When adding a new service connection, choose the <strong>Docker Registry</strong> option. The following form will ask you to choose Docker Hub or Azure Container Registry along with pertaining information.  This tutorial will use Azure Container Registry.  You can create a new Service Connection following the directions <a href="https://docs.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&amp;tabs=yaml#create-new">here</a>.</p>
+
+<h3 id="create-the-pipeline">Create the pipeline</h3>
+
+<p>Once your repository is created with your .NET application and supporting dockerfile, you can create your pipeline following these steps.</p>
+
+<ol>
+  <li>Navigate to <strong>Pipelines</strong> on the left menu bar and click on the <strong>Create pipeline</strong> button</li>
+  <li>On the next screen, select <strong>Azure Repos Git</strong> as your repository option and select the repository where you code is</li>
+  <li>Under the Configure tab choose the <strong>Starter Pipeline</strong> option</li>
+  <li>Under the next Review tab, click the <strong>Save</strong> button</li>
+</ol>
+
+<h3 id="secure-secrets">Secure secrets</h3>
+
+<p>Since we are using sensitive information that you don’t want others to access, we will use variables to protect our information. Create a variable by following the directions <a href="https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&amp;tabs=yaml%2Cbatch">here</a>.</p>
+
+<p>To add a Variable, you click the <strong>Variables</strong> button next to the <em>Save</em> button in the top-right of the editing view for your pipeline. Select the <strong>New Variable</strong> button and enter your information. Add the variables below with your own secrets appropriate from each resource.</p>
+
+<ul>
+  <li>vmImageName: ‘windows-latest’</li>
+  <li>imageRepository: ‘your-image-repo-name’</li>
+  <li>dockerfilePath: ‘$(Build.SourcesDirectory)/path/to/Dockerfile’</li>
+  <li>dockerRegistryServiceConnection: ‘your-service-connection-number’</li>
+</ul>
+
+<h3 id="edit-the-pipeline">Edit the pipeline</h3>
+
+<p>After your pipeline is created and saved, you will need to edit the pipeline to run the steps for building the container, pushing to a registry, and deploying the image to App Service.  To start, navigate to the <strong>Pipelines</strong> menu, choose your pipeline that you just created and click the <strong>Edit</strong> button.</p>
+
+<p><strong>Build image and push to Azure Container Registry</strong></p>
+
+<p>First, you need to add the docker task so you can build the image.  Add the following code and replace the Dockerfile: app/Dockerfile with the path to your Dockerfile.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">trigger</span><span class="pi">:</span>
+ <span class="pi">-</span> <span class="s">main</span>
+
+ <span class="na">pool</span><span class="pi">:</span>
+   <span class="na">vmImage</span><span class="pi">:</span> <span class="s1">'</span><span class="s">windows-latest'</span> 
+
+ <span class="na">variables</span><span class="pi">:</span>
+   <span class="na">vmImageName</span><span class="pi">:</span> <span class="s1">'</span><span class="s">windows-latest'</span>
+   <span class="na">imageRepository</span><span class="pi">:</span> <span class="s1">'</span><span class="s">your-image-repo-name'</span>
+   <span class="na">dockerfilePath</span><span class="pi">:</span> <span class="s1">'</span><span class="s">$(Build.SourcesDirectory)/path/to/Dockerfile'</span>
+   <span class="na">dockerRegistryServiceConnection</span><span class="pi">:</span> <span class="s1">'</span><span class="s">your-service-connection-number'</span>
+
+<span class="pi">-</span> <span class="na">stage</span><span class="pi">:</span> <span class="s">Build</span>
+  <span class="na">displayName</span><span class="pi">:</span> <span class="s">Build and push stage</span>
+  <span class="na">jobs</span><span class="pi">:</span>  
+  <span class="pi">-</span> <span class="na">job</span><span class="pi">:</span> <span class="s">Build</span>
+    <span class="na">displayName</span><span class="pi">:</span> <span class="s">Build job</span>
+    <span class="na">pool</span><span class="pi">:</span>
+      <span class="na">vmImage</span><span class="pi">:</span> <span class="s">$(vmImageName)</span>
+    <span class="na">steps</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">task</span><span class="pi">:</span> <span class="s">Docker@2</span>
+      <span class="na">displayName</span><span class="pi">:</span> <span class="s">Build and push an image to container registry</span>
+      <span class="na">inputs</span><span class="pi">:</span>
+        <span class="na">command</span><span class="pi">:</span> <span class="s">buildAndPush</span>
+        <span class="na">repository</span><span class="pi">:</span> <span class="s">$(imageRepository)</span>
+        <span class="na">dockerfile</span><span class="pi">:</span> <span class="s">$(dockerfilePath)</span>
+        <span class="na">containerRegistry</span><span class="pi">:</span> <span class="s">$(dockerRegistryServiceConnection)</span>
+        <span class="na">tags</span><span class="pi">:</span> <span class="pi">|</span>
+          <span class="s">$(tag)</span>
+</code></pre></div></div>
+
+<h3 id="deploy-to-azure-app-service">Deploy to Azure App Service</h3>
+
+<p>Next, you’ll need to setup the deploy task.  This will require your subscription name, application name, and container registry.  Add a new stage to the yaml file by pasting the code below.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">-</span> <span class="na">stage</span><span class="pi">:</span> <span class="s">Deploy</span>
+  <span class="na">displayName</span><span class="pi">:</span> <span class="s">Deploy to App Service</span>
+  <span class="na">jobs</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">job</span><span class="pi">:</span> <span class="s">Deploy</span>
+    <span class="na">displayName</span><span class="pi">:</span> <span class="s">Deploy</span>
+    <span class="na">pool</span><span class="pi">:</span>
+      <span class="na">vmImage</span><span class="pi">:</span> <span class="s">$(vmImageName)</span>
+    <span class="na">steps</span><span class="pi">:</span>
+</code></pre></div></div>
+
+<ol>
+  <li>Next, navigate to the <strong>Show assistant</strong> tab in the upper right hand corner and find the <strong>Azure App Service deploy</strong> task and fill out the following form
+    <ol>
+      <li>Connection type: Azure Resource Manager</li>
+      <li>Azure subscription: your-subscription-name</li>
+      <li>App Service type: Web App for Containers (Windows)</li>
+      <li>App Service name: your-app-name</li>
+      <li>Registry or Namespace: your-azure-container-registry-namespace</li>
+      <li>Image: your-azure-container-registry-image-name</li>
+    </ol>
+  </li>
+</ol>
+
+<p>Once you have those filled out, click the <strong>Add</strong> button to add a task like below</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">-</span> <span class="na">task</span><span class="pi">:</span> <span class="s">AzureRmWebAppDeployment@4</span>
+  <span class="na">inputs</span><span class="pi">:</span>
+    <span class="na">ConnectionType</span><span class="pi">:</span> <span class="s1">'</span><span class="s">AzureRM'</span>
+    <span class="na">azureSubscription</span><span class="pi">:</span> <span class="s1">'</span><span class="s">my-subscription-name'</span>
+    <span class="na">appType</span><span class="pi">:</span> <span class="s1">'</span><span class="s">webAppHyperVContainer'</span>
+    <span class="na">WebAppName</span><span class="pi">:</span> <span class="s1">'</span><span class="s">my-app-name'</span>
+    <span class="na">DockerNamespace</span><span class="pi">:</span> <span class="s1">'</span><span class="s">myregsitry.azurecr.io'</span>
+    <span class="na">DockerRepository</span><span class="pi">:</span> <span class="s1">'</span><span class="s">dotnetframework:12'</span>
+</code></pre></div></div>
+
+<p>After you’ve added the task the pipeline is ready to run.  Click the <strong>Validate and save</strong> button and run the pipeline.  The pipeline will go through the steps to Build and push the Windows container image to Azure Container Registry and deploy the image to App Service.</p>
+
+<p>See the below for the full yaml file:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">trigger</span><span class="pi">:</span>
+ <span class="pi">-</span> <span class="s">main</span>
+
+ <span class="na">pool</span><span class="pi">:</span>
+   <span class="na">vmImage</span><span class="pi">:</span> <span class="s1">'</span><span class="s">windows-latest'</span> 
+
+ <span class="na">variables</span><span class="pi">:</span>
+   <span class="na">vmImageName</span><span class="pi">:</span> <span class="s1">'</span><span class="s">windows-latest'</span>
+   <span class="na">imageRepository</span><span class="pi">:</span> <span class="s1">'</span><span class="s">your-image-repo-name'</span>
+   <span class="na">dockerfilePath</span><span class="pi">:</span> <span class="s1">'</span><span class="s">$(Build.SourcesDirectory)/path/to/Dockerfile'</span>
+   <span class="na">dockerRegistryServiceConnection</span><span class="pi">:</span> <span class="s1">'</span><span class="s">your-service-connection-number'</span>
+
+<span class="pi">-</span> <span class="na">stage</span><span class="pi">:</span> <span class="s">Build</span>
+  <span class="na">displayName</span><span class="pi">:</span> <span class="s">Build and push stage</span>
+  <span class="na">jobs</span><span class="pi">:</span>  
+  <span class="pi">-</span> <span class="na">job</span><span class="pi">:</span> <span class="s">Build</span>
+    <span class="na">displayName</span><span class="pi">:</span> <span class="s">Build job</span>
+    <span class="na">pool</span><span class="pi">:</span>
+      <span class="na">vmImage</span><span class="pi">:</span> <span class="s">$(vmImageName)</span>
+    <span class="na">steps</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">task</span><span class="pi">:</span> <span class="s">Docker@2</span>
+      <span class="na">displayName</span><span class="pi">:</span> <span class="s">Build and push an image to container registry</span>
+      <span class="na">inputs</span><span class="pi">:</span>
+        <span class="na">command</span><span class="pi">:</span> <span class="s">buildAndPush</span>
+        <span class="na">repository</span><span class="pi">:</span> <span class="s">$(imageRepository)</span>
+        <span class="na">dockerfile</span><span class="pi">:</span> <span class="s">$(dockerfilePath)</span>
+        <span class="na">containerRegistry</span><span class="pi">:</span> <span class="s">$(dockerRegistryServiceConnection)</span>
+        <span class="na">tags</span><span class="pi">:</span> <span class="pi">|</span>
+          <span class="s">$(tag)</span>
+
+<span class="pi">-</span> <span class="na">stage</span><span class="pi">:</span> <span class="s">Deploy</span>
+  <span class="na">displayName</span><span class="pi">:</span> <span class="s">Deploy to App Service</span>
+  <span class="na">jobs</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">job</span><span class="pi">:</span> <span class="s">Deploy</span>
+    <span class="na">displayName</span><span class="pi">:</span> <span class="s">Deploy</span>
+    <span class="na">pool</span><span class="pi">:</span>
+      <span class="na">vmImage</span><span class="pi">:</span> <span class="s">$(vmImageName)</span>
+    <span class="na">steps</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">task</span><span class="pi">:</span> <span class="s">AzureRmWebAppDeployment@4</span>
+<span class="na">		  inputs</span><span class="pi">:</span>
+<span class="err">		</span>    <span class="na">ConnectionType</span><span class="pi">:</span> <span class="s1">'</span><span class="s">AzureRM'</span>
+<span class="err">		</span>    <span class="na">azureSubscription</span><span class="pi">:</span> <span class="s1">'</span><span class="s">my-subscription-name'</span>
+<span class="err">		</span>    <span class="na">appType</span><span class="pi">:</span> <span class="s1">'</span><span class="s">webAppHyperVContainer'</span>
+<span class="err">		</span>    <span class="na">WebAppName</span><span class="pi">:</span> <span class="s1">'</span><span class="s">my-app-name'</span>
+<span class="err">		</span>    <span class="na">DockerNamespace</span><span class="pi">:</span> <span class="s1">'</span><span class="s">myregsitry.azurecr.io'</span>
+<span class="err">		</span>    <span class="na">DockerRepository</span><span class="pi">:</span> <span class="s1">'</span><span class="s">dotnetframework:12'</span>
+</code></pre></div></div>]]></content><author><name>Azure App Service</name></author><category term="dotnet" /><category term="windows containers" /><summary type="html"><![CDATA[Azure DevOps enables you to host, build, plan and test your code with complimentary workflows. Using Azure Pipelines as one of these workflows allows you to deploy your application with CI/CD that works with any platform and cloud. A pipeline is defined as a YAML file in the root directory of your repository.]]></summary></entry><entry><title type="html">Prevent crashes due to ‘system.webServer/runtime’ already defined</title><link href="https://azure.github.io/AppService/2024/03/20/Azure-WebApp-crashing-due-to-duplicate-runtime-section.html" rel="alternate" type="text/html" title="Prevent crashes due to ‘system.webServer/runtime’ already defined" /><published>2024-03-20T00:00:00+00:00</published><updated>2024-03-20T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2024/03/20/Azure%20WebApp%20crashing%20due%20to%20duplicate%20runtime%20section</id><content type="html" xml:base="https://azure.github.io/AppService/2024/03/20/Azure-WebApp-crashing-due-to-duplicate-runtime-section.html"><![CDATA[<p>The following article addresses an issue that may arise within your application, particularly when utilizing XDT transforms or older versions of Site extensions from the App Service Site extension gallery. The symptoms include:</p>
+
+<ol>
+  <li>The SCM site enters a crashing loop and fails to recover.</li>
+  <li>The EventLog.xml file (present in %HOME%\LogFiles folder) records an error concerning a duplicate <strong>‘system.webServer/runtime’</strong> section:</li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;Data&gt;~1YourSiteName&lt;/Data&gt;
+&lt;Data&gt;Config section 'system.webServer/runtime' already defined. Sections 
+must only appear once per config file. See the help topic &lt;location&gt; for exceptions.
+&lt;/Data&gt;
+&lt;Data&gt;\\?\D:\DWASFiles\Sites\#1YourSiteName\Config\applicationhost.config&lt;/Data&gt;
+&lt;Data&gt;1150&lt;/Data&gt;
+&lt;Binary&gt;B7000000&lt;/Binary&gt;
+</code></pre></div></div>
+
+<p>This issue arises when a site extension (or <a href="https://github.com/projectkudu/kudu/wiki/Xdt-transform-samples">custom XDT Transform</a>) contains an incorrect XDT Transform utilizing <strong>Insert</strong> (instead of <strong>InsertIfMissing</strong>) to add a custom environment variable within the <environmentVariables> collection in the resulting applicationHost.config file. This leads to duplicate **'system.webServer/runtime'** tags, triggering the error. Notably, the following site extensions have updates available to address this issue:</environmentVariables></p>
+
+<ol>
+  <li>NewRelic</li>
+  <li>Composer</li>
+</ol>
+
+<p>It must be noted that error could surface while using custom XDT transforms or any other site extension that is using <strong>Insert</strong> instead of <strong>InsertIfMissing</strong> XDT transform.</p>
+
+<h3 id="how-to-resolve">How to Resolve</h3>
+<p>To resolve this problem, follow these steps:</p>
+<ol>
+  <li>Get the FTP/S endpoing for your app. (Details in <a href="https://learn.microsoft.com/en-us/azure/app-service/deploy-ftp?tabs=portal#get-ftps-endpoint">Get FTP/S endpoint</a>).</li>
+  <li>Navigate to <strong>/SiteExtensions</strong> folder.</li>
+  <li>Locate the respective site extension and delete the SiteExtension folder (e.g. Composer, NewRelic).</li>
+  <li><strong>Restart</strong> the site from Azure Portal to ensure the site extension update takes effect.</li>
+  <li>Navigate back to the <strong>Kudu Console</strong> (<yoursitename>.azurewebsites.net) of your app and go to **Site Extensions** tab and install the latest version of the Site Extension from the gallery.</yoursitename></li>
+</ol>
+
+<blockquote>
+  <p>Please execute the mentioned steps only if you have identified that you are experiencing the issue described in the symptoms provided above.</p>
+</blockquote>
+
+<p>If the app is utilizing a <a href="https://github.com/projectkudu/kudu/wiki/Xdt-transform-samples">custom XDT Transform</a>, ensure to use <strong>InsertIfMissing</strong> instead of <strong>Insert</strong> transform.</p>
+
+<h3 id="additional-information">Additional Information</h3>
+<p>The emergence of this issue coincided with an update to the Diagnostic as a Service (DaaS) site extension by App Service. The rollout of this update commenced in February 2024. Notably, the latest iteration of the site extension introduced a new environment variable utilized by DaaS for diagnostic purposes. It is important to highlight that while the DaaS site extension appropriately employed the InsertIfMissing transform, the insertion of the system.webServer/runtime section conflicted with other XDT Transforms utilizing the Insert transform, resulting in failures due to the preexistence of the section.</p>]]></content><author><name>Azure App Service</name></author><category term="Diagnostics" /><summary type="html"><![CDATA[The following article addresses an issue that may arise within your application, particularly when utilizing XDT transforms or older versions of Site extensions from the App Service Site extension gallery. The symptoms include:]]></summary></entry><entry><title type="html">Troubleshoot your App Service Hybrid Connections with the Hybrid Connection Debug Utility</title><link href="https://azure.github.io/AppService/2024/03/01/Hybrid-connection-debug-utility.html" rel="alternate" type="text/html" title="Troubleshoot your App Service Hybrid Connections with the Hybrid Connection Debug Utility" /><published>2024-03-01T00:00:00+00:00</published><updated>2024-03-01T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2024/03/01/Hybrid-connection-debug-utility</id><content type="html" xml:base="https://azure.github.io/AppService/2024/03/01/Hybrid-connection-debug-utility.html"><![CDATA[<p>The Hybrid Connection Debug utility is provided to perform captures and troubleshooting of issues with the Hybrid Connection Manager.</p>
+
+<p>This utility acts as a mini-Hybrid Connection Manager and must be used <em>instead of</em> the existing Hybrid Connection Manager you have installed on your client. If you have production environments that use Hybrid Connections, you should create a new Hybrid Connection that only gets served by this utility and repro your issue with the new Hybrid Connection.</p>
+
+<p>The tool can be downloaded here: <a href="https://hybridconnectiondebugutility.azurewebsites.net/HybridConnectionDebugUtility.zip">Hybrid Connection Debug Utility</a>.</p>
+
+<h2 id="usage">Usage</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>USAGE:
+HybridConnectionDebugUtility client <span class="o">[</span>connectionString] <span class="o">[</span>listenPort] <span class="o">[</span>options]
+HybridConnectionDebugUtility listener <span class="o">[</span>connectionString] <span class="o">[</span>options]
+
+options:
+    /traceLevel:[level] - Specifies the trace-level to use <span class="o">(</span>none, connections, verbose<span class="o">)</span>
+    /keepAlive - Enables TCP keep-alive on endpoint connection socket
+    /overrideEndpointHost:[host] - Specifies an endpoint host to use instead of the one defined <span class="k">in </span>the Hybrid Connection
+    /overrideEndpointPort:[port] - Specifies an endpoint port to use instead of the one defined <span class="k">in </span>the Hybrid Connection
+    /log:[file] - Specifies a file to log all activity to.
+    /connectionStats - Logs connection statistics <span class="o">(</span><span class="c"># of connections, bytes written/read)</span>
+
+traceLevel allowed values:
+    none
+    connections: <span class="o">(</span>default<span class="o">)</span> trace all connections opened and closed.
+    verbose: trace all connections and packet data.
+</code></pre></div></div>
+
+<p>The debug utility can function in two modes - as a client or listener:</p>
+
+<ul>
+  <li>Client: This mimics the behavior of Hybrid Connections in the app itself in App Service - e.g. this will forward connections <em>to</em> Service Bus.</li>
+  <li>Listener: This mimics the behavior of the Hybrid Connection Manager - e.g. this will receive connections <em>from</em> Service Bus.</li>
+</ul>
+
+<p>Typically, for any troubleshooting of Hybrid Connections issues, <strong>Listener</strong> should be the only mode that is necessary.</p>
+
+<h2 id="using-the-tool">Using the tool</h2>
+
+<p>Setup a Hybrid Connection in the Azure Portal as per usual, e.g. under the App -&gt; Networking -&gt; Hybrid Connections -&gt; Add a Hybrid Connection. It’s highly recommended that you use a <em>new</em> Hybrid Connection with this tool (e.g. a Hybrid Connection that is not being served by <em>any</em> Hybrid Connection Managers currently and shows in the Portal as “Not Connected”). To use an existing one instead, the Hybrid Connection must first be removed from <em>all</em> Hybrid Connection Managers (and thus show <strong>“Not Connected”</strong> - this will break connectivity).</p>
+
+<p>You’ll need to retrieve the connection string from this Hybrid Connection which can be done in the portal:</p>
+
+<p><img src="/AppService/media/2024/03/GatewayConnectionString.png" alt="Hybrid Connection gateway connection string" /></p>
+
+<p>The connection string will be in the following format:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">Endpoint</span><span class="o">=</span>sb://<span class="k">**</span><span class="se">\[</span>ServiceBusNamespace<span class="se">\]</span><span class="k">**</span>.servicebus.windows.net/<span class="p">;</span><span class="nv">SharedAccessKeyName</span><span class="o">=</span>defaultListener<span class="p">;</span><span class="nv">SharedAccessKey</span><span class="o">=</span><span class="k">**</span><span class="se">\[</span>KeyValue<span class="se">\]</span><span class="k">**</span><span class="p">;</span><span class="nv">EntityPath</span><span class="o">=</span><span class="k">**</span><span class="se">\[</span>RelayName<span class="se">\]</span><span class="k">**</span>
+</code></pre></div></div>
+
+<p>To launch the Hybrid Connection Debug Utility in it’s most basic configuration:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>HybridConnectionDebugUtility.exe listener <span class="o">[</span>connectionstring] 
+</code></pre></div></div>
+
+<p>By default, this listener will forward traffic to the endpoint that is configured on the Hybrid Connection itself (set when creating it through App Service Hybrid Connections UI). If no endpoint is set or to override this endpoint, use the parameters <code class="language-plaintext highlighter-rouge">/overrideEndpointHost:[host]</code> and <code class="language-plaintext highlighter-rouge">/overrideEndpointPort:[port]</code>.</p>
+
+<p>Depending on what you’re investigating, it’s recommended to include either <code class="language-plaintext highlighter-rouge">/traceLevel:connections</code> or <code class="language-plaintext highlighter-rouge">/traceLevel:verbose</code>. Connections will show data about all connections being made and when they are opened and closed:</p>
+
+<p><img src="/AppService/media/2024/03/ConnectionsOutput.png" alt="Hybrid Connection Debug Utility connections-only tracing mode" /></p>
+
+<p>For Verbose traffic, it will include packet captures (though these are difficult to read and incompatible with tools like WireShark and Netmon):</p>
+
+<p><img src="/AppService/media/2024/03/VerboseOutput.png" alt="Hybrid Connection Debug Utility verbose tracing mode" /></p>
+
+<p>If additional support is needed, you can reach out to customer support and share the output from the tool. To write all data to a file, run the command with <code class="language-plaintext highlighter-rouge">/log:[filename]</code>.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[The Hybrid Connection Debug utility is provided to perform captures and troubleshooting of issues with the Hybrid Connection Manager.]]></summary></entry></feed>
