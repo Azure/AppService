@@ -1,5 +1,5 @@
 ---
-title: "Managed Identity Support for Storage Account used in Diagnostics under Diagnose and Solve blade"
+title: "Managed Identity Support for storage accounts used in Diagnostic Tools under Diagnose and Solve blade"
 author_name: "Puneet Gupta"
 category: 'Diagnostics'
 ---
@@ -11,7 +11,10 @@ We are pleased to announce **Managed Identity** support for authenticating again
 - Compatibility: Managed Identity for storage accounts can be used with applications hosted on both Windows and Linux App Service plans.
 
 ### Usage Details
-In the Diagnose and Solve blade for a web app, navigate to the **Diagnostic Tools** category and select the **Collect Memory Dump** option. Here, you will see the **Authentication** setting, under the storage account name, which displays the authentication method used to connect to the storage account. If your application is preconfigured with a storage account, you might encounter a warning indicating the use of **Account Key or SAS** based authentication to connect to the storage account.
+1. Navigate to your App Service web app in the Azure Portal.
+2. Select **Diagnose and Solve problems**.
+3. Navigate to the **Diagnostic Tools** category and select the **Collect Memory Dump** option. 
+4. Here, you will see the **Authentication** setting, under the storage account name, which displays the authentication method used to connect to the storage account. If your application is preconfigured with a storage account, you might encounter a warning indicating the use of **Account Key or SAS** based authentication to connect to the storage account.
 
 > ![]({{site.baseurl}}/media/2024/07/daas-storage-account.png)
 
