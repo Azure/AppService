@@ -5,7 +5,9 @@ toc: true
 toc_sticky: true
 ---
 
-At Microsoft Build 2024, we had announced the [Public Preview for the Sidecar pattern for Linux App Service](https://azure.github.io/AppService/2024/04/04/Public-Preview-Sidecars-Webjobs.html). This feature allows developers to enhance their web applications with additional services running alongside the main application container. In this blog, we will demonstrate how you can leverage the Sidecar pattern to seamlessly integrate a Redis cache into your Linux App Service, boosting your application's performance and reliability.
+At Microsoft Build 2024, we had announced the [Public Preview for the Sidecar pattern for Linux App Service](https://azure.github.io/AppService/2024/04/04/Public-Preview-Sidecars-Webjobs.html). This feature allows developers to enhance their web applications with additional services running alongside the main application container. See Sidecars in action in this [Build session](https://build.microsoft.com/sessions/2d3bac21-85b9-4a33-8293-78536984cb6e?source=sessions). 
+
+In this blog, we will demonstrate how you can leverage the Sidecar pattern to seamlessly integrate a Redis cache into your Linux App Service, boosting your application's performance and reliability.
 
 ## Setting Up your local environment
 
@@ -128,7 +130,7 @@ The browser will display the weather forecast in JSON format. Since we have impl
 
 ## Deploying the Application to Linux App Service
 
-To get started, you'll need to containerize your .NET application. This [tutorial](https://learn.microsoft.com/en-us/dotnet/core/docker/build-container?tabs=windows&pivots=dotnet-8-0) walks you through the process step by step.
+To get started, you'll need to containerize your .NET application. This [tutorial](https://learn.microsoft.com/dotnet/core/docker/build-container?tabs=windows&pivots=dotnet-8-0) walks you through the process step by step.
 *Note: The Sidecar feature is currently enabled for custom-container scenarios for Linux App Service. We are working on enabling it for code scenarios as well. We will update the blog soon for the code-based web applications*
 
 1. **Containerize Your .NET Application**
@@ -141,7 +143,7 @@ To get started, you'll need to containerize your .NET application. This [tutoria
     docker push <your-registry>/<your-image-name>:<tag>
     ```
 
-    We would also recommend that you push the local redis image to ACR. This would allow you to take advantage of securing your resources using Managed Identity. Please refer to this [documentation](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-get-started-docker-cli?tabs=azure-cli).
+    We would also recommend that you push the local redis image to ACR. This would allow you to take advantage of securing your resources using Managed Identity. Please refer to this [documentation](https://learn.microsoft.com/azure/container-registry/container-registry-get-started-docker-cli?tabs=azure-cli).
 3. **Create a New Linux Web App in Azure**
     Create a new Linux Web App from the portal and choose the options for Container and Linux.
     ![Create web app]({{site.baseurl}}/media/2024/07/CreateWebApp.jpg)
@@ -151,13 +153,13 @@ To get started, you'll need to containerize your .NET application. This [tutoria
     Specify the details of your application image.
     ![Create web app]({{site.baseurl}}/media/2024/07/AddContainer.jpg)
 
-    *Note: We strongly recommend enabling [Managed Identity](https://learn.microsoft.com/en-us/azure/app-service/overview-managed-identity?tabs=portal%2Chttp) for your Azure resources.*
+    *Note: We strongly recommend enabling [Managed Identity](https://learn.microsoft.com/azure/app-service/overview-managed-identity?tabs=portal%2Chttp) for your Azure resources.*
 
 4. **Add Redis Sidecar**
     Go to the Deployment Center for your application and add a sidecar container.
     ![Add Redis sidecar]({{site.baseurl}}/media/2024/07/add-redis-container.jpg)
 
-    This [document](https://learn.microsoft.com/en-us/azure/app-service/tutorial-custom-container-sidecar) tells you how to add sidecars, step-by-step.
+    This [document](https://learn.microsoft.com/azure/app-service/tutorial-custom-container-sidecar) tells you how to add sidecars, step-by-step.
 
 5. **Verify the deployment**
     Once your deployment is complete, you can browse to `<your application url>/weatherforecast`
@@ -170,7 +172,7 @@ To get started, you'll need to containerize your .NET application. This [tutoria
 
 ## Caveat for Multi-Instance Workloads
 
-There is a caveat for this application. We are using a local instance of Redis. If you scale out your application to multiple instances, you will notice that the response does not always come from the cache, depending on which instance your request is being routed to. For multi-instance workloads, we recommend using [Azure Cache for Redis](https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-overview), which provides a distributed, scalable, and high-performance caching solution.
+There is a caveat for this application. We are using a local instance of Redis. If you scale out your application to multiple instances, you will notice that the response does not always come from the cache, depending on which instance your request is being routed to. For multi-instance workloads, we recommend using [Azure Cache for Redis](https://learn.microsoft.com/azure/azure-cache-for-redis/cache-overview), which provides a distributed, scalable, and high-performance caching solution.
 
 ## Summary
 
