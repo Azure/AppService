@@ -1,4 +1,9 @@
-# A Step-by-Step Guide to Datadog Integration with Linux App Service via Sidecars
+---
+title: "A Step-by-Step Guide to Datadog Integration with Linux App Service via Sidecars"
+author_name: "Tulika Chaudharie"
+toc: true
+toc_sticky: true
+---
 
 In this blog post, we dive into the realms of observability and monitoring, taking advantage of the latest advancements in Azure's Linux App Service. If you've been following App Service updates, you might have caught wind of the [Public Preview for the Sidecar Pattern for Linux App Service](https://azure.github.io) announced recently. Leveraging this development, we're here to guide you through integrating Datadog, an Azure Native ISV service partner that provides a powerful observability platform, with your .NET custom container application hosted on Linux App Service. Whether you're eager to streamline log management, track application traces, or enhance request monitoring, we've got you covered.
 

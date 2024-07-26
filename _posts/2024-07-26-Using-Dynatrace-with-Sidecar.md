@@ -1,4 +1,9 @@
-# Powering Observability: Dynatrace Integration with Linux App Service via Sidecars
+---
+title: "Powering Observability: Dynatrace Integration with Linux App Service via Sidecars"
+author_name: "Tulika Chaudharie"
+toc: true
+toc_sticky: true
+---
 
 Observability has become crucial for modern applications. Integrating [Dynatrace](https://learn.microsoft.com/en-us/azure/partner-solutions/dynatrace/) with Linux App Service allows you to leverage Dynatrace's powerful monitoring capabilities. This guide walks you through the steps to integrate Dynatrace with your .NET custom container application hosted on Linux App Service using the [sidecar pattern](https://azure.github.io/AppService/2024/04/04/Public-Preview-Sidecars-Webjobs.html).
 
