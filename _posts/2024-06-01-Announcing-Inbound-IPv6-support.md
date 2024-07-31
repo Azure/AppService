@@ -45,6 +45,12 @@ To update an app to return IPv6 DNS records:
 az resource update --name <app-name> --set properties.ipMode="IPv6" -g <resource-group-name> --resource-type "Microsoft.Web/sites"
 ```
 
+If you are updating a slot, you'll need the resource id of the slot. Here is an example:
+
+```bash
+az resource update --ids '/subscriptions/<sub-id>/resourceGroups/<resource-group-name>/providers/Microsoft.Web/sites/<app-name>/slots/<slot-name>' --set properties.ipMode='IPv6'
+```
+
 ## Create or update using Azure Resource Manager templates
 
 To deploy a new app or update an existing app using ARM, you can just set the IPMode to either IPv6 or IPv4AndIPv6. In this template, you are also creating an App Service plan. If you use the template below, replace the values prefixed with REPLACE. For the `reserved` property, true = Linux, false = Windows.
