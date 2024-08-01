@@ -125,7 +125,7 @@ This is the current list of supported regions in preview.
 | France Central       | :heavy_check_mark:                      |
 | France South         | :heavy_check_mark:    |
 | Germany North        | :heavy_check_mark:    |
-| Germany West Central | :heavy_check_mark:                      |
+| Germany West Central |                       |
 | Italy North          | :heavy_check_mark:    |
 | Japan East           | :heavy_check_mark:    |
 | Japan West           | :heavy_check_mark:    |
