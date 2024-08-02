@@ -5,11 +5,11 @@ toc: true
 toc_sticky: true
 ---
 
-In this blog post, we dive into the realms of observability and monitoring, taking advantage of the latest advancements in Azure's Linux App Service. If you've been following App Service updates, you might have caught wind of the [Public Preview for the Sidecar Pattern for Linux App Service](https://azure.github.io) announced recently. Leveraging this development, we're here to guide you through integrating Datadog, an Azure Native ISV service partner that provides a powerful observability platform, with your .NET custom container application hosted on Linux App Service. Whether you're eager to streamline log management, track application traces, or enhance request monitoring, we've got you covered.
+In this blog post, we dive into the realms of observability and monitoring, taking advantage of the latest advancements in Azure's Linux App Service. If you've been following App Service updates, you might have caught wind of the [Public Preview for the Sidecar Pattern for Linux App Service](https://azure.github.io/AppService/2024/04/04/Public-Preview-Sidecars-Webjobs.html) announced recently. Leveraging this development, we're here to guide you through integrating Datadog, an Azure Native ISV service partner that provides a powerful observability platform, with your .NET custom container application hosted on Linux App Service. Whether you're eager to streamline log management, track application traces, or enhance request monitoring, we've got you covered.
 
 ## Setting up your .NET application
 
-To get started, you'll need to containerize your .NET application. This [tutorial](https://learn.microsoft.com) walks you through the process step by step.
+To get started, you'll need to containerize your .NET application. This [tutorial](https://learn.microsoft.com/en-us/dotnet/core/docker/build-container?tabs=windows&pivots=dotnet-8-0) walks you through the process step by step.
 
 Once your application is containerized, you can integrate the Datadog tracer. To do that, you will need to add the following lines to the Dockerfile for your main application.
 
@@ -79,25 +79,25 @@ Note: Typically, .NET uses port 8080 but you can change it in your project.
 
 If you don’t have a Datadog account, you can create an instance of Datadog on the Azure portal by following this QuickStart.
 
-[Create Datadog - Azure Native ISV Services](https://learn.microsoft.com)
+[Create Datadog - Azure Native ISV Services](https://learn.microsoft.com/en-us/azure/partner-solutions/datadog/create)
 
 Alternatively, you can also create a service account on Datadog by following the steps in this tutorial.
 
-[Service Accounts (datadoghq.com)](https://docs.datadoghq.com)
+[Service Accounts (datadoghq.com)](https://docs.datadoghq.com/account_management/org_settings/service_accounts/)
 
 Datadog offers a 14 days Free Trial if you would like to try out the service.
 
 ## AppSettings for the Datadog Integration
 
-You need to set the following [AppSettings](https://learn.microsoft.com).
+You need to set the following [AppSettings](https://learn.microsoft.com/en-us/azure/app-service/configure-common?tabs=portal).
 
-- **DD_API_KEY** – If you have created the Datadog resource on the Azure portal, you can manage your API keys [like this](https://learn.microsoft.com).
+- **DD_API_KEY** – If you have created the Datadog resource on the Azure portal, you can manage your API keys [like this](https://learn.microsoft.com/en-us/azure/partner-solutions/datadog/manage#api-keys).
 
-    Alternatively, you can create your API Key by following the steps here [API and Application Keys (datadoghq.com)](https://docs.datadoghq.com).
+    Alternatively, you can create your API Key by following the steps here [API and Application Keys](https://docs.datadoghq.com/account_management/api-app-keys/).
 
     We would encourage you to add sensitive information like API keys to Azure Key vault [Use Key Vault references - Azure App Service | Microsoft Learn](https://learn.microsoft.com).
 
-- **DD_SITE** – Datadog offers you different sites for your data. You can use `us3.datadoghq.com` as this site is hosted in Azure. Therefore, the Observability data for your application stays in Azure. You can find more information about Datadog sites [here](https://docs.datadoghq.com).
+- **DD_SITE** – Datadog offers you different sites for your data. You can use `us3.datadoghq.com` as this site is hosted in Azure. Therefore, the Observability data for your application stays in Azure. You can find more information about Datadog sites [here](https://docs.datadoghq.com/getting_started/site/).
 
 - **DD_SERVICE**: The name of the service that would be displayed in your Datadog Service Catalog.
 - **DD_ENV**: This is used to set the global environment, which allows you to differentiate data coming from various environments like staging or production.
@@ -108,7 +108,7 @@ You need to set the following [AppSettings](https://learn.microsoft.com).
 - **CORECLR_PROFILER**: `{846F5F1C-F9AE-4B07-969E-05C26BC060D8}`
 - **CORECLR_PROFILER_PATH**: `/datadog/tracer/Datadog.Trace.ClrProfiler.Native.so`
 
-To know more about these Datadog settings, you can refer to the [documentation](https://docs.datadoghq.com).
+To know more about these Datadog settings, you can refer to the [documentation](https://docs.datadoghq.com/serverless/azure_app_services/azure_app_services_container/?code-lang=dotnet).
 
 ## Add the Datadog Sidecar
 
@@ -126,7 +126,7 @@ Port: 8126
 
 ### Disclaimer: Datadog Image Usage
 
-It's important to note that the Datadog image used here is sourced directly from Datadog and is provided 'as-is.' Microsoft does not own or maintain this image. Therefore, its usage is subject to the terms of use outlined by Datadog, which can be found [here](https://www.datadoghq.com).
+It's important to note that the Datadog image used here is sourced directly from Datadog and is provided 'as-is.' Microsoft does not own or maintain this image. Therefore, its usage is subject to the terms of use outlined by Datadog, which can be found [here](https://www.datadoghq.com/legal/terms/).
 
 ## Visualizing Your Observability Data in Datadog
 
@@ -146,12 +146,12 @@ Your application traces will be under `APM->Traces->Explorer`
 
 ![Traces Explorer]({{site.baseurl}}/media/2024/07/datadog-traceexplorer.png)
 
-To learn more about Datadog dashboards, you can refer to the [documentation](https://docs.datadoghq.com).
+To learn more about Datadog dashboards, you can refer to the [documentation](https://docs.datadoghq.com/dashboards/).
 
 ## Next steps
 
 In this guide, we've explored the seamless integration of Datadog with your .NET custom container application hosted on Linux App Service. By leveraging the Sidecar Pattern and Datadog's powerful observability platform, you can now unlock actionable insights and enhance the monitoring capabilities of your applications.
 
-It's important to note that Datadog, as an [Azure Native ISV Services](https://learn.microsoft.com) partner, offers robust support for Azure services and environments. Our collaboration with Datadog is aimed at providing you with even closer and simplified integration experiences in the future.
+It's important to note that Datadog, as an [Azure Native ISV Services](https://learn.microsoft.com/en-us/azure/partner-solutions/datadog/) partner, offers robust support for Azure services and environments. Our collaboration with Datadog is aimed at providing you with even closer and simplified integration experiences in the future.
 
 Stay tuned for upcoming guides where we'll delve into integrating Datadog with code-based web applications and other language stacks like NodeJS and Python.

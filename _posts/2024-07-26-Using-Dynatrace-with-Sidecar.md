@@ -9,7 +9,7 @@ Observability has become crucial for modern applications. Integrating [Dynatrace
 
 ## Setting Up Your .NET Application
 
-To get started, you'll need to containerize your .NET application. You can do the containerization by following this [tutorial](https://learn.microsoft.com).
+To get started, you'll need to containerize your .NET application. You can do the containerization by following this [tutorial](https://learn.microsoft.com/en-us/dotnet/core/docker/build-container?tabs=windows&pivots=dotnet-8-0).
 
 Here's a sample Dockerfile that you can use:
 
