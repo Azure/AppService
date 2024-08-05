@@ -7,7 +7,7 @@ toc_sticky: true
 
 In our ongoing series exploring the integration of various sidecar scenarios with Linux App Service, we delve into an exciting new domain—building AI applications. Following our previous discussion on leveraging [Redis as a sidecar](https://azure.github.io/AppService/2024/07/19/Using-Redis-with-Sidecar.html), we now turn our focus to using Small Language Models (SLMs) to enhance the capabilities of your web applications.
 
-In this post, we will demonstrate how to deploy [Phi-3](https://azure.microsoft.com/en-us/blog/introducing-phi-3-redefining-whats-possible-with-slms/), a powerful SLM, as a sidecar to your Linux App Service. SLMs offer numerous advantages for web applications, including:
+In this post, we will demonstrate how to deploy [Phi-3](https://azure.microsoft.com/blog/introducing-phi-3-redefining-whats-possible-with-slms/), a powerful SLM, as a sidecar to your Linux App Service. SLMs offer numerous advantages for web applications, including:
 
 1. **More Lightweight & Efficient**: This makes them more suitable for situations where computational resources are limited or where real-time inference is required.
 2. **More Accessible**: SLMs lower the barrier to entry for people who want to experiment with language models. Anyone who has access to a laptop or mobile device can train and deploy an SLM, whereas training and deploying an LLM would likely require expensive cloud services or specialized hardware.
