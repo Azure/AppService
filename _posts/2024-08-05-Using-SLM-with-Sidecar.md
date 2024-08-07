@@ -134,6 +134,7 @@ app.post("/api/generate", (req, res) => {
     
     ![Website output]({{site.baseurl}}/media/2024/08/phi-output.jpg)
 
+
     *Note: Since we are deploying a language model, please be aware that the application might take a little longer to start up the first time. This delay is due to the initial setup and loading of the Phi-3 model, which ensures that it is ready to handle requests efficiently. Subsequent startups should be faster once the model is properly initialized.*
 
 ## Summary
