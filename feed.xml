@@ -1,0 +1,1153 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en_US"><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://azure.github.io/AppService/feed.xml" rel="self" type="application/atom+xml" /><link href="https://azure.github.io/AppService/" rel="alternate" type="text/html" hreflang="en_US" /><updated>2024-08-09T00:10:08+00:00</updated><id>https://azure.github.io/AppService/feed.xml</id><title type="html">Azure App Service</title><subtitle>Announcements, updates, and release notes from the Azure App Service product team.</subtitle><author><name>Azure App Service</name></author><entry><title type="html">Azure App Service Community Standup: Integrating Datadog with Linux App Service using Sidecars</title><link href="https://azure.github.io/AppService/2024/08/08/App-Service-Community-Standup.html" rel="alternate" type="text/html" title="Azure App Service Community Standup: Integrating Datadog with Linux App Service using Sidecars" /><published>2024-08-08T00:00:00+00:00</published><updated>2024-08-08T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2024/08/08/App-Service-Community-Standup</id><content type="html" xml:base="https://azure.github.io/AppService/2024/08/08/App-Service-Community-Standup.html"><![CDATA[<p>Watch the latest Azure App Service Community Standup on Integrating Datadog with Linux App Service using Sidecars.</p>
+
+<p><a href="https://www.youtube.com/watch?v=xSrDUDLknhQ"><img src="https://img.youtube.com/vi/xSrDUDLknhQ/hqdefault.jpg" alt="Azure App Service Community Standup" /></a></p>
+
+<p>For more information on Datadog and Sidecar patterns on App Service, check out the following resources:</p>
+
+<ul>
+  <li>
+    <p><a href="https://www.datadoghq.com/private-beta/aas-sidecar/">Azure App Service (AAS) - Sidecar Support</a></p>
+  </li>
+  <li>
+    <p><a href="https://docs.datadoghq.com/serverless/guide/azure_app_service_linux_sidecar/">Instrument Azure App Service - Linux Containers with Sidecar Pattern</a></p>
+  </li>
+  <li>
+    <p><a href="https://azure.github.io/AppService/2024/07/26/Using-Datadog-with-Sidecar.html">A Step-by-Step Guide to Datadog Integration with Linux App Service via Sidecars</a></p>
+  </li>
+</ul>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[Watch the latest Azure App Service Community Standup on Integrating Datadog with Linux App Service using Sidecars.]]></summary></entry><entry><title type="html">Building Smarter Apps: Integrating Phi-3 SLM with Linux App Service</title><link href="https://azure.github.io/AppService/2024/08/05/Using-SLM-with-Sidecar.html" rel="alternate" type="text/html" title="Building Smarter Apps: Integrating Phi-3 SLM with Linux App Service" /><published>2024-08-05T00:00:00+00:00</published><updated>2024-08-05T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2024/08/05/Using-SLM-with-Sidecar</id><content type="html" xml:base="https://azure.github.io/AppService/2024/08/05/Using-SLM-with-Sidecar.html"><![CDATA[<p>In our ongoing series exploring the integration of various sidecar scenarios with Linux App Service, we delve into an exciting new domain—building AI applications. Following our previous discussion on leveraging <a href="https://azure.github.io/AppService/2024/07/19/Using-Redis-with-Sidecar.html">Redis as a sidecar</a>, we now turn our focus to using Small Language Models (SLMs) to enhance the capabilities of your web applications.</p>
+
+<p>In this post, we will demonstrate how to deploy <a href="https://azure.microsoft.com/blog/introducing-phi-3-redefining-whats-possible-with-slms/">Phi-3</a>, a powerful SLM, as a sidecar to your Linux App Service. SLMs offer numerous advantages for web applications, including:</p>
+
+<ol>
+  <li><strong>More Lightweight &amp; Efficient</strong>: This makes them more suitable for situations where computational resources are limited or where real-time inference is required.</li>
+  <li><strong>More Accessible</strong>: SLMs lower the barrier to entry for people who want to experiment with language models. Anyone who has access to a laptop or mobile device can train and deploy an SLM, whereas training and deploying an LLM would likely require expensive cloud services or specialized hardware.</li>
+  <li><strong>Domain-Specific Adaptation</strong>: You can fine-tune SLMs to specific industry domains, such as legal, finance, or e-commerce, to improve performance and accuracy. This domain-specific adaptation allows the model to understand specialized terminology and context better, leading to more accurate results and insights. By tailoring SLMs to their specific use cases, organizations can unlock new opportunities for innovation and differentiation in their respective industries.</li>
+  <li><strong>More Secure</strong>: Since SLMs have smaller codebases and fewer potential surfaces for security breaches, they are also less vulnerable to malicious attacks.</li>
+  <li><strong>Better for the Environment</strong>: SLMs use less energy and memory than LLMs, which makes them more environmentally friendly and sustainable. They also have smaller footprints and faster inference times, which makes them more suitable for edge computing and real-time applications.</li>
+</ol>
+
+<h2 id="setting-up-the-application">Setting Up the Application</h2>
+
+<p>For our sample application, we are creating a simple Node.js chat app. You can clone this <a href="https://github.com/Azure-Samples/sidecar-samples/tree/main/slm-using-ollama/slm-using-ollama">repo</a> if you would like to follow along.</p>
+
+<p>This app will serve as the front end for interacting with the Phi-3 Small Language Model (SLM) running as a sidecar. You can find the code of the app <a href="https://github.com/Azure-Samples/sidecar-samples/blob/main/slm-using-ollama/slm-using-ollama/webapp/app.js">here</a>.</p>
+
+<p>This is the main part of the code.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">app</span><span class="p">.</span><span class="nf">post</span><span class="p">(</span><span class="dl">"</span><span class="s2">/api/generate</span><span class="dl">"</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">request</span><span class="p">.</span><span class="nf">post</span><span class="p">(</span><span class="dl">'</span><span class="s1">http://localhost:11434/api/generate</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span> <span class="na">json</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="dl">"</span><span class="s2">model</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">phi3</span><span class="dl">"</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">prompt</span><span class="dl">"</span><span class="p">:</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">prompt</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">stream</span><span class="dl">"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">options</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+          <span class="dl">"</span><span class="s2">num_keep</span><span class="dl">"</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">num_predict</span><span class="dl">"</span><span class="p">:</span> <span class="mi">150</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">seed</span><span class="dl">"</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">top_k</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">top_p</span><span class="dl">"</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">tfs_z</span><span class="dl">"</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">typical_p</span><span class="dl">"</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">repeat_last_n</span><span class="dl">"</span><span class="p">:</span> <span class="mi">33</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">temperature</span><span class="dl">"</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">repeat_penalty</span><span class="dl">"</span><span class="p">:</span> <span class="mf">1.2</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">presence_penalty</span><span class="dl">"</span><span class="p">:</span> <span class="mf">1.5</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">frequency_penalty</span><span class="dl">"</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">mirostat</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">mirostat_tau</span><span class="dl">"</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">mirostat_eta</span><span class="dl">"</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">penalize_newline</span><span class="dl">"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">stop</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span><span class="dl">"</span><span class="s2">&lt;*end*&gt;</span><span class="dl">"</span><span class="p">],</span>
+          <span class="dl">"</span><span class="s2">num_thread</span><span class="dl">"</span><span class="p">:</span> <span class="mi">8</span>
+        <span class="p">}</span>
+    <span class="p">}}</span>
+    <span class="p">,</span> <span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">response</span><span class="p">,</span> <span class="nx">body</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">if </span><span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">console</span><span class="p">.</span><span class="nf">error</span><span class="p">(</span><span class="nx">error</span><span class="p">);</span>
+          <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+        
+        <span class="nx">res</span><span class="p">.</span><span class="nf">json</span><span class="p">(</span><span class="nx">body</span><span class="p">);</span>
+    <span class="p">})</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<ul>
+  <li>This route handles POST requests to the /api/generate endpoint.</li>
+  <li>It forwards the request to the Phi-3 SLM API running locally on port 11434.</li>
+  <li>The request body includes the model configuration and prompt, along with various options for generating the response.</li>
+  <li>The server sends the response from the SLM API back to the client.</li>
+</ul>
+
+<h2 id="building-your-application-container-images">Building your application container images</h2>
+
+<p><strong>Prerequisites:</strong> Ensure you have <a href="https://www.docker.com/products/docker-desktop/">Docker Desktop</a> installed.</p>
+
+<ol>
+  <li>
+    <p>To get started, you’ll need to containerize your Node.js application. This <a href="https://docs.docker.com/language/nodejs/containerize/">article</a> walks you through the process step by step.</p>
+
+    <p><em>Note: The Sidecar feature is currently enabled for custom-container scenarios for Linux App Service. We are working on enabling it for code scenarios as well. We will update the blog soon for the code-based web applications</em></p>
+
+    <p>The Dockerfile for this project is <a href="https://github.com/Azure-Samples/sidecar-samples/blob/main/slm-using-ollama/slm-using-ollama/webapp/Dockerfile">here</a>.</p>
+
+    <p>Build the image and push it to your preferred container registry, such as Azure Container Registry, Docker Hub, or a private registry.</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>     docker build <span class="nt">-t</span> &lt;your-registry&gt;/&lt;your-image-name&gt;:&lt;tag&gt; <span class="nb">.</span>
+     docker push &lt;your-registry&gt;/&lt;your-image-name&gt;:&lt;tag&gt;
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Build the Phi-3 container image as well and push it to your container registry. You can use this <a href="https://github.com/Azure-Samples/sidecar-samples/blob/main/slm-using-ollama/slm-using-ollama/slm/Dockerfile">Dockerfile</a>.</p>
+
+    <p>For our Phi-3 images, we are also using a <a href="https://github.com/Azure-Samples/sidecar-samples/blob/main/slm-using-ollama/slm-using-ollama/slm/startup.sh">startup file</a></p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="c">#!/usr/bin/env bash</span>
+    
+ <span class="c"># Start Ollama in the background</span>
+ ollama serve &amp;
+ <span class="nb">sleep </span>5
+    
+ <span class="c"># Pull and run phi3</span>
+ ollama pull phi3
+    
+ <span class="c"># Restart ollama and run it in to foreground.</span>
+ pkill <span class="nt">-f</span> <span class="s2">"ollama"</span>
+ ollama serve
+</code></pre></div>    </div>
+
+    <p>This startup file performs the following actions:</p>
+    <ul>
+      <li>Starts the Ollama server in the background and waits for 5 seconds to ensure it is running.</li>
+      <li>Pulls the Phi-3 model using Ollama.</li>
+      <li>Restarts the Ollama server by killing the existing background process and then running it in the foreground to ensure the Phi-3 model is loaded and ready for use.</li>
+    </ul>
+  </li>
+</ol>
+
+<h2 id="deploying-the-application-to-linux-app-service">Deploying the Application to Linux App Service</h2>
+
+<ol>
+  <li>
+    <p><strong>Create a New Linux Web App in Azure</strong></p>
+
+    <p>Create a new Linux Web App from the portal and choose the options for Container and Linux.
+ <img src="/AppService/media/2024/07/CreateWebApp.jpg" alt="Create web app" /></p>
+
+    <p>On the Container tab, make sure that Sidecar support is Enabled.</p>
+
+    <p>Specify the details of your application image.
+ <img src="/AppService/media/2024/07/AddContainer.jpg" alt="Create web app" /></p>
+
+    <p><em>Note: We strongly recommend enabling <a href="https://learn.microsoft.com/azure/app-service/overview-managed-identity?tabs=portal%2Chttp">Managed Identity</a> for your Azure resources.</em></p>
+  </li>
+  <li>
+    <p><strong>Add Phi-3 Sidecar</strong></p>
+
+    <p>Go to the Deployment Center for your application and add a sidecar container.
+ <img src="/AppService/media/2024/08/phi-sidecar.jpg" alt="Add Phi-3 sidecar" /></p>
+
+    <p>This <a href="https://learn.microsoft.com/azure/app-service/tutorial-custom-container-sidecar">document</a> tells you how to add sidecars, step-by-step.</p>
+  </li>
+  <li>
+    <p><strong>Verify the deployment</strong></p>
+
+    <p>Once your deployment is complete, you can browse to your application URL and see the chat frontend.</p>
+
+    <p><img src="/AppService/media/2024/08/phi-output.jpg" alt="Website output" /></p>
+
+    <p><em>Note: Since we are deploying a language model, please be aware that the application might take a little longer to start up the first time. This delay is due to the initial setup and loading of the Phi-3 model, which ensures that it is ready to handle requests efficiently. Subsequent startups should be faster once the model is properly initialized.</em></p>
+  </li>
+</ol>
+
+<h2 id="summary">Summary</h2>
+
+<p>In this blog post, we explored how to deploy Phi-3, a Small Language Model (SLM), as a sidecar on Linux App Service to add AI capabilities in your web applications. We discussed the benefits of using SLMs, such as being more lightweight, accessible, and secure, as well as their suitability for domain-specific adaptation and environmental sustainability. We also walked through the setup of a simple Node.js chat application that interacts with Phi-3, providing a practical example of how to integrate SLMs into your projects.</p>
+
+<p>For more examples of Phi-3, feel free to explore this <a href="https://github.com/microsoft/Phi-3CookBook">repository</a>.</p>
+
+<p>While we’ll continue to build and share more exciting sidecar scenarios, we can’t wait to see the amazing applications you create with these powerful features!</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[In our ongoing series exploring the integration of various sidecar scenarios with Linux App Service, we delve into an exciting new domain—building AI applications. Following our previous discussion on leveraging Redis as a sidecar, we now turn our focus to using Small Language Models (SLMs) to enhance the capabilities of your web applications.]]></summary></entry><entry><title type="html">A Step-by-Step Guide to Datadog Integration with Linux App Service via Sidecars</title><link href="https://azure.github.io/AppService/2024/07/26/Using-Datadog-with-Sidecar.html" rel="alternate" type="text/html" title="A Step-by-Step Guide to Datadog Integration with Linux App Service via Sidecars" /><published>2024-07-26T00:00:00+00:00</published><updated>2024-07-26T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2024/07/26/Using-Datadog-with-Sidecar</id><content type="html" xml:base="https://azure.github.io/AppService/2024/07/26/Using-Datadog-with-Sidecar.html"><![CDATA[<p>In this blog post, we dive into the realms of observability and monitoring, taking advantage of the latest advancements in Azure’s Linux App Service. If you’ve been following App Service updates, you might have caught wind of the <a href="https://azure.github.io/AppService/2024/04/04/Public-Preview-Sidecars-Webjobs.html">Public Preview for the Sidecar Pattern for Linux App Service</a> announced recently. Leveraging this development, we’re here to guide you through integrating Datadog, an Azure Native ISV service partner that provides a powerful observability platform, with your .NET custom container application hosted on Linux App Service. Whether you’re eager to streamline log management, track application traces, or enhance request monitoring, we’ve got you covered.</p>
+
+<h2 id="setting-up-your-net-application">Setting up your .NET application</h2>
+
+<p>To get started, you’ll need to containerize your .NET application. This <a href="https://learn.microsoft.com/en-us/dotnet/core/docker/build-container?tabs=windows&amp;pivots=dotnet-8-0">tutorial</a> walks you through the process step by step.</p>
+
+<p>Once your application is containerized, you can integrate the Datadog tracer. To do that, you will need to add the following lines to the Dockerfile for your main application.</p>
+
+<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Datadog specific</span>
+<span class="k">RUN </span><span class="nb">mkdir</span> <span class="nt">-p</span> /datadog/tracer
+<span class="k">RUN </span><span class="nb">mkdir</span> <span class="nt">-p</span> /home/LogFiles/dotnet
+
+<span class="k">ADD</span><span class="s"> https://github.com/DataDog/dd-trace-dotnet/releases/download/v2.49.0/datadog-dotnet-apm-2.49.0.tar.gz /datadog/tracer</span>
+<span class="k">RUN </span><span class="nb">cd</span> /datadog/tracer <span class="o">&amp;&amp;</span> <span class="nb">tar</span> <span class="nt">-zxf</span> datadog-dotnet-apm-2.49.0.tar.gz
+</code></pre></div></div>
+
+<p>This ensures that the Datadog tracer is properly installed and configured within your application container.</p>
+
+<p>Below is a sample Dockerfile incorporating Datadog integration:</p>
+
+<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Stage 1: Build the application</span>
+<span class="k">FROM</span><span class="w"> </span><span class="s">mcr.microsoft.com/dotnet/sdk:8.0</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s">build</span>
+<span class="k">WORKDIR</span><span class="s"> /app</span>
+
+<span class="c"># Copy the project file and restore dependencies</span>
+<span class="k">COPY</span><span class="s"> *.csproj ./</span>
+<span class="k">RUN </span>dotnet restore
+
+<span class="c"># Copy the remaining source code</span>
+<span class="k">COPY</span><span class="s"> . .</span>
+
+<span class="c"># Build the application</span>
+<span class="k">RUN </span>dotnet publish <span class="nt">-c</span> Release <span class="nt">-o</span> out
+
+<span class="c"># Stage 2: Create a runtime image</span>
+<span class="k">FROM</span><span class="w"> </span><span class="s">mcr.microsoft.com/dotnet/aspnet:8.0</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s">runtime</span>
+<span class="k">WORKDIR</span><span class="s"> /app</span>
+
+<span class="c"># Copy the build output from stage 1</span>
+<span class="k">COPY</span><span class="s"> --from=build /app/out ./</span>
+
+<span class="c"># Datadog specific</span>
+<span class="k">RUN </span><span class="nb">mkdir</span> <span class="nt">-p</span> /datadog/tracer
+<span class="k">RUN </span><span class="nb">mkdir</span> <span class="nt">-p</span> /home/LogFiles/dotnet
+
+<span class="k">ADD</span><span class="s"> https://github.com/DataDog/dd-trace-dotnet/releases/download/v2.49.0/datadog-dotnet-apm-2.49.0.tar.gz /datadog/tracer</span>
+<span class="k">RUN </span><span class="nb">cd</span> /datadog/tracer <span class="o">&amp;&amp;</span> <span class="nb">tar</span> <span class="nt">-zxf</span> datadog-dotnet-apm-2.49.0.tar.gz
+
+<span class="c"># Set the entry point for the application</span>
+<span class="k">ENTRYPOINT</span><span class="s"> ["dotnet", "&lt;your dotnet app&gt;.dll"]</span>
+</code></pre></div></div>
+
+<p>You’re now ready to build the image and push it to your preferred container registry, be it Azure Container Registry, Docker Hub, or a private registry.</p>
+
+<h2 id="create-your-linux-web-app">Create your Linux Web App</h2>
+
+<p>Create a new Linux Web App from the portal and choose the options for Container and Linux.</p>
+
+<p><img src="/AppService/media/2024/07/CreateWebApp.jpg" alt="Create web app" /></p>
+
+<p>On the Container tab, make sure that Sidecar support is Enabled.</p>
+
+<p>Specify the details of your application image.</p>
+
+<p><img src="/AppService/media/2024/07/AddContainer.jpg" alt="Add Container" /></p>
+
+<p>Note: Typically, .NET uses port 8080 but you can change it in your project.</p>
+
+<h2 id="setup-your-datadog">Setup your Datadog</h2>
+
+<p>If you don’t have a Datadog account, you can create an instance of Datadog on the Azure portal by following this QuickStart.</p>
+
+<p><a href="https://learn.microsoft.com/en-us/azure/partner-solutions/datadog/create">Create Datadog - Azure Native ISV Services</a></p>
+
+<p>Alternatively, you can also create a service account on Datadog by following the steps in this tutorial.</p>
+
+<p><a href="https://docs.datadoghq.com/account_management/org_settings/service_accounts/">Service Accounts (datadoghq.com)</a></p>
+
+<p>Datadog offers a 14 days Free Trial if you would like to try out the service.</p>
+
+<h2 id="appsettings-for-the-datadog-integration">AppSettings for the Datadog Integration</h2>
+
+<p>You need to set the following <a href="https://learn.microsoft.com/en-us/azure/app-service/configure-common?tabs=portal">AppSettings</a>.</p>
+
+<ul>
+  <li>
+    <p><strong>DD_API_KEY</strong> – If you have created the Datadog resource on the Azure portal, you can manage your API keys <a href="https://learn.microsoft.com/en-us/azure/partner-solutions/datadog/manage#api-keys">like this</a>.</p>
+
+    <p>Alternatively, you can create your API Key by following the steps here <a href="https://docs.datadoghq.com/account_management/api-app-keys/">API and Application Keys</a>.</p>
+
+    <table>
+      <tbody>
+        <tr>
+          <td>We would encourage you to add sensitive information like API keys to Azure Key vault [Use Key Vault references - Azure App Service</td>
+          <td>Microsoft Learn](https://learn.microsoft.com).</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <p><strong>DD_SITE</strong> – Datadog offers you different sites for your data. You can use <code class="language-plaintext highlighter-rouge">us3.datadoghq.com</code> as this site is hosted in Azure. Therefore, the Observability data for your application stays in Azure. You can find more information about Datadog sites <a href="https://docs.datadoghq.com/getting_started/site/">here</a>.</p>
+  </li>
+  <li><strong>DD_SERVICE</strong>: The name of the service that would be displayed in your Datadog Service Catalog.</li>
+  <li><strong>DD_ENV</strong>: This is used to set the global environment, which allows you to differentiate data coming from various environments like staging or production.</li>
+  <li><strong>DD_SERVERLESS_LOG_PATH</strong>: This is the path where you write your application logs. Typically, this will be <code class="language-plaintext highlighter-rouge">/home/Logfile/*.log</code>, If you have changed the location for your application logs, you can specify that in this setting.</li>
+  <li><strong>DD_DOTNET_TRACER_HOME</strong>: <code class="language-plaintext highlighter-rouge">/datadog/tracer</code></li>
+  <li><strong>DD_TRACE_LOG_DIRECTORY</strong>: <code class="language-plaintext highlighter-rouge">/home/Logfiles/dotnet</code></li>
+  <li><strong>CORECLR_ENABLE_PROFILING</strong>: <code class="language-plaintext highlighter-rouge">1</code></li>
+  <li><strong>CORECLR_PROFILER</strong>: <code class="language-plaintext highlighter-rouge">{846F5F1C-F9AE-4B07-969E-05C26BC060D8}</code></li>
+  <li><strong>CORECLR_PROFILER_PATH</strong>: <code class="language-plaintext highlighter-rouge">/datadog/tracer/Datadog.Trace.ClrProfiler.Native.so</code></li>
+</ul>
+
+<p>To know more about these Datadog settings, you can refer to the <a href="https://docs.datadoghq.com/serverless/azure_app_services/azure_app_services_container/?code-lang=dotnet">documentation</a>.</p>
+
+<h2 id="add-the-datadog-sidecar">Add the Datadog Sidecar</h2>
+
+<p>Go to the Deployment Center for your application and add a sidecar container</p>
+
+<p><img src="/AppService/media/2024/07/Sidecar-datadog.jpg" alt="Sidecar-datadog" /></p>
+
+<div class="language-docker highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Image Source: Docker Hub and other registries
+Image type: Public
+Registry server URL: svlsddagent.azurecr.io    
+Image and tag: serverless-sidecar:latest
+Port: 8126
+</code></pre></div></div>
+
+<h3 id="disclaimer-datadog-image-usage">Disclaimer: Datadog Image Usage</h3>
+
+<p>It’s important to note that the Datadog image used here is sourced directly from Datadog and is provided ‘as-is.’ Microsoft does not own or maintain this image. Therefore, its usage is subject to the terms of use outlined by Datadog, which can be found <a href="https://www.datadoghq.com/legal/terms/">here</a>.</p>
+
+<h2 id="visualizing-your-observability-data-in-datadog">Visualizing Your Observability Data in Datadog</h2>
+
+<p>You are all set! You can now see your Observability data flow to Datadog backend. Take a look at the Azure serverless page for a complete view of your App Services.</p>
+
+<p><img src="/AppService/media/2024/07/datadog-serverless.jpg" alt="datadog-serverless" /></p>
+
+<p>The Service Catalog gives you an overview of each service, such as the number of requests, latency, and more.</p>
+
+<p><img src="/AppService/media/2024/07/datadog-servicecatalog.png" alt="Service Catalog" /></p>
+
+<p>You can see your application logs by going to <code class="language-plaintext highlighter-rouge">Logs -&gt; Explorer</code></p>
+
+<p><img src="/AppService/media/2024/07/datadog-logexplorer.png" alt="Logs Explorer" /></p>
+
+<p>Your application traces will be under <code class="language-plaintext highlighter-rouge">APM-&gt;Traces-&gt;Explorer</code></p>
+
+<p><img src="/AppService/media/2024/07/datadog-traceexplorer.png" alt="Traces Explorer" /></p>
+
+<p>To learn more about Datadog dashboards, you can refer to the <a href="https://docs.datadoghq.com/dashboards/">documentation</a>.</p>
+
+<h2 id="next-steps">Next steps</h2>
+
+<p>In this guide, we’ve explored the seamless integration of Datadog with your .NET custom container application hosted on Linux App Service. By leveraging the Sidecar Pattern and Datadog’s powerful observability platform, you can now unlock actionable insights and enhance the monitoring capabilities of your applications.</p>
+
+<p>It’s important to note that Datadog, as an <a href="https://learn.microsoft.com/en-us/azure/partner-solutions/datadog/">Azure Native ISV Services</a> partner, offers robust support for Azure services and environments. Our collaboration with Datadog is aimed at providing you with even closer and simplified integration experiences in the future.</p>
+
+<p>Stay tuned for upcoming guides where we’ll delve into integrating Datadog with code-based web applications and other language stacks like NodeJS and Python.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[In this blog post, we dive into the realms of observability and monitoring, taking advantage of the latest advancements in Azure’s Linux App Service. If you’ve been following App Service updates, you might have caught wind of the Public Preview for the Sidecar Pattern for Linux App Service announced recently. Leveraging this development, we’re here to guide you through integrating Datadog, an Azure Native ISV service partner that provides a powerful observability platform, with your .NET custom container application hosted on Linux App Service. Whether you’re eager to streamline log management, track application traces, or enhance request monitoring, we’ve got you covered.]]></summary></entry><entry><title type="html">Powering Observability: Dynatrace Integration with Linux App Service via Sidecars</title><link href="https://azure.github.io/AppService/2024/07/26/Using-Dynatrace-with-Sidecar.html" rel="alternate" type="text/html" title="Powering Observability: Dynatrace Integration with Linux App Service via Sidecars" /><published>2024-07-26T00:00:00+00:00</published><updated>2024-07-26T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2024/07/26/Using-Dynatrace-with-Sidecar</id><content type="html" xml:base="https://azure.github.io/AppService/2024/07/26/Using-Dynatrace-with-Sidecar.html"><![CDATA[<p>Observability has become crucial for modern applications. Integrating <a href="https://learn.microsoft.com/en-us/azure/partner-solutions/dynatrace/">Dynatrace</a> with Linux App Service allows you to leverage Dynatrace’s powerful monitoring capabilities. This guide walks you through the steps to integrate Dynatrace with your .NET custom container application hosted on Linux App Service using the <a href="https://azure.github.io/AppService/2024/04/04/Public-Preview-Sidecars-Webjobs.html">sidecar pattern</a>.</p>
+
+<h2 id="setting-up-your-net-application">Setting Up Your .NET Application</h2>
+
+<p>To get started, you’ll need to containerize your .NET application. You can do the containerization by following this <a href="https://learn.microsoft.com/en-us/dotnet/core/docker/build-container?tabs=windows&amp;pivots=dotnet-8-0">tutorial</a>.</p>
+
+<p>Here’s a sample Dockerfile that you can use:</p>
+
+<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Stage 1: Build the application</span>
+<span class="k">FROM</span><span class="w"> </span><span class="s">mcr.microsoft.com/dotnet/sdk:8.0</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s">build</span>
+<span class="k">WORKDIR</span><span class="s"> /app</span>
+
+<span class="c"># Copy the project file and restore dependencies</span>
+<span class="k">COPY</span><span class="s"> *.csproj ./</span>
+<span class="k">RUN </span>dotnet restore
+
+<span class="c"># Copy the remaining source code</span>
+<span class="k">COPY</span><span class="s"> . .</span>
+
+<span class="c"># Build the application</span>
+<span class="k">RUN </span>dotnet publish <span class="nt">-c</span> Release <span class="nt">-o</span> out
+
+<span class="c"># Stage 2: Create a runtime image</span>
+<span class="k">FROM</span><span class="w"> </span><span class="s">mcr.microsoft.com/dotnet/aspnet:8.0</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s">runtime</span>
+<span class="k">WORKDIR</span><span class="s"> /app</span>
+
+<span class="c"># Copy the build output from stage 1</span>
+<span class="k">COPY</span><span class="s"> --from=build /app/out ./</span>
+
+<span class="c"># Set the entry point for the application</span>
+<span class="k">ENTRYPOINT</span><span class="s"> ["dotnet", "&lt;your dotnet app&gt;.dll"]</span>
+</code></pre></div></div>
+
+<p>You’re now ready to build the image and push it to your preferred container registry, be it Azure Container Registry, Docker Hub, or a private registry.</p>
+
+<h2 id="create-your-linux-web-app">Create Your Linux Web App</h2>
+
+<p>Create a new Linux Web App from the Azure portal and choose the options for Container and Linux.</p>
+
+<p><img src="/AppService/media/2024/07/CreateWebApp.jpg" alt="Create web app" /></p>
+
+<p>On the Container tab, enable Sidecar support and specify your application image details.</p>
+
+<p><img src="/AppService/media/2024/07/AddContainer.jpg" alt="Add Container" /></p>
+
+<p>Note: Typically, .Net uses port 8080 but you can change it in your project.</p>
+
+<h2 id="setup-your-dynatrace-account">Setup Your Dynatrace Account</h2>
+
+<p>If you don’t have a Dynatrace account, you can create an instance of Dynatrace on the Azure portal by following this Marketplace <a href="https://azuremarketplace.microsoft.com/en-us/marketplace/apps/dynatrace.dynatrace_portal_integration?tab=PlansAndPrice">link</a>.</p>
+
+<p>You can choose the Free Trial plan to get a 30 days subscription.</p>
+
+<p><img src="/AppService/media/2024/07/dynatrace-sub.png" alt="Dynatrace account" /></p>
+
+<h2 id="appsettings-for-dynatrace-integration">AppSettings for Dynatrace Integration</h2>
+
+<p>You need to set the following <a href="https://learn.microsoft.com/en-us/azure/app-service/configure-common?tabs=portal">AppSettings</a>.</p>
+
+<p>You can get more details about the Dynatrace related settings <a href="https://docs.dynatrace.com/docs/setup-and-configuration/setup-on-cloud-platforms/microsoft-azure-services/azure-integrations/azure-functions/integrate-oneagent-on-azure-functions#prerequisites">here</a>.</p>
+
+<ul>
+  <li><strong>DT_TENANT</strong> – The environment ID</li>
+  <li><strong>DT_TENANTTOKEN</strong> – Same as DT_API_TOKEN. This is the PaaS token for your environment.</li>
+  <li><strong>DT_HOME</strong> - /home/dynatrace</li>
+  <li><strong>LD_PRELOAD</strong> - /home/dynatrace/oneagent/agent/lib64/liboneagentproc.so</li>
+  <li><strong>DT_LOGSTREAM</strong> - stdout</li>
+  <li><strong>DT_LOGLEVELCON</strong> – INFO</li>
+</ul>
+
+<p>We would encourage you to add sensitive information like DT_TENANTTOKEN to Azure Key vault <a href="https://learn.microsoft.com/en-us/azure/app-service/app-service-key-vault-references?tabs=azure-cli">Use Key Vault references - Azure App Service</a>.</p>
+
+<h2 id="add-the-dynatrace-sidecar">Add the Dynatrace Sidecar</h2>
+
+<p>Go to the Deployment Center for your application and add a sidecar container:</p>
+
+<p><img src="/AppService/media/2024/07/sidecar-dynatrace1.jpg" alt="Sidecar-dynatrace" /></p>
+
+<div class="language-docker highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Image Source: Docker Hub and other registries
+Image type: Public
+Registry server URL: your-dynatrace-registry-url
+Image and tag: oneagent:latest
+Port: 8443
+</code></pre></div></div>
+
+<p>Once you have added the sidecar, you would need to restart your website to see the data start flowing to the Dynatrace backend.</p>
+
+<p>Please note that this is an experimental container image for Dynatrace. We will be updating this blog with a new image soon.</p>
+
+<h3 id="disclaimer-dynatrace-image-usage">Disclaimer: Dynatrace Image Usage</h3>
+
+<p>It’s important to note that the Dynatrace image used here is sourced directly from Dynatrace and is provided ‘as-is.’ Microsoft does not own or maintain this image. Therefore, its usage is subject to the <a href="https://www.dynatrace.com/company/trust-center/customers/">terms of use</a> outlined by Dynatrace.</p>
+
+<h2 id="visualizing-your-observability-data-in-dynatrace">Visualizing Your Observability Data in Dynatrace</h2>
+
+<p>You are all set! You can now see your Observability data flow to Dynatrace backend.</p>
+
+<p>The Hosts tab gives you metrics about the VM which is hosting the application.</p>
+
+<p><img src="/AppService/media/2024/07/dt1.jpg" alt="Hosts" /></p>
+
+<p>Dynatrace also has a Services view which lets you look at your application specific information like Response Time, Failed Requests and application traces.</p>
+
+<p><img src="/AppService/media/2024/07/dt2.jpg" alt="Services" /></p>
+
+<p>You can learn more about Dynatrace’s Observability capabilities by going through the <a href="https://docs.dynatrace.com/docs/observe-and-explore">documentation</a>.</p>
+
+<h2 id="next-steps">Next Steps</h2>
+
+<p>As you’ve seen, the Sidecar Pattern for Linux App Service opens a world of possibilities for integrating powerful tools like Dynatrace into your Linux App Service-hosted applications. With Dynatrace being an <a href="https://learn.microsoft.com/en-us/azure/partner-solutions/dynatrace/">Azure Native ISV Services</a> partner, this integration marks just the beginning of a journey towards a closer and more simplified experience for Azure users.</p>
+
+<p>This is just the start. We’re committed to providing even more guidance and resources to help you seamlessly integrate Dynatrace with your code-based Linux web applications and other language stacks. Stay tuned for upcoming updates and tutorials as we continue to empower you to make the most of your Azure environment.</p>
+
+<p>In the meantime, don’t hesitate to explore further, experiment with different configurations, and leverage the full potential of observability with Dynatrace and Azure App Service.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[Observability has become crucial for modern applications. Integrating Dynatrace with Linux App Service allows you to leverage Dynatrace’s powerful monitoring capabilities. This guide walks you through the steps to integrate Dynatrace with your .NET custom container application hosted on Linux App Service using the sidecar pattern.]]></summary></entry><entry><title type="html">Leveraging Redis as a Sidecar for Linux App Service</title><link href="https://azure.github.io/AppService/2024/07/19/Using-Redis-with-Sidecar.html" rel="alternate" type="text/html" title="Leveraging Redis as a Sidecar for Linux App Service" /><published>2024-07-19T00:00:00+00:00</published><updated>2024-07-19T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2024/07/19/Using-Redis-with-Sidecar</id><content type="html" xml:base="https://azure.github.io/AppService/2024/07/19/Using-Redis-with-Sidecar.html"><![CDATA[<p>At Microsoft Build 2024, we had announced the <a href="https://azure.github.io/AppService/2024/04/04/Public-Preview-Sidecars-Webjobs.html">Public Preview for the Sidecar pattern for Linux App Service</a>. This feature allows developers to enhance their web applications with additional services running alongside the main application container. See Sidecars in action in this <a href="https://build.microsoft.com/sessions/2d3bac21-85b9-4a33-8293-78536984cb6e?source=sessions">Build session</a>.</p>
+
+<p>In this blog, we will demonstrate how you can leverage the Sidecar pattern to seamlessly integrate a Redis cache into your Linux App Service, boosting your application’s performance and reliability.</p>
+
+<h2 id="setting-up-your-local-environment">Setting Up your local environment</h2>
+
+<p>Before you deploy your application to Azure App Service, you can set it up locally by following these steps</p>
+
+<ol>
+  <li><strong>Prerequisites:</strong> Ensure you have <a href="https://www.docker.com/products/docker-desktop/">Docker Desktop</a> and Visual Studio 2019 or above installed on your machine.</li>
+  <li>
+    <p><strong>Pulling the Redis Container Image:</strong> Open your terminal or command prompt and pull the latest Redis container image by running the following command:</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker pull redis
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><strong>Starting the Redis Container:</strong> Start the Redis container with the following command, replacing <code class="language-plaintext highlighter-rouge">instance-name</code> with your preferred instance name:</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker run <span class="nt">--name</span> &lt;instance-name&gt; <span class="nt">-p</span> 6379:6379 <span class="nt">-d</span> redis
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><strong>Verifying the Redis Container:</strong> To ensure the container is up and running, execute:</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker ps <span class="nt">-a</span>
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Creating the .NET Core Application:</strong> Now, create a .NET Core application that connects to Redis on port 6379. For our sample, we will use the ASP.NET Core Web API template, which creates a weather forecasting application.</li>
+  <li>
+    <p><strong>Installing the Required NuGet Package:</strong> In your project, install the NuGet package <code class="language-plaintext highlighter-rouge">Microsoft.Extensions.Caching.StackExchangeRedis</code> to enable Redis caching. You can do this via the NuGet Package Manager in Visual Studio or by running the following command in the Package Manager Console:</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> Install-Package Microsoft.Extensions.Caching.StackExchangeRedis
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="configuring-the-application-to-use-redis">Configuring the Application to Use Redis</h2>
+
+<p>You can find the full project code <a href="https://github.com/Azure-Samples/sidecar-samples/tree/main/Redis.Core.WebApi-master">here</a>. In this blog, I will highlight some of the main points for configuring your application to use Redis.</p>
+
+<ol>
+  <li>
+    <p><strong>Setting Up the Redis Connection String</strong>
+In appsettings.json, set up your Redis connection string:</p>
+
+    <div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="p">{</span>
+ <span class="s">"ConnectionStrings"</span><span class="p">:</span> <span class="p">{</span>
+     <span class="s">"Redis"</span><span class="p">:</span> <span class="s">"localhost:6379"</span>
+ <span class="p">}</span>
+ <span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><strong>Configuring Redis in Startup.cs</strong>
+In Startup.cs, configure your web API to connect to the Redis instance:</p>
+
+    <div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">public</span> <span class="k">void</span> <span class="nf">ConfigureServices</span><span class="p">(</span><span class="n">IServiceCollection</span> <span class="n">services</span><span class="p">)</span>
+ <span class="p">{</span>
+     <span class="c1">// Other service configurations</span>
+
+     <span class="c1">// Add Redis</span>
+     <span class="n">services</span><span class="p">.</span><span class="nf">AddStackExchangeRedisCache</span><span class="p">(</span><span class="n">options</span> <span class="p">=&gt;</span>
+     <span class="p">{</span>
+         <span class="n">options</span><span class="p">.</span><span class="n">Configuration</span> <span class="p">=</span> <span class="n">Configuration</span><span class="p">.</span><span class="nf">GetConnectionString</span><span class="p">(</span><span class="s">"Redis"</span><span class="p">);</span>
+         <span class="n">options</span><span class="p">.</span><span class="n">InstanceName</span> <span class="p">=</span> <span class="s">"Redis.Core.WebApi_"</span><span class="p">;</span>
+     <span class="p">});</span>
+
+     <span class="c1">// Other service configurations</span>
+ <span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><strong>Implementing Caching in the API</strong>
+Whenever the API is called, it will first check if the values are in the cache. If not, it will fetch them from the database:</p>
+
+    <div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">public</span> <span class="k">async</span> <span class="n">Task</span><span class="p">&lt;</span><span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">WeatherForecast</span><span class="p">&gt;&gt;</span> <span class="nf">GetWeatherForecasts</span><span class="p">()</span>
+ <span class="p">{</span>
+     <span class="kt">var</span> <span class="n">dataFromCache</span> <span class="p">=</span> <span class="k">await</span> <span class="n">_cache</span><span class="p">.</span><span class="n">GetRecordAsync</span><span class="p">&lt;</span><span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">WeatherForecast</span><span class="p">&gt;&gt;(</span><span class="n">WeatherData_Key</span><span class="p">);</span>
+     <span class="k">if</span> <span class="p">(</span><span class="n">dataFromCache</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+     <span class="p">{</span>
+         <span class="n">_logger</span><span class="p">.</span><span class="nf">LogInformation</span><span class="p">(</span><span class="s">"Data loaded from cache @"</span> <span class="p">+</span> <span class="n">DateTime</span><span class="p">.</span><span class="n">Now</span><span class="p">);</span>
+         <span class="k">return</span> <span class="n">dataFromCache</span><span class="p">;</span>
+     <span class="p">}</span>
+     <span class="k">else</span>
+     <span class="p">{</span>
+         <span class="n">_logger</span><span class="p">.</span><span class="nf">LogInformation</span><span class="p">(</span><span class="s">"Data loaded from db @"</span> <span class="p">+</span> <span class="n">DateTime</span><span class="p">.</span><span class="n">Now</span><span class="p">);</span>
+         <span class="kt">var</span> <span class="n">dataFromDb</span> <span class="p">=</span> <span class="nf">GetDataFromDB</span><span class="p">();</span>
+         <span class="k">await</span> <span class="n">_cache</span><span class="p">.</span><span class="n">SetRecordAsync</span><span class="p">&lt;</span><span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">WeatherForecast</span><span class="p">&gt;&gt;(</span><span class="n">dataFromDb</span><span class="p">,</span> <span class="n">WeatherData_Key</span><span class="p">);</span>
+         <span class="k">return</span> <span class="n">dataFromDb</span><span class="p">;</span>
+     <span class="p">}</span>
+ <span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><strong>Adding Values to the Cache</strong>
+We have an extension method that adds values to the cache:</p>
+
+    <div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">public</span> <span class="k">static</span> <span class="k">async</span> <span class="n">Task</span> <span class="n">SetRecordAsync</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;(</span><span class="k">this</span> <span class="n">IDistributedCache</span> <span class="n">cache</span><span class="p">,</span>
+     <span class="n">T</span> <span class="k">value</span><span class="p">,</span>
+     <span class="kt">string</span> <span class="n">key</span><span class="p">,</span>
+     <span class="n">TimeSpan</span><span class="p">?</span> <span class="n">absoluteExpiry</span> <span class="p">=</span> <span class="k">null</span><span class="p">,</span>
+     <span class="n">TimeSpan</span><span class="p">?</span> <span class="n">slidingExpiry</span> <span class="p">=</span> <span class="k">null</span><span class="p">)</span>
+ <span class="p">{</span>
+     <span class="c1">// Caching option</span>
+     <span class="kt">var</span> <span class="n">cachingOption</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">DistributedCacheEntryOptions</span><span class="p">();</span>
+
+     <span class="c1">// Cache Time to Live, from Current Time to &lt;specified&gt; mins, after that cache will expire</span>
+     <span class="n">cachingOption</span><span class="p">.</span><span class="n">AbsoluteExpirationRelativeToNow</span> <span class="p">=</span> <span class="n">absoluteExpiry</span> <span class="p">??</span> <span class="n">TimeSpan</span><span class="p">.</span><span class="nf">FromSeconds</span><span class="p">(</span><span class="m">60</span><span class="p">);</span>
+
+     <span class="c1">// Cache Time to Live, will slide if it is accessed within the sliding window</span>
+     <span class="n">cachingOption</span><span class="p">.</span><span class="n">SlidingExpiration</span> <span class="p">=</span> <span class="n">slidingExpiry</span><span class="p">;</span>
+
+     <span class="c1">// Convert to JSON</span>
+     <span class="kt">var</span> <span class="n">dataToStore</span> <span class="p">=</span> <span class="n">JsonSerializer</span><span class="p">.</span><span class="nf">Serialize</span><span class="p">(</span><span class="k">value</span><span class="p">);</span>
+
+     <span class="c1">// Set Cache</span>
+     <span class="k">await</span> <span class="n">cache</span><span class="p">.</span><span class="nf">SetStringAsync</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">dataToStore</span><span class="p">,</span> <span class="n">cachingOption</span><span class="p">);</span>
+ <span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><strong>Running Your Application</strong>
+Now you can run your application. Open your browser and navigate to:
+<code class="language-plaintext highlighter-rouge">http://localhost:5000/weatherforecast</code>.</p>
+  </li>
+</ol>
+
+<p>The browser will display the weather forecast in JSON format. Since we have implemented logging in the application, you will see logs in the command prompt indicating whether the response is coming from the database or the cache.</p>
+
+<h2 id="deploying-the-application-to-linux-app-service">Deploying the Application to Linux App Service</h2>
+
+<p>To get started, you’ll need to containerize your .NET application. This <a href="https://learn.microsoft.com/dotnet/core/docker/build-container?tabs=windows&amp;pivots=dotnet-8-0">tutorial</a> walks you through the process step by step.
+<em>Note: The Sidecar feature is currently enabled for custom-container scenarios for Linux App Service. We are working on enabling it for code scenarios as well. We will update the blog soon for the code-based web applications</em></p>
+
+<ol>
+  <li><strong>Containerize Your .NET Application</strong>
+ Create a Dockerfile in the root directory of your project. The Dockerfile for this project is <a href="https://github.com/Azure-Samples/sidecar-samples/blob/main/Redis.Core.WebApi-master/Redis.Core.WebApi/Dockerfile">here</a>.</li>
+  <li>
+    <p><strong>Build and Push the Docker Image</strong>
+ Build the image and push it to your preferred container registry, such as Azure Container Registry, Docker Hub, or a private registry.</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker build <span class="nt">-t</span> &lt;your-registry&gt;/&lt;your-image-name&gt;:&lt;tag&gt; <span class="nb">.</span>
+ docker push &lt;your-registry&gt;/&lt;your-image-name&gt;:&lt;tag&gt;
+</code></pre></div>    </div>
+
+    <p>We would also recommend that you push the local redis image to ACR. This would allow you to take advantage of securing your resources using Managed Identity. Please refer to this <a href="https://learn.microsoft.com/azure/container-registry/container-registry-get-started-docker-cli?tabs=azure-cli">documentation</a>.</p>
+  </li>
+  <li>
+    <p><strong>Create a New Linux Web App in Azure</strong>
+ Create a new Linux Web App from the portal and choose the options for Container and Linux.
+ <img src="/AppService/media/2024/07/CreateWebApp.jpg" alt="Create web app" /></p>
+
+    <p>On the Container tab, make sure that Sidecar support is Enabled.</p>
+
+    <p>Specify the details of your application image.
+ <img src="/AppService/media/2024/07/AddContainer.jpg" alt="Create web app" /></p>
+
+    <p><em>Note: We strongly recommend enabling <a href="https://learn.microsoft.com/azure/app-service/overview-managed-identity?tabs=portal%2Chttp">Managed Identity</a> for your Azure resources.</em></p>
+  </li>
+  <li>
+    <p><strong>Add Redis Sidecar</strong>
+ Go to the Deployment Center for your application and add a sidecar container.
+ <img src="/AppService/media/2024/07/add-redis-container.jpg" alt="Add Redis sidecar" /></p>
+
+    <p>This <a href="https://learn.microsoft.com/azure/app-service/tutorial-custom-container-sidecar">document</a> tells you how to add sidecars, step-by-step.</p>
+  </li>
+  <li>
+    <p><strong>Verify the deployment</strong>
+ Once your deployment is complete, you can browse to <code class="language-plaintext highlighter-rouge">&lt;your application url&gt;/weatherforecast</code></p>
+
+    <p>You should see output like this
+ <img src="/AppService/media/2024/07/website-output.jpg" alt="Page output" /></p>
+
+    <p>Refresh the page a few times. You can go to the <code class="language-plaintext highlighter-rouge">Log Stream</code> in the Azure Portal to see logs indicating whether the response is coming from the database or the cache.
+ <img src="/AppService/media/2024/07/redis-logs.jpg" alt="Log stream" /></p>
+  </li>
+</ol>
+
+<h2 id="caveat-for-multi-instance-workloads">Caveat for Multi-Instance Workloads</h2>
+
+<p>There is a caveat for this application. We are using a local instance of Redis. If you scale out your application to multiple instances, you will notice that the response does not always come from the cache, depending on which instance your request is being routed to. For multi-instance workloads, we recommend using <a href="https://learn.microsoft.com/azure/azure-cache-for-redis/cache-overview">Azure Cache for Redis</a>, which provides a distributed, scalable, and high-performance caching solution.</p>
+
+<h2 id="summary">Summary</h2>
+
+<p>In this blog, we explored how to enhance your Linux App Service with Redis using the sidecar pattern. We started by setting up the application locally, containerizing it, and then deploying it to Azure App Service. In the coming weeks, we will be publishing more scenarios for leveraging Sidecars with your web applications.</p>
+
+<p>Looking forward to seeing what you are going to build!</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[At Microsoft Build 2024, we had announced the Public Preview for the Sidecar pattern for Linux App Service. This feature allows developers to enhance their web applications with additional services running alongside the main application container. See Sidecars in action in this Build session.]]></summary></entry><entry><title type="html">Crash Monitoring for child processes</title><link href="https://azure.github.io/AppService/2024/07/15/Monitoring-crashes-in-child-processes.html" rel="alternate" type="text/html" title="Crash Monitoring for child processes" /><published>2024-07-15T00:00:00+00:00</published><updated>2024-07-15T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2024/07/15/Monitoring%20crashes%20in%20child%20processes</id><content type="html" xml:base="https://azure.github.io/AppService/2024/07/15/Monitoring-crashes-in-child-processes.html"><![CDATA[<p>We are pleased to announce the extension of the crash monitoring feature to include processes other than the main worker process (w3wp.exe). This enhancement allows for the monitoring and capturing of crash dumps for any unhandled exceptions in non-w3wp.exe processes. This feature is especially useful for out-of-process stacks such as .NET Core.</p>
+
+<h3 id="enabling-crash-monitoring-for-child-processes">Enabling Crash Monitoring for child processes</h3>
+<p>To enable crash monitoring for processes other than w3wp.exe, follow these steps:</p>
+<ol>
+  <li><strong>Specify Process Name</strong>: Under the Crash Monitoring tool in the Diagnostic Tools category, enter the name of the process you wish to monitor in the <strong>Child Process Name</strong> section.
+    <blockquote>
+      <p><img src="/AppService/media/2024/07/child-process-crash-monitoring.png" alt="Crash Monitoring for child processes" /></p>
+    </blockquote>
+  </li>
+  <li><strong>Start Monitoring</strong>: Click on “Start Monitor” to begin monitoring the specified process.</li>
+</ol>
+
+<p>Once enabled, all new instances of the specified process will be monitored using the debugger process. If a crash occurs, a crash dump will be collected and uploaded to the designated storage account.</p>
+
+<h3 id="important-considerations">Important Considerations</h3>
+<ol>
+  <li><strong>Exclusive Monitoring</strong>: At any given time, only one specific process name can be monitored. When child process crash monitoring is enabled, w3wp.exe will not be monitored for crashes.</li>
+  <li><strong>Resource Limitations</strong>: A maximum of five processes with the same name can be monitored simultaneously. Each monitored child process initiates a debugger process. This limit is set to prevent excessive resource usage by debugger processes.</li>
+</ol>
+
+<p>By following these guidelines, you can effectively extend crash monitoring to additional processes and enhance your diagnostic capabilities.</p>]]></content><author><name>Azure App Service</name></author><category term="Diagnostics" /><summary type="html"><![CDATA[We are pleased to announce the extension of the crash monitoring feature to include processes other than the main worker process (w3wp.exe). This enhancement allows for the monitoring and capturing of crash dumps for any unhandled exceptions in non-w3wp.exe processes. This feature is especially useful for out-of-process stacks such as .NET Core.]]></summary></entry><entry><title type="html">Managed Identity Support for storage accounts used in Diagnostic Tools under Diagnose and Solve blade</title><link href="https://azure.github.io/AppService/2024/07/15/Using-Managed-Identity-DaaS-storage-accounts.html" rel="alternate" type="text/html" title="Managed Identity Support for storage accounts used in Diagnostic Tools under Diagnose and Solve blade" /><published>2024-07-15T00:00:00+00:00</published><updated>2024-07-15T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2024/07/15/Using%20Managed%20Identity%20DaaS%20storage%20accounts</id><content type="html" xml:base="https://azure.github.io/AppService/2024/07/15/Using-Managed-Identity-DaaS-storage-accounts.html"><![CDATA[<p>We are pleased to announce <strong>Managed Identity</strong> support for authenticating against storage accounts used for diagnostic tools under Diagnostics and a Service. This feature allows the use of both system-assigned and user-assigned managed identities as authentication mechanisms for connecting to storage accounts where memory dumps and other diagnostic data are stored.</p>
+
+<h3 id="key-benefits">Key Benefits</h3>
+<ul>
+  <li>Enhanced Security: Managed Identity enhances security by eliminating the need for Key-based authentication on the storage account.</li>
+  <li>Compatibility: Managed Identity for storage accounts can be used with applications hosted on both Windows and Linux App Service plans.</li>
+</ul>
+
+<h3 id="usage-details">Usage Details</h3>
+<ol>
+  <li>Navigate to your App Service web app in the Azure Portal.</li>
+  <li>Select <strong>Diagnose and Solve problems</strong>.</li>
+  <li>Navigate to the <strong>Diagnostic Tools</strong> category and select the <strong>Collect Memory Dump</strong> option.</li>
+  <li>Here, you will see the <strong>Authentication</strong> setting, under the storage account name, which displays the authentication method used to connect to the storage account. If your application is preconfigured with a storage account, you might encounter a warning indicating the use of <strong>Account Key or SAS</strong> based authentication to connect to the storage account.</li>
+</ol>
+
+<blockquote>
+  <p><img src="/AppService/media/2024/07/daas-storage-account.png" alt="" /></p>
+</blockquote>
+
+<p>When you click <strong>Change</strong>, you can select from the managed identities already configured on the app.</p>
+
+<blockquote>
+  <p><img src="/AppService/media/2024/07/daas-storage-choose-msi.png" alt="" /></p>
+</blockquote>
+
+<p>Upon hitting Save, the chosen user identity will be added to the following access roles on the storage account:</p>
+<ul>
+  <li>Storage Blob Data Contributor</li>
+  <li>Storage Table Data Contributor</li>
+  <li>Storage Queue Data Contributor</li>
+</ul>
+
+<blockquote>
+  <p><img src="/AppService/media/2024/07/daas-storage-after-msi.png" alt="" /></p>
+</blockquote>
+
+<p>From this point forward, the diagnostic service will use this managed identity to connect to the configured storage account. You can then disable Key-based authentication by adjusting the settings of the storage account.</p>
+
+<h3 id="automating-via-powershell">Automating via PowerShell</h3>
+<p>Below is a sample script demonstrating how to update the storage account authentication for an Azure Web App to use Managed Service Identity (MSI). The script updates the storage account configuration for the web app and all its slots.</p>
+
+<blockquote>
+  <p>Disclaimer - This script is provided for illustration purposes only. Please test it on a staging or test app before applying it to a production web app.</p>
+</blockquote>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$SubscriptionId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"&lt;Your_Subscription_Id&gt;"</span><span class="w">
+
+</span><span class="c"># Specify Managed Identity Name and resource group</span><span class="w">
+</span><span class="nv">$managedIdentityName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'&lt;ManagedIdentityName&gt;'</span><span class="w">
+</span><span class="nv">$managedIdentityResourceGroup</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'&lt;ManagedIdentityResourceGroup&gt;'</span><span class="w">
+
+</span><span class="c"># Specify Storage account name and resource group</span><span class="w">
+</span><span class="nv">$storageAccountName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'&lt;StorageAccountName&gt;'</span><span class="w">
+</span><span class="nv">$storageAccountResourceGroup</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'&lt;StorageAccountResourceGroup&gt;'</span><span class="w">
+
+</span><span class="c"># Specify web app name and resource group</span><span class="w">
+</span><span class="nv">$webAppName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"&lt;WebAppName&gt;"</span><span class="w">
+</span><span class="nv">$webAppResourceGroupName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"&lt;WebAppResourceGroup&gt;"</span><span class="w">
+
+</span><span class="kr">function</span><span class="w"> </span><span class="nf">addRole</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="kr">param</span><span class="p">(</span><span class="w">
+        </span><span class="p">[</span><span class="n">string</span><span class="p">]</span><span class="w"> </span><span class="nv">$storageAccountResourceId</span><span class="p">,</span><span class="w">
+        </span><span class="p">[</span><span class="n">string</span><span class="p">]</span><span class="w"> </span><span class="nv">$managedIdentityPrincipalId</span><span class="p">,</span><span class="w">
+        </span><span class="p">[</span><span class="n">string</span><span class="p">]</span><span class="w"> </span><span class="nv">$roleId</span><span class="p">,</span><span class="w">
+        </span><span class="p">[</span><span class="n">string</span><span class="p">]</span><span class="w"> </span><span class="nv">$roleName</span><span class="w">
+    </span><span class="p">)</span><span class="w">
+
+    </span><span class="nv">$accountName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$storageAccountResourceId</span><span class="o">.</span><span class="nf">Split</span><span class="p">(</span><span class="s1">'//'</span><span class="p">)[</span><span class="nt">-1</span><span class="p">]</span><span class="w">
+    </span><span class="s2">"Adding [</span><span class="nv">$roleName</span><span class="s2">] for principal [</span><span class="nv">$managedIdentityPrincipalId</span><span class="s2">] to account - "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">$accountName</span><span class="w">
+
+    </span><span class="nv">$roleAssignmentId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">guid</span><span class="p">]::</span><span class="n">NewGuid</span><span class="p">()</span><span class="w">
+    </span><span class="nv">$ResourceUri</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"https://management.azure.com/"</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">$storageAccountResourceId</span><span class="w"> 
+    </span><span class="nv">$ResourceUri</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$ResourceUri</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">"/providers/Microsoft.Authorization/roleAssignments/</span><span class="nv">$roleAssignmentId</span><span class="s2">"</span><span class="w">
+    </span><span class="nv">$ResourceUri</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$ResourceUri</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">"?api-version=2022-04-01"</span><span class="w">
+
+    </span><span class="nv">$Body</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">@{</span><span class="w">
+      </span><span class="nx">properties</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">@{</span><span class="w">
+        </span><span class="nx">principalId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"</span><span class="nv">$managedIdentityPrincipalId</span><span class="s2">"</span><span class="w">
+        </span><span class="nx">roleDefinitionId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"</span><span class="nv">$storageAccountResourceId</span><span class="s2">/providers/Microsoft.Authorization/roleDefinitions/</span><span class="nv">$roleId</span><span class="s2">"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">ConvertTo-Json</span><span class="w"> </span><span class="nt">-Depth</span><span class="w"> </span><span class="nx">3</span><span class="w">
+
+    </span><span class="kr">try</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="n">Invoke-RestMethod</span><span class="w"> </span><span class="nt">-Uri</span><span class="w"> </span><span class="nv">$ResourceUri</span><span class="w"> </span><span class="nt">-Headers</span><span class="w"> </span><span class="nv">$Headers</span><span class="w"> </span><span class="nt">-Body</span><span class="w"> </span><span class="nv">$Body</span><span class="w"> </span><span class="nt">-Method</span><span class="w"> </span><span class="nx">PUT</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+    </span><span class="kr">catch</span><span class="p">{</span><span class="w">
+       </span><span class="nv">$responseError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">$_</span><span class="o">.</span><span class="nf">ErrorDetails</span><span class="o">.</span><span class="nf">Message</span><span class="w">
+       </span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$responseError</span><span class="o">.</span><span class="nf">Contains</span><span class="p">(</span><span class="s2">"The role assignment already exists"</span><span class="p">)){</span><span class="w">
+        </span><span class="n">Write-Host</span><span class="w"> </span><span class="s2">"The [</span><span class="nv">$managedIdentityPrincipalId</span><span class="s2">] already exists in [</span><span class="nv">$roleName</span><span class="s2">] on [</span><span class="nv">$accountName</span><span class="s2">]"</span><span class="w">
+       </span><span class="p">}</span><span class="w"> </span><span class="kr">else</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="kr">throw</span><span class="w">
+       </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="c"># Login to Azure if not already logged in</span><span class="w">
+</span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="o">-not</span><span class="w"> </span><span class="p">(</span><span class="n">Get-AzContext</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="n">Connect-AzAccount</span><span class="w">  
+</span><span class="p">}</span><span class="w">
+
+</span><span class="n">Set-AzContext</span><span class="w"> </span><span class="nt">-Subscription</span><span class="w"> </span><span class="nv">$SubscriptionId</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Out-Null</span><span class="w">
+</span><span class="nv">$context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Get-AzContext</span><span class="w">
+
+</span><span class="nv">$managedIdentity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Get-AzUserAssignedIdentity</span><span class="w"> </span><span class="nt">-ResourceGroupName</span><span class="w"> </span><span class="nv">$managedIdentityResourceGroup</span><span class="w"> </span><span class="nt">-Name</span><span class="w"> </span><span class="nv">$managedIdentityName</span><span class="w">
+</span><span class="nv">$Identity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$managedIdentity</span><span class="o">.</span><span class="nf">Id</span><span class="w">
+</span><span class="s2">"Managed Identity Id is "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">$Identity</span><span class="w">
+
+</span><span class="c"># Get the access token</span><span class="w">
+</span><span class="nv">$AzureRmProfile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">Microsoft.Azure.Commands.Common.Authentication.Abstractions.AzureRmProfileProvider</span><span class="p">]::</span><span class="n">Instance.Profile</span><span class="w">  
+</span><span class="nv">$ProfileClient</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">New-Object</span><span class="w"> </span><span class="nt">-TypeName</span><span class="w"> </span><span class="nx">Microsoft.Azure.Commands.ResourceManager.Common.RMProfileClient</span><span class="w"> </span><span class="nt">-ArgumentList</span><span class="w"> </span><span class="p">(</span><span class="nv">$AzureRmProfile</span><span class="p">)</span><span class="w">  
+</span><span class="nv">$Token</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$ProfileClient</span><span class="o">.</span><span class="nf">AcquireAccessToken</span><span class="p">(</span><span class="nv">$context</span><span class="o">.</span><span class="nf">Subscription</span><span class="o">.</span><span class="nf">TenantId</span><span class="p">)</span><span class="w">
+
+</span><span class="c"># Prepare the header with the Bearer token  </span><span class="w">
+</span><span class="nv">$Headers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">@{</span><span class="w">  
+    </span><span class="s1">'Authorization'</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Bearer '</span><span class="w"> </span><span class="err">+</span><span class="w"> </span><span class="nv">$Token</span><span class="err">.</span><span class="nx">AccessToken</span><span class="w">  
+    </span><span class="s1">'Content-Type'</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'application/json'</span><span class="w">  
+</span><span class="p">}</span><span class="w">
+
+</span><span class="nv">$account</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Get-AzStorageAccount</span><span class="w"> </span><span class="nt">-Name</span><span class="w"> </span><span class="nv">$storageAccountName</span><span class="w"> </span><span class="nt">-ResourceGroupName</span><span class="w"> </span><span class="nv">$storageAccountResourceGroup</span><span class="w">
+</span><span class="nv">$storageAccountResourceId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$account</span><span class="o">.</span><span class="nf">Id</span><span class="w">
+
+</span><span class="c">#https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles</span><span class="w">
+</span><span class="n">addRole</span><span class="w"> </span><span class="nt">-storageAccountResourceId</span><span class="w"> </span><span class="nv">$account</span><span class="o">.</span><span class="nf">Id</span><span class="w"> </span><span class="nt">-managedIdentityPrincipalId</span><span class="w"> </span><span class="nv">$managedIdentity</span><span class="o">.</span><span class="nf">PrincipalId</span><span class="w"> </span><span class="nt">-roleId</span><span class="w"> </span><span class="s2">"ba92f5b4-2d11-453d-a403-e96b0029c9fe"</span><span class="w"> </span><span class="nt">-roleName</span><span class="w"> </span><span class="s2">"Storage Blob Data Contributor"</span><span class="w">
+</span><span class="n">addRole</span><span class="w"> </span><span class="nt">-storageAccountResourceId</span><span class="w"> </span><span class="nv">$account</span><span class="o">.</span><span class="nf">Id</span><span class="w"> </span><span class="nt">-managedIdentityPrincipalId</span><span class="w"> </span><span class="nv">$managedIdentity</span><span class="o">.</span><span class="nf">PrincipalId</span><span class="w"> </span><span class="nt">-roleId</span><span class="w"> </span><span class="s2">"0a9a7e1f-b9d0-4cc4-a60d-0319b160aaa3"</span><span class="w"> </span><span class="nt">-roleName</span><span class="w"> </span><span class="s2">"Storage Table Data Contributor"</span><span class="w">
+</span><span class="n">addRole</span><span class="w"> </span><span class="nt">-storageAccountResourceId</span><span class="w"> </span><span class="nv">$account</span><span class="o">.</span><span class="nf">Id</span><span class="w"> </span><span class="nt">-managedIdentityPrincipalId</span><span class="w"> </span><span class="nv">$managedIdentity</span><span class="o">.</span><span class="nf">PrincipalId</span><span class="w"> </span><span class="nt">-roleId</span><span class="w"> </span><span class="s2">"974c5e8b-45b9-4653-ba55-5f855dd0fb88"</span><span class="w"> </span><span class="nt">-roleName</span><span class="w"> </span><span class="s2">"Storage Queue Data Contributor"</span><span class="w">
+
+</span><span class="s2">"Getting WebApp app settings"</span><span class="w">
+</span><span class="nv">$webApp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Get-AzWebApp</span><span class="w"> </span><span class="nt">-ResourceGroupName</span><span class="w"> </span><span class="nv">$webAppResourceGroupName</span><span class="w"> </span><span class="nt">-Name</span><span class="w"> </span><span class="nv">$webAppName</span><span class="w">
+</span><span class="nv">$appSettings</span><span class="o">=</span><span class="nv">$webApp</span><span class="o">.</span><span class="nf">SiteConfig</span><span class="o">.</span><span class="nf">AppSettings</span><span class="w">
+
+</span><span class="nv">$newAppSettings</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">@{}</span><span class="w">
+</span><span class="kr">foreach</span><span class="w"> </span><span class="p">(</span><span class="nv">$item</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nv">$appSettings</span><span class="p">)</span><span class="w">
+</span><span class="p">{</span><span class="w">
+    </span><span class="nv">$newAppSettings</span><span class="p">[</span><span class="nv">$item</span><span class="o">.</span><span class="nf">Name</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$item</span><span class="o">.</span><span class="nf">Value</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="nv">$connectionString</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"DefaultEndpointsProtocol=https;AccountName=</span><span class="si">$(</span><span class="nv">$account</span><span class="o">.</span><span class="nf">StorageAccountName</span><span class="si">)</span><span class="s2">;ManagedIdentityClientId=</span><span class="si">$(</span><span class="nv">$managedIdentity</span><span class="o">.</span><span class="nf">ClientId</span><span class="si">)</span><span class="s2">;EndpointSuffix=core.windows.net"</span><span class="w">
+</span><span class="nv">$newAppSettings</span><span class="p">[</span><span class="s1">'WEBSITE_DAAS_STORAGE_CONNECTIONSTRING'</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$connectionString</span><span class="w">
+ 
+</span><span class="s2">"Updating AppSettings for "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">$webApp</span><span class="o">.</span><span class="nf">Name</span><span class="w">
+</span><span class="n">Set-AzWebApp</span><span class="w"> </span><span class="nt">-ResourceGroupName</span><span class="w"> </span><span class="nv">$webAppResourceGroupName</span><span class="w"> </span><span class="nt">-Name</span><span class="w"> </span><span class="nv">$webApp</span><span class="o">.</span><span class="nf">Name</span><span class="w"> </span><span class="nt">-AppSettings</span><span class="w"> </span><span class="nv">$newAppSettings</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Out-Null</span><span class="w">
+</span><span class="s2">"App Setting updated"</span><span class="w">
+
+</span><span class="s2">"Getting slots for "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">$webApp</span><span class="o">.</span><span class="nf">Name</span><span class="w">
+</span><span class="nv">$slots</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">@()</span><span class="w">
+</span><span class="nv">$slotsWebApp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Get-AzWebAppSlot</span><span class="w"> </span><span class="nt">-ResourceGroupName</span><span class="w"> </span><span class="nv">$webAppResourceGroupName</span><span class="w"> </span><span class="nt">-Name</span><span class="w"> </span><span class="nv">$webApp</span><span class="o">.</span><span class="nf">Name</span><span class="w">
+</span><span class="nx">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$slotsWebApp</span><span class="w"> </span><span class="o">-ne</span><span class="w"> </span><span class="bp">$null</span><span class="w"> </span><span class="o">-and</span><span class="w"> </span><span class="nv">$slotsWebApp</span><span class="o">.</span><span class="nf">Name</span><span class="w"> </span><span class="o">-ne</span><span class="w"> </span><span class="bp">$null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nv">$slotName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$slotsWebApp</span><span class="o">.</span><span class="nf">Name</span><span class="o">.</span><span class="nf">Split</span><span class="p">(</span><span class="s1">'/'</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="w">
+    </span><span class="nv">$slots</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="nv">$slotName</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="kr">foreach</span><span class="w"> </span><span class="p">(</span><span class="nv">$slotName</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nv">$slots</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nv">$slotWebApp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Get-AzWebAppSlot</span><span class="w"> </span><span class="nt">-ResourceGroupName</span><span class="w"> </span><span class="nv">$webAppResourceGroupName</span><span class="w"> </span><span class="nt">-Name</span><span class="w"> </span><span class="nv">$webApp</span><span class="o">.</span><span class="nf">Name</span><span class="w"> </span><span class="nt">-Slot</span><span class="w"> </span><span class="nv">$slotName</span><span class="w">
+    </span><span class="nv">$appSettingsSlot</span><span class="w"> </span><span class="o">=</span><span class="nv">$slotWebApp</span><span class="o">.</span><span class="nf">SiteConfig</span><span class="o">.</span><span class="nf">AppSettings</span><span class="w">
+    </span><span class="nv">$newAppSettingsSlot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">@{}</span><span class="w">
+
+    </span><span class="kr">foreach</span><span class="p">(</span><span class="nv">$item</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nv">$appSettingsSlot</span><span class="p">){</span><span class="w">
+        </span><span class="nv">$newAppSettingsSlot</span><span class="p">[</span><span class="nv">$item</span><span class="o">.</span><span class="nf">Name</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$item</span><span class="o">.</span><span class="nf">Value</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+
+    </span><span class="nv">$newAppSettingsSlot</span><span class="p">[</span><span class="s1">'WEBSITE_DAAS_STORAGE_CONNECTIONSTRING'</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$connectionString</span><span class="w">
+    </span><span class="s2">"Updating AppSettings for "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">$webApp</span><span class="o">.</span><span class="nf">Name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">"(</span><span class="nv">$slotName</span><span class="s2">)"</span><span class="w">
+    </span><span class="n">Set-AzWebAppSlot</span><span class="w"> </span><span class="nt">-ResourceGroupName</span><span class="w"> </span><span class="nv">$webAppResourceGroupName</span><span class="w"> </span><span class="nt">-Name</span><span class="w"> </span><span class="nv">$webApp</span><span class="o">.</span><span class="nf">Name</span><span class="w"> </span><span class="nt">-AppSettings</span><span class="w"> </span><span class="nv">$newAppSettingsSlot</span><span class="w"> </span><span class="nt">-Slot</span><span class="w"> </span><span class="nv">$slotName</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Out-Null</span><span class="w">
+    </span><span class="s2">"AppSettings updated for "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">$webApp</span><span class="o">.</span><span class="nf">Name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">"(</span><span class="nv">$slotName</span><span class="s2">)"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>]]></content><author><name>Azure App Service</name></author><category term="Diagnostics" /><summary type="html"><![CDATA[We are pleased to announce Managed Identity support for authenticating against storage accounts used for diagnostic tools under Diagnostics and a Service. This feature allows the use of both system-assigned and user-assigned managed identities as authentication mechanisms for connecting to storage accounts where memory dumps and other diagnostic data are stored.]]></summary></entry><entry><title type="html">Azure App Service Community Standup: Reliable Web App Pattern on App Service</title><link href="https://azure.github.io/AppService/2024/07/04/App-Service-Community-Standup.html" rel="alternate" type="text/html" title="Azure App Service Community Standup: Reliable Web App Pattern on App Service" /><published>2024-07-04T00:00:00+00:00</published><updated>2024-07-04T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2024/07/04/App-Service-Community-Standup</id><content type="html" xml:base="https://azure.github.io/AppService/2024/07/04/App-Service-Community-Standup.html"><![CDATA[<p>Watch the latest Azure App Service Community Standup on Reliable Web App Pattern on App Service.</p>
+
+<p><a href="https://www.youtube.com/watch?v=bYJ2w97E2q8"><img src="https://img.youtube.com/vi/bYJ2w97E2q8/hqdefault.jpg" alt="Azure App Service Community Standup" /></a></p>
+
+<p>An introduction to the Reliable Web App Pattern, which is guidance and a reference architecture that shows you how to migrate an on-premise Java or .NET enterprise web app to Azure App Service. We’ll use the five pillars of the Well Architected Framework and development design patterns to ensure your web app is secure, scalable, and reliable.</p>
+
+<p>For more information on Reliable App Pattern on App Service, check out the following resources:</p>
+
+<ul>
+  <li>
+    <p><a href="https://azure.microsoft.com/en-us/solutions/cloud-enablement/cloud-adoption-framework/">Cloud Adoption Framework</a></p>
+  </li>
+  <li>
+    <p><a href="https://learn.microsoft.com/en-us/azure/well-architected/what-is-well-architected-framework#layers-of-the-well-architected-framework">Well Architected Framework</a></p>
+  </li>
+  <li>
+    <p><a href="https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/scenarios/app-platform/app-services/landing-zone-accelerator">Landing Zone Accelerator</a></p>
+  </li>
+  <li>
+    <p><a href="https://aka.ms/eap/rwa">Enterprise App Patterns</a></p>
+  </li>
+  <li>
+    <p><a href="https://aka.ms/appcat">Application Code Assessment Tools</a></p>
+  </li>
+</ul>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[Watch the latest Azure App Service Community Standup on Reliable Web App Pattern on App Service.]]></summary></entry><entry><title type="html">Azure App Service Community Standup: App Service Environment Migration</title><link href="https://azure.github.io/AppService/2024/06/07/App-Service-Community-Standup.html" rel="alternate" type="text/html" title="Azure App Service Community Standup: App Service Environment Migration" /><published>2024-06-07T00:00:00+00:00</published><updated>2024-06-07T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2024/06/07/App-Service-Community-Standup</id><content type="html" xml:base="https://azure.github.io/AppService/2024/06/07/App-Service-Community-Standup.html"><![CDATA[<p>Watch the latest Azure App Service Community Standup on ASE migration.</p>
+
+<p><a href="https://www.youtube.com/watch?v=rjeVKFZHeb4"><img src="https://img.youtube.com/vi/rjeVKFZHeb4/hqdefault.jpg" alt="Azure App Service Community Standup" /></a></p>
+
+<p>If you’re currently using App Service Environment v1 or v2, you must migrate your workloads to App Service Environment v3. App Service Environment v1 and v2 will be retired on 31 August 2024. Failure to migrate by that date will result in loss of the environments, running applications, and all application data.</p>
+
+<p>For more information on ASE Upgrade check out the following resources:</p>
+
+<ul>
+  <li><a href="https://learn.microsoft.com/azure/app-service/environment/upgrade-to-asev3">Upgrade to App Service Environment v3</a></li>
+</ul>
+
+<p>You can also catch up on demand on our <strong>//Build 2024</strong> session:</p>
+
+<ul>
+  <li><a href="https://build.microsoft.com/sessions/2d3bac21-85b9-4a33-8293-78536984cb6e?source=/speakers/59c88939-51ca-470b-a25d-3aec108025df">Using AI with App Service to deploy differentiated web apps and APIs</a></li>
+</ul>
+
+<p>Our next community standup is scheduled for <a href="https://www.youtube.com/live/bYJ2w97E2q8">July 3rd</a> but until then be sure to catch up on all past episodes of the <a href="https://www.youtube.com/watch?v=sjT0y0vQ4RU&amp;list=PLI7iePan8aH75bqCGA_LDtURqAmer8gSc">App Service Community Standup</a></p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[Watch the latest Azure App Service Community Standup on ASE migration.]]></summary></entry><entry><title type="html">Announcing inbound IPv6 support in public preview</title><link href="https://azure.github.io/AppService/2024/06/01/Announcing-Inbound-IPv6-support.html" rel="alternate" type="text/html" title="Announcing inbound IPv6 support in public preview" /><published>2024-06-01T00:00:00+00:00</published><updated>2024-06-01T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2024/06/01/Announcing-Inbound-IPv6-support</id><content type="html" xml:base="https://azure.github.io/AppService/2024/06/01/Announcing-Inbound-IPv6-support.html"><![CDATA[<p>Update - August 1, 2024: All but two regions are now supported and we have Azure portal support rolling out soon. We also added a CLI sample for configuration IPv6 support on a deployment slot.</p>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>I am happy to announce the first part of our IPv6 implementation in App Service. Public preview of inbound IPv6 support for multi-tenant apps on Premium SKUs, Functions Consumption, Functions Elastic Premium, and Logic Apps Standard. We’ll be adding IPv6 support in four stages.</p>
+
+<ol>
+  <li>This announcement: IPv6 inbound support (multi-tenant)</li>
+  <li>In development: IPv6 non-vnet outbound support (multi-tenant)</li>
+  <li>Backlog: IPv6 vnet outbound support (multi-tenant and App Service Environment v3)</li>
+  <li>Backlog: IPv6 vnet inbound support (App Service Environment v3 - both internal and external)</li>
+</ol>
+
+<p>Limitations in this public preview:</p>
+
+<ul>
+  <li>Only a subset of regions are supported - see the list below.</li>
+  <li>Basic and Standard tier currently does not support changing the <code class="language-plaintext highlighter-rouge">IPMode</code> property.</li>
+  <li>Functions Consumption may have multiple IP addresses in the DNS result.</li>
+  <li>Functions Consumption and Elastic Premium may not remove the IPv4 address in IPv6 mode.</li>
+  <li>The IPv6 address is not visible in the <code class="language-plaintext highlighter-rouge">inboundIpAddress</code> or <code class="language-plaintext highlighter-rouge">possibleInboundIpAddresses</code> properties.</li>
+  <li>IP-SSL IPv6 bindings are not supported.</li>
+</ul>
+
+<p>For GA we will work on including Basic and Standard tier, adding all regions, include the IPv6 addresses in new properties and stabilize the DNS results to not show extra addresses.</p>
+
+<h2 id="how-does-it-work">How does it work</h2>
+
+<p>IPv6 inbound requires two things: an IPv6 address that accepts traffic coming in, and a DNS record that returns an IPv6 (AAAA) record. You’ll also need a client that can send and receive IPv6 traffic. This means that you may not be able to test it from your local machine since many networks today only support IPv4.</p>
+
+<p>Our stamps (deployment units) will all have IPv6 addresses added. When these are added, you can start sending traffic to both the IPv4 and IPv6 address. To ensure backwards compatibility, the DNS response for the default host name (<em>app-name</em>.azurewebsites.net) will return only the IPv4 address. If you want to change that, we have added a site property called <code class="language-plaintext highlighter-rouge">IPMode</code> that you can configure to <code class="language-plaintext highlighter-rouge">IPv6</code> or <code class="language-plaintext highlighter-rouge">IPv4AndIPv6</code>. If you set it to IPv6 only, your client will need to “understand” IPv6 in order to get a response. Setting it to IPv4 and IPv6 will allow you to have existing clients use IPv4, but allow capable clients to use IPv6. If your client does support IPv6, you can test the IPv6 connection using curl:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-6</span> https://&lt;app-name&gt;.azurewebsites.net
+</code></pre></div></div>
+
+<p>If you are using custom domain, you can define your custom DNS records the same way. If you only add an IPv6 (AAAA) record, your clients will need to support IPv6. You can also choose to add both, and finally you can use a CNAME to the default hostname of the site in which case you will use the behavior of <code class="language-plaintext highlighter-rouge">IPMode</code>.</p>
+
+<p>Do make a note of some of the limitations and especially behavior of Functions plans. We will be working on fixing those issues before General Availability. Do also note that DNS tends to have multiple layers of caching, and sometimes it can take 5-10 minutes for DNS to return the right records.</p>
+
+<h2 id="update-using-cli">Update using CLI</h2>
+
+<p>To update an app to return IPv6 DNS records:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az resource update <span class="nt">--name</span> &lt;app-name&gt; <span class="nt">--set</span> properties.ipMode<span class="o">=</span><span class="s2">"IPv6"</span> <span class="nt">-g</span> &lt;resource-group-name&gt; <span class="nt">--resource-type</span> <span class="s2">"Microsoft.Web/sites"</span>
+</code></pre></div></div>
+
+<p>If you are updating a slot, you’ll need the resource id of the slot. Here is an example:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az resource update <span class="nt">--ids</span> <span class="s1">'/subscriptions/&lt;sub-id&gt;/resourceGroups/&lt;resource-group-name&gt;/providers/Microsoft.Web/sites/&lt;app-name&gt;/slots/&lt;slot-name&gt;'</span> <span class="nt">--set</span> properties.ipMode<span class="o">=</span><span class="s1">'IPv6'</span>
+</code></pre></div></div>
+
+<h2 id="create-or-update-using-azure-resource-manager-templates">Create or update using Azure Resource Manager templates</h2>
+
+<p>To deploy a new app or update an existing app using ARM, you can just set the IPMode to either IPv6 or IPv4AndIPv6. In this template, you are also creating an App Service plan. If you use the template below, replace the values prefixed with REPLACE. For the <code class="language-plaintext highlighter-rouge">reserved</code> property, true = Linux, false = Windows.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+    <span class="dl">"</span><span class="s2">$schema</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">contentVersion</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">1.0.0.0</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">variables</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="dl">"</span><span class="s2">appName</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">REPLACE-APP-NAME</span><span class="dl">"</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">appIPMode</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">IPv6</span><span class="dl">"</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">appServicePlanName</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">REPLACE-PLAN-NAME</span><span class="dl">"</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">appServicePlanSize</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">P1v3</span><span class="dl">"</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">appServicePlanInstanceCount</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">location</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">[resourceGroup().location]</span><span class="dl">"</span>
+    <span class="p">},</span>
+    <span class="dl">"</span><span class="s2">resources</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">[variables('appServicePlanName')]</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">type</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Microsoft.Web/serverfarms</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">apiVersion</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">2021-03-01</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">location</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">[variables('location')]</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">properties</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+                <span class="dl">"</span><span class="s2">reserved</span><span class="dl">"</span><span class="p">:</span> <span class="kc">false</span>
+            <span class="p">},</span>
+            <span class="dl">"</span><span class="s2">sku</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+                <span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">[variables('appServicePlanSize')]</span><span class="dl">"</span><span class="p">,</span>
+                <span class="dl">"</span><span class="s2">capacity</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">[variables('appServicePlanInstanceCount')]</span><span class="dl">"</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">[variables('appName')]</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">type</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Microsoft.Web/sites</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">apiVersion</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">2021-03-01</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">location</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">[variables('location')]</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">dependsOn</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span>
+                <span class="dl">"</span><span class="s2">[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]</span><span class="dl">"</span>
+            <span class="p">],</span>
+            <span class="dl">"</span><span class="s2">properties</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+              <span class="dl">"</span><span class="s2">serverFarmId</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]</span><span class="dl">"</span><span class="p">,</span>
+              <span class="dl">"</span><span class="s2">httpsOnly</span><span class="dl">"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+              <span class="dl">"</span><span class="s2">ipMode</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">[variables('appIPMode')]</span><span class="dl">"</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+     <span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="supported-regions">Supported regions</h2>
+
+<p>This is the current list of supported regions in preview.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Region</th>
+      <th style="text-align: center">IPv6 supported</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Australia Central</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Australia Central 2</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Australia East</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Australia Southeast</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Brazil South</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Brazil Southeast</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Canada Central</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Canada East</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Central India</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Central US</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>East Asia</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>East US</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>East US 2</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>France Central</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>France South</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Germany North</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Germany West Central</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>Italy North</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Japan East</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Japan West</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Jio India West</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Korea Central</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Korea South</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>North Central US</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>North Europe</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Norway East</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Norway West</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Poland Central</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Qatar Central</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>South Africa North</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>South Africa West</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>South Central US</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>South India</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Southeast Asia</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Sweden Central</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Switzerland North</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Switzerland West</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>UAE Central</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>UAE North</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>UK South</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td>UK West</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>West Central US</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>West Europe</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>West India</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>West US</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>West US 2</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>West US 3</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+  </tbody>
+</table>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[Update - August 1, 2024: All but two regions are now supported and we have Azure portal support rolling out soon. We also added a CLI sample for configuration IPv6 support on a deployment slot.]]></summary></entry></feed>
