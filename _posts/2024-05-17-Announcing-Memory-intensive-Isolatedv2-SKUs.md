@@ -5,9 +5,11 @@ toc: true
 toc_sticky: true
 ---
 
-Update - June 26, 2024: The first Linux regions are opened and in the same regions Windows Container is adding support for large SKUs (I4v2, I5v2 and I6v2). Azure portal support has been added.
+Update - August 19, 2024: More Windows and Linux regions are open and more regions have runtime in GA state.
 
 ## Previous updates
+
+Update - June 26, 2024: The first Linux regions are opened and in the same regions Windows Container is adding support for large SKUs (I4v2, I5v2 and I6v2). Azure portal support has been added.
 
 Update - June 4, 2024: We have now resolved the issue with outbound connections and have further progressed with the runtime of many regions so they can be marked with GA runtime.
 
@@ -89,29 +91,29 @@ To deploy a new plan or update an existing plan using ARM, you can just use the 
 
 ## Regions and OS support
 
-This is the current list of supported regions. Regions marked with * has runtime in preview and should only be used for dev/test environments. More regions and Linux/Windows Container support will be added in the coming months.
+This is the current list of supported regions.
 
 | Region               | Windows                    | Linux                       | Windows Container          |
 | -------------------- | :------------------------: | :-------------------------: | :------------------------: |
 | Australia Central    |                            |                             |                            |
-| Australia Central 2  | :heavy_check_mark:         |                             |                            |
+| Australia Central 2  | :heavy_check_mark:         | :heavy_check_mark:          |                            |
 | Australia East       | :heavy_check_mark: *       |                             |                            |
-| Australia Southeast  | :heavy_check_mark:         |                             |                            |
+| Australia Southeast  | :heavy_check_mark:         | :heavy_check_mark:          |                            |
 | Brazil South         |                            |                             |                            |
-| Brazil Southeast     |                            |                             |                            |
-| Canada Central       | :heavy_check_mark: *       |                             |                            |
-| Canada East          | :heavy_check_mark:         |                             |                            |
-| Central India        | :heavy_check_mark:         |                             |                            |
+| Brazil Southeast     | :heavy_check_mark:         | :heavy_check_mark:          |                            |
+| Canada Central       | :heavy_check_mark:         |                             |                            |
+| Canada East          | :heavy_check_mark:         | :heavy_check_mark:          |                            |
+| Central India        | :heavy_check_mark:         | :heavy_check_mark:          |                            |
 | Central US           |                            |                             |                            |
 | East Asia            | :heavy_check_mark:         |                             |                            |
 | East US              |          |                             |                            |
-| East US 2            | :heavy_check_mark: *       |                             |                            |
-| France Central       |                            |                             |                            |
+| East US 2            | :heavy_check_mark:         |                             |                            |
+| France Central       | :heavy_check_mark:         | :heavy_check_mark:          |                            |
 | France South         |                            |                             |                            |
 | Germany North        | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark: **      |
 | Germany West Central | :heavy_check_mark:         |                             |                            |
 | Italy North          |                            |                             |                            |
-| Japan East           | :heavy_check_mark: *       |                             |                            |
+| Japan East           | :heavy_check_mark:         |                             |                            |
 | Japan West           | :heavy_check_mark:         |                             |                            |
 | Jio India West       |                            |                             |                            |
 | Korea Central        |                            |                             |                            |
@@ -122,24 +124,25 @@ This is the current list of supported regions. Regions marked with * has runtime
 | Norway West          |                            |                             |                            |
 | Poland Central       |                            |                             |                            |
 | Qatar Central        |                            |                             |                            |
-| South Africa North   | :heavy_check_mark: *       |                             |                            |
-| South Africa West    |                            |                             |                            |
-| South Central US     | :heavy_check_mark: *       |                             |                            |
+| South Africa North   | :heavy_check_mark:         | :heavy_check_mark:          |                            |
+| South Africa West    | :heavy_check_mark:         | :heavy_check_mark:          |                            |
+| South Central US     | :heavy_check_mark:         |                             |                            |
 | South India          |                            |                             |                            |
 | Southeast Asia       | :heavy_check_mark: *       |                             |                            |
 | Sweden Central       | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark: **      |
-| Switzerland North    | :heavy_check_mark: *       |                             |                            |
+| Sweden South         | :heavy_check_mark:         | :heavy_check_mark:          |                            |
+| Switzerland North    | :heavy_check_mark:         |                             |                            |
 | Switzerland West     |                            |                             |                            |
 | UAE Central          |                            |                             |                            |
 | UAE North            | :heavy_check_mark:         |                             |                            |
 | UK South             | :heavy_check_mark:         |                             |                            |
-| UK West              | :heavy_check_mark: *       |                             |                            |
+| UK West              | :heavy_check_mark:         | :heavy_check_mark:          |                            |
 | West Central US      |                            |                             |                            |
 | West Europe          |                            |                             |                            |
 | West India           |                            |                             |                            |
-| West US              | :heavy_check_mark: *       |                             |                            |
+| West US              | :heavy_check_mark:         |                             |                            |
 | West US 2            | :heavy_check_mark:         |                             |                            |
-| West US 3            |                            |                             |                            |
+| West US 3            | :heavy_check_mark:         | :heavy_check_mark:          |                            |
 
 ** Windows Container is adding support for large SKUs (I4v2, I5v2 and I6v2). Memory intensive SKUs will follow later.
 
