@@ -11,9 +11,6 @@ Watch the latest Azure App Service Community Standup on .NET and App Config
 
 For more information on Datadog and Sidecar patterns on App Service, check out the following resources:
 
- (microsoft.com)
-Use App Configuration references - Azure App Service | Microsoft Learn
-
 * [Generally Available: App Configuration references on App Service](https://azure.microsoft.com/en-us/updates/v2/app-config-ref-ga)
 
 * [Use App Configuration references - Azure App Service](https://learn.microsoft.com/en-us/azure/app-service/app-service-configuration-references)
