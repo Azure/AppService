@@ -5,7 +5,7 @@ toc: true
 toc_sticky: true
 ---
 
-Watch the latest Azure App Service Community Standup on .NET and App Configuration
+Watch the latest Azure App Service Community Standup on .NET 9 and App Configuration
 
 [![Azure App Service Community Standup](https://img.youtube.com/vi/Vj2ujuj5_Vo/hqdefault.jpg)](https://www.youtube.com/watch?v=Vj2ujuj5_Vo)
 
