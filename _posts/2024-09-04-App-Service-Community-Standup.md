@@ -1,15 +1,15 @@
 ---
-title: "Azure App Service Community Standup: .NET 9 and App Config"
+title: "Azure App Service Community Standup: .NET 9 and App Configuration"
 author_name: "Denver Brittain"
 toc: true
 toc_sticky: true
 ---
 
-Watch the latest Azure App Service Community Standup on .NET and App Config
+Watch the latest Azure App Service Community Standup on .NET and App Configuration
 
 [![Azure App Service Community Standup](https://img.youtube.com/vi/Vj2ujuj5_Vo/hqdefault.jpg)](https://www.youtube.com/watch?v=Vj2ujuj5_Vo)
 
-For more information on Datadog and Sidecar patterns on App Service, check out the following resources:
+For more information on .NET 9 and App Configuration on App Service, check out the following resources:
 
 * [Generally Available: App Configuration references on App Service](https://azure.microsoft.com/en-us/updates/v2/app-config-ref-ga)
 
