@@ -5,7 +5,7 @@ toc: true
 toc_sticky: true
 ---
 
-Update - September 9, 2024: Opened for Linux and Windows Container in Canada Central, Japan West, UK South, and Switzerland North regions.
+Update - September 10, 2024: Opened for Linux and Windows Container in additional regions.
 
 ## Previous updates
 
@@ -111,7 +111,7 @@ This is the current list of supported regions.
 | East US              |                            |                             |                            |
 | East US 2            | :heavy_check_mark:         |                             |                            |
 | France Central       | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark: *       |
-| France South         |                            |                             |                            |
+| France South         | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark: *       |
 | Germany North        | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark: *       |
 | Germany West Central | :heavy_check_mark:         |                             |                            |
 | Italy North          |                            |                             |                            |
@@ -134,7 +134,7 @@ This is the current list of supported regions.
 | Sweden Central       | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark: *       |
 | Sweden South         | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark: *       |
 | Switzerland North    | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark: *       |
-| Switzerland West     |                            |                             |                            |
+| Switzerland West     | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark: *       |
 | UAE Central          |                            |                             |                            |
 | UAE North            | :heavy_check_mark:         |                             |                            |
 | UK South             | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark: *       |
