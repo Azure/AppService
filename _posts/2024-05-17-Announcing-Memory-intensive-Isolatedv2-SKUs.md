@@ -5,7 +5,7 @@ toc: true
 toc_sticky: true
 ---
 
-Update - September 9, 2024: Opened for Linux and Windows Container in Canada Central, Japan West, UK South, and Switzerland North regions.
+Update - September 10, 2024: Opened for Linux and Windows Container in additional regions.
 
 ## Previous updates
 
@@ -111,30 +111,30 @@ This is the current list of supported regions.
 | East US              |                            |                             |                            |
 | East US 2            | :heavy_check_mark:         |                             |                            |
 | France Central       | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark: *       |
-| France South         |                            |                             |                            |
+| France South         | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark: *       |
 | Germany North        | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark: *       |
 | Germany West Central | :heavy_check_mark:         |                             |                            |
 | Italy North          |                            |                             |                            |
-| Japan East           | :heavy_check_mark:         |                             |                            |
+| Japan East           | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark: *       |
 | Japan West           | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark: *       |
 | Jio India West       |                            |                             |                            |
 | Korea Central        |                            |                             |                            |
 | Korea South          | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark: *       |
 | North Central US     | :heavy_check_mark:         |                             |                            |
-| North Europe         | :heavy_check_mark:         |                             |                            |
+| North Europe         | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark: *       |
 | Norway East          | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark: *       |
 | Norway West          |                            |                             |                            |
 | Poland Central       |                            |                             |                            |
 | Qatar Central        |                            |                             |                            |
 | South Africa North   | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark: *       |
 | South Africa West    | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark: *       |
-| South Central US     | :heavy_check_mark:         |                             |                            |
+| South Central US     | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark: *       |
 | South India          |                            |                             |                            |
-| Southeast Asia       | :heavy_check_mark:         |                             |                            |
+| Southeast Asia       | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark: *       |
 | Sweden Central       | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark: *       |
 | Sweden South         | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark: *       |
 | Switzerland North    | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark: *       |
-| Switzerland West     |                            |                             |                            |
+| Switzerland West     | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark: *       |
 | UAE Central          |                            |                             |                            |
 | UAE North            | :heavy_check_mark:         |                             |                            |
 | UK South             | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark: *       |
@@ -142,7 +142,7 @@ This is the current list of supported regions.
 | West Central US      |                            |                             |                            |
 | West Europe          |                            |                             |                            |
 | West India           |                            |                             |                            |
-| West US              | :heavy_check_mark:         |                             |                            |
+| West US              | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark: *       |
 | West US 2            | :heavy_check_mark:         |                             |                            |
 | West US 3            | :heavy_check_mark:         | :heavy_check_mark:          | :heavy_check_mark: *       |
 
