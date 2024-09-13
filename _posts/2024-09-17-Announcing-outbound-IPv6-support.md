@@ -35,6 +35,8 @@ nslookup ipv6.azurewebsites.net
 curl -6 https://ipv6.azurewebsites.net
 ```
 
+> ![]({{site.baseurl}}/media/2024/09/ipv6-outbound-test.png)
+
 ## Supported regions
 
 This is the current list of supported regions in preview.
