@@ -26,7 +26,7 @@ Using the `az` commands below, assign the system-assigned identity to your appli
 az webapp create --resource-group <groupName> --name <appName> --container-image-name myacr.azurecr.io/myimage:mytag --assign-identity [system] --acr-use-identity --acr-identity [system]
 ```
 
-This command will return a json output that shows all your configuration settings. You will also notice the identity “type” is set to “SystemAssigned” in the returned output.
+This command will return a json output that shows all your configuration settings. You will also notice the identity “type” is set to “SystemAssigned” in the returned output. From here, you can also view your updated registry settings in the Azure portal Deployment Center of your Web App resource.
 
 Now that the identity is assigned, we can grab the principal and registry Id's to use in creating the role assignment. Run the following commands to query and store the necessary Id's:
 
