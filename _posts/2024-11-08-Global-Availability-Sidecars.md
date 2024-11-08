@@ -1,4 +1,9 @@
-# Sidecars for Azure App Service for Linux
+---
+title: "Introducing Sidecars for Azure App Service for Linux: Now Generally Available"
+author_name: "Tulika Chaudharie"
+toc: true
+toc_sticky: true
+---
 
 The **sidecar pattern** is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both isolation and encapsulation. This pattern is particularly useful for applications needing to be composed of diverse components and technologies, including new capabilities and integrations. [Learn more about how you can use sidecar extensibility to modernize your applications](https://techcommunity.microsoft.com/blog/appsonazureblog/announcing-the-general-availability-of-sidecar-extensibility-in-azure-app-servic/4267985)
 
