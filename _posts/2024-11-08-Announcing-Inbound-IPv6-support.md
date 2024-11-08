@@ -5,7 +5,9 @@ toc: true
 toc_sticky: true
 ---
 
-Update - August 1, 2024: All but two regions are now supported and we have Azure portal support rolling out soon. We also added a CLI sample for configuration IPv6 support on a deployment slot.
+Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to set the `IPMode` property is now available. A screenshot is included below.
+
+Update 1 - August 1, 2024: All but two regions are now supported and we have Azure portal support rolling out soon. We also added a CLI sample for configuration IPv6 support on a deployment slot.
 
 ## Introduction
 
@@ -54,6 +56,12 @@ If you are updating a slot, you'll need the resource id of the slot. Here is an 
 ```bash
 az resource update --ids '/subscriptions/<sub-id>/resourceGroups/<resource-group-name>/providers/Microsoft.Web/sites/<app-name>/slots/<slot-name>' --set properties.ipMode='IPv6'
 ```
+
+## Update using Azure portal
+
+To update an app to return IPv6 DNS records, you can use the Azure portal. Go to the app, and under the **Configuration** blade, you'll find the `Inbound IP mode (preview)` property.
+
+![Inbound IP mode portal setting]({{site.baseurl}}/media/2024/11/ipmode.png)
 
 ## Create or update using Azure Resource Manager templates
 
