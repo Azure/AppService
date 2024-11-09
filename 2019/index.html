@@ -1,0 +1,1315 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Azure App Service</title>
+<meta name="description" content="Announcements, updates, and release notes from the Azure App Service product team.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Azure App Service">
+<meta property="og:url" content="https://azure.github.io/AppService/2019/">
+
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2019-01-01T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2019/">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--archive-year">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+
+  <div class="archive">
+    
+      
+        <h1 id="page-title" class="page__title"></h1>
+      
+    
+    
+
+<h1>Posts from 2019</h1>
+<section id="year" class="taxonomy__section">
+    <div class="entries-list">
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2019/12/12/App-Service-Environment-Support-for-Availability-Zones.html" rel="permalink">App Service Environment Support for Availability Zones
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+        
+        
+          • By Stefan Schackow
+        
+        • December 12, 2019
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+  NOTE! As of March 2023, the content in this post may be outdated. For the latest information on Availability Zone support for App Service Environment, see...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2019/12/09/Azure-CLI-for-ASE-and-Access-Restriction.html" rel="permalink">Azure CLI for ASE and Access Restriction
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • December 9, 2019
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Based on customer requests we have added support for automating App Service Environment operations using the Azure CLI. With the 2.0.77 release you can creat...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2019/11/13/PHP-Minor-Version-Update-for-January-2020.html" rel="permalink">PHP Minor Version Update for January 2020
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+          • By Eric Stenson
+        
+        • November 13, 2019
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Latest version updates to PHP
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2019/11/04/Azure-App-Service-at-Microsoft-Ignite-2019.html" rel="permalink">Azure App Service at Microsoft Ignite 2019
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+          • By Andrew Westgarth
+        
+        • November 4, 2019
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">During Microsoft Ignite 2019, this week, these are the Azure App Service sessions to look out for in the session catalog.
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2019/11/04/Announcing-Managed-Certificates.html" rel="permalink">Secure your Custom Domains at no cost with App Service Managed Certificates (preview)
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Yutang Lin
+        
+        • November 4, 2019
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Free Transport Layer Security (TLS) for Azure App Service is now in preview! This has been one of the most highly requested features of the service since its...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2019/11/01/App-Service-Integration-with-Azure-Monitor.html" rel="permalink">App Service Integration with Azure Monitor (Preview)
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+        
+        
+          • By Jason Freeberg and Yutang Lin
+        
+        • November 1, 2019
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We are happy to announce that App Service has new and improved integration with Azure Monitor (preview). You can now send your logs from Windows or Linux App...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2019/10/07/Mitigate-your-CPU-problems-before-they-even-happen.html" rel="permalink">Mitigate your CPU problems before they happen
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+        
+        
+          • By Yun Jung Choi
+        
+        • October 7, 2019
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Automatically mitigate CPU anomalies and save yourself from another late-night servicing call.
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2019/10/02/Swap-slots-with-arm-templates.html" rel="permalink">Use ARM templates to swap deployment slots
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+          • By Ruslan Yakushev
+        
+        • October 2, 2019
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">You can now use ARM templates to swap deployment slots.
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2019/09/04/PHP-Minor-Version-Update-for-September-2019.html" rel="permalink">PHP Minor Version Update for September 2019
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+          • By Eric Stenson
+        
+        • September 4, 2019
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Latest version updates to PHP
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2019/08/29/App-Service-on-Azure-Stack-Update-7-Released.html" rel="permalink">Azure App Service on Azure Stack Update 7 Released
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+          • By Andrew Westgarth
+        
+        • August 29, 2019
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">This afternoon we released the seventh update to Azure App Service on Azure Stack.  This release updates the resource provider and brings the following key c...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2019/08/10/Github-actions-for-webapps.html" rel="permalink">Announcing GitHub Actions for App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+        
+        
+          • By Jason Freeberg
+        
+        • August 10, 2019
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Last week GitHub announced the preview of GitHub Actions with built-in CI/CD; watch the announcement here. These actions, defined in YAML files, allow you to...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2019/08/06/How-to-restore-soft-delete-App-Service-domains.html" rel="permalink">Restore App Service domains within 30 days
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+          • By Elle Tojaroon
+        
+        • August 6, 2019
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">If the domain was deleted within the past 30 days, you restore it by re-creating the resource under the same subscription and resource group.
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2019/08/06/Bring-visibility-to-your-app-and-its-dependencies-with-Navigator.html" rel="permalink">Get visibility into your app’s dependencies with Navigator
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+        
+        
+          • By Yun Jung Choi
+        
+        • August 6, 2019
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Application downtime can be dreadful, especially when the app is handling mission-critical load. There could be countless causes for your app’s downtime rang...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2019/07/30/Key-Vault-References-with-Spring-Apps.html" rel="permalink">Azure Key Vault References with Spring Apps
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Jason Freeberg
+        
+        • July 30, 2019
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Securely store and access your connection strings with minimal code changes.
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2019/07/25/Removing-Easy-Tables-and-Easy-APIs-from-Azure-App-Services.html" rel="permalink">Removing Easy Tables and Easy APIs from Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+        
+        
+          • By Ela Malani
+        
+        • July 25, 2019
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+  Integrating mobile services in your application? Sign up with App Center
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2019/07/17/PHP-Minor-Version-Update-for-July-2019.html" rel="permalink">PHP Minor Version Update for July 2019
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+          • By Eric Stenson
+        
+        • July 17, 2019
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Latest version updates to PHP
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2019/06/18/PHP-Minor-Version-Update-for-August-2019.html" rel="permalink">PHP Minor Version Update for August 2019
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+          • By Eric Stenson
+        
+        • June 18, 2019
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Latest version updates to PHP
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2019/05/28/App-Service-on-Azure-Stack-Update-6-Released.html" rel="permalink">Azure App Service on Azure Stack Update 6 Released
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+          • By Andrew Westgarth
+        
+        • May 28, 2019
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">This afternoon we released the sixth update to Azure App Service on Azure Stack.  This release updates the resource provider and brings the following key cap...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2019/05/21/App-Service-Plan-Density-Check.html" rel="permalink">App Service plan Density Check
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+          • By Khaled Zayed
+        
+        • May 21, 2019
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">App Service plan defines the compute resource assigned to run your App Service. The pricing tier of your App Service plan determines the compute power and fe...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2019/05/07/Announcing-the-new-change-analysis-experience-in-App-Service-Diagnostics-Analysis.html" rel="permalink">Announcing the new change analysis experience in App Service Diagnostics
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+        
+        
+          • By Yun Jung Choi
+        
+        • May 7, 2019
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">In a fast-paced development environment, sometimes it is difficult to keep track of all the changes made to your app… let alone pinpoint a change that caused...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/appservicecertificate/2019/03/19/DevTalk-App-Service-Certificate-sync-improvements-and-design.html" rel="permalink">//DevTalk - App Service Certificate - New Sync and Export experiences
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Chibi Vikramathithan
+        
+        • March 19, 2019
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">App Service Certificates have been a very popular feature among App Service customers. However, our customers often get confused about the sync scenarios bet...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/update/2019/03/18/Changes-to-Testing-in-Production-UX.html" rel="permalink">Changes to Routing Rules UX
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jason Freeberg
+        
+        • March 18, 2019
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We will soon be rolling out a series of UX and ARM API changes that will alter the behavior of routing rules for testing in production. After May 22nd, you w...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2019/02/28/Azure-App-Service-on-Azure-Stack-Update-5-Released.html" rel="permalink">Azure App Service on Azure Stack Update 5 Released
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+          • By Andrew Westgarth
+        
+        • February 28, 2019
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">This morning we released the fifth update to Azure App Service on Azure Stack.  This release updates the resource provider and brings the following key capab...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2019/02/26/Changes-to-data-connections-UX.html" rel="permalink">The Data Connections will be removed from Web App menu
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Byron Tardif
+        
+        • February 26, 2019
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Data connections provides a guided experience to easily add a connection string to a new or existing SQL Azure Database or Azure Storage Account.
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2019/02/05/Important-Update-for-Zend-Z-Ray-PHP-Debugging.html" rel="permalink">The Zend Z-Ray debugging feature will be discontinued in Azure App Service on June 7, 2019
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Byron Tardif
+        
+        • February 5, 2019
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The Z-Ray PHP debugging feature will soon be discontinued in App Service. This shouldn’t affect the App Service service-level agreement (SLA) or the runtime ...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2019/01/16/App-Service-Environment-Support-for-Availability-Zones-(Preview).html" rel="permalink">App Service Environment Support for Availability Zones (Preview)
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+        • January 16, 2019
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+App Service Environment (ASE) support for Availability Zones (AZ) is now in preview.  Customers can deploy internal load balancer (ILB) ASEs into a spe...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2019/01/11/PHP-Minor-Version-Update-for-January-2019.html" rel="permalink">PHP Minor Version Update for January 2019
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+        • January 11, 2019
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2019/01/04/Python-2.7-Now-Available-for-App-Service-on-Linux.html" rel="permalink">Python 2.7 Now Available for App Service on Linux
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+        • January 4, 2019
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+Python 2.7 has been added to the public preview of Python on Azure App Service (Linux).  With this recent addition developers can enjoy the productivit...</p>
+  </article>
+</div>
+
+        
+    </div>
+    <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+</section>
+  </div>
+</div>
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

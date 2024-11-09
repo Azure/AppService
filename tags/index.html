@@ -1,0 +1,6270 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Azure App Service</title>
+<meta name="description" content="Announcements, updates, and release notes from the Azure App Service product team.">
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Azure App Service">
+<meta property="og:url" content="https://azure.github.io/AppService/tags/">
+
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/tags/">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--tags">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <div class="archive">
+    
+      
+        <h1 id="page-title" class="page__title"></h1>
+      
+    
+    
+
+
+
+
+
+<ul class="taxonomy__index">
+  
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        <li>
+          <a href="#dotnet">
+            <strong>dotnet</strong> <span class="taxonomy__count">13</span>
+          </a>
+        </li>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+    
+      
+    
+      
+        <li>
+          <a href="#azure-stack">
+            <strong>Azure Stack</strong> <span class="taxonomy__count">9</span>
+          </a>
+        </li>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        <li>
+          <a href="#windows-containers">
+            <strong>windows containers</strong> <span class="taxonomy__count">9</span>
+          </a>
+        </li>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+    
+      
+    
+      
+    
+      
+        <li>
+          <a href="#php">
+            <strong>PHP</strong> <span class="taxonomy__count">8</span>
+          </a>
+        </li>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        <li>
+          <a href="#zero-to-hero">
+            <strong>zero to hero</strong> <span class="taxonomy__count">7</span>
+          </a>
+        </li>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        <li>
+          <a href="#deployment">
+            <strong>Deployment</strong> <span class="taxonomy__count">6</span>
+          </a>
+        </li>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+    
+      
+        <li>
+          <a href="#azure-portal">
+            <strong>Azure Portal</strong> <span class="taxonomy__count">3</span>
+          </a>
+        </li>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        <li>
+          <a href="#monitoring">
+            <strong>monitoring</strong> <span class="taxonomy__count">3</span>
+          </a>
+        </li>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        <li>
+          <a href="#a-b-testing">
+            <strong>A/B Testing</strong> <span class="taxonomy__count">3</span>
+          </a>
+        </li>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+    
+      
+    
+      
+    
+      
+    
+      
+        <li>
+          <a href="#devops">
+            <strong>devops</strong> <span class="taxonomy__count">2</span>
+          </a>
+        </li>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        <li>
+          <a href="#networking">
+            <strong>Networking</strong> <span class="taxonomy__count">2</span>
+          </a>
+        </li>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        <li>
+          <a href="#certsdomains">
+            <strong>certsdomains</strong> <span class="taxonomy__count">2</span>
+          </a>
+        </li>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        <li>
+          <a href="#best-practice">
+            <strong>best practice</strong> <span class="taxonomy__count">1</span>
+          </a>
+        </li>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        <li>
+          <a href="#ase">
+            <strong>ASE</strong> <span class="taxonomy__count">1</span>
+          </a>
+        </li>
+      
+    
+      
+        <li>
+          <a href="#windows-containers">
+            <strong>Windows containers</strong> <span class="taxonomy__count">1</span>
+          </a>
+        </li>
+      
+    
+      
+        <li>
+          <a href="#docker">
+            <strong>Docker</strong> <span class="taxonomy__count">1</span>
+          </a>
+        </li>
+      
+    
+      
+        <li>
+          <a href="#python">
+            <strong>Python</strong> <span class="taxonomy__count">1</span>
+          </a>
+        </li>
+      
+    
+      
+    
+      
+    
+      
+        <li>
+          <a href="#windows-azure-pack">
+            <strong>Windows Azure Pack</strong> <span class="taxonomy__count">1</span>
+          </a>
+        </li>
+      
+    
+      
+        <li>
+          <a href="#java">
+            <strong>Java</strong> <span class="taxonomy__count">1</span>
+          </a>
+        </li>
+      
+    
+      
+        <li>
+          <a href="#scm">
+            <strong>scm</strong> <span class="taxonomy__count">1</span>
+          </a>
+        </li>
+      
+    
+      
+        <li>
+          <a href="#network">
+            <strong>Network</strong> <span class="taxonomy__count">1</span>
+          </a>
+        </li>
+      
+    
+      
+        <li>
+          <a href="#virtual-network">
+            <strong>Virtual Network</strong> <span class="taxonomy__count">1</span>
+          </a>
+        </li>
+      
+    
+      
+        <li>
+          <a href="#vnet">
+            <strong>VNET</strong> <span class="taxonomy__count">1</span>
+          </a>
+        </li>
+      
+    
+      
+        <li>
+          <a href="#connectivity">
+            <strong>Connectivity</strong> <span class="taxonomy__count">1</span>
+          </a>
+        </li>
+      
+    
+      
+        <li>
+          <a href="#azure-monitor">
+            <strong>Azure Monitor</strong> <span class="taxonomy__count">1</span>
+          </a>
+        </li>
+      
+    
+      
+        <li>
+          <a href="#app-service-environment">
+            <strong>App Service Environment</strong> <span class="taxonomy__count">1</span>
+          </a>
+        </li>
+      
+    
+      
+        <li>
+          <a href="#kubernetes">
+            <strong>kubernetes</strong> <span class="taxonomy__count">1</span>
+          </a>
+        </li>
+      
+    
+      
+        <li>
+          <a href="#bicep">
+            <strong>Bicep</strong> <span class="taxonomy__count">1</span>
+          </a>
+        </li>
+      
+    
+      
+    
+      
+        <li>
+          <a href="#docker">
+            <strong>docker</strong> <span class="taxonomy__count">1</span>
+          </a>
+        </li>
+      
+    
+      
+        <li>
+          <a href="#app-service">
+            <strong>app service</strong> <span class="taxonomy__count">1</span>
+          </a>
+        </li>
+      
+    
+      
+        <li>
+          <a href="#php">
+            <strong>php</strong> <span class="taxonomy__count">1</span>
+          </a>
+        </li>
+      
+    
+      
+        <li>
+          <a href="#wordpress">
+            <strong>wordpress</strong> <span class="taxonomy__count">1</span>
+          </a>
+        </li>
+      
+    
+      
+        <li>
+          <a href="#azure-app-service-environment">
+            <strong>azure app service environment</strong> <span class="taxonomy__count">1</span>
+          </a>
+        </li>
+      
+    
+      
+        <li>
+          <a href="#azure-firewall">
+            <strong>azure firewall</strong> <span class="taxonomy__count">1</span>
+          </a>
+        </li>
+      
+    
+      
+        <li>
+          <a href="#network-trace-analysis">
+            <strong>network trace analysis</strong> <span class="taxonomy__count">1</span>
+          </a>
+        </li>
+      
+    
+      
+        <li>
+          <a href="#linux-app-service">
+            <strong>Linux App Service</strong> <span class="taxonomy__count">1</span>
+          </a>
+        </li>
+      
+    
+  
+</ul>
+
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <section id="dotnet" class="taxonomy__section">
+        <h2 class="archive__subtitle">dotnet</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/04/03/Continuous-deployment-for-Windows-containers.html" rel="permalink">Continuous Deployment for Windows Containers with Azure Pipelines
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • April 3, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Azure DevOps enables you to host, build, plan and test your code with complimentary workflows. Using Azure Pipelines as one of these workflows allows you to ...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2021/11/08/Dot.Net6.on.App.Service.html" rel="permalink">.NET 6 on App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Byron Tardif
+        
+        • November 8, 2021
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We are happy to announce that App Service is rolling out day 0 support for .NET 6.0 applications across all public regions and scenarios on both Windows and ...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2021/07/08/How-to-create-a-blazor-webassembly-grpc-web-app-using-app-service-on-an-azure-arc-enabled-kubernetes-cluster.html" rel="permalink">How to create a Blazor WebAssembly gRPC-Web app using App Service on an Azure Arc Enabled Kubernetes Cluster
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • July 8, 2021
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">With the release of the App Service on Kubernetes preview, you can now run App Service on Kubernetes deploying your web apps to Azure Kubernetes Service, or ...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2021/06/25/Dot-Net-6-Preview-5-on-App-Service.html" rel="permalink">.NET 6 Preview 5 on App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+          • By Byron Tardif
+        
+        • June 25, 2021
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">In case you missed it, we released support for .NET 6 Preview 4 about 2 weeks ago.
+</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2021/06/09/Dot-Net-6-Preview-on-App-Service.html" rel="permalink">.NET 6 Preview on App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+          • By Byron Tardif
+        
+        • June 9, 2021
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We are happy to announce that App Service now supports apps targeting .NET 6 Preview 4 across all public regions and scenarios on both Windows and Linux App ...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2020/11/16/Hosting-dotnet-five-Applications-on-Azure-App-Service.html" rel="permalink">Hosting .NET 5 Applications on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  9 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • November 16, 2020
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">With the newly announced launch of .NET 5 General Availability, App Service is offering immediate support for .NET 5 via Early Access stack.  The new Early A...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2020/11/10/Dot-Net-5-on-App-Service.html" rel="permalink">.NET 5 on App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Byron Tardif
+        
+        • November 10, 2020
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We are happy to announce that App Service now supports .NET 5 applications across all public regions and scenarios on both Windows and Linux App Service plans.
+</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2020/06/25/App-Service-Continuous-Deployment-for-Windows-Containers-with-Azure-DevOps.html" rel="permalink">Continuous Deployment for Windows Containers with Azure DevOps
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  12 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • June 25, 2020
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Azure DevOps enables you to host, build, plan and test your code with complimentary workflows. Using Azure Pipelines as one of these workflows allows you to ...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2020/06/09/NET-Framework-4.8-is-coming-to-App-Service.html" rel="permalink">.NET Framework 4.8 is coming to App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • June 9, 2020
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+  The .NET Framework 4.8 update is a non-breaking in-place upgrade on App Service.  No updates are required to existing applications.
+
+</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2020/06/09/App-Service-Continuous-Deployment-for-Windows-Containers-with-GitHub-Actions.html" rel="permalink">Continuous Deployment for Windows Containers with GitHub Actions
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  11 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • June 9, 2020
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Github Actions enables you to easily automate any part of your development workflow. GitHub Actions are defined as YAML files in the .github/workflows direct...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2020/04/24/Running-.NET-5-Preview-on-App-Service.html" rel="permalink">Running .NET 5 (preview) on App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • April 24, 2020
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">.NET 5 is the latest version to expand the capabilities of .NET by taking the best of Core, Framework, Xamarin, and Mono to create a unified platform for imp...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2020/04/16/Announcing-.NET-Core-3.1-LTS-Generally-Available-on-App-Service.html" rel="permalink">Announcing .NET Core 3.1 LTS General Availability on App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • April 16, 2020
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">App Service is announcing GA of .NET Core 3.1 LTS on Linux &amp; Windows today.  If you are running .NET Core 3.0 applications, which had its end-of-life dat...</p>
+  </article>
+</div>
+
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+      <section id="azure-stack" class="taxonomy__section">
+        <h2 class="archive__subtitle">Azure Stack</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/11/02/App-Service-on-Azure-Stack-Hub-2022-H1-Released.html" rel="permalink">Azure App Service and Azure Functions on Azure Stack Hub 2022 H1 Released
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+          • By Andrew Westgarth
+        
+        • November 2, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The 2022 H1 update to Azure App Service on Azure Stack Hub is now available. This release is a major update in terms of underlying infrastructure and topolog...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2021/12/10/App-Service-on-Azure-Stack-Hub-2021-Q3-Update-Released.html" rel="permalink">Azure App Service and Azure Functions on Azure Stack Hub 2021 Q3 Released
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Andrew Westgarth
+        
+        • December 10, 2021
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The 2021 Q3 update to Azure App Service on Azure Stack Hub is now available. This release updates the resource provider and brings the following key capabili...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2021/06/11/App-Service-on-Azure-Stack-Hub-2021-Q1-Update-Released.html" rel="permalink">Azure App Service and Azure Functions on Azure Stack Hub 2021 Q1 Released
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Andrew Westgarth
+        
+        • June 11, 2021
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The 2021 Q1 update to Azure App Service on Azure Stack Hub is now available. This release updates the resource provider and brings the following key capabili...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2020/11/12/App-Service-on-Azure-Stack-Hub-2020-Q3-Update-Released.html" rel="permalink">Azure App Service and Azure Functions on Azure Stack Hub 2020 Q3 Released
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Andrew Westgarth
+        
+        • November 12, 2020
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The 2020 Q3 update to Azure App Service on Azure Stack Hub is now available. This release updates the resource provider and brings the following key capabili...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2020/05/06/App-Service-on-Azure-Stack-Hub-2020-Q2-Update-Released.html" rel="permalink">Azure App Service and Azure Functions on Azure Stack Hub 2020 Q2 Released
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+          • By Andrew Westgarth
+        
+        • May 6, 2020
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have released the 2020 Q2 update to Azure App Service on Azure Stack Hub. This release updates the resource provider and brings the following key capabili...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2020/01/13/App-Service-on-Azure-Stack-Hub-Update-8-Released.html" rel="permalink">Azure App Service on Azure Stack Hub Update 8 Released
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Andrew Westgarth
+        
+        • January 13, 2020
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">This afternoon we released the eighth update to Azure App Service on Azure Stack Hub. This release updates the resource provider and brings the following key...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2019/08/29/App-Service-on-Azure-Stack-Update-7-Released.html" rel="permalink">Azure App Service on Azure Stack Update 7 Released
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+          • By Andrew Westgarth
+        
+        • August 29, 2019
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">This afternoon we released the seventh update to Azure App Service on Azure Stack.  This release updates the resource provider and brings the following key c...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2019/05/28/App-Service-on-Azure-Stack-Update-6-Released.html" rel="permalink">Azure App Service on Azure Stack Update 6 Released
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+          • By Andrew Westgarth
+        
+        • May 28, 2019
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">This afternoon we released the sixth update to Azure App Service on Azure Stack.  This release updates the resource provider and brings the following key cap...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2019/02/28/Azure-App-Service-on-Azure-Stack-Update-5-Released.html" rel="permalink">Azure App Service on Azure Stack Update 5 Released
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+          • By Andrew Westgarth
+        
+        • February 28, 2019
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">This morning we released the fifth update to Azure App Service on Azure Stack.  This release updates the resource provider and brings the following key capab...</p>
+  </article>
+</div>
+
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <section id="windows-containers" class="taxonomy__section">
+        <h2 class="archive__subtitle">windows containers</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/04/03/Continuous-deployment-for-Windows-containers.html" rel="permalink">Continuous Deployment for Windows Containers with Azure Pipelines
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • April 3, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Azure DevOps enables you to host, build, plan and test your code with complimentary workflows. Using Azure Pipelines as one of these workflows allows you to ...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/04/11/windows-containers-app-insights-preview.html" rel="permalink">Public Preview: Codeless Monitoring for Windows Containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jason Freeberg
+        
+        • April 11, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We are happy to share that Auto-Instrumentation of Application Insights for Windows Container applications is now in public preview! Auto-Instrumentation all...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/03/02/Migrating-your-Windows-conainer-apps-from-Premium-Container-SKU-(Preview)-to-Premium-V3-SKU.html" rel="permalink">Migrating your Windows container apps from the Premium Container SKU (Preview) to Premium V3 SKU
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • March 2, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The Premium Container SKU will not be moving out of preview status and will be retired on 30th June 2022.  Please move your applications to the Premium V3 SK...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2021/11/01/how-to-setup-continuous-deployment-using-acr-tasks-with-windows-containers.html" rel="permalink">How-to setup Continuous Deployment using ACR Tasks with Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • November 1, 2021
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">ACR Tasks are a set of Azure CLI command features in Azure Container Registry that can help you automate container image builds.  This can be integrated as p...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2021/03/04/How-to-Host-a-Python-application-with-Windows-Containers-on-App-Service.html" rel="permalink">How-to Host a Python application with Windows containers on App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • March 4, 2021
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Windows containers on App Service can help you easily modernize your application by making it easier to Lift-and-Shift to App Service and install custom depe...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2020/10/02/Deploy-your-resources-on-the-new-Premium-v3-SKU-with-an-ARM-template.html" rel="permalink">Deploy your resources on the new Premium v3 SKU with an ARM template
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • October 2, 2020
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The Premium v3 hardware tier, previously announced at Microsoft Ignite 2020, is now available for you to deploy your applications to.  This new hardware tier...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2020/06/25/App-Service-Continuous-Deployment-for-Windows-Containers-with-Azure-DevOps.html" rel="permalink">Continuous Deployment for Windows Containers with Azure DevOps
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  12 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • June 25, 2020
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Azure DevOps enables you to host, build, plan and test your code with complimentary workflows. Using Azure Pipelines as one of these workflows allows you to ...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2020/06/09/App-Service-Continuous-Deployment-for-Windows-Containers-with-GitHub-Actions.html" rel="permalink">Continuous Deployment for Windows Containers with GitHub Actions
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  11 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • June 9, 2020
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Github Actions enables you to easily automate any part of your development workflow. GitHub Actions are defined as YAML files in the .github/workflows direct...</p>
+  </article>
+</div>
+
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+      <section id="php" class="taxonomy__section">
+        <h2 class="archive__subtitle">PHP</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/02/23/WordPress-on-App-Service-Public-Preview.html" rel="permalink">WordPress on App Service Public Preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+        
+        
+          • By Abhishek Reddy
+        
+        • February 23, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We are happy to announce the public preview of the WordPress offering on App Service. This offering will enable you to deploy and host new WordPress websites...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2020/07/26/PHP-Minor-Version-Update-for-August-2020.html" rel="permalink">PHP Minor Version Update for August 2020
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+          • By Eric Stenson
+        
+        • July 26, 2020
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Latest version updates to PHP
+</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2020/05/04/PHP-Minor-Version-Update-for-July-2020.html" rel="permalink">PHP Minor Version Update for July 2020
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+          • By Eric Stenson
+        
+        • May 4, 2020
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Latest version updates to PHP
+</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2020/01/25/PHP-Minor-Version-Update-for-February-2020.html" rel="permalink">PHP Minor Version Update for February 2020
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+          • By Eric Stenson
+        
+        • January 25, 2020
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Latest version updates to PHP
+</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2019/11/13/PHP-Minor-Version-Update-for-January-2020.html" rel="permalink">PHP Minor Version Update for January 2020
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+          • By Eric Stenson
+        
+        • November 13, 2019
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Latest version updates to PHP
+</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2019/09/04/PHP-Minor-Version-Update-for-September-2019.html" rel="permalink">PHP Minor Version Update for September 2019
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+          • By Eric Stenson
+        
+        • September 4, 2019
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Latest version updates to PHP
+</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2019/07/17/PHP-Minor-Version-Update-for-July-2019.html" rel="permalink">PHP Minor Version Update for July 2019
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+          • By Eric Stenson
+        
+        • July 17, 2019
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Latest version updates to PHP
+</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2019/06/18/PHP-Minor-Version-Update-for-August-2019.html" rel="permalink">PHP Minor Version Update for August 2019
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+          • By Eric Stenson
+        
+        • June 18, 2019
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Latest version updates to PHP
+</p>
+  </article>
+</div>
+
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <section id="zero-to-hero" class="taxonomy__section">
+        <h2 class="archive__subtitle">zero to hero</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2020/10/05/zero_to_hero_pt7.html" rel="permalink">Zero to Hero with App Service, Part 7: Multi-tier web applications
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Christina Compy
+        
+        • October 5, 2020
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The Azure App Service is offered as two deployment types: the multi-tenant service and the App Service Environment. In the multi-tenant service there are tho...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2020/08/14/zero_to_hero_pt6.html" rel="permalink">Zero to Hero with App Service, Part 6: Securing your web app
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  6 minute read
+
+        
+        
+          • By Christina Compy
+        
+        • August 14, 2020
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The Azure App Service is offered as two deployment types: the multi-tenant service and the App Service Environment. In the multi-tenant service there are tho...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2020/07/28/zero_to_hero_pt5.html" rel="permalink">Zero to Hero with App Service, Part 5: Add and Secure a Custom Domain on Your Azure App Service Web App
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Yutang Lin
+        
+        • July 28, 2020
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">This article is the fifth part of the Zero to Hero with App Service series. This article assumes you have completed the first article.
+</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2020/07/20/zero_to_hero_pt4.html" rel="permalink">Zero to Hero with App Service, Part 4: Migrate Applications to Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+        
+        
+          • By Gaurav Seth
+        
+        • July 20, 2020
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">In this installment of Zero to Hero with App Service, learn how to migrate your existing applications to App Service. If you followed parts one, two, and thr...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2020/07/07/zero_to_hero_pt3.html" rel="permalink">Zero to Hero with App Service, Part 3: Releasing to Production
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+        
+        
+          • By Jason Freeberg
+        
+        • July 7, 2020
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+  This is the third article in the Zero to Hero with App Service series. This article assumes you have already completed the previous two articles.
+
+</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2020/06/29/zero_to_hero_pt2.html" rel="permalink">Zero to Hero with App Service, Part 2: Continuous Integration and Delivery
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Jason Freeberg
+        
+        • June 29, 2020
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">This is the second article in our Zero to Hero with App Service series. This article assumes you have completed Part 1. In the last article you created an Ap...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2020/06/29/zero_to_hero_pt1.html" rel="permalink">Zero to Hero with App Service, Part 1: Setting Up
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+        
+        
+          • By Jason Freeberg
+        
+        • June 29, 2020
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">In times of rapid change, developers and IT decision-makers must quickly adjust to a drastically evolving landscape. Successful organizations use managed clo...</p>
+  </article>
+</div>
+
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <section id="deployment" class="taxonomy__section">
+        <h2 class="archive__subtitle">Deployment</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/01/10/Deployment-Status-API-CLI.html" rel="permalink">Use Azure CLI to track the status of your code deployments
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • January 10, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We are adding new capability to az webapp deploy allowing you to track the status of your code deployments. You can take advantage of more detailed informati...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2021/08/09/setup-github-actions-azurecli.html" rel="permalink">Set up GitHub Actions with the Azure CLI
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jason Freeberg
+        
+        • August 9, 2021
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">With GitHub Actions you can set up a workflow to build and deploy your applications whenever there’s a commit on your main branch, or a PR is merged, or even...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2021/07/29/Deploying-Your-Infrastructure-to-App-Service.html" rel="permalink">Overview of the Various Methods for Deploying Your Infrastructure to App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  23 minute read
+
+        
+        
+          • By Jordan Selig
+        
+        • July 29, 2021
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">There are a number of ways to deploy infrastructure to Azure, what you pick depends on a number of factors including skill level, experience, job requirement...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2021/07/23/Quickstart-Intro-to-Bicep-with-Web-App-plus-DB.html" rel="permalink">Quickstart: Intro to Bicep with Web App and DB
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  8 minute read
+
+        
+        
+          • By Jordan Selig
+        
+        • July 23, 2021
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Get started with Azure App Service by deploying an app to the cloud using a Bicep file and Azure CLI in Cloud Shell. Because you use a free App Service tier,...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2021/03/01/deploying-to-network-secured-sites-2.html" rel="permalink">Deploying to Network-secured sites, Part 2
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+        
+        
+          • By Jason Freeberg
+        
+        • March 1, 2021
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">An earlier article explained how to use self-hosted Azure DevOps agents to build and deploy your applications to a web app that has Private Endpoints enabled...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2021/01/04/deploying-to-network-secured-sites.html" rel="permalink">Deploying to Network-secured sites
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Jason Freeberg
+        
+        • January 4, 2021
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">With the recently-announced Private Endpoints integration you can block inbound access from the internet to your web app. Before this integration, developers...</p>
+  </article>
+</div>
+
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+      <section id="azure-portal" class="taxonomy__section">
+        <h2 class="archive__subtitle">Azure Portal</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2020/03/13/Azure-Functions-Portal-Preview.html" rel="permalink">Announcing public preview for Azure Functions portal UX
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+          • By Byron Tardif
+        
+        • March 13, 2020
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Access the preview
+</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/update/2019/03/18/Changes-to-Testing-in-Production-UX.html" rel="permalink">Changes to Routing Rules UX
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jason Freeberg
+        
+        • March 18, 2019
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We will soon be rolling out a series of UX and ARM API changes that will alter the behavior of routing rules for testing in production. After May 22nd, you w...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2019/02/26/Changes-to-data-connections-UX.html" rel="permalink">The Data Connections will be removed from Web App menu
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Byron Tardif
+        
+        • February 26, 2019
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Data connections provides a guided experience to easily add a connection string to a new or existing SQL Azure Database or Azure Storage Account.
+</p>
+  </article>
+</div>
+
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <section id="monitoring" class="taxonomy__section">
+        <h2 class="archive__subtitle">monitoring</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2020/08/31/AzMon-AppServiceAppLogs.html" rel="permalink">AppServiceAppLogs is now available for ASP .NET apps on Windows
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+        
+        
+          • By Yutang Lin
+        
+        • August 31, 2020
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have added a new log type for ASP .NET web apps on Windows (ASP .NET Core support is not yet supported). The log type, AppServiceAppLogs, captures your ap...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2020/06/25/New-Logs-Available-for-Azure-Monitor-Integration.html" rel="permalink">New Log Types for Azure Monitor Integration
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+          • By Yutang Lin
+        
+        • June 25, 2020
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have recently added two new log types to our preview of App Service’s Integration with Azure Monitor. The two new log types are:
+</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2019/11/01/App-Service-Integration-with-Azure-Monitor.html" rel="permalink">App Service Integration with Azure Monitor (Preview)
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+        
+        
+          • By Jason Freeberg and Yutang Lin
+        
+        • November 1, 2019
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We are happy to announce that App Service has new and improved integration with Azure Monitor (preview). You can now send your logs from Windows or Linux App...</p>
+  </article>
+</div>
+
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <section id="a-b-testing" class="taxonomy__section">
+        <h2 class="archive__subtitle">A/B Testing</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2020/10/20/ab_testing_app_service3.html" rel="permalink">A/B Testing with App Service, Part 3: Analyzing the telemetry
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+        
+        
+          • By Jason Freeberg and Shubham Dhond
+        
+        • October 20, 2020
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">This is the third article in our guide for A/B testing with App Service. The first article shows how to set up your client-side project. The second article s...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2020/08/24/ab_testing_app_service2.html" rel="permalink">A/B Testing with App Service, Part 2: Server-side configuration
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+        
+        
+          • By Jason Freeberg and Shubham Dhond
+        
+        • August 24, 2020
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">This is the second article in our guide for A/B testing with App Service. See the first article for more information about A/B testing and how to set up your...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2020/08/03/ab_testing_app_service.html" rel="permalink">A/B Testing with App Service, Part 1: Client-side configuration
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  8 minute read
+
+        
+        
+          • By Jason Freeberg, Shubham Dhond
+        
+        • August 3, 2020
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">In software development, A/B testing is the process of comparing two versions of a webpage or application to determine which version improves a metric or KPI...</p>
+  </article>
+</div>
+
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+      <section id="devops" class="taxonomy__section">
+        <h2 class="archive__subtitle">devops</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2019/12/09/Azure-CLI-for-ASE-and-Access-Restriction.html" rel="permalink">Azure CLI for ASE and Access Restriction
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • December 9, 2019
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Based on customer requests we have added support for automating App Service Environment operations using the Azure CLI. With the 2.0.77 release you can creat...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2019/08/10/Github-actions-for-webapps.html" rel="permalink">Announcing GitHub Actions for App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+        
+        
+          • By Jason Freeberg
+        
+        • August 10, 2019
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Last week GitHub announced the preview of GitHub Actions with built-in CI/CD; watch the announcement here. These actions, defined in YAML files, allow you to...</p>
+  </article>
+</div>
+
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <section id="networking" class="taxonomy__section">
+        <h2 class="archive__subtitle">Networking</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2021/03/01/deploying-to-network-secured-sites-2.html" rel="permalink">Deploying to Network-secured sites, Part 2
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+        
+        
+          • By Jason Freeberg
+        
+        • March 1, 2021
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">An earlier article explained how to use self-hosted Azure DevOps agents to build and deploy your applications to a web app that has Private Endpoints enabled...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2021/01/04/deploying-to-network-secured-sites.html" rel="permalink">Deploying to Network-secured sites
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Jason Freeberg
+        
+        • January 4, 2021
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">With the recently-announced Private Endpoints integration you can block inbound access from the internet to your web app. Before this integration, developers...</p>
+  </article>
+</div>
+
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <section id="certsdomains" class="taxonomy__section">
+        <h2 class="archive__subtitle">certsdomains</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2021/11/22/ASC-1130-Change.html" rel="permalink">Upcoming Change to App Service Certificate on November 30 2021
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Yutang Lin
+        
+        • November 22, 2021
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Starting November 30 2021, GoDaddy will no longer be issuing certificates for the additional ‘www’ domain when validating domain ownership through HTML web p...</p>
+  </article>
+</div>
+
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2021/09/22/2021-Managing-ASD.html" rel="permalink">Managing an App Service Domain
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+        
+        
+          • By Yutang Lin
+        
+        • September 22, 2021
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">App Service Domain is a domain resource on Azure which integrates with Azure DNS. This allows you to manage all your resources on Azure for when you need to ...</p>
+  </article>
+</div>
+
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <section id="best-practice" class="taxonomy__section">
+        <h2 class="archive__subtitle">best practice</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2020/05/15/Robust-Apps-for-the-cloud.html" rel="permalink">The Ultimate Guide to Running Healthy Apps in the Cloud
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  12 minute read
+
+        
+        
+          • By Khaled Zayed
+        
+        • May 15, 2020
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Modern-day data centers are extremely complex and have many moving parts. VMs can restart or move, systems are upgraded, and file servers are scaled up and d...</p>
+  </article>
+</div>
+
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <section id="ase" class="taxonomy__section">
+        <h2 class="archive__subtitle">ASE</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2020/09/22/asev3-public-preview-preannouncement.html" rel="permalink">App Service Environment v3 (ASEv3) public preview pre-announcement
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Christina Compy
+        
+        • September 22, 2020
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The App Service Environment v3 (ASEv3) project is a realization of several years of infrastructure development to enable a best-in-class, network isolated ap...</p>
+  </article>
+</div>
+
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+      <section id="windows-containers" class="taxonomy__section">
+        <h2 class="archive__subtitle">Windows containers</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2020/09/29/Security-for-Windows-containers-using-Hyper-V-Isolation.html" rel="permalink">Security for Windows containers using Hyper-V Isolation
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 29, 2020
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Windows containers on App Service enable you to modernize your Windows applications so you can bring along dependencies or lift-and-shift your current applic...</p>
+  </article>
+</div>
+
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+      <section id="docker" class="taxonomy__section">
+        <h2 class="archive__subtitle">Docker</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2020/10/15/Docker-Hub-authenticated-pulls-on-App-Service.html" rel="permalink">Docker Hub authenticated pulls on App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • October 15, 2020
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Starting November 1st, 2020. Docker will be introducing rate limits on unauthenticated pull requests from Docker Hub.  These limits are based on the account ...</p>
+  </article>
+</div>
+
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+      <section id="python" class="taxonomy__section">
+        <h2 class="archive__subtitle">Python</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2020/12/11/cicd-for-python-apps.html" rel="permalink">Using GitHub Actions for Python Applications
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  7 minute read
+
+        
+        
+          • By Jason Freeberg
+        
+        • December 11, 2020
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">GitHub announced CI/CD support through GitHub Actions which became generally available at GitHub Universe in November 2019. Since then, many Azure services h...</p>
+  </article>
+</div>
+
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+  
+    
+  
+    
+      <section id="windows-azure-pack" class="taxonomy__section">
+        <h2 class="archive__subtitle">Windows Azure Pack</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2021/01/06/Migrate-from-Windows-Azure-Pack-Websites-to-Azure-App-Service.html" rel="permalink">Migrate from Windows Azure Pack Websites to Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+        
+        
+          • By Andrew Westgarth
+        
+        • January 6, 2021
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">As Windows Azure Pack Web Sites v2 heads towards the end of extended support in 2022, it is important for customers to plan to migrate their workloads from t...</p>
+  </article>
+</div>
+
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+      <section id="java" class="taxonomy__section">
+        <h2 class="archive__subtitle">Java</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2021/01/06/java-stacks-update.html" rel="permalink">Java, Tomcat, and JBoss EAP version updates
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+          • By Jason Freeberg
+        
+        • January 6, 2021
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The latest App Service releases included new Java, Tomcat and JBoss EAP versions.
+
+Windows
+
+
+  New Tomcat versions
+    
+      9.0.38
+      8.5.58
+    
+  
+  N...</p>
+  </article>
+</div>
+
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+      <section id="scm" class="taxonomy__section">
+        <h2 class="archive__subtitle">scm</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2021/03/03/Custom-domain-for-scm-site.html" rel="permalink">Custom domain for SCM site
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • March 3, 2021
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">When enabling private endpoint for a web app, both the web app and the Source Control Manager (SCM) site, also sometimes referred to as kudu, are locked down...</p>
+  </article>
+</div>
+
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+      <section id="network" class="taxonomy__section">
+        <h2 class="archive__subtitle">Network</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2021/04/13/Network-and-Connectivity-Troubleshooting-Tool.html" rel="permalink">Troubleshoot Network/Connectivity issues on App Service &amp; Functions
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Khaled Zayed
+        
+        • April 13, 2021
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Troubleshooting networking &amp; connectivity issues when running on App Services just became easier. We are happy to announce the release of our new diagnos...</p>
+  </article>
+</div>
+
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+      <section id="virtual-network" class="taxonomy__section">
+        <h2 class="archive__subtitle">Virtual Network</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2021/04/13/Network-and-Connectivity-Troubleshooting-Tool.html" rel="permalink">Troubleshoot Network/Connectivity issues on App Service &amp; Functions
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Khaled Zayed
+        
+        • April 13, 2021
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Troubleshooting networking &amp; connectivity issues when running on App Services just became easier. We are happy to announce the release of our new diagnos...</p>
+  </article>
+</div>
+
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+      <section id="vnet" class="taxonomy__section">
+        <h2 class="archive__subtitle">VNET</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2021/04/13/Network-and-Connectivity-Troubleshooting-Tool.html" rel="permalink">Troubleshoot Network/Connectivity issues on App Service &amp; Functions
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Khaled Zayed
+        
+        • April 13, 2021
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Troubleshooting networking &amp; connectivity issues when running on App Services just became easier. We are happy to announce the release of our new diagnos...</p>
+  </article>
+</div>
+
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+      <section id="connectivity" class="taxonomy__section">
+        <h2 class="archive__subtitle">Connectivity</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2021/04/13/Network-and-Connectivity-Troubleshooting-Tool.html" rel="permalink">Troubleshoot Network/Connectivity issues on App Service &amp; Functions
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Khaled Zayed
+        
+        • April 13, 2021
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Troubleshooting networking &amp; connectivity issues when running on App Services just became easier. We are happy to announce the release of our new diagnos...</p>
+  </article>
+</div>
+
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+      <section id="azure-monitor" class="taxonomy__section">
+        <h2 class="archive__subtitle">Azure Monitor</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2021/04/14/upgrade-notification-for-ase.html" rel="permalink">Upgrade Notifications for App Service (Preview)
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+        
+        
+          • By Michimune Kohno and Sanghmitra Gite
+        
+        • April 14, 2021
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The Azure App Service is a PaaS solution offering in Azure which constantly updates the platform. One of the top requests from customers is to receive a noti...</p>
+  </article>
+</div>
+
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+      <section id="app-service-environment" class="taxonomy__section">
+        <h2 class="archive__subtitle">App Service Environment</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2021/04/14/upgrade-notification-for-ase.html" rel="permalink">Upgrade Notifications for App Service (Preview)
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+        
+        
+          • By Michimune Kohno and Sanghmitra Gite
+        
+        • April 14, 2021
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The Azure App Service is a PaaS solution offering in Azure which constantly updates the platform. One of the top requests from customers is to receive a noti...</p>
+  </article>
+</div>
+
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+      <section id="kubernetes" class="taxonomy__section">
+        <h2 class="archive__subtitle">kubernetes</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2021/07/08/How-to-create-a-blazor-webassembly-grpc-web-app-using-app-service-on-an-azure-arc-enabled-kubernetes-cluster.html" rel="permalink">How to create a Blazor WebAssembly gRPC-Web app using App Service on an Azure Arc Enabled Kubernetes Cluster
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • July 8, 2021
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">With the release of the App Service on Kubernetes preview, you can now run App Service on Kubernetes deploying your web apps to Azure Kubernetes Service, or ...</p>
+  </article>
+</div>
+
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+      <section id="bicep" class="taxonomy__section">
+        <h2 class="archive__subtitle">Bicep</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2021/07/23/Quickstart-Intro-to-Bicep-with-Web-App-plus-DB.html" rel="permalink">Quickstart: Intro to Bicep with Web App and DB
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  8 minute read
+
+        
+        
+          • By Jordan Selig
+        
+        • July 23, 2021
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Get started with Azure App Service by deploying an app to the cloud using a Bicep file and Azure CLI in Cloud Shell. Because you use a free App Service tier,...</p>
+  </article>
+</div>
+
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+  
+    
+      <section id="docker" class="taxonomy__section">
+        <h2 class="archive__subtitle">docker</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2021/11/01/how-to-setup-continuous-deployment-using-acr-tasks-with-windows-containers.html" rel="permalink">How-to setup Continuous Deployment using ACR Tasks with Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • November 1, 2021
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">ACR Tasks are a set of Azure CLI command features in Azure Container Registry that can help you automate container image builds.  This can be integrated as p...</p>
+  </article>
+</div>
+
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+      <section id="app-service" class="taxonomy__section">
+        <h2 class="archive__subtitle">app service</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/08/08/Announcing-GA-WordPress-on-Azure-App-Service.html" rel="permalink">Announcing GA: WordPress on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+          • By Abhishek Reddy
+        
+        • August 8, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We are thrilled to announce that WordPress on App Service that was under public preview since February 15, 2022, is now generally available. With advanced fe...</p>
+  </article>
+</div>
+
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+      <section id="php" class="taxonomy__section">
+        <h2 class="archive__subtitle">php</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/08/08/Announcing-GA-WordPress-on-Azure-App-Service.html" rel="permalink">Announcing GA: WordPress on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+          • By Abhishek Reddy
+        
+        • August 8, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We are thrilled to announce that WordPress on App Service that was under public preview since February 15, 2022, is now generally available. With advanced fe...</p>
+  </article>
+</div>
+
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+      <section id="wordpress" class="taxonomy__section">
+        <h2 class="archive__subtitle">wordpress</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/08/08/Announcing-GA-WordPress-on-Azure-App-Service.html" rel="permalink">Announcing GA: WordPress on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+          • By Abhishek Reddy
+        
+        • August 8, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We are thrilled to announce that WordPress on App Service that was under public preview since February 15, 2022, is now generally available. With advanced fe...</p>
+  </article>
+</div>
+
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+      <section id="azure-app-service-environment" class="taxonomy__section">
+        <h2 class="archive__subtitle">azure app service environment</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/08/18/Configure-Azure-Firewall-With-ASEv3.html" rel="permalink">Configure Azure Firewall with ASEv3
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+        
+        
+          • By Hugo Girard
+        
+        • August 18, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">When deploying App Service Environment, one requirement you will probably want is to monitor and limit your egress traffic from the ASE.
+</p>
+  </article>
+</div>
+
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+      <section id="azure-firewall" class="taxonomy__section">
+        <h2 class="archive__subtitle">azure firewall</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2022/08/18/Configure-Azure-Firewall-With-ASEv3.html" rel="permalink">Configure Azure Firewall with ASEv3
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+        
+        
+          • By Hugo Girard
+        
+        • August 18, 2022
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">When deploying App Service Environment, one requirement you will probably want is to monitor and limit your egress traffic from the ASE.
+</p>
+  </article>
+</div>
+
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+      <section id="network-trace-analysis" class="taxonomy__section">
+        <h2 class="archive__subtitle">network trace analysis</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/01/29/Harnessing-the-Power-of-Network-Trace-Analysis-in-Azure-App-Service.html" rel="permalink">Harnessing the Power of Network Trace Analysis in Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+          • By Olu Shadare
+        
+        • January 29, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We are thrilled to announce the public preview of a powerful new feature in Azure App Service: the Network Trace Analyzer. Designed to simplify the often-com...</p>
+  </article>
+</div>
+
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+      <section id="linux-app-service" class="taxonomy__section">
+        <h2 class="archive__subtitle">Linux App Service</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/04/04/Public-Preview-Sidecars-Webjobs.html" rel="permalink">Unlocking Possibilities: Introducing Sidecar Pattern and Webjobs for Linux App Service in Public Preview!
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • April 4, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Today marks an important milestone in the evolution of our Linux App Service offering as we announce the launch of two powerful features, both now available ...</p>
+  </article>
+</div>
+
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+
+
+  </div>
+</div>
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
