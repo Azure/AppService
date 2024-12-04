@@ -8,7 +8,7 @@ tags:
     - windows containers
 ---
 
-Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enable **system-assigned** identity when pulling from Azure Container Registry (ACR) with the use of a Windows container application.
+Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enable **system-assigned** identity when pulling from Azure Container Registry (ACR) with the use of a Windows container application
 
 ### Prerequisites
 
