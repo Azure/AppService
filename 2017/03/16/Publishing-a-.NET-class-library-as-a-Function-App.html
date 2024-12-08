@@ -1,0 +1,1000 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Publishing a .NET class library as a Function App - Azure App Service</title>
+<meta name="description" content="">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Publishing a .NET class library as a Function App">
+<meta property="og:url" content="https://azure.github.io/AppService/2017/03/16/Publishing-a-.NET-class-library-as-a-Function-App.html">
+
+
+  <meta property="og:description" content="">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2017-03-16T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2017/03/16/Publishing-a-.NET-class-library-as-a-Function-App.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Publishing a .NET class library as a Function App">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="March 16, 2017">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Publishing a .NET class library as a Function App
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  6 minute read
+
+            
+            
+            • March 16, 2017
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Donna Malayeri" target="_blank">Donna Malayeri</a>
+<time>    3/16/2017 1:00:00 PM</time>
+<hr/>
+<div id="content"><strong>Update #1</strong>: The Azure Functions CLI has been renamed to <strong><a href="https://www.npmjs.com/package/azure-functions-core-tools">Azure Functions Core Tools</a></strong>.
+
+<strong>Update #2</strong>: We now have Visual Studio 2017 tooling for Azure Functions! You can use WebJobs attributes to configure triggers and bindings, so there is no need to manually author function.json. For more information, see the following:
+<ul>
+<li><a href="https://blogs.msdn.microsoft.com/webdev/2017/05/10/azure-function-tools-for-visual-studio-2017/">Visual Studio 2017 Tools for Azure Functions</a></li>
+<li><a href="https://www.youtube.com/watch?v=BN2sIRrOt8A">Azure Functions Visual Studio Tooling</a> video</li>
+</ul>
+With our new Azure Functions runtime support for precompiled functions, you can now use familiar Visual Studio features such IntelliSense and unit testing. These features were among the top requests after we launched the preview Visual Studio Tools for Azure Functions. This also enables an improved development workflow for customers who feel that that class libraries are a better fit for their application.
+
+Azure Functions now supports publishing a class library as the implementation for one or more functions in a Function App. We’ve also recently made several runtime improvements to make assemblies much more useful, such as shadow-copying managed assemblies to avoid file locking issues and restarting the Functions runtime to pick up newly deployed binaries.
+
+Using Visual Studio 2015 or 2017, you can try precompiled functions today with a few manual tweaks to your project. The manual steps are needed because the existing Functions project type (.funproj) has no build action, since it contains only script files. With the setup below, you'll instead use a web project which will provide the full development experience of IntelliSense, local debugging, and publishing to Azure.
+
+The next version of Visual Studio tooling for Azure Functions won’t require this manual configuration, as it will be directly based on class libraries. In fact, the Visual Studio experience will be optimized around class libraries, while the Functions portal will continue to use script files.
+
+<a href="/AppService/media/2017/03/intellisense-cropped.png"><img alt="intellisense-cropped" class="aligncenter wp-image-3695 size-large" height="213" src="/AppService/media/2017/03/intellisense-cropped-1024x248.png" width="879"/></a>
+<h2>Performance benefits of class libraries</h2>
+Aside from the tooling experience, another advantage of using a class library is that you’ll see improvements to “cold start,” particularly when running on a <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-scale#service-plan-options">Consumption plan</a>. Cold start occurs on the first request to a Function App after it has gone idle, which happens after 5 minutes of inactivity. When a Function App starts up, it indexes all functions and compiles C# and F# scripts into an assembly in memory. So, compilation time will add to cold start time. Customers aren’t charged for cold start since function execution hasn’t started, but it does cause a delay in event processing.
+<h2>Use a Web Application project with a customized start action</h2>
+A Web Application project is really a special kind of class library, which means it produces an executable .dll as the build output. To enable local running and debugging, modify the start action of the web project to launch the <a href="https://www.npmjs.com/package/azure-functions-core-tools">Azure Functions Core Tools</a>.
+
+Here are some sample projects set up this way:
+<ul>
+<li><a href="https://github.com/lindydonna/FunctionsAsWebProject">HttpTrigger sample</a><b></b></li>
+<li><a href="https://github.com/lindydonna/CoderCardsV2">CoderCards</a> – trading card generator with blob trigger</li>
+</ul>
+<h3>Project setup – Visual Studio 2015 or 2017</h3>
+<ol>
+<li>From the New Project dialog, choose <b>ASP.NET Web Application (.NET Framework)</b> with the empty site template.</li>
+<li>Open the project properties. In the <b>Web</b> tab, choose <b>Start External Program</b></li>
+<li>For the program path, enter the path to <b>func.exe</b> for the <a href="https://www.npmjs.com/package/azure-functions-core-tools">Azure Functions Core Tools</a>.
+<ul>
+<li>OR, if you've installed the Visual Studio Functions Tooling, the path will look something like <code>C:\Users\USERNAME\AppData\Local\Azure.Functions.Cli\1.0.0-beta.93\func.exe</code></li>
+<li>If you've installed the Azure Functions Core Tools through NPM, the path will be something like <code>C:\Users\USERNAME\AppData\Roaming\npm\node_modules\azure-functions-core-tools\bin\func.exe</code></li>
+</ul>
+</li>
+<li>For <strong>Command line arguments</strong>, set <code>host start</code></li>
+<li>For <strong>Working directory</strong>, specify the root of the web project on your machine (unfortunately, this isn’t set automatically.)</li>
+</ol>
+<a href="/AppService/media/2017/03/start-action.png"><img alt="start-action" class="aligncenter wp-image-3656 size-large" height="203" src="/AppService/media/2017/03/start-action-1024x236.png" width="879"/></a>
+
+Here's a <a href="https://www.youtube.com/watch?v=R7F92POLGaE">YouTube video that walks through these steps</a>.
+<h3>Downloading existing function code</h3>
+If you’ve already developed your functions in the Azure Portal, you can download your code and settings with the following steps.
+<ol>
+<li>Install the <a href="https://www.npmjs.com/package/azure-functions-core-tools">Azure Functions Core Tools from npm</a>.
+<ul>
+<li>If you’ve installed the <a href="https://blogs.msdn.microsoft.com/webdev/2016/12/01/visual-studio-tools-for-azure-functions/">Visual Studio Tools for Azure Functions</a>, just add func.exe to your path from <code>%USERPROFILE%\AppData\Local\Azure.Functions.Cli\1.0.0-beta.93</code> (or the latest version on your machine).</li>
+</ul>
+</li>
+<li>Go to the Kudu console for your Function App in <strong>Function App Settings</strong> -&gt; <strong>Kudu</strong>. Navigate to <b>site</b> and click on the download icon to the left of <b>wwwroot</b> (click on the animated gif below). Or, from an authenticated session, go to <code>https://your-function-app.scm.azurewebsites.net/api/zip/site/wwwroot/</code>.</li>
+<li>Unzip the file wwwroot.zip on your local machine. From that directory, run the following:
+
+[sourcecode language="plain" light="true" gutter="false"]
+func azure login
+(optional) func azure account list
+(optional) func azure account set
+func azure functionapp list
+func azure functionapp fetch-app-settings [name]
+[/sourcecode]
+
+</li>
+</ol>
+This will create a local file called <code>appsettings.json</code>. These settings are <b>only used locally</b> by the Functions Core Tools. Since this file contains secrets, be sure not to check this file in to source control! (The Azure Functions Core Tools adds <code>appsettings.json</code> to <code>.gitignore</code> for you.)
+
+<strong>Animated gif:</strong>
+<a href="/AppService/media/2017/03/kudu-download.gif"><img alt="kudu-download" class="wp-image-3765 size-medium alignnone" height="169" src="/AppService/media/2017/03/kudu-download-300x169.gif" width="300"/></a>
+<a href="/AppService/media/2017/03/kudu.png"><img alt="kudu" class="size-mediumlarge wp-image-3655 alignnone" height="170" src="/AppService/media/2017/03/kudu-500x170.png" width="500"/></a>
+<h3>Project content</h3>
+<ol>
+<li>Copy your downloaded files to the web project folder (including appsettings.json). Include the script files and function.json in the project.</li>
+<li>F5 should now work and successfully attach a debugger. But, you’re still using script files.</li>
+</ol>
+<h3>Converting to class files</h3>
+To convert script files to C# class files, most changes are straightforward. The one manual step is to modify function.json to point to a class library instead of a script file (step #7 below). The next version of the Visual Studio tooling will eliminate this manual step.
+<ol>
+<li>Rename .csx to .cs and add a class declaration and optional namespace declaration. Remove #load and replace #r with assembly references.</li>
+<li>If you’re using TraceWriter, add the NuGet package <a href="https://www.nuget.org/packages/Microsoft.Azure.WebJobs">Microsoft.Azure.WebJobs</a> and the statement: <code>using Microsoft.Azure.WebJobs.Host</code></li>
+<li>If you're using timer triggers, add the NuGet package <a href="https://www.nuget.org/packages/Microsoft.Azure.WebJobs.Extensions/">Microsoft.Azure.WebJobs.Extensions</a>.</li>
+<li>Add NuGet package references for the packages that are <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-reference-csharp#referencing-external-assemblies">automatically referenced</a>, such as <code>Newtonsoft.Json</code> and <code>Microsoft.ServiceBus</code>.</li>
+<li>Add explicit namespace import statements if you’re using any of the <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-reference-csharp#importing-namespaces">automatically imported namespaces</a>, such as <code>System.Threading.Tasks</code>.</li>
+<li>Add any other <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-reference-csharp#package-management">NuGet packages specified in project.json</a> using NuGet package manager.</li>
+<li><strong>For each function, modify function.json</strong> and specify the <code>scriptFile</code> and <code>entryPoint</code> properties. <code>scriptFile</code> is a path to the assembly and <code>entryPoint</code> is the qualified name of the method. Make sure that function.json is in a directory that matches the function name. See documentation on <a href="https://github.com/Azure/azure-webjobs-sdk-script/wiki/Precompiled-functions">precompiled functions</a>.
+
+[sourcecode language="plain" light="true" gutter="false"]
+"scriptFile": "..\\bin\\Assembly.dll",
+"entryPoint": "Namespace.ClassName.Run"
+[/sourcecode]
+
+See <a href="https://github.com/lindydonna/CoderCardsV2/blob/master/CoderCardsWebsite/CardGenerator/function.json">sample function.json</a>.</li>
+</ol>
+Once you compile and run, you should see your class library functions being loaded by the Functions Runtime.
+
+<a href="/AppService/media/2017/03/cli-running.png"><img alt="cli-running" class="aligncenter size-mediumlarge wp-image-3665" height="226" src="/AppService/media/2017/03/cli-running-500x226.png" width="500"/></a>
+<h3>Publish from Visual Studio</h3>
+You can publish the project to a Function App using the same experience as App Service publish. The project template generates web.config, but publishing this file has no effect (it is not used by the Functions runtime). Each web project maps to one Function App. If you need to publish functions independently of one another, we recommend that you use separate Function Apps.
+
+To create a new Function App, choose <strong>Function App</strong> in the <strong>Create App Service</strong> dialog. To publish to an existing Function App, download your publish profile from the Azure Portal and import in the Visual Studio publish dialog.
+
+You can use the Azure portal to run precompiled functions and view execution logs. To make code changes, you should re-publish from Visual Studio.
+<h3>Publish from Azure Functions Core Tools</h3>
+The <a href="https://www.npmjs.com/package/azure-functions-cli">Azure Functions Core Tools</a> also provides a publish command, via the following:
+
+[sourcecode language="plain" light="true" gutter="false"]
+func azure login
+func azure functionapp publish [name]
+[/sourcecode]
+
+<h3>Building on the server using continuous integration and deployment</h3>
+There’s another big advantage to using a web project—continuous integration with build on the server just works! Just follow the same steps as <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-continuous-deployment">continuous deployment for Azure Functions</a>. Your project will be built whenever there is a sync from source control. This will only work if you’re using a Web Application project, but not if you’re using a Functions Project (.funproj).
+
+To see this in action, just fork the <a href="https://github.com/lindydonna/FunctionsAsWebProject">HttpTrigger sample</a> project<b> </b>and set up GitHub as your continuous integration source.<b></b>
+<h2>Provide feedback</h2>
+Ask questions in the comments section below or reach out to me on Twitter <a href="https://twitter.com/lindydonna">@lindydonna</a>. For general feedback and questions about Azure Functions:
+<ul>
+<li>Ask product questions on the <a href="https://social.msdn.microsoft.com/Forums/azure/en-US/home?forum=AzureFunctions">Azure Functions MSDN forum</a> and <a href="http://stackoverflow.com/questions/tagged/azure-functions">StackOverflow</a>, where you’ll get answers directly from the engineering team.</li>
+<li>Submit feature requests on <a href="https://feedback.azure.com/forums/355860-azure-functions">feedback.azure.com</a> or the <a href="https://github.com/Azure/Azure-Functions">Azure Functions GitHub repo</a>.</li>
+<li>Reach out to us on Twitter via <a href="https://twitter.com/azure">@Azure</a> with the hashtag <a href="https://twitter.com/search?q=%23azurefunctions">#AzureFunctions</a>.</li>
+</ul></div>
+</div></body>
+<script src="/AppService/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="/AppService/resource/replace.js" type="text/javascript"></script>
+</html>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2017-03-16T00:00:00+00:00">March 16, 2017</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Publishing+a+.NET+class+library+as+a+Function+App%20https%3A%2F%2Fazure.github.io%2FAppService%2F2017%2F03%2F16%2FPublishing-a-.NET-class-library-as-a-Function-App.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2017%2F03%2F16%2FPublishing-a-.NET-class-library-as-a-Function-App.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2017%2F03%2F16%2FPublishing-a-.NET-class-library-as-a-Function-App.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2017/03/16/Azure-Functions-F-support-is-now-generally-available.html" class="pagination--pager" title="Azure Functions F# support is now generally available
+">Previous</a>
+    
+    
+      <a href="/AppService/2017/03/23/Azure-App-Service-(Web,-API,-Mobile,-ASE)-&amp;-Azure-Functions-SKU-Comparison-Matrix.html" class="pagination--pager" title="Azure App Service (Web, API, Mobile, ASE) &amp; Azure Functions SKU Comparison Matrix
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

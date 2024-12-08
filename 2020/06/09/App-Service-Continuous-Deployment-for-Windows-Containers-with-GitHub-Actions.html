@@ -1,0 +1,1314 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Continuous Deployment for Windows Containers with GitHub Actions - Azure App Service</title>
+<meta name="description" content="Github Actions enables you to easily automate any part of your development workflow. GitHub Actions are defined as YAML files in the .github/workflows directory of your repository. The workflows are triggered by an event, such as a push to a specific branch, a commit or comment on a pull request, or on a CRON schedule.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Continuous Deployment for Windows Containers with GitHub Actions">
+<meta property="og:url" content="https://azure.github.io/AppService/2020/06/09/App-Service-Continuous-Deployment-for-Windows-Containers-with-GitHub-Actions.html">
+
+
+  <meta property="og:description" content="Github Actions enables you to easily automate any part of your development workflow. GitHub Actions are defined as YAML files in the .github/workflows directory of your repository. The workflows are triggered by an event, such as a push to a specific branch, a commit or comment on a pull request, or on a CRON schedule.">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2020-06-09T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2020/06/09/App-Service-Continuous-Deployment-for-Windows-Containers-with-GitHub-Actions.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Continuous Deployment for Windows Containers with GitHub Actions">
+    <meta itemprop="description" content="Github Actions enables you to easily automate any part of your development workflow. GitHub Actions are defined as YAML files in the .github/workflows directory of your repository. The workflows are triggered by an event, such as a push to a specific branch, a commit or comment on a pull request, or on a CRON schedule.">
+    <meta itemprop="datePublished" content="June 09, 2020">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Continuous Deployment for Windows Containers with GitHub Actions
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  11 minute read
+
+            
+            
+              • By Jeff Martinez
+            
+            • June 9, 2020
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#sample-application">Sample Application</a></li>
+  <li><a href="#create-resources">Create Resources</a>
+    <ul>
+      <li><a href="#create-a-service-principal-optional-or-use-publish-profile">Create a Service Principal (optional) or use Publish Profile</a></li>
+    </ul>
+  </li>
+  <li><a href="#secure-secrets">Secure Secrets</a></li>
+  <li><a href="#the-dockerfile">The Dockerfile</a>
+    <ul>
+      <li><a href="#net-framework">.NET Framework</a></li>
+      <li><a href="#net-core">.NET Core</a></li>
+    </ul>
+  </li>
+  <li><a href="#create-the-github-workflow">Create the GitHub Workflow</a>
+    <ul>
+      <li><a href="#add-the-workflow-trigger">Add the workflow trigger</a></li>
+      <li><a href="#log-into-your-container-registry">Log into your container registry</a>
+        <ul>
+          <li><a href="#azure-container-registry">Azure Container Registry</a></li>
+          <li><a href="#docker-hub">Docker Hub</a></li>
+        </ul>
+      </li>
+      <li><a href="#build-and-push-image-to-registry">Build and Push Image to Registry</a></li>
+      <li><a href="#authenticate-with-azure">Authenticate with Azure</a></li>
+      <li><a href="#deploy-to-azure-app-service">Deploy to Azure App Service</a></li>
+    </ul>
+  </li>
+  <li><a href="#deploy-to-azure-sql-database-optional">Deploy to Azure SQL Database (Optional)</a>
+    <ul>
+      <li><a href="#create-a-dacpac-file-in-your-project">Create a dacpac file in your project</a></li>
+    </ul>
+  </li>
+  <li><a href="#summary">Summary</a>
+    <ul>
+      <li><a href="#full-workflow-file">Full workflow file</a></li>
+      <li><a href="#helpful-resources">Helpful Resources</a></li>
+    </ul>
+  </li>
+</ul>
+            </nav>
+          </aside>
+        
+        <p>Github Actions enables you to easily automate any part of your development workflow. GitHub Actions are defined as YAML files in the <code class="language-plaintext highlighter-rouge">.github/workflows</code> directory of your repository. The workflows are triggered by an event, such as a push to a specific branch, a commit or comment on a pull request, or on a CRON schedule.</p>
+
+<p>In this article, we will use GitHub Actions for Azure to deploy a Windows Container application to App Service. The sample application is already configured to be used in a Windows Container, pushed to a registry, and deployed to App Service. Of course, you can use this guide to add the correct deployment tasks to work with your own applications.</p>
+
+<h2 id="sample-application">Sample Application</h2>
+
+<blockquote>
+  <p>If you would like to get started with your own application, you can skip to the next section.</p>
+</blockquote>
+
+<p>The sample application is a simple task-tracking app built with .NET Framework using Azure SQL for storage.  The project has a workflow file, <em>main.yaml</em>, that is set up for continuous deployment. You have your choice of using Azure Container Registry (ACR) or Docker Hub for your registry needs (the difference in syntax will be explained below).</p>
+
+<p>Find the full repository samples for <a href="https://aka.ms/dotnetframeworkdeployment">.NET Framework</a> and <a href="https://aka.ms/dotnetcoredeployment">.NET Core</a> at these highlighted links.</p>
+
+<h2 id="create-resources">Create Resources</h2>
+
+<p>Create the following resources. You will need information from each resource that will be used in the file and stored in your secrets. Create your choice of registry (Azure Container Registry or Docker Hub) first since you will need information from there before you can create your App Service.</p>
+
+<ol>
+  <li>Azure Container Registry OR Docker Hub repository</li>
+  <li>App Service (Web App for Container)</li>
+  <li>.NET Framework application with supporting dockerfile in a GitHub repository</li>
+  <li>Azure SQL Database (Optional)</li>
+</ol>
+
+<h3 id="create-a-service-principal-optional-or-use-publish-profile">Create a Service Principal (optional) or use Publish Profile</h3>
+
+<p>In this step you have the choice of using a Service Principal or Publish Profile for authentication.  If you would like to use your <strong>publish profile</strong> credentials instead, please skip this section and see <a href="#Deploy-to-azure-app-service">Deploy to Azure App Service</a> to see how.  To use a Service Principal, please continue here:</p>
+
+<p>Our workflow will use a Service Principal to authenticate with Azure when deploying the container to App Service. A service principal is an Active Directory Identity created for use with automation scenarios, such as GitHub Actions.</p>
+
+<ol>
+  <li>
+    <p>Run the following command in Azure CLI in powershell to get the credentials needed to run the login action.  The output of this command will be a collection of key value pairs that you’ll need to add to your GitHub secrets.</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> az ad sp create-for-rbac <span class="nt">--name</span> <span class="s2">"&lt;appservice-name&gt;"</span> <span class="nt">--role</span> contributor <span class="se">\</span>
+   <span class="nt">--scopes</span> /subscriptions/<span class="o">{</span>subscription-id<span class="o">}</span>/resourceGroups/<span class="o">{</span>resource-group<span class="o">}</span> <span class="se">\</span>
+   <span class="nt">--sdk-auth</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Copy the output into your GitHub secrets to use as your <code class="language-plaintext highlighter-rouge">AZURE_CREDENTIALS</code> secret.</p>
+
+    <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">   </span><span class="p">{</span><span class="w">
+     </span><span class="nl">"clientId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;GUID&gt;"</span><span class="p">,</span><span class="w">
+     </span><span class="nl">"clientSecret"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;GUID&gt;"</span><span class="p">,</span><span class="w">
+     </span><span class="nl">"subscriptionId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;GUID&gt;"</span><span class="p">,</span><span class="w">
+     </span><span class="nl">"tenantId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;GUID&gt;"</span><span class="w">
+   </span><span class="p">}</span><span class="w">
+</span></code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="secure-secrets">Secure Secrets</h2>
+
+<p>Since we are using sensitive information that you don’t want others to access, we will use GitHub secrets to protect our information. Create a secret by following the directions <a href="https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets">here</a>.  Add the github secrets variables below with your own secrets appropriate from each resource.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">APP_NAME</code>: web-app-name</li>
+  <li><code class="language-plaintext highlighter-rouge">AZURE_CREDENTIALS</code>: the JSON output of the <code class="language-plaintext highlighter-rouge">az ad sp create-for-rbac</code> command</li>
+  <li><code class="language-plaintext highlighter-rouge">PUBLISH_PROFILE</code>: content of your publish profile <em>(optional)</em></li>
+  <li><code class="language-plaintext highlighter-rouge">IMAGE_NAME</code>: name-of-image</li>
+  <li><code class="language-plaintext highlighter-rouge">CONTAINER_REGISTRY_USERNAME</code>: Your container registry username</li>
+  <li><code class="language-plaintext highlighter-rouge">CONTAINER_REGISTRY_PASSWORD</code>: Your container registry password</li>
+  <li><code class="language-plaintext highlighter-rouge">CONTAINER_NAME</code>: The hostname of the container registry (ACR only)</li>
+  <li><code class="language-plaintext highlighter-rouge">AZURE_SQL_CONNECTION_STRING</code>: database-connection-string</li>
+  <li><code class="language-plaintext highlighter-rouge">DATABASE_SERVER_NAME</code>: server-name</li>
+</ul>
+
+<h2 id="the-dockerfile">The Dockerfile</h2>
+
+<p>The samples below explain the associated Dockerfiles for the .NET Framework and .NET Core sample applications linked above.  If creating your own application, use the appropriate Dockerfile below and replace the directory paths to match your application.</p>
+
+<h3 id="net-framework">.NET Framework</h3>
+
+<p>.NET Framework applications will work best with a multi-stage build.  This example copies over the necessary project files and packages before it creates the publish files for deployment to Azure.</p>
+
+<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Set the base image</span>
+<span class="k">FROM</span><span class="w"> </span><span class="s">mcr.microsoft.com/dotnet/framework/sdk:4.8</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="s">build</span>
+<span class="k">WORKDIR</span><span class="s"> "/src"</span>
+
+<span class="c"># Copy packages to your image and restore them</span>
+<span class="k">COPY</span><span class="s"> taskapp/taskapp.sln .</span>
+<span class="k">COPY</span><span class="s"> taskapp/taskapp/taskapp.csproj taskapp/taskapp/taskapp.csproj</span>
+<span class="k">COPY</span><span class="s"> taskapp/taskapp/packages.config taskapp/taskapp/packages.config</span>
+<span class="k">RUN </span>nuget restore taskapp/taskapp/packages.config <span class="nt">-PackagesDirectory</span> taskapp/packages
+
+<span class="c"># Add files from source to the current directory and publish the deployment files to the folder profile</span>
+<span class="k">COPY</span><span class="s"> . .</span>
+<span class="k">WORKDIR</span><span class="s"> /src/taskapp/taskapp</span>
+<span class="k">RUN </span>msbuild taskapp.csproj /p:Configuration<span class="o">=</span>Release /m /p:DeployOnBuild<span class="o">=</span><span class="nb">true</span> /p:PublishProfile<span class="o">=</span>FolderProfile
+
+<span class="c"># Layer the production runtime image</span>
+<span class="k">FROM</span><span class="w"> </span><span class="s">mcr.microsoft.com/dotnet/framework/aspnet:4.8-windowsservercore-ltsc2019</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="s">deploy</span>
+
+<span class="c"># Add the publish files into the right directory</span>
+<span class="k">WORKDIR</span><span class="s"> /inetpub/wwwroot</span>
+<span class="k">COPY</span><span class="s"> --from=build /src/taskapp/taskapp/bin/Release/Publish .</span>
+</code></pre></div></div>
+
+<h3 id="net-core">.NET Core</h3>
+
+<p>For .NET Core, the nano server base image must be “1809” to be compatible with what Azure currently supports.  Keep in mind this may change in the future.</p>
+
+<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Set the base image</span>
+<span class="k">FROM</span><span class="w"> </span><span class="s">mcr.microsoft.com/dotnet/core/aspnet:3.1-nanoserver-1809</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s">base</span>
+<span class="k">WORKDIR</span><span class="s"> /app</span>
+<span class="k">EXPOSE</span><span class="s"> 80</span>
+
+<span class="c"># Add the sdk so you can run the dotnet restore and build commands</span>
+<span class="k">FROM</span><span class="w"> </span><span class="s">mcr.microsoft.com/dotnet/core/sdk:3.1-nanoserver-1809</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s">build</span>
+<span class="k">WORKDIR</span><span class="s"> /src</span>
+<span class="k">COPY</span><span class="s"> *.csproj ./</span>
+<span class="k">RUN </span>dotnet restore <span class="s2">"taskapp.csproj"</span>
+<span class="k">COPY</span><span class="s"> . .</span>
+<span class="k">WORKDIR</span><span class="s"> "/src"</span>
+<span class="k">RUN </span>dotnet build <span class="s2">"taskapp.csproj"</span> <span class="nt">-c</span> Release <span class="nt">-o</span> /app/build
+
+<span class="c"># Create the publish files</span>
+<span class="k">FROM</span><span class="w"> </span><span class="s">build</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s">publish</span>
+<span class="k">RUN </span>dotnet publish <span class="s2">"taskapp.csproj"</span> <span class="nt">-c</span> Release <span class="nt">-o</span> /app/publish
+
+<span class="c"># Copy the publish files into the container</span>
+<span class="k">FROM</span><span class="w"> </span><span class="s">base</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s">final</span>
+<span class="k">WORKDIR</span><span class="s"> /app</span>
+<span class="k">COPY</span><span class="s"> --from=publish /app/publish .</span>
+<span class="k">ENTRYPOINT</span><span class="s"> ["dotnet", "taskapp.dll"]</span>
+
+</code></pre></div></div>
+
+<h2 id="create-the-github-workflow">Create the GitHub Workflow</h2>
+
+<p>Now that we have our resources created, secrets secured, and dockerfile in order we can start building our workflow file for continuous deployment. The workflow file is a yaml file in <code class="language-plaintext highlighter-rouge">.github/workflows/</code>. It contains a collection of actions that run when triggered. Add the workflow file by going to the <em>Actions</em> tab in your repository and click <em>Set up a workflow yourself</em>.</p>
+
+<p><img src="/AppService/media/2020/06/githubactions_1.jpg" alt="ghactions" /></p>
+
+<p>After choosing this option, you will see a starter worklfow that explains how GitHub Actions work.  If you are new to this I recommend you read the comments, but we won’t be needing any of the starting code so you can remove it.</p>
+
+<h3 id="add-the-workflow-trigger">Add the workflow trigger</h3>
+
+<p>First, specify the trigger that starts the workflow. For our example, we are simply triggering the build whenever there is a push into the master branch If you would like to change this behavior, there are <a href="https://help.github.com/en/actions/reference/events-that-trigger-workflows">many other triggers</a> for Github Actions.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">Build and Deploy Windows Container App to Azure App Service</span>
+
+<span class="c1"># Trigger the build on commits into the master branch</span>
+<span class="na">on</span><span class="pi">:</span>
+  <span class="na">push</span><span class="pi">:</span>
+    <span class="na">branches</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">master</span>
+
+<span class="c1"># Starts jobs and sets the type of runner (Windows) they will run on</span>
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">build-and-deploy-to-azure</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">windows-latest</span>
+
+    <span class="na">steps</span><span class="pi">:</span>
+
+    <span class="c1"># Checks out repository so your workflow can access it</span>
+    <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v1</span>
+</code></pre></div></div>
+
+<h3 id="log-into-your-container-registry">Log into your container registry</h3>
+
+<p>In order for the workflow to access our registry, we need to add our <a href="https://github.com/azure/docker-login">Docker login action</a>. This action can login to both Azure Container Registry or Docker Hub. If logging into Docker Hub, you can get away with not using the <code class="language-plaintext highlighter-rouge">login-server</code> parameter.  If using ACR, you can grab the server name, username, and password from the <em>Access Keys</em> tab in your Azure Container Registry Resource.</p>
+
+<p>Add the following secrets if you have not already:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">CONTAINER_REGISTRY_USERNAME</code>: Your container registry username</li>
+  <li><code class="language-plaintext highlighter-rouge">CONTAINER_REGISTRY_PASSWORD</code>: Your container registry password</li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">CONTAINER_NAME</code>: The hostname of the container registry (ACR only)</p>
+
+    <p><img src="/AppService/media/2020/06/githubactions_2.jpg" alt="ghactions" /></p>
+  </li>
+</ul>
+
+<h4 id="azure-container-registry">Azure Container Registry</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Use docker login to log into ACR</span>
+<span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Docker login to ACR</span>
+  <span class="na">uses</span><span class="pi">:</span> <span class="s">azure/docker-login@v1</span>
+  <span class="na">with</span><span class="pi">:</span>
+    <span class="na">login-server</span><span class="pi">:</span> <span class="s">${{ secrets.CONTAINER_REGISTRY_NAME }}</span>
+    <span class="na">username</span><span class="pi">:</span> <span class="s">${{ secrets.CONTAINER_REGISTRY_USERNAME }}</span>
+    <span class="na">password</span><span class="pi">:</span> <span class="s">${{ secrets.CONTAINER_REGISTRY_PASSWORD }}</span>
+</code></pre></div></div>
+
+<h4 id="docker-hub">Docker Hub</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Use docker login</span>
+<span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Docker Hub login</span>
+  <span class="na">uses</span><span class="pi">:</span> <span class="s">azure/docker-login@v1</span>
+  <span class="na">with</span><span class="pi">:</span>
+    <span class="na">username</span><span class="pi">:</span> <span class="s">${{ secrets.CONTAINER_REGISTRY_USERNAME }}</span>
+    <span class="na">password</span><span class="pi">:</span> <span class="s">${{ secrets.CONTAINER_REGISTRY_PASSWORD }}</span>
+</code></pre></div></div>
+
+<h3 id="build-and-push-image-to-registry">Build and Push Image to Registry</h3>
+
+<p>Next, we will add a command to build and push the container image to the registry. We are using the <code class="language-plaintext highlighter-rouge">$</code> to tag the container with the commit id. This makes it easy to track what each image contains.</p>
+
+<p>Add the following secrets if you have not already:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">IMAGE_NAME</code>: The name of the image (can be any name)</li>
+  <li><code class="language-plaintext highlighter-rouge">CONTAINER_REGISTRY_NAME</code>: The hostname of the container registry (ACR only)</li>
+</ul>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Build and push the image to Container Registry</span>
+<span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Build and Push container to registry</span>
+  <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+    <span class="s">docker build --file=taskapp/taskapp/Dockerfile -t ${{ secrets.CONTAINER_REGISTRY_NAME }}/${{ secrets.IMAGE_NAME }}:${{ github.sha }} .</span>
+    <span class="s">docker push ${{ secrets.CONTAINER_REGISTRY_NAME }}/${{ secrets.IMAGE_NAME }}:${{ github.sha }}</span>
+</code></pre></div></div>
+
+<h3 id="authenticate-with-azure">Authenticate with Azure</h3>
+
+<p>In the <a href="#Create-a-Service-Principal">earlier section</a> you created an Azure Service Principal and added it as a GitHub Secret. You can now add the <a href="https://github.com/azure/login">Azure login action</a> to the workflow. This action will use the Service Principal to authenticate with Azure.  If you are using a <strong>publish profile</strong> to deploy your application instead of using a Service Principal, please skip this section.</p>
+
+<p>Add the following secrets if you have not already:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">AZURE_CREDENTIALS</code>: The output of the earlier command that generated the Service Principal</li>
+</ul>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Azure Service Principal Authentication</span>
+  <span class="na">uses</span><span class="pi">:</span> <span class="s">azure/login@v1</span>
+  <span class="na">with</span><span class="pi">:</span>
+      <span class="na">creds</span><span class="pi">:</span> <span class="s">${{ secrets.AZURE_CREDENTIALS }}</span>
+</code></pre></div></div>
+
+<h3 id="deploy-to-azure-app-service">Deploy to Azure App Service</h3>
+
+<p>If you haven’t already created your App Service, now is the time to do so before you can proceed. Remember that Windows Containers deployment is only available on the Premium tier App Service Plans.  Be mindful of the tier capacity, as you may need to scale up if your container is too large.</p>
+
+<p>The final step to setting up the continuous deployment is to add the webapps container deploy action.</p>
+
+<p>Add the following secrets if you have not already:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">APP_NAME</code>: The webapp name</li>
+  <li><code class="language-plaintext highlighter-rouge">CONTAINER_REGISTRY_NAME</code>: The container registry name</li>
+  <li><code class="language-plaintext highlighter-rouge">IMAGE_NAME</code>: The name of the container image</li>
+  <li><code class="language-plaintext highlighter-rouge">PUBLISH_PROFILE</code>: content of your publish profile</li>
+</ul>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Deploy Container to Azure App Service</span>
+  <span class="na">uses</span><span class="pi">:</span> <span class="s">azure/webapps-container-deploy@v1</span>
+  <span class="na">with</span><span class="pi">:</span>
+    <span class="na">app-name</span><span class="pi">:</span> <span class="s">${{ secrets.APP_NAME }}</span>
+    <span class="na">images</span><span class="pi">:</span> <span class="s">${{ secrets.CONTAINER_REGISTRY_NAME }}/${{ secrets.IMAGE_NAME }}:${{ github.sha }}</span>
+</code></pre></div></div>
+
+<p>If you would like to deploy using your <strong>publish profile</strong> instead of using a Service Principal add the publish-profile line:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Deploy container to Azure App Service</span>
+      <span class="s">uses</span><span class="err">:</span> <span class="s">Azure/webapps-deploy@v2</span>
+      <span class="s">with</span><span class="err">:</span> 
+        <span class="na">app-name</span><span class="pi">:</span> <span class="s">${{ secrets.APP_NAME }}</span>
+        <span class="na">publish-profile</span><span class="pi">:</span> <span class="s">${{ secrets.PUBLISH_PROFILE }}</span>
+        <span class="na">images</span><span class="pi">:</span> <span class="s">${{ secrets.REGISTRY_USERNAME }}.azurecr.io/${{ secrets.IMAGE_NAME }}:${{ github.sha }}</span>
+</code></pre></div></div>
+
+<p>To obtain the contents of your publish profile:</p>
+<ol>
+  <li>Go to the <strong>Overview</strong> page of your web app</li>
+  <li>Click on the <strong>Get publish profile</strong> tab to download your publish profile</li>
+  <li>Copy the entire contents of the xml file and add it to your GitHub secret <code class="language-plaintext highlighter-rouge">PUBLISH-PROFILE</code></li>
+</ol>
+
+<p>See this <a href="https://docs.microsoft.com/visualstudio/deployment/tutorial-import-publish-settings-azure?view=vs-2019#create-the-publish-settings-file-in-azure-app-service">documentation</a> for an example.</p>
+
+<h2 id="deploy-to-azure-sql-database-optional">Deploy to Azure SQL Database (Optional)</h2>
+
+<p>Adding Azure SQL to the workflow is optional of course, as you might have other plans for storage.  To deploy your SQL database to Azure, you will use a <a href="https://docs.microsoft.com/sql/relational-databases/data-tier-applications/data-tier-applications?view=sql-server-ver15#dac-concepts">dacpac</a> file or SQL scripts, and a connection string. The connection string can be found in the overview page of your Azure SQL database and you can create your dacpac by extracting the data using something like SQL Server Object Explorer in Visual Studio.</p>
+
+<p>Add the following secrets if you have not already:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">DATABASE_SERVER_NAME</code>: The resource name of the database</li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">AZURE_SQL_CONNECTION_STRING</code>: The full connection string for the database</p>
+
+    <p><img src="/AppService/media/2020/06/githubactions_5.jpg" alt="ghactions" /></p>
+  </li>
+</ul>
+
+<p>Both your server name and connection string are found in the Azure database resource in the portal. Copy the connection string, making sure your password and user ID are correct, and paste into your GitHub secrets.</p>
+
+<h3 id="create-a-dacpac-file-in-your-project">Create a dacpac file in your project</h3>
+
+<p>As mentioned before, you’ll need to use either a dacpac file or set of SQL scripts to deploy your database schema.  If you are using Visual Studio, it’s easy to create and add the needed dacpac file to run the action.</p>
+
+<ol>
+  <li>Connect your SQL Azure Database to Visual Studio</li>
+  <li>Right-click the data base and choose <em>Extract Data-tier application</em></li>
+  <li>
+    <p>On the following window, choose the location at the same level of your github workflow file and click create.</p>
+
+    <p><img src="/AppService/media/2020/06/githubactions_5.jpg" alt="ghactions" /></p>
+  </li>
+</ol>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Deploy a dacpac file to a pre-provisioned Azure SQL Server</span>
+<span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Azure SQL Deploy</span>
+  <span class="na">uses</span><span class="pi">:</span> <span class="s">Azure/sql-action@v1</span>
+  <span class="na">with</span><span class="pi">:</span>
+    <span class="na">server-name</span><span class="pi">:</span> <span class="s">${{ secrets.DATABASE_SERVER_NAME }}.database.windows.net</span>
+    <span class="na">connection-string</span><span class="pi">:</span> <span class="s">${{ secrets.AZURE_SQL_CONNECTION_STRING }}</span>
+    <span class="na">dacpac-package</span><span class="pi">:</span> <span class="s1">'</span><span class="s">./data.dacpac'</span>
+</code></pre></div></div>
+
+<p>Your dacpac file should have been created and added to your project. The action finds your file under the dacpac-package parameter seen above.</p>
+
+<h2 id="summary">Summary</h2>
+
+<p>From here you are setup to continuously build your Windows Container application through github actions. Below you’ll see the final result of the workflow yaml file.</p>
+
+<h3 id="full-workflow-file">Full workflow file</h3>
+
+<p>The previous sections showed how to assemble the workflow step-by-step. The full <code class="language-plaintext highlighter-rouge">main.yaml</code> is below.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">Build and Deploy Windows Container App to Azure App Service</span>
+
+<span class="c1"># Trigger the build on commits into the master branch</span>
+<span class="na">on</span><span class="pi">:</span>
+  <span class="na">push</span><span class="pi">:</span>
+    <span class="na">branches</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">master</span>
+
+<span class="c1"># Starts jobs and sets the type of runner (Windows) they will run on</span>
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">build-and-deploy-to-azure</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">windows-latest</span>
+
+    <span class="na">steps</span><span class="pi">:</span>
+
+    <span class="c1"># Checks out repository so your workflow can access it</span>
+    <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v1</span>
+
+    <span class="c1"># Authenticate a Service Principal to deploy to your Web App</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Azure Service Principal Authentication</span>
+      <span class="na">uses</span><span class="pi">:</span> <span class="s">azure/login@v1</span>
+      <span class="na">with</span><span class="pi">:</span>
+          <span class="na">creds</span><span class="pi">:</span> <span class="s">${{ secrets.AZURE_CREDENTIALS }}</span>
+
+    <span class="c1"># Use docker login to log into ACR </span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Docker login to ACR</span>
+      <span class="na">uses</span><span class="pi">:</span> <span class="s">azure/docker-login@v1</span>
+      <span class="na">with</span><span class="pi">:</span>
+       <span class="c1"># comment out the login-server parameter if using docker hub</span>
+        <span class="na">login-server</span><span class="pi">:</span> <span class="s">${{ secrets.CONTAINER_REGISTRY_NAME }}</span>
+        <span class="na">username</span><span class="pi">:</span> <span class="s">${{ secrets.CONTAINER_REGISTRY_USERNAME }}</span>
+        <span class="na">password</span><span class="pi">:</span> <span class="s">${{ secrets.CONTAINER_REGISTRY_PASSWORD }}</span>
+
+    <span class="c1"># Build and push your image to Azure Container Registry </span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Build and Push container to ACR</span>
+      <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="s">docker build --file=taskapp/taskapp/Dockerfile -t ${{ secrets.CONTAINER_REGISTRY_NAME }}/${{ secrets.IMAGE_NAME }}:${{ github.sha }} .</span>
+        <span class="s">docker push ${{ secrets.CONTAINER_REGISTRY_NAME }}/${{ secrets.IMAGE_NAME }}:${{ github.sha }}  </span>
+
+    <span class="c1"># Deploy your container to App Service </span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Deploy Container to Azure App Service</span>
+      <span class="na">uses</span><span class="pi">:</span> <span class="s">azure/webapps-container-deploy@v1</span>
+      <span class="na">with</span><span class="pi">:</span>
+        <span class="na">app-name</span><span class="pi">:</span> <span class="s">${{ secrets.APP_NAME }}</span>
+        <span class="na">images</span><span class="pi">:</span> <span class="s">${{ secrets.CONTAINER_REGISTRY_NAME }}/${{ secrets.IMAGE_NAME }}:${{ github.sha }}</span>
+
+    <span class="c1"># Deploy a dacpac file to your SQL server</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Azure SQL Deploy</span>
+      <span class="na">uses</span><span class="pi">:</span> <span class="s">Azure/sql-action@v1</span>
+      <span class="na">with</span><span class="pi">:</span>
+        <span class="na">server-name</span><span class="pi">:</span> <span class="s">${{ secrets.DATABASE_SERVER_NAME }}</span>
+        <span class="na">connection-string</span><span class="pi">:</span> <span class="s">${{ secrets.AZURE_SQL_CONNECTION_STRING }}</span>
+        <span class="na">dacpac-package</span><span class="pi">:</span> <span class="s1">'</span><span class="s">./data.dacpac'</span>
+
+</code></pre></div></div>
+
+<h3 id="helpful-resources">Helpful Resources</h3>
+
+<ul>
+  <li>Actions
+    <ul>
+      <li><a href="https://github.com/marketplace/actions/checkout">Checkout Action</a></li>
+      <li><a href="https://github.com/marketplace/actions/azure-login">Azure Login Action</a></li>
+      <li><a href="https://github.com/marketplace/actions/docker-login">Docker Login Action</a></li>
+      <li><a href="https://github.com/marketplace/actions/azure-sql-deploy">Azure SQL Deploy Action</a></li>
+      <li><a href="https://github.com/marketplace/actions/azure-webapp-container">Azure WebApp Container Action</a></li>
+    </ul>
+  </li>
+  <li>Other resources
+    <ul>
+      <li><a href="https://channel9.msdn.com/Events/Build/2020/BOD126/">Build 2020 Session Covering GitHub Actions</a></li>
+      <li><a href="https://docs.microsoft.com/azure/app-service/deploy-github-actions">App Service Docs for GitHub Actions</a></li>
+    </ul>
+  </li>
+</ul>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2020-06-09T00:00:00+00:00">June 09, 2020</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Continuous+Deployment+for+Windows+Containers+with+GitHub+Actions%20https%3A%2F%2Fazure.github.io%2FAppService%2F2020%2F06%2F09%2FApp-Service-Continuous-Deployment-for-Windows-Containers-with-GitHub-Actions.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2020%2F06%2F09%2FApp-Service-Continuous-Deployment-for-Windows-Containers-with-GitHub-Actions.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2020%2F06%2F09%2FApp-Service-Continuous-Deployment-for-Windows-Containers-with-GitHub-Actions.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2020/05/19/App-Service-Build-2020-recap.html" class="pagination--pager" title="App Service //Build 2020 Recap
+">Previous</a>
+    
+    
+      <a href="/AppService/2020/06/09/NET-Framework-4.8-is-coming-to-App-Service.html" class="pagination--pager" title=".NET Framework 4.8 is coming to App Service
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

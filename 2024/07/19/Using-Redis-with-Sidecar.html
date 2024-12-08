@@ -1,0 +1,1071 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Leveraging Redis as a Sidecar for Linux App Service - Azure App Service</title>
+<meta name="description" content="At Microsoft Build 2024, we had announced the Public Preview for the Sidecar pattern for Linux App Service. This feature allows developers to enhance their web applications with additional services running alongside the main application container. See Sidecars in action in this Build session.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Leveraging Redis as a Sidecar for Linux App Service">
+<meta property="og:url" content="https://azure.github.io/AppService/2024/07/19/Using-Redis-with-Sidecar.html">
+
+
+  <meta property="og:description" content="At Microsoft Build 2024, we had announced the Public Preview for the Sidecar pattern for Linux App Service. This feature allows developers to enhance their web applications with additional services running alongside the main application container. See Sidecars in action in this Build session.">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2024-07-19T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2024/07/19/Using-Redis-with-Sidecar.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Leveraging Redis as a Sidecar for Linux App Service">
+    <meta itemprop="description" content="At Microsoft Build 2024, we had announced the Public Preview for the Sidecar pattern for Linux App Service. This feature allows developers to enhance their web applications with additional services running alongside the main application container. See Sidecars in action in this Build session.">
+    <meta itemprop="datePublished" content="July 19, 2024">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Leveraging Redis as a Sidecar for Linux App Service
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+            
+            
+              • By Tulika Chaudharie
+            
+            • July 19, 2024
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#setting-up-your-local-environment">Setting Up your local environment</a></li>
+  <li><a href="#configuring-the-application-to-use-redis">Configuring the Application to Use Redis</a></li>
+  <li><a href="#deploying-the-application-to-linux-app-service">Deploying the Application to Linux App Service</a></li>
+  <li><a href="#caveat-for-multi-instance-workloads">Caveat for Multi-Instance Workloads</a></li>
+  <li><a href="#summary">Summary</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <p>At Microsoft Build 2024, we had announced the <a href="https://azure.github.io/AppService/2024/04/04/Public-Preview-Sidecars-Webjobs.html">Public Preview for the Sidecar pattern for Linux App Service</a>. This feature allows developers to enhance their web applications with additional services running alongside the main application container. See Sidecars in action in this <a href="https://build.microsoft.com/sessions/2d3bac21-85b9-4a33-8293-78536984cb6e?source=sessions">Build session</a>.</p>
+
+<p>In this blog, we will demonstrate how you can leverage the Sidecar pattern to seamlessly integrate a Redis cache into your Linux App Service, boosting your application’s performance and reliability.</p>
+
+<h2 id="setting-up-your-local-environment">Setting Up your local environment</h2>
+
+<p>Before you deploy your application to Azure App Service, you can set it up locally by following these steps</p>
+
+<ol>
+  <li><strong>Prerequisites:</strong> Ensure you have <a href="https://www.docker.com/products/docker-desktop/">Docker Desktop</a> and Visual Studio 2019 or above installed on your machine.</li>
+  <li>
+    <p><strong>Pulling the Redis Container Image:</strong> Open your terminal or command prompt and pull the latest Redis container image by running the following command:</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker pull redis
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><strong>Starting the Redis Container:</strong> Start the Redis container with the following command, replacing <code class="language-plaintext highlighter-rouge">instance-name</code> with your preferred instance name:</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker run <span class="nt">--name</span> &lt;instance-name&gt; <span class="nt">-p</span> 6379:6379 <span class="nt">-d</span> redis
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><strong>Verifying the Redis Container:</strong> To ensure the container is up and running, execute:</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker ps <span class="nt">-a</span>
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Creating the .NET Core Application:</strong> Now, create a .NET Core application that connects to Redis on port 6379. For our sample, we will use the ASP.NET Core Web API template, which creates a weather forecasting application.</li>
+  <li>
+    <p><strong>Installing the Required NuGet Package:</strong> In your project, install the NuGet package <code class="language-plaintext highlighter-rouge">Microsoft.Extensions.Caching.StackExchangeRedis</code> to enable Redis caching. You can do this via the NuGet Package Manager in Visual Studio or by running the following command in the Package Manager Console:</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> Install-Package Microsoft.Extensions.Caching.StackExchangeRedis
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="configuring-the-application-to-use-redis">Configuring the Application to Use Redis</h2>
+
+<p>You can find the full project code <a href="https://github.com/Azure-Samples/sidecar-samples/tree/main/Redis.Core.WebApi-master">here</a>. In this blog, I will highlight some of the main points for configuring your application to use Redis.</p>
+
+<ol>
+  <li>
+    <p><strong>Setting Up the Redis Connection String</strong>
+In appsettings.json, set up your Redis connection string:</p>
+
+    <div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="p">{</span>
+ <span class="s">"ConnectionStrings"</span><span class="p">:</span> <span class="p">{</span>
+     <span class="s">"Redis"</span><span class="p">:</span> <span class="s">"localhost:6379"</span>
+ <span class="p">}</span>
+ <span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><strong>Configuring Redis in Startup.cs</strong>
+In Startup.cs, configure your web API to connect to the Redis instance:</p>
+
+    <div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">public</span> <span class="k">void</span> <span class="nf">ConfigureServices</span><span class="p">(</span><span class="n">IServiceCollection</span> <span class="n">services</span><span class="p">)</span>
+ <span class="p">{</span>
+     <span class="c1">// Other service configurations</span>
+
+     <span class="c1">// Add Redis</span>
+     <span class="n">services</span><span class="p">.</span><span class="nf">AddStackExchangeRedisCache</span><span class="p">(</span><span class="n">options</span> <span class="p">=&gt;</span>
+     <span class="p">{</span>
+         <span class="n">options</span><span class="p">.</span><span class="n">Configuration</span> <span class="p">=</span> <span class="n">Configuration</span><span class="p">.</span><span class="nf">GetConnectionString</span><span class="p">(</span><span class="s">"Redis"</span><span class="p">);</span>
+         <span class="n">options</span><span class="p">.</span><span class="n">InstanceName</span> <span class="p">=</span> <span class="s">"Redis.Core.WebApi_"</span><span class="p">;</span>
+     <span class="p">});</span>
+
+     <span class="c1">// Other service configurations</span>
+ <span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><strong>Implementing Caching in the API</strong>
+Whenever the API is called, it will first check if the values are in the cache. If not, it will fetch them from the database:</p>
+
+    <div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">public</span> <span class="k">async</span> <span class="n">Task</span><span class="p">&lt;</span><span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">WeatherForecast</span><span class="p">&gt;&gt;</span> <span class="nf">GetWeatherForecasts</span><span class="p">()</span>
+ <span class="p">{</span>
+     <span class="kt">var</span> <span class="n">dataFromCache</span> <span class="p">=</span> <span class="k">await</span> <span class="n">_cache</span><span class="p">.</span><span class="n">GetRecordAsync</span><span class="p">&lt;</span><span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">WeatherForecast</span><span class="p">&gt;&gt;(</span><span class="n">WeatherData_Key</span><span class="p">);</span>
+     <span class="k">if</span> <span class="p">(</span><span class="n">dataFromCache</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+     <span class="p">{</span>
+         <span class="n">_logger</span><span class="p">.</span><span class="nf">LogInformation</span><span class="p">(</span><span class="s">"Data loaded from cache @"</span> <span class="p">+</span> <span class="n">DateTime</span><span class="p">.</span><span class="n">Now</span><span class="p">);</span>
+         <span class="k">return</span> <span class="n">dataFromCache</span><span class="p">;</span>
+     <span class="p">}</span>
+     <span class="k">else</span>
+     <span class="p">{</span>
+         <span class="n">_logger</span><span class="p">.</span><span class="nf">LogInformation</span><span class="p">(</span><span class="s">"Data loaded from db @"</span> <span class="p">+</span> <span class="n">DateTime</span><span class="p">.</span><span class="n">Now</span><span class="p">);</span>
+         <span class="kt">var</span> <span class="n">dataFromDb</span> <span class="p">=</span> <span class="nf">GetDataFromDB</span><span class="p">();</span>
+         <span class="k">await</span> <span class="n">_cache</span><span class="p">.</span><span class="n">SetRecordAsync</span><span class="p">&lt;</span><span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">WeatherForecast</span><span class="p">&gt;&gt;(</span><span class="n">dataFromDb</span><span class="p">,</span> <span class="n">WeatherData_Key</span><span class="p">);</span>
+         <span class="k">return</span> <span class="n">dataFromDb</span><span class="p">;</span>
+     <span class="p">}</span>
+ <span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><strong>Adding Values to the Cache</strong>
+We have an extension method that adds values to the cache:</p>
+
+    <div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">public</span> <span class="k">static</span> <span class="k">async</span> <span class="n">Task</span> <span class="n">SetRecordAsync</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;(</span><span class="k">this</span> <span class="n">IDistributedCache</span> <span class="n">cache</span><span class="p">,</span>
+     <span class="n">T</span> <span class="k">value</span><span class="p">,</span>
+     <span class="kt">string</span> <span class="n">key</span><span class="p">,</span>
+     <span class="n">TimeSpan</span><span class="p">?</span> <span class="n">absoluteExpiry</span> <span class="p">=</span> <span class="k">null</span><span class="p">,</span>
+     <span class="n">TimeSpan</span><span class="p">?</span> <span class="n">slidingExpiry</span> <span class="p">=</span> <span class="k">null</span><span class="p">)</span>
+ <span class="p">{</span>
+     <span class="c1">// Caching option</span>
+     <span class="kt">var</span> <span class="n">cachingOption</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">DistributedCacheEntryOptions</span><span class="p">();</span>
+
+     <span class="c1">// Cache Time to Live, from Current Time to &lt;specified&gt; mins, after that cache will expire</span>
+     <span class="n">cachingOption</span><span class="p">.</span><span class="n">AbsoluteExpirationRelativeToNow</span> <span class="p">=</span> <span class="n">absoluteExpiry</span> <span class="p">??</span> <span class="n">TimeSpan</span><span class="p">.</span><span class="nf">FromSeconds</span><span class="p">(</span><span class="m">60</span><span class="p">);</span>
+
+     <span class="c1">// Cache Time to Live, will slide if it is accessed within the sliding window</span>
+     <span class="n">cachingOption</span><span class="p">.</span><span class="n">SlidingExpiration</span> <span class="p">=</span> <span class="n">slidingExpiry</span><span class="p">;</span>
+
+     <span class="c1">// Convert to JSON</span>
+     <span class="kt">var</span> <span class="n">dataToStore</span> <span class="p">=</span> <span class="n">JsonSerializer</span><span class="p">.</span><span class="nf">Serialize</span><span class="p">(</span><span class="k">value</span><span class="p">);</span>
+
+     <span class="c1">// Set Cache</span>
+     <span class="k">await</span> <span class="n">cache</span><span class="p">.</span><span class="nf">SetStringAsync</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">dataToStore</span><span class="p">,</span> <span class="n">cachingOption</span><span class="p">);</span>
+ <span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><strong>Running Your Application</strong>
+Now you can run your application. Open your browser and navigate to:
+<code class="language-plaintext highlighter-rouge">http://localhost:5000/weatherforecast</code>.</p>
+  </li>
+</ol>
+
+<p>The browser will display the weather forecast in JSON format. Since we have implemented logging in the application, you will see logs in the command prompt indicating whether the response is coming from the database or the cache.</p>
+
+<h2 id="deploying-the-application-to-linux-app-service">Deploying the Application to Linux App Service</h2>
+
+<p>To get started, you’ll need to containerize your .NET application. This <a href="https://learn.microsoft.com/dotnet/core/docker/build-container?tabs=windows&amp;pivots=dotnet-8-0">tutorial</a> walks you through the process step by step.
+<em>Note: The Sidecar feature is currently enabled for custom-container scenarios for Linux App Service. We are working on enabling it for code scenarios as well. We will update the blog soon for the code-based web applications</em></p>
+
+<ol>
+  <li><strong>Containerize Your .NET Application</strong>
+ Create a Dockerfile in the root directory of your project. The Dockerfile for this project is <a href="https://github.com/Azure-Samples/sidecar-samples/blob/main/Redis.Core.WebApi-master/Redis.Core.WebApi/Dockerfile">here</a>.</li>
+  <li>
+    <p><strong>Build and Push the Docker Image</strong>
+ Build the image and push it to your preferred container registry, such as Azure Container Registry, Docker Hub, or a private registry.</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker build <span class="nt">-t</span> &lt;your-registry&gt;/&lt;your-image-name&gt;:&lt;tag&gt; <span class="nb">.</span>
+ docker push &lt;your-registry&gt;/&lt;your-image-name&gt;:&lt;tag&gt;
+</code></pre></div>    </div>
+
+    <p>We would also recommend that you push the local redis image to ACR. This would allow you to take advantage of securing your resources using Managed Identity. Please refer to this <a href="https://learn.microsoft.com/azure/container-registry/container-registry-get-started-docker-cli?tabs=azure-cli">documentation</a>.</p>
+  </li>
+  <li>
+    <p><strong>Create a New Linux Web App in Azure</strong>
+ Create a new Linux Web App from the portal and choose the options for Container and Linux.
+ <img src="/AppService/media/2024/07/CreateWebApp.jpg" alt="Create web app" /></p>
+
+    <p>On the Container tab, make sure that Sidecar support is Enabled.</p>
+
+    <p>Specify the details of your application image.
+ <img src="/AppService/media/2024/07/AddContainer.jpg" alt="Create web app" /></p>
+
+    <p><em>Note: We strongly recommend enabling <a href="https://learn.microsoft.com/azure/app-service/overview-managed-identity?tabs=portal%2Chttp">Managed Identity</a> for your Azure resources.</em></p>
+  </li>
+  <li>
+    <p><strong>Add Redis Sidecar</strong>
+ Go to the Deployment Center for your application and add a sidecar container.
+ <img src="/AppService/media/2024/07/add-redis-container.jpg" alt="Add Redis sidecar" /></p>
+
+    <p>This <a href="https://learn.microsoft.com/azure/app-service/tutorial-custom-container-sidecar">document</a> tells you how to add sidecars, step-by-step.</p>
+  </li>
+  <li>
+    <p><strong>Verify the deployment</strong>
+ Once your deployment is complete, you can browse to <code class="language-plaintext highlighter-rouge">&lt;your application url&gt;/weatherforecast</code></p>
+
+    <p>You should see output like this
+ <img src="/AppService/media/2024/07/website-output.jpg" alt="Page output" /></p>
+
+    <p>Refresh the page a few times. You can go to the <code class="language-plaintext highlighter-rouge">Log Stream</code> in the Azure Portal to see logs indicating whether the response is coming from the database or the cache.
+ <img src="/AppService/media/2024/07/redis-logs.jpg" alt="Log stream" /></p>
+  </li>
+</ol>
+
+<h2 id="caveat-for-multi-instance-workloads">Caveat for Multi-Instance Workloads</h2>
+
+<p>There is a caveat for this application. We are using a local instance of Redis. If you scale out your application to multiple instances, you will notice that the response does not always come from the cache, depending on which instance your request is being routed to. For multi-instance workloads, we recommend using <a href="https://learn.microsoft.com/azure/azure-cache-for-redis/cache-overview">Azure Cache for Redis</a>, which provides a distributed, scalable, and high-performance caching solution.</p>
+
+<h2 id="summary">Summary</h2>
+
+<p>In this blog, we explored how to enhance your Linux App Service with Redis using the sidecar pattern. We started by setting up the application locally, containerizing it, and then deploying it to Azure App Service. In the coming weeks, we will be publishing more scenarios for leveraging Sidecars with your web applications.</p>
+
+<p>Looking forward to seeing what you are going to build!</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2024-07-19T00:00:00+00:00">July 19, 2024</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Leveraging+Redis+as+a+Sidecar+for+Linux+App+Service%20https%3A%2F%2Fazure.github.io%2FAppService%2F2024%2F07%2F19%2FUsing-Redis-with-Sidecar.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2024%2F07%2F19%2FUsing-Redis-with-Sidecar.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2024%2F07%2F19%2FUsing-Redis-with-Sidecar.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2024/07/15/Using-Managed-Identity-DaaS-storage-accounts.html" class="pagination--pager" title="Managed Identity Support for storage accounts used in Diagnostic Tools under Diagnose and Solve blade
+">Previous</a>
+    
+    
+      <a href="/AppService/2024/07/26/Using-Datadog-with-Sidecar.html" class="pagination--pager" title="A Step-by-Step Guide to Datadog Integration with Linux App Service via Sidecars
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

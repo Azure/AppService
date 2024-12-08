@@ -1,0 +1,1048 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Creating a local PFX copy of App Service Certificate - Azure App Service</title>
+<meta name="description" content="">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Creating a local PFX copy of App Service Certificate">
+<meta property="og:url" content="https://azure.github.io/AppService/2017/02/24/Creating-a-local-PFX-copy-of-App-Service-Certificate.html">
+
+
+  <meta property="og:description" content="">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2017-02-24T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2017/02/24/Creating-a-local-PFX-copy-of-App-Service-Certificate.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Creating a local PFX copy of App Service Certificate">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="February 24, 2017">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Creating a local PFX copy of App Service Certificate
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  7 minute read
+
+            
+            
+            • February 24, 2017
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/akurmi" target="_blank">akurmi</a>
+<time>    2/24/2017 3:04:03 PM</time>
+<hr/>
+<div id="content"><h1>Introduction</h1>
+Last year, we introduced ‘App Service Certificate’, a certificate lifecycle management offering. Azure portal provides a user-friendly experience for creating App Service Certificates and using them with App Service Apps. You can read more about this service <a href="https://docs.microsoft.com/en-us/azure/app-service-web/web-sites-purchase-ssl-web-site">here</a>. While the portal provides first class experience for deploying App Service Certificate through Key Vault to App Service Apps, we have been receiving customer requests where they would like to use these certificates outside of App Service platform, say with Azure Virtual Machines. In this blogpost, I am going to describe how to create a local PFX copy of App Service Certificate so that you can use it anywhere you want.
+<h2>Prerequisites</h2>
+Before making a local copy, make sure that:
+1. The App Service Certificate is in ‘Issued’ state
+2. It’s assigned to a Key Vault (Step 1 in the link shared above).
+<h2>Creating a local copy of the issued SSL certificate using PowerShell</h2>
+You can use the following PowerShell script to create a local PFX copy.
+
+<strong>You need to first install Azure PowerShell and have the required modules installed. Follow this <a href="https://docs.microsoft.com/en-us/powershell/azure/install-az-ps">blog </a>to install the Azure PowerShell commandlets.</strong>
+
+To use the script, open a PowerShell window, copy the entire script below (uncomment Remove-AzKeyVaultAccessPolicy line if you want to remove Access policies after export, check your permissions to see if you want to remove the policy) and paste it on the PowerShell window and hit enter.
+<pre>
+    Function Export-AppServiceCertificate
+    {
+    ###########################################################
+    
+    Param(
+    [Parameter(Mandatory=$true,Position=1,HelpMessage="ARM Login Url")]
+    [string]$loginId,
+    
+    [Parameter(Mandatory=$true,HelpMessage="Subscription Id")]
+    [string]$subscriptionId,
+    
+    [Parameter(Mandatory=$true,HelpMessage="Resource Group Name")]
+    [string]$resourceGroupName,
+    
+    [Parameter(Mandatory=$true,HelpMessage="Name of the App Service Certificate Resource")]
+    [string]$name
+    )
+    
+    ###########################################################
+    
+    Connect-AzAccount
+    Set-AzContext -Subscription $subscriptionId
+    
+    ## Get the KeyVault Resource Url and KeyVault Secret Name were the certificate is stored
+    $ascResource= Get-AzResource -ResourceId "/subscriptions/$subscriptionId/resourceGroups/$resourceGroupName/providers/Microsoft.CertificateRegistration/certificateOrders/$name"
+    $certProps = Get-Member -InputObject $ascResource.Properties.certificates[0] -MemberType NoteProperty
+    $certificateName = $certProps[0].Name
+    $keyVaultId = $ascResource.Properties.certificates[0].$certificateName.KeyVaultId
+    $keyVaultSecretName = $ascResource.Properties.certificates[0].$certificateName.KeyVaultSecretName
+    
+    ## Split the resource URL of KeyVault and get KeyVaultName and KeyVaultResourceGroupName
+    $keyVaultIdParts = $keyVaultId.Split("/")
+    $keyVaultName = $keyVaultIdParts[$keyVaultIdParts.Length - 1]
+    $keyVaultResourceGroupName = $keyVaultIdParts[$keyVaultIdParts.Length - 5]
+    
+    ## --- !! NOTE !! ----
+    ## Only users who can set the access policy and has the the right RBAC permissions can set the access policy on KeyVault, if the command fails contact the owner of the KeyVault
+    Set-AzKeyVaultAccessPolicy -ResourceGroupName $keyVaultResourceGroupName -VaultName $keyVaultName -UserPrincipalName $loginId -PermissionsToSecrets get
+    Write-Host "Get Secret Access to account $loginId has been granted from the KeyVault, please check and remove the policy after exporting the certificate"
+    
+    ## Getting the secret from the KeyVault
+    $secret = Get-AzKeyVaultSecret -VaultName $keyVaultName -Name $keyVaultSecretName -AsPlainText
+    $pfxCertObject= New-Object System.Security.Cryptography.X509Certificates.X509Certificate2 -ArgumentList @([Convert]::FromBase64String($secret),"",[System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::Exportable)
+    $pfxPassword = -join ((65..90) + (97..122) + (48..57) | Get-Random -Count 50 | % {[char]$_})
+    $currentDirectory = (Get-Location -PSProvider FileSystem).ProviderPath
+    [Environment]::CurrentDirectory = (Get-Location -PSProvider FileSystem).ProviderPath
+    [io.file]::WriteAllBytes(".\appservicecertificate.pfx",$pfxCertObject.Export([System.Security.Cryptography.X509Certificates.X509ContentType]::Pkcs12,$pfxPassword))
+    
+    ## --- !! NOTE !! ----
+    ## Remove the Access Policy required for exporting the certificate once you have exported the certificate to prevent giving the account prolonged access to the KeyVault
+    ## The account will be completely removed from KeyVault access policy and will prevent to account from accessing any keys/secrets/certificates on the KeyVault, 
+    ## Run the following command if you are sure that the account is not used for any other access on the KeyVault or login to the portal and change the access policy accordingly.
+    # Remove-AzKeyVaultAccessPolicy -ResourceGroupName $keyVaultResourceGroupName -VaultName $keyVaultName -UserPrincipalName $loginId
+    # Write-Host "Access to account $loginId has been removed from the KeyVault"
+    
+    # Print the password for the exported certificate
+    Write-Host "Created an App Service Certificate copy at: $currentDirectory\appservicecertificate.pfx"
+    Write-Warning "For security reasons, do not store the PFX password. Use it directly from the console as required."
+    Write-Host "PFX password: $pfxPassword"
+    
+    }
+</pre>
+Now you will have a new command called <strong>Export-AppServiceCertificate, use the command as follows </strong>
+<pre>Export-AppServiceCertificate -loginId yourarmemail@domain.com -subscriptionId yoursubid -resourceGroupName resourceGroupNameOfYourAppServiceCertificate -name appServiceCertificateName</pre>
+Once the command is executed, you would see a new file in the current directory called ‘appservicecertificate.pfx’. This is a password protected PFX, the PowerShell console would display the corresponding password. For security reasons, do not store this password in a text file. You can use the password directly from the console as required. Also, don’t forget to delete the local PFX file once you no longer need it.
+<h2>Exporting the certificate with the chain included for App Service Web App consumption.</h2>
+The pfx created by the above commands will not include certificates from the chain. Services like Azure App Services expect the certificates that are being uploaded to have all the certificates in the chain included as part of the pfx file.
+
+To get the certificates of the chain to be part of the pfx, you will need to install the exported certificate on your machine first using the password that is provided by the script, <strong>make sure you mark the certificate as exportable</strong>.
+
+<a href="/AppService/media/2017/02/Exportable.png"><img alt="" class="alignnone size-full wp-image-8895" height="555" src="/AppService/media/2017/02/Exportable.png" width="577"/></a>
+
+Once you have installed the exported certificate open the certificate from your certificate store and navigate to the Certification Path tab, it would look something like below,
+
+<a href="/AppService/media/2017/02/CertificationPath.png"><img alt="" class="alignnone size-full wp-image-8885" height="463" src="/AppService/media/2017/02/CertificationPath.png" width="403"/></a>
+
+Now go to <a href="https://certs.godaddy.com/repository">https://certs.godaddy.com/repository</a> and download the intermediate certificates and the root certificate. Install all of the certificates downloaded to the same store as your certificate. Once you confirmed that all the certificates in the chain have been installed we can export the certificate with the chain by going to the certificate store, right clicking on the SSL certificate we exported and installed and clicking of<strong> All Tasks -&gt; Export ...</strong>
+
+In the wizard, make sure you select the option,<strong> "Yes, export the private key"</strong>
+
+And then under the Personal Information Exchange property, make sure the option <strong>"Include all certificates in the certification path if possible"</strong> is checked.
+
+<a href="/AppService/media/2017/02/Export.png"><img alt="" class="alignnone size-full wp-image-8905" height="563" src="/AppService/media/2017/02/Export.png" width="644"/></a>
+
+Once exported into a new pfx file we can check if the new pfx has the certificate chain included in it by running the command,
+<pre>certutil -dump &lt;path of the certificate file&gt;</pre>
+You will see the list of the certificates that are part of the pfx from the root to your certificate. A pfx file created with the above steps with all the certificates of the chain contained is well formed and can be uploaded to App Service Web Apps with confidence. <em>Note the CA part of the uploaded pfx file will be discarded when we process the uploaded certificate, we store all the intermediate certificates associated with the certificate to enable the chain to be remade properly in the runtime.</em>
+<strong>Once all the export operation is complete and you have successfully uploaded your certificate clean your machine of any trace of the SSL certificate by deleting the certificate from the store to secure your certificate.</strong>
+<h2>Things to note</h2>
+If you create a copy of App Service Certificate this way, it won’t have any impact on existing App Service SSL bindings that were created using the portal experience. It also won’t affect any such SSL bindings you may create in the future. You can still Rekey and Renew an App Service Certificate with one click even after making a copy but you would be responsible for creating a new local copy with the new certificate and updating all services that are using the old certificate.
+<h2>Tips</h2>
+This section compares this method of certificate deployment with the built-in Azure portal experience for Web Apps. It also contains recommendations you should follow when you use the PFX copy elsewhere.
+<table border="1" cellpadding="0" cellspacing="0" class="MsoTableGrid" style="border-collapse: collapse;border: none">
+<tbody>
+<tr>
+<td style="width: 116.85pt;border: solid windowtext 1.0pt;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
+<p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal"><strong>Title</strong></p>
+</td>
+<td style="width: 116.85pt;border: solid windowtext 1.0pt;border-left: none;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
+<p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal"><strong>Azure portal Deployment</strong></p>
+</td>
+<td style="width: 116.9pt;border: solid windowtext 1.0pt;border-left: none;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
+<p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal"><strong>Deploying local PFX copy</strong></p>
+</td>
+<td style="width: 116.9pt;border: solid windowtext 1.0pt;border-left: none;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
+<p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal"><strong>Recommendations</strong></p>
+</td>
+</tr>
+<tr>
+<td style="width: 116.85pt;border: solid windowtext 1.0pt;border-top: none;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
+<p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal">Auto/Manual Renew</p>
+</td>
+<td style="width: 116.85pt;border-top: none;border-left: none;border-bottom: solid windowtext 1.0pt;border-right: solid windowtext 1.0pt;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
+<p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal">When an App Service Certificate is renewed, all the corresponding App Service SSL bindings are updated automatically</p>
+</td>
+<td style="width: 116.9pt;border-top: none;border-left: none;border-bottom: solid windowtext 1.0pt;border-right: solid windowtext 1.0pt;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
+<p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal">When a certificate is renewed, you would need to manually update all the services that are using a local copy.</p>
+</td>
+<td style="width: 116.9pt;border-top: none;border-left: none;border-bottom: solid windowtext 1.0pt;border-right: solid windowtext 1.0pt;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
+<p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal">Turn off Auto renew as you won’t know when exactly an App Service Certificate gets renewed with Auto renew and this would end up breaking your SSL endpoints. Manually renew such App Service Certificates before they expire</p>
+</td>
+</tr>
+<tr>
+<td style="width: 116.85pt;border: solid windowtext 1.0pt;border-top: none;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
+<p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal">Rekey</p>
+</td>
+<td style="width: 116.85pt;border-top: none;border-left: none;border-bottom: solid windowtext 1.0pt;border-right: solid windowtext 1.0pt;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
+<p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal">Just like renewal, the corresponding SSL bindings are updated automatically</p>
+</td>
+<td style="width: 116.9pt;border-top: none;border-left: none;border-bottom: solid windowtext 1.0pt;border-right: solid windowtext 1.0pt;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
+<p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal">Just like renewal, you would need to manually update all such services.</p>
+</td>
+<td style="width: 116.9pt;border-top: none;border-left: none;border-bottom: solid windowtext 1.0pt;border-right: solid windowtext 1.0pt;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
+<p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal"></p>
+</td>
+</tr>
+<tr>
+<td style="width: 116.85pt;border: solid windowtext 1.0pt;border-top: none;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
+<p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal">Deployment</p>
+</td>
+<td style="width: 116.85pt;border-top: none;border-left: none;border-bottom: solid windowtext 1.0pt;border-right: solid windowtext 1.0pt;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
+<p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal">When deploying certificate this way, you don’t need any file locally and there won’t be any secrets to clean up</p>
+</td>
+<td style="width: 116.9pt;border-top: none;border-left: none;border-bottom: solid windowtext 1.0pt;border-right: solid windowtext 1.0pt;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
+<p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal">When deploying certificate this way, you would have the PFX certificate on local disk.</p>
+</td>
+<td style="width: 116.9pt;border-top: none;border-left: none;border-bottom: solid windowtext 1.0pt;border-right: solid windowtext 1.0pt;padding: 0in 5.4pt 0in 5.4pt" valign="top" width="156">
+<p class="MsoNormal" style="margin-bottom: .0001pt;line-height: normal">Always delete the local copy once you no longer need it as you can create a PFX copy as many times as you want. Also, never store the password shown in PowerShell console locally. This way, even if somehow an adversary gets hold of your local disk, he still won’t be able to use the PFX certificate as it’s protected by a strong password</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h2>Getting in touch</h2>
+If you have an App Service Certificate that you would like to use outside of App Service ecosystem, then give this a try and let us know how it goes. If you run into any issues, please let us know on the <a href="https://social.msdn.microsoft.com/Forums/en-US/home?forum=windowsazurewebsitespreview">App Service forum</a>.</div>
+</div></body>
+<script src="/AppService/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="/AppService/resource/replace.js" type="text/javascript"></script>
+</html>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2017-02-24T00:00:00+00:00">February 24, 2017</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Creating+a+local+PFX+copy+of+App+Service+Certificate%20https%3A%2F%2Fazure.github.io%2FAppService%2F2017%2F02%2F24%2FCreating-a-local-PFX-copy-of-App-Service-Certificate.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2017%2F02%2F24%2FCreating-a-local-PFX-copy-of-App-Service-Certificate.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2017%2F02%2F24%2FCreating-a-local-PFX-copy-of-App-Service-Certificate.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2017/02/23/Making-your-APIs-available-to-PowerApps-and-Microsoft-Flow.html" class="pagination--pager" title="Making your APIs available to PowerApps and Microsoft Flow
+">Previous</a>
+    
+    
+      <a href="/AppService/2017/03/06/Announcing-general-availability-for-MySQL-in-app.html" class="pagination--pager" title="Announcing general availability for MySQL in-app
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

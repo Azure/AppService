@@ -1,0 +1,1053 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Continuous Deployment for Windows Containers with Azure Pipelines - Azure App Service</title>
+<meta name="description" content="Azure DevOps enables you to host, build, plan and test your code with complimentary workflows. Using Azure Pipelines as one of these workflows allows you to deploy your application with CI/CD that works with any platform and cloud.  A pipeline is defined as a YAML file in the root directory of your repository.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Continuous Deployment for Windows Containers with Azure Pipelines">
+<meta property="og:url" content="https://azure.github.io/AppService/2024/04/03/Continuous-deployment-for-Windows-containers.html">
+
+
+  <meta property="og:description" content="Azure DevOps enables you to host, build, plan and test your code with complimentary workflows. Using Azure Pipelines as one of these workflows allows you to deploy your application with CI/CD that works with any platform and cloud.  A pipeline is defined as a YAML file in the root directory of your repository.">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2024-04-03T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2024/04/03/Continuous-deployment-for-Windows-containers.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Continuous Deployment for Windows Containers with Azure Pipelines">
+    <meta itemprop="description" content="Azure DevOps enables you to host, build, plan and test your code with complimentary workflows. Using Azure Pipelines as one of these workflows allows you to deploy your application with CI/CD that works with any platform and cloud.  A pipeline is defined as a YAML file in the root directory of your repository.">
+    <meta itemprop="datePublished" content="April 03, 2024">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Continuous Deployment for Windows Containers with Azure Pipelines
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+            
+            
+              • By Jeff Martinez
+            
+            • April 3, 2024
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#pre-requisites">Pre-requisites</a></li>
+  <li><a href="#add-a-service-connection">Add a Service Connection</a></li>
+  <li><a href="#create-the-pipeline">Create the pipeline</a></li>
+  <li><a href="#secure-secrets">Secure secrets</a></li>
+  <li><a href="#edit-the-pipeline">Edit the pipeline</a></li>
+  <li><a href="#deploy-to-azure-app-service">Deploy to Azure App Service</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <p>Azure DevOps enables you to host, build, plan and test your code with complimentary workflows. Using Azure Pipelines as one of these workflows allows you to deploy your application with CI/CD that works with any platform and cloud.  A pipeline is defined as a YAML file in the root directory of your repository.</p>
+
+<p>In this article, we will use Azure Pipelines to deploy a Windows container application to App Service from a Git repository in Azure DevOps.  It assumes you already have a .NET application with supporting dockerfile in Azure DevOps.</p>
+
+<h3 id="pre-requisites">Pre-requisites</h3>
+
+<ol>
+  <li>An <a href="https://learn.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal?tabs=azure-cli">Azure Container Registry</a></li>
+  <li>App Service Web App (Windows container) resource</li>
+  <li>.NET application with dockerfile in Azure DevOps</li>
+</ol>
+
+<h3 id="add-a-service-connection">Add a Service Connection</h3>
+
+<p>Before you create your pipeline, you should first create your Service Connection since you will be asked to choose and verify your connection when creating your template. A Service Connection will allow you to connect to your registry of choice (ACR or Docker Hub) when using the task templates. When adding a new service connection, choose the <strong>Docker Registry</strong> option. The following form will ask you to choose Docker Hub or Azure Container Registry along with pertaining information.  This tutorial will use Azure Container Registry.  You can create a new Service Connection following the directions <a href="https://docs.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&amp;tabs=yaml#create-new">here</a>.</p>
+
+<h3 id="create-the-pipeline">Create the pipeline</h3>
+
+<p>Once your repository is created with your .NET application and supporting dockerfile, you can create your pipeline following these steps.</p>
+
+<ol>
+  <li>Navigate to <strong>Pipelines</strong> on the left menu bar and click on the <strong>Create pipeline</strong> button</li>
+  <li>On the next screen, select <strong>Azure Repos Git</strong> as your repository option and select the repository where you code is</li>
+  <li>Under the Configure tab choose the <strong>Starter Pipeline</strong> option</li>
+  <li>Under the next Review tab, click the <strong>Save</strong> button</li>
+</ol>
+
+<h3 id="secure-secrets">Secure secrets</h3>
+
+<p>Since we are using sensitive information that you don’t want others to access, we will use variables to protect our information. Create a variable by following the directions <a href="https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&amp;tabs=yaml%2Cbatch">here</a>.</p>
+
+<p>To add a Variable, you click the <strong>Variables</strong> button next to the <em>Save</em> button in the top-right of the editing view for your pipeline. Select the <strong>New Variable</strong> button and enter your information. Add the variables below with your own secrets appropriate from each resource.</p>
+
+<ul>
+  <li>vmImageName: ‘windows-latest’</li>
+  <li>imageRepository: ‘your-image-repo-name’</li>
+  <li>dockerfilePath: ‘$(Build.SourcesDirectory)/path/to/Dockerfile’</li>
+  <li>dockerRegistryServiceConnection: ‘your-service-connection-number’</li>
+</ul>
+
+<h3 id="edit-the-pipeline">Edit the pipeline</h3>
+
+<p>After your pipeline is created and saved, you will need to edit the pipeline to run the steps for building the container, pushing to a registry, and deploying the image to App Service.  To start, navigate to the <strong>Pipelines</strong> menu, choose your pipeline that you just created and click the <strong>Edit</strong> button.</p>
+
+<p><strong>Build image and push to Azure Container Registry</strong></p>
+
+<p>First, you need to add the docker task so you can build the image.  Add the following code and replace the Dockerfile: app/Dockerfile with the path to your Dockerfile.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">trigger</span><span class="pi">:</span>
+ <span class="pi">-</span> <span class="s">main</span>
+
+ <span class="na">pool</span><span class="pi">:</span>
+   <span class="na">vmImage</span><span class="pi">:</span> <span class="s1">'</span><span class="s">windows-latest'</span> 
+
+ <span class="na">variables</span><span class="pi">:</span>
+   <span class="na">vmImageName</span><span class="pi">:</span> <span class="s1">'</span><span class="s">windows-latest'</span>
+   <span class="na">imageRepository</span><span class="pi">:</span> <span class="s1">'</span><span class="s">your-image-repo-name'</span>
+   <span class="na">dockerfilePath</span><span class="pi">:</span> <span class="s1">'</span><span class="s">$(Build.SourcesDirectory)/path/to/Dockerfile'</span>
+   <span class="na">dockerRegistryServiceConnection</span><span class="pi">:</span> <span class="s1">'</span><span class="s">your-service-connection-number'</span>
+
+<span class="pi">-</span> <span class="na">stage</span><span class="pi">:</span> <span class="s">Build</span>
+  <span class="na">displayName</span><span class="pi">:</span> <span class="s">Build and push stage</span>
+  <span class="na">jobs</span><span class="pi">:</span>  
+  <span class="pi">-</span> <span class="na">job</span><span class="pi">:</span> <span class="s">Build</span>
+    <span class="na">displayName</span><span class="pi">:</span> <span class="s">Build job</span>
+    <span class="na">pool</span><span class="pi">:</span>
+      <span class="na">vmImage</span><span class="pi">:</span> <span class="s">$(vmImageName)</span>
+    <span class="na">steps</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">task</span><span class="pi">:</span> <span class="s">Docker@2</span>
+      <span class="na">displayName</span><span class="pi">:</span> <span class="s">Build and push an image to container registry</span>
+      <span class="na">inputs</span><span class="pi">:</span>
+        <span class="na">command</span><span class="pi">:</span> <span class="s">buildAndPush</span>
+        <span class="na">repository</span><span class="pi">:</span> <span class="s">$(imageRepository)</span>
+        <span class="na">dockerfile</span><span class="pi">:</span> <span class="s">$(dockerfilePath)</span>
+        <span class="na">containerRegistry</span><span class="pi">:</span> <span class="s">$(dockerRegistryServiceConnection)</span>
+        <span class="na">tags</span><span class="pi">:</span> <span class="pi">|</span>
+          <span class="s">$(tag)</span>
+</code></pre></div></div>
+
+<h3 id="deploy-to-azure-app-service">Deploy to Azure App Service</h3>
+
+<p>Next, you’ll need to setup the deploy task.  This will require your subscription name, application name, and container registry.  Add a new stage to the yaml file by pasting the code below.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">-</span> <span class="na">stage</span><span class="pi">:</span> <span class="s">Deploy</span>
+  <span class="na">displayName</span><span class="pi">:</span> <span class="s">Deploy to App Service</span>
+  <span class="na">jobs</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">job</span><span class="pi">:</span> <span class="s">Deploy</span>
+    <span class="na">displayName</span><span class="pi">:</span> <span class="s">Deploy</span>
+    <span class="na">pool</span><span class="pi">:</span>
+      <span class="na">vmImage</span><span class="pi">:</span> <span class="s">$(vmImageName)</span>
+    <span class="na">steps</span><span class="pi">:</span>
+</code></pre></div></div>
+
+<ol>
+  <li>Next, navigate to the <strong>Show assistant</strong> tab in the upper right hand corner and find the <strong>Azure App Service deploy</strong> task and fill out the following form
+    <ol>
+      <li>Connection type: Azure Resource Manager</li>
+      <li>Azure subscription: your-subscription-name</li>
+      <li>App Service type: Web App for Containers (Windows)</li>
+      <li>App Service name: your-app-name</li>
+      <li>Registry or Namespace: your-azure-container-registry-namespace</li>
+      <li>Image: your-azure-container-registry-image-name</li>
+    </ol>
+  </li>
+</ol>
+
+<p>Once you have those filled out, click the <strong>Add</strong> button to add a task like below</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">-</span> <span class="na">task</span><span class="pi">:</span> <span class="s">AzureRmWebAppDeployment@4</span>
+  <span class="na">inputs</span><span class="pi">:</span>
+    <span class="na">ConnectionType</span><span class="pi">:</span> <span class="s1">'</span><span class="s">AzureRM'</span>
+    <span class="na">azureSubscription</span><span class="pi">:</span> <span class="s1">'</span><span class="s">my-subscription-name'</span>
+    <span class="na">appType</span><span class="pi">:</span> <span class="s1">'</span><span class="s">webAppHyperVContainer'</span>
+    <span class="na">WebAppName</span><span class="pi">:</span> <span class="s1">'</span><span class="s">my-app-name'</span>
+    <span class="na">DockerNamespace</span><span class="pi">:</span> <span class="s1">'</span><span class="s">myregsitry.azurecr.io'</span>
+    <span class="na">DockerRepository</span><span class="pi">:</span> <span class="s1">'</span><span class="s">dotnetframework:12'</span>
+</code></pre></div></div>
+
+<p>After you’ve added the task the pipeline is ready to run.  Click the <strong>Validate and save</strong> button and run the pipeline.  The pipeline will go through the steps to Build and push the Windows container image to Azure Container Registry and deploy the image to App Service.</p>
+
+<p>See the below for the full yaml file:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">trigger</span><span class="pi">:</span>
+ <span class="pi">-</span> <span class="s">main</span>
+
+ <span class="na">pool</span><span class="pi">:</span>
+   <span class="na">vmImage</span><span class="pi">:</span> <span class="s1">'</span><span class="s">windows-latest'</span> 
+
+ <span class="na">variables</span><span class="pi">:</span>
+   <span class="na">vmImageName</span><span class="pi">:</span> <span class="s1">'</span><span class="s">windows-latest'</span>
+   <span class="na">imageRepository</span><span class="pi">:</span> <span class="s1">'</span><span class="s">your-image-repo-name'</span>
+   <span class="na">dockerfilePath</span><span class="pi">:</span> <span class="s1">'</span><span class="s">$(Build.SourcesDirectory)/path/to/Dockerfile'</span>
+   <span class="na">dockerRegistryServiceConnection</span><span class="pi">:</span> <span class="s1">'</span><span class="s">your-service-connection-number'</span>
+
+<span class="pi">-</span> <span class="na">stage</span><span class="pi">:</span> <span class="s">Build</span>
+  <span class="na">displayName</span><span class="pi">:</span> <span class="s">Build and push stage</span>
+  <span class="na">jobs</span><span class="pi">:</span>  
+  <span class="pi">-</span> <span class="na">job</span><span class="pi">:</span> <span class="s">Build</span>
+    <span class="na">displayName</span><span class="pi">:</span> <span class="s">Build job</span>
+    <span class="na">pool</span><span class="pi">:</span>
+      <span class="na">vmImage</span><span class="pi">:</span> <span class="s">$(vmImageName)</span>
+    <span class="na">steps</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">task</span><span class="pi">:</span> <span class="s">Docker@2</span>
+      <span class="na">displayName</span><span class="pi">:</span> <span class="s">Build and push an image to container registry</span>
+      <span class="na">inputs</span><span class="pi">:</span>
+        <span class="na">command</span><span class="pi">:</span> <span class="s">buildAndPush</span>
+        <span class="na">repository</span><span class="pi">:</span> <span class="s">$(imageRepository)</span>
+        <span class="na">dockerfile</span><span class="pi">:</span> <span class="s">$(dockerfilePath)</span>
+        <span class="na">containerRegistry</span><span class="pi">:</span> <span class="s">$(dockerRegistryServiceConnection)</span>
+        <span class="na">tags</span><span class="pi">:</span> <span class="pi">|</span>
+          <span class="s">$(tag)</span>
+
+<span class="pi">-</span> <span class="na">stage</span><span class="pi">:</span> <span class="s">Deploy</span>
+  <span class="na">displayName</span><span class="pi">:</span> <span class="s">Deploy to App Service</span>
+  <span class="na">jobs</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">job</span><span class="pi">:</span> <span class="s">Deploy</span>
+    <span class="na">displayName</span><span class="pi">:</span> <span class="s">Deploy</span>
+    <span class="na">pool</span><span class="pi">:</span>
+      <span class="na">vmImage</span><span class="pi">:</span> <span class="s">$(vmImageName)</span>
+    <span class="na">steps</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">task</span><span class="pi">:</span> <span class="s">AzureRmWebAppDeployment@4</span>
+<span class="na">		  inputs</span><span class="pi">:</span>
+<span class="err">		</span>    <span class="na">ConnectionType</span><span class="pi">:</span> <span class="s1">'</span><span class="s">AzureRM'</span>
+<span class="err">		</span>    <span class="na">azureSubscription</span><span class="pi">:</span> <span class="s1">'</span><span class="s">my-subscription-name'</span>
+<span class="err">		</span>    <span class="na">appType</span><span class="pi">:</span> <span class="s1">'</span><span class="s">webAppHyperVContainer'</span>
+<span class="err">		</span>    <span class="na">WebAppName</span><span class="pi">:</span> <span class="s1">'</span><span class="s">my-app-name'</span>
+<span class="err">		</span>    <span class="na">DockerNamespace</span><span class="pi">:</span> <span class="s1">'</span><span class="s">myregsitry.azurecr.io'</span>
+<span class="err">		</span>    <span class="na">DockerRepository</span><span class="pi">:</span> <span class="s1">'</span><span class="s">dotnetframework:12'</span>
+</code></pre></div></div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2024-04-03T00:00:00+00:00">April 03, 2024</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Continuous+Deployment+for+Windows+Containers+with+Azure+Pipelines%20https%3A%2F%2Fazure.github.io%2FAppService%2F2024%2F04%2F03%2FContinuous-deployment-for-Windows-containers.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2024%2F04%2F03%2FContinuous-deployment-for-Windows-containers.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2024%2F04%2F03%2FContinuous-deployment-for-Windows-containers.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2024/03/20/Azure-WebApp-crashing-due-to-duplicate-runtime-section.html" class="pagination--pager" title="Prevent crashes due to ‘system.webServer/runtime’ already defined
+">Previous</a>
+    
+    
+      <a href="/AppService/2024/04/04/Public-Preview-Sidecars-Webjobs.html" class="pagination--pager" title="Unlocking Possibilities: Introducing Sidecar Pattern and Webjobs for Linux App Service in Public Preview!
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

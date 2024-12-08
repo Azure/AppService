@@ -1,0 +1,1107 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>How to use gRPC-Web with Blazor WebAssembly on App Service - Azure App Service</title>
+<meta name="description" content="gRPC is a modern protocol which uses HTTP/2 to streamline messaging between clients and back-end servers and is an efficient way to connect services that require high-performance communication. However, HTTP/2 gRPC is not compatible with modern browsers and requires the use of gRPC-Web to communicate between a browser application and a gRPC server.  gRPC-Web enables this scenario by having the browser send normal HTTP requests and acting as a proxy in front of the gRPC server to translate the requests to the browser.  With gRPC-Web, you can create a .NET server app hosted on App Service using gRPC-Web middleware which operates as a translator between the browser application and the .NET server app.  This translation maps incoming gRPC-Web requests to the appropriate .NET classes in the server app, and translates the server app’s return values into gRPC-Web responses that are sent back to the browser.  If you would like to learn more about gRPC-Web, visit the gRPC blog.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="How to use gRPC-Web with Blazor WebAssembly on App Service">
+<meta property="og:url" content="https://azure.github.io/AppService/2021/03/15/How-to-use-gRPC-Web-with-Blazor-WebAssembly-on-App-Service.html">
+
+
+  <meta property="og:description" content="gRPC is a modern protocol which uses HTTP/2 to streamline messaging between clients and back-end servers and is an efficient way to connect services that require high-performance communication. However, HTTP/2 gRPC is not compatible with modern browsers and requires the use of gRPC-Web to communicate between a browser application and a gRPC server.  gRPC-Web enables this scenario by having the browser send normal HTTP requests and acting as a proxy in front of the gRPC server to translate the requests to the browser.  With gRPC-Web, you can create a .NET server app hosted on App Service using gRPC-Web middleware which operates as a translator between the browser application and the .NET server app.  This translation maps incoming gRPC-Web requests to the appropriate .NET classes in the server app, and translates the server app’s return values into gRPC-Web responses that are sent back to the browser.  If you would like to learn more about gRPC-Web, visit the gRPC blog.">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2021-03-15T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2021/03/15/How-to-use-gRPC-Web-with-Blazor-WebAssembly-on-App-Service.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="How to use gRPC-Web with Blazor WebAssembly on App Service">
+    <meta itemprop="description" content="gRPC is a modern protocol which uses HTTP/2 to streamline messaging between clients and back-end servers and is an efficient way to connect services that require high-performance communication. However, HTTP/2 gRPC is not compatible with modern browsers and requires the use of gRPC-Web to communicate between a browser application and a gRPC server.  gRPC-Web enables this scenario by having the browser send normal HTTP requests and acting as a proxy in front of the gRPC server to translate the requests to the browser.  With gRPC-Web, you can create a .NET server app hosted on App Service using gRPC-Web middleware which operates as a translator between the browser application and the .NET server app.  This translation maps incoming gRPC-Web requests to the appropriate .NET classes in the server app, and translates the server app’s return values into gRPC-Web responses that are sent back to the browser.  If you would like to learn more about gRPC-Web, visit the gRPC blog.">
+    <meta itemprop="datePublished" content="March 15, 2021">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">How to use gRPC-Web with Blazor WebAssembly on App Service
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  6 minute read
+
+            
+            
+              • By Jeff Martinez
+            
+            • March 15, 2021
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#create-blazor-webassembly-app">Create Blazor WebAssembly App</a></li>
+  <li><a href="#install-packages">Install packages</a></li>
+  <li><a href="#add-proto-file-and-service-to-the-shared-project">Add Proto file and Service to the Shared project</a></li>
+  <li><a href="#configure-grpc-web-in-the-server">Configure gRPC-Web in the Server</a></li>
+  <li><a href="#configure-grpc-web-with-the-net-client">Configure gRPC-Web with the .NET client</a></li>
+  <li><a href="#deploying-to-app-service">Deploying to App Service</a></li>
+  <li><a href="#resources">Resources</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <p>gRPC is a modern protocol which uses HTTP/2 to streamline messaging between clients and back-end servers and is an efficient way to connect services that require high-performance communication. However, HTTP/2 gRPC is not compatible with modern browsers and requires the use of gRPC-Web to communicate between a browser application and a gRPC server.  gRPC-Web enables this scenario by having the browser send normal HTTP requests and acting as a proxy in front of the gRPC server to translate the requests to the browser.  With gRPC-Web, you can create a .NET server app hosted on App Service using gRPC-Web middleware which operates as a translator between the browser application and the .NET server app.  This translation maps incoming gRPC-Web requests to the appropriate .NET classes in the server app, and translates the server app’s return values into gRPC-Web responses that are sent back to the browser.  If you would like to learn more about gRPC-Web, visit the <a href="https://grpc.io/blog/state-of-grpc-web/">gRPC blog</a>.</p>
+
+<p>In the following example, we’ll be using a .NET 5 Blazor WebAssembly application and replacing the existing JSON calls with gRPC-Web by enabling the gRPC-Web middleware in the startup configuration.</p>
+
+<h2 id="create-blazor-webassembly-app">Create Blazor WebAssembly App</h2>
+<p>In Visual Studio, you will create a Blazor WebAssembly application that we can add  gRPC-Web to.</p>
+
+<p>Open Visual Studio and <strong>Create a new project</strong> and search for <strong>Blazor app</strong>.  Highlight <strong>Blazor app</strong>, click <strong>Next</strong>, name your application and click <strong>Create</strong>.</p>
+
+<p>Choose <strong>.NET 5.0</strong> in the drop-down, highlight the <strong>Blazor WebAssembly App</strong> option and check the <strong>ASP.NET Core hosted</strong> option under the <strong>Advanced</strong> column before clicking the <strong>Create</strong> button.</p>
+
+<p><img src="/AppService/media/2021/03/grpc_blazor_1.png" alt="Blazor App Create in Visual Studio" /></p>
+
+<p>Once your application is created, you will have a Client, Server, and Shared project under your solution.</p>
+
+<h2 id="install-packages">Install packages</h2>
+<p>Before you add any code to your projects, you need to make sure the correct packages are installed on your Client, Server, and Shared projects.</p>
+
+<p>Starting on the Shared project <strong>Right-click</strong> the project and go to <strong>Manage Nuget packages</strong>.  Browse for and install the following packages in the Shared project:</p>
+<ul>
+  <li>Google.Protobuf</li>
+  <li>Grpc.Net.Client</li>
+  <li>Grpc.Tools</li>
+</ul>
+
+<p>Next, follow the same process for the Shared project and go to your Server project to install these packages:</p>
+<ul>
+  <li>Grpc.AspNetCore</li>
+  <li>Grpc.AspNetCore.Web</li>
+</ul>
+
+<p>Then, go to your Client project and install the following:</p>
+<ul>
+  <li>Grpc.Net.Client.Web</li>
+</ul>
+
+<p>You can verify that each of the packages are installed by viewing the .csproj file of each project.  You should see an added package reference for the ones you’ve installed.</p>
+
+<h2 id="add-proto-file-and-service-to-the-shared-project">Add Proto file and Service to the Shared project</h2>
+<p>Grpc works with Proto files which are written in protocol buffer language that define your messaging.  To learn more about the language please visit this <a href="https://developers.google.com/protocol-buffers/docs/proto3#simple">guide</a>.</p>
+
+<p>To add a proto file, <strong>Right-click</strong> the Shared project and go to <strong>Add</strong>, then <strong>New item</strong>.  You can choose a Class file and name it <strong>weather.proto</strong> and hit <strong>Add</strong>.  Visual Studio will pick up that it is a gRPC file as you will see a gRPC icon next to the file.</p>
+
+<p>Remove the boiler plate code in the file and replace it with the following:</p>
+
+<pre><code class="language-grpc">syntax = "proto3"; 
+// replace namespace with your own
+option csharp_namespace = "BlazorGrpcWebApp.Shared"; 
+package WeatherForecast; 
+import "google/protobuf/timestamp.proto"; 
+
+service WeatherForecasts { 
+	rpc GetWeather (WeatherForecast) returns (WeatherReply); 
+} 
+
+message WeatherReply { 
+	repeated WeatherForecast forecasts = 1; 
+} 
+
+message WeatherForecast { 
+	google.protobuf.Timestamp dateTimeStamp = 1; 
+	int32 temperatureC = 2; 
+	string summary = 3; 
+}
+
+</code></pre>
+
+<p>Next we will add the Weather Service class.  This class will contain the same code and logic that is currently in the <em>WeatherForecastController.cs</em> file, which provides us with our weather data.  Right-click the project and add a new class item naming it <em>WeatherService.cs</em>.</p>
+
+<p>Add the following using statements and code to the class:</p>
+
+<div class="language-c# highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">using</span> <span class="nn">Grpc.Core</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Google.Protobuf.WellKnownTypes</span><span class="p">;</span>
+
+<span class="k">public</span> <span class="k">class</span> <span class="nc">WeatherService</span> <span class="p">:</span> <span class="n">WeatherForecasts</span><span class="p">.</span><span class="n">WeatherForecastsBase</span> 
+<span class="p">{</span> 
+	<span class="k">private</span> <span class="k">static</span> <span class="k">readonly</span> <span class="kt">string</span><span class="p">[]</span> <span class="n">Summaries</span> <span class="p">=</span> <span class="k">new</span><span class="p">[]</span> 
+	<span class="p">{</span> 
+		<span class="s">"Freezing"</span><span class="p">,</span> <span class="s">"Bracing"</span><span class="p">,</span> <span class="s">"Chilly"</span><span class="p">,</span> <span class="s">"Cool"</span><span class="p">,</span> <span class="s">"Mild"</span><span class="p">,</span> <span class="s">"Warm"</span><span class="p">,</span> <span class="s">"Balmy"</span><span class="p">,</span> <span class="s">"Hot"</span><span class="p">,</span> <span class="s">"Sweltering"</span><span class="p">,</span> <span class="s">"Scorching"</span> 
+	<span class="p">};</span> 
+
+	<span class="k">public</span> <span class="k">override</span> <span class="n">Task</span><span class="p">&lt;</span><span class="n">WeatherReply</span><span class="p">&gt;</span> <span class="nf">GetWeather</span><span class="p">(</span><span class="n">WeatherForecast</span> <span class="n">request</span><span class="p">,</span> <span class="n">ServerCallContext</span> <span class="n">context</span><span class="p">)</span> 
+	<span class="p">{</span> 
+		<span class="kt">var</span> <span class="n">reply</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">WeatherReply</span><span class="p">();</span> 
+		<span class="kt">var</span> <span class="n">rng</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">Random</span><span class="p">();</span> 
+
+		<span class="n">reply</span><span class="p">.</span><span class="n">Forecasts</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="n">Enumerable</span><span class="p">.</span><span class="nf">Range</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">10</span><span class="p">).</span><span class="nf">Select</span><span class="p">(</span><span class="n">index</span> <span class="p">=&gt;</span> <span class="k">new</span> <span class="n">WeatherForecast</span> 
+		<span class="p">{</span> 
+			<span class="n">Date</span> <span class="p">=</span> <span class="n">DateTime</span><span class="p">.</span><span class="n">Now</span><span class="p">.</span><span class="nf">AddDays</span><span class="p">(</span><span class="n">index</span><span class="p">),</span> 
+			<span class="n">TemperatureC</span> <span class="p">=</span> <span class="n">rng</span><span class="p">.</span><span class="nf">Next</span><span class="p">(</span><span class="m">20</span><span class="p">,</span> <span class="m">55</span><span class="p">),</span> 
+			<span class="n">Summary</span> <span class="p">=</span> <span class="n">Summaries</span><span class="p">[</span><span class="n">rng</span><span class="p">.</span><span class="nf">Next</span><span class="p">(</span><span class="n">Summaries</span><span class="p">.</span><span class="n">Length</span><span class="p">)]</span> 
+		<span class="p">}));</span> 
+
+		<span class="k">return</span> <span class="n">Task</span><span class="p">.</span><span class="nf">FromResult</span><span class="p">(</span><span class="n">reply</span><span class="p">);</span> 
+	<span class="p">}</span> 
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>Now that you have your WeatherService added, you will notice that some of the objects won’t be recognized from the proto file.  To remedy this, we’ll need to include a reference to the proto file in the Shared .cproj file ItemGroup so it can be recongized.  Add the following to your ItemGroup in the .csproj file:</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;ItemGroup&gt;</span> 
+	<span class="nt">&lt;SupportedPlatform</span> <span class="na">Include=</span><span class="s">"browser"</span> <span class="nt">/&gt;</span> 
+	// Add .proto file reference
+	<span class="nt">&lt;Protobuf</span> <span class="na">Include=</span><span class="s">"weather.proto"</span> <span class="nt">/&gt;</span> 
+<span class="nt">&lt;/ItemGroup&gt;</span>
+
+
+</code></pre></div></div>
+
+<h2 id="configure-grpc-web-in-the-server">Configure gRPC-Web in the Server</h2>
+<p>To configure the application to take advantage of gRPC-Web you need to register the gRPC service in your <em>Startup.cs</em> file.  This enables you to use dependency injection to consume the service across the app.  Add the following code to your ConfigureServices method in the Server Startup.cs file:</p>
+
+<div class="language-c# highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">void</span> <span class="nf">ConfigureServices</span><span class="p">(</span><span class="n">IServiceCollection</span> <span class="n">services</span><span class="p">)</span> 
+<span class="p">{</span> 
+	<span class="c1">// add gRPC service </span>
+	<span class="n">services</span><span class="p">.</span><span class="nf">AddGrpc</span><span class="p">();</span> 
+	<span class="n">services</span><span class="p">.</span><span class="nf">AddControllersWithViews</span><span class="p">();</span> 
+	<span class="n">services</span><span class="p">.</span><span class="nf">AddRazorPages</span><span class="p">();</span> 
+<span class="p">}</span>
+
+</code></pre></div></div>
+<p>Next, you’ll add the gRPC-Web middleware to the apps configuration and register the gRPC service.  This must be added after UseRouting and before UseEndpoints in the Configure method.</p>
+
+<div class="language-c# highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">app</span><span class="p">.</span><span class="nf">UseRouting</span><span class="p">();</span> 
+
+<span class="c1">// must be added after UseRouting and before UseEndpoints </span>
+<span class="n">app</span><span class="p">.</span><span class="nf">UseGrpcWeb</span><span class="p">();</span> 
+
+<span class="n">app</span><span class="p">.</span><span class="nf">UseEndpoints</span><span class="p">(</span><span class="n">endpoints</span> <span class="p">=&gt;</span> 
+<span class="p">{</span> 
+	<span class="c1">// map to and register the gRPC service</span>
+	<span class="n">endpoints</span><span class="p">.</span><span class="n">MapGrpcService</span><span class="p">&lt;</span><span class="n">WeatherService</span><span class="p">&gt;().</span><span class="nf">EnableGrpcWeb</span><span class="p">();</span> 
+	<span class="n">endpoints</span><span class="p">.</span><span class="nf">MapRazorPages</span><span class="p">();</span> 
+	<span class="n">endpoints</span><span class="p">.</span><span class="nf">MapControllers</span><span class="p">();</span> 
+	<span class="n">endpoints</span><span class="p">.</span><span class="nf">MapFallbackToFile</span><span class="p">(</span><span class="s">"index.html"</span><span class="p">);</span> 
+<span class="p">});</span>
+
+</code></pre></div></div>
+
+<h2 id="configure-grpc-web-with-the-net-client">Configure gRPC-Web with the .NET client</h2>
+<p>In order to configure gRPC-Web to use in our Client project, you’ll need to add a gRPC channel that provides a connection to a gRPC server using the HttpClient object.</p>
+
+<p>Add the following code to the <em>Program.cs</em> file in your Client project:</p>
+
+<div class="language-c# highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">using</span> <span class="nn">Grpc.Net.Client</span> 
+<span class="k">using</span> <span class="nn">Grpc.Net.Client.Web</span><span class="p">;</span> 
+<span class="k">using</span> <span class="nn">Microsoft.AspNetCore.Components</span><span class="p">;</span> 
+
+<span class="n">builder</span><span class="p">.</span><span class="n">Services</span><span class="p">.</span><span class="nf">AddSingleton</span><span class="p">(</span><span class="n">services</span> <span class="p">=&gt;</span> 
+<span class="p">{</span> 
+	<span class="kt">var</span> <span class="n">httpClient</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">HttpClient</span><span class="p">(</span><span class="k">new</span> <span class="nf">GrpcWebHandler</span><span class="p">(</span><span class="n">GrpcWebMode</span><span class="p">.</span><span class="n">GrpcWeb</span><span class="p">,</span> <span class="k">new</span> <span class="nf">HttpClientHandler</span><span class="p">()));</span> 
+	<span class="kt">var</span> <span class="n">baseUri</span> <span class="p">=</span> <span class="n">services</span><span class="p">.</span><span class="n">GetRequiredService</span><span class="p">&lt;</span><span class="n">NavigationManager</span><span class="p">&gt;().</span><span class="n">BaseUri</span><span class="p">;</span> 
+	<span class="kt">var</span> <span class="n">channel</span> <span class="p">=</span> <span class="n">GrpcChannel</span><span class="p">.</span><span class="nf">ForAddress</span><span class="p">(</span><span class="n">baseUri</span><span class="p">,</span> <span class="k">new</span> <span class="n">GrpcChannelOptions</span> <span class="p">{</span> <span class="n">HttpClient</span> <span class="p">=</span> <span class="n">httpClient</span> <span class="p">});</span> 
+	<span class="k">return</span> <span class="k">new</span> <span class="n">WeatherForecasts</span><span class="p">.</span><span class="nf">WeatherForecastsClient</span><span class="p">(</span><span class="n">channel</span><span class="p">);</span> 
+<span class="p">});</span>
+
+</code></pre></div></div>
+
+<p>Now that gRPC-Web is configured in the client project, we need to adjust the code in the FetchData.razor file so we can test the gRPC calls.  The injected HttpClient will no longer be needed, but we will replace that with the Weather Forecasts Client so we can retrieve the weather data.  Replace the current code in the FetchData.Razor with the code below.</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@page "/fetchdata" 
+// replace using statement with your namespace
+@using BlazorGrpcWebApp.Shared 
+@inject WeatherForecasts.WeatherForecastsClient WeatherForecastsClient 
+
+<span class="nt">&lt;h1&gt;</span>Weather forecast<span class="nt">&lt;/h1&gt;</span> 
+<span class="nt">&lt;p&gt;</span>This component demonstrates fetching data from the server.<span class="nt">&lt;/p&gt;</span> 
+
+@if (forecasts == null) 
+{ 
+	<span class="nt">&lt;p&gt;&lt;em&gt;</span>Loading...<span class="nt">&lt;/em&gt;&lt;/p&gt;</span> 
+} 
+else 
+{ 
+	<span class="nt">&lt;table</span> <span class="na">class=</span><span class="s">"table"</span><span class="nt">&gt;</span> 
+	<span class="nt">&lt;thead&gt;</span> 
+	<span class="nt">&lt;tr&gt;</span> 
+	<span class="nt">&lt;th&gt;</span>Date<span class="nt">&lt;/th&gt;</span> 
+	<span class="nt">&lt;th&gt;</span>Temp. (C)<span class="nt">&lt;/th&gt;</span> 
+	<span class="nt">&lt;th&gt;</span>Summary<span class="nt">&lt;/th&gt;</span> 
+	<span class="nt">&lt;/tr&gt;</span> 
+	<span class="nt">&lt;/thead&gt;</span> 
+	<span class="nt">&lt;tbody&gt;</span> 
+	@foreach (var forecast in forecasts) 
+	{ 
+		<span class="nt">&lt;tr&gt;</span> 
+		<span class="nt">&lt;td&gt;</span>@forecast.Date.ToShortDateString()<span class="nt">&lt;/td&gt;</span> 
+		<span class="nt">&lt;td&gt;</span>@forecast.TemperatureC<span class="nt">&lt;/td&gt;</span> 
+		<span class="nt">&lt;td&gt;</span>@forecast.Summary<span class="nt">&lt;/td&gt;</span> 
+		<span class="nt">&lt;/tr&gt;</span> 
+	} 
+	<span class="nt">&lt;/tbody&gt;</span> 
+	<span class="nt">&lt;/table&gt;</span> 
+} 
+
+@code 
+{ 
+	private IList<span class="nt">&lt;WeatherForecast&gt;</span> forecasts; 
+	protected override async Task OnInitializedAsync() 
+	{ 
+		forecasts = (await WeatherForecastsClient.GetWeatherAsync(new WeatherForecast())).Forecasts; 
+	} 
+}
+
+</code></pre></div></div>
+
+<p>Once the FetchData.razor file is updated to output the weather data we can verify that we are using gRPC-Web by running our application locally <strong>Right-click</strong> anywhere on the application and go to <strong>Inspect</strong>.  Find the <strong>Network</strong> tab and then visit the Fetch data page.  The Weather forecast data will load and you will see the name of our method GetWeather show up.  Click on the GetWeather name to view the Response Headers which show the <strong>content-type</strong> being <strong>application/grpc-web</strong>.</p>
+
+<p><img src="/AppService/media/2021/03/grpc_blazor_2.png" alt="grpc web network validation" /></p>
+
+<h2 id="deploying-to-app-service">Deploying to App Service</h2>
+<p>Since we are using a Blazor WebAssembly application that is hosted on ASP.NET Core the deployment process is slightly different.  You can still deploy to App Service as you typically would, but you’ll need to Publish the <strong>Server</strong> project.  The hosted deployment serves the Blazor app to browsers from its hosted ASP.NET Core app that runs on a web server.  Your Server app will have reference to the Client app DLLs as the apps are deployed together with the Client app being published in the wwwroot folder.  Learn more about hosted deployments in the <a href="https://grpc.io/blog/state-of-grpc-web/">Blazor documentation</a>.</p>
+
+<p>Once your application is published you can verify that gRPC-Web is working using the same process from above by inspecting the Network in the browse.  Your Request URL will now point to your App Service URL (myappname.azurewebsites.net) and the <em>content-type:</em> will still be <em>application/grpc-web</em>.</p>
+
+<h2 id="resources">Resources</h2>
+<ol>
+  <li><a href="https://docs.microsoft.com/aspnet/core/grpc/browser?view=aspnetcore-5.0">Use gRPC in browser apps</a></li>
+  <li><a href="https://devblogs.microsoft.com/aspnet/grpc-web-for-net-now-available/">gRPC-Web for .NET apps</a></li>
+  <li><a href="https://grpc.io/blog/state-of-grpc-web/">gRPC-Web documentation</a></li>
+</ol>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-03-15T00:00:00+00:00">March 15, 2021</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=How+to+use+gRPC-Web+with+Blazor+WebAssembly+on+App+Service%20https%3A%2F%2Fazure.github.io%2FAppService%2F2021%2F03%2F15%2FHow-to-use-gRPC-Web-with-Blazor-WebAssembly-on-App-Service.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2021%2F03%2F15%2FHow-to-use-gRPC-Web-with-Blazor-WebAssembly-on-App-Service.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2021%2F03%2F15%2FHow-to-use-gRPC-Web-with-Blazor-WebAssembly-on-App-Service.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2021/03/11/increased-savings-with-app-service-offerings.html" class="pagination--pager" title="Increased Savings with App Service Offerings
+">Previous</a>
+    
+    
+      <a href="/AppService/2021/03/26/Secure-resilient-site-with-custom-domain.html" class="pagination--pager" title="Deploying a secure, resilient site with a custom domain
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

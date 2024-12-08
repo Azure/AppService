@@ -1,0 +1,1105 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>How to Create a Web App with a Hybrid Connection - Azure App Service</title>
+<meta name="description" content="Hybrid Connections is a feature in App Service that provides access from your app to a TCP endpoint allowing your app to access application resources in any network that can make outbound calls to Azure over port 443. For those that want their apps in App Service to securely access other resources (typically outside of Azure - within Azure you would use Private Endpoints for example) but don’t want to set up an Azure ExpressRoute or connection via the public internet, Hybrid Connections can be an efficient and simple solution.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="How to Create a Web App with a Hybrid Connection">
+<meta property="og:url" content="https://azure.github.io/AppService/2021/10/15/How-to-create-a-web-app-with-a-hybrid-connection.html">
+
+
+  <meta property="og:description" content="Hybrid Connections is a feature in App Service that provides access from your app to a TCP endpoint allowing your app to access application resources in any network that can make outbound calls to Azure over port 443. For those that want their apps in App Service to securely access other resources (typically outside of Azure - within Azure you would use Private Endpoints for example) but don’t want to set up an Azure ExpressRoute or connection via the public internet, Hybrid Connections can be an efficient and simple solution.">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2021-10-15T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2021/10/15/How-to-create-a-web-app-with-a-hybrid-connection.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="How to Create a Web App with a Hybrid Connection">
+    <meta itemprop="description" content="Hybrid Connections is a feature in App Service that provides access from your app to a TCP endpoint allowing your app to access application resources in any network that can make outbound calls to Azure over port 443. For those that want their apps in App Service to securely access other resources (typically outside of Azure - within Azure you would use Private Endpoints for example) but don’t want to set up an Azure ExpressRoute or connection via the public internet, Hybrid Connections can be an efficient and simple solution.">
+    <meta itemprop="datePublished" content="October 15, 2021">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">How to Create a Web App with a Hybrid Connection
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  9 minute read
+
+            
+            
+              • By Jordan Selig
+            
+            • October 15, 2021
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#prerequisites">Prerequisites</a></li>
+  <li><a href="#prepare-local-mysql">Prepare local MySQL</a>
+    <ul>
+      <li><a href="#connect-to-local-mysql-server">Connect to local MySQL server</a></li>
+      <li><a href="#create-a-database-locally">Create a database locally</a></li>
+    </ul>
+  </li>
+  <li><a href="#create-a-nodejs-app-locally">Create a Node.js app locally</a>
+    <ul>
+      <li><a href="#clone-the-sample">Clone the sample</a></li>
+      <li><a href="#configure-mysql-connection">Configure MySQL connection</a></li>
+      <li><a href="#run-the-application">Run the application</a></li>
+    </ul>
+  </li>
+  <li><a href="#configure-the-app-for-app-service">Configure the app for App Service</a></li>
+  <li><a href="#deploy-app-to-azure">Deploy app to Azure</a>
+    <ul>
+      <li><a href="#create-a-web-app">Create a web app</a></li>
+      <li><a href="#configure-database-settings">Configure database settings</a></li>
+      <li><a href="#create-hybrid-connection">Create Hybrid Connection</a></li>
+      <li><a href="#browse-to-the-azure-app">Browse to the Azure app</a></li>
+    </ul>
+  </li>
+  <li><a href="#clean-up-resources">Clean up resources</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <p><a href="https://docs.microsoft.com/azure/app-service/app-service-hybrid-connections">Hybrid Connections</a> is a feature in App Service that provides access from your app to a TCP endpoint allowing your app to access application resources in any network that can make outbound calls to Azure over port 443. For those that want their apps in App Service to securely access other resources (typically outside of Azure - within Azure you would use <a href="https://docs.microsoft.com/azure/private-link/private-endpoint-overview">Private Endpoints</a> for example) but don’t want to set up an <a href="https://docs.microsoft.com/azure/expressroute/">Azure ExpressRoute</a> or connection via the public internet, Hybrid Connections can be an efficient and simple solution.</p>
+
+<p>If you have decided to go down the route of using an App Service Hybrid Connection to connect your web app in App Service to a resource in another network, this tutorial will walk you through setting up the connection and demonstrate how you would connect to a database on your local machine. If you are unfamiliar with Hybrid Connections, take a look at the documentation for <a href="https://docs.microsoft.com/azure/service-bus-relay/relay-hybrid-connections-protocol/">Azure Relay Hybrid Connections</a> and <a href="https://docs.microsoft.com/azure/app-service/app-service-hybrid-connections">App Service Hybrid Connections</a>.</p>
+
+<h2 id="prerequisites">Prerequisites</h2>
+
+<p>If you don’t have an <a href="https://docs.microsoft.com/azure/guides/developer/azure-developer-guide#understanding-accounts-subscriptions-and-billing">Azure subscription</a>, create a <a href="https://azure.microsoft.com/free/?ref=microsoft.com&amp;utm_source=microsoft.com&amp;utm_medium=docs&amp;utm_campaign=visualstudio">free account</a> before you begin.</p>
+
+<p>For this tutorial, a <a href="https://github.com/achowba/node-mysql-crud-app">Node.js app</a> with a MySQL database will be used. It is important to review the How-To guides specifically for <a href="https://docs.microsoft.com/en-us/azure/app-service/configure-language-nodejs?pivots=platform-windows">configuring an app</a> on the <a href="https://docs.microsoft.com/en-us/azure/app-service/">App Service Docs</a> site to ensure you are configuring your app appropriately based on your app’s runtime. For more information on how to build apps with a database, see the <a href="https://docs.microsoft.com/azure/app-service/tutorial-nodejs-mongodb-app?pivots=platform-windows">tutorials</a> posted on the App Service Docs site. The Node.js and MySQL app used for this tutorial was created by Atauba Prince. Check out his <a href="https://dev.to/achowba/build-a-simple-app-using-node-js-and-mysql-19me">post</a> to learn more about how it works and how to build it from scratch.</p>
+
+<h2 id="prepare-local-mysql">Prepare local MySQL</h2>
+
+<p>In this step, you create a database in your local MySQL server. If you don’t have a local MySQL server, <a href="https://dev.mysql.com/doc/refman/5.7/en/installing.html">install and start MySQL</a>.</p>
+
+<p>For this tutorial on Hybrid Connections, you will be connecting to your database as root. This is only being done for simplicity due to this being a Hybrid Connections focused tutorial. Connecting as root is not best practice and it’s recommended to use fine grained access control and to follow <a href="https://docs.microsoft.com/azure/app-service/security-recommendations">security best practices</a> when accessing resources.</p>
+
+<h3 id="connect-to-local-mysql-server">Connect to local MySQL server</h3>
+
+<p>In a terminal window, connect to your local MySQL server.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql <span class="nt">-u</span> root <span class="nt">-p</span>
+</code></pre></div></div>
+
+<p>If you’re prompted for a password, enter the password for the <code class="language-plaintext highlighter-rouge">root</code> account. If you don’t remember your root account password, see <a href="https://dev.mysql.com/doc/refman/5.7/en/resetting-permissions.html">MySQL: How to Reset the Root Password</a>.</p>
+
+<p>If your command runs successfully, then your MySQL server is running. If not, make sure that your local MySQL server is started by following the <a href="https://dev.mysql.com/doc/refman/5.7/en/postinstallation.html">MySQL post-installation steps</a>.</p>
+
+<h3 id="create-a-database-locally">Create a database locally</h3>
+
+<ol>
+  <li>
+    <p>At the <code class="language-plaintext highlighter-rouge">mysql</code> prompt, create a database.</p>
+
+    <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">CREATE</span> <span class="k">DATABASE</span> <span class="n">socka</span><span class="p">;</span>
+ <span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">IF</span> <span class="k">NOT</span> <span class="k">EXISTS</span> <span class="nv">`players`</span> <span class="p">(</span>
+     <span class="nv">`id`</span> <span class="nb">int</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="n">AUTO_INCREMENT</span><span class="p">,</span>
+     <span class="nv">`first_name`</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+     <span class="nv">`last_name`</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+     <span class="nv">`position`</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+     <span class="nv">`number`</span> <span class="nb">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+     <span class="nv">`image`</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+     <span class="nv">`user_name`</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+     <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="nv">`id`</span><span class="p">)</span>
+ <span class="p">)</span> <span class="n">ENGINE</span><span class="o">=</span><span class="n">InnoDB</span>  <span class="k">DEFAULT</span> <span class="n">CHARSET</span><span class="o">=</span><span class="n">latin1</span> <span class="n">AUTO_INCREMENT</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Exit your server connection by typing <code class="language-plaintext highlighter-rouge">quit</code>.</p>
+
+    <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">quit</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>At this point, your database is fully configured and you can move on to configuring the app.</p>
+
+<h2 id="create-a-nodejs-app-locally">Create a Node.js app locally</h2>
+
+<p>In this step, you will create a local Node.js app to connect to your database to ensure the app and database function as intended. It is good practice to ensure your app functions locally prior to deploying to App Service.</p>
+
+<h3 id="clone-the-sample">Clone the sample</h3>
+
+<p>In a terminal window, <code class="language-plaintext highlighter-rouge">cd</code> to a working directory.</p>
+
+<ol>
+  <li>
+    <p>Clone the sample repository and change to the repository root.</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> git clone https://github.com/achowba/node-mysql-crud-app
+ <span class="nb">cd </span>node-mysql-crud-app
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Install the required packages.</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> npm <span class="nb">install</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h3 id="configure-mysql-connection">Configure MySQL connection</h3>
+
+<p>In the repository root, open up the <em>app.js</em> file. If you are following along with the tutorial, you should not need to change anything. If you created a user to access your database, you will need to update the <em>mysql.createConnection</em> function with the appropriate parameters.</p>
+
+<h3 id="run-the-application">Run the application</h3>
+
+<p>Ensure that your MySQL server is up and running and go ahead and start the application.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>node app.js
+</code></pre></div></div>
+
+<p>Check your terminal to ensure your code has no errors, then head over to your browser and open http://localhost:2000. Feel free to play around with the app by adding, editing, and deleting players. All updates that you make will be stored in the local database. Later on, when you create the app in App Service, since you will be connecting to this same database, you will see the same values.</p>
+
+<h2 id="configure-the-app-for-app-service">Configure the app for App Service</h2>
+
+<p>Depending on the runtime of your app, you may need to make minor changes to ensure your App will run on App Service. For Node.js applications, review <a href="https://docs.microsoft.com/azure/app-service/configure-language-nodejs?pivots=platform-windows">this guidance</a>. For this tutorial, you will be modifying the database connection parameters to use app settings rather than hard-coded values. This is more secure and allows you to make updates without having to modify the source code and then wait for the app to re-build and re-deploy.</p>
+
+<p>Go back to the <em>app.js</em> file and find the <em>mysql.createConnection</em> function. Replace the values for the parameters with environment variables. The function should look like the below. The names for the values of the settings are arbitrary, but note what they are as you will need them a little later on.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">db</span> <span class="o">=</span> <span class="nx">mysql</span><span class="p">.</span><span class="nf">createConnection</span><span class="p">({</span>
+    <span class="na">host</span><span class="p">:</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">DB_HOST</span><span class="p">,</span>
+    <span class="na">user</span><span class="p">:</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">DB_USER</span><span class="p">,</span>
+    <span class="na">password</span><span class="p">:</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">DB_PASSWORD</span><span class="p">,</span>
+    <span class="na">database</span><span class="p">:</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">DB_NAME</span><span class="p">,</span>
+    <span class="na">port</span><span class="p">:</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">DB_PORT</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h2 id="deploy-app-to-azure">Deploy app to Azure</h2>
+
+<h3 id="create-a-web-app">Create a web app</h3>
+
+<p>At this point, you are ready to deploy the app to App Service. Ensure you are in the root directory of your app and deploy your code using the <code class="language-plaintext highlighter-rouge">az webapp up</code> command. Pick a unique name for your app. You will be prompted if the name you choose is already in use. Note the addition of the <code class="language-plaintext highlighter-rouge">os-type</code> parameter. This is included here to create the app on App Service on Windows. If you want to create it on Linux, be aware that you need to modify the <code class="language-plaintext highlighter-rouge">host</code> parameter in your connection string to something other than “localhost” (i.e. if using Linux, don’t use “localhost” and instead use a different host or try your machine name). On Linux, “localhost” is an entity in the hosts file of basically any Linux entity which means it never actually resolves the hybrid connection as it would on Windows.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp up <span class="nt">--sku</span> B1 <span class="nt">--name</span> &lt;app-name&gt; <span class="nt">--os-type</span> Windows
+</code></pre></div></div>
+
+<p>The command may take a few minutes to complete. When finished, navigate to your App Service in the <a href="https://portal.azure.com">Azure portal</a>. At this point, you will have an App Service with deployed code, however your app will not function until you connect the database.</p>
+
+<h3 id="configure-database-settings">Configure database settings</h3>
+
+<p>In App Service, you set environment variables as app settings by using the <a href="https://docs.microsoft.com/cli/azure/webapp/config/appsettings#az_webapp_config_appsettings_set">az webapp config appsettings set</a> command (you can also do this directly in the portal).</p>
+
+<p>Execute the following command. Note the values for the app settings are what were previously used in the <em>mysql.createConnection</em> function. If you had different values, be sure to substitute them accordingly. Also be sure to fill in the placeholders for app name and resource group. These values can be found by navigating to your app in the portal or by executing the <code class="language-plaintext highlighter-rouge">az webapp show</code> command.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp config appsettings <span class="nb">set</span> <span class="nt">--name</span> &lt;app-name&gt; <span class="nt">--resource-group</span> &lt;resource-group&gt; <span class="nt">--settings</span> <span class="nv">DB_HOST</span><span class="o">=</span><span class="s2">"localhost"</span> <span class="nv">DB_DATABASE</span><span class="o">=</span><span class="s2">"socka"</span> <span class="nv">DB_USERNAME</span><span class="o">=</span><span class="s2">"root"</span> <span class="nv">DB_PASSWORD</span><span class="o">=</span><span class="s2">""</span> <span class="nv">DB_PORT</span><span class="o">=</span><span class="s2">"3306"</span>
+</code></pre></div></div>
+
+<h3 id="create-hybrid-connection">Create Hybrid Connection</h3>
+
+<p>The final step is to create the Hybrid Connection from your App Service to your local database. Be sure to review the <a href="https://docs.microsoft.com/azure/app-service/app-service-hybrid-connections#things-you-cannot-do-with-hybrid-connections">system requirements</a> for the Hybrid Connection Manager to ensure your scenario is eligible for this feature.</p>
+
+<p>To create a Hybrid Connection, go to the <a href="https://portal.azure.com">Azure portal</a> and select your app. Select <strong>Networking</strong> from the left-hand side then <strong>Hybrid connections</strong> under <strong>Outbound Traffic</strong>.</p>
+
+<p>Towards the top of the screen, you should see a button to “Download connection manager.” Download and install the Hybrid Connection Manager (HCM) on your local machine. You will need that after configuring the connection in the portal.</p>
+
+<p>To add a new Hybrid Connection, select <strong>[+] Add hybrid connection</strong>.</p>
+
+<p>You’ll see a list of the Hybrid Connections that you already created if you have used Hybrid Connections before. To add one or more of them to your app, select the ones you want, and then select <strong>Add selected Hybrid Connection</strong>. If you are new to Hybrid Connections, you will need to create a one that connects to the MySQL database on your local machine. To do this, select <strong>Create new hybrid connection</strong> and input the required values. For this tutorial, the values are as follows:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Setting</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Hybrid connection Name</td>
+      <td>(create a name)</td>
+    </tr>
+    <tr>
+      <td>Endpoint Host</td>
+      <td>localhost</td>
+    </tr>
+    <tr>
+      <td>Endpoint Port</td>
+      <td>3306</td>
+    </tr>
+    <tr>
+      <td>Servicebus namespace</td>
+      <td><em>Create new</em> (or use an existing one if you have one already)</td>
+    </tr>
+    <tr>
+      <td>Location</td>
+      <td>(pick a location close to you, I recommend using the same one as your resource group)</td>
+    </tr>
+    <tr>
+      <td>Name</td>
+      <td>(create a name)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Select <strong>Ok</strong> and your Hybrid Connection will get created and you will get re-directed to the <strong>Hybrid connections</strong> blade. You should see the Hybrid Connection you just created in the list with a status of “Not connected.”</p>
+
+<p>The Hybrid Connections feature requires a relay agent in the network that hosts your Hybrid Connection endpoint. That relay agent is called the Hybrid Connection Manager (what you downloaded earlier). After installing the Hybrid Connection Manager, you can run HybridConnectionManagerUi.exe to use the UI for the tool. This file is in the Hybrid Connection Manager installation directory. In Windows 10, you can also just search for Hybrid Connection Manager UI in your search box.</p>
+
+<p>To add one or more Hybrid Connections:</p>
+
+<ol>
+  <li>Select <strong>Add a new Hybrid Connection</strong>.</li>
+  <li>Sign in with your Azure account to get your Hybrid Connections available with your subscriptions. The Hybrid Connection Manager does not continue to use your Azure account beyond that.</li>
+  <li>Choose a subscription.</li>
+  <li>Select the Hybrid Connections that you want to relay.</li>
+  <li>Select <strong>Save</strong>.</li>
+  <li>You can now see the Hybrid Connections you added. You can also select the configured Hybrid Connection to see details.</li>
+  <li>Under <strong>Azure Status</strong>, ensure that you are “Connected”. If you are not, open up Task Manager on your Windows machine, go to the “Services” tab, and find the <em>HybridConnectionManager</em> service. Right click it and select <strong>Restart</strong>. Head back over to the Hybrid Connection Manager and select <strong>Refresh</strong> to update the Azure connection status. You should now see a “Connected” status. If not, have a look at the <a href="https://docs.microsoft.com/en-us/azure/app-service/app-service-hybrid-connections#troubleshooting">troubleshooting info</a> for App Service Hybrid Connections.</li>
+</ol>
+
+<h3 id="browse-to-the-azure-app">Browse to the Azure app</h3>
+
+<p>Browse to <code class="language-plaintext highlighter-rouge">http://&lt;app-name&gt;.azurewebsites.net</code> and see your app exactly how it was running locally, but this time with the app in Azure connected to your local database!</p>
+
+<h2 id="clean-up-resources">Clean up resources</h2>
+
+<p>In the preceding steps, you created Azure resources in a resource group. The resource group has a name like “appsvc_rg_Linux_CentralUS” depending on your location. If you keep the web app running, you will incur some ongoing costs (see <a href="https://azure.microsoft.com/pricing/details/app-service/linux/">App Service pricing</a>).</p>
+
+<p>If you don’t expect to need these resources in the future, delete the resource group by running the following command:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az group delete <span class="nt">--no-wait</span>
+</code></pre></div></div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-10-15T00:00:00+00:00">October 15, 2021</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=How+to+Create+a+Web+App+with+a+Hybrid+Connection%20https%3A%2F%2Fazure.github.io%2FAppService%2F2021%2F10%2F15%2FHow-to-create-a-web-app-with-a-hybrid-connection.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2021%2F10%2F15%2FHow-to-create-a-web-app-with-a-hybrid-connection.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2021%2F10%2F15%2FHow-to-create-a-web-app-with-a-hybrid-connection.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2021/09/22/2021-Managing-ASD.html" class="pagination--pager" title="Managing an App Service Domain
+">Previous</a>
+    
+    
+      <a href="/AppService/2021/10/29/Intro-to-Azure-Resource-Graph-for-App-Service.html" class="pagination--pager" title="Introduction to Azure Resource Graph for App Service
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

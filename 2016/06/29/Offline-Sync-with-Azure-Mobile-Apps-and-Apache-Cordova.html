@@ -1,0 +1,968 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Offline Sync with Azure Mobile Apps and Apache Cordova - Azure App Service</title>
+<meta name="description" content="How to do Offline Sync with Azure Mobile Apps and Apache Cordova">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Offline Sync with Azure Mobile Apps and Apache Cordova">
+<meta property="og:url" content="https://azure.github.io/AppService/2016/06/29/Offline-Sync-with-Azure-Mobile-Apps-and-Apache-Cordova.html">
+
+
+  <meta property="og:description" content="How to do Offline Sync with Azure Mobile Apps and Apache Cordova">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2016-06-29T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2016/06/29/Offline-Sync-with-Azure-Mobile-Apps-and-Apache-Cordova.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Offline Sync with Azure Mobile Apps and Apache Cordova">
+    <meta itemprop="description" content="How to do Offline Sync with Azure Mobile Apps and Apache Cordova">
+    <meta itemprop="datePublished" content="June 29, 2016">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Offline Sync with Azure Mobile Apps and Apache Cordova
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+            
+            
+              • By Adrian Hall
+            
+            • June 29, 2016
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#step-1-new-variables">Step 1: New variables</a></li>
+  <li><a href="#step-2-initialization">Step 2: Initialization</a></li>
+  <li><a href="#step-3-adjusting-the-refresh">Step 3: Adjusting the Refresh</a></li>
+  <li><a href="#wrap-up">Wrap Up</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <p>In the past, I’ve introduced you to <a href="http://shellmonger.com/2016/04/04/30-days-of-zumo-v2-azure-mobile-apps-day-3-azure-ad-authentication/">a TodoList application</a> built in Apache Cordova so that it is available for iOS, Android or any other platform that Apache Cordova supports. You can find the QuickStart for Apache Cordova from within the Azure Portal, and read about it within <a href="https://azure.microsoft.com/documentation/articles/app-service-mobile-cordova-get-started/">our documentation</a>. Recently, we released a new beta for the Azure Mobile Apps Cordova SDK that supports offline sync, which is a feature we didn’t have. Underneath, the Cordova offline sync functionality uses SQLite - this means it isn’t an option at this point for HTML/JS applications. We’ll have to work out how to do this with IndexDB or something similar, but for now that isn’t an option without a lot of custom work. Let’s take a look at the differences.</p>
+
+<h2 id="step-1-new-variables">Step 1: New variables</h2>
+
+<p>Just like other clients, I need a local store reference and a sync context that is used to keep track of the operational aspects for synchronization:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">client</span><span class="p">,</span>        <span class="c1">// Connection to the Azure Mobile App backend</span>
+      <span class="nx">store</span><span class="p">,</span>         <span class="c1">// Sqlite store to use for offline data sync</span>
+      <span class="nx">syncContext</span><span class="p">,</span>   <span class="c1">// Offline data sync context</span>
+      <span class="nx">todoItemTable</span><span class="p">;</span> <span class="c1">// Reference to a table endpoint on backend</span>
+</code></pre></div></div>
+
+<h2 id="step-2-initialization">Step 2: Initialization</h2>
+
+<p>All the initialization is done in the onDeviceReady() method. I have to set up a model so that the SQLite database is set up to match what is on the server:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">onDeviceReady</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="c1">// Create the connection to the backend</span>
+    <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WindowsAzure</span><span class="p">.</span><span class="nc">MobileServiceClient</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://yoursite.azurewebsites.net</span><span class="dl">'</span><span class="p">);</span>
+
+    <span class="c1">// Set up the SQLite database</span>
+    <span class="nx">store</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WindowsAzure</span><span class="p">.</span><span class="nc">MobileServiceSqliteStore</span><span class="p">();</span>
+
+    <span class="c1">// Define the table schema</span>
+    <span class="nx">store</span><span class="p">.</span><span class="nf">defineTable</span><span class="p">({</span>
+        <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">todoitem</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">columnDefinitions</span><span class="p">:</span> <span class="p">{</span>
+            <span class="c1">// sync interface</span>
+            <span class="na">id</span><span class="p">:</span> <span class="dl">'</span><span class="s1">string</span><span class="dl">'</span><span class="p">,</span>
+            <span class="na">deleted</span><span class="p">:</span> <span class="dl">'</span><span class="s1">boolean</span><span class="dl">'</span><span class="p">,</span>
+            <span class="na">version</span><span class="p">:</span> <span class="dl">'</span><span class="s1">string</span><span class="dl">'</span><span class="p">,</span>
+            <span class="c1">// Now for the model</span>
+            <span class="na">text</span><span class="p">:</span> <span class="dl">'</span><span class="s1">string</span><span class="dl">'</span><span class="p">,</span>
+            <span class="na">complete</span><span class="p">:</span> <span class="dl">'</span><span class="s1">boolean</span><span class="dl">'</span>
+        <span class="p">}</span>
+    <span class="p">}).</span><span class="nf">then</span><span class="p">(</span><span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// Initialize the sync context</span>
+        <span class="nx">syncContext</span> <span class="o">=</span> <span class="nx">client</span><span class="p">.</span><span class="nf">getSyncContext</span><span class="p">();</span>
+        <span class="nx">syncContext</span><span class="p">.</span><span class="nx">pushHandler</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="na">onConflict</span><span class="p">:</span> <span class="nf">function </span><span class="p">(</span><span class="nx">serverRecord</span><span class="p">,</span> <span class="nx">clientRecord</span><span class="p">,</span> <span class="nx">pushError</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nb">window</span><span class="p">.</span><span class="nf">alert</span><span class="p">(</span><span class="dl">'</span><span class="s1">TODO: onConflict</span><span class="dl">'</span><span class="p">);</span>
+            <span class="p">},</span>
+            <span class="na">onError</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">pushError</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nb">window</span><span class="p">.</span><span class="nf">alert</span><span class="p">(</span><span class="dl">'</span><span class="s1">TODO: onError</span><span class="dl">'</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">};</span>
+        <span class="k">return</span> <span class="nx">syncContext</span><span class="p">.</span><span class="nf">initialize</span><span class="p">(</span><span class="nx">store</span><span class="p">);</span>
+    <span class="p">}).</span><span class="nf">then</span><span class="p">(</span><span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// I can now get a reference to the table</span>
+        <span class="nx">todoItemTable</span> <span class="o">=</span> <span class="nx">client</span><span class="p">.</span><span class="nf">getSyncTable</span><span class="p">(</span><span class="dl">'</span><span class="s1">todoitem</span><span class="dl">'</span><span class="p">);</span>
+
+        <span class="nf">refreshData</span><span class="p">();</span>
+
+        <span class="nf">$</span><span class="p">(</span><span class="dl">'</span><span class="s1">#add-item</span><span class="dl">'</span><span class="p">).</span><span class="nf">submit</span><span class="p">(</span><span class="nx">addItemHandler</span><span class="p">);</span>
+        <span class="nf">$</span><span class="p">(</span><span class="dl">'</span><span class="s1">#refresh</span><span class="dl">'</span><span class="p">).</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">click</span><span class="dl">'</span><span class="p">,</span> <span class="nx">refreshData</span><span class="p">);</span>
+    <span class="p">});</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>There are three distinct areas here, separated by promises. The first promise defines the tables. If you are using multiple tables, you must ensure that all promises are complete before progressing to the next section. You can do this with <code class="language-plaintext highlighter-rouge">Promise.all()</code> as an example. The second section initializes the sync context. You need to define two sections for the push handler - the conflict handler and the error handler. I’ll go into the details of a conflict handler at a later date, but this is definitely something you will want to spend some time thinking about. Do you want the last one in to be the winner, or the current client edition to be the winner, or do you want to prompt the user on conflicts? It’s all possible. Once I have created a sync context, I can get a reference to the local SQLite database table, which is used instead of the <code class="language-plaintext highlighter-rouge">getTable()</code> call that it replaces. The rest of the code is identical - I refresh the data and add the event handlers.</p>
+
+<h2 id="step-3-adjusting-the-refresh">Step 3: Adjusting the Refresh</h2>
+
+<p>In the past, refresh was just a query to the backend. Now I need to do something a bit different. When refresh is clicked, I want to do the push/pull cycle for synchronizing the data.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">refreshData</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nf">updateSummaryMessage</span><span class="p">(</span><span class="dl">'</span><span class="s1">Loading data from Azure</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nx">syncContext</span><span class="p">.</span><span class="nf">push</span><span class="p">().</span><span class="nf">then</span><span class="p">(</span><span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">syncContext</span><span class="p">.</span><span class="nf">pull</span><span class="p">(</span><span class="k">new</span> <span class="nx">WindowsAzure</span><span class="p">.</span><span class="nc">Query</span><span class="p">(</span><span class="dl">'</span><span class="s1">todoitem</span><span class="dl">'</span><span class="p">));</span>
+    <span class="p">}).</span><span class="nf">then</span><span class="p">(</span><span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">todoItemtable</span>
+            <span class="p">.</span><span class="nf">where</span><span class="p">({</span> <span class="na">complete</span><span class="p">:</span> <span class="kc">false</span> <span class="p">})</span>
+            <span class="p">.</span><span class="nf">read</span><span class="p">()</span>
+            <span class="p">.</span><span class="nf">then</span><span class="p">(</span><span class="nx">createTodoItemList</span><span class="p">,</span> <span class="nx">handleError</span><span class="p">);</span>
+    <span class="p">});</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Just like the initialization, the SDK uses promises to proceed asynchronously. First push (which resolves as a promise), then pull (which also resolves as a promise) and finally you do EXACTLY THE SAME THING AS BEFORE - you query the table, read the results and then build the todo list. Seriously - this bit really didn’t change. That means you can add offline to your app without changing your existing code - just add the initialization and something to trigger the push/pull.</p>
+
+<h2 id="wrap-up">Wrap Up</h2>
+
+<p>This is still a beta, which means a work-in-progress. Feel free to try it out and give us feedback. You can file issues and ideas at <a href="https://github.com/azure/azure-mobile-apps-js-client/issues">our GitHub repository</a>.</p>
+
+<p><em>Cross-posted to <a href="http://wp.me/p6gQt8-2oB">my personal blog</a></em></p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2016-06-29T00:00:00+00:00">June 29, 2016</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Offline+Sync+with+Azure+Mobile+Apps+and+Apache+Cordova%20https%3A%2F%2Fazure.github.io%2FAppService%2F2016%2F06%2F29%2FOffline-Sync-with-Azure-Mobile-Apps-and-Apache-Cordova.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2016%2F06%2F29%2FOffline-Sync-with-Azure-Mobile-Apps-and-Apache-Cordova.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2016%2F06%2F29%2FOffline-Sync-with-Azure-Mobile-Apps-and-Apache-Cordova.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2016/06/27/Azure-App-Service-and-ASP.NET-Core.html" class="pagination--pager" title="Azure App Service and ASP.NET Core
+">Previous</a>
+    
+    
+      <a href="/AppService/2016/07/05/Cross-Post-Creating-a-Corporate-Wiki-in-Azure.html" class="pagination--pager" title="Cross-Post Creating a Corporate Wiki in Azure
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

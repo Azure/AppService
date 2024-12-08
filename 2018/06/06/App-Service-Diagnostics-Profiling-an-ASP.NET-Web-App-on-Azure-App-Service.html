@@ -1,0 +1,963 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>App Service Diagnostics – Profiling an ASP.NET Web App on Azure App Service - Azure App Service</title>
+<meta name="description" content="">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="App Service Diagnostics – Profiling an ASP.NET Web App on Azure App Service">
+<meta property="og:url" content="https://azure.github.io/AppService/2018/06/06/App-Service-Diagnostics-Profiling-an-ASP.NET-Web-App-on-Azure-App-Service.html">
+
+
+  <meta property="og:description" content="">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2018-06-06T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2018/06/06/App-Service-Diagnostics-Profiling-an-ASP.NET-Web-App-on-Azure-App-Service.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="App Service Diagnostics – Profiling an ASP.NET Web App on Azure App Service">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="June 06, 2018">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">App Service Diagnostics – Profiling an ASP.NET Web App on Azure App Service
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  10 minute read
+
+            
+            
+            • June 6, 2018
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/PuneetG" target="_blank">PuneetG</a>
+<time>    6/6/2018 12:47:44 AM</time>
+<hr/>
+<div id="content">The <strong>Diagnostic Tools</strong> options under the <strong>Diagnose and Solve</strong> blade for Azure App Services has been live for a few months now and has many tools that help you troubleshoot apps based on their application stack. In this post, we are going to cover the <strong>Collect .NET Profiler Trace</strong> option in detail and how you can use it to troubleshoot a slow or a failing ASP.NET based Web App.
+
+<a href="/AppService/media/2018/05/tools.png"><img alt="" class="alignnone size-full wp-image-8715" height="145" src="/AppService/media/2018/05/tools.png" width="615"/></a>
+
+Profiler tool helps in collecting an <strong>on-demand</strong> trace that lets you identify the underlying .NET exceptions, time taken in the various request processing pipeline stages and even lets you drill down into exact methods within the application code that are taking time. It is extremely useful in situations where the problem is happening right now and you want to collect some data to identify the root cause of the issue. Profiling is designed for production scenarios and is based on ETW (Event tracing for Windows) . The analysis component of the profiler uses the <a href="https://blogs.msdn.microsoft.com/dotnet/2013/08/15/announcing-traceevent-monitoring-and-diagnostics-for-the-cloud/">TraceEvent</a> library to generate a report that helps you drill down in to the problems in matter of a few minutes. It should be noted that no changes are made to your Web App code or your configuration during the collection or the analysis phase. In fact, the web app is not even restarted as a result of capturing this trace. The captured trace has ETW events emitted by the IIS and the ASP.NET providers along with stack traces captured at the CPU level. You can use this tool to efficiently troubleshoot delays which are relatively small (less than a second too) without impacting the run-time performance of the application. The profiler works for both ASP.NET and ASP.NET core applications.
+<h2>How to Collect the Trace</h2>
+To collect the trace, go to <strong>Diagnose and Solve Problems</strong> and choose the <strong>Collect .NET Profiler Trace</strong> option under <strong>Diagnostic Tools</strong> option and click on <strong>Collect Profiler Trace</strong>. Unless you have isolated that only a specific instance is failing, it is best to just select all the instances on which your Web App is running.
+
+<a href="/AppService/media/2018/05/collect_profiler_Trace.png"><img alt="" class="alignnone size-full wp-image-8615" height="250" src="/AppService/media/2018/05/collect_profiler_Trace.png" width="968"/></a>
+<strong>Add thread report</strong> option - With this option enabled, a thread report of all the threads in the process is also collected at the <em>end</em> of the profiler trace. This is useful especially if you are troubleshooting totally hung processes, deadlocks or requests taking more than 60 seconds. This will pause your process for a few seconds until the thread dump is generated. This option is NOT recommended if you are experiencing high CPU on the instance because if the instance is under stress, it might take a long time to even start a new process to collect the thread dumps.
+
+Clicking the <strong>Collect Profiler Trace</strong> will start profiling the Web App and the wizard will show progress of various steps involved.
+
+<a href="/AppService/media/2018/05/reproduce_issue_now.png"><img alt="" class="alignnone size-full wp-image-8635" height="423" src="/AppService/media/2018/05/reproduce_issue_now.png" width="577"/></a>
+
+Once the profiler trace is started, reproduce the issue by browsing the Web App. If you have a Web App running on multiple instances, make sure to browse a few more times to ensure that the requests to the web app get captured in the profiler trace. The default duration for which the profiler trace runs is 60 seconds and during this 60 seconds, all the requests that were made to the Web App get captured in the profiler trace. It is important to note that the profiler trace only has information about the requests that were captured in these 60 seconds (It is possible to increase this duration as mentioned below in this article)
+
+After 60 seconds, the profiler automatically stops, and an analysis component gets triggered that starts analyzing the profiler trace that just got captured. After the analysis finishes, a link to view the profiler report for every instance serving the web app is generated and you click on the Open Report button to view the Analysis report.
+
+<a href="/AppService/media/2018/05/OpenReportIcon.png"><img alt="" class="alignnone size-full wp-image-8625" height="123" src="/AppService/media/2018/05/OpenReportIcon.png" width="591"/></a>
+<h2>Understanding the Analysis Report</h2>
+The analysis report provides some basic information about the number of requests captured, successful and failed requests, CPU usage of the instance, CPU usage of the web app and request execution information that helps you identify how fast your Web App was responding when the trace was getting captured. This can be used to validate if the trace is useful and if the right set of requests got captured in the trace and if the cause of slowness is related to high CPU on the instance serving the web app or not. The trace file section also has a link to download the trace file.
+
+<a href="/AppService/media/2018/05/ReportSummaryInformation.png"><img alt="" class="alignnone size-full wp-image-8595" height="212" src="/AppService/media/2018/05/ReportSummaryInformation.png" width="1570"/></a>
+
+For troubleshooting slow or slow or hung web applications, click on <strong>Slow Requests</strong> tab. This view shows you the top 100 slowest requests that got captured in the trace. It also breaks down the time spent in various modules of request execution in IIS and tries to categorize them in to <em>Platform, Network and Application code</em> to give you a quick indication on where the problem might be.
+
+<a href="/AppService/media/2018/05/slowrequests.png"><img alt="" class="alignnone size-full wp-image-8645" height="418" src="/AppService/media/2018/05/slowrequests.png" width="1548"/></a>
+<ul>
+<li><strong>Application Code - </strong>represents the time spent in handlers or modules that get invoked either while executing application code (for e.g ManagedPipelineHandler) or those that are closely related to any explicit configuration done for the application (for e.g. RewriteModule). Any external or third party handlers, modules fall in this category. Anything which does not fall in the native IIS handlers or modules is classified as Application.</li>
+<li><strong>Network</strong> - represents the time spent in <strong>reading the request entity body</strong> from the client or time spent in <strong>flushing the response buffer back to the client</strong>. Time spent in waiting on external outbound network calls made from the application (like Database, cache, external HTTP requests etc.) is <strong><span style="text-decoration: underline">not counted</span> </strong>here and is grouped under Application Code. If requests are spending a lot of time in this category, then it means that there is either a network issue between the client and the web app, the network might be slow or the request and response body is big.</li>
+<li><strong>Platform</strong> - represents the time a request spends in <strong>core native modules or handlers of IIS</strong> which are pre-installed in Azure App Service (for e.g. DefautlDocumentModule, StaticFileHandler etc.). A request spending too much time in these modules might indicate an overall platform issue so you can contact Microsoft Support to get more details.</li>
+</ul>
+<em></em>The chart also plots the Top 5 handlers or modules in the IIS processing pipeline where the requests spent most of their time and this can give a quick indication as to where the problem might be. In the above example, we see that 83% of the time was spent in PageLoad and 15% of the time was spent waiting in the CLR thread pool queue waiting for the request to be picked up and assigned to a thread pool thread.
+
+In the same section, if you scroll below, you find a list of Top 100 Slow requests with the time taken in request execution and the slowest module for these requests. Note that stack traces will be captured if the request execution delay is on the same thread or if the application code uses Tasks class (from System.Net.Threading) to perform asynchronous IO in the request. There are lot of ways in .NET Framework to achieve asynchronous execution behavior and not all of them can be tracked so it is possible that for those scenarios, there are no stack traces captured for the request. Even for those scenarios, at least the Module name should help in identifying where the delay might be happening and is good indication of where the problem lies.
+
+<a href="/AppService/media/2018/05/Top100SlowRequests.png"><img alt="" class="alignnone size-full wp-image-8655" height="348" src="/AppService/media/2018/05/Top100SlowRequests.png" width="1537"/></a>
+
+So the above information tells us that the slowest request in this trace took around 30 seconds and 99.79% of the time was spent in the the Page_Load event of ASP.NET which tells us that something in the Page_Load caused the request to slow down hence narrowing the issue down to Application Code.
+
+The Profiler tries its best to correlate the stack trace of thread to the slow requests and if it manages to find this information, a light bulb icon is displayed next to the Details view to illustrate that there are stack traces captured for this request. You can click on the <strong>Details</strong> button to get the stack trace captured.
+<h2>Stack Traces - Thread View</h2>
+For a request, the <strong>Thread View</strong> is shown for requests where the profiler is able to determine that the request execution happened on the same thread and where the delay in request processing happened on the same very thread. It is however possible that the thread view is shown even for ASYNC requests if the .NET Task Scheduler decides to run them on the same thread. It is best advised to look at both the Thread View and Activity view for requests that executed on the same thread to get an idea of methods taking the longest time because at times one view may have more accurate information than the other and might help you go one more step closer to the code that is introducing the delay.
+
+<a href="/AppService/media/2018/05/StackTrace.png"><img alt="" class="alignnone size-full wp-image-8665" height="473" src="/AppService/media/2018/05/StackTrace.png" width="1202"/></a>
+
+The stack trace helps us identify the delay is happening while trying to open a SqlConnection from a page named SlowSql.aspx and the function name is demomvp.SlowSql.Page_Load. There is also a toggle button for showing the full .NET Framework stack which shows time spent in all the functions that got executed on this thread and at times is helpful if you want to drill down further within the .NET Framework code to identify methods where time is being spent.
+
+Profiler is able to show the stack traces accurately for requests that have completed in the trace. For requests that started in the trace and have not finished before the trace is stopped, the profiler tries its best to show the time taken but it may not be 100% accurate. Incomplete requests would have a warning icon next to the slow request report and it is suggested to look all the complete requests in the trace to get a better picture of request execution.
+<h2>Stack Traces - Activity View</h2>
+If the request has switched multiple threads, you will notice an icon next to the list of requests in the slow request report indicating the request is an async request.
+
+<a href="/AppService/media/2018/05/async.png"><img alt="" class="alignnone size-full wp-image-8685" height="82" src="/AppService/media/2018/05/async.png" width="1457"/></a>
+
+For asynchronous requests, the profiler report shows you the <strong>Activity View</strong> and the thread view is not shown. Activity view groups method execution by the activity information which is passed by CLR when using Tasks and the profiler groups similar tasks originating with the same Activity Id and stitches them together to show you this view. Here is an example of an asynchronous request's activity view.
+
+<a href="/AppService/media/2018/05/async2.png"><img alt="" class="alignnone size-full wp-image-8695" height="594" src="/AppService/media/2018/05/async2.png" width="1156"/></a>
+
+In the above stack trace, we can see that the method demomvp.AsyncThreadDelaySleep.WaitForSomeTime invoked a new Delay Task and spent 8 seconds awaiting on it. As you can see, by the nature of asynchronous execution, understanding ASYNC tasks is slightly more trickier than synchronous threads but still the profiler report has grouped the right functions together by grouping .NET Activity. To know more about .NET Activities and how they are flown, check out this detailed post - <a href="https://blogs.msdn.microsoft.com/vancem/2015/09/14/exploring-eventsource-activity-correlation-and-causation-features/">https://blogs.msdn.microsoft.com/vancem/2015/09/14/exploring-eventsource-activity-correlation-and-causation-features/</a>
+<h2>Failed Requests</h2>
+For requests, that failed with a HTTP error, the Failed Requests view highlights the HTTP Module or the handler that was responsible for setting the error status code. Clicking on Details will show more information about the failure and will highlight the underlying exception for the request. The profiler tries its best to correlate a request with an exception, however if a request has switched multiple threads (either due to multiple tasks or due to different threading primitives), then the profiler may not be able to correlate the exception with the request.
+
+<a href="/AppService/media/2018/05/failedrequests.png"><img alt="" class="alignnone size-full wp-image-8675" height="854" src="/AppService/media/2018/05/failedrequests.png" width="1185"/></a>
+<h2>.NET Exceptions View</h2>
+This view shows <strong>all</strong> .NET exceptions that happened in the process during the trace. The difference in this view vs. the Failed Requests view is that this can include all the exceptions that might have happened on background threads , IO threads or on threads that could not be associated to a request directly.
+<h2>CPU Stacks</h2>
+If the process traced also consumed high CPU, then the profiler report would also show you the call-stack of the thread that consumed the maximum CPU and this should help in identifying the function that need to be optimized.
+
+<a href="/AppService/media/2018/05/CPU-Stacks.png"><img alt="" class="alignnone size-full wp-image-8705" height="743" src="/AppService/media/2018/05/CPU-Stacks.png" width="1325"/></a>
+
+ 
+
+In the above example, we can see that there is a <strong>ProfilerClassTest.CalculateDiscounts</strong> method is taking 4 seconds on the CPU
+<h2>Increasing the duration for the Profiler Trace</h2>
+It is possible to increase the default profiling duration by setting an application setting <strong>IIS_PROFILING_TIMEOUT_IN_SECONDS</strong> with a maximum value of 900 (i.e. 15 minutes). If you configure this application setting to a number more than 900, it defaults to the 60 second value.
+<h2>How to Analyze the trace further ?</h2>
+If the profiler report is not able to identify the issue easily, you can use the <a href="https://github.com/Microsoft/perfview/releases">PerfView </a>tool or Visual Studio to analyze the trace . The trace file generated by the profiler is a <strong>*.diagsession</strong> file that is supported by these tools. The link to download the trace file is also present in the analysis report in the top section.
+
+We hope this tool helps you identify issues in production easily and lets you optimize your code to better serve your Web Apps.
+
+<strong>Happy Debugging !!!</strong></div>
+</div></body>
+<script src="/AppService/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="/AppService/resource/replace.js" type="text/javascript"></script>
+</html>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2018-06-06T00:00:00+00:00">June 06, 2018</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=App+Service+Diagnostics+%E2%80%93+Profiling+an+ASP.NET+Web+App+on+Azure+App+Service%20https%3A%2F%2Fazure.github.io%2FAppService%2F2018%2F06%2F06%2FApp-Service-Diagnostics-Profiling-an-ASP.NET-Web-App-on-Azure-App-Service.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2018%2F06%2F06%2FApp-Service-Diagnostics-Profiling-an-ASP.NET-Web-App-on-Azure-App-Service.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2018%2F06%2F06%2FApp-Service-Diagnostics-Profiling-an-ASP.NET-Web-App-on-Azure-App-Service.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2018/06/04/App-Service-Deployment-Center-(Preview).html" class="pagination--pager" title="App Service Deployment Center (Preview)
+">Previous</a>
+    
+    
+      <a href="/AppService/2018/06/13/TLS-Configuration-now-fixed-to-block-1.0.html" class="pagination--pager" title="TLS Configuration now fixed to block 1.0
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

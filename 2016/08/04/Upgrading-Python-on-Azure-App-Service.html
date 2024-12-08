@@ -1,0 +1,1015 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Upgrading Python on Azure App Service - Azure App Service</title>
+<meta name="description" content="App Service is Microsoft Azure’s platform-as-a-service offering for web apps, whether they are sites accessed through a browser, REST APIs used by your own clients, or event-triggered processing. Many of you are already using Python to implement your apps on App Service (and rightly so!).">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Upgrading Python on Azure App Service">
+<meta property="og:url" content="https://azure.github.io/AppService/2016/08/04/Upgrading-Python-on-Azure-App-Service.html">
+
+
+  <meta property="og:description" content="App Service is Microsoft Azure’s platform-as-a-service offering for web apps, whether they are sites accessed through a browser, REST APIs used by your own clients, or event-triggered processing. Many of you are already using Python to implement your apps on App Service (and rightly so!).">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2016-08-04T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2016/08/04/Upgrading-Python-on-Azure-App-Service.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Upgrading Python on Azure App Service">
+    <meta itemprop="description" content="App Service is Microsoft Azure’s platform-as-a-service offering for web apps, whether they are sites accessed through a browser, REST APIs used by your own clients, or event-triggered processing. Many of you are already using Python to implement your apps on App Service (and rightly so!).">
+    <meta itemprop="datePublished" content="August 04, 2016">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Upgrading Python on Azure App Service
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  9 minute read
+
+            
+            
+              • By Steve Dower
+            
+            • August 4, 2016
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p><a href="https://azure.microsoft.com/en-us/services/app-service/">App Service</a> is <a href="https://azure.microsoft.com/en-us/">Microsoft Azure</a>’s platform-as-a-service offering for web apps, whether they are sites accessed through a browser, REST APIs used by your own clients, or event-triggered processing. Many of you are already using Python to implement your apps on App Service (and rightly so!).</p>
+
+<p>When we first enabled Python on App Service we wanted to make it as easy as possible. So we went and installed the latest available versions on every host, so that you could just assume it was going to be present. Unfortunately, this did not turn out to be a great long-term solution.</p>
+
+<p>Happily though, we found a better approach! While it isn’t quite polished yet, we know that people want the solution now. Rather than waiting until we’ve finished all the scripts, documentation, videos etc. that will come in the future, we decided to give out early details in this blog post.</p>
+
+<p>This post will start by outlining some of the problems, why we couldn’t do the “obvious” fix, and how to use the new approach. Feedback is welcome as we continue to improve the user experience around it, but hopefully the information here will be sufficient to get everyone moving again.</p>
+
+<h2 id="what-went-wrong">What went wrong?</h2>
+
+<p>Having Python installed on every App Service machine sounds like a great idea, right? And so we went ahead and installed the most up-to-date Python 2.7.8 and Python 3.4.1… oh yeah, they’re not the latest versions of Python any more.</p>
+
+<p>The obvious solution here is to simply upgrade Python so that everyone has the latest improvements, bug and security fixes. But unfortunately, there were changes made between 2.7.8 and 2.7.9 and between 3.4 and 3.5 that meant upgrading would break existing users. Stability of the platform had to outweigh these improvements, so we were stuck. (The SSL improvements in 2.7.9 had workarounds that customers could implement themselves, so weren’t sufficient to justify breaking other customers.)</p>
+
+<p>We had also chosen to install the 32-bit versions of Python. This adds an extra restriction on users who may have been deploying pre-built binaries targeting 64-bit versions, or other micro versions of Python.</p>
+
+<p>Since users want to be able to choose their version of Python, the fix is to let everyone choose. We also wanted to improve package installation and make it easier to avoid IIS details.</p>
+
+<h2 id="choosing-your-version-of-python">Choosing your version of Python</h2>
+
+<p>Azure App Service has support for site extensions, which allow you to add features to your site. These can be deployed as part of an ARM template, using a REST API, or manually through the portal. The main part of our improved Python support is a set of <a href="https://www.siteextensions.net/packages?q=Tags%3A%22python%22">site extensions</a> containing the Python runtime, broken down by the exact version so that you can choose which one to install. (Obviously we recommend using the latest Python 3 version, but when you <strong>need</strong> an older version, you really need it so you can choose it.)</p>
+
+<p>If your site is already deployed and running, it is easiest to install through the portal. Navigate to your App Service blade, select Tools, Extensions and then Add.</p>
+
+<p><img src="https://msdnshared.blob.core.windows.net/media/2016/07/siteextensions.png" alt="The Add Site Extension blade on the Azure Portal" /></p>
+
+<p>From the list of extensions, scroll down until you spot the Python logos, then choose the version you need. (Improvements to this UI are coming in the future; right now you just need to search manually.)</p>
+
+<p>However, if you are deploying your site with an Azure Resource Manager (ARM) template, it is much simpler to add the site extension as a resource. It will appear as a nested resource of your site, with a type <code class="language-plaintext highlighter-rouge">siteextensions</code> and the name can be found from <a href="https://www.siteextensions.net/packages?q=Tags%3A%22python%22">siteextensions.net</a>.</p>
+
+<p>For example, after adding a reference to <code class="language-plaintext highlighter-rouge">python352x64</code>, your template may look like this:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"resources"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"apiVersion"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-08-01"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"[parameters('siteName')]"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Microsoft.Web/sites"</span><span class="p">,</span><span class="w">
+      </span><span class="err">...</span><span class="w">
+      </span><span class="nl">"resources"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"apiVersion"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-08-01"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"python352x64"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"siteextensions"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">},</span><span class="w">
+          </span><span class="nl">"dependsOn"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="s2">"[resourceId('Microsoft.Web/sites', parameters('siteName'))]"</span><span class="w">
+          </span><span class="p">]</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+      </span><span class="err">...</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Regardless of how you choose to install the site extension, after installing you will have a version of Python installed at a path like <code class="language-plaintext highlighter-rouge">C:\home\Python35\python.exe</code> (see the description of the extension for the exact path).</p>
+
+<h2 id="configuring-your-site">Configuring your site</h2>
+
+<p>Once Python is installed on your site, you will need to reference it. Previously our tooling has been able to do this automatically, since we knew where Python was, but now the control is in your hands. Luckily, configuring your site is mostly a matter of knowing where to find <code class="language-plaintext highlighter-rouge">python.exe</code>.</p>
+
+<p>Since App Service apps all run behind IIS, the configuration file is known as <code class="language-plaintext highlighter-rouge">web.config</code> (if you’re used to httpd servers, <code class="language-plaintext highlighter-rouge">web.config</code> is the equivalent of <code class="language-plaintext highlighter-rouge">.htaccess</code>), and there are two request handlers available: FastCGI, and Http Platform.</p>
+
+<h3 id="using-the-fastcgi-handler">Using the FastCGI handler</h3>
+
+<p>FastCGI is an interface that works at the request level. IIS will receive incoming connections and forward the request details to a WSGI app running in one or more persistent Python processes. The <a href="https://pypi.io/project/wfastcgi">wfastcgi</a> package is pre-installed and configured, so you can easily enable it.</p>
+
+<p>Your <code class="language-plaintext highlighter-rouge">web.config</code> configuration should include the following:</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span>
+<span class="nt">&lt;configuration&gt;</span>
+  <span class="nt">&lt;appSettings&gt;</span>
+    <span class="nt">&lt;add</span> <span class="na">key=</span><span class="s">"PYTHONPATH"</span> <span class="na">value=</span><span class="s">"D:\home\site\wwwroot"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;add</span> <span class="na">key=</span><span class="s">"WSGI_HANDLER"</span> <span class="na">value=</span><span class="s">"app.wsgi_app"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;add</span> <span class="na">key=</span><span class="s">"WSGI_LOG"</span> <span class="na">value=</span><span class="s">"D:\home\LogFiles\wfastcgi.log"</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/appSettings&gt;</span>
+  <span class="nt">&lt;system.webServer&gt;</span>
+    <span class="nt">&lt;handlers&gt;</span>
+      <span class="nt">&lt;add</span> <span class="na">name=</span><span class="s">"PythonHandler"</span> <span class="na">path=</span><span class="s">"*"</span> <span class="na">verb=</span><span class="s">"*"</span> <span class="na">modules=</span><span class="s">"FastCgiModule"</span> <span class="na">scriptProcessor=</span><span class="s">"D:\home\Python35\python.exe|D:\home\Python35\wfastcgi.py"</span> <span class="na">resourceType=</span><span class="s">"Unspecified"</span> <span class="na">requireAccess=</span><span class="s">"Script"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/handlers&gt;</span>
+  <span class="nt">&lt;/system.webServer&gt;</span>
+<span class="nt">&lt;/configuration&gt;</span>
+</code></pre></div></div>
+
+<p>The value for <code class="language-plaintext highlighter-rouge">PYTHONPATH</code> may be freely extended, but must include the root of your website. <code class="language-plaintext highlighter-rouge">WSGI_HANDLER</code> should be updated to point to a WSGI app importable from your website. <code class="language-plaintext highlighter-rouge">WSGI_LOG</code> is optional but recommended while debugging your site. All app settings are made available to the app as environment variables.</p>
+
+<p>The path to <code class="language-plaintext highlighter-rouge">python.exe</code> and <code class="language-plaintext highlighter-rouge">wfastcgi.py</code> will need to be customized if you are using a different version of Python. See the description of the site extension to find out where it will be installed and update these paths accordingly.</p>
+
+<h3 id="using-the-http-platform-handler">Using the Http Platform handler</h3>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span>
+<span class="nt">&lt;configuration&gt;</span>
+  <span class="nt">&lt;system.webServer&gt;</span>
+    <span class="nt">&lt;handlers&gt;</span>
+      <span class="nt">&lt;add</span> <span class="na">name=</span><span class="s">"PythonHandler"</span> <span class="na">path=</span><span class="s">"*"</span> <span class="na">verb=</span><span class="s">"*"</span> <span class="na">modules=</span><span class="s">"httpPlatformHandler"</span> <span class="na">resourceType=</span><span class="s">"Unspecified"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/handlers&gt;</span>
+    <span class="nt">&lt;httpPlatform</span> <span class="na">processPath=</span><span class="s">"D:\home\Python35\python.exe"</span>
+                  <span class="na">arguments=</span><span class="s">"D:\home\site\wwwroot\runserver.py --port %HTTP_PLATFORM_PORT%"</span>
+                  <span class="na">stdoutLogEnabled=</span><span class="s">"true"</span>
+                  <span class="na">stdoutLogFile=</span><span class="s">"D:\home\LogFiles\python.log"</span>
+                  <span class="na">startupTimeLimit=</span><span class="s">"60"</span>
+                  <span class="na">processesPerApplication=</span><span class="s">"16"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;environmentVariables&gt;</span>
+        <span class="nt">&lt;environmentVariable</span> <span class="na">name=</span><span class="s">"SERVER_PORT"</span> <span class="na">value=</span><span class="s">"%HTTP_PLATFORM_PORT%"</span> <span class="nt">/&gt;</span>
+      <span class="nt">&lt;/environmentVariables&gt;</span>
+    <span class="nt">&lt;/httpPlatform&gt;</span>
+  <span class="nt">&lt;/system.webServer&gt;</span>
+<span class="nt">&lt;/configuration&gt;</span>
+</code></pre></div></div>
+
+<p>As for the previous configuration, the path to <code class="language-plaintext highlighter-rouge">python.exe</code> may need to be customized depending on the version of Python you are using. See the description of the site extension to find out where it will be installed and update these paths accordingly.</p>
+
+<p>Arguments may be freely customized for your app. The <code class="language-plaintext highlighter-rouge">HTTP_PLATFORM_PORT</code> environment variable contains the port your local server should listen on for connections from <code class="language-plaintext highlighter-rouge">localhost</code>. In this example, I created another environment variable <code class="language-plaintext highlighter-rouge">SERVER_PORT</code> that isn’t really required. You can add or remove environment variables as necessary for your app.</p>
+
+<h2 id="installing-packages">Installing packages</h2>
+
+<p>Once you’ve installed Python onto your server, the next thing you’ll need is any packages your app depends on. This is the area we’re currently focusing on, so expect new announcements in the coming weeks as we simplify this process, but here are a few ways you can do it right now.</p>
+
+<h3 id="kudu-console">Kudu Console</h3>
+
+<p>Even after you have installed your packages, you will likely find this is an invaluable debugging tool. Once your website is created, for example at <code class="language-plaintext highlighter-rouge">http://trywebsites.azurewebsites.net/</code>, you can get into the Kudu console by adding <code class="language-plaintext highlighter-rouge">.scm</code> after your site name: <code class="language-plaintext highlighter-rouge">https://trywebsites.scm.azurewebsites.net/</code>. You will need to log in with your Azure account (so that example URL probably isn’t going to work) but can then directly access files and run commands on your site. <a href="https://github.com/projectkudu/kudu/wiki/Kudu-console">The Kudu documentation</a> contains the most up-to-date information about the console.</p>
+
+<p><img src="https://msdnshared.blob.core.windows.net/media/2016/07/kudu.png" alt="The Kudu console, displaying the file list and console." /></p>
+
+<p>Once you are in the console and have added the site extension, you can freely install any packages you like (well, almost - more on this later). The one trick is that you’ll have to specify the full path to Python. We also suggest including a <a href="https://pip.pypa.io/en/stable/user_guide/#requirements-files">requirements</a> file as part of your site so that it is easy to reproduce the set of packages both locally and on the server. For example:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>D:\home&gt;D:\home\Python35\python.exe -m pip install --upgrade -r D:\home\site\wwwroot\requirements.txt
+</code></pre></div></div>
+
+<p>There’s no C compiler on your web server, so if any packages have native extension modules you’ll need to install the wheel. Many popular packages provide their own wheels, so installing them will work just fine, but for those that don’t you will need to use <code class="language-plaintext highlighter-rouge">pip wheel [package]</code> on a development machine and then upload the wheel with your site. (The end of <a href="https://github.com/Microsoft/PTVS/wiki/Python-Environments#managing-required-packages">our page on managing requirements</a> shows an example.)</p>
+
+<h3 id="kudu-rest-api">Kudu REST API</h3>
+
+<p>If you don’t want to manually log into the Kudu portal to install packages, you can also trigger these commands remotely via the <a href="https://github.com/projectkudu/kudu/wiki/REST-API">REST API</a>. The <code class="language-plaintext highlighter-rouge">command</code> command behaves identically to typing into the console, except you can POST the command to <code class="language-plaintext highlighter-rouge">https://yoursite.scm.azurewebsites.net/api/command</code>.</p>
+
+<p>See the <a href="https://github.com/projectkudu/kudu/wiki/REST-API">documentation</a> for other commands and information about authentication. There is a helper class in <a href="https://github.com/zooba/pybot/blob/master/_deploy/deploy_helpers.py">this sample project</a> that obtains the credentials using the <a href="http://azure-sdk-for-python.readthedocs.io/en/latest/">Azure SDK for Python</a> and will let you submit the same command as above via the <code class="language-plaintext highlighter-rouge">exec()</code> method. (Remember how I mentioned that we’re working on better ways to do all of these? Yep, there’s a lot of manual work required right now, but soon we’ll have install-on-deploy automation available.)</p>
+
+<h3 id="vendor-everything">Vendor everything</h3>
+
+<p>A final option for deploying your packages is to “vendor” them. This essentially means copying the entire library into your own source code and copying it as part of your site. Depending on how many dependencies you have and how frequently you update them, this may be the easiest way to get a working deployment going. The one catch is that you need to ensure that you copy libraries from a version of Python that precisely matches the version you are installing on the server. If you take extensions from Python 3.5 32-bit and try and use them with 64-bit Python, you will see obscure import errors after deployment. However, as the versions of Python we make available on Azure are exactly the same as those released on <a href="&quot;https://www.python.org/">python.org</a>, you can easily obtain a compatible version for local development.</p>
+
+<h2 id="aside-what-about-virtual-environments">Aside: what about virtual environments?</h2>
+
+<p>While we recommend working in a virtual environment locally, to ensure you fully understand the dependencies needed by your site, once you have published there should not be multiple projects using the same Python install at all. (If there are, you really want to avoid having conflicting dependencies!) As a result, it’s easier and more efficient to just install into the main Python directory.</p>
+
+<h2 id="summary">Summary</h2>
+
+<p>We hope you appreciate this information at this time. While there is still a lot of ongoing work to improve Python on Azure App Service, we have reached a point where there is enough for people to benefit from being able to use parts of it. In particular, we know that many of you will be unblocked by the new ability to install newer versions of Python onto your app service servers.
+&lt;If you have any feedback, suggestions, or want to deploy or manage your web site in a way you think we may not have considered, feel free to leave a comment on this post or email <a href="mailto:python@microsoft.com">python@microsoft.com</a> directly. While we can’t respond to every piece of feedback or need for assistance (we suggest creating support requests for those), we’re happy to hear what you need.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2016-08-04T00:00:00+00:00">August 04, 2016</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Upgrading+Python+on+Azure+App+Service%20https%3A%2F%2Fazure.github.io%2FAppService%2F2016%2F08%2F04%2FUpgrading-Python-on-Azure-App-Service.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2016%2F08%2F04%2FUpgrading-Python-on-Azure-App-Service.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2016%2F08%2F04%2FUpgrading-Python-on-Azure-App-Service.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2016/07/18/Transition-from-Mobile-Services-to-Mobile-Apps-Node.js-Edition.html" class="pagination--pager" title="Transition from Mobile Services to Mobile Apps Node.js Edition
+">Previous</a>
+    
+    
+      <a href="/AppService/2016/08/11/Introducing-a-Quicker-Mobile-App-Quickstart.html" class="pagination--pager" title="Introducing a Quicker Mobile App Quickstart
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

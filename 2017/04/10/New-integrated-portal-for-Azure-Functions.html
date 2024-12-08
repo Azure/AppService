@@ -1,0 +1,953 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>New integrated portal for Azure Functions - Azure App Service</title>
+<meta name="description" content="">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="New integrated portal for Azure Functions">
+<meta property="og:url" content="https://azure.github.io/AppService/2017/04/10/New-integrated-portal-for-Azure-Functions.html">
+
+
+  <meta property="og:description" content="">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2017-04-10T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2017/04/10/New-integrated-portal-for-Azure-Functions.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="New integrated portal for Azure Functions">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="April 10, 2017">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">New integrated portal for Azure Functions
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+            
+            
+            • April 10, 2017
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Donna Malayeri" target="_blank">Donna Malayeri</a>
+<time>    4/10/2017 10:30:44 AM</time>
+<hr/>
+<div id="content">I’m excited to announce a new integrated portal experience for Azure Functions. Previously, there was somewhat disjoint experience between Function Apps and App Service. For many management operations, customers had to navigate to the App Service resource blade, and we heard feedback that customers wanted a more integrated and streamlined experience. In addition, we want to provide an easier way to manage multiple Function Apps from within one view.
+
+We’ve made several enhancements to the experience, including:
+<ul>
+<li>A dedicated browse blade for Function Apps. Function Apps are still listed in the App Service blade, but that’s no longer the only way to find Function Apps</li>
+<li>A tree view that allows viewing and managing multiple Function Apps</li>
+<li>Filters on subscription and app name, as well as an option to scope the view to just one app</li>
+<li>One-click access to all App Service platform features</li>
+<li>A convenient way to manage features that have already been configured</li>
+<li>Overall UI enhancements to be more consistent with the rest of the Azure portal</li>
+</ul>
+For a visual introduction, the short video below walks through the main features. <a href="https://www.youtube.com/watch?v=t3Umy4WKGy0" target="_blank">The video is also available on YouTube</a>.
+
+[video width="1920" height="866" mp4="media/2017/04/function-navigation-full.mp4"][/video]
+<h2>Function App browse and management</h2>
+There is now a new browse blade for Function Apps that you can pin to the left-hand service menu. Under <strong>More services</strong>, search for <strong>Functions</strong>.
+
+<a href="/AppService/media/2017/04/service-menu2.png"><img alt="service-menu" class="alignnone size-full wp-image-4096" height="316" src="/AppService/media/2017/04/service-menu2.png" width="550"/></a>
+
+Once you’re on the browse blade, you’ll see all Function Apps in your active subscription in a tree view on the left. You can filter on one or more subscriptions or search for an app name. In the list view on the right, apps are listed in a grid view that includes the subscription, resource group, and location.
+
+If you select an app in the grid view, you’ll see a scoped view for just that Function App. Clearing the search box at the top will show all Function Apps in the selected subscriptions. See animated gif below.
+
+<a href="/AppService/media/2017/04/function-navigation-filter-and-scope.gif"><img alt="function-navigation-filter-and-scope" class="alignnone wp-image-4036" height="271" src="/AppService/media/2017/04/function-navigation-filter-and-scope-1024x462.gif" width="601"/></a>
+
+You can also scope to a particular Function App by selecting the chevron to the right of the app name. The refresh button will update the function and proxies list. On a Consumption plan, the refresh button also synchronizes triggers with the central listener. (This is required if you FTP or Kudu to modify your <strong>function.json</strong> files.)
+<h2>Function App management</h2>
+Once you’ve selected a Function App, the Overview tab on the right displays information about your app and is similar to the App Service resource blade. From here, you can stop, restart and delete your app, download the publish profile, and reset publish credentials.
+
+The <strong>Configured features</strong> section lists any platform features that you’ve customized. For instance, if you have configured a deployment option, you can navigate to the settings directly from the overview page.
+
+<a href="/AppService/media/2017/04/configured-features.png"><img alt="configured-features" class="alignnone size-mediumlarge wp-image-4025" height="278" src="/AppService/media/2017/04/configured-features-500x278.png" width="500"/></a>
+
+The <strong>Settings </strong>tab includes Function App level settings, such as the runtime version, proxies configuration, and host keys. The <strong>Platform features</strong> tab lists all relevant App Service settings. If you miss the App Service resource blade, you can still get to it from <strong>General Settings -&gt; All settings</strong>. Features that are not available for your app are still displayed, but include a tooltip on why they are not available. You can also search settings based on either exact name or a descriptive tag. For instance, searching on “git” will highlight the option <strong>Deployment source</strong>.
+
+<a href="/AppService/media/2017/04/search-platform-features.png"><img alt="search-platform-features" class="alignnone size-mediumlarge wp-image-4057" height="350" src="/AppService/media/2017/04/search-platform-features-411x350.png" width="411"/></a>
+
+The <strong>API definition</strong> tab allows you to configure a Swagger API definition. For more information on the feature, see the blog post <a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/03/30/announcing-functions-swagger-support/">Announcing Azure Functions OpenAPI (Swagger) support preview</a>.
+<h2>Function navigation</h2>
+Navigating to an individual function is also much easier. If you select the <strong>Functions </strong>or <strong>Proxies </strong>node within a Function App, you’ll see a list of items you can use to navigate. We’ll be making more improvements to the <strong>Functions</strong> list, including the ability to search functions, change the enabled state, and delete functions. (For more details, see the GitHub issue <a href="https://github.com/projectkudu/AzureFunctionsPortal/issues/1062">AzureFunctionsPortal #1062</a>.)
+
+<a href="/AppService/media/2017/04/functions-node.png"><img alt="functions-node" class="alignnone size-full wp-image-4116" height="246" src="/AppService/media/2017/04/functions-node.png" width="600"/></a>
+
+See animated gif below.
+
+<a href="/AppService/media/2017/04/functions-and-proxies-list1.gif"><img alt="functions-and-proxies-list" class="alignnone wp-image-4045 size-large" height="397" src="/AppService/media/2017/04/functions-and-proxies-list1-1024x462.gif" width="879"/></a>
+<h2>New Function page</h2>
+The New Function page has a few changes. Since the main Function App page now shows the <strong>Overview</strong> tab, that displaced the Quickstart experience. We’ve incorporated it as part of the <strong>New Function</strong> page. If a Function App has no functions, you’ll see the quickstart below. To get to the full template view, select <strong>Create custom function</strong> at the bottom of the page. To get to the quickstart view below from the template view, select “go to the quickstart.”
+
+<a href="/AppService/media/2017/04/quickstart-page.png"><img alt="quickstart-page" class="alignnone size-mediumlarge wp-image-4055" height="350" src="/AppService/media/2017/04/quickstart-page-356x350.png" width="356"/></a>
+<a href="/AppService/media/2017/04/template-page.png"><img alt="template-page" class="alignnone wp-image-4075" height="276" src="/AppService/media/2017/04/template-page.png" width="400"/></a>
+<h2>Upcoming improvements</h2>
+Today’s release is just the start of the improvements to the Functions portal. Here’s a list of some of the other improvements we have planned:
+<ul>
+<li>Option to create a new Function App from the navigation blade. Currently, you have to go to the top-level +New option to create a Function App (<a href="https://github.com/projectkudu/AzureFunctionsPortal/issues/986">AzureFunctionsPortal #986</a>)</li>
+<li>On Functions grid page, add options for search, enable/disable, and delete (<a href="https://github.com/projectkudu/AzureFunctionsPortal/issues/1062">AzureFunctionsPortal #1062</a>)</li>
+<li>Include pricing tier in Function App list (<a href="https://github.com/projectkudu/AzureFunctionsPortal/issues/1030">AzureFunctionsPortal #1030</a>)</li>
+<li>Add list of keys to Get Function URL dialog (<a href="https://github.com/projectkudu/AzureFunctionsPortal/issues/850">AzureFunctionsPortal #850</a>)</li>
+<li>Sort templates by scenario, rather than alphabetical (<a href="https://github.com/projectkudu/AzureFunctionsPortal/issues/405">AzureFunctionsPortal #405</a>)</li>
+</ul>
+<h2>Feedback survey</h2>
+As this is a big change to the Azure Functions portal, we’d love to hear your feedback. <strong>Help improve the product by filling out a 2-minute survey: <a href="https://aka.ms/functions-portal-survey">https://aka.ms/functions-portal-survey</a></strong>.
+<h2>Provide feedback</h2>
+Ask questions in the comments section below or reach out to me on Twitter <a href="https://twitter.com/lindydonna">@lindydonna</a>. For general feedback and questions about Azure Functions:
+<ul>
+<li>Ask product questions on the <a href="https://social.msdn.microsoft.com/Forums/azure/en-US/home?forum=AzureFunctions">Azure Functions MSDN forum</a> and <a href="http://stackoverflow.com/questions/tagged/azure-functions">StackOverflow</a>, where you’ll get answers directly from the engineering team.</li>
+<li>Submit feature requests on the <a href="https://github.com/Azure/Azure-Functions">Azure Functions GitHub repo</a> or <a href="https://feedback.azure.com/forums/355860-azure-functions">feedback.azure.com</a>. For portal bugs and feature requests, post in <a href="https://github.com/projectkudu/AzureFunctionsPortal">AzureFunctionsPortal</a>.</li>
+<li>Reach out to us on Twitter via <a href="https://twitter.com/azurefunctions">@AzureFunctions</a> or use the the hashtag <a href="https://twitter.com/search?q=%23azurefunctions">#AzureFunctions</a>.</li>
+</ul>
+<strong>Acknowledgements</strong>
+
+We’d like to thank our Azure MVPs and Azure Advisors for trying out an early version of the portal and providing feedback. Functions team members <a href="https://twitter.com/bktv99">@bktv99</a>, <a href="https://twitter.com/crandycodes">@crandycodes</a>, and <a href="https://twitter.com/phaseshake">@phaseshake</a> filed the most bugs during the bug bash.</div>
+</div></body>
+<script src="/AppService/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="/AppService/resource/replace.js" type="text/javascript"></script>
+</html>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2017-04-10T00:00:00+00:00">April 10, 2017</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=New+integrated+portal+for+Azure+Functions%20https%3A%2F%2Fazure.github.io%2FAppService%2F2017%2F04%2F10%2FNew-integrated-portal-for-Azure-Functions.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2017%2F04%2F10%2FNew-integrated-portal-for-Azure-Functions.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2017%2F04%2F10%2FNew-integrated-portal-for-Azure-Functions.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2017/04/06/Azure-Functions-now-has-direct-integration-with-Application-Insights.html" class="pagination--pager" title="Azure Functions now has direct integration with Application Insights
+">Previous</a>
+    
+    
+      <a href="/AppService/2017/04/14/Announcing-Try-App-Service-API-Apps.html" class="pagination--pager" title="Announcing Try App Service API Apps
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

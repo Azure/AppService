@@ -1,0 +1,1195 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>The Ultimate Guide to Running Healthy Apps in the Cloud - Azure App Service</title>
+<meta name="description" content="Modern-day data centers are extremely complex and have many moving parts. VMs can restart or move, systems are upgraded, and file servers are scaled up and down. All these events are to be expected in a cloud environment. However, you can make your cloud application resilient to these events by following best practices. This document outlines 13 crucial steps that you can take to ensure that your app is cloud ready. By taking these steps, you will ensure that any events in the data center will have negligible effects on your app and that your app will be more resilient and future proof.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="The Ultimate Guide to Running Healthy Apps in the Cloud">
+<meta property="og:url" content="https://azure.github.io/AppService/2020/05/15/Robust-Apps-for-the-cloud.html">
+
+
+  <meta property="og:description" content="Modern-day data centers are extremely complex and have many moving parts. VMs can restart or move, systems are upgraded, and file servers are scaled up and down. All these events are to be expected in a cloud environment. However, you can make your cloud application resilient to these events by following best practices. This document outlines 13 crucial steps that you can take to ensure that your app is cloud ready. By taking these steps, you will ensure that any events in the data center will have negligible effects on your app and that your app will be more resilient and future proof.">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2020-05-15T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2020/05/15/Robust-Apps-for-the-cloud.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="The Ultimate Guide to Running Healthy Apps in the Cloud">
+    <meta itemprop="description" content="Modern-day data centers are extremely complex and have many moving parts. VMs can restart or move, systems are upgraded, and file servers are scaled up and down. All these events are to be expected in a cloud environment. However, you can make your cloud application resilient to these events by following best practices. This document outlines 13 crucial steps that you can take to ensure that your app is cloud ready. By taking these steps, you will ensure that any events in the data center will have negligible effects on your app and that your app will be more resilient and future proof.">
+    <meta itemprop="datePublished" content="May 15, 2020">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">The Ultimate Guide to Running Healthy Apps in the Cloud
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  12 minute read
+
+            
+            
+              • By Khaled Zayed
+            
+            • May 15, 2020
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#use-multiple-instances">Use Multiple Instances</a></li>
+  <li><a href="#update-your-default-settings">Update your default settings</a></li>
+  <li><a href="#use-production-hardware">Use Production Hardware</a></li>
+  <li><a href="#leverage-deployment-slots">Leverage Deployment Slots</a></li>
+  <li><a href="#set-your-health-check-path">Set your Health Check path</a></li>
+  <li><a href="#use-application-initialization">Use Application Initialization</a></li>
+  <li><a href="#enable-local-cache">Enable Local Cache</a></li>
+  <li><a href="#auto-heal">Auto-Heal</a></li>
+  <li><a href="#minimize-app-service-plan-density">Minimize App Service Plan Density</a></li>
+  <li><a href="#monitor-disk-space-usage">Monitor Disk Space usage</a></li>
+  <li><a href="#enable-application-insights">Enable Application Insights</a></li>
+  <li><a href="#deploy-in-multiple-regions">Deploy in Multiple Regions</a></li>
+  <li><a href="#check-app-service-diagnostics">Check App Service Diagnostics</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <p>Modern-day data centers are extremely complex and have many moving parts. VMs can restart or move, systems are upgraded, and file servers are scaled up and down. All these events are to be expected in a cloud environment. However, you can make your cloud application resilient to these events by following best practices. This document outlines 13 crucial steps that you can take to ensure that your app is cloud ready. By taking these steps, you will ensure that any events in the data center will have negligible effects on your app and that your app will be more resilient and future proof.</p>
+
+<p>As mentioned above, your instances are expected to and will restart. They will be upgraded and will sometimes suffer from file server movements. However you can make your app resilient to all these incidents. In order to guarantee the maximum uptime for your app, <strong>please ensure that you follow all practices</strong>.</p>
+
+<h2 id="use-multiple-instances">Use Multiple Instances</h2>
+
+<p>Running your app on only one VM instance is an immediate single point-of-failure. By ensuring that you have multiple instances allocated to your app, if something goes wrong with any particular instance, your app will still be able to respond to requests going to the other instances. Keep in mind that your <strong>app code should be able to handle multiple instances</strong> without synchronization issues when reading from or writing to data sources. You can allocate multiple instances to your app using the “Scale out (App Service Plan)” blade:</p>
+
+<p><img src="/AppService/media/2020/04/multiple-instances.png" alt="multiple-instances" /></p>
+
+<p>To avoid a single point-of-failure, run your app with <strong>at least 2-3 instances</strong>. This is especially important if your app takes considerable time to start (known as cold start). Running more than one instance ensures that your application is available when App Service moves or upgrades the underlying VM instances. You can also configure rules to automatically scale out based on predefined rules such as:</p>
+
+<ul>
+  <li>Time of day (when the app has the most traffic)</li>
+  <li>Resource utilization (memory, CPU, etc.)</li>
+  <li>A combination of both!</li>
+</ul>
+
+<p><strong>Learn More</strong></p>
+
+<ul>
+  <li><a href="https://docs.microsoft.com/azure/azure-monitor/platform/autoscale-get-started?toc=/azure/app-service/toc.json">Get started with Autoscale in Azure</a></li>
+  <li><a href="https://michaelcandido.com/app-service-warm-up-demystified/">App Service Warm-Up Demystified</a></li>
+</ul>
+
+<h2 id="update-your-default-settings">Update your default settings</h2>
+
+<p>App Service has many settings for developers to configure the web app to their use case. <strong>Always-On</strong> keeps your VM instances alive even when no requests have been received in the last 20 minutes. By default, Always-On is disabled; enabling Always-On will limit application cold starts.</p>
+
+<p><strong>ARR Affinity</strong> creates sticky sessions so that clients will connect to the same app instance on subsequent requests. However, ARR Affinity can cause unequal distribution of requests between your instances and possibly overload an instance. Disabling ARR Affinity assumes that your application is either stateless, or the session state is stored on a remote service such as a cache or database.</p>
+
+<p>Lastly, please set the <strong>Platform</strong> setting from 32 Bit to 64 Bit. The maximum available amount of memory for a 32-bit process (even on a 64-bit operating system) is 2 GB. By default, the worker process is set to 32-bit in App Service (for compatibility with legacy web applications). Consider switching to 64-bit processes so you can take advantage of the additional memory available in your Web Worker role.</p>
+
+<p>For production apps that are aiming to be robust, it is recommended to set <strong>Always on to On</strong>, <strong>ARR Affinity to Off</strong> and <strong>Platform to 64 Bit</strong>.</p>
+
+<p>You can change these settings in the configurations section of the Azure Portal, under the <em>General Settings</em> tab:</p>
+
+<p><img src="/AppService/media/2020/04/alwayson.png" alt="alwayson" /></p>
+
+<p><strong>Learn More</strong></p>
+
+<ul>
+  <li><a href="https://docs.microsoft.com/azure/app-service/configure-common#configure-general-settings">Configure an App Service app in the Azure portal</a></li>
+  <li><a href="https://azure.github.io/AppService/2016/05/16/Disable-Session-affinity-cookie-(ARR-cookie)-for-Azure-web-apps.html">Disable Session affinity cookie (ARR cookie) for Azure web apps</a></li>
+</ul>
+
+<h2 id="use-production-hardware">Use Production Hardware</h2>
+
+<p>App Service offers a variety of hardware tiers (also known as SKUs) to suit different customer needs. When creating a new App Service Plan, you have an option to select a different hardware tier for your plan:</p>
+
+<p><img src="/AppService/media/2020/04/pricing.jpg" alt="pricing" /></p>
+
+<p>If your App Service Plan is used for production, please ensure that your App Service Plan is running on one of the recommended “production” pricing tiers. Moreover, if your application is resource intensive, make sure to select the appropriate pricing tier within the recommended ones according to the need of your app. For example, if your application consumes a lot of CPU cycles, running on an S1 pricing tier will not be ideal as it could potentially cause high CPU that would cause downtime or slowness on your app.</p>
+
+<p><strong>Learn More</strong></p>
+
+<ul>
+  <li><a href="https://docs.microsoft.com/azure/app-service/manage-scale-up">Scale up an app in Azure App Service</a></li>
+</ul>
+
+<h2 id="leverage-deployment-slots">Leverage Deployment Slots</h2>
+
+<p>Before deploying your new code to production, you can leverage the Deployment Slots feature in App Services to test your changes. Deployment slots are live apps with their own host names. App content and configurations elements can be swapped between two deployment slots, including the production slot.</p>
+
+<p>Deploying your application to a non-production slot has the following benefits:</p>
+
+<ul>
+  <li>You can validate app changes in a staging environment before swapping it into the production slot.</li>
+  <li>Deploying an app to a slot first and swapping it into production makes sure that all instances of the staging slot are warmed up before swapping into production. This eliminates downtime when you deploy your app. The traffic redirection is seamless, and no requests are dropped because of swap operations. You can automate this entire workflow by configuring auto swap.</li>
+  <li>After a swap, the slot with previously staged app now has the previous production app. If the changes swapped into the production slot aren’t as you expect, you can perform the same swap immediately to get your “last known good site” back.</li>
+</ul>
+
+<p><img src="/AppService/media/2020/04/slots.jpg" alt="slots" /></p>
+
+<blockquote>
+  <p>Please note that Deployment Slots are only available for Standard, Premium, or Isolated App Service plan tiers</p>
+</blockquote>
+
+<p>We highly recommend using <strong>Swap with Preview</strong>. Swap with Preview allows you to test the app in your staging slots against your production settings and also warm up the app. After doing your tests and warming up all the necessary paths, you can then complete the swap and the app will start receiving production traffic <strong>without restarting</strong>. This has a high impact on your app’s availability &amp; performance.</p>
+
+<p><strong>Learn More</strong></p>
+
+<ul>
+  <li><a href="https://docs.microsoft.com/azure/app-service/deploy-staging-slots">Set up staging environments in Azure App Service</a></li>
+  <li><a href="https://ruslany.net/2015/10/azure-web-app-deployment-slot-swap-with-preview/">Azure Web App Deployment Slot Swap with Preview</a></li>
+  <li><a href="https://docs.microsoft.com/azure/app-service/deploy-best-practices#use-deployment-slots">Deployment best practices</a></li>
+</ul>
+
+<h2 id="set-your-health-check-path">Set your Health Check path</h2>
+
+<p>App Service allows you to specify a health check path on your apps. The platform pings this path to determine if your application is healthy and responding to requests. When your site is scaled out to multiple instances, App Service will exclude any unhealthy instance(s) from serving requests, improving your overall availability. Your app’s health check path should poll the critical components of your application, such as your database, cache, or messaging service. This ensures that the status returned by the health check path is an accurate picture of the overall health of your application.</p>
+
+<ol>
+  <li>
+    <p>Go to <em>Monitoring</em> &gt; <em>Health Check</em> on the Web App blade for Azure portal:</p>
+
+    <p><img src="/AppService/media/2020/04/health-check-1.png" alt="health-check-1" /></p>
+  </li>
+  <li>
+    <p>Set the value of the path that our service will ping.</p>
+  </li>
+  <li>
+    <p>Hit save to save the configuration.</p>
+  </li>
+</ol>
+
+<blockquote>
+  <p>Please note that the Health Check feature works only when you have two or more instances, which is a <strong>very</strong> strong recommendation. For a single instance web app, the traffic is never blocked even if that single instance is encountering issues.</p>
+</blockquote>
+
+<p><strong>Learn More</strong></p>
+
+<ul>
+  <li><a href="https://github.com/projectkudu/kudu/wiki/Health-Check-(Preview)">Health Check (Preview)</a></li>
+</ul>
+
+<h2 id="use-application-initialization">Use Application Initialization</h2>
+
+<p>Application Initialization ensures that your app instances have fully started before they are added to they start serving requests. Application Initialization is used during site restarts, auto scaling, and manual scaling. This is a critical feature where hitting the site’s root path is not sufficient to start the application. For this purpose a warm-up path must be created on the app which should be unauthenticated and App Init should be configured to use this url path.</p>
+
+<p>Try to make sure that the method implemented by the warm-up url takes care of touching the functions of all important routes and it returns a response only when warm-up is complete. The site will be put into production only when it returns a response (success or failure) and app initialization will assume “everything is fine with the app”. App Initialization can be configured for your app within web.config file.</p>
+
+<p><strong>Learn More</strong></p>
+
+<ul>
+  <li><a href="https://ruslany.net/2015/09/how-to-warm-up-azure-web-app-during-deployment-slots-swap/">How to warm up Azure Web App during deployment slots swap</a></li>
+</ul>
+
+<h2 id="enable-local-cache">Enable Local Cache</h2>
+
+<p>When this feature is enabled, the site content is read, written from the local virtual machine instance instead of fetching from Azure storage (where site content is stored). This will reduce the number of recycles required for the app. It can be enabled through Azure portal from the “General -&gt; Application settings”. On this page under the App settings section add <code class="language-plaintext highlighter-rouge">WEBSITE_LOCAL_CACHE_OPTION</code> as key and <code class="language-plaintext highlighter-rouge">"Always"</code> as value. Also add the <code class="language-plaintext highlighter-rouge">WEBSITE_LOCAL_CACHE_SIZEINMB</code> with a desired local cache size value up to 2000MB (if not provided, it defaults to 300 MB). It helps to provide the cache size specially when the site contents are more than 300 MB. Ensure that site contents are less than 2000MB for this feature to work. Also it is a good practice to keep it as a slot setting so that it does not get removed with a swap.
+<strong>The most important thing to keep in mind here</strong> is that app should not be doing local disk writes for state persistence of its data/transactions.
+External storage like storage containers, db or cosmosDB should be used for storage purposes.</p>
+
+<blockquote>
+  <p>Please note that the behavior of Local Cache depends on the language and CMS you are using. For best results, we recommend using it for .net and .netcore apps as long as local writes are not being done by the app.</p>
+</blockquote>
+
+<p><img src="/AppService/media/2020/04/local-cache.png" alt="multiple-instances" /></p>
+
+<p><img src="/AppService/media/2020/04/local-cache-2.png" alt="multiple-instances" /></p>
+
+<p><strong>Learn More</strong></p>
+
+<ul>
+  <li><a href="https://docs.microsoft.com/en-us/azure/app-service/overview-local-cache">Azure App Service Local Cache overview</a></li>
+</ul>
+
+<h2 id="auto-heal">Auto-Heal</h2>
+
+<p>Sometimes your application might experience unexpected behaviors that could be resolved by a simple restart. The Auto-Heal features allows you to do exactly that! It allows you to define the ‘condition’ that would trigger Auto-Heal and the ‘action’ that Auto-Heal will initiate when the condition is met.</p>
+
+<p>You can create an Auto-Heal mitigation rule by going to “Diagnose and Solve problems” section -&gt; “Diagnostic Tools” tile and then “Auto-Heal” under Proactive Tools section.</p>
+
+<p><img src="/AppService/media/2020/04/auto-heal.png" alt="multiple-instances" /></p>
+
+<p>Below are example filter values to set up, however if some other value of error code and frequency suits your application, please modify accordingly:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Condition</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Request Count</td>
+      <td>70</td>
+    </tr>
+    <tr>
+      <td>Status Code</td>
+      <td>500</td>
+    </tr>
+    <tr>
+      <td>Sub-status code</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>Win32-status code</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>Frequency in seconds</td>
+      <td>60</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Once the condition above is met, we recommend configuring an action to:</p>
+
+<ul>
+  <li>Recycle Process</li>
+</ul>
+
+<p>and add an ‘Override when Action Executes’:</p>
+
+<ul>
+  <li>Startup Time for process before auto heal executes: 3600 seconds (1 hour)</li>
+</ul>
+
+<p><strong>Learn More</strong></p>
+
+<ul>
+  <li><a href="https://stack247.wordpress.com/2019/05/20/azure-app-service-auto-healing/">Azure App Service Auto-Heal</a></li>
+  <li><a href="https://azure.github.io/AppService/2018/09/10/Announcing-the-New-Auto-Healing-Experience-in-App-Service-Diagnostics.html">Announcing the New Auto-Heal Experience in App Service Diagnostics</a></li>
+</ul>
+
+<h2 id="minimize-app-service-plan-density">Minimize App Service Plan Density</h2>
+
+<p>Running too many Apps in an App Service Plan can have a negative impact performance. All the apps running on the App Service Plan can be seen on “Apps” under “Settings” section in your App Service Plan on Azure portal.</p>
+
+<p>You can verify the App Service Plan density with the App Service Plan Density Check. Learn more here:</p>
+
+<ul>
+  <li><a href="https://azure.github.io/AppService/2019/05/21/App-Service-Plan-Density-Check.html">App Service Plan Density Check</a></li>
+</ul>
+
+<h2 id="monitor-disk-space-usage">Monitor Disk Space usage</h2>
+
+<p>Ensure that the disk space used by www folder should be less than 1GB. It is a very healthy practice in reducing downtime during app restarts and hence improve the application performance. File system usage can be tracked from “App Service Plan -&gt; Quotas” section in Azure portal.</p>
+
+<p><img src="/AppService/media/2020/04/diskusage.png" alt="disk-usage" /></p>
+
+<h2 id="enable-application-insights">Enable Application Insights</h2>
+
+<p>Application Insights offers a suite of features that empower you to troubleshoot incidents that happen on your app. You can use it to debug code errors, diagnose performance degradations caused by dependencies and more.</p>
+
+<p>One of the powerful features of Application Insights is the App Insights Profiler. Enabling Application Insights Profiler provides you with performance traces for your applications that are running in production in Azure. Profiler captures the data automatically at scale without negatively affecting your users. Profiler helps you identify the “hot” code paths that take the longest when handling a web request. Profiler works with .NET applications. To enable it, go to your Application Insights in Azure portal. Click on Performance under Investigate.</p>
+
+<ol>
+  <li>
+    <p>In the Performance pane click on “Configure Profiler”</p>
+
+    <p><img src="/AppService/media/2020/04/aiprofiler-1.jpg" alt="ai-1" /></p>
+  </li>
+  <li>
+    <p>In the pane that opens after that, click on “Profile Now” to start profiling.</p>
+
+    <p><img src="/AppService/media/2020/04/aiprofiler-2.jpg" alt="ai-2" /></p>
+  </li>
+  <li>
+    <p>When Profiler is running, it profiles randomly about once per hour and for a duration of two minutes. If your application is handling a steady stream of requests, Profiler uploads traces every hour.
+To view traces, in the Performance pane, select Take Actions, and then select the Profiler Traces button.</p>
+
+    <p><img src="/AppService/media/2020/04/aiprofiler-3.jpg" alt="ai-3" /></p>
+  </li>
+  <li>
+    <p>App Insights also allows you to track dependencies in your application. You can leverage this feature to troubleshoot slow requests. To automatically track dependencies from .NET console apps, install the Nuget package <code class="language-plaintext highlighter-rouge">Microsoft.ApplicationInsights.DependencyCollector</code>, and initialize <code class="language-plaintext highlighter-rouge">DependencyTrackingTelemetryModule</code> as follows:</p>
+
+    <div class="language-c# highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">DependencyTrackingTelemetryModule</span> <span class="n">depModule</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">DependencyTrackingTelemetryModule</span><span class="p">();</span>
+ <span class="n">depModule</span><span class="p">.</span><span class="nf">Initialize</span><span class="p">(</span><span class="n">TelemetryConfiguration</span><span class="p">.</span><span class="n">Active</span><span class="p">);</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Each request event is associated with the dependency calls, exceptions, and other events that are tracked while your app is processing the request. So if some requests are doing badly, you can find out whether it’s because of slow responses from a dependency. You can see a waterfall view of the requests in the performance blade as well under the “Dependencies” tab:</p>
+
+    <p><img src="/AppService/media/2020/04/dependency.jpg" alt="ai-4" /></p>
+  </li>
+</ol>
+
+<p>You can also leverage our newly released <a href="https://azure.github.io/AppService/2020/04/21/Announcing-Application-Insights-Integration-with-App-Service-Diagnostics.html">App Insights integration with App Service Diagnostics</a>, discussed in details here:</p>
+
+<p><strong>Learn More</strong></p>
+
+<ul>
+  <li><a href="https://docs.microsoft.com/azure/azure-monitor/app/profiler-overview">Profile production applications in Azure with Application Insights</a></li>
+  <li><a href="https://docs.microsoft.com/azure/azure-monitor/app/asp-net-exceptions">Diagnose exceptions in your web apps with Application Insights</a></li>
+  <li><a href="https://docs.microsoft.com/azure/azure-monitor/app/asp-net-dependencies#diagnosis">Dependency Tracking in Azure Application Insights</a></li>
+</ul>
+
+<h2 id="deploy-in-multiple-regions">Deploy in Multiple Regions</h2>
+
+<p>You can deploy Azure Front Door or Azure Traffic Manager to intercept traffic before they hit your site. They help in routing &amp; distributing traffic between your instances/regions. In the event that a catastrophic incident happens in one of the Azure Datacenters, you can still guarantee that your app will run and serve requests by investing in one of them.
+<br />
+There are additional benefits to using Front Door or Traffic Manager, such as routing incoming requests based the customers’ geography to provide the shortest respond time to customers and distribute the load among your instances in order not to overload one of them with requests.</p>
+
+<p><strong>Learn More</strong></p>
+
+<ul>
+  <li><a href="https://docs.microsoft.com/en-us/azure/app-service/web-sites-traffic-manager">Controlling Azure App Service traffic with Azure Traffic Manager</a></li>
+  <li><a href="https://docs.microsoft.com/en-us/azure/frontdoor/quickstart-create-front-door">Quickstart: Create a Front Door for a highly available global web application</a></li>
+</ul>
+
+<h2 id="check-app-service-diagnostics">Check App Service Diagnostics</h2>
+
+<p>Finally, you can check the progress you’ve accomplished in making your app resilient by leverage the “Risk Assessments” section available in App Service Diagnostics here:</p>
+
+<p><img src="/AppService/media/2020/04/risk-alerts.png" alt="bestpractices" /></p>
+
+<p>You’ll be presented by 2 options:</p>
+
+<ul>
+  <li>Best Practices for Availability &amp; Performance</li>
+  <li>Best Practices for Optimal Configuration</li>
+</ul>
+
+<p>We recommend that you follow all the best practices listed in those detectors and get them all to green!</p>
+
+<hr />
+
+<p>Finally, we also recommend that you take a look at the <a href="https://docs.microsoft.com/en-us/azure/architecture/patterns/">Cloud Design Patterns</a> document to minimize the application start time and follow more resiliency recommendations.</p>
+
+<p>Feel free to post any questions about App Resiliency on the <a href="https://social.msdn.microsoft.com/forums/azure/en-US/home?forum=windowsazurewebsitespreview">MSDN Forum</a>.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2020-05-15T00:00:00+00:00">May 15, 2020</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=The+Ultimate+Guide+to+Running+Healthy+Apps+in+the+Cloud%20https%3A%2F%2Fazure.github.io%2FAppService%2F2020%2F05%2F15%2FRobust-Apps-for-the-cloud.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2020%2F05%2F15%2FRobust-Apps-for-the-cloud.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2020%2F05%2F15%2FRobust-Apps-for-the-cloud.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2020/05/11/event-grid-integration.html" class="pagination--pager" title="App Service integration with Event Grid
+">Previous</a>
+    
+    
+      <a href="/AppService/2020/05/19/App-Service-Build-2020-recap.html" class="pagination--pager" title="App Service //Build 2020 Recap
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

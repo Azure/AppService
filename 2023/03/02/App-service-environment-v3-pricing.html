@@ -1,0 +1,1144 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Estimate your cost savings by migrating to App Service Environment v3 - Azure App Service</title>
+<meta name="description" content="If you weren’t already aware, App Service Environment v1 and v2 is retiring on 31 August, 2024. There are many reasons to migrate to App Service Environment v3 including better performance, faster scaling, and reduced overhead since networking dependency management has been greatly simplified. One benefit that stands out that we understand might need some additional explanation is that App Service Environment v3 is often cheaper than previous versions. With the removal of the stamp fee and larger instance sizes per respective SKU with previous versions, App Service Environment v3 can help you do more with less and reduce your monthly spend if you’re familiar with the updates.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Estimate your cost savings by migrating to App Service Environment v3">
+<meta property="og:url" content="https://azure.github.io/AppService/2023/03/02/App-service-environment-v3-pricing.html">
+
+
+  <meta property="og:description" content="If you weren’t already aware, App Service Environment v1 and v2 is retiring on 31 August, 2024. There are many reasons to migrate to App Service Environment v3 including better performance, faster scaling, and reduced overhead since networking dependency management has been greatly simplified. One benefit that stands out that we understand might need some additional explanation is that App Service Environment v3 is often cheaper than previous versions. With the removal of the stamp fee and larger instance sizes per respective SKU with previous versions, App Service Environment v3 can help you do more with less and reduce your monthly spend if you’re familiar with the updates.">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2023-03-02T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2023/03/02/App-service-environment-v3-pricing.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Estimate your cost savings by migrating to App Service Environment v3">
+    <meta itemprop="description" content="If you weren’t already aware, App Service Environment v1 and v2 is retiring on 31 August, 2024. There are many reasons to migrate to App Service Environment v3 including better performance, faster scaling, and reduced overhead since networking dependency management has been greatly simplified. One benefit that stands out that we understand might need some additional explanation is that App Service Environment v3 is often cheaper than previous versions. With the removal of the stamp fee and larger instance sizes per respective SKU with previous versions, App Service Environment v3 can help you do more with less and reduce your monthly spend if you’re familiar with the updates.">
+    <meta itemprop="datePublished" content="March 02, 2023">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Estimate your cost savings by migrating to App Service Environment v3
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  11 minute read
+
+            
+            
+              • By Jordan Selig
+            
+            • March 2, 2023
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#basic-scenarios">Basic scenarios</a>
+    <ul>
+      <li><a href="#scenario-1-scale-down-your-app-service-plans-with-pay-as-you-go-pricing">Scenario 1: Scale down your App Service plans with pay-as-you-go pricing</a></li>
+      <li><a href="#scenario-2-3-year-reserved-instance-pricing-and-savings-plan">Scenario 2: 3 year reserved instance pricing and savings plan</a></li>
+      <li><a href="#scenario-3-break-even-point">Scenario 3: Break even point</a></li>
+    </ul>
+  </li>
+  <li><a href="#advanced-scenarios">Advanced scenarios</a>
+    <ul>
+      <li><a href="#scenario-4-sku-mix">Scenario 4: SKU mix</a></li>
+      <li><a href="#scenario-5-migration-to-app-service-environment-v3-using-the-migration-feature">Scenario 5: Migration to App Service Environment v3 using the migration feature</a></li>
+      <li><a href="#scenario-6-reduce-total-number-of-app-service-environments">Scenario 6: Reduce total number of App Service Environments</a></li>
+    </ul>
+  </li>
+  <li><a href="#zone-redundant-app-service-environment-v3-pricing">Zone redundant App Service Environment v3 pricing</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <p>If you weren’t already aware, App Service Environment v1 and v2 is <a href="https://azure.microsoft.com/updates/app-service-environment-version-1-and-version-2-will-be-retired-on-31-august-2024/">retiring on 31 August, 2024</a>. There are many reasons to <a href="https://aka.ms/asemigration">migrate to App Service Environment v3</a> including better performance, faster scaling, and reduced overhead since networking dependency management has been greatly simplified. One benefit that stands out that we understand might need some additional explanation is that App Service Environment v3 is often cheaper than previous versions. With the removal of the stamp fee and larger instance sizes per respective SKU with previous versions, App Service Environment v3 can help you do more with less and reduce your monthly spend if you’re familiar with the updates.</p>
+
+<p>In this post, we’ll go over a couple common scenarios that will help you better understand App Service Environment v3 pricing and how it compares to your pricing model on App Service Environment v1 or v2. We know there are many scenarios out there, so hopefully one of the ones shared here can be used as an example for you to better understand your situation. <a href="https://azure.microsoft.com/pricing/calculator/">The Azure Pricing Calculator</a> is a great resource and will be referenced throughout this post for each scenario. Note that estimates here are based on the prices applicable on the day the estimate was created. Actual total estimates may vary. For the most up-to-date estimate, click the link for each scenario. Refer to the <a href="https://azure.microsoft.com/pricing/details/app-service/windows/">App Service pricing page</a> for more information.</p>
+
+<blockquote>
+  <p>NOTE: Unless otherwise indicated, all scenarios are calculated using costs based on Linux $USD pricing in East US. The payment option is set to monthly to simplify cost comparisons.</p>
+</blockquote>
+
+<h2 id="basic-scenarios">Basic scenarios</h2>
+
+<h3 id="scenario-1-scale-down-your-app-service-plans-with-pay-as-you-go-pricing">Scenario 1: Scale down your App Service plans with pay-as-you-go pricing</h3>
+
+<p>The App Service plan SKUs available for App Service Environment v3 run on the Isolated v2 tier. This is not to be confused with the tier used by App Service Environment v2, which is the Isolated tier. Below are the corresponding service plans for each available tier. Notice that for the Isolated v2 tier, the number of cores and amount of RAM is effectively doubled. We’ll use this information in this scenario. Additionally, there are <a href="https://azure.github.io/AppService/2022/12/01/Announcing-Larger-Isolatedv2-SKUs.html">new larger SKUs available with the Isolated v2 tier</a> that were not previously available with the older version.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Isolated</th>
+      <th style="text-align: center">Cores</th>
+      <th style="text-align: center">RAM (GB)</th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center">Isolated v2</th>
+      <th style="text-align: center">Cores</th>
+      <th style="text-align: center">RAM (GB)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">I1</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">3.5</td>
+      <td style="text-align: center">→</td>
+      <td style="text-align: center">I1v2</td>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">8</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">I2</td>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">7</td>
+      <td style="text-align: center">→</td>
+      <td style="text-align: center">I2v2</td>
+      <td style="text-align: center">4</td>
+      <td style="text-align: center">16</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">I3</td>
+      <td style="text-align: center">4</td>
+      <td style="text-align: center">14</td>
+      <td style="text-align: center">→</td>
+      <td style="text-align: center">I3v2</td>
+      <td style="text-align: center">8</td>
+      <td style="text-align: center">32</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">I4v2</td>
+      <td style="text-align: center">16</td>
+      <td style="text-align: center">64</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">I5v2</td>
+      <td style="text-align: center">32</td>
+      <td style="text-align: center">128</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">I6v2</td>
+      <td style="text-align: center">64</td>
+      <td style="text-align: center">256</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>In this scenario, you are using an App Service Environment v2 with 1 I2 plan. You require 2 cores and 7 GB RAM. You are using pay-as-you-go pricing.</p>
+
+<p>On App Service Environment v2, your monthly cost is:</p>
+
+<p><a href="https://azure.com/e/45f5b42a6f144e448fd78e93afa77e6f">Stamp fee + 1(I2) = $991.34 + $416.10 = <strong>$1,407.44</strong></a></p>
+
+<p>If you were to migrate this exact workload to App Service Environment v3, you would be able to scale down from I2 to I1v2 since the Isolated v2 equivalent tier has double the cores and RAM. Your monthly cost on App Service Environment v3 would be:</p>
+
+<p><a href="https://azure.com/e/e88da9f9cacb4e3ab0a0179f7521f316">1(I1v2) = <strong>$281.78</strong></a></p>
+
+<p>As you can see, this is a significant cost savings since you were able to use a smaller tier and the stamp fee is no longer applicable. If you don’t scale down after migrating to v3, you will be over-provisioned and incur unnecessary charges, some of which may make your App Service Environment v3 more expensive than your old environment.</p>
+
+<h3 id="scenario-2-3-year-reserved-instance-pricing-and-savings-plan">Scenario 2: 3 year reserved instance pricing and savings plan</h3>
+
+<p><a href="https://azure.microsoft.com/reservations/">Reservations or reserved instance pricing</a> is a discount you can receive if you know what your usage will look like for the next 1 to 3 years. On App Service Environment v2, reservations are supported for the stamp fee. On App Service Environment v3, there is no stamp fee and reservations are supported on the instances themselves.</p>
+
+<p>The following scenario will use the same requirements as Scenario 1, but instead of using pay-as-you-go pricing, you will now use 3 year reserved instance pricing since you know your requirements will stay relatively flat over the next 3 years. With reservations, you can pay upfront or monthly. For ease of comparison between the scenarios, monthly payments will be used.</p>
+
+<p>On App Service Environment v2 with a 3 year reservation, your monthly cost would be:</p>
+
+<p><a href="https://azure.com/e/062d229d8ccb4f48a6d5415d0a25d3b3">Stamp fee + 1(I2) = $594.77 + $416.10 = <strong>$1,010.87</strong></a></p>
+
+<p>Notice the 40% reduction in the stamp fee by using reservations. On App Service Environment v3, your monthly cost would be:</p>
+
+<p><a href="https://azure.com/e/43b6f63e28004295bce5b7bfc921a83c">1(I1v2) = <strong>$127.00</strong></a></p>
+
+<p>There’s a 55% reduction in the monthly cost as a result of using reserved instance pricing.</p>
+
+<p><a href="https://azure.microsoft.com/pricing/offers/savings-plan-compute/">Azure savings plan for compute</a> is another option that is only available on App Service Environment v3. Azure savings plan for compute is a flexible pricing model that provides savings up to 65 percent off pay-as-you-go pricing when you commit to spend a fixed hourly amount on compute services for one or three years.</p>
+
+<p>For this scenario, your cost on App Service Environment v3 with a 3 year savings plan would be:</p>
+
+<p><a href="https://azure.com/e/486568f1ea9747fea19199c2ec9be559">1(I1v2) = <strong>$154.98</strong></a></p>
+
+<p><img src="/AppService/media/2023/03/scale-down-asp.png" alt="" /></p>
+
+<h3 id="scenario-3-break-even-point">Scenario 3: Break even point</h3>
+
+<p>So far we’ve demonstrated the ways migrating to App Service Environment v3 can save you money. However, there are some cases where this may not be the case. Let’s take for example you have an App Service Environment v2 with a single I1 instance and you’re using pay-as-you-go pricing. Your monthly cost would be:</p>
+
+<p><a href="https://azure.com/e/ac89a70062a240e1b990304052d49fad">Stamp fee + 1(I1) = $991.34 + $208.05 = <strong>$1,199.39</strong></a></p>
+
+<p>If you migrate this environment to v3, your monthly cost would be:</p>
+
+<p><a href="https://azure.com/e/e88da9f9cacb4e3ab0a0179f7521f316">1(I1v2) = <strong>$281.78</strong></a></p>
+
+<p>This is a significant cost reduction, just know that you’re now over-provisioned since you now have double the cores and RAM, which you may not need. This is not an issue since the new environment is so much cheaper. However, when you start to have many I1 instances in a single App Service Environment, for example because you use this environment for dev or test workloads across multiple different apps and teams, you need to consider the break even point if you migrate to App Service Environment v3.</p>
+
+<p>For this scenario, your App Service Environment v2 has 14 I1 instances. Because of how your environment is being used by your team, you can not reduce the number of instances or use a larger instance that has the same effective capacity. Your monthly cost is:</p>
+
+<p><a href="https://azure.com/e/bd1dce4b5c8f4d6d807ed3c4ae78fcae">Stamp fee + 14(I1) = $991.34 + $2,912.70 = <strong>$3,904.04</strong></a></p>
+
+<p>A migration of this environment to v3 would lead to the following monthly cost:</p>
+
+<p><a href="https://azure.com/e/95a729b2ee2849c6847d88ef63140617">14(I1v2) = <strong>$3,944.92</strong></a></p>
+
+<p>As you can see, your App Service Environment v3 is slightly more expensive than your v2. As you start adding more I1 instances, and therefore need more I1v2 instances when you migrate, the difference in price becomes even more significant and your v3 will get more and more expensive than your v2. Unfortunately, if you’re in this situation, you may have to plan for a higher monthly cost.</p>
+
+<blockquote>
+  <p>NOTE: This calculation was done with Linux $USD prices in East US. Break even points will vary due to price variances in the various regions. For an estimate that reflects your situation, see <a href="https://azure.microsoft.com/pricing/calculator/">the Azure Pricing Calculator</a>.</p>
+</blockquote>
+
+<p>The following chart visually depicts the break even point at the time of releasing this blog post using the selected region and price offering where App Service Environment v3 becomes more expensive than v2. If you need more than 13 of our smallest instance offering, you fall into this scenario. There may be other scenarios where this is also the case.</p>
+
+<p><img src="/AppService/media/2023/03/break-even-point.png" alt="" /></p>
+
+<h2 id="advanced-scenarios">Advanced scenarios</h2>
+
+<p>The first three scenarios were basic and were intended to give you a quick sense of how pricing works on App Service Environment v3. Realistically, you’ll have many more instances and probably be using a combination of the SKUs. The following scenarios will give you a better sense of the cost saving opportunities for these use cases.</p>
+
+<h3 id="scenario-4-sku-mix">Scenario 4: SKU mix</h3>
+
+<p>To accommodate various app types in your App Service Environment v2, you use a combination of the tiers in various quantities. The first estimate will be using pay-as-you-go pricing, and the second will use a 3 year reservation on the stamp fee.</p>
+
+<p><a href="https://azure.com/e/6139e2a572ab4d82a263278e08f61eaa">Stamp fee + 20(I1) + 10(I2) + 5(I3) = $991.34 + $12,483.00 = <strong>$13,474.34</strong></a></p>
+
+<p>With a 3 year reservation, this becomes:</p>
+
+<p><a href="https://azure.com/e/087b3549856945a1b620ad58ccced0c6">Stamp fee + 20(I1) + 10(I2) + 5(I3) = $594.77 + $12,483.00 = <strong>$13,077.77</strong></a></p>
+
+<p>You can start to see here that as you consume more resources, the reservations available on App Service Environment v2 don’t significantly reduce monthly costs since they only apply to the stamp fee.</p>
+
+<p>On App Service Environment v3, you require the same respective core and RAM capacity. There are various paths you can take here depending on your specific requirements - you can keep the same number of instances and just scale them down, or you can reduce the total number instance you are using. For this scenario, we’ll do the following:</p>
+
+<ul>
+  <li>20 I1 → 10 I1v2</li>
+  <li>10 I2 → 10 I1v2</li>
+  <li>5 I3 → 5 I2v2</li>
+</ul>
+
+<p>With pay-as-you-go pricing, this would be:</p>
+
+<p><a href="https://azure.com/e/43a72b6bf449498f822a82cb0396e0ba">20(I1v2) + 5(I2v2) = <strong>$8,453.40</strong></a></p>
+
+<p>And with a 3 year reservation:</p>
+
+<p><a href="https://azure.com/e/99b162b41e944bbabfabf7f2d4d424bb">20(I1v2) + 5(I2v2) = <strong>$3,809.98</strong></a></p>
+
+<p>At this point, you’re reducing your costs by over 70%. This is where the cost saving benefits of App Service Environment v3 really start to become significant. Even if you were to use pay-as-you-go pricing, you still see cost savings in the form of thousands of dollars per month.</p>
+
+<p><img src="/AppService/media/2023/03/sku-mix.png" alt="" /></p>
+
+<h3 id="scenario-5-migration-to-app-service-environment-v3-using-the-migration-feature">Scenario 5: Migration to App Service Environment v3 using the migration feature</h3>
+
+<p>The <a href="https://aka.ms/asemigration">migration feature</a> was developed to automate the migration of App Service Environments to v3. It’s an in-place migration, meaning it uses the same subnet your current environment is in. During the migration, your current environment is deleted and an App Service Environment v3 is spun up. All of your instances are automatically converted to their Isolated v2 counterparts (for example I2 is converted to I2v2). Since the Isolated v2 instances are larger, you’ll be over-provisioned if you’re still expecting the same traffic volume. This is a direct scenario where you have the opportunity to scale your instances down similar to what was done in <a href="#scenario-4-sku-mix">Scenario 4</a>.</p>
+
+<p>To keep things consistent, we’ll keep the requirements for this scenario the same as <a href="#scenario-4-sku-mix">Scenario 4</a>. Your capacity requirements will not change after migration. Prior to migrating, your monthly pay-as-you-go cost is:</p>
+
+<p><a href="https://azure.com/e/6139e2a572ab4d82a263278e08f61eaa">Stamp fee + 20(I1) + 10(I2) + 5(I3) = $991.34 + $12,483.00 = <strong>$13,474.34</strong></a></p>
+
+<p>Immediately after migrating using the migration feature, your instances have been converted and you have the following leading to a higher monthly cost than what you had on App Service Environment v2.</p>
+
+<ul>
+  <li>20 I1 → 20 I1v2</li>
+  <li>10 I2 → 10 I2v2</li>
+  <li>5 I3 → 5 I3v2</li>
+</ul>
+
+<p><a href="https://azure.com/e/34c240000f004539bbf921bd2b5813c8">20(I1v2) + 10(I2v2) + 5(I3v2) = <strong>$16,906.80</strong></a></p>
+
+<p>You’re significantly over-provisioned, so you scale down and immediately reduce your monthly cost by 50%.</p>
+
+<ul>
+  <li>20 I1v2 → 10 I1v2</li>
+  <li>10 I2v2 → 10 I1v2</li>
+  <li>5 I3v2 → 5 I2v2</li>
+</ul>
+
+<p><a href="https://azure.com/e/84abb76b9de64bd6bd639a0dcc846545">20(I1v2) + 5(I2v2) = <strong>$8,453.40</strong></a></p>
+
+<p>You should plan how you will scale down prior to migrating to ensure you don’t get hit with unexpected costs due to being over-provisioned. You’ll be able to scale down immediately after the migration finishes.</p>
+
+<p><img src="/AppService/media/2023/03/migration-feature.png" alt="" /></p>
+
+<h3 id="scenario-6-reduce-total-number-of-app-service-environments">Scenario 6: Reduce total number of App Service Environments</h3>
+
+<p>App Service Environments are a great choice for customers that need to scale beyond the limits of the App Service public multi-tenant offering of 30 App Service plan instances. But even the 200 instance limit with App Service Environments may not be enough for some customers. In that case, they need to create multiple App Service Environments.</p>
+
+<p>For this scenario, you have 3 App Service Environment v2s all at max capacity with 200 I3 instances in each. Your monthly cost with pay-as-you-go pricing is:</p>
+
+<p><a href="https://azure.com/e/7d160cd7d861450bad0c999f7ba19b5b">3(Stamp fee + 200(I3)) = <strong>$505,268.04</strong></a></p>
+
+<p>With App Service Environment v3, you have a couple options for how to proceed. You can continue using 3 App Service Environment v3s and just scale down to a smaller SKU, or you can reduce the number of environments by taking advantage of the new larger SKUs.</p>
+
+<p>Keeping the same number of environments and scaling down would lead to a monthly cost with pay-as-you-go pricing of:</p>
+
+<p><a href="https://azure.com/e/58a00f7ada9746339bb09f8bf20f87a0">3(200(I2v2)) = <strong>$338,136.00</strong></a></p>
+
+<p>This would be further reduced if you were to use a reservation or savings plan.</p>
+
+<p>If you wanted to reduce the total number of App Service Environments, this would be possible by using the larger SKUs that are only offered on App Service Environment v3. In addition to the potential cost savings you would see by reducing your instance counts and number of environments, you would also realize additional cost savings in the form of overhead since management would be over fewer resources.</p>
+
+<p>For this scenario, the requirement is to have the equivalent of 600 I3 instances, or 2400 cores and 8,400 GB RAM. With App Service Environment v3, this can be accomplished with a single App Service Environment with 38 I6v2 instances. The pay-as-you-go monthly cost would be:</p>
+
+<p><a href="https://azure.com/e/8be70aee48704f0aa7fc2ef9e909b017">38(I6v2) = 38($9,016.96) = <strong>$342,644.48</strong></a></p>
+
+<p>This is just over the cost of the maintaining 3 App Service Environment v3s, but this doesn’t take into account the extra overhead involved in managing multiple resources. With 3 year reserved instance pricing, this monthly cost would be reduced significantly.</p>
+
+<p><a href="https://azure.com/e/7baef8ad75444c43bba7dd42b0492532">38(I6v2) = 38($3,831.055) = <strong>$145,580.07</strong></a></p>
+
+<p><img src="/AppService/media/2023/03/reduce-number-ase.png" alt="" /></p>
+
+<h2 id="zone-redundant-app-service-environment-v3-pricing">Zone redundant App Service Environment v3 pricing</h2>
+
+<p><a href="https://learn.microsoft.com/azure/reliability/migrate-app-service-environment">Zone redundant App Service Environment</a> deployments are only supported on App Service Environment v3. There is no additional charge for enabling zone redundancy if you have 9 or more instances. These 9 instances can be made up of any combination of the available SKUs. For example, you can have 9 I1v2s or 3 I1v2s, 3 I2v2s, and 3 I3v2s. You will only be charged for those 9 instances.</p>
+
+<p>If you enable zone redundancy, and if your environment has fewer than 9 total instances, you’ll be charged the difference if the form of a minimum instance fee which uses the Windows I1v2 instance price. For example, if you have a zone redundant App Service Environment v3 with 3 Linux I3v2 instances, you will be charged for those 3 I3v2 instances at the standard Linux rate, plus 6 Windows I1v2 instances.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2023-03-02T00:00:00+00:00">March 02, 2023</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Estimate+your+cost+savings+by+migrating+to+App+Service+Environment+v3%20https%3A%2F%2Fazure.github.io%2FAppService%2F2023%2F03%2F02%2FApp-service-environment-v3-pricing.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2023%2F03%2F02%2FApp-service-environment-v3-pricing.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2023%2F03%2F02%2FApp-service-environment-v3-pricing.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2023/02/03/Custom-domain-ux-updates.html" class="pagination--pager" title="Updates to App Service Overview Blade for Custom Domains
+">Previous</a>
+    
+    
+      <a href="/AppService/2023/04/24/App-service-language-version-policy-update.html" class="pagination--pager" title="Updates to App Service Azure Policies that monitor language versions
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

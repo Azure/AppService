@@ -1,0 +1,1282 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Netflix Eureka on App Service - Azure App Service</title>
+<meta name="description" content="Netflix Eureka is a REST based middleware designed for discovery and load balancing of web applications. For those who already have a Netflix Eureka app, this article explains the configurations required to get a Netflix Eureka based app running correctly in App Service. For readers starting from scratch, we have prepared a demo project with a working example of Netflix Eureka based services working together on Azure App Service.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Netflix Eureka on App Service">
+<meta property="og:url" content="https://azure.github.io/AppService/2020/08/18/Netflix-Eureka-On-App-Service.html">
+
+
+  <meta property="og:description" content="Netflix Eureka is a REST based middleware designed for discovery and load balancing of web applications. For those who already have a Netflix Eureka app, this article explains the configurations required to get a Netflix Eureka based app running correctly in App Service. For readers starting from scratch, we have prepared a demo project with a working example of Netflix Eureka based services working together on Azure App Service.">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2020-08-18T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2020/08/18/Netflix-Eureka-On-App-Service.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Netflix Eureka on App Service">
+    <meta itemprop="description" content="Netflix Eureka is a REST based middleware designed for discovery and load balancing of web applications. For those who already have a Netflix Eureka app, this article explains the configurations required to get a Netflix Eureka based app running correctly in App Service. For readers starting from scratch, we have prepared a demo project with a working example of Netflix Eureka based services working together on Azure App Service.">
+    <meta itemprop="datePublished" content="August 18, 2020">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Netflix Eureka on App Service
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  9 minute read
+
+            
+            
+              • By Gregory Goldshteyn
+            
+            • August 18, 2020
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#configure-netflix-eureka-for-app-service">Configure Netflix Eureka for App Service</a>
+    <ul>
+      <li><a href="#example-configuration-files">Example configuration files</a></li>
+      <li><a href="#enable-https-only">Enable HTTPS Only</a></li>
+      <li><a href="#explanation-of-properties">Explanation of Properties</a></li>
+      <li><a href="#server-configuration">Server Configuration</a></li>
+      <li><a href="#linux-configuration">Linux Configuration</a></li>
+    </ul>
+  </li>
+  <li><a href="#tutorial">Tutorial</a>
+    <ul>
+      <li><a href="#prerequisites">Prerequisites</a></li>
+      <li><a href="#an-overview-of-the-project">An Overview of the Project</a></li>
+      <li><a href="#building">Building</a></li>
+      <li><a href="#deploying">Deploying</a></li>
+      <li><a href="#the-services">The Services</a></li>
+      <li><a href="#querying-the-services">Querying the Services</a></li>
+      <li><a href="#querying-the-discovery-server">Querying the Discovery Server</a></li>
+    </ul>
+  </li>
+  <li><a href="#securing-eureka">Securing Eureka</a>
+    <ul>
+      <li><a href="#basic-auth">Basic Auth</a></li>
+      <li><a href="#security-options-for-azure-and-spring-boot">Security Options for Azure and Spring Boot</a></li>
+    </ul>
+  </li>
+</ul>
+            </nav>
+          </aside>
+        
+        <p>Netflix Eureka is a REST based middleware designed for discovery and load balancing of web applications. For those who already have a Netflix Eureka app, this article explains the <a href="#configurations">configurations</a> required to get a Netflix Eureka based app running correctly in App Service. For readers starting from scratch, we have prepared a <a href="#tutorial">demo project</a> with a working example of Netflix Eureka based services working together on Azure App Service.</p>
+
+<h2 id="configure-netflix-eureka-for-app-service">Configure Netflix Eureka for App Service</h2>
+
+<p>In Azure, there are several configurations that must be performed on Eureka clients to get them working correctly in App Service. These settings can be included in an application.yml file, application.properties file, or as arguments to the JVM in the <code class="language-plaintext highlighter-rouge">JAVA_OPTS</code> app setting.</p>
+
+<p><strong>Note:</strong> These configurations are for Windows Web Apps. For configuration on Linux, see <a href="#linux-configuration">Linux Configuration</a></p>
+
+<h3 id="example-configuration-files">Example configuration files</h3>
+
+<p>If you are using .properties files, the required configurations are below.</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">spring.application.name=example-client</span>
+<span class="s">eureka.client.serviceUrl.defaultZone=https://example-server.azurewebsites.com:443/eureka</span>
+<span class="s">eureka.instance.hostname=example-client.azurewebsites.com</span>
+<span class="s">eureka.instance.secure-port-enabled=true</span>
+<span class="s">eureka.instance.nonsecure-port-enabled=false</span>
+<span class="s">eureka.instance.nonSecurePort=80</span>
+<span class="s">eureka.instance.securePort=443</span>
+<span class="s">management.server.port=${server.port}</span>
+<span class="s">eureka.instance.instanceId=${eureka.instance.hostname}:${spring.application.name}:443</span>
+<span class="s">eureka.instance.statusPageUrl=https://${eureka.hostname}:443/actuator/info</span>
+<span class="s">eureka.instance.healthCheckUrl=https://${eureka.hostname}:443/actuator/health</span>
+<span class="s">eureka.instance.secureHealthCheckUrl=https://${eureka.hostname}:443/actuator/health</span>
+</code></pre></div></div>
+
+<p>Here are the same configurations for YAML users.</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">spring</span><span class="pi">:</span>
+  <span class="na">application</span><span class="pi">:</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">example-server</span>
+<span class="na">management</span><span class="pi">:</span>
+  <span class="na">server</span><span class="pi">:</span>
+    <span class="na">port</span><span class="pi">:</span> <span class="s">${server.port}</span>
+<span class="na">eureka</span><span class="pi">:</span>
+  <span class="na">client</span><span class="pi">:</span>
+    <span class="na">serviceUrl</span><span class="pi">:</span>
+      <span class="na">defaultZone</span><span class="pi">:</span> <span class="s">https://example-server.azurewebsites.com:443/eureka</span>
+<span class="na">eureka</span><span class="pi">:</span>
+  <span class="na">instance</span><span class="pi">:</span>
+    <span class="na">hostname</span><span class="pi">:</span> <span class="s">example-client.azurewebsites.com</span>
+    <span class="na">secure-port-enabled</span><span class="pi">:</span> <span class="kc">true</span>
+    <span class="na">nonsecure-port-enabled</span><span class="pi">:</span> <span class="kc">false</span>
+    <span class="na">nonSecurePort</span><span class="pi">:</span> <span class="m">80</span>
+    <span class="na">securePort</span><span class="pi">:</span> <span class="m">443</span>
+    <span class="na">instanceId</span><span class="pi">:</span> <span class="s">${eureka.instance.hostname}:${spring.application.name}:443</span>
+    <span class="na">statusPageUrl</span><span class="pi">:</span> <span class="s">https://${eureka.hostname}:443/actuator/info</span>
+    <span class="na">healthCheckUrl</span><span class="pi">:</span> <span class="s">https://${eureka.hostname}:443/actuator/health</span>
+    <span class="na">secureHealthCheckUrl</span><span class="pi">:</span> <span class="s">https://${eureka.hostname}:443/actuator/health</span>
+</code></pre></div></div>
+
+<h3 id="enable-https-only">Enable HTTPS Only</h3>
+
+<p>Configure your web app to only accept HTTP<strong>S</strong> traffic.</p>
+
+<ol>
+  <li>Go to your App Service in the Azure Portal</li>
+  <li>Find <strong>Settings</strong> on the left-side navigation menu</li>
+  <li>Click <strong>TLS/SSL settings</strong></li>
+  <li>Toggle HTTPS only to “On”</li>
+</ol>
+
+<p><img src="/AppService/media/2020/08/EnableHTTPSOnly.png" alt="Configure App to Only Accept HTTPS Traffic" class="align-center" /></p>
+
+<h3 id="explanation-of-properties">Explanation of Properties</h3>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">spring.application.name=[YOUR APP NAME]</span>
+</code></pre></div></div>
+
+<p>Setting the application name is important for discovery by other services, which will look for the app by <code class="language-plaintext highlighter-rouge">spring.application.name</code>. For a Spring Boot based Netflix Eureka app, this is <code class="language-plaintext highlighter-rouge">spring.application.name</code></p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">eureka.client.serviceUrl.defaultZone=https://[YOUR SERVER HOSTNAME]:443/eureka</span>
+</code></pre></div></div>
+
+<p>This is the default server the client will broadcast to, allowing communication between the client, server, and discovery of all services known by the server. In App Service, the server URL might look like: <em>my-eureka-server.azurewebsites.net</em>.</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">eureka.instance.hostname=[YOUR CLIENT HOSTNAME]</span>
+</code></pre></div></div>
+
+<p>The url of the client itself. This should look like <code class="language-plaintext highlighter-rouge">my-eureka-client.azurewebsites.net</code></p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">eureka.instance.secure-port-enabled=true</span>
+<span class="s">eureka.instance.nonsecure-port-enabled=false</span>
+<span class="s">eureka.instance.nonSecurePort=80</span>
+<span class="s">eureka.instance.securePort=443</span>
+</code></pre></div></div>
+
+<p>It is recommended to use secure communication (HTTP<strong>S</strong>). In the case you do not want to use secure communication, set <code class="language-plaintext highlighter-rouge">eureka.instance.secure-port-enabled</code> to <code class="language-plaintext highlighter-rouge">false</code> and <code class="language-plaintext highlighter-rouge">eureka.instance.nonsecure-port-enabled=true</code>. If you do that, ensure that <strong>HTTPS Only</strong> setting (under <strong>TLS/SSL settings</strong>) is set to “Off”.</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">management.server.port=${server.port}</span>
+<span class="s">eureka.instance.instanceId=${eureka.instance.hostname}:${spring.application.name}:443</span>
+<span class="s">eureka.instance.statusPageUrl=https://${eureka.hostname}:443/actuator/info</span>
+<span class="s">eureka.instance.healthCheckUrl=https://${eureka.hostname}:443/actuator/health</span>
+<span class="s">eureka.instance.secureHealthCheckUrl=https://${eureka.hostname}:443/actuator/health</span>
+</code></pre></div></div>
+
+<p>If using a service such as <a href="https://spring.io/guides/gs/actuator-service/">Spring Actuator</a>, the management server port must be defined as the same port as server.port. This is because the platform assigns a random port to <code class="language-plaintext highlighter-rouge">server.port</code>, which the platform then exposes as port 80 and port 443. As such, the Actuator must also communicate on the port which is chosen by the platform to be exposed to the internet.</p>
+
+<h3 id="server-configuration">Server Configuration</h3>
+
+<p>In Eureka, applications can be clients, servers, or both. In the case where an application is just a server and not a client, add the following configuration in <code class="language-plaintext highlighter-rouge">application.properties</code>.</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">eureka.client.register-with-eureka=false</span>
+<span class="s">eureka.client.fetch-registry=false</span>
+</code></pre></div></div>
+
+<h3 id="linux-configuration">Linux Configuration</h3>
+
+<p>If you are planning on hosting your Netflix Eureka application as a Linux Web App, the port information specified in Windows Web Apps is not required. This is because Windows Web Apps can only expose port 80 and port 443 externally, whereas a Linux Web App can expose other ports.</p>
+
+<p>An example application.properties file for a Netflix Eureka client on a Linux Web App:</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">spring.application.name=example-client</span>
+<span class="s">eureka.client.serviceUrl.defaultZone=https://example-server.azurewebsites.com:443/eureka</span>
+<span class="s">eureka.instance.hostname=example-client.azurewebsites.com</span>
+<span class="s">eureka.instance.secure-port-enabled=true</span>
+<span class="s">eureka.instance.nonsecure-port-enabled=false</span>
+</code></pre></div></div>
+
+<p>By default the ports 80 and 443 are used for http and https traffic respectively. Notably, <code class="language-plaintext highlighter-rouge">management.server.port</code> can be set to any arbitrary port. This may be useful for security or administrative purposes.</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">management.server.port=888</span>
+</code></pre></div></div>
+
+<h2 id="tutorial">Tutorial</h2>
+
+<p>If you do not have a Netflix Eureka project, you can <a href="https://github.com/Azure-Samples/app-service-netflix-eureka-windows">get the example project files here</a> and follow the instructions below to get started.</p>
+
+<p>If you prefer to use Linux App Service Plans, the example project for Linux is <a href="https://github.com/Azure-Samples/app-service-netflix-eureka-linux">available here</a>. The instructions for the Linux project are the same.</p>
+
+<p><strong>NOTE:</strong> the Linux version of this project will be hosted on premium (P1v2) App Service Plans, which may incur costs.</p>
+
+<h3 id="prerequisites">Prerequisites</h3>
+
+<p>Building and deploying the example project will require the following technologies.</p>
+
+<ul>
+  <li><a href="https://openjdk.java.net/install/">Java JDK 1.8</a></li>
+  <li><a href="https://maven.apache.org/download.cgi">Maven</a></li>
+  <li><a href="https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest">Azure CLI</a></li>
+</ul>
+
+<p>You will also need an active Azure Subscription to create the web apps.</p>
+
+<h3 id="an-overview-of-the-project">An Overview of the Project</h3>
+
+<p>The project is composed of the following four web apps.</p>
+
+<ul>
+  <li>2 services which provide data: <strong>ratings-data-service</strong>, <strong>movie-info-service</strong></li>
+  <li>1 service which consumes data from the others: <strong>movie-catalog-service</strong></li>
+  <li>1 discovery server to allow the services discover each other: <strong>discovery-server</strong></li>
+</ul>
+
+<p>The utility of Netflix Eureka for discovery is showcased in the catalog service, which consumes the ratings data and movie info in this block. The discovery server handles registering the movie info service and ratings data service such that they can be hosted on many machines at many URLS and be consumed by name. As you can see, the code simply calls the services by their app names: <code class="language-plaintext highlighter-rouge">ratings-data-service</code> and <code class="language-plaintext highlighter-rouge">movie-info-service</code>.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">"/catalog/{userId}"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">CatalogItem</span><span class="o">&gt;</span> <span class="nf">getCatalog</span><span class="o">(</span><span class="nd">@PathVariable</span><span class="o">(</span><span class="s">"userId"</span><span class="o">)</span> <span class="nc">String</span> <span class="n">userId</span><span class="o">)</span> <span class="o">{</span>
+
+    <span class="nc">UserRating</span> <span class="n">userRating</span> <span class="o">=</span> <span class="n">restTemplate</span><span class="o">.</span><span class="na">getForObject</span><span class="o">(</span><span class="s">"http://ratings-data-service/ratingsdata/user/"</span> <span class="o">+</span> <span class="n">userId</span><span class="o">,</span> <span class="nc">UserRating</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+    <span class="k">return</span> <span class="n">userRating</span><span class="o">.</span><span class="na">getRatings</span><span class="o">().</span><span class="na">stream</span><span class="o">()</span>
+      <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">rating</span> <span class="o">-&gt;</span> <span class="o">{</span>
+        <span class="nc">Movie</span> <span class="n">movie</span> <span class="o">=</span> <span class="n">restTemplate</span><span class="o">.</span><span class="na">getForObject</span><span class="o">(</span><span class="s">"http://movie-info-service/movies/"</span> <span class="o">+</span> <span class="n">rating</span><span class="o">.</span><span class="na">getMovieId</span><span class="o">(),</span> <span class="nc">Movie</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">CatalogItem</span><span class="o">(</span><span class="n">movie</span><span class="o">.</span><span class="na">getName</span><span class="o">(),</span> <span class="n">movie</span><span class="o">.</span><span class="na">getDescription</span><span class="o">(),</span> <span class="n">rating</span><span class="o">.</span><span class="na">getRating</span><span class="o">());</span>
+      <span class="o">})</span>
+      <span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="nc">Collectors</span><span class="o">.</span><span class="na">toList</span><span class="o">());</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="building">Building</h3>
+
+<p>Run <code class="language-plaintext highlighter-rouge">mvn clean prepare-package package -DskipTests</code> from the root of the project directory to build the applications.</p>
+
+<h3 id="deploying">Deploying</h3>
+
+<p>Deploying is similar to <a href="https://docs.microsoft.com/en-us/azure/developer/java/spring-framework/deploy-spring-boot-java-app-with-maven-plugin">deploying a Spring Boot application using Maven</a>. Make sure you are authenticated on the Azure CLI and have the correct subscription set.</p>
+
+<p>Then, run <code class="language-plaintext highlighter-rouge">mvn azure-webapp:deploy -Dprefix=yourPrefix</code>, replacing <code class="language-plaintext highlighter-rouge">yourPrefix</code> with a string that is unique to you or your organization. The domain names on App Service must be unique, so this prevents name collisions with other applications. If a prefix is not set this way, a timestamp will used as the prefix.</p>
+
+<blockquote>
+  <p>The <code class="language-plaintext highlighter-rouge">application.properties</code> file of each of the services is generated based on <a href="https://github.com/Azure-Samples/app-service-netflix-eureka-windows/blob/main/client.application.properties.template"><code class="language-plaintext highlighter-rouge">client.application.properties.template</code></a>. The <code class="language-plaintext highlighter-rouge">application.properties</code> file of the discovery server is generated from <a href="https://github.com/Azure-Samples/app-service-netflix-eureka-windows/blob/main/server.application.properties.template"><code class="language-plaintext highlighter-rouge">server.application.properties.template</code></a>. This is to apply the prefix and ensure each application has the same properties. This happens in the <code class="language-plaintext highlighter-rouge">prepare-package</code> step of the build process.</p>
+</blockquote>
+
+<p>To build and run the project in one command, use:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  mvn clean prepare-package package azure-webapp:deploy <span class="nt">-Dprefix</span><span class="o">=</span>yourPrefix <span class="nt">-DskipTests</span>
+</code></pre></div></div>
+
+<h3 id="the-services">The Services</h3>
+
+<p>After deployment, the project will be hosted on four Azure web apps. The individual apps are at the following four URLs, where “yourPrefix” is the string you provided in the previous step.</p>
+
+<ul>
+  <li>http://yourPrefix-discovery-server.azurewebsites.net/</li>
+  <li>http://yourPrefix-movie-catalog-service.azurewebsites.net/</li>
+  <li>http://yourPrefix-movie-info-service.azurewebsites.net/</li>
+  <li>http://yourPrefix-ratings-data-service.azurewebsites.net/</li>
+</ul>
+
+<p>Your URLS are in output of the Maven command, and in the Azure Portal in the auto-generated resource group, <strong>yourPrefix-example-netflix-eureka-rg</strong>.</p>
+
+<blockquote>
+  <p>By default, this project is configured to use a free tier App Service Plan. These app service plans are not “always on” by default, which means they must be visited after deployment to start up. Additionally, they will stop after 20 minutes of inactivity.</p>
+</blockquote>
+
+<p>Ensure that you visit the discovery server first. This allows the services register with it and discover each other. Then visit the movie info and ratings data services before the movie catalog service. This is because the movie catalog service requires data from the movie info service and ratings data service. Querying the movie catalog service before the movie info and ratings data services results in a 500 error.</p>
+
+<p>A PowerShell script which performs the requests in correct order:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#Replace with your prefix</span><span class="w">
+</span><span class="nv">$prefix</span><span class="o">=</span><span class="n">microsoft-example</span><span class="w">
+
+</span><span class="n">Invoke-Webrequest</span><span class="w"> </span><span class="nt">-URI</span><span class="w"> </span><span class="nx">https://</span><span class="nv">$prefix</span><span class="nt">-discovery-server</span><span class="o">.</span><span class="nf">azurewebsites</span><span class="o">.</span><span class="nf">net</span><span class="w">
+</span><span class="nx">Invoke-Webrequest</span><span class="w"> </span><span class="nt">-URI</span><span class="w"> </span><span class="nx">https://</span><span class="nv">$prefix</span><span class="nt">-movie-info-service</span><span class="o">.</span><span class="nf">azurewebsites</span><span class="o">.</span><span class="nf">net</span><span class="w">
+</span><span class="nx">Invoke-Webrequest</span><span class="w"> </span><span class="nt">-URI</span><span class="w"> </span><span class="nx">https://</span><span class="nv">$prefix</span><span class="nt">-ratings-data-service</span><span class="o">.</span><span class="nf">azurewebsites</span><span class="o">.</span><span class="nf">net</span><span class="w">
+</span><span class="nx">Invoke-Webrequest</span><span class="w"> </span><span class="nt">-URI</span><span class="w"> </span><span class="nx">https://</span><span class="nv">$prefix</span><span class="nt">-movie-catalog-service</span><span class="o">.</span><span class="nf">azurewebsites</span><span class="o">.</span><span class="nf">net</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The same can be done on bash using curl:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#Replace with your prefix</span>
+<span class="nv">$prefix</span><span class="o">=</span>microsoft-example
+
+curl <span class="nt">-s</span> https://<span class="nv">$prefix</span><span class="nt">-discovery-server</span>.azurewebsites.net
+curl <span class="nt">-s</span> https://<span class="nv">$prefix</span><span class="nt">-movie-info-service</span>.azurewebsites.net
+curl <span class="nt">-s</span> https://<span class="nv">$prefix</span><span class="nt">-ratings-data-service</span>.azurewebsites.net
+curl <span class="nt">-s</span> https://<span class="nv">$prefix</span><span class="nt">-movie-catalog-service</span>.azurewebsites.net
+</code></pre></div></div>
+
+<h3 id="querying-the-services">Querying the Services</h3>
+
+<p>Data from the services can be accessed directly on each site. Data can also be retrieved as PowerShell objects through the <code class="language-plaintext highlighter-rouge">Invoke-RestMethod</code> command:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#Replace with your prefix</span><span class="w">
+</span><span class="nv">$prefix</span><span class="o">=</span><span class="n">microsoft-example</span><span class="w">
+
+</span><span class="n">Invoke-RestMethod</span><span class="w"> </span><span class="nt">-URI</span><span class="w"> </span><span class="nx">https://</span><span class="nv">$prefix</span><span class="nt">-movie-info-service</span><span class="o">.</span><span class="nf">azurewebsites</span><span class="o">.</span><span class="nf">net</span><span class="nx">/movies/12</span><span class="w"> </span><span class="nt">-ContentType</span><span class="w"> </span><span class="s2">"application/json"</span><span class="w">
+</span><span class="n">Invoke-RestMethod</span><span class="w"> </span><span class="nt">-URI</span><span class="w"> </span><span class="nx">https://</span><span class="nv">$prefix</span><span class="nt">-ratings-data-service</span><span class="o">.</span><span class="nf">azurewebsites</span><span class="o">.</span><span class="nf">net</span><span class="nx">/ratingsdata/movies/12</span><span class="w"> </span><span class="nt">-ContentType</span><span class="w"> </span><span class="s2">"application/json"</span><span class="w">
+</span><span class="n">Invoke-RestMethod</span><span class="w"> </span><span class="nt">-URI</span><span class="w"> </span><span class="nx">https://</span><span class="nv">$prefix</span><span class="nt">-movie-catalog-service</span><span class="o">.</span><span class="nf">azurewebsites</span><span class="o">.</span><span class="nf">net</span><span class="nx">/catalog/12</span><span class="w"> </span><span class="nt">-ContentType</span><span class="w"> </span><span class="s2">"application/json"</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Or in bash:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#Replace with your prefix</span>
+<span class="nv">$prefix</span><span class="o">=</span>microsoft-example
+
+curl <span class="nt">-s</span> https://<span class="nv">$prefix</span><span class="nt">-discovery-server</span>.azurewebsites.net
+curl <span class="nt">-s</span> https://<span class="nv">$prefix</span><span class="nt">-movie-info-service</span>.azurewebsites.net/movies/12
+curl <span class="nt">-s</span> https://<span class="nv">$prefix</span><span class="nt">-ratings-data-service</span>.azurewebsites.net/ratingsdata/movies/12
+curl <span class="nt">-s</span> https://<span class="nv">$prefix</span><span class="nt">-movie-catalog-service</span>.azurewebsites.net/catalog/12
+</code></pre></div></div>
+
+<h3 id="querying-the-discovery-server">Querying the Discovery Server</h3>
+
+<p>The discovery server can be queried to provide information about the services registered with it. The following command gets the applications registered with the discovery server:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Invoke-RestMethod</span><span class="w"> </span><span class="nt">-URI</span><span class="w"> </span><span class="nx">https://</span><span class="nv">$prefix</span><span class="nt">-discovery-server</span><span class="o">.</span><span class="nf">azurewebsites</span><span class="o">.</span><span class="nf">net</span><span class="nx">/eureka/apps</span><span class="w"> </span><span class="nt">-ContentType</span><span class="w"> </span><span class="s2">"application/json"</span><span class="w">
+
+</span><span class="nv">$response</span><span class="o">.</span><span class="nf">applications</span><span class="w">
+
+</span><span class="n">versions__delta</span><span class="w"> </span><span class="nx">apps__hashcode</span><span class="w"> </span><span class="nx">application</span><span class="w">
+</span><span class="o">---------------</span><span class="w"> </span><span class="o">--------------</span><span class="w"> </span><span class="o">-----------</span><span class="w">
+</span><span class="mi">1</span><span class="w">               </span><span class="n">UP_3_</span><span class="w">          </span><span class="p">{</span><span class="n">MOVIE-INFO-SERVICE</span><span class="p">,</span><span class="w"> </span><span class="nx">RATINGS-DATA-SERVICE</span><span class="p">,</span><span class="w"> </span><span class="nx">MOVIE-CATALOG-SERVICE</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>An individual service can then be queried as a PowerShell object:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$catalogService</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$response</span><span class="o">.</span><span class="nf">applications</span><span class="o">.</span><span class="nf">application</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Where-Object</span><span class="w"> </span><span class="p">{</span><span class="bp">$_</span><span class="o">.</span><span class="nf">name</span><span class="w"> </span><span class="o">-eq</span><span class="w"> </span><span class="s2">"MOVIE-CATALOG-SERVICE"</span><span class="p">}</span><span class="w">
+
+</span><span class="nv">$catalogService</span><span class="o">.</span><span class="nf">instance</span><span class="w">
+
+</span><span class="n">instanceId</span><span class="w">                    </span><span class="p">:</span><span class="w"> </span><span class="nx">example-movie-catalog-service.azurewebsites.net:movie-catalog-service:443</span><span class="w">
+</span><span class="n">hostName</span><span class="w">                      </span><span class="p">:</span><span class="w"> </span><span class="nx">example-movie-catalog-service.azurewebsites.net</span><span class="w">
+</span><span class="n">app</span><span class="w">                           </span><span class="p">:</span><span class="w"> </span><span class="nx">MOVIE-CATALOG-SERVICE</span><span class="w">
+</span><span class="n">ipAddr</span><span class="w">                        </span><span class="p">:</span><span class="w"> </span><span class="nx">10.0.5.129</span><span class="w">
+</span><span class="n">status</span><span class="w">                        </span><span class="p">:</span><span class="w"> </span><span class="nx">UP</span><span class="w">
+</span><span class="n">overriddenstatus</span><span class="w">              </span><span class="p">:</span><span class="w"> </span><span class="nx">UNKNOWN</span><span class="w">
+</span><span class="n">port</span><span class="w">                          </span><span class="p">:</span><span class="w"> </span><span class="nx">port</span><span class="w">
+</span><span class="n">securePort</span><span class="w">                    </span><span class="p">:</span><span class="w"> </span><span class="nx">securePort</span><span class="w">
+</span><span class="n">countryId</span><span class="w">                     </span><span class="p">:</span><span class="w"> </span><span class="nx">1</span><span class="w">
+</span><span class="n">dataCenterInfo</span><span class="w">                </span><span class="p">:</span><span class="w"> </span><span class="nx">dataCenterInfo</span><span class="w">
+</span><span class="n">leaseInfo</span><span class="w">                     </span><span class="p">:</span><span class="w"> </span><span class="nx">leaseInfo</span><span class="w">
+</span><span class="n">metadata</span><span class="w">                      </span><span class="p">:</span><span class="w"> </span><span class="nx">metadata</span><span class="w">
+</span><span class="n">homePageUrl</span><span class="w">                   </span><span class="p">:</span><span class="w"> </span><span class="nx">http://example-movie-catalog-service.azurewebsites.net:80/</span><span class="w">
+</span><span class="n">statusPageUrl</span><span class="w">                 </span><span class="p">:</span><span class="w"> </span><span class="nx">https://example-movie-catalog-service.azurewebsites.net:443/actuator/info</span><span class="w">
+</span><span class="n">healthCheckUrl</span><span class="w">                </span><span class="p">:</span><span class="w"> </span><span class="nx">http://example-movie-catalog-service.azurewebsites.net:443/actuator/health</span><span class="w">
+</span><span class="n">secureHealthCheckUrl</span><span class="w">          </span><span class="p">:</span><span class="w"> </span><span class="nx">https://example-movie-catalog-service.azurewebsites.net:443/actuator/health</span><span class="w">
+</span><span class="n">vipAddress</span><span class="w">                    </span><span class="p">:</span><span class="w"> </span><span class="nx">movie-catalog-service</span><span class="w">
+</span><span class="n">secureVipAddress</span><span class="w">              </span><span class="p">:</span><span class="w"> </span><span class="nx">movie-catalog-service</span><span class="w">
+</span><span class="n">isCoordinatingDiscoveryServer</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="nx">false</span><span class="w">
+</span><span class="n">lastUpdatedTimestamp</span><span class="w">          </span><span class="p">:</span><span class="w"> </span><span class="nx">1596156385669</span><span class="w">
+</span><span class="n">lastDirtyTimestamp</span><span class="w">            </span><span class="p">:</span><span class="w"> </span><span class="nx">1596156385326</span><span class="w">
+</span><span class="n">actionType</span><span class="w">                    </span><span class="p">:</span><span class="w"> </span><span class="nx">ADDED</span><span class="w">
+</span></code></pre></div></div>
+
+<p>This means that services and discovery servers hosted on Azure can be accessed and consumed by other Eureka servers, including those hosted on other cloud service providers and local servers. While Netflix Eureka is designed for Java, it is possible to use this data to implement a Netflix Eureka client in any language.</p>
+
+<h2 id="securing-eureka">Securing Eureka</h2>
+
+<p>Without requiring authorization, any user can access the discovery server. This means that a malicious user has all of the information about every service and server registered, and can register their own malicious applications to your discovery server, potentially accessing sensitive information.</p>
+
+<h3 id="basic-auth">Basic Auth</h3>
+
+<p>Since our example application is based on Spring Boot, it can use Spring Boot’s security to require credentials from clients before registering them.</p>
+
+<ol>
+  <li>
+    <p>In the <code class="language-plaintext highlighter-rouge">pom.xml</code> of the discovery server project, add this dependency:</p>
+
+    <div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nt">&lt;dependency&gt;</span>
+   <span class="nt">&lt;groupId&gt;</span>org.springframework.boot<span class="nt">&lt;/groupId&gt;</span>
+   <span class="nt">&lt;artifactId&gt;</span>spring-boot-starter-security<span class="nt">&lt;/artifactId&gt;</span>
+ <span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>In the <code class="language-plaintext highlighter-rouge">application.properties</code> of the discovery server, add the following:</p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">spring</span><span class="o">.</span><span class="na">security</span><span class="o">.</span><span class="na">user</span><span class="o">.</span><span class="na">name</span><span class="o">=</span><span class="n">your</span><span class="o">-</span><span class="n">eureka</span><span class="o">-</span><span class="n">user</span>
+ <span class="n">spring</span><span class="o">.</span><span class="na">security</span><span class="o">.</span><span class="na">user</span><span class="o">.</span><span class="na">password</span><span class="o">=</span><span class="n">your</span><span class="o">-</span><span class="n">eureka</span><span class="o">-</span><span class="n">password</span>
+</code></pre></div>    </div>
+
+    <p><strong>Note:</strong> if you are adding this to the example project, add the above properties to <code class="language-plaintext highlighter-rouge">server.application.properties.template</code> as well.</p>
+  </li>
+  <li>
+    <p>Define a class in the discovery server project that extends WebSecurityConfigurerAdapter and overrides the <code class="language-plaintext highlighter-rouge">configure()</code> method</p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">package</span> <span class="nn">io.javabrains.discoveryserver</span><span class="o">;</span> <span class="c1">//Package of the example project, replace with yours</span>
+
+ <span class="kn">import</span> <span class="nn">org.springframework.context.annotation.Configuration</span><span class="o">;</span>
+ <span class="kn">import</span> <span class="nn">org.springframework.security.config.annotation.web.builders.HttpSecurity</span><span class="o">;</span>
+ <span class="kn">import</span> <span class="nn">org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter</span><span class="o">;</span>
+
+ <span class="nd">@Configuration</span>
+ <span class="kd">public</span> <span class="kd">class</span> <span class="nc">SecurityConfig</span> <span class="kd">extends</span> <span class="nc">WebSecurityConfigurerAdapter</span> <span class="o">{</span>
+
+   <span class="nd">@Override</span>
+   <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">configure</span><span class="o">(</span><span class="nc">HttpSecurity</span> <span class="n">http</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+       <span class="n">http</span><span class="o">.</span><span class="na">csrf</span><span class="o">().</span><span class="na">disable</span><span class="o">().</span><span class="na">authorizeRequests</span><span class="o">().</span><span class="na">anyRequest</span><span class="o">().</span><span class="na">authenticated</span><span class="o">().</span><span class="na">and</span><span class="o">().</span><span class="na">httpBasic</span><span class="o">();</span>
+   <span class="o">}</span>
+
+ <span class="o">}</span>
+</code></pre></div>    </div>
+
+    <p>When you run the discovery server and navigate to it, there should now be a pop-up requesting a username and password.</p>
+  </li>
+  <li>
+    <p>Modify the <code class="language-plaintext highlighter-rouge">application.properties</code> file of the client to include the username and password in the discovery server URL</p>
+
+    <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code> eureka.client.serviceUrl.defaultZone=https://discovery-server.azurewebsites.net:443/eureka
+</code></pre></div>    </div>
+
+    <p>Should now be:</p>
+
+    <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code> eureka.client.serviceUrl.defaultZone=https://username:password@discovery-server.azurewebsites.net:443/eureka
+</code></pre></div>    </div>
+
+    <p><strong>Note:</strong>: if you’re adding this to the example project, add the username and password to <code class="language-plaintext highlighter-rouge">client.application.properties.template</code></p>
+  </li>
+</ol>
+
+<p>The client will now be able to successfully register with the Eureka server.</p>
+
+<h3 id="security-options-for-azure-and-spring-boot">Security Options for Azure and Spring Boot</h3>
+
+<p>Azure App Service provides built-in authentication and authorization support, so you can sign in users and access data by writing minimal or no code in your web app. This feature, <strong>EasyAuth</strong>, allows Azure Web Apps to authenticate though identity providers, including Azure Active Directory, Google, Microsoft Account, Facebook, Twitter, and OpenID Connect.</p>
+
+<p><a href="https://docs.microsoft.com/en-us/azure/app-service/overview-authentication-authorization">You can read more about EasyAuth and Authentication and Authorization in Azure here</a></p>
+
+<p>The Spring Boot Starter for Azure provides auto-configuration for a number of Azure Services. These include Azure Active Directory, an authorization and identity service, and Key Vault, a service for storing and retrieving secrets securely across Azure.</p>
+
+<p><a href="https://docs.microsoft.com/en-us/azure/developer/java/spring-framework/spring-boot-starters-for-azure">You can read more about Spring Boot Starters for Azure here</a></p>
+
+<p>Aside from Basic Auth, our example application can use the security features of Spring Security for other types of authorization (Including OAuth2) and protection from exploits such as CSRF attacks.</p>
+
+<p><a href="https://docs.spring.io/spring-security/site/docs/current/reference/html5/">You can read more about Spring Security here</a></p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2020-08-18T00:00:00+00:00">August 18, 2020</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Netflix+Eureka+on+App+Service%20https%3A%2F%2Fazure.github.io%2FAppService%2F2020%2F08%2F18%2FNetflix-Eureka-On-App-Service.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2020%2F08%2F18%2FNetflix-Eureka-On-App-Service.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2020%2F08%2F18%2FNetflix-Eureka-On-App-Service.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2020/08/14/zero_to_hero_pt6.html" class="pagination--pager" title="Zero to Hero with App Service, Part 6: Securing your web app
+">Previous</a>
+    
+    
+      <a href="/AppService/2020/08/19/github-actions-code-ga.html" class="pagination--pager" title="GitHub Actions integration is now Generally Available
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

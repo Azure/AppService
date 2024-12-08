@@ -1,0 +1,1414 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Control and automate planned maintenance for App Service Environment v3 part 2 - Azure App Service</title>
+<meta name="description" content="This is part 2 of a 2-part series about controlling and automating planned maintenance in App Service Environment v3.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Control and automate planned maintenance for App Service Environment v3 part 2">
+<meta property="og:url" content="https://azure.github.io/AppService/2022/10/07/Configure-automation-for-upgrade-preferences-in-App-Service-Environment-part2.html">
+
+
+  <meta property="og:description" content="This is part 2 of a 2-part series about controlling and automating planned maintenance in App Service Environment v3.">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2022-10-07T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2022/10/07/Configure-automation-for-upgrade-preferences-in-App-Service-Environment-part2.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Control and automate planned maintenance for App Service Environment v3 part 2">
+    <meta itemprop="description" content="This is part 2 of a 2-part series about controlling and automating planned maintenance in App Service Environment v3.">
+    <meta itemprop="datePublished" content="October 07, 2022">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Control and automate planned maintenance for App Service Environment v3 part 2
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  15 minute read
+
+            
+            
+              • By Błażej Miśkiewicz
+            
+            • October 7, 2022
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#introduction">Introduction</a></li>
+  <li><a href="#getting-started-with-the-second-scenario">Getting Started with the second scenario</a></li>
+  <li><a href="#create-basic-infrastructure">Create basic infrastructure</a></li>
+  <li><a href="#create-and-deploy-sample-application">Create and deploy sample application</a></li>
+  <li><a href="#planned-maintenance---change-the-upgrade-preference">Planned maintenance - Change the upgrade preference</a></li>
+  <li><a href="#deploy-azure-front-door">Deploy Azure Front Door</a></li>
+  <li><a href="#deploy-logic-app">Deploy Logic App</a>
+    <ul>
+      <li><a href="#deploy-logic-app-template">Deploy Logic App template</a></li>
+      <li><a href="#authorize-office-365-connection">Authorize Office 365 connection</a></li>
+    </ul>
+  </li>
+  <li><a href="#change-an-alert">Change an Alert</a>
+    <ul>
+      <li><a href="#send-test-notifications">Send test notifications</a></li>
+      <li><a href="#logic-app-run-history-blade">Logic App run history blade</a></li>
+    </ul>
+  </li>
+</ul>
+            </nav>
+          </aside>
+        
+        <h2 id="introduction">Introduction</h2>
+
+<p>This is part 2 of a 2-part series about automation for planned maintenance in App Service Environment v3. In this 2-part series, I will walk you through building a demo environment, setting up manual upgrade preference option for App Service Environment and configure automation using Logic App. In the first scenario you have deployed a simple environment, in the second scenario the environment will be more complex.</p>
+
+<p><a href="https://azure.github.io/AppService/2022/09/15/Configure-automation-for-upgrade-preferences-in-App-Service-Environment.html">The first article</a> uses one Azure App Service Environment, which will be configured with the manual upgrade preference option. When an upgrade is ready, an alert will be triggered that will start your Logic App. The Logic App will send you an email asking you to confirm the upgrade process.</p>
+
+<p><strong>The second article</strong> uses two Azure App Service Environments in two different regions. The first App Service Environment will be for the production workload, and the second for disaster recovery purposes. The Web App will be published using Azure Front Door Standard service. When an upgrade is ready, an alert will be triggered that will start your Logic App. The Logic App will send you an email asking you to confirm traffic redirection from the primary region to the disaster recovery region, when you accept this workflow, Logic App will redirect the traffic and start the upgrade process of your production Azure App Service Environment. Using this approach you can avoid cold start of the applications. Usually the upgrade process should be invisible for your application but if you have an application that needs more time to start or you want to decide when the upgrade should start then this approach will be perfect for you.</p>
+
+<blockquote>
+  <p><strong>Info</strong> You can also use the Logic App from this article to redirect the traffic before migrating from App Service Environment v2 to App Service Environment v3. When Logic App does not detect an available upgrade, it will send you an email asking you to confirm only the traffic redirection from the primary region to the secondary region without starting upgrade process of the App Service Environment. Another place where you can use this example to build a production version of your Logic App may be the disaster recovery procedure.</p>
+</blockquote>
+
+<blockquote>
+  <p><strong>Remember</strong> Now you can change Upgrade preference option to Manual and decide for yourself when you want to upgrade App Service Environment v3. After an update is available, you’ll have 15 days to start the upgrade process. If you don’t start the upgrade within the 15 days, the upgrade will be processed with the remaining automatic upgrades in the region. You can find more information about upgrade preference for App Service Environments v3 on this site <a href="https://docs.microsoft.com/azure/app-service/environment/how-to-upgrade-preference?pivots=experience-azp">upgrade preference for App Service Environments</a></p>
+</blockquote>
+
+<p><strong>Requirements:</strong></p>
+
+<ol>
+  <li>Access to Azure Subscription</li>
+  <li>Access to Office 365 account</li>
+  <li>Successful completion of <a href="https://azure.github.io/AppService/2022/09/15/Configure-automation-for-upgrade-preferences-in-App-Service-Environment.html">the first article</a></li>
+</ol>
+
+<p><strong>Second scenario is organized into five steps:</strong></p>
+
+<ol>
+  <li>Deploy second App Service Environment using Azure CLI</li>
+  <li>Deploy second sample app using Azure CLI</li>
+  <li>Deploy Azure Front Door using CLI</li>
+  <li>Deploy new version of Logic App using ARM template</li>
+  <li>Change <em>Alert rules</em> in <em>Monitor</em></li>
+</ol>
+
+<p><strong>Decide where you will execute commands</strong></p>
+
+<p>The best option to walk through this guide and execute commands would be to use Azure Cloud Shell with Bash environment. Azure Cloud Shell is an interactive, authenticated, browser-accessible shell for managing Azure resources. It provides the flexibility of choosing the shell experience that best suits the way you work, either Bash or PowerShell. For information on how to use Azure Cloud Shell, please visit this page <a href="https://docs.microsoft.com/azure/cloud-shell/overview">Azure Cloud Shell</a>. You can also install Azure CLI on your machine. The Azure CLI is available to install in Windows, macOS and Linux environments. It can also be run in a Docker container. For information on how to install the Azure CLI, please visit this page <a href="https://docs.microsoft.com/cli/azure/install-azure-cli">Azure CLI</a>.</p>
+
+<p>If you decide to use <a href="https://shell.azure.com">Azure Cloud Shell</a>, please use Bash environment.</p>
+
+<h2 id="getting-started-with-the-second-scenario">Getting Started with the second scenario</h2>
+
+<blockquote>
+  <p><strong>Remember</strong> To deploy the second scenario, you must first go through the first scenario - <a href="https://azure.github.io/AppService/2022/09/15/Configure-automation-for-upgrade-preferences-in-App-Service-Environment.html">Control and automate planned maintenance for App Service Environment v3 part 1</a>.</p>
+</blockquote>
+
+<p><strong>Create folder for you data</strong></p>
+
+<p>You can use the name below for your folder. You just need to replace <em>asedemo</em> with your environment name.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir </span>asedemo-upgrade-preference-ase-s2
+<span class="nb">cd </span>asedemo-upgrade-preference-ase-s2
+</code></pre></div></div>
+
+<p><strong>Choose the right subscription</strong></p>
+
+<p>If you have many subscriptions you must select the subscription in which you want to deploy the resources.</p>
+
+<p>Using this command you can find and copy the <em>SubscriptionId</em> in which you want to create resources for this scenario.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az account list <span class="nt">-o</span> table
+</code></pre></div></div>
+
+<p>Using this command you can set a subscription to be the current active subscription.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az account <span class="nb">set</span> <span class="nt">-s</span> YourSubscriptionID
+</code></pre></div></div>
+
+<p>You can find more information about the <em>az account</em> command on this site <a href="https://docs.microsoft.com/cli/azure/account?view=azure-cli-latest">az account</a>.</p>
+
+<p><strong>Prepare parameters</strong></p>
+
+<p>When you construct your naming convention, identify the key pieces of information that you want to reflect in the resource names. Different information is relevant for different resource types. The following sites are useful when you construct resource names <a href="https://docs.microsoft.com/azure/cloud-adoption-framework/ready/azure-best-practices/resource-naming">Define your naming convention</a> and <a href="https://docs.microsoft.com/azure/cloud-adoption-framework/ready/azure-best-practices/resource-abbreviations">Recommended abbreviations for Azure resource types</a>.</p>
+
+<p>You can use the names below. You just need to replace <em>asedemo</em> with your environment name <strong>(please use the same environment name that you used in scenario 1)</strong>, change <em>SubscriptionId</em>, <em>EmailAddress</em>, <em>LocationRegionPROD</em> and change <em>LocationRegionDR</em> parameters.</p>
+
+<p>Copy and paste your parameters to your shell.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">ASEsubscriptionID</span><span class="o">=</span>11111111-1111-1111-1111-111111111111
+<span class="nv">EmailAddress</span><span class="o">=</span>YourEmailAddress
+<span class="nv">LocationRegionPROD</span><span class="o">=</span>northeurope
+<span class="nv">LocationRegionDR</span><span class="o">=</span>westeurope
+<span class="nv">ASENamePROD</span><span class="o">=</span>ase-asedemo-prod-01
+<span class="nv">ASENameDR</span><span class="o">=</span>ase-asedemo-dr-01
+<span class="nv">ASEPlanNamePROD</span><span class="o">=</span>plan-asedemo-linux-prod-01
+<span class="nv">ASEPlanNameDR</span><span class="o">=</span>plan-asedemo-linux-dr-01
+<span class="nv">WEBAPPNamePROD</span><span class="o">=</span>app-asedemo-prod-01
+<span class="nv">WEBAPPNameDR</span><span class="o">=</span>app-asedemo-dr-01
+<span class="nv">ResourceGroupNameSHARED</span><span class="o">=</span>rg-asedemo-shared-01
+<span class="nv">ASEResourceGroupNamePROD</span><span class="o">=</span>rg-asedemo-prod-01
+<span class="nv">ASEResourceGroupNameDR</span><span class="o">=</span>rg-asedemo-dr-01
+<span class="nv">VirtualNetworkNamePROD</span><span class="o">=</span>vnet-asedemo-prod-<span class="nv">$LocationRegionPROD</span><span class="nt">-01</span>
+<span class="nv">VirtualNetworkNameDR</span><span class="o">=</span>vnet-asedemo-dr-<span class="nv">$LocationRegionDR</span><span class="nt">-01</span>
+<span class="nv">SubnetNameVnetPROD</span><span class="o">=</span>snet-asedemo-prod-<span class="nv">$LocationRegionPROD</span><span class="nt">-01</span>
+<span class="nv">SubnetNameVnetDR</span><span class="o">=</span>snet-asedemo-dr-<span class="nv">$LocationRegionDR</span><span class="nt">-01</span>
+<span class="nv">VnetPrefixPROD</span><span class="o">=</span>192.168.10.0/24
+<span class="nv">SubnetVnetPrefixPROD</span><span class="o">=</span>192.168.10.0/24
+<span class="nv">VnetPrefixDR</span><span class="o">=</span>192.168.100.0/24
+<span class="nv">SubnetVnetPrefixDR</span><span class="o">=</span>192.168.100.0/24
+<span class="nv">LogicAppName</span><span class="o">=</span>logic-asedemo-prod-02
+<span class="nv">FDName</span><span class="o">=</span>fd-asedemo-01
+<span class="nv">OriginGroup</span><span class="o">=</span>origin-group-asedemo
+<span class="nv">OriginNamePrimary</span><span class="o">=</span>primary
+<span class="nv">OriginNameSecondary</span><span class="o">=</span>secondary
+</code></pre></div></div>
+
+<h2 id="create-basic-infrastructure">Create basic infrastructure</h2>
+
+<p><strong>Create Resource Group</strong></p>
+
+<p>The demo environment will be organized using three resource groups. The first resource group is for App Service Environment in primary region, the second is for App Service Environment in secondary region and the third resource group is for the <em>Logic App</em> automation. Two resource groups were created during the first scenario, now you need to create a resource group for Azure App Service Environment is the secondary region.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az group create <span class="nt">-l</span> <span class="nv">$LocationRegionDR</span> <span class="nt">-n</span> <span class="nv">$ASEResourceGroupNameDR</span>
+</code></pre></div></div>
+
+<p><strong>Create virtual network with subnet for App Service Environment</strong></p>
+
+<p>A virtual network is required to create an App Service Environment. This command will create a virtual network with a subnet.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az network vnet create <span class="nt">-g</span> <span class="nv">$ASEResourceGroupNameDR</span> <span class="nt">-n</span> <span class="nv">$VirtualNetworkNameDR</span> <span class="nt">--address-prefix</span> <span class="nv">$VnetPrefixDR</span> <span class="nt">--subnet-name</span> <span class="nv">$SubnetNameVnetDR</span> <span class="nt">--subnet-prefix</span> <span class="nv">$SubnetVnetPrefixDR</span>
+</code></pre></div></div>
+
+<p><strong>Create App Service Environment - this process may take a while</strong></p>
+
+<p>An App Service Environment is a single-tenant deployment of Azure App Service that runs in your virtual network. This command will create an App Service Environment.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az appservice ase create <span class="nt">-n</span> <span class="nv">$ASENameDR</span> <span class="nt">-g</span> <span class="nv">$ASEResourceGroupNameDR</span> <span class="nt">--vnet-name</span> <span class="nv">$VirtualNetworkNameDR</span> <span class="nt">--subnet</span> <span class="nv">$SubnetNameVnetDR</span> <span class="nt">--kind</span> asev3 <span class="nt">--virtual-ip-type</span> External
+</code></pre></div></div>
+
+<p>For more information about Azure CLI for App Service Environment, visit <a href="https://docs.microsoft.com/cli/azure/appservice/ase?view=azure-cli-latest#az-appservice-ase-create">Azure CLI ASE Create</a>.</p>
+
+<p><strong>Create App Service Plan in App Service Environment - this process may take a while</strong></p>
+
+<p>Applications are hosted in App Service plans, which are created in an App Service Environment. An App Service plan is essentially a provisioning profile for an application host. This command will create an App Service plan.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az appservice plan create <span class="nt">-g</span> <span class="nv">$ASEResourceGroupNameDR</span> <span class="nt">-n</span> <span class="nv">$ASEPlanNameDR</span> <span class="nt">--app-service-environment</span> <span class="nv">$ASENameDR</span> <span class="nt">--is-linux</span> <span class="nt">--sku</span> I1v2
+</code></pre></div></div>
+
+<p>For more information about Azure CLI for App Service Environment Plan, visit <a href="https://docs.microsoft.com/cli/azure/appservice/plan?view=azure-cli-latest#az-appservice-plan-create">Azure CLI ASE Plan Create</a></p>
+
+<h2 id="create-and-deploy-sample-application">Create and deploy sample application</h2>
+
+<p><strong>Create a web app</strong></p>
+
+<p>To create a PHP app in your App Service Environment, use this command.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp create <span class="nt">-g</span> <span class="nv">$ASEResourceGroupNameDR</span> <span class="nt">-p</span> <span class="nv">$ASEPlanNameDR</span> <span class="nt">-n</span> <span class="nv">$WEBAPPNameDR</span> <span class="nt">--runtime</span> <span class="s2">"PHP:8.0"</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Tip:</strong>  To check the list of available runtimes in format Framework:Version, use the command <code class="language-plaintext highlighter-rouge">az webapp list-runtimes</code>.</p>
+</blockquote>
+
+<p>Create variables with the URLs of your websites. You will use these variables later with the <em>curl</em> command to check if your websites is working correctly.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">URLofYourPrimaryWebsite</span><span class="o">=</span><span class="si">$(</span>az webapp show <span class="nt">--name</span> <span class="nv">$WEBAPPNamePROD</span> <span class="nt">--resource-group</span> <span class="nv">$ASEResourceGroupNamePROD</span> <span class="nt">--query</span> defaultHostName <span class="nt">-o</span> tsv<span class="si">)</span>
+<span class="nv">URLofYourSecondaryWebsite</span><span class="o">=</span><span class="si">$(</span>az webapp show <span class="nt">--name</span> <span class="nv">$WEBAPPNameDR</span> <span class="nt">--resource-group</span> <span class="nv">$ASEResourceGroupNameDR</span> <span class="nt">--query</span> defaultHostName <span class="nt">-o</span> tsv<span class="si">)</span>
+</code></pre></div></div>
+
+<p>You can also write down the URL of your websites.</p>
+
+<p><img src="/AppService/media/2022/09/url-upgrade-preferences-in-App-Service-Environment.png" alt="URL of your site" class="align-center" /></p>
+
+<p><strong>Create index.php file for primary website</strong></p>
+
+<p>Sample code for your secondary website:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="s1">'&lt;?php
+ echo "Secondary Website";
+?&gt;'</span> <span class="o">&gt;</span> index.php
+</code></pre></div></div>
+
+<p><strong>Create zip file for primary website</strong></p>
+
+<p>In the next step you will use <em>ZIP Deploy</em> to deploy the application. You need a ZIP utility for this. Fortunately, ZIP utility is pre-installed in Azure Cloud Shell.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>zip secondaryapp.zip index.php
+</code></pre></div></div>
+
+<p><strong>Deploy sample app</strong></p>
+
+<p>To deploy a sample application using <em>ZIP Deploy</em>, use this command:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp deployment <span class="nb">source </span>config-zip <span class="nt">--resource-group</span> <span class="nv">$ASEResourceGroupNamePROD</span>  <span class="nt">--name</span> <span class="nv">$WEBAPPNamePROD</span> <span class="nt">--src</span> ./secondaryapp.zip
+</code></pre></div></div>
+
+<p><strong>Check if your app is running</strong></p>
+
+<p>Use your browser or use <em>curl</em> command to check if your secondary app is working correctly.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl https://<span class="nv">$URLofYourSecondaryWebsite</span>
+</code></pre></div></div>
+
+<h2 id="planned-maintenance---change-the-upgrade-preference">Planned maintenance - Change the upgrade preference</h2>
+
+<p>To change the <em>Upgrade preference</em> setting to Manual on your App Service Environment v3, use this command:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az resource update <span class="nt">--name</span> <span class="nv">$ASENameDR</span> <span class="nt">-g</span> <span class="nv">$ASEResourceGroupNameDR</span> <span class="nt">--resource-type</span> <span class="s2">"Microsoft.Web/hostingEnvironments"</span> <span class="nt">--set</span> properties.upgradePreference<span class="o">=</span>Manual
+</code></pre></div></div>
+
+<h2 id="deploy-azure-front-door">Deploy Azure Front Door</h2>
+
+<p><strong>Create Azure Front Door profile</strong></p>
+
+<p>Run <code class="language-plaintext highlighter-rouge">az afd profile create</code> to create an Azure Front Door profile.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az afd profile create <span class="se">\</span>
+    <span class="nt">--profile-name</span> <span class="nv">$FDName</span> <span class="se">\</span>
+    <span class="nt">--resource-group</span> <span class="nv">$ResourceGroupNameSHARED</span> <span class="se">\</span>
+    <span class="nt">--sku</span> Standard_AzureFrontDoor
+</code></pre></div></div>
+
+<p><strong>Add an endpoint</strong></p>
+
+<p>Run <code class="language-plaintext highlighter-rouge">az afd endpoint create</code> to create an endpoint in your profile.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az afd endpoint create <span class="se">\</span>
+    <span class="nt">--resource-group</span> <span class="nv">$ResourceGroupNameSHARED</span> <span class="se">\</span>
+    <span class="nt">--endpoint-name</span> endpoint-<span class="nv">$FDName</span> <span class="se">\</span>
+    <span class="nt">--profile-name</span> <span class="nv">$FDName</span> <span class="se">\</span>
+    <span class="nt">--enabled-state</span> Enabled
+</code></pre></div></div>
+
+<p>Create a variable with the URL of your Azure Front Door endpoint. You will use this variable later with the <em>curl</em> command to check if your Azure Front Door endpoint is working correctly.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">URLofYourFrontDoorEndpoint</span><span class="o">=</span><span class="si">$(</span>az afd endpoint show <span class="se">\</span>
+    <span class="nt">--resource-group</span> <span class="nv">$ResourceGroupNameSHARED</span> <span class="se">\</span>
+    <span class="nt">--profile-name</span> <span class="nv">$FDName</span> <span class="se">\</span>
+    <span class="nt">--endpoint-name</span> endpoint-<span class="nv">$FDName</span> <span class="se">\</span>
+    <span class="nt">--query</span> hostName <span class="nt">-o</span> tsv<span class="si">)</span>
+</code></pre></div></div>
+
+<p>You can also write down the URL of your Azure Front Door endpoint.</p>
+
+<p><img src="/AppService/media/2022/10/url-front-door.png" alt="URL of your site" class="align-center" /></p>
+
+<p><strong>Create an origin group</strong></p>
+
+<p>Run <code class="language-plaintext highlighter-rouge">az afd origin-group create</code> to create an origin group that contains your two web apps.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az afd origin-group create <span class="se">\</span>
+    <span class="nt">--resource-group</span> <span class="nv">$ResourceGroupNameSHARED</span> <span class="se">\</span>
+    <span class="nt">--origin-group-name</span> <span class="nv">$OriginGroup</span> <span class="se">\</span>
+    <span class="nt">--profile-name</span> <span class="nv">$FDName</span> <span class="se">\</span>
+    <span class="nt">--probe-request-type</span> GET <span class="se">\</span>
+    <span class="nt">--probe-protocol</span> Https <span class="se">\</span>
+    <span class="nt">--probe-interval-in-seconds</span> 60 <span class="se">\</span>
+    <span class="nt">--probe-path</span> / <span class="se">\</span>
+    <span class="nt">--sample-size</span> 4 <span class="se">\</span>
+    <span class="nt">--successful-samples-required</span> 3 <span class="se">\</span>
+    <span class="nt">--additional-latency-in-milliseconds</span> 50
+</code></pre></div></div>
+
+<p><strong>Add an origin to the group - primary website</strong></p>
+
+<p>Run <code class="language-plaintext highlighter-rouge">az afd origin create</code> to add an origin to your origin group.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az afd origin create <span class="se">\</span>
+    <span class="nt">--resource-group</span> <span class="nv">$ResourceGroupNameSHARED</span> <span class="se">\</span>
+    <span class="nt">--host-name</span> <span class="nv">$URLofYourPrimaryWebsite</span> <span class="se">\</span>
+    <span class="nt">--profile-name</span> <span class="nv">$FDName</span> <span class="se">\</span>
+    <span class="nt">--origin-group-name</span> <span class="nv">$OriginGroup</span> <span class="se">\</span>
+    <span class="nt">--origin-name</span> primary <span class="se">\</span>
+    <span class="nt">--origin-host-header</span> <span class="nv">$URLofYourPrimaryWebsite</span> <span class="se">\</span>
+    <span class="nt">--priority</span> 1 <span class="se">\</span>
+    <span class="nt">--weight</span> 1000 <span class="se">\</span>
+    <span class="nt">--enabled-state</span> Enabled <span class="se">\</span>
+    <span class="nt">--http-port</span> 80 <span class="se">\</span>
+    <span class="nt">--https-port</span> 443
+</code></pre></div></div>
+
+<p>Repeat this step and add your second origin - secondary website.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az afd origin create <span class="se">\</span>
+    <span class="nt">--resource-group</span> <span class="nv">$ResourceGroupNameSHARED</span> <span class="se">\</span>
+    <span class="nt">--host-name</span> <span class="nv">$URLofYourSecondaryWebsite</span> <span class="se">\</span>
+    <span class="nt">--profile-name</span> <span class="nv">$FDName</span> <span class="se">\</span>
+    <span class="nt">--origin-group-name</span> <span class="nv">$OriginGroup</span> <span class="se">\</span>
+    <span class="nt">--origin-name</span> secondary <span class="se">\</span>
+    <span class="nt">--origin-host-header</span> <span class="nv">$URLofYourSecondaryWebsite</span> <span class="se">\</span>
+    <span class="nt">--priority</span> 2 <span class="se">\</span>
+    <span class="nt">--weight</span> 1000 <span class="se">\</span>
+    <span class="nt">--enabled-state</span> Enabled <span class="se">\</span>
+    <span class="nt">--http-port</span> 80 <span class="se">\</span>
+    <span class="nt">--https-port</span> 443
+</code></pre></div></div>
+
+<p><strong>Add a route</strong></p>
+
+<p>Run <code class="language-plaintext highlighter-rouge">az afd route create</code> to map your endpoint to the origin group. This route forwards requests from the endpoint to your origin group.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az afd route create <span class="se">\</span>
+    <span class="nt">--resource-group</span> <span class="nv">$ResourceGroupNameSHARED</span>  <span class="se">\</span>
+    <span class="nt">--profile-name</span> <span class="nv">$FDName</span> <span class="se">\</span>
+    <span class="nt">--endpoint-name</span> endpoint-<span class="nv">$FDName</span> <span class="se">\</span>
+    <span class="nt">--forwarding-protocol</span> MatchRequest <span class="se">\</span>
+    <span class="nt">--route-name</span> route <span class="se">\</span>
+    <span class="nt">--https-redirect</span> Enabled <span class="se">\</span>
+    <span class="nt">--origin-group</span> <span class="nv">$OriginGroup</span> <span class="se">\</span>
+    <span class="nt">--supported-protocols</span> Http Https <span class="se">\</span>
+    <span class="nt">--link-to-default-domain</span> Enabled
+</code></pre></div></div>
+
+<p>For more information about Azure CLI for Azure Front Door, visit <a href="https://learn.microsoft.com/azure/frontdoor/create-front-door-cli">Front Door CLI</a>.</p>
+
+<p>In a production environment you will probably need to implement a WAF policy for you application. For more information about Azure CLI for Azure Front Door WAF Policy, visit <a href="https://learn.microsoft.com/azure/frontdoor/create-front-door-cli#create-a-new-security-policy">Front Door WAF Policy</a>.</p>
+
+<p><strong>Check if your Azure Front Door Endpoint is running - this process may take a while</strong></p>
+
+<p>Use your browser or use <em>curl</em> command to check if your app is working correctly.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl https://<span class="nv">$URLofYourFrontDoorEndpoint</span>
+</code></pre></div></div>
+
+<h2 id="deploy-logic-app">Deploy Logic App</h2>
+
+<p>This sample code is intended to show you what the Logic App can do to automate your processes. This sample Logic App shows how to use various connectors and functions to build you own Logic App in a production environment.</p>
+
+<p><strong>Logic App ARM Template</strong></p>
+
+<p>You can use the <em>curl</em> command in Azure Cloud Shell to download the template_scenario_2.json file from the GitHub repository.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl https://raw.githubusercontent.com/bmis/azure-logic-app-upgrade-preference/main/templates/template_scenario_2.json <span class="nt">--output</span> template_scenario_2.json
+</code></pre></div></div>
+
+<p>You can use the <em>code</em> editor in Azure Cloud Shell to check the template_scenario_2.json file.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>code template_scenario_2.json
+</code></pre></div></div>
+
+<p>Use <code class="language-plaintext highlighter-rouge">ctrl + q</code> to close <em>code</em> editor.</p>
+
+<p><strong>Logic App ARM Parameters file</strong></p>
+
+<p>The <code class="language-plaintext highlighter-rouge">echo</code> command will create a parameters_scenario_2.json file for you.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="s1">'{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "logicapp_name": {
+            "value": "'</span><span class="s2">"</span><span class="nv">$LogicAppName</span><span class="s2">"</span><span class="s1">'"
+        },
+        "SubscriptionID": {
+            "value": "'</span><span class="s2">"</span><span class="nv">$ASEsubscriptionID</span><span class="s2">"</span><span class="s1">'"
+        },
+        "ResourceGroupName": {
+            "value": "'</span><span class="s2">"</span><span class="nv">$ResourceGroupNameSHARED</span><span class="s2">"</span><span class="s1">'"
+        },
+        "webapp_name_primary_region": {
+            "value": "'</span><span class="s2">"</span><span class="nv">$URLofYourPrimaryWebsite</span><span class="s2">"</span><span class="s1">'"
+        },
+        "webapp_name_secondary_region": {
+            "value": "'</span><span class="s2">"</span><span class="nv">$URLofYourSecondaryWebsite</span><span class="s2">"</span><span class="s1">'"
+        },
+        "ase_name_primary_region": {
+            "value": "'</span><span class="s2">"</span><span class="nv">$ASENamePROD</span><span class="s2">"</span><span class="s1">'"
+        },
+        "ase_name_secondary_region": {
+            "value": "'</span><span class="s2">"</span><span class="nv">$ASENameDR</span><span class="s2">"</span><span class="s1">'"
+        },
+        "frontdoor_name": {
+            "value": "'</span><span class="s2">"</span><span class="nv">$FDName</span><span class="s2">"</span><span class="s1">'"
+        },
+        "frontdoor_OriginGroup_name": {
+            "value": "'</span><span class="s2">"</span><span class="nv">$OriginGroup</span><span class="s2">"</span><span class="s1">'"
+        },
+        "frontdoor_OriginNamePrimary": {
+            "value": "'</span><span class="s2">"</span><span class="nv">$OriginNamePrimary</span><span class="s2">"</span><span class="s1">'"
+        }, 
+        "frontdoor_OriginNameSecondary": {
+            "value": "'</span><span class="s2">"</span><span class="nv">$OriginNameSecondary</span><span class="s2">"</span><span class="s1">'"
+        },    
+        "connections_office365_name": {
+            "value": "office365"
+        },
+        "EmailAddress": {
+            "value": "'</span><span class="s2">"</span><span class="nv">$EmailAddress</span><span class="s2">"</span><span class="s1">'"
+        }
+    }
+}'</span> <span class="o">&gt;</span> parameters_scenario_2.json
+</code></pre></div></div>
+
+<p>You can use the <em>code</em> editor in Azure Cloud Shell to check parameters_scenario_2.json file.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>code parameters_scenario_2.json
+</code></pre></div></div>
+
+<p>Use <code class="language-plaintext highlighter-rouge">ctrl + q</code> to close <em>code</em> editor.</p>
+
+<h3 id="deploy-logic-app-template">Deploy Logic App template</h3>
+
+<p>To start the deployment, execute the command below.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az deployment group create <span class="nt">--name</span> <span class="nv">$LogicAppName</span> <span class="nt">--resource-group</span> <span class="nv">$ResourceGroupNameSHARED</span>  <span class="nt">--template-file</span> template_scenario_2.json <span class="nt">--parameters</span> parameters_scenario_2.json
+</code></pre></div></div>
+
+<h3 id="authorize-office-365-connection">Authorize Office 365 connection</h3>
+
+<p>Before you can use the Office 365 connector in your Logic App you must authorize the Office365 connection.</p>
+
+<ol>
+  <li>Open <a href="https://portal.azure.com">Azure portal</a>, sign in with your credentials</li>
+  <li>Go to your Logic App using for example the search box at the top, search for <em>logic-asedemo-prod-02</em> - change <em>asedemo</em> to your environment name</li>
+  <li>Click <em>API connections</em> and then select <em>office365</em> API Connection</li>
+  <li>Check the status, if status is <em>Connected</em> everything is ok, if it’s <em>Unauthorized</em>, click <em>Edit API connection</em> and then click <em>Authorize</em></li>
+  <li>Sign in to your account</li>
+  <li>Click <em>Save</em></li>
+</ol>
+
+<p><strong>Check out the app via Logic App designer:</strong></p>
+
+<ol>
+  <li>Open <a href="https://portal.azure.com">Azure portal</a>, sign in with your credentials</li>
+  <li>Go to your Logic App using for example the search box at the top, search for logic-asedemo-prod-02 - change asedemo to your environment name</li>
+  <li>Click <em>Logic app designer</em></li>
+  <li>Familiarize yourself with the individual steps of the Logic App workflow</li>
+</ol>
+
+<p><strong>Steps in Azure Logic App:</strong></p>
+
+<ol>
+  <li>The Logic App starts when an alert occurs. You will configure the alert later in this article.</li>
+  <li>The Logic App verifies that the alert applies to the Azure App Service Environment.</li>
+  <li>Using functions such as <em>split</em>, <em>json</em> and action such as <em>Filter array</em>, the Logic App will extract from the text, the information about the name of App Service Environment to which the alert relates and the URL of the App Service Environment.</li>
+  <li>In the next step, the approval email is sent.</li>
+  <li>If the <em>Approve</em> option is selected, the Logic App will go further. If the <em>Reject</em> option is selected the Logic App will send second approval email, more information about this in point 8.</li>
+  <li>After selecting <em>Approve</em>, the Logic App will check for an upgrade for the App Service Environment.</li>
+  <li>If an upgrade is available, a <em>http requests</em> will be sent which redirect the traffic from the primary region to the secondary region and initiates the upgrade. As well, an e-mail will be sent with the information that the traffic has been redirected and the upgrade has started.</li>
+  <li>If the upgrade is not available, the second approval email is sent.</li>
+  <li>If the <em>Approve</em> option is selected, the Logic App will continue. If the <em>Reject</em> option is selected the Logic App will stop working.</li>
+  <li>After selecting <em>Approve</em>, the Logic App will only redirect the traffic from the primary region to the secondary region without starting upgrade process of App Service Environment. As well, an e-mail will be sent with the information that traffic has been redirected.</li>
+</ol>
+
+<p><img src="/AppService/media/2022/10/logic-app-designer_s2.png" alt="Logic App Designer" class="align-center" /></p>
+
+<p>For more information about Logic Apps, visit <a href="https://docs.microsoft.com/azure/logic-apps/logic-apps-overview">Logic App Overview</a>.</p>
+
+<p><strong>Steps to assign a contibutor RBAC role to App Service Environment instance:</strong></p>
+
+<p>Your Logic App will be deployed with system assigned managed identity. Before you can use your Logic App you must give your Logic App identity permission to your App Service Environment and Azure Front Door. Permissions are required to:</p>
+
+<ol>
+  <li>Checking if an upgrade is available</li>
+  <li>Starting the upgrade process</li>
+  <li>Redirect traffic from the primary region to the secondary region</li>
+</ol>
+
+<p>If you want to know more about managed identities please go to this page <a href="https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview">Managed identities for Azure resources</a>. Information about permissions that you need to configure managed identity can be found on this page <a href="https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/managed-identities-faq#which-azure-rbac-permissions-are-required-to-use-a-managed-identity-on-a-resource">Managed identities for Azure resources frequently asked questions</a>.</p>
+
+<p>Step 1: Determine who needs access</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">LogicAppIdentity</span><span class="o">=</span><span class="si">$(</span>az resource show <span class="nt">--name</span> <span class="nv">$LogicAppName</span> <span class="nt">--resource-group</span> <span class="nv">$ResourceGroupNameSHARED</span> <span class="nt">--resource-type</span> <span class="s2">"Microsoft.Logic/workflows"</span> <span class="nt">--query</span> identity.principalId <span class="nt">-o</span> tsv<span class="si">)</span>
+</code></pre></div></div>
+
+<p>Step 2: Assign contributor role</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az role assignment create <span class="nt">--assignee</span> <span class="nv">$LogicAppIdentity</span> <span class="nt">--role</span> <span class="s2">"Contributor"</span> <span class="nt">--scope</span> /subscriptions/<span class="nv">$ASEsubscriptionID</span>/resourceGroups/<span class="nv">$ASEResourceGroupNamePROD</span>/providers/Microsoft.Web/hostingEnvironments/<span class="nv">$ASENamePROD</span>
+
+az role assignment create <span class="nt">--assignee</span> <span class="nv">$LogicAppIdentity</span> <span class="nt">--role</span> <span class="s2">"Contributor"</span> <span class="nt">--scope</span> /subscriptions/<span class="nv">$ASEsubscriptionID</span>/resourceGroups/<span class="nv">$ASEResourceGroupNameDR</span>/providers/Microsoft.Web/hostingEnvironments/<span class="nv">$ASENameDR</span>
+
+az role assignment create <span class="nt">--assignee</span> <span class="nv">$LogicAppIdentity</span> <span class="nt">--role</span> <span class="s2">"Contributor"</span> <span class="nt">--scope</span> /subscriptions/<span class="nv">$ASEsubscriptionID</span>/resourceGroups/<span class="nv">$ResourceGroupNameSHARED</span>/providers/Microsoft.Cdn/profiles/<span class="nv">$FDName</span>
+</code></pre></div></div>
+
+<p>If you are at this stage, you have successfully created the demo environment. Now you need to change an alert that will trigger the new Logic App.</p>
+
+<h2 id="change-an-alert">Change an Alert</h2>
+
+<ol>
+  <li>Open <a href="https://portal.azure.com">Azure portal</a>, sign in with your credentials.</li>
+  <li>Go to <em>Monitor</em> using for example the search box at the top.</li>
+  <li>From the menu, click <em>Alerts</em>.</li>
+  <li>Click <em>Alert rules</em>.</li>
+  <li>Search for your alert <em>alert-asedemo-planned-maintenance</em> - please change <em>asedemo</em> to your environment name, open the alert rules.</li>
+  <li>Click <em>Edit</em> button.</li>
+  <li>In the <em>Action</em> section, click name of your <em>Action group name</em> <em>ag-asedemo</em> - please change <em>asedemo</em> to your environment name.</li>
+  <li>In the <em>Action</em> section, change <em>Selected</em> logic app to you new Logic App using <em>edit</em> button.</li>
+  <li>In field <em>Select a logic app</em> choose your new Logic App with name <em>logic-asedemo-prod-02</em> - please change <em>asedemo</em> to your environment name.</li>
+  <li>Click <em>OK</em>.</li>
+  <li>Click <em>Save changes</em>.</li>
+</ol>
+
+<h3 id="send-test-notifications">Send test notifications</h3>
+
+<p>As you build your automation and notification logic, you may want to test it before the actual upgrade is available. The Azure portal and rest api has the ability to send a special test upgrade available notification, which you can use to verify your automation logic. The message will be similar to the real notification, but the title will be prefixed with “[Test]” and the description will be different. You can send test notifications after you’ve configured your upgrade preference to Manual. The test notifications are sent in batches every 15 minutes.</p>
+
+<p>To send a special test upgrade available notification, use this command:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">ASEidPROD</span><span class="o">=</span><span class="si">$(</span>az appservice ase show <span class="nt">--name</span> <span class="nv">$ASENamePROD</span> <span class="nt">--resource-group</span> <span class="nv">$ASEResourceGroupNamePROD</span> <span class="nt">--query</span> <span class="nb">id</span> <span class="nt">--output</span> tsv<span class="si">)</span>
+az rest <span class="nt">--method</span> POST <span class="nt">--uri</span> <span class="s2">"</span><span class="k">${</span><span class="nv">ASEidPROD</span><span class="k">}</span><span class="s2">/testUpgradeAvailableNotification?api-version=2022-03-01"</span>
+</code></pre></div></div>
+
+<p>You can also use <a href="https://portal.azure.com">Azure portal</a> to send test notifications. You can find more information about test notifications at <a href="https://docs.microsoft.com/azure/app-service/environment/how-to-upgrade-preference?pivots=experience-azp#send-test-notifications">Send test notifications</a>.</p>
+
+<p><strong>Check your mailbox and approve the redirection traffic from the primary region to the secondary region and upgrade process</strong></p>
+
+<p><img src="/AppService/media/2022/10/aprove-or-reject-email-s2.png" alt="Approve or reject email" class="align-center" /></p>
+
+<p>Because this is a test notification your Logic App will send you a second email asking you to confirm only the traffic redirection. Information from email <em>App Service Environment NameOfYourASE does not currently have an upgrade available but you can redirect the traffic without upgrade using approve button.</em> In a real-world scenario when an upgrade will be available your Logic App will send you information that <em>The traffic from NameOfYourWebAppPrimaryRegion to the NameOfYourWebAppSecondaryRegion has been redirected and the upgrade of NameOfYourASE has started.</em></p>
+
+<blockquote>
+  <p><strong>Tip:</strong> You can also send a test notification from the App Service Environment in the second region, the Logic App will redirect traffic from the second region to the primary region.</p>
+</blockquote>
+
+<h3 id="logic-app-run-history-blade">Logic App run history blade</h3>
+
+<p>Familiarize yourself with the Logic App run using Run history blade.</p>
+
+<ol>
+  <li>Open <a href="https://portal.azure.com">Azure portal</a>, sign in with your credentials.</li>
+  <li>Go to your Logic App using for example the search box at the top, search for <em>logic-asedemo-prod-02</em> - change <em>asedemo</em> to your environment name.</li>
+  <li>Click <em>Overview</em>.</li>
+  <li>Click <em>Run history</em>.</li>
+  <li>Select last <em>Succeeded</em> Logic App run.</li>
+  <li>Familiarize yourself with the Logic App run.</li>
+</ol>
+
+<p>You successfully completed the second scenario.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2022-10-07T00:00:00+00:00">October 07, 2022</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Control+and+automate+planned+maintenance+for+App+Service+Environment+v3+part+2%20https%3A%2F%2Fazure.github.io%2FAppService%2F2022%2F10%2F07%2FConfigure-automation-for-upgrade-preferences-in-App-Service-Environment-part2.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2022%2F10%2F07%2FConfigure-automation-for-upgrade-preferences-in-App-Service-Environment-part2.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2022%2F10%2F07%2FConfigure-automation-for-upgrade-preferences-in-App-Service-Environment-part2.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2022/09/15/Configure-automation-for-upgrade-preferences-in-App-Service-Environment.html" class="pagination--pager" title="Control and automate planned maintenance for App Service Environment v3
+">Previous</a>
+    
+    
+      <a href="/AppService/2022/10/11/Public-preview-min-tls-cipher-suite.html" class="pagination--pager" title="Public Preview: Disabling Weaker TLS Cipher Suites for Web Apps on Multi-tenant Premium App Service Plans
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

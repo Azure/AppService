@@ -1,0 +1,995 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>FAQ  SSL certificates for Web Apps and  App Service Certificates - Azure App Service</title>
+<meta name="description" content="">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="FAQ  SSL certificates for Web Apps and  App Service Certificates">
+<meta property="og:url" content="https://azure.github.io/AppService/2017/07/24/FAQ-SSL-certificates-for-Web-Apps-and-App-Service-Certificates.html">
+
+
+  <meta property="og:description" content="">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2017-07-24T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2017/07/24/FAQ-SSL-certificates-for-Web-Apps-and-App-Service-Certificates.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="FAQ  SSL certificates for Web Apps and  App Service Certificates">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="July 24, 2017">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">FAQ  SSL certificates for Web Apps and  App Service Certificates
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  9 minute read
+
+            
+            
+            • July 24, 2017
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/mksunitha" target="_blank">mksunitha</a>
+<time>    7/24/2017 11:06:00 PM</time>
+<hr/>
+<div id="content">Here is a list of commonly asked questions for App Service Certificates.
+<h4 id="how-do-i-purchase-and-configure-a-new-ssl-certificate-in-azure-for-my-web-app"><strong>How do I purchase and configure a new SSL certificate in Azure for my web app?</strong></h4>
+<p class="lf-text-block lf-block">To learn how to purchase and set up an SSL certificate for your App Service web app, see<span> </span><a href="https://docs.microsoft.com/en-us/azure/app-service-web/web-sites-purchase-ssl-web-site">Add an SSL certificate to your App Service app</a>.</p>
+<h4><strong>I am unable to purchase an SSL certificate or App Service certificate ?</strong></h4>
+This could be caused due to one of the following reasons:
+<ul>
+<li>App Service plan is Free or Shared pricing plans. We do not support SSL for these pricing tiers.</li>
+<li>Subscription does not have a valid credit card</li>
+<li>Subscription offer does not support purchase an App Service certificate such as Microsoft Student offer</li>
+<li>Subscription has hit the maximum limit of purchases allowed on a subscription</li>
+<li>App Service certificate was marked as fraud. You will see this error “<em>Your certificate has been flagged for possible fraud. The request is currently under review. If the certificate does not become usable within 24 hours”</em></li>
+</ul>
+<div id="purchase-issue-resolve"></div>
+Try any of these solutions based on the cause
+<ul>
+<li>Upgrade App Service plan to Standard Pricing tier for Web App</li>
+<li>Add a valid credit card to your subscription if you don’t have one</li>
+<li>If you are using Microsoft Student subscription or other Azure subscriptions where App Service certificate is not supported, please upgrade your subscription</li>
+<li>App Service Certificates has a limit of 10 certificate purchases for Pay-As-Go and EA subscriptions types and for other subscription types the limit is 3. To increase the limit Kindly share the following details with us if you want to increase the purchase limit on your subscription for certificates:
+<ul>
+<li>Please articulate the business reason for increasing the purchase limit on your subscription.</li>
+<li>Monthly spending cap on this subscription if any</li>
+<li>Does the subscription have a valid credit card associated with the subscription</li>
+</ul>
+</li>
+</ul>
+We shall review and evaluate your business needs internally to either approve or reject your request provided there are no other constraints to meet these needs for you.
+<ul>
+<li>If the certificate is marked as Fraud and has not been resolved after 24 hours , then follow the steps below :
+<ul>
+<li>Go to App Service certificate in Azure portal</li>
+<li>Click on Certificate Configuration -&gt; Step 2 : Verify -&gt; Domain Verification</li>
+<li>Click on <strong>Email Instructions</strong> which will send an email to GoDaddy to resolve the issue</li>
+</ul>
+</li>
+</ul>
+<h4 id="renew">When does my certificate get renewed?</h4>
+App Service certificates are valid for one year. If Auto Renew is on for an ASC then it will be renewed automatically before it expires and just like ReKey operation, the linked App Service Apps will be moved to the new certificate. You can change this setting by clicking on ‘Auto Renew Settings’ which is on by default. You can also manually renew a certificate by clicking on Manual Renew irrespective of the current Auto Renew setting if the certificate expiration is within 90 days.
+<h4 id="rekeyandsync">How can I Rekey and/or ReSync my app service certificate?</h4>
+In order to stay compliant, many web companies need to rotate their certificates periodically. Also if a customer believes that his certificate has been compromised then he should rotate the certificate as soon as possible to minimize likelihood of the stolen certificate being used for malicious purposes. Traditionally, this requires obtaining a new certificate from the CA which is as complicated as buying a new one. Once a new certificate is created, you need to update all App Service Apps one by one manually. With ASC, we support one click ReKey. ASC allows you to ReKey a certificate unlimited number of times during its lifetime for free.
+
+<strong> Using Rekey and Sync option in the portal :</strong> This blade displays the current sync state. You can see the thumbprint of ASC along with the thumbprints of all App Service linked certificates. When these certificates are in sync, all thumbprints will match and when they are out of sync, one or more linked certificate thumbprints will be different from the ASC thumbprint. <span>In order to rotate the certificate, click <strong>ReKey</strong> at the top. The ASC status will move to Rekey Certificate which may take 5-10 minutes. You dont have to click on Sync since a background task runs every 8 hours to sync the changes in the certificate. To force a sync , you can click on the <strong>Sync </strong> button . </span>
+<img alt="App Service Certificate ReKey and Sync" src="https://azurecomcdn.azureedge.net/mediahandler/acomblog/media/Default/blog/fcccd343-1b0e-4e9e-8a3b-25073cf79e3b.png"/>
+<h4 id="https-fails"><strong>I see certificate errors shown when enforcing HTTPS?</strong></h4>
+<p class="lf-text-block lf-block">If your web app gives you certificate validation errors, it could be due to :</p>
+<ul>
+<li class="lf-text-block lf-block"><strong>Using a self-signed certificate</strong> :  In this case avoid using Self signed certificate since we cannot verify the domain ownership . This is not supported with Azure web apps</li>
+<li><strong>Missing intermediate certificates when you export your certificate to the PFX file : </strong>In this case , recreate the PFX file and follow guidance <a href="https://technet.microsoft.com/en-us/library/dd261744.aspx">here</a> to make sure intermediate certiificates are also included when exporting it in PFX format.</li>
+<li><strong>Domain host name is not added to the Web app: </strong> Please add the domain hostname to your web app as per instructions <a href="https://docs.microsoft.com/en-us/azure/app-service/app-service-web-tutorial-custom-domain">here</a></li>
+<li><strong>If using App Service certificate domain verification is not completed : </strong> In this case , your certificate is not ready to be used. Please complete domain verification step as described <a href="https://docs.microsoft.com/en-us/azure/app-service/web-sites-purchase-ssl-web-site#step-4---verify-the-domain-ownership">here</a>.</li>
+</ul>
+<h4 id="cert-for-azurewebsites-domain">Can I get the intermediate certificates for mysite.azurewebsites.net</h4>
+We support HTTPS on *.azurewebsites.net  domain name. Since this domain is owned by App Service Team , we do not share the certificate information with users for security reasons. We recommend to use a custom domain and bring your own certificate for a production application.
+<h4><strong>Domain verification is not working  for App service certificate ?</strong></h4>
+We provide alternate solution to manually verify your domain . Manual verification lets you verify domain ownership through your DNS configuration by adding a TXT record.
+
+Follow these steps to complete Manual verification :
+<ol>
+<li>Go to the Domain Name Service (DNS) provider for <strong>your domain name </strong></li>
+</ol>
+<ol>
+<li>Add a <strong>Txt record</strong> for your domain with value of the domain token showed in the portal .</li>
+</ol>
+Wait a few minutes for DNS propagation to take place and click on <strong>Refresh</strong> button to trigger the verification.
+
+Alternate method to manually verify is the Html Web Page method which can be used to allow the certificate authority to confirm the domain ownership of the domain the certificate is issued for.
+<ol>
+<li>Create an <strong>HTML file</strong>named {Domain Verification Token}.html.</li>
+<li>Content of this file <strong>should be the value of Domain Verification Token.</strong></li>
+<li><strong>Upload this file</strong>at the root of the web server hosting your domain</li>
+<li>Click on <strong>Refresh button to check the Certificate status</strong>. It might take few minutes for verification to complete.</li>
+</ol>
+<strong>For example</strong>, if you are buying a standard certificate for azure.com with Domain Verification Token ‘1234abcd’ then a web request made to <strong>http://azure.com/1234abcd.html</strong> should return 1234abcd.
+
+<em><strong> </strong><strong>Important notice :</strong> A certificate order has only 15 days to complete domain verification operation, after 15 days the certificate is denied by the certificate authority, you are not charged for the certificate. Please delete this certificate and try again.</em>
+<h4 id="auto-renew"><strong>My SSL certificate is not being auto-renewed ?</strong></h4>
+All App Service certificates issued prior to March 31st 2017 will receive an email to re-verify their domain at the time of renewal even if the auto-renewal is enabled for your certificate.This is a result of change in GoDaddy policy.  Please check your email and complete this one-time domain verification to continue to auto-renew the SSL certificate. Also , note that GoDaddy does require you to verify your domain once every three years and you will receive a email once every three years  to verify your domain.
+<h4 id="how-do-i-upload-and-configure-an-existing-ssl-certificate-for-my-web-app"><strong>Can I bring my own SSL certificate and how do I upload/configure it for my web app?</strong></h4>
+<p class="lf-text-block lf-block">Yes , you can bring your own SSL certificate. To learn how to upload and set up an existing custom SSL certificate, see<span> </span><a href="https://docs.microsoft.com/en-us/azure/app-service-web/app-service-web-tutorial-custom-ssl#upload">Bind an existing custom SSL certificate to an Azure web app</a>.</p>
+<h4 id="my-app-service-certificate-is-flagged-for-fraud-how-do-i-resolve-this"><strong>My App Service certificate is flagged for fraud. How do I resolve this?<strong></strong></strong></h4>
+<p class="lf-text-block lf-block">During the domain verification of an App Service certificate purchase, you might see the following message: <span class="lf-thread-btn"></span></p>
+<p class="lf-text-block lf-block"><em>“Your certificate has been flagged for possible fraud. The request is currently under review. If the certificate does not become usable within 24 hours, please contact Azure Support.”</em><span class="lf-thread-btn"></span></p>
+<p class="lf-text-block lf-block">As the message indicates, this fraud verification process might take up to 24 hours to complete. During this time, you'll continue to see the message. If the certificate is marked as Fraud and has not been resolved after 24 hours , then follow the steps below :</p>
+<ul>
+<li>Go to App Service certificate in Azure portal</li>
+<li>Click on <strong>Certificate Configuration -&gt; Step 2 : Verify -&gt; Domain Verification</strong></li>
+<li>Click on <strong>Email Instructions</strong> which will send an email to GoDaddy to resolve the issue .</li>
+</ul>
+<h4 id="rekey-and-sync-app-service-certificate"><span>My App Service Certificate is still showing old secret value. How can I force a sync with the new secret in my Key Vault’ ?</span></h4>
+You can rekey your certificate using a new private key by following the details instructions in <a href="https://docs.microsoft.com/en-us/azure/app-service-web/web-sites-purchase-ssl-web-site#rekey-and-sync-the-certificate">this article</a>.
+<h4 id="ev-ssl">How do I buy EV SSL for using with Azure web app</h4>
+App Service certificate does not support purchasing EV SSL from Azure portal. But there are other options to use EV SSL with Web apps. For details , click <a href="https://blogs.msdn.microsoft.com/appserviceteam/2018/04/12/using-ev-ssl-with-azure-web-app/">here</a>
+<h4 id="export-app-service-certificate-for-azure"><strong>Can I export my App Service certificate for use with other Azure services such as Cloud Services and so forth?</strong></h4>
+We've gotten a lot of feedback from customers asking for this ability, so we now allow you to export your certificate as a PFX file so that you can use it across multiple subscriptions and Azure services. See<span> </span><a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/02/24/creating-a-local-pfx-copy-of-app-service-certificate/" rel="noopener" target="_blank">this blog post</a><span> </span>for more information.
+<h4 id="export-app-service-certificate-outside-azure"><strong>Can I export my App Service certificate to be used outside of Azure, such as for a website hosted elsewhere?</strong></h4>
+App Service Certificates can be used for any Azure or non-Azure Services and is not limited to App Services. To do so , you need to create a local PFX copy of an App Service certificate that you can use it anywhere you want. For more information, read Creating a local PFX copy of an App Service Certificate.
+<h4 id="move-app-service-certificate-different-subscription"><strong>Can I use my App Service certificate in a different subscription in Azure?</strong></h4>
+You can migrate your App Service Certificate within the Azure portal. You can also export it as a PFX file for use in another subscription. See<span> </span><a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/02/24/creating-a-local-pfx-copy-of-app-service-certificate/" rel="noopener" target="_blank">this blog post</a><span> </span>for more information.
+<h4><strong>I have a Free or a DreamSpark Azure subscription. Can I purchase an App Service certificate with my credits?</strong></h4>
+Because Free and DreamSpark Azure credits are free credits, they cannot be used to purchase App Service certificates.
+<h4><strong>Can I get a refund if I purchase an SSL certificate and then decide that I no longer need it?</strong></h4>
+Unfortunately, we cannot refund you on the purchase of an SSL certificate.
+<h4 id="update-binding"><strong>How do I update an SNI or IP based SSL binding on web app ?</strong></h4>
+<em><strong>Note :</strong> When the binding is updated , please wait for 24 hours for the change to reflect in the Azure portal . To avoid downtime with your web app  , make sure you updated the binding for SSL at least a week prior to the expiration of your current SSL certificate.  </em>
+<span>Login to the Azure portal and select your web app. To update and SSL binding :</span>
+<ul>
+<li><span>Upload a new certificate</span></li>
+<li><span>Click "Add binding" in SSL certificates setting for your web app</span></li>
+<li><span>Select your domain</span></li>
+<li>Select your certificate</li>
+<li>Click <strong>Add binding. </strong>Note that by adding an <span class="highlight" id="0.49454705846578584">SSL</span> binding with a hostname used in another binding will override the existing binding. <a href="/AppService/media/2017/07/binding.png"><img alt="" class="alignnone wp-image-5317" height="508" src="/AppService/media/2017/07/binding-1024x908.png" width="573"/></a></li>
+</ul>
+ 
+<h1></h1></div>
+</div></body>
+<script src="/AppService/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="/AppService/resource/replace.js" type="text/javascript"></script>
+</html>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2017-07-24T00:00:00+00:00">July 24, 2017</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=FAQ++SSL+certificates+for+Web+Apps+and++App+Service+Certificates%20https%3A%2F%2Fazure.github.io%2FAppService%2F2017%2F07%2F24%2FFAQ-SSL-certificates-for-Web-Apps-and-App-Service-Certificates.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2017%2F07%2F24%2FFAQ-SSL-certificates-for-Web-Apps-and-App-Service-Certificates.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2017%2F07%2F24%2FFAQ-SSL-certificates-for-Web-Apps-and-App-Service-Certificates.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2017/07/10/Azure-Web-App-PHP-updates.html" class="pagination--pager" title="Azure Web App PHP updates
+">Previous</a>
+    
+    
+      <a href="/AppService/2017/07/31/Assign-App-Service-domain-to-Azure-VM-or-Azure-Storage.html" class="pagination--pager" title="Assign App Service domain to Azure VM or Azure Storage
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,1032 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Running Azure Functions Locally with the CLI and VS Code - Azure App Service</title>
+<meta name="description" content="">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Running Azure Functions Locally with the CLI and VS Code">
+<meta property="og:url" content="https://azure.github.io/AppService/2016/12/01/Running-Azure-Functions-Locally-with-the-CLI-and-VS-Code.html">
+
+
+  <meta property="og:description" content="">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2016-12-01T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2016/12/01/Running-Azure-Functions-Locally-with-the-CLI-and-VS-Code.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Running Azure Functions Locally with the CLI and VS Code">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="December 01, 2016">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Running Azure Functions Locally with the CLI and VS Code
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  6 minute read
+
+            
+            
+            • December 1, 2016
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Donna Malayeri" target="_blank">Donna Malayeri</a>
+<time>    12/1/2016 9:00:47 AM</time>
+<hr/>
+<div id="content"><strong>Update 5/31: We now have official documentation for the Azure Functions Core Tools and this blog post is now out of date. See <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local">Develop and debug Azure functions locally</a>.</strong>
+
+After our <a href="https://azure.microsoft.com/en-us/blog/announcing-general-availability-of-azure-functions/">General Availability release of Azure Functions</a> on November 15, lots of customers have been asking how to develop Azure Functions on a local development machine, before pushing working code to Azure.
+
+I’m happy to announce that we have some great new functionality to share on this front. You can now use your favorite editor and local development tools and trigger from events in your Azure resources. You can use <a href="https://www.visualstudio.com/downloads/">Visual Studio 2015</a>, <a href="https://code.visualstudio.com/">Visual Studio Code</a>, or just a command line and any code editor.
+<h1>Visual Studio 2015</h1>
+Customers who use Visual Studio should check out the preview <a href="https://aka.ms/dm9ryu">Azure Functions Tools for Visual Studio 2015</a>. This allows you to create local Functions projects, add new Functions from templates within Visual Studio, run functions locally, and debug C# functions. Get the tools and learn more on the <a href="https://aka.ms/dm9ryu">Web Tools team blog</a>.
+
+<a href="/AppService/media/2016/12/visual-studio-functions-debugging.png"><img alt="visual-studio-functions-debugging" class="alignnone size-full wp-image-2646" height="89" src="/AppService/media/2016/12/visual-studio-functions-debugging.png" width="691"/></a>
+<h1>VS Code and azure-functions-cli</h1>
+If you prefer VS Code or want to debug JavaScript functions, you can use the <a href="https://npmjs.com/package/azure-functions-cli">Azure Functions CLI</a>. Note that currently the Azure Functions CLI only works on Windows, but we’re <a href="https://github.com/Azure/azure-webjobs-sdk-script/issues/509">working on support for other platforms</a>. (Note that C# debugging support is currently only available in Visual Studio, not VS Code.)
+<h2>Installing</h2>
+Make sure you’re using Node version 6.x LTS or later (required by the Yeoman dependency), then do:
+<pre>npm i -g azure-functions-cli</pre>
+The Azure Functions CLI is actually the Azure Functions “host” packaged with a command line interface and some other utilities. This is the <strong>exact same runtime</strong> that’s used in Azure, it’s not an emulator or simulator. It is distributed through npm because it uses Yeoman for scaffolding, but the core functionality is just a .NET 4.6 executable. (That’s why it currently only works on Windows.)
+<h2>Creating a function project</h2>
+When running locally, a function project (the equivalent of a Function App in Azure) is just a directory with the files <strong>host.json</strong> and <strong>appsettings.json</strong>. See the product documentation for more about the <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-reference#folder-structure">Azure Functions folder structure</a>.
+
+From a command prompt, do the following:
+<pre>mkdir MyAwesomeFunctionProj
+cd MyAwesomeFunctionProj
+func init</pre>
+You’ll see the following output:
+<pre>Writing .gitignore
+Writing host.json
+Writing appsettings.json
+Initialized empty Git repository in C:/CDriveCode/MyAwesomeFunctionProj/.git/</pre>
+Notice the file <strong>appsettings.json</strong>, which is where you set local environment variables and connection strings (more on this later).
+<h2>Creating a simple function</h2>
+Now, let’s create a simple HTTP triggered Node function via <strong>func new</strong>
+<a href="/AppService/media/2016/11/156.png"><img alt="1" class="alignnone size-mediumlarge wp-image-2355" height="271" src="/AppService/media/2016/11/156-500x271.png" width="500"/></a>
+
+I chose HttpTrigger-JavaScript and named it HttpTrigger-JS.
+
+<a href="/AppService/media/2016/11/246.png"><img alt="2" class="alignnone size-mediumlarge wp-image-2285" height="98" src="/AppService/media/2016/11/246-500x98.png" width="500"/></a>
+<h2>Running the function</h2>
+This HTTP triggered function is very simple, it just takes in a “name” argument as either a query parameter or JSON body content, and outputs “Hello name”. To edit the function code, let’s open up VS Code:
+<pre>code .</pre>
+In Visual Studio Code, go to <strong>View</strong> -&gt; <strong>Integrated Terminal</strong>
+<pre>func run .\HttpTrigger-JS\ -c "{\"name\": \"Donna\"}"</pre>
+<a href="/AppService/media/2016/11/terminal1.png"><img alt="terminal" class="alignnone size-large wp-image-2395" height="143" src="/AppService/media/2016/11/terminal1-1024x167.png" width="879"/></a>
+
+You’ll see that a separate window launches, which is the Functions host. By default, it will listen on http://localhost:7071.
+
+In the Functions host window, you’ll see that the URL of HTTP triggers is listed. You can then use a web debugging tool like Fiddler or Postman to create more complex requests.
+
+<a href="/AppService/media/2016/11/426.png"><img alt="4" class="alignnone size-large wp-image-2305" height="207" src="/AppService/media/2016/11/426-1024x241.png" width="879"/></a>
+<h2>Debugging the function in Visual Studio Code</h2>
+Running a function is great, but debugging is where the magic happens. To run the code and attach the JavaScript debugger, do the following:
+<ul>
+<li>In a command prompt (either the Integrated Terminal or a regular command prompt), run the function as before and add the <code>--debug</code> flag:
+<pre>func run .\HttpTrigger-JS\ -c "{\"name\": \"Debugging!\"}" --debug</pre>
+</li>
+<li>Add a breakpoint to <strong>index.js</strong>.</li>
+<li>In the Debug tab, select F5 or the play button</li>
+<li>In the terminal or command prompt, press any character and you’ll see your breakpoint being hit!</li>
+</ul>
+<a href="/AppService/media/2016/11/522.png"><img alt="5" class="alignnone size-large wp-image-2315" height="332" src="/AppService/media/2016/11/522-1024x387.png" width="879"/></a>
+<a href="/AppService/media/2016/11/623.png"><img alt="6" class="alignnone size-large wp-image-2316" height="244" src="/AppService/media/2016/11/623-1024x284.png" width="879"/></a>
+<h2>Running a queue-triggered function</h2>
+Now let’s create a function that triggers from a queue in Azure. First, run <strong>func new</strong> and select <strong>QueueTrigger-JavaScript</strong>. Name the function <strong>QueueTriggerJS</strong>.
+
+<strong>Setting a connection string</strong>
+Next, we need a value for a storage account connection string. You can either do this by editing <strong>appsettings.json</strong> manually or by using the Azure Functions CLI.
+
+<strong>To edit manually:</strong>
+<ul>
+<li>To go <a href="http://storageexplorer.com/">Azure Storage Explorer</a> or the Azure Portal and copy your storage connection string</li>
+<li>Add the value to <strong>appsettings.json</strong>:
+<pre>{
+    "IsEncrypted": false,
+    "Values": {
+         "AzureWebJobsStorage": "DefaultEndpointsProtocol=https;AccountName=youraccountname;AccountKey=XXX"
+      }
+}</pre>
+</li>
+</ul>
+<strong>Using the Azure Functions CLI:</strong>
+
+Log in to Azure, then set the active subscription. You can list your Function Apps in Azure and pull down connection strings for a particular app:
+<pre>func azure login
+func azure account set 
+func azure functionapp list
+func azure functionapp fetch 
+</pre>
+You’ll see the following output. Settings will be encrypted by default and stored in <strong>appsettings.json</strong>.
+<pre>Loading AzureWebJobsStorage = *****
+Loading AzureWebJobsDashboard = *****</pre>
+To view settings values on the command line, run:
+<pre>func settings list -a</pre>
+If you want edit the file in an unencrypted form, run:
+<pre>func settings decrypt</pre>
+<strong>Editing the Function configuration</strong>
+If you haven’t already, open the Functions directory in Visual Studio Code by running <code>code .</code>
+
+Now, edit <strong>QueueTriggerJS/function.json</strong> and set the value <strong>AzureWebJobsStorage</strong> for the value for <strong>connection</strong>. Your <strong>function.json</strong> will look like the following:
+<pre>{
+    "disabled": false,
+    "bindings": [
+        {
+            "name": "myQueueItem",
+            "type": "queueTrigger",
+            "direction": "in",
+            "queueName": "js-queue-items",
+            "connection":"AzureWebJobsStorage"
+        }
+    ]
+}
+</pre>
+Now it’s time to run the function. There are two ways to trigger it: add new items to a queue named <strong>js-queue-items</strong> or use the Functions CLI to trigger the function directly.
+<h2>Triggering a function using “func run”</h2>
+To trigger directly, run the following in the Functions CLI:
+<pre>func run .\QueueTriggerJS\ --debug -c "I love this CLI!"</pre>
+You’ll see the following output:
+<pre>Executing: 'Functions.QueueTriggerJS' - Reason: 'This function was programmatically called via the host APIs.'
+Function started (Id=c2603348-a0c5-4d7a-b938-5d3e66ed35fd)
+JavaScript queue trigger function processed work item I love this CLI!
+Function completed (Success, Id=c2603348-a0c5-4d7a-b938-5d3e66ed35fd)
+Executed: 'Functions.QueueTriggerJS' (Succeeded)</pre>
+Note: if you this error, it means you haven’t set a value for <strong>AzureWebJobsStorage</strong> in <strong>appsettings.json</strong>: <em>Microsoft.Azure.WebJobs.Host: Error indexing method 'Functions.QueueTriggerJS'. Microsoft.Azure.WebJobs.Host: Object reference not set to an instance of an object. Error indexing method 'Functions.QueueTriggerJS'.</em>
+
+Now, let’s run and attach a debugger, the same as before:
+<pre>func run .\QueueTriggerJS --debug -c "Foo"</pre>
+<h2>Triggering a function with a queue message</h2>
+The cool thing about the local development experience is that you can trigger off of Azure resources directly, rather than just simulating via <strong>func run</strong>.
+
+By default, the Functions CLI will poll for new queue items every minute. For development purposes, it’s helpful to poll more frequently. Add the following to your <strong>host.json</strong> file, to poll every 2 seconds:
+<pre>{
+     "queues": {
+        "maxPollingInterval": 2000
+     }
+}
+</pre>
+Launch <a href="http://storageexplorer.com/">Azure Storage Explorer</a> and create a queue <strong>js-queue-items</strong> in storage account you’ve specified in the <strong>AzureWebJobsStorage</strong> connection string:
+
+<a href="/AppService/media/2016/11/721.png"><img alt="7" class="alignnone size-full wp-image-2325" height="104" src="/AppService/media/2016/11/721.png" width="303"/></a>
+<a href="/AppService/media/2016/11/818.png"><img alt="8" class="alignnone size-full wp-image-2335" height="194" src="/AppService/media/2016/11/818.png" width="916"/></a>
+
+Then, in Visual Studio Code, we see out breakpoint being hit:
+<a href="/AppService/media/2016/11/916.png"><img alt="9" class="alignnone size-large wp-image-2345" height="275" src="/AppService/media/2016/11/916-1024x320.png" width="879"/></a>
+
+This is just a taste of what you can accomplish with the Azure Functions CLI. Try it out today and let us know what you think!
+<h1>Provide feedback</h1>
+The Azure Functions CLI is still in preview and under active development. If you find any issues, please post a <a href="https://github.com/Azure/azure-webjobs-sdk-script/issues">GitHub issue</a> and include the title “CLI:”. The CLI is open source and can be found in a <a href="https://github.com/Azure/azure-webjobs-sdk-script/tree/rename-cli">branch of the azure-webjobs-script repo</a>. You can also reach out to me on Twitter <a href="https://twitter.com/lindydonna">@lindydonna</a>.
+
+For general feedback and questions about Azure Functions:
+<ul>
+<li>Ask product questions on the <a href="https://social.msdn.microsoft.com/Forums/azure/en-US/home?forum=AzureFunctions">Azure Functions MSDN forum</a> and <a href="http://stackoverflow.com/questions/tagged/azure-functions">StackOverflow</a>, where you’ll get answers directly from the engineering team.</li>
+<li>Submit feature requests on <a href="https://feedback.azure.com/forums/355860-azure-functions">feedback.azure.com</a>.</li>
+<li>Reach out to us on Twitter via <a href="https://twitter.com/azure">@Azure</a> with the hashtag <a href="https://twitter.com/search?q=%23azurefunctions">#AzureFunctions</a>.</li>
+</ul></div>
+</div></body>
+<script src="/AppService/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="/AppService/resource/replace.js" type="text/javascript"></script>
+</html>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2016-12-01T00:00:00+00:00">December 01, 2016</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Running+Azure+Functions+Locally+with+the+CLI+and+VS+Code%20https%3A%2F%2Fazure.github.io%2FAppService%2F2016%2F12%2F01%2FRunning-Azure-Functions-Locally-with-the-CLI-and-VS-Code.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2016%2F12%2F01%2FRunning-Azure-Functions-Locally-with-the-CLI-and-VS-Code.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2016%2F12%2F01%2FRunning-Azure-Functions-Locally-with-the-CLI-and-VS-Code.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2016/12/01/New-Quickstart-experience-for-App-Service-Web-App.html" class="pagination--pager" title="New Quickstart experience for App Service Web App
+">Previous</a>
+    
+    
+      <a href="/AppService/2016/12/12/Update-Changes-to-MySQL-support-for-Azure-Imagine-Offer.html" class="pagination--pager" title="Update Changes to MySQL support for Azure Imagine Offer
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

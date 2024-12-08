@@ -1,0 +1,922 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Intro to Microsoft Defender for App Service - Azure App Service</title>
+<meta name="description" content="If you’re an Azure portal user with App Service, you’ve most likely seen the Security item in the left-hand menu. This item comes from our partners from the recently re-branded Microsoft Defender for Cloud. If you aren’t familiar with Microsoft Defender for Cloud (formerly Azure Security Center and Azure Defender), it’s a tool for security posture management and threat protection. It aggregates compliance data and continually assesses your environments to give you a summary view of your security posture and allow you to streamline security management not just for your resources in Azure, but also for your resources and environments on-premises as well as in other cloud platforms (Defender for Cloud currently supports integration with AWS and GCP). For more information about Microsoft Defender for Cloud, check out the documentation.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Intro to Microsoft Defender for App Service">
+<meta property="og:url" content="https://azure.github.io/AppService/2022/06/16/Into-to-microsoft-defender-for-app-service.html">
+
+
+  <meta property="og:description" content="If you’re an Azure portal user with App Service, you’ve most likely seen the Security item in the left-hand menu. This item comes from our partners from the recently re-branded Microsoft Defender for Cloud. If you aren’t familiar with Microsoft Defender for Cloud (formerly Azure Security Center and Azure Defender), it’s a tool for security posture management and threat protection. It aggregates compliance data and continually assesses your environments to give you a summary view of your security posture and allow you to streamline security management not just for your resources in Azure, but also for your resources and environments on-premises as well as in other cloud platforms (Defender for Cloud currently supports integration with AWS and GCP). For more information about Microsoft Defender for Cloud, check out the documentation.">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2022-06-16T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2022/06/16/Into-to-microsoft-defender-for-app-service.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Intro to Microsoft Defender for App Service">
+    <meta itemprop="description" content="If you’re an Azure portal user with App Service, you’ve most likely seen the Security item in the left-hand menu. This item comes from our partners from the recently re-branded Microsoft Defender for Cloud. If you aren’t familiar with Microsoft Defender for Cloud (formerly Azure Security Center and Azure Defender), it’s a tool for security posture management and threat protection. It aggregates compliance data and continually assesses your environments to give you a summary view of your security posture and allow you to streamline security management not just for your resources in Azure, but also for your resources and environments on-premises as well as in other cloud platforms (Defender for Cloud currently supports integration with AWS and GCP). For more information about Microsoft Defender for Cloud, check out the documentation.">
+    <meta itemprop="datePublished" content="June 16, 2022">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Intro to Microsoft Defender for App Service
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+            
+            
+              • By Jordan Selig
+            
+            • June 16, 2022
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#microsoft-defender-for-app-service">Microsoft Defender for App Service</a>
+    <ul>
+      <li><a href="#without-enhanced-security-features-free">Without enhanced security features (Free)</a></li>
+      <li><a href="#with-enhanced-security-features">With enhanced security features</a></li>
+    </ul>
+  </li>
+  <li><a href="#things-to-consider">Things to consider</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <p>If you’re an Azure portal user with App Service, you’ve most likely seen the <strong>Security</strong> item in the left-hand menu. This item comes from our partners from the recently re-branded <a href="https://docs.microsoft.com/azure/defender-for-cloud/defender-for-cloud-introduction">Microsoft Defender for Cloud</a>. If you aren’t familiar with Microsoft Defender for Cloud (formerly Azure Security Center and Azure Defender), it’s a tool for security posture management and threat protection. It aggregates compliance data and continually assesses your environments to give you a summary view of your security posture and allow you to streamline security management not just for your resources in Azure, but also for your resources and environments on-premises as well as in other cloud platforms (Defender for Cloud currently supports integration with AWS and GCP). For more information about Microsoft Defender for Cloud, check out the <a href="https://docs.microsoft.com/azure/defender-for-cloud/defender-for-cloud-introduction">documentation</a>.</p>
+
+<p><img src="/AppService/media/2022/04/AppServiceSecurityBlade.png" alt="App Service Security blade" /></p>
+
+<h2 id="microsoft-defender-for-app-service">Microsoft Defender for App Service</h2>
+
+<h3 id="without-enhanced-security-features-free">Without enhanced security features (Free)</h3>
+
+<p>Microsoft Defender for Cloud is offered in two modes. Without enhanced security features (Free) is enabled for free on all your Azure subscriptions when you visit the workload protection dashboard in the Azure portal for the first time, or if enabled programmatically via API. The free version will not be enabled until you complete one of those actions. Using the free mode provides the secure score and its related features: security policy, continuous security assessment, and actionable security recommendations to help you protect your Azure resources. The below screenshot is a sample of what the free version gives you. As you can see on the left-hand side, there are a number of features that aren’t selectable since they aren’t available with the free version. However, even though they are not selectable from the TOC, you can access the Regulatory Compliance and Inventory blades by clicking on the respective widgets in the dashboard.</p>
+
+<p><img src="/AppService/media/2022/04/DefenderFreeMode.png" alt="Defender for Cloud without enhanced security features" /></p>
+
+<p>The free mode gives you access to your compliance status based on the <a href="https://docs.microsoft.com/security/benchmark/azure/">Azure Security Benchmark</a>. For example, the Azure Security Baseline states that <a href="https://docs.microsoft.com/security/benchmark/azure/security-controls-v3-data-protection#dp-3-encrypt-sensitive-data-in-transit">sensitive data should be encrypted in transit</a>. The below screenshot shows where this control, specifically for App Service, shows up in the Defender for Cloud compliance dashboard. The Azure Security Baseline includes standards for services other than App Service as well to give you full compliance status of your account. To track compliance with other standards, you’ll need to enable the enhanced security features.</p>
+
+<p><img src="/AppService/media/2022/04/DefenderFreeModeComplianceSample.png" alt="Defender for Cloud compliance sample" /></p>
+
+<p>From the compliance dashboard in Defender, you’ll see exactly which benchmarks your environment fails to meet. Selecting one of the controls will show you which resources are failing the compliance check as well as in many cases give you a “Quick Fix” to make your resources compliant.</p>
+
+<p>Heading back to the <strong>Security</strong> blade for your App Service, after enabling Defender, and therefore the Azure Security Benchmark, under Recommendations, you’ll now see the App Service specific controls from the Azure Security Benchmark where your app fails to be compliant. If you don’t see any recommendations, your app is either fully compliant with the Azure Security Benchmark or you haven’t given the platform enough time to complete its assessment and update the portal (this can take up to 24 hours). You’ll additionally see a severity recommendation for each control based on the priority the Azure Security Benchmark, which gives you a good sense of which controls you should most likely enable. Note that if you have enabled any custom policies in Azure Policy based off of the controls associated with the Azure Security Benchmark, they won’t show up in the Recommendations or in the Defender compliance dashboard. At this time, only “built-in” policies are supported. Additionally, you won’t see any alerts under “Security incidents and alerts” in the Security blade since that is a not a feature of the free version.</p>
+
+<p><img src="/AppService/media/2022/04/AppServiceSecurityBladeFull.png" alt="App Service Security blade sample" /></p>
+
+<h3 id="with-enhanced-security-features">With enhanced security features</h3>
+
+<p>Defender for Cloud with all enhanced security features extends the capabilities of the free mode and allows you to include workloads running in private and other public clouds, providing unified security management and threat protection across your hybrid cloud workloads. For more information on the two modes, see the <a href="https://docs.microsoft.com/azure/defender-for-cloud/enhanced-security-features-overview">enhanced security features documentation</a>.</p>
+
+<p>If you choose to use the enhanced security features, Defender for Cloud offers specific plans dedicated to various Azure services including one for App Service called <a href="https://docs.microsoft.com/azure/defender-for-cloud/defender-for-app-service-introduction">Microsoft Defender for App Service</a>. In addition to the benefits you get from the enhanced security features, enabling Defender for App Service increases your security posture by assessing the resources covered by your App Service plan and generating security recommendations based on its findings. It also monitors the underlying logs and infrastructure that customers don’t typically have access to since App Service is a fully managed platform. To learn more about the benefits of Defender for App Service, see <a href="https://docs.microsoft.com/azure/defender-for-cloud/defender-for-app-service-introduction">protecting your web apps and APIs</a>.</p>
+
+<h2 id="things-to-consider">Things to consider</h2>
+
+<p>If the built-in policies that make up the Azure Security Benchmark and other compliance standards don’t meet your compliance standards, you can <a href="https://docs.microsoft.com/azure/governance/policy/tutorials/create-custom-policy-definition">create custom policies in Azure Policy</a>. Custom policies however will not show up under the recommendations in the Security blade and in your Defender compliance dashboard.</p>
+
+<p>You must visit the Microsoft Defender for Cloud dashboard in the portal or enable Defender programmatically via API for it to start monitoring your resources. Even if you are just using the free version, you still need complete one of those actions to see your recommendations in the Security blade.</p>
+
+<p>Defender for App Service costs $15/month per instance. If cost is a limiting factor for you, take this into consideration when enabling the enhanced security features. Defender gives you the ability to select which resources you want to be in scope and therefore charged for, which can help you reduce costs as needed. If you don’t enable Defender for App Service, you can still use the free version and have access to compliance against the Azure Security Benchmark.</p>
+
+<p>If you choose to not enable the enhanced security features, that doesn’t mean your App Service isn’t secure or that you don’t have options to secure your apps. App Service as well as Azure have a number of built-in features and services that you can leverage to lock down and protect your apps based on your requirements. To learn more about App Service security, start with the <a href="https://docs.microsoft.com/azure/app-service/security-recommendations">security recommendations for App Service</a>.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2022-06-16T00:00:00+00:00">June 16, 2022</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Intro+to+Microsoft+Defender+for+App+Service%20https%3A%2F%2Fazure.github.io%2FAppService%2F2022%2F06%2F16%2FInto-to-microsoft-defender-for-app-service.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2022%2F06%2F16%2FInto-to-microsoft-defender-for-app-service.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2022%2F06%2F16%2FInto-to-microsoft-defender-for-app-service.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2022/06/16/Announcing-Resiliency-Score-Report-for-Azure-Web-Apps.html" class="pagination--pager" title="Announcing Resiliency Score Report for Azure Web Apps
+">Previous</a>
+    
+    
+      <a href="/AppService/2022/07/06/azure-policy-updates-for-app-service.html" class="pagination--pager" title="Azure Policy Updates for App Service
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

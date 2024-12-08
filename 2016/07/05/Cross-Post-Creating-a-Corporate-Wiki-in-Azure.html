@@ -1,0 +1,1005 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Cross-Post Creating a Corporate Wiki in Azure - Azure App Service</title>
+<meta name="description" content="">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Cross-Post Creating a Corporate Wiki in Azure">
+<meta property="og:url" content="https://azure.github.io/AppService/2016/07/05/Cross-Post-Creating-a-Corporate-Wiki-in-Azure.html">
+
+
+  <meta property="og:description" content="">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2016-07-05T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2016/07/05/Cross-Post-Creating-a-Corporate-Wiki-in-Azure.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Cross-Post Creating a Corporate Wiki in Azure">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="July 05, 2016">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Cross-Post Creating a Corporate Wiki in Azure
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  8 minute read
+
+            
+            
+            • July 5, 2016
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Chris Gillum (MSFT)" target="_blank">Chris Gillum (MSFT)</a>
+<time>    7/5/2016 9:42:35 AM</time>
+<hr/>
+<div id="content"><header>
+<p>Note: This post was cross-posted from <a href="https://cgillum.tech/2016/06/30/creating-a-corporate-wiki-in-azure/">CGillum Dev Blog</a>.</p>
+</header>
+
+Using <a href="https://azure.microsoft.com/en-us/services/app-service/">Azure App Service</a> and <a href="https://azure.microsoft.com/en-us/services/active-directory/">Azure Active Directory</a> (AAD), it's possible to create a <a href="https://www.mediawiki.org">MediaWiki</a>-based web app for use within your organization with minimal setup and for little or no cost. If you're not familiar with MediaWiki, it's the same open source platform which powers <a href="https://en.wikipedia.org">Wikipedia</a>. A few folks within Microsoft surprised me when they created internal wikis using my <a href="https://azure.microsoft.com/en-us/documentation/articles/app-service-authentication-overview/">Easy Auth feature (Authentication / Authorization)</a> so I thought I'd try it out for myself and do a quick write-up on it.
+
+Note that I'm assuming you're already familiar with Azure Active Directory and that you have an Azure Subscription that is associated with your organization. If not, you can find more information here: <a href="https://azure.microsoft.com/en-us/documentation/articles/sign-up-organization/">https://azure.microsoft.com/en-us/documentation/articles/sign-up-organization/</a>.
+<h1>Creating a Web App</h1>
+The first step is to create a new web app. If you already know how to do this, you can skip this section. The easiest way is to simply navigate to <a href="https://portal.azure.com">https://portal.azure.com</a>, log in with your Azure Subscription (the one for your organization), and go to New --&gt; Web and Mobile --&gt; Web App. This can also be done using the <a href="https://azure.microsoft.com/en-us/documentation/articles/powershell-install-configure/">Azure PowerShell</a> or <a href="https://azure.microsoft.com/en-us/documentation/articles/xplat-cli-install/">Cross-Platform CLI Tools</a>, though I won't cover those details here. In this example, let's suppose you named the web app <strong>easyauth-wiki</strong> (all my examples and screenshots will use this name, but you can replace it with your own app name).
+
+<strong>IMPORTANT</strong>: If you want to create custom hostnames for your web app, you should set that up now.
+<h1>Enabling AAD Authentication</h1>
+As I hinted to before, this can be done in the portal via Easy Auth, Azure App Service's integrated authentication feature. For simplicity, we'll use the Express configuration, which automatically creates an AAD application and configures it for your site.
+<ul>
+<li>In <a href="https://portal.azure.com">https://portal.azure.com</a>, select the web app you previously created.</li>
+<li>Select <strong>Settings</strong> and navigate down to <strong>Authentication / Authorization</strong>.</li>
+<li>Set App Service Authentication to On.</li>
+<li>Under <strong>Authentication Providers</strong>, select <strong>Azure Active Directory</strong></li>
+<li>For <strong>Management mode</strong>, select <strong>Express</strong> and then click <strong>OK</strong>.</li>
+<li>Back in the Authentication / Authorization blade, click <strong>Save</strong>.</li>
+</ul>
+<a href="/AppService/media/2016/07/MediaWiki-EnableEasyAuth.png"><img alt="Enable AAD Authentication" class="aligncenter size-full wp-image-140" height="538" src="/AppService/media/2016/07/MediaWiki-EnableEasyAuth.png" width="1482"/></a>
+
+At this point, your new web app is now protected using Azure Active Directory authentication and only users in your organization will be able to access the site.
+<h1>Installing MediaWiki</h1>
+It's possible to create a MediaWiki app using the Marketplace gallery in the Azure management portal, but for this write-up I'm going to configure it from scratch. This also allows me to use a <a href="https://www.mediawiki.org/wiki/Manual:SQLite">local SQLite database</a> (instead of paying for a ClearDB MySQL database), which is convenient for testing and is free. If you're expecting your wiki to be used by a large number of users, then you should definitely consider using MySQL instead of SQLite, though I won't cover the MySQL setup here.
+<h2>Download MediaWiki</h2>
+There are multiple ways to get MediaWiki installed on your web app. I'm going to show you the quick-and-dirty way which doesn't involve any 3rd party tools or source control. Start by navigating to the debug console on the SCM endpoint for the site you just created: <strong>https://{appname}.scm.azurewebsites.net/DebugConsole</strong>. You can log in using your Azure Subscription credentials if you're not already logged in. Then do the following:
+<ul>
+<li>cd D:\home\site\wwwroot</li>
+<li>del hostingstart.html</li>
+<li>curl https://releases.wikimedia.org/mediawiki/1.26/mediawiki-1.26.3.tar.gz &gt; mediawiki.tar.gz</li>
+<li>tar -xzvf mediawiki.tar.gz</li>
+</ul>
+The last step might take a while due to the large number of files to extract. This will get all the MediaWiki bits onto your web app. I chose MediaWiki 1.26.3 since that was the latest when I started writing this post, but a newer version is probably available by the time you read this (in fact, 1.27.0 was released shortly after I finished putting together my sample). You can find available versions of MediaWiki on the <a href="https://www.mediawiki.org/wiki/Download">MediaWiki download page</a>. Be sure to adjust my instructions accordingly depending on which version you decide to use.
+<h2>Configure MediaWiki</h2>
+Now that MediaWiki is installed, let's configure it with a simple SQLite database backend.
+<ul>
+<li>Navigate to https://{appname}.azurewebsites.net/mediawiki-1.26.3/mw-config/index.php</li>
+<li>Click through the first two pages.</li>
+<li>In the <strong>Connect to database</strong> page, select <strong>Database type: SQLite</strong> and click <strong>Continue</strong>.</li>
+<li>Configure your wiki with a name and an administrator account and click <strong>Continue</strong>.</li>
+<li>For <strong>User rights profile</strong>, select <strong>Private wiki</strong>.</li>
+<li>Feel free to mess with additional settings on this page as necessary. Under Advanced configuration, you may want to enable <strong>PHP object caching</strong> for improved performance (internally we use WinCache). When all done, click <strong>Continue</strong> and then <strong>Continue</strong> two more times to complete the installation.</li>
+</ul>
+At this point, you should see a Complete! screen and a LocalSettings.php file should have been downloaded by your browser. You'll need to upload this file to your MediaWiki installation directory (D:\home\site\wwwroot\mediawiki-1.26.3) to complete the installation. The easiest way is to simply drag/drop it from your file system to the browser window which shows the Debug Console in the D:\home\site\wwwroot\mediawiki-1.26.3 directory.
+<h2>Configuring Integrated Authentication</h2>
+The final required step is to connect the user accounts in your Azure Active Directory to the user accounts in your wiki. This can be done using the <a href="https://www.mediawiki.org/wiki/Extension:Auth_remoteuser">Auth_remoteuser</a> extension, as I'll describe here. The great thing about this extension is that it can also be used for on-premises Active Directory, making it very easy to do on-premises to Azure migrations.
+
+Once again, let's take the simple route of installing it directly onto the web app using the Kudu Debug console (otherwise you can follow the instructions on the extension page).
+<ul>
+<li>Use cURL to download the extension, e.g. <strong>curl https://extdist.wmflabs.org/dist/extensions/Auth_remoteuser-REL1_26-6103d19.tar.gz &gt; Auth_remoteuser-REL1_26-6103d19.tar.gz</strong> (the actual URL will be different for you depending on which version is the latest by the time you read this).</li>
+<li>Extract the downloaded extension into the MediaWiki <strong>extensions</strong> directory - e.g. <strong>tar -xzvf Auth_remoteuser-REL1_26-6103d19.tar.gz -C D:\home\site\wwwroot\mediawiki-1.26.3\extensions</strong> (again, your exact path may differ).</li>
+<li>Open your LocalSettings.php for editing (e.g. D:\home\site\wwwroot\mediawiki-1.26.3\LocalSettings.php) and make the following changes:</li>
+</ul>
+[php]
+require_once "$IP/extensions/Auth_remoteuser/Auth_remoteuser.php";
+$wgAuth = new Auth_remoteuser();
+[/php]
+At this point your identity setup is now complete! MediaWiki automatically recognizes your login. No registration required. You can test it by browsing to the root of your MediaWiki installation - e.g. https://{appname}.azurewebsites.net/mediawiki-1.26.3.
+
+The last step is to add a URL rewrite rule to fix your URLs so that you don't need to include the MediaWiki installation directory in your URL.
+<h2>Configuring URL Rewrite Rules (Optional)</h2>
+The final step involves configuring <a href="http://www.iis.net/learn/extensions/url-rewrite-module">IIS rewrite rules</a> on your app to remove the installation directory as well as to "prettify" your URLs. Without doing this, your URLs are quite ugly and hard to discover.
+
+<a href="/AppService/media/2016/07/MediaWiki-UglyUrl.png"><img alt="Ugly URL" class="aligncenter size-full wp-image-139" height="222" src="/AppService/media/2016/07/MediaWiki-UglyUrl.png" width="947"/></a>
+
+There are many ways to configure this so consider the below just one of many examples.
+<ul>
+<li>In the Kudu console, navigate to <strong>D:\home\site\wwwroot</strong>.</li>
+<li>Create a web.config file by entering the following command: <strong>touch web.config</strong></li>
+<li>Open the file for editing and add the following content (replacing the MediaWiki version numbers as necessary):</li>
+</ul>
+[xml]
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;configuration&gt;
+ &lt;system.webServer&gt;
+  &lt;rewrite&gt;
+   &lt;rules&gt;
+    &lt;rule name="wikiRule1" stopProcessing="true"&gt;
+     &lt;match url="^wiki/(.*)$" /&gt;
+     &lt;action type="Rewrite" url="/mediawiki-1.26.3/index.php?title={UrlEncode:{R:1}}" /&gt;
+    &lt;/rule&gt;
+    &lt;rule name="wikiRule2" stopProcessing="true"&gt;
+     &lt;match url="^wiki/$" /&gt;
+     &lt;action type="Rewrite" url="/mediawiki-1.26.3/index.php" /&gt;
+    &lt;/rule&gt;
+    &lt;rule name="wikiRule4" stopProcessing="true"&gt;
+     &lt;match url="^/*$" /&gt;
+     &lt;action type="Rewrite" url="/mediawiki-1.26.3/index.php" /&gt;
+    &lt;/rule&gt;
+   &lt;/rules&gt;      
+  &lt;/rewrite&gt;
+ &lt;/system.webServer&gt;
+&lt;/configuration&gt;
+[/xml]
+<ul>
+<li>Open the LocalSettings.php file and ensure the following variables are set as shown here (again, you may need to fix up the MediaWiki version number):</li>
+</ul>
+[php]
+$wgScriptPath = "/mediawiki-1.26.3";
+$wgArticlePath = "/wiki/$1";
+$wgUsePathInfo = true;
+[/php]
+
+Now, if you navigate to your site root, you'll get redirected to https://{appname}.azurewebsites.net/wiki and you will see your wiki content. If you click on a page, you'll get a friendly /wiki/PageTitle URL.
+
+<a href="/AppService/media/2016/07/MediaWiki-ShortUrl.png"><img alt="Pretty URL" class="aligncenter size-full wp-image-138" height="223" src="/AppService/media/2016/07/MediaWiki-ShortUrl.png" width="948"/></a>
+
+This is a big improvement from before!
+<h2 id="Anchors">Linking to Anchors (Optional)</h2>
+It's common for people to create links to certain sections of their wiki pages which contain URL fragments. For example, you might have a URL which looks like <em>/wiki/Main_Page#SectionZ</em>. This ensures that when you share the link with someone and they click it, the browser will automatically scroll to wherever "SectionZ" is located on the page. More information on anchors in MediaWiki can be found <a href="https://meta.wikimedia.org/wiki/Help:Link#Anchors">here</a>.
+
+There is one problem that occurs when you introduce login to your web app, however. If you're familiar with URL fragments (the #SectionZ part of the URL) then you'll know that <a href="http://stackoverflow.com/a/3664324/2069">they are never sent to the server</a>. By default, the Easy Auth module handles the login entirely on the server, so if one of your colleagues clicks on a link to the wiki with a URL fragment in it and they are not yet logged in, the URL fragment will be lost by the time they finish logging in and get redirected back to the page they tried to visit. This is a pain because then they have to manually scroll to find the location that they were supposed to be directly linked to. Note that this problem is not unique to MediaWiki or Easy Auth. There are many other server-side authentication solutions which suffer from the same issue.
+
+One potential workaround is to have people complete the login and then click the link again in order to be navigated to the correct location in the target page. Obviously, this is not a very good solution. Several teams internally at Microsoft have run into this problem and reported it to me, so I thought it would be a good idea to find a way to solve it in a way that didn't require users to know about the problem. To that end, we recently added a new feature in Easy Auth which solves this by using some JavaScript to ensure URL fragments are correctly preserved. Currently it's an opt-in feature which you can enable by setting the <strong>WEBSITE_AUTH_PRESERVE_URL_FRAGMENT</strong> app setting to <strong>true</strong> in the Azure management portal.
+
+<a href="/AppService/media/2016/07/MediaWiki-PreserveUrlFragments.png"><img alt="Preserving URL fragments in login" class="aligncenter size-full wp-image-142" height="276" src="/AppService/media/2016/07/MediaWiki-PreserveUrlFragments.png" width="972"/></a>
+
+With this setting in place, when users click on your links which contain URL fragments, the login process will ensure that the URL fragment part of your URL does not get lost in the login redirect process. Let us know in the comments if you found this feature helpful for you, we'd love to know about it. If it helps out enough folks, we'll likely turn on this capability by default.
+
+<footer>
+<p>Note: This post was cross-posted from <a href="https://cgillum.tech/2016/06/30/creating-a-corporate-wiki-in-azure/">CGillum Dev Blog</a>.</p>
+</footer></div>
+</div></body>
+<script src="/AppService/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="/AppService/resource/replace.js" type="text/javascript"></script>
+</html>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2016-07-05T00:00:00+00:00">July 05, 2016</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Cross-Post+Creating+a+Corporate+Wiki+in+Azure%20https%3A%2F%2Fazure.github.io%2FAppService%2F2016%2F07%2F05%2FCross-Post-Creating-a-Corporate-Wiki-in-Azure.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2016%2F07%2F05%2FCross-Post-Creating-a-Corporate-Wiki-in-Azure.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2016%2F07%2F05%2FCross-Post-Creating-a-Corporate-Wiki-in-Azure.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2016/06/29/Offline-Sync-with-Azure-Mobile-Apps-and-Apache-Cordova.html" class="pagination--pager" title="Offline Sync with Azure Mobile Apps and Apache Cordova
+">Previous</a>
+    
+    
+      <a href="/AppService/2016/07/07/Create-digital-experiences-with-Episerver-CMS-in-Azure.html" class="pagination--pager" title="Create digital experiences with Episerver CMS in Azure
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

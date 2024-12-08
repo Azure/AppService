@@ -1,0 +1,994 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Zero to Hero with App Service, Part 6: Securing your web app - Azure App Service</title>
+<meta name="description" content="The Azure App Service is offered as two deployment types: the multi-tenant service and the App Service Environment. In the multi-tenant service there are thousands of customers on the same infrastructure. Your apps are always secured but the network, the address space and some other components are shared.  In an App Service Environment you have a single tenant version of App Service that runs in your Azure Virtual Network.  The next two articles are focused on how to configure network security in the multi-tenant App Service.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Zero to Hero with App Service, Part 6: Securing your web app">
+<meta property="og:url" content="https://azure.github.io/AppService/2020/08/14/zero_to_hero_pt6.html">
+
+
+  <meta property="og:description" content="The Azure App Service is offered as two deployment types: the multi-tenant service and the App Service Environment. In the multi-tenant service there are thousands of customers on the same infrastructure. Your apps are always secured but the network, the address space and some other components are shared.  In an App Service Environment you have a single tenant version of App Service that runs in your Azure Virtual Network.  The next two articles are focused on how to configure network security in the multi-tenant App Service.">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2020-08-14T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2020/08/14/zero_to_hero_pt6.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Zero to Hero with App Service, Part 6: Securing your web app">
+    <meta itemprop="description" content="The Azure App Service is offered as two deployment types: the multi-tenant service and the App Service Environment. In the multi-tenant service there are thousands of customers on the same infrastructure. Your apps are always secured but the network, the address space and some other components are shared.  In an App Service Environment you have a single tenant version of App Service that runs in your Azure Virtual Network.  The next two articles are focused on how to configure network security in the multi-tenant App Service.">
+    <meta itemprop="datePublished" content="August 14, 2020">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Zero to Hero with App Service, Part 6: Securing your web app
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  6 minute read
+
+            
+            
+              • By Christina Compy
+            
+            • August 14, 2020
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#networking-overview">Networking overview</a>
+    <ul>
+      <li><a href="#features-and-services">Features and Services</a></li>
+    </ul>
+  </li>
+  <li><a href="#securing-your-web-app">Securing your web app</a>
+    <ul>
+      <li><a href="#securing-inbound-traffic">Securing inbound traffic</a>
+        <ul>
+          <li><a href="#alternate-configuration">Alternate Configuration</a></li>
+        </ul>
+      </li>
+      <li><a href="#secure-publishing-inbound-traffic">Secure publishing inbound traffic</a></li>
+      <li><a href="#secure-outbound-traffic-from-your-web-app">Secure outbound traffic from your web app</a></li>
+    </ul>
+  </li>
+  <li><a href="#summary">Summary</a>
+    <ul>
+      <li><a href="#helpful-resources">Helpful Resources</a></li>
+    </ul>
+  </li>
+</ul>
+            </nav>
+          </aside>
+        
+        <p>The Azure App Service is offered as two deployment types: the multi-tenant service and the App Service Environment. In the multi-tenant service there are thousands of customers on the same infrastructure. Your apps are always secured but the network, the address space and some other components are shared.  In an App Service Environment you have a single tenant version of App Service that runs in your Azure Virtual Network.  The next two articles are focused on how to configure network security in the multi-tenant App Service.</p>
+
+<p>In this article, you will learn how to secure your standalone app in the multi-tenant App Service.  In the next article, we will cover how to build a secure multi-tier web application.</p>
+
+<h2 id="networking-overview">Networking overview</h2>
+
+<p>There are two aspects that need to be secured for a web app, inbound traffic and outbound traffic.  Inbound traffic are visitors going to your web page, or clients sending requests to your API. Outbound traffic is when your web app makes an outbound call to a database, cache, message queue, or other service. The inbound traffic passes through a load balancer to a set of shared front end servers before reaching the workers which your apps run on. The outbound traffic leaves those workers and goes out through one of the outbound load balancers used by the scale unit. In the diagram below, the inbound and outbound load balancers are shown in green.</p>
+
+<p><img src="/AppService/media/2020/08/app-service-architecture.png" alt="App Service architecture" /></p>
+
+<p>All traffic to and from the components inside App Service is strictly locked down and secured to prevent malicious actions.  This includes preventing any worker-to-worker communication.  This means users just need to secure the networking path to and from their apps–all other traffic is secured for you.</p>
+
+<h3 id="features-and-services">Features and Services</h3>
+
+<p>The following tutorial uses a number of Azure Networking features and services. Here is a quick breakdown of the features used in this article.</p>
+
+<ul>
+  <li><a href="https://docs.microsoft.com/azure/web-application-firewall/ag/ag-overview">Web Application Firewall</a>:  The Web Application Firewall (or WAF for short) sits between your applications and your end users. It protects your applications against common attacks like cross-site-scripting or SQL injection.</li>
+  <li><a href="https://docs.microsoft.com/azure/virtual-network/virtual-networks-overview">Virtual Network</a>: The Azure Virtual Network (VNet) is the building block for creating your network in Azure. A VNet is similar to a physical network that you would have in an on-premises network: you can assign an address space for a VNet and apply subnets to organize the network.</li>
+  <li><a href="https://docs.microsoft.com/azure/application-gateway/overview">Application Gateway</a>: An Application Gateway acts as a load balancer for your application(s) and allows you to route requests based on the requested hostname or URL path. Learn more about <a href="https://docs.microsoft.com/azure/application-gateway/features">Azure Application Gateway features</a></li>
+  <li><a href="https://docs.microsoft.com/azure/virtual-network/virtual-network-service-endpoints-overview">Service endpoints</a>: Some Azure resources are deployed into virtual networks by default. Other resources, such as the multi-tenant App Service, can gain access to the VNet using Service Endpoints. This means you can use Service Endpoints to only allow inbound traffic to your web app from a subnet within a VNet.</li>
+  <li><a href="https://docs.microsoft.com/azure/private-link/private-endpoint-overview">Private Endpoints</a>: Private Endpoints enable exposing the inbound traffic to a service on an address in a selected VNet.</li>
+  <li><a href="https://docs.microsoft.com/azure/frontdoor/front-door-overview">Azure Front Door</a>: Front Door (AFD) provides many of the same features and benefits of an Application Gateway. It improves application performance by routing users to the nearest Point of Presence (POP).</li>
+</ul>
+
+<h2 id="securing-your-web-app">Securing your web app</h2>
+
+<p>To secure the network access around your web app you will need to secure…</p>
+
+<ol>
+  <li><a href="#securing-inbound-traffic">Inbound request traffic to your app</a></li>
+  <li><a href="#secure-publishing-inbound-traffic">Inbound publishing traffic to your app</a></li>
+  <li><a href="#secure-outbound-traffic-from-your-web-app">Outbound calls made from your app</a></li>
+</ol>
+
+<p>To secure inbound request traffic to your app, use a WAF enabled Application Gateway with Service Endpoints. To secure inbound publishing traffic to your app, use a build agent with service endpoints on the publishing endpoint. Lastly, to secure outbound traffic from your web app, use VNet Integration and an Azure Firewall.</p>
+
+<p><img src="/AppService/media/2020/08/secure-web-app.png" alt="App Service architecture" /></p>
+
+<h3 id="securing-inbound-traffic">Securing inbound traffic</h3>
+
+<ol>
+  <li>Select or create an Azure Virtual Network (VNet).  To secure your inbound traffic to your app you will need to have a VNet. If you have one already, you do not need to create another.  It should be in the same region as your web app.  If you do not have a VNet, you can create one following these instructions <a href="https://docs.microsoft.com/azure/virtual-network/quick-create-portal">Creating an Azure Virtual Network</a>.</li>
+  <li>Create an Application Gateway as described here in <a href="https://docs.microsoft.com/azure/application-gateway/quick-create-portal">Creating an Application Gateway</a>.</li>
+  <li>Enable <a href="https://docs.microsoft.com/azure/app-service/app-service-ip-restrictions#service-endpoints">Service Endpoints</a> to your web app.</li>
+  <li>Once you have the VNet, App Gateway, and Service Endpoints set up, you need to add a custom domain name for your app that should point to your Application Gateway.  Your web app needs to be configured with the new domain name.  To add a custom domain name to your web app, follow the guidance here.</li>
+</ol>
+
+<p>The end result is that your web app will have all inbound traffic routed through your Application Gateway to your app.  You can, and should, enable Web Application Firewall (WAF) support on your Application Gateway.</p>
+
+<h4 id="alternate-configuration">Alternate Configuration</h4>
+
+<p>There are two alternative services that are in preview that should be noted.  One is using <a href="https://docs.microsoft.com/azure/app-service/networking/private-endpoint">Private Endpoints</a> rather than Service Endpoints and the other is using Azure Front Door instead of an Application Gateway.</p>
+
+<p>If you use Private Endpoints instead of Service Endpoints, you would create your Private Endpoint in a subnet other than the GatewaySubnet. This Private Endpoint would be configured against your app. This is a great solution as it also hosts the HTTPS publishing endpoint for your app. When you add Private Endpoints to your app, the app is no longer accessible from the internet.  Traffic to your app must only go through the private endpoints on your app.</p>
+
+<p>If you use <a href="https://docs.microsoft.com/azure/frontdoor/front-door-overview">Azure Front Door</a> (AFD) with your app, you would need to set an IP address <a href="https://docs.microsoft.com/azure/app-service/app-service-ip-restrictions">access restriction</a> to secure your app to only being accessible through AFD. There are some additional changes that will soon be available that will enable you to lock you app down to specific AFD profiles. If you use AFD, you can enable a mix of capabilities such as WAF protection just like with an Application Gateway.</p>
+
+<h3 id="secure-publishing-inbound-traffic">Secure publishing inbound traffic</h3>
+
+<p>Publishing is the process by which you upload your web app content to your app service instance. Unless you are using FTP, all publishing actions are performed against the scm site for your app. For every app there exists the app url and there also exists the publishing url. The publishing url is <em>&lt;app name&gt;.scm.azurewebsites.net</em>. Secure publishing is not too different from secure app access. For secure publishing you need to publish from inside your VNet.  To have a secure publishing story you need to follow one of the following patterns:</p>
+<ul>
+  <li>Use Access Restrictions to secure traffic to the publishing endpoint for your app</li>
+  <li>Use service endpoints to secure traffic from a jump box being used to publish</li>
+  <li>Use a relay agent, such as the Azure Pipeline build agent deployed on a VM in your VNet and then use service endpoints to secure your scm site to the subnet that the build agent is in.</li>
+</ul>
+
+<p>To use the Azure Pipeline relays agent:</p>
+
+<ol>
+  <li>Create a VM in your VNet.</li>
+  <li>Install and configure the <a href="https://docs.microsoft.com/azure/devops/pipelines/tasks/deploy/azure-rm-web-app-deployment">Azure pipeline agent</a></li>
+  <li>Configure service endpoints for your app scm site against the subnet that your VM is in.</li>
+</ol>
+
+<h3 id="secure-outbound-traffic-from-your-web-app">Secure outbound traffic from your web app</h3>
+
+<p>To secure outbound traffic from your web app you need to use the regional VNet Integration feature.  This feature enables you to make calls into your VNet and have all outbound traffic subject to Network Security Groups (NSGs) and Route Tables (UDRs). With NSGs you can restrict outbound traffic to address blocks of your choosing.  With UDRs you can route traffic as you see fit.  If you route the outbound traffic to an Azure Firewall device, you can restrict your outbound internet traffic to only the FQDN’s you want it to reach.</p>
+
+<p>To secure your outbound traffic from your web app, enable <a href="https://docs.microsoft.com/azure/app-service/web-sites-integrate-with-vnet">VNet Integration</a>. By default, your app outbound traffic will only be affected by NSGs and UDRs if you are going to a private address (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16). To ensure that all of your outbound traffic is affected by the NSGs and UDRs on your integration subnet, set the application setting WEBSITE_VNET_ROUTE_ALL to 1.</p>
+
+<h2 id="summary">Summary</h2>
+
+<p>Congratulations! In this article you learned how to secure your inbound and outbound networking traffic. You are now able to assemble App Service and Networking features to create a secure internet facing web application.</p>
+
+<h3 id="helpful-resources">Helpful Resources</h3>
+
+<ul>
+  <li><a href="https://docs.microsoft.com/azure/app-service/networking-features">App Service networking features</a></li>
+  <li><a href="https://docs.microsoft.com/azure/app-service/app-service-ip-restrictions">App Service access restrictions</a></li>
+  <li><a href="https://docs.microsoft.com/azure/app-service/web-sites-integrate-with-vnet">App Service VNet Integration</a></li>
+  <li><a href="https://docs.microsoft.com/azure/app-service/networking/private-endpoint">App Service Private endpoints</a></li>
+  <li><a href="https://docs.microsoft.com/azure/app-service/app-service-hybrid-connections">App Service Hybrid Connections</a></li>
+</ul>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2020-08-14T00:00:00+00:00">August 14, 2020</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Zero+to+Hero+with+App+Service%2C+Part+6%3A+Securing+your+web+app%20https%3A%2F%2Fazure.github.io%2FAppService%2F2020%2F08%2F14%2Fzero_to_hero_pt6.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2020%2F08%2F14%2Fzero_to_hero_pt6.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2020%2F08%2F14%2Fzero_to_hero_pt6.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2020/08/11/Crash-Monitoring-Feature-in-Azure-App-Service.html" class="pagination--pager" title="Crash Monitoring in Azure App Service
+">Previous</a>
+    
+    
+      <a href="/AppService/2020/08/18/Netflix-Eureka-On-App-Service.html" class="pagination--pager" title="Netflix Eureka on App Service
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

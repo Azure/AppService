@@ -1,0 +1,1013 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Crash Monitoring in Azure App Service - Azure App Service</title>
+<meta name="description" content="Application crashes happen. A crash is when an exception in your code goes un-handled and terminates the process. These unhandled exceptions are also known as second chance exceptions. When your application crashes, all the in-flight requests (request that are currently being processed by the app) are aborted. An end user may experience an HTTP 502 error for those requests. When the app restarts, availability of the app is still impacted due to the cold start which makes things worse.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Crash Monitoring in Azure App Service">
+<meta property="og:url" content="https://azure.github.io/AppService/2020/08/11/Crash-Monitoring-Feature-in-Azure-App-Service.html">
+
+
+  <meta property="og:description" content="Application crashes happen. A crash is when an exception in your code goes un-handled and terminates the process. These unhandled exceptions are also known as second chance exceptions. When your application crashes, all the in-flight requests (request that are currently being processed by the app) are aborted. An end user may experience an HTTP 502 error for those requests. When the app restarts, availability of the app is still impacted due to the cold start which makes things worse.">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2020-08-11T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2020/08/11/Crash-Monitoring-Feature-in-Azure-App-Service.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Crash Monitoring in Azure App Service">
+    <meta itemprop="description" content="Application crashes happen. A crash is when an exception in your code goes un-handled and terminates the process. These unhandled exceptions are also known as second chance exceptions. When your application crashes, all the in-flight requests (request that are currently being processed by the app) are aborted. An end user may experience an HTTP 502 error for those requests. When the app restarts, availability of the app is still impacted due to the cold start which makes things worse.">
+    <meta itemprop="datePublished" content="August 11, 2020">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Crash Monitoring in Azure App Service
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+            
+            
+              • By Yun Jung Choi, Puneet Gupta
+            
+            • August 11, 2020
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#enabling-crash-monitoring">Enabling Crash Monitoring</a>
+    <ul>
+      <li><a href="#using-the-azure-portal">Using the Azure Portal</a></li>
+      <li><a href="#configuration">Configuration</a></li>
+    </ul>
+  </li>
+  <li><a href="#analyzing-the-data">Analyzing the Data</a>
+    <ul>
+      <li><a href="#view-historical-data">View Historical Data</a></li>
+    </ul>
+  </li>
+  <li><a href="#disable-crash-monitoring">Disable Crash Monitoring</a></li>
+  <li><a href="#watch-a-demo">Watch a Demo</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <p>Application crashes happen. A crash is when an exception in your code goes un-handled and terminates the process. These unhandled exceptions are also known as <em>second chance exceptions</em>. When your application crashes, all the in-flight requests (request that are currently being processed by the app) are aborted. An end user may experience an HTTP 502 error for those requests. When the app restarts, availability of the app is still impacted due to the cold start which makes things worse.</p>
+
+<p>When you are running production applications, it is important to quickly identify the root cause of an application crash to troubleshoot and minimize the business impact. Having the right set of logs is key to a quick resolution. However, it could be difficult to capture these logs at the time of the crash.</p>
+
+<p><strong>With App Service Diagnostics’ Crash Monitoring</strong>, you can collect memory dumps and call stack information at the time of the crash to identify the root cause. Crash Monitoring works by enabling an agent on your application hosted on App Service. The agent attaches a debugger (<code class="language-plaintext highlighter-rouge">procdump.exe</code> in this case) when process starts. If the process crashes with an unhandled exception, the debugger captures a memory dump.</p>
+
+<blockquote>
+  <p>Currently offered in App Service Diagnostics for Windows web apps.</p>
+</blockquote>
+
+<h2 id="enabling-crash-monitoring">Enabling Crash Monitoring</h2>
+
+<p>If you are using <a href="https://azure.microsoft.com/blog/introduction-to-remote-debugging-on-azure-web-sites/">Remote Debugging</a> on your app, Remote Debugging takes preference over Crash Monitoring, and Crash Monitoring will not run.</p>
+
+<h3 id="using-the-azure-portal">Using the Azure Portal</h3>
+
+<p>To access Crash Monitoring, browse to your App Service in the <a href="https://portal.azure.com">Azure Portal</a> and click <strong>Diagnose and Solve problems</strong> in the left navigation panel. Then, click on the home page tile named <strong>Diagnostic Tools</strong>. Once you are inside Diagnostic Tools, click <strong>Crash Monitoring</strong>.</p>
+
+<h3 id="configuration">Configuration</h3>
+
+<p>Crash Monitoring operates based on 4 conditions that you can configure to your needs. Enabling crash monitoring might incur slight performance impact on your app because a debugger is always attached to your process. The delay would vary depending upon the number of exceptions that your application code is throwing.</p>
+
+<ul>
+  <li><strong>Storage account</strong>: The selected storage account will store the memory dumps captured via Crash Monitoring. Avoid changing the storage account for your app if there is an active crash monitoring session in progress.</li>
+  <li><strong>Start time</strong>: Crash Monitoring session will begin at the selected time.</li>
+  <li><strong>Stop time</strong>: Crash Monitoring session will end at the selected time regardless of the maximum of memory dumps captured. To completely disable the agent after the Crash Monitoring session, click on the <strong>Disable Agent</strong> link.</li>
+  <li><strong>Max No. of memory dump</strong>: The Crash Monitoring session concludes once the maximum number of dumps has been gathered. If you want to fully deactivate the agent after the Crash Monitoring session, simply click the <strong>Disable Agent</strong> link. Before connecting the debugger to the process, the crash monitoring agent verifies the current number of dumps in the storage account. Once the necessary amount of memory dumps has been created, the agent will cease to gather more unless you remove the current dumps from storage or relocate them to another location.</li>
+</ul>
+
+<blockquote>
+  <p>The Crash Monitoring configurations are saved in your app’s app settings. Each time a new configuration is saved, your app will restart.</p>
+</blockquote>
+
+<p><img src="/AppService/media/2020/08/crash-monitoring-ui.png" alt="Crash Monitoring" /></p>
+
+<p>Once you click <strong>Start Monitor</strong>, the configuration will be saved, and the monitoring session will begin.</p>
+
+<p><img src="/AppService/media/2020/08/crash-monitoring-enabled.png" alt="Crash Monitoring Enabled" /></p>
+
+<blockquote>
+  <p>Deleting a memory dump from a storage account while the tool is still running may cause the tool to collect additional data than desired. Please ensure the session is completed before you delete the memory dumps from the storage account.</p>
+</blockquote>
+
+<h2 id="analyzing-the-data">Analyzing the Data</h2>
+
+<p>Once you configure and start the Crash Monitoring session, the tool will automatically collect memory dumps and stack trace as your application crashes. You can view the memory dumps and stack trace information grouped by the exit code in the <strong>Analyze</strong> section. Memory dumps and stack trace information become available as your application crashes though you may experience 15 minutes of delay for complete logs to show.</p>
+
+<p>You can click on the <strong>View details</strong> link to expand the details of the crash.</p>
+
+<p><img src="/AppService/media/2020/08/crash-monitoring-insight.png" alt="Crash Monitoring Insight" /></p>
+
+<p>Then, you can click on the <strong>View</strong> link under <strong>Callstack</strong> to view the call stack for the crash.</p>
+
+<p><img src="/AppService/media/2020/08/crash-monitoring-details.png" alt="Crash Monitoring Details" /></p>
+
+<p><img src="/AppService/media/2020/08/crash-monitoring-callstack.png" alt="Crash Monitoring CallStack" /></p>
+
+<p>Also, there is an option to download the dump file directly. Click on the <strong>Download file</strong> link next to download the dump file. Once downloaded, open it in Visual Studio.</p>
+
+<p><img src="/AppService/media/2020/08/crash-monitoring-visual-studio.png" alt="Open dump file in Visual Studio" /></p>
+
+<p>Not only this, you can also launch the call stack window by navigating to the <strong>Debug</strong> menu and then selecting <strong>Windows</strong> and then choosing <strong>Call Stack</strong>.</p>
+
+<p><img src="/AppService/media/2020/08/crash-monitoring-visual-studio-stack.png" alt="View Callstack in Visual Studio" /></p>
+
+<p>Clicking on <strong>Debug with Managed Only</strong> will attempt to load the PDB files and open the exact source code of the function if Visual Studio and symbols are lined up properly. Even if they are not, the Visual Studio Debugger will show exception details like below. In this way, you can identify the call stack and exception message directly from the memory dump file.</p>
+
+<p><img src="/AppService/media/2020/08/crash-monitoring-visual-studio-exception.png" alt="View Exception in Visual Studio" /></p>
+
+<h3 id="view-historical-data">View Historical Data</h3>
+
+<p>You can view up to past 15 days of data in the <strong>View History</strong> section. If you delete the memory dumps from your storage accounts, they will no longer show in this section.</p>
+
+<p><img src="/AppService/media/2020/08/crash-monitoring-history.png" alt="Crash Monitoring Historical Data" /></p>
+
+<h2 id="disable-crash-monitoring">Disable Crash Monitoring</h2>
+
+<p>To disable Crash Monitoring, click <strong>Disable agent</strong> in the Analyze section. This will remove the app settings for Crash Monitoring and restart your app.</p>
+
+<p><img src="/AppService/media/2020/08/crash-monitoring-disable-agent.png" alt="Crash Monitoring disable agent" /></p>
+
+<h2 id="watch-a-demo">Watch a Demo</h2>
+
+<p>Watch this video to learn more about the feature and analyzing the report generated by this tool.</p>
+
+<div class="responsive-video-container">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/k2MKBHwqMsQ" frameborder="0" allow="accelerometer;
+                   autoplay; 
+                   encrypted-media;
+                   gyroscope; 
+                   picture-in-picture" allowfullscreen=""></iframe>
+</div>
+
+<p>Feel free to share your feedback or questions about Crash Monitoring by emailing <a href="mailto:diagnostics@microsoft.com">diagnostics@microsoft.com</a></p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2020-08-11T00:00:00+00:00">August 11, 2020</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Crash+Monitoring+in+Azure+App+Service%20https%3A%2F%2Fazure.github.io%2FAppService%2F2020%2F08%2F11%2FCrash-Monitoring-Feature-in-Azure-App-Service.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2020%2F08%2F11%2FCrash-Monitoring-Feature-in-Azure-App-Service.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2020%2F08%2F11%2FCrash-Monitoring-Feature-in-Azure-App-Service.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2020/08/10/securing-data-plane-access.html" class="pagination--pager" title="Disabling basic auth on App Service
+">Previous</a>
+    
+    
+      <a href="/AppService/2020/08/14/zero_to_hero_pt6.html" class="pagination--pager" title="Zero to Hero with App Service, Part 6: Securing your web app
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+      <div class="page__comments">
+  
+  
+      <h4 class="page__comments-title">Leave a comment</h4>
+      <section id="disqus_thread"></section>
+    
+</div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "https://azure.github.io/AppService/2020/08/11/Crash-Monitoring-Feature-in-Azure-App-Service.html";  // Replace PAGE_URL with your page's canonical URL variable
+      this.page.identifier = "/2020/08/11/Crash-Monitoring Feature in Azure App Service"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://app-service-blog.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>
