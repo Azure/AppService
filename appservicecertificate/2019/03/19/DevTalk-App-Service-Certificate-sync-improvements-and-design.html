@@ -1,0 +1,938 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>//DevTalk - App Service Certificate - New Sync and Export experiences - Azure App Service</title>
+<meta name="description" content="App Service Certificates have been a very popular feature among App Service customers. However, our customers often get confused about the sync scenarios between App Service Certificates and Linked Private certificates. Specifically during the Manual Renew, Manual Rekey, and Auto Renew operations. This blog will showcase recent UX improvements to give you control over the sync scenarios. We will also talk about the internals of the automatic sync tasks running in the background to keep your certificates and SSL bindings synced up automatically.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="//DevTalk - App Service Certificate - New Sync and Export experiences">
+<meta property="og:url" content="https://azure.github.io/AppService/appservicecertificate/2019/03/19/DevTalk-App-Service-Certificate-sync-improvements-and-design.html">
+
+
+  <meta property="og:description" content="App Service Certificates have been a very popular feature among App Service customers. However, our customers often get confused about the sync scenarios between App Service Certificates and Linked Private certificates. Specifically during the Manual Renew, Manual Rekey, and Auto Renew operations. This blog will showcase recent UX improvements to give you control over the sync scenarios. We will also talk about the internals of the automatic sync tasks running in the background to keep your certificates and SSL bindings synced up automatically.">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2019-03-19T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/appservicecertificate/2019/03/19/DevTalk-App-Service-Certificate-sync-improvements-and-design.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="//DevTalk - App Service Certificate - New Sync and Export experiences">
+    <meta itemprop="description" content="App Service Certificates have been a very popular feature among App Service customers. However, our customers often get confused about the sync scenarios between App Service Certificates and Linked Private certificates. Specifically during the Manual Renew, Manual Rekey, and Auto Renew operations. This blog will showcase recent UX improvements to give you control over the sync scenarios. We will also talk about the internals of the automatic sync tasks running in the background to keep your certificates and SSL bindings synced up automatically.">
+    <meta itemprop="datePublished" content="March 19, 2019">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">//DevTalk - App Service Certificate - New Sync and Export experiences
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+            
+            
+              • By Chibi Vikramathithan
+            
+            • March 19, 2019
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p>App Service Certificates have been a very popular feature among App Service customers. However, our customers often get confused about the sync scenarios between App Service Certificates and Linked Private certificates. Specifically during the Manual Renew, Manual Rekey, and Auto Renew operations. This blog will showcase recent UX improvements to give you control over the sync scenarios. We will also talk about the internals of the automatic sync tasks running in the background to keep your certificates and SSL bindings synced up automatically.</p>
+
+<h2 id="app-service-certificate-overview-experience">App Service Certificate Overview experience</h2>
+
+<p>When you open the App Service Certificate UX you will see the list of Linked Private certificates that are referenced in your App Service Apps.</p>
+
+<p><a href="/AppService/media/2019/03/overview-ux.png"><img src="/AppService/media/2019/03/overview-ux.png" alt="App Service Certificate Overview" title="App Service Certificate Overview" /></a></p>
+
+<p>Note the sync button top, it will be disabled if all Linked Private certificates are in-sync. If any Linked Private certificates are not synced, the sync button will be enabled as shown above.</p>
+
+<p>The Sync operation performs the following tasks:</p>
+
+<ol>
+  <li><strong>Updates</strong> the Linked Private certificate with the current active App Service Certificate.</li>
+  <li><strong>Updates all SSL Bindings in all apps used by the Linked Private certificate</strong> to use the new certificate.</li>
+</ol>
+
+<p>You can sync all Linked Private certificates from the main sync experience in one click.</p>
+
+<p><a href="/AppService/media/2019/03/sync-ux.png"><img src="/AppService/media/2019/03/sync-ux.png" alt="Sync UX" title="Sync UX" /></a></p>
+
+<h2 id="manual-rekey-and-renew-experience">Manual Rekey and Renew experience</h2>
+
+<p>Previously, during rekey and renew scenarios we would show the certificates references. Now we show the status of the Linked Private certificate and the difference between the thumbprints between them to give a clear view of the certificate state. We also allow you to sync the certificate with the sync command directly.</p>
+
+<p>This model allows you to perform a rekey or a renew and leave the UI and continue with your work in the portal. When you return to the App Service Certificate blade, you will see the out-of-sync certificates. At this point, you can either let the automatic sync task take care of it, or sync it manually using the button.</p>
+
+<h3 id="manual-renew-scenario">Manual Renew Scenario</h3>
+
+<p><a href="/AppService/media/2019/03/renew-ux.png"><img src="/AppService/media/2019/03/renew-ux.png" alt="Renew UX" title="Renew UX" /></a></p>
+
+<h3 id="manual-rekey-scenario">Manual Rekey Scenario</h3>
+
+<p><a href="/AppService/media/2019/03/rekey-ux.png"><img src="/AppService/media/2019/03/rekey-ux.png" alt="Rekey UX" title="Rekey UX" /></a></p>
+
+<h2 id="auto-renew-and-sync-internals">Auto Renew and Sync internals</h2>
+
+<p>Our customers are sometimes confused by how the auto renew operation works and how it affects the Linked Private certificates. In an attempt to demystify the process, let me explain how our renew and syncs happen.</p>
+
+<p>As we know by now, App Service Certificate uses GoDaddy APIs to issue your SSL certificates. Once a certificate is issued, we store the certificates in the KeyVault you configured during the KeyVault configuration step. <strong>We have a AutoRenew background task that runs every 8 hours in the App Service Certificate backend</strong> to look at all the certificates that are up for renewal and renew them if you have turned on Auto Renew. Once renewed the background task updates the KeyVault with the new certificate.</p>
+
+<p><strong>Meanwhile, in the App Service backend we have another task that runs every 48 hours</strong> to sync all certificates that have a KeyVault reference (you can import a certificate from KeyVault secret into a App Service Web App following this blog). The background tasks has to run through a lot of private certificates which have KeyVault references and check if they have changed and update the certificate if needed, during this sync we also need to update the SSL Bindings on all the apps that are using this private certificate to maintain a working configuration.</p>
+
+<p>We have put in a lot of work to make these background task run at maximum efficiency and fall back properly on error cases. So when an Auto Renew happens, the new certificate will automatically be synced when 48-hour background task picks up the certificate to sync. We are aware that 48 hours is too long for some customers and we are working on improving the timings. Until then, you can do a manual sync with the experience provided above. <strong>You can rest assured that the certificate used in your app at any point of the scenario will be valid during the auto renew process as we give a buffer of 60 days when both the newly renewed certificate and the old are valid.</strong></p>
+
+<p>Looking forward to hearing more on whether the internal details shed some light on how the auto renew and sync works and if you need more details feel free to drop a comment with your ask.</p>
+
+<h2 id="export-scenario">Export Scenario</h2>
+
+<p>When you go to the export experience on App Service Certificate, you will see a new link to open the KeyVault Secret directly. In order to open the KeyVault secret you need to have GET permissions on the KeyVault Access Policy. Once you open the secret UI, you can navigate to the current version and download the certificate directly from the portal. The certificate will be in pfx format and may need further processing to add a password or prepare it for Linux/Mac usage. But for now, you do not need any PowerShell magic to get the pfx. Note that KeyVault secret UI does not add a password for the downloaded pfx. Once you downloaded the pfx, we advise you to install it on your Windows machine and export it with the password and delete the other occurrences to keep the pfx save (or as save as it can be now that it is out in the wild file system frontier). If you using mac or linux you will need to use openssl to secure it with a key.</p>
+
+<p><em>Use it only when you want to take the pfx out of Azure and use it somewhere else. You can also use KeyVault APIs (which can run in any platform) to directly pull the secret when you need it in your code which is much more safer than keeping a file around.</em></p>
+
+<p><strong>Export experience - Click the “Open KeyVault Secret”</strong></p>
+
+<p><a href="/AppService/media/2019/03/export-ux.png"><img src="/AppService/media/2019/03/export-ux.png" alt="Export experience" title="Export experience" /></a></p>
+
+<p><strong>KeyVault Secret UI - Click the Current version</strong></p>
+
+<p><a href="/AppService/media/2019/03/currentversion-ux.png"><img src="/AppService/media/2019/03/currentversion-ux.png" alt="KeyVault Secret UI" title="KeyVault Secret UI" /></a></p>
+
+<p><strong>Download Pfx - Click “Download as a certificate” button</strong></p>
+
+<p><a href="/AppService/media/2019/03/download-cert-ux.png"><img src="/AppService/media/2019/03/download-cert-ux.png" alt="Download Pfx" title="Download Pfx" /></a></p>
+
+<h2 id="epilogue">Epilogue</h2>
+
+<p>Looking forward to hearing more from you, we like to keep our //DevTalk series a quick informal blog series that bring you direct updates from us on improvements across App Service that we keep tinkering out in the service. We drive these changes based on customer feedback, support cases, user voice, internal DLs and posts like these. We look forward to feedback, asks and comments on the new improvements and old to help us develop the service you love to use 💖.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-03-19T00:00:00+00:00">March 19, 2019</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%2F%2FDevTalk+-+App+Service+Certificate+-+New+Sync+and+Export+experiences%20https%3A%2F%2Fazure.github.io%2FAppService%2Fappservicecertificate%2F2019%2F03%2F19%2FDevTalk-App-Service-Certificate-sync-improvements-and-design.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2Fappservicecertificate%2F2019%2F03%2F19%2FDevTalk-App-Service-Certificate-sync-improvements-and-design.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2Fappservicecertificate%2F2019%2F03%2F19%2FDevTalk-App-Service-Certificate-sync-improvements-and-design.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/update/2019/03/18/Changes-to-Testing-in-Production-UX.html" class="pagination--pager" title="Changes to Routing Rules UX
+">Previous</a>
+    
+    
+      <a href="/AppService/2019/05/07/Announcing-the-new-change-analysis-experience-in-App-Service-Diagnostics-Analysis.html" class="pagination--pager" title="Announcing the new change analysis experience in App Service Diagnostics
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

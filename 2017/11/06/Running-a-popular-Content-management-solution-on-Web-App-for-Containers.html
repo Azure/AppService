@@ -1,0 +1,983 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Running a popular Content management solution on Web App for Containers - Azure App Service</title>
+<meta name="description" content="">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Running a popular Content management solution on Web App for Containers">
+<meta property="og:url" content="https://azure.github.io/AppService/2017/11/06/Running-a-popular-Content-management-solution-on-Web-App-for-Containers.html">
+
+
+  <meta property="og:description" content="">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2017-11-06T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2017/11/06/Running-a-popular-Content-management-solution-on-Web-App-for-Containers.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Running a popular Content management solution on Web App for Containers">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="November 06, 2017">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Running a popular Content management solution on Web App for Containers
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  9 minute read
+
+            
+            
+            • November 6, 2017
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/mksunitha" target="_blank">mksunitha</a>
+<time>    11/6/2017 1:34:21 PM</time>
+<hr/>
+<div id="content"><p class="MsoNormal">There are multiple options to hosting your Content management solutions (CMS) like WordPress , Drupal , Magento etc. with Linux App Service . The blog post below will cover the key decisions and implementation guidelines when using <a href="https://azure.microsoft.com/en-us/services/app-service/containers/">Web App for Containers</a> for a CMS solution like WordPress or Drupal.</p>
+<h3>Built images :</h3>
+<p class="MsoNormal">App Service team provides your bare bone docker images for PHP , and other frameworks. These images are very basic and help you quickly get started but as your apps grows , these images may be limited to your needs as you are limited from making any changes to these images .</p>
+<h3>Custom images :</h3>
+<p class="MsoNormal">Custom docker images provides you with more flexibility to grow as your apps grows. You have more control on the docker image itself and can modify it with new modules or extensions if and when your app needs these changes . This option make lift and shift of your application more easy since you can replicate you current dependencies as close as possible in the cloud. Checkout an example of using a <a href="https://docs.microsoft.com/en-us/azure/app-service/containers/tutorial-custom-docker-image">Python Application with a Custom image</a>.</p>
+The <strong>recommended approach is using custom images</strong> with Web App for Containers when using a CMS solution.
+<h2>File Storage</h2>
+<p class="MsoNormal">App Service come with a shared file storage . You must use this storage if :</p>
+<ul>
+<li>The application writes to the file system frequently and needs these files to be persisted.</li>
+<li>You want to use auto-scaling features and you want all the instances to share the same file storage</li>
+</ul>
+<p class="MsoNormal">In order to use the App Service Storage , explicitly include an app setting</p>
+<pre class="MsoNormal">WEBSITES_ENABLE_APP_SERVICE_STORAGE = true</pre>
+<p class="MsoNormal">To better understand this , let me elaborate with an example :  If you have a WordPress app , note that WordPress CMS installs minor version updates to make sure your app has any important fixes needed. This means new files being added or existing files being modified to your application. In such cases , the application needs the files to persist so that you have the latest patches/fixes for WordPress hence this scenario requires the use of App Service Storage .</p>
+<p class="MsoNormal">Most CMS solutions have a variation of this type of application updates . Have a better understating of your application to decide if you want to use App Service storage.</p>
+<h3>Can I use local storage instead of App Service Storage for CMS solutions</h3>
+<p class="MsoNormal">By using the local storage rather than App Service Storage  you do get better stability and there is less impact if the app service storage has  issues.  To use local storage  , set the app setting</p>
+<pre class="MsoNormal">WEBSITES_ENABLE_APP_SERVICE_STORAGE = false</pre>
+<p class="MsoNormal">Lets use WordPress as an example here again. You can use local storage for WordPress app , but this requires a few changes in your code and how the application is used. Here are a few things you would need to do :</p>
+<ul>
+<li class="MsoNormal"><span style="text-indent: -0.25in">Turn off auto update for WordPress</span></li>
+<li class="MsoNormal">Manually deploy the latest WordPress code updates with your docker image</li>
+<li>Do not install plugins , themes etc. from production site’s WordPress administration dashboard</li>
+</ul>
+<p class="MsoNormal">For other CMS solutions like Drupal , Joomla etc ; you need to understand if there are options on turn on auto-update . The steps #2 and #3 mentioned above will still apply to any other application. This is a key decision to make before taking the next step.</p>
+<h2>Deployment</h2>
+<p class="MsoNormal">There are many deployment options available for your custom images:</p>
+<ul>
+<li><span style="font-size: 7pt;line-height: normal;font-family: 'Times New Roman'"> </span><!--[endif]--><a href="https://blogs.msdn.microsoft.com/devops/2017/05/10/use-azure-portal-to-setup-continuous-delivery-for-web-app-on-linux/">Continuous Delivery with VSTS</a></li>
+<li><a href="https://docs.microsoft.com/en-us/azure/app-service/containers/app-service-linux-ci-cd">Continuous Deployment with Azure Container Registry (ACR) or Docker Hub</a></li>
+</ul>
+<h3>Choose a deployment option</h3>
+<p class="MsoNormal">There are two common terms with deployment as seen above  :</p>
+<ul>
+<li class="MsoNormal"><strong>Continuous Deployment</strong> : Every change made to your docker image  is pushed out to production automatically.</li>
+<li class="MsoNormal"><strong>Continuous Delivery</strong>:  Provides you with a deployment release pipeline. This solution does not mean your code is pushed to production automatically . The goal here is to build  a process that can allow code to be deployed any time . Most Continuous Delivery processes include automated tests and criteria that needs to be met before the changes go to production.</li>
+</ul>
+<p class="MsoNormal">Based on your needs  , pick either Continuous Delivery which we provide using VSTS  or Continuous Deployment with ACR/DockerHub.</p>
+<h3>Can I deploy my code via GIT</h3>
+<p class="MsoNormal">You can have your application source code as part of the docker image or you can have the application code on a git based repository and your docker image on ACR or Docker Hub .  Continuous Delivery with VSTS supports both these scenarios.</p>
+<p class="MsoNormal">If you are not using Continuous Delivery with VSTS ,  the other option you have is Continuous Deployment feature  that support GitHub, Bitbucket, Local GIT etc.</p>
+<p class="MsoNormal"><em>Note :</em><em>You must use App Service Storage for your files if your application code is separate from your docker image and you choose to deploy the source code separately than the docker image. If your application code is large , there may be some issues with Git deployment for such apps. In those cases use <a href="https://github.com/projectkudu/kudu/wiki/Deploying-from-a-zip-file">Zip deploy API </a></em></p>
+<h2>Planning  Migration or setting up a new site</h2>
+The question listed below should help you make the key decisions before implementing a migration of an existing site or setting up a new site:
+<ol>
+<li>Should I use a built in image or customer image ? Review your dependencies or requirements to answer this question</li>
+<li>Should I use App Service Storage or Local Storage ? Does the app need file persistence ?</li>
+<li>Do I need to run the app on multiple instances with auto-scale or Can I run the app on single instance ?  When running in single instance , you can include local mysql , local redis etc without having to use a cloud service for MySQL and Redis . Note to use Local mysql you need file persistence</li>
+<li>What deployment strategy works best for  this application ?  Keep in mind to choose an option that helps make deployment even after the site is in production. This will provide a stable , repeatable deployment process.</li>
+<li>What external dependencies are needed  ? Do I need a cloud based service for my database , twitter/Facebook API etc .</li>
+</ol>
+<h2>Migration</h2>
+Migration of an application from On-premise or other cloud solution providers can be challenging tasks.  Here is migration process that is articulated for Web App for Containers.
+<ol>
+<li class="MsoNormal">Identify your application dependencies on premise or local development machine . Such as , webserver , php version , php extensions , web server modules etc . If you are using apache server with say php , you can build a custom image with apache server  , php etc to run on Web app for containers. If you are using nginx  in your current architecture , you can build a custom image with nginx for web app for containers.</li>
+<li class="MsoNormal">Identify external dependencies like Database , Redis cache , CDN etc. Find appropriate solutions for these external dependencies in Azure</li>
+<li class="MsoNormal">For CMS solutions always build a Custom docker image based on the dependencies you identified from the above step. You can find many <a href="https://github.com/azure-app-service">samples here</a>  to help get started . Enable SSH in your docker image which can help as a tool to debug your app.</li>
+<li class="MsoNormal">Create a Web App For Container from<a href="http://portal.azure.com/?feature.customportal=false#create/Microsoft.AppSvcLinux"> Azure portal</a></li>
+<li class="MsoNormal">Create your external dependencies with the appropriate solutions available in Azure . For example , if your app needs MySQL you can use <a href="https://azure.microsoft.com/en-us/services/mysql/">Azure database for MySQL </a> for better reliability and performance</li>
+<li class="MsoNormal">Make the decision to use Local storage or App Service Storage. To use App Service Storage , edit the app setting  WEBSITES_ENABLE_APP_SERVICE_STORAGE = true</li>
+<li class="MsoNormal">Select a deployment option for your application : Continuous Delivery or Continuous Deployment or Git Deployment. Deploy your code to the application and make sure the application code is updated appropriately to use the new dependencies for database , cdn etc in Azure</li>
+<li class="MsoNormal">Browse your application once deployed</li>
+<li class="MsoNormal">Turn on Diagnostic logs to view your docker logs to investigate any issues if you don’t get the expected results. Troubleshoot your application further using SSH .</li>
+<li class="MsoNormal">Tweak your Docker image as needed to resolve any issues . Reiterate the process from step 7 .</li>
+</ol>
+<p class="MsoNormal">If you are still unable to resolve any issues for a given step or have questions , reach out via <a href="https://azure.microsoft.com/en-us/support/forums/">support forums</a> to get help.</p>
+<h2>Setting up  CMS solution on Web App for Containers</h2>
+<p class="MsoNormal"><span class="MsoHyperlink"><span style="color: windowtext">In the steps below ,  using Drupal CMS as an example  for the CMS solution to be setup and configured on Web App for Containers : </span></span></p>
+<p class="MsoListParagraphCxSpFirst" style="margin-left: 0.75in;text-indent: -0.25in"><!-- [if !supportLists]--><span style="font-family: Wingdings">ü<span style="font-size: 7pt;line-height: normal;font-family: 'Times New Roman'">  </span></span><!--[endif]-->Create a Web App using Web App for Containers using <a href="https://github.com/Azure-App-Service/nginx-fpm">Nginx-fpm and Drush CLI tool</a><span class="MsoHyperlink">  </span><span class="MsoHyperlink"><span style="color: windowtext">or your own custom Drupal Image. </span></span>This image does not have Drupal source code as part of the image. <i>Note : When using your custom docker image , make sure it is available in either Docker Hub or Azure Container registry as a private or public repository .  Make sure you application has <a href="https://docs.microsoft.com/en-us/azure/app-service/containers/app-service-linux-ssh-support">SSH</a> enabled which can help in troubleshooting.</i></p>
+<p class="MsoListParagraphCxSpMiddle" style="margin-left: .75in;text-indent: -.25in"><!-- [if !supportLists]--><span class="MsoHyperlink"><span style="font-family: Wingdings;color: windowtext">ü<span style="font-size: 7pt;line-height: normal;font-family: 'Times New Roman'">  </span></span></span><!--[endif]--><span class="MsoHyperlink"><span style="color: windowtext">Use App Service Storage since Drupal requires files to persist when you do install a module or update Drupal modules or Drupal core . Go to your app , select Application Settings -&gt; App Settings.  Now set  WEBSITES_ENABLE_APP_SERVICE_STORAGE =true </span></span></p>
+<p class="MsoListParagraphCxSpMiddle" style="margin-left: .75in;text-indent: -.25in"><!-- [if !supportLists]--><span class="MsoHyperlink"><span style="font-family: Wingdings;color: windowtext">ü<span style="font-size: 7pt;line-height: normal;font-family: 'Times New Roman'">  </span></span></span><!--[endif]--><span class="MsoHyperlink"><span style="color: windowtext">Design and then implement your deployment strategy for your application . </span></span></p>
+<p class="MsoListParagraphCxSpMiddle" style="margin-left: .75in;text-indent: -.25in"><!-- [if !supportLists]--><span class="MsoHyperlink"><span style="font-family: Wingdings;color: windowtext">ü<span style="font-size: 7pt;line-height: normal;font-family: 'Times New Roman'">  </span></span></span><!--[endif]--><span class="MsoHyperlink"><span style="color: windowtext">Create a MySQL or PostgreSQL database depending on what database driver your application is using with <a href="https://azure.microsoft.com/en-us/services/mysql/"> Azure database for MySQL </a>.</span></span></p>
+<p class="MsoListParagraphCxSpMiddle" style="margin-left: 1.25in;text-indent: -.25in"><!-- [if !supportLists]--><span class="MsoHyperlink"><span style="font-family: 'Courier New';color: windowtext">o<span style="font-size: 7pt;line-height: normal;font-family: 'Times New Roman'">   </span></span></span><!--[endif]--><span class="MsoHyperlink"><span style="color: windowtext">If you are migrating an existing application from on-premise or other cloud service provider , <a href="https://docs.microsoft.com/en-us/azure/mysql/concepts-migrate-import-export">import your database</a> content in the database.  </span></span><span class="MsoHyperlink"><span style="color: windowtext"><span style="font-size: 7pt;line-height: normal;font-family: 'Times New Roman'">                                              </span></span></span></p>
+<p class="MsoListParagraphCxSpMiddle" style="margin-left: .75in;text-indent: -.25in"><!-- [if !supportLists]--><span class="MsoHyperlink"><span style="font-family: Wingdings;color: windowtext">ü<span style="font-size: 7pt;line-height: normal;font-family: 'Times New Roman'">  </span></span></span><!--[endif]--><span class="MsoHyperlink"><span style="color: windowtext">Browse your application </span></span></p>
+<p class="MsoListParagraphCxSpMiddle" style="margin-left: .75in;text-indent: -.25in"><!-- [if !supportLists]--><span class="MsoHyperlink"><span style="font-family: Wingdings;color: windowtext">ü<span style="font-size: 7pt;line-height: normal;font-family: 'Times New Roman'">  </span></span></span><!--[endif]--><span class="MsoHyperlink"><span style="color: windowtext">If the application does not load as expected , <a href="https://docs.microsoft.com/en-us/azure/app-service/containers/app-service-linux-intro#troubleshooting">turn on diagnostic logs</a>. </span></span></p>
+<p class="MsoListParagraphCxSpLast" style="margin-left: .75in;text-indent: -.25in"><!-- [if !supportLists]--><span class="MsoHyperlink"><span style="font-family: Wingdings;color: windowtext">ü<span style="font-size: 7pt;line-height: normal;font-family: 'Times New Roman'">  </span></span></span><!--[endif]--><span class="MsoHyperlink"><span style="color: windowtext">Fix the docker image based on your investigation and update your Docker image.</span></span></p>
+If you are planning to migrate a WordPress or Joomla or Moodle  CMS solution , the process is exactly the same except for the custom image you plan to use . Here are some samples you can use :
+<ol>
+<li>Custom image with <a href="https://github.com/Azure-App-Service/alpine-php-mysql">Alpine-PHP-MySQL </a></li>
+<li>Custom image with <a href="https://github.com/Azure-App-Service/apps/tree/master/apache-php-mysql/0.4">Apache-PHP-MySQL</a></li>
+</ol>
+<h2>Performance</h2>
+There are multiple bake some caching into your docker image , such as using PHP 's caching options such as :
+<ol>
+<li>Server level caching based on which web server you are using leverage any modules or configuration that can help boost performance.</li>
+<li>Framework level caching such as PHP supports various options for caching
+<ul>
+<li><a href="http://php.net/manual/en/book.apc.php">APC</a>   if using Apache (or <a href="https://pecl.php.net/package/APCu">APCu if using Nginx</a> )</li>
+<li><a href="http://php.net/manual/en/book.opcache.php">Opcache</a></li>
+</ul>
+</li>
+<li> Using Compression , for example including mod_deflate apache module helps with boosting performance on your application running on Apache web server by reducing the bandwidth on the file and reduces load on the server . This differs based on your web server</li>
+<li>Enable back-end database caching using Azure Redis Cache service. If you are not using auto-scale feature with web app for containers , you can run a local redis baked into your docker image. Note this will only work if your app is running on one instance</li>
+<li><a href="https://docs.microsoft.com/en-us/azure/app-service/app-service-web-tutorial-content-delivery-network?toc=%2fazure%2fapp-service%2fcontainers%2ftoc.json">Add a CDN </a> to boost performance of your app.</li>
+</ol>
+<h2>Other Configurations</h2>
+Here are a few other configurations you can add to you application
+<ul>
+<li><a href="https://docs.microsoft.com/en-us/azure/app-service/app-service-web-tutorial-custom-domain?toc=%2fazure%2fapp-service%2fcontainers%2ftoc.json">Add a Custom domain</a></li>
+<li><a href="https://docs.microsoft.com/en-us/azure/app-service/app-service-web-tutorial-custom-ssl?toc=%2fazure%2fapp-service%2fcontainers%2ftoc.json">Bind an SSL certificate </a></li>
+</ul></div>
+</div></body>
+<script src="/AppService/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="/AppService/resource/replace.js" type="text/javascript"></script>
+</html>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2017-11-06T00:00:00+00:00">November 06, 2017</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Running+a+popular+Content+management+solution+on+Web+App+for+Containers%20https%3A%2F%2Fazure.github.io%2FAppService%2F2017%2F11%2F06%2FRunning-a-popular-Content-management-solution-on-Web-App-for-Containers.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2017%2F11%2F06%2FRunning-a-popular-Content-management-solution-on-Web-App-for-Containers.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2017%2F11%2F06%2FRunning-a-popular-Content-management-solution-on-Web-App-for-Containers.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2017/11/02/October-2017-App-Service-Update.html" class="pagination--pager" title="October 2017 App Service Update
+">Previous</a>
+    
+    
+      <a href="/AppService/2017/11/15/Azure-Functions-Proxies-is-now-Generally-Available.html" class="pagination--pager" title="Azure Functions Proxies is now Generally Available
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

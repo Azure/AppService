@@ -1,0 +1,1020 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Multi-container Linux Web App - Azure App Service</title>
+<meta name="description" content="">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Multi-container Linux Web App">
+<meta property="og:url" content="https://azure.github.io/AppService/2018/05/07/Multi-container-Linux-Web-App.html">
+
+
+  <meta property="og:description" content="">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2018-05-07T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2018/05/07/Multi-container-Linux-Web-App.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Multi-container Linux Web App">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="May 07, 2018">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Multi-container Linux Web App
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  6 minute read
+
+            
+            
+            • May 7, 2018
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Yi Liao MSFT" target="_blank">Yi Liao MSFT</a>
+<time>    5/7/2018 8:20:01 AM</time>
+<hr/>
+<div id="content">The App Service team is happy to announce the public preview of Multi-container support in Web App for Containers.
+<h1><strong>Multi-container Web App Concept</strong></h1>
+App Service Linux community has repeatedly asked for the capability to deploy multiple containers for a single App.  Customers want to have additional containers to complement the primary container and have these containers form an “operable” unit. The benefits for Multi-container are: 1. customer can separate capabilities such as proxies, cache and storage into additional containers and manage the source code and container images independently following the “separation of concerns” design pattern in containerization;  2. customer can operate those containers as an atomic unit and leverage App Service’s rich feature set for application life-cycle management, scaling and diagnosis, without the needs to stand up a container Orchestrator and to manage the hosting infrastructure by themselves.  Today we're happy to announce the public preview of Multi-container support in Web App for Containers!
+<h1><strong>Primary Use Case</strong></h1>
+In App Service Linux community, the primary multi-container use case is that customer deploy a stateless web app with multiple containers (Web, Proxy, Cache or Git-mirror) to a single App Service plan.  For example: customer can have one container for web frontend and have another container for session cache using Redis, all deployed to the same App Service plan. All containers can communicate to each other through a Docker Bridge network using internal IP addresses.
+<h1><strong>Supported Configurations </strong></h1>
+In Public Preview, we support Docker-Compose and Kubernetes configuration format as they’re the “standard” ways to describe multi-container applications. We don’t want to invent another format.  It’s also convenient for the customers because the formats are well documented and widely used by Docker community.
+
+Customer can create or configure a Multi-container app from Azure Portal or through Azure CLI. Customer can describe a multi-container app using Docker Compose and Kubernetes configuration format in a yaml file. Customer can upload the multi-container config file through portal UI or point to the URL if the config file is hosted elsewhere (note: URL <span style="float: none;background-color: transparent;color: #333333;cursor: text;font-family: Georgia,'Times New Roman','Bitstream Charter',Times,serif;font-size: 16px;font-style: normal;font-variant: normal;font-weight: 400;letter-spacing: normal;line-height: 24px;text-align: left;text-decoration: none;text-indent: 0px">link support will come soon after announcement)</span>, portal screenshot as below.
+
+<a href="/AppService/media/2018/05/multicontainer.png"><img alt="" class="alignnone wp-image-8035 size-large" height="425" src="/AppService/media/2018/05/multicontainer-1024x495.png" width="879"/></a>
+
+For example, customer can use <strong>Docker-Compose</strong> format to describe a multi-container app:
+<blockquote>docker-compose.yml
+
+version: '3'
+services:
+web:
+image: "appsvcsample/flaskapp"
+# this image repo's source code come from "Get started with Docker Compose" on docker.com
+ports:
+- "80:80"
+redis:
+image: "redis:alpine"</blockquote>
+CLI command to create a multi-container app:
+<blockquote>$ az webapp create --resource-group [resource group] --plan [service plan] --name [app name] --multicontainer-config-type "compose" --multicontainer-config-file [path to "docker-compose.yml"]</blockquote>
+CLI command to configure a multi-container app:
+<blockquote>$ az webapp config container set --resource-group [resource group] --name [app name] --multicontainer-config-type "compose" --multicontainer-config-file [path to "docker-compose.yml"]</blockquote>
+Customer can also use <strong>Kubernetes configuration</strong> format to describe a multi-container app:
+<blockquote>my-kube.yml
+
+apiVersion: v1
+kind: Pod
+metadata:
+name: python
+spec:
+containers:
+- name: web
+image: appsvcsample/flaskapp
+# this image repo's source code come from "Get started with Docker Compose" on docker.com
+ports:
+- containerPort: 80
+- name: redis
+image: redis:alpine</blockquote>
+CLI command to create a multi-container app:
+<blockquote>$ az webapp create --resource-group [resource group] --plan [service plan] --name [app name] --multicontainer-config-type "kube" --multicontainer-config-file [path to "my-kube.yml"]</blockquote>
+CLI command to configure a multi-container app:
+<blockquote>$ az webapp config container set --resource-group [resource group] --name [app name] --multicontainer-config-type "kube" --multicontainer-config-file [path to "my-kube.yml"]</blockquote>
+<h1>Samples</h1>
+We're working to add more Multi-container web app samples.  To get you started quickly, please feel free to copy the samples provided in this blog post, or download more from <a href="https://github.com/yiliaomsft">Github</a>.
+<h1><strong>Scaling Multi-container Web App</strong></h1>
+Customer can scale up and / or out a stateless multi-container app just as any web apps hosted on App Service, using the same scaling features provided by App Service.
+
+If you would like to use a database in container for dev/testing purposes in a single-host app, please make sure to use the persisted shared storage to store your database files, so the database files can be persisted during app restarts. First, you should enable the App Service shared storage following the instructions at <a href="https://review.docs.microsoft.com/en-us/azure/app-service/containers/app-service-linux-faq">here</a>. Then, you should mount the shared storage to a directory within the Docker container where you store the database files, a MySQL example in docker-compose.yml:
+<blockquote>services:
+mysql:
+image: mysql:5.7
+volumes:
+- ${WEBAPP_STORAGE_HOME}/site:[/path/in/container/where/mysqlfiles/needs/to/be/mounted]</blockquote>
+If you would like to scale out a multi-container app to multiple hosts in an App Service plan and use the app for production purpose, we strongly recommend you use Azure Database services instead of putting the database in a container. For example, for a WordPress app you can move the database to an Azure Database for MySQL.  To do that, please follow the following steps:
+<ul>
+<li>Create a MySQL instance on Azure Database for MySQL servers. This can be easily done through Azure portal or CLI.  Make sure to configure MySQL server for SSL following the instructions at <a href="https://docs.microsoft.com/en-us/azure/mysql/howto-configure-ssl">https://docs.microsoft.com/en-us/azure/mysql/howto-configure-ssl</a>, and also make sure to enable client access to MySQL server by configuring MySQL firewall rules:  <a href="https://docs.microsoft.com/en-us/azure/mysql/concepts-firewall-rules">https://docs.microsoft.com/en-us/azure/mysql/concepts-firewall-rules</a>.</li>
+<li>Modify your docker-compose.yml to use Azure MySQL instead of local MySQL server, for example, if you have a WordPress app connect to a MySQL database, you can pass the following environment variables in <span style="float: none;background-color: transparent;color: #333333;cursor: text;font-family: Georgia,'Times New Roman','Bitstream Charter',Times,serif;font-size: 16px;font-style: normal;font-variant: normal;font-weight: 400;letter-spacing: normal;line-height: 24px;text-align: left;text-decoration: none;text-indent: 0px">docker-compose.yml</span>:</li>
+</ul>
+<blockquote><span>WORDPRESS_DB_HOST: [mysql server name].mysql.database.azure.com</span>
+<span> WORDPRESS_DB_USER: [db user name]@[mysql server name]</span>
+<span> WORDPRESS_DB_PASSWORD: [database password]</span></blockquote>
+<ul>
+<li>Test the configuration locally with docker-compose up before you push it to App Service.</li>
+</ul>
+<h1><strong>Limitations in Public Preview</strong></h1>
+We wanted to put this feature out as soon as possible so customer can validate and provide more feedbacks during Preview. There are certain limitations in this Public Preview release.
+
+We support Docker-Compose and Kubernetes format to describe a multi-container app, but we don’t support all their configuration objects during Public Preview. Our goal is to support any configuration objects that are meaningful to App Service during this release. The supported objects and limitations are as follows:
+<h2>Docker-Compose</h2>
+Supported configuration in Public Preview:
+
+<strong>services</strong>
+
+A service definition contains configuration that is applied to each container started for that service, much like passing command-line parameters to docker container create.
+
+<strong>image</strong>
+
+Specify the image to start the container from. Can either be a repository/tag or a partial image ID.
+
+<strong>ports</strong>
+
+Expose ports by mapping ports in the HOST:CONTAINER pattern, recommend explicitly specifying your port mapping as string. App Service specific, we would only expose one service port to external, we would identify a single service port to expose to external based on the HOST port provided for each service, we're looking for port 80 or port 8080.
+
+<strong>environment</strong>
+
+Add environment variables. You can use an array as input. The dictionary format is not supported in current release, we will add support for dictionary format in next release.
+<blockquote>environment:  #supported
+RACK_ENV: development
+SHOW: 'true'
+SESSION_SECRET:
+
+environment:  #not supported
+- RACK_ENV=development
+- SHOW=true
+- SESSION_SECRET</blockquote>
+<strong>volumes</strong>
+
+Mount host paths or named volumes, specified as sub-options to a service. We support both persisted volume and non-persisted volume. To use the persisted volume, please enable the shared storage by set WEBSITES_ENABLE_APP_SERVICE_STORAGE=TRUE.  You can reference the shared storage using ${WEBAPP_STORAGE_HOME}.
+
+For example, you can mount the shared storage to /tmp in the container:
+<blockquote>volumes:
+- ${WEBAPP_STORAGE_HOME}/site/wwwroot:/tmp</blockquote>
+<strong>command</strong>
+
+Override the default command. Currently we support the collection format, for example: command: ["bundle", "exec", "thin", "-p", "3000"]. We will add support for a single string after public preview.
+
+<strong>entrypoint</strong>
+
+Override the default entrypoint.
+
+<strong>restart</strong>
+
+“no” is the default restart policy, and it does not restart a container under any circumstance. When “always” is specified, the container always restarts. More info at <a href="https://docs.docker.com/compose/compose-file/">https://docs.docker.com/compose/compose-file/#restart</a>.
+
+Configuration not supported in Public Preview:
+
+(besides the list below, any other Docker-Compose syntax not explicitly called out in the “Supported Configuration” section will not be supported in Public Preview)
+
+<strong>build</strong>
+
+Configuration options that are applied at build time. We don’t support “build” image locally as we need an explicit image to start the container with.
+
+<strong>depends_on</strong>
+
+Express dependency between services. we don’t currently support “depends_on” to specify the dependencies among containers, but we plan to support this shortly after Public Preview.
+
+<strong>networks</strong>
+
+Networks to join. We don’t support additional “networks” as we run all containers on one Bridge network.
+
+<strong>secrets</strong>
+
+Grant access to secrets on a per-service basis using the per-service secrets configuration. We don’t currently support it, but we plan to support this shortly after Public Preview.
+</div></body>
+<script src="/AppService/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="/AppService/resource/replace.js" type="text/javascript"></script>
+</html>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2018-05-07T00:00:00+00:00">May 07, 2018</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Multi-container+Linux+Web+App%20https%3A%2F%2Fazure.github.io%2FAppService%2F2018%2F05%2F07%2FMulti-container-Linux-Web-App.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2018%2F05%2F07%2FMulti-container-Linux-Web-App.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2018%2F05%2F07%2FMulti-container-Linux-Web-App.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2018/05/07/Introducing-Restore-from-Snapshots-(Preview).html" class="pagination--pager" title="Introducing Restore from Snapshots (Preview)
+">Previous</a>
+    
+    
+      <a href="/AppService/2018/05/07/New-SSH-Experience-and-Remote-Debugging-for-Linux-Web-Apps.html" class="pagination--pager" title="New SSH Experience and Remote Debugging for Linux Web Apps
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,935 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Zero to Hero with App Service, Part 7: Multi-tier web applications - Azure App Service</title>
+<meta name="description" content="The Azure App Service is offered as two deployment types: the multi-tenant service and the App Service Environment. In the multi-tenant service there are thousands of customers on the same infrastructure. Your apps are always secured but they share the network, address space, front ends, and some other components.  In an App Service Environment you get a single tenant version of App Service that runs in your Azure Virtual Network. In this article, you will learn how to build network-secured, multi-tier web applications in the multi-tenant App Service.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Zero to Hero with App Service, Part 7: Multi-tier web applications">
+<meta property="og:url" content="https://azure.github.io/AppService/2020/10/05/zero_to_hero_pt7.html">
+
+
+  <meta property="og:description" content="The Azure App Service is offered as two deployment types: the multi-tenant service and the App Service Environment. In the multi-tenant service there are thousands of customers on the same infrastructure. Your apps are always secured but they share the network, address space, front ends, and some other components.  In an App Service Environment you get a single tenant version of App Service that runs in your Azure Virtual Network. In this article, you will learn how to build network-secured, multi-tier web applications in the multi-tenant App Service.">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2020-10-05T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2020/10/05/zero_to_hero_pt7.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Zero to Hero with App Service, Part 7: Multi-tier web applications">
+    <meta itemprop="description" content="The Azure App Service is offered as two deployment types: the multi-tenant service and the App Service Environment. In the multi-tenant service there are thousands of customers on the same infrastructure. Your apps are always secured but they share the network, address space, front ends, and some other components.  In an App Service Environment you get a single tenant version of App Service that runs in your Azure Virtual Network. In this article, you will learn how to build network-secured, multi-tier web applications in the multi-tenant App Service.">
+    <meta itemprop="datePublished" content="October 05, 2020">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Zero to Hero with App Service, Part 7: Multi-tier web applications
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+            
+            
+              • By Christina Compy
+            
+            • October 5, 2020
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#multi-tier-web-applications">Multi-tier web applications</a></li>
+  <li><a href="#service-endpoints">Service endpoints</a></li>
+  <li><a href="#private-endpoints">Private endpoints</a></li>
+  <li><a href="#access-restrictions">Access restrictions</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <p>The Azure App Service is offered as two deployment types: the multi-tenant service and the App Service Environment. In the multi-tenant service there are thousands of customers on the same infrastructure. Your apps are always secured but they share the network, address space, front ends, and some other components.  In an App Service Environment you get a single tenant version of App Service that runs in your Azure Virtual Network. In this article, you will learn how to build network-secured, multi-tier web applications in the multi-tenant App Service.</p>
+
+<h2 id="multi-tier-web-applications">Multi-tier web applications</h2>
+
+<p>The obvious question to start with is, <em>what is a multi-tier web application</em>?  A multi-tier web application is an application with a front end that makes calls to one or more API applications behind it. By itself this is not a complex concept, but when a user wants to secure the API applications so they are not internet accessible the architecture becomes more complex.</p>
+
+<p>There are multiple ways to secure your API applications so that they can only be reached from your front end applications. They all involve securing your API application’s inbound traffic. There are multiple features that could be used for this purpose:</p>
+
+<ul>
+  <li><a href="https://docs.microsoft.com/azure/app-service/app-service-ip-restrictions#service-endpoints">Service endpoints</a> secure the listening service. With Service Endpoints, the source address must be in an Azure Virtual Network subnet.</li>
+  <li><a href="https://docs.microsoft.com/azure/app-service/networking/private-endpoint">Private endpoints</a> prevent data exfiltration and secure the listening service. With private endpoints, you can reach the web app from anywhere that has network access to the private endpoint address.</li>
+  <li><a href="https://docs.microsoft.com/azure/app-service/app-service-ip-restrictions#service-endpoints">Access restrictions</a> can lock down your inbound traffic to a set of address blocks.</li>
+</ul>
+
+<p>Each of those features satisfies a specific situation and there are trade offs.  Access restrictions are useful if you have public address access points like NAT devices or perhaps a virtual network device with a dedicated public address.  If you use service endpoints, you do not add any new resources to your subscription and are able to use one subnet.  If you use private endpoints you will add a new top level resource, add Azure DNS private zones to your VNet and will require two subnets. Let’s now dicsuss each of these options in greater detail.</p>
+
+<h2 id="service-endpoints">Service endpoints</h2>
+
+<p>To configure a multi-tier application using service endpoints to secure your API application, you need to use VNet Integration with your front end app and service endpoints with your API app. Set service endpoints on the integration subnet used by your Front End application. This solution is fast to set up and easy as well.</p>
+
+<p><img src="/AppService/media/2020/09/one-fe-one-service-endpoint.png" alt="simple service endpoints" class="align-center" /></p>
+
+<p>If you have multiple front end apps, the configuration is the same if all of the front end apps are in the same App Service plan.  With VNet Integration, the apps in the same App Service plan can use the same integration subnet.   If you have additional front end applications in separate App Service plans, you will need to use multiple integration subnets. In this situation, service endpoints must be configured against each of the integration subnets. With VNet Integration, you cannot have more than one App Service plan configured with a subnet.</p>
+
+<p><img src="/AppService/media/2020/09/two-fe-one-service-endpoint.png" alt="multiple front end apps with one api app" class="align-center" /></p>
+
+<p>If you have multiple API apps and multiple front end apps from separate App Service plans, you need to configure VNet Integration from each front end app and then service endpoints on each API app against the integration subnets.</p>
+
+<p><img src="/AppService/media/2020/09/two-fe-two-service-endpoint.png" alt="multiple front end apps with multiple api apps" class="align-center" /></p>
+
+<p>As you add front end applications, you need to configure service endpoints with each dependent API application. This means service endpoints are great at smaller scale. It can quickly get out of hand if you have many–<em>or an ever increasing number of</em>–front end applications with multiple API applications. Managing the configuration can be confusing as the number of front ends grows.</p>
+
+<h2 id="private-endpoints">Private endpoints</h2>
+
+<p>With private endpoints, the configuration is both easier and harder. It is easier in that when you place a private endpoint in your VNet for an app, you are done managing the inbound traffic to your API app. Unlike with service endpoints, there is no additional configuration to your API app as you add new front end consumers.  It is harder because setting up private endpoints creates a new, top-level resource and Azure DNS private zones.</p>
+
+<p>If you have one front end app or more than that, the configuration is the same.  You set up VNet Integration with the same VNet that your API app has a private endpoint in. You also have private endpoints configured on your API application.</p>
+
+<p><img src="/AppService/media/2020/09/one-fe-one-private-endpoint.png" alt="private endpoints with api app" class="align-center" /></p>
+
+<p>If you have more than one front end app, the only difference is that this second front end app needs VNet Integration to be  configured with it. If this additional front end application is in a different App Service plan, it will use a separate subnet.  Each time you use VNet Integration from another App Service plan, you will need another subnet for integration.</p>
+
+<p><img src="/AppService/media/2020/09/two-fe-one-private-endpoint.png" alt="private endpoint api app with multiple front ends" class="align-center" /></p>
+
+<p>If you have multiple API applications, you will need multiple private endpoints. Those private endpoints can be in the same subnet, or not.  Private endpoints are more flexible in this regard than VNet Integration. Once your API application has exposed itself with a private endpoint, any front end app that integrates with that VNet should be able to reach it.</p>
+
+<p><img src="/AppService/media/2020/09/two-fe-two-private-endpoint.png" alt="multiple private endpoint api apps with multiple front ends" class="align-center" /></p>
+
+<p>At a small scale, private endpoints incurs more overhead. You will have more to manage and maintain than with service endpoints. On the other hand, private endpoints are a solution for data exfiltration concerns. They also do better at scale as it is easy to add more front end applications.</p>
+
+<h2 id="access-restrictions">Access restrictions</h2>
+
+<p>With access restrictions you can secure inbound traffic to a set of IP address blocks.  This is useful when you want to lock your traffic to a set of egress devices.  You can also use it with other edge protection services such as Azure Front Door. With respect to using it directly with multi-tier applications, you can secure your API applications to the egress addresses used by your front end applications. The problem with this approach is that the outbound addresses are shared with all of the other customers in the same scale unit. From a security review perspective it doesn’t look as secure as service endpoint or private endpoint based solutions.  So while it is possible and worth noting, it is not recommended to use access restrictions to create multi-tier web applications.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2020-10-05T00:00:00+00:00">October 05, 2020</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Zero+to+Hero+with+App+Service%2C+Part+7%3A+Multi-tier+web+applications%20https%3A%2F%2Fazure.github.io%2FAppService%2F2020%2F10%2F05%2Fzero_to_hero_pt7.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2020%2F10%2F05%2Fzero_to_hero_pt7.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2020%2F10%2F05%2Fzero_to_hero_pt7.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2020/10/02/Deploy-your-resources-on-the-new-Premium-v3-SKU-with-an-ARM-template.html" class="pagination--pager" title="Deploy your resources on the new Premium v3 SKU with an ARM template
+">Previous</a>
+    
+    
+      <a href="/AppService/2020/10/05/Diagnose-App-with-High-CPU.html" class="pagination--pager" title="CPU Diagnostics Part 1: Identify and Diagnose High CPU issues
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

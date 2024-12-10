@@ -1,0 +1,1000 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Breaking change for SNI-SSL hostnames on Azure App Service - Azure App Service</title>
+<meta name="description" content="">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Breaking change for SNI-SSL hostnames on Azure App Service">
+<meta property="og:url" content="https://azure.github.io/AppService/2018/05/02/Breaking-change-for-SNI-SSL-hostnames-on-Azure-App-Service.html">
+
+
+  <meta property="og:description" content="">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2018-05-02T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2018/05/02/Breaking-change-for-SNI-SSL-hostnames-on-Azure-App-Service.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Breaking change for SNI-SSL hostnames on Azure App Service">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="May 02, 2018">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Breaking change for SNI-SSL hostnames on Azure App Service
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+            
+            
+            • May 2, 2018
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Oded Dvoskin" target="_blank">Oded Dvoskin</a>
+<time>    5/2/2018 1:36:23 PM</time>
+<hr/>
+<div id="content"><h2><strong><u>SSL in Azure App Service</u></strong></h2>
+Azure app service is a multitenant infrastructure. When web apps are created on azure app service, we provide a default hostname which is sitename.azurewebsites.net. Clients can make requests over HTTP or HTTPs to these hostnames. When using HTTPs against the default hostname for the site, a certificate with subject name *.azurewebsites.net is returned to the client for SSL.
+
+When customers configure an app service with a custom domain name, by default the system allows you to pick between an <strong>SNI-SSL </strong>binding type or <strong>IP-SSL </strong>binding type.
+
+<strong>SNI-SSL </strong>bindings are free of cost. For an SNI binding to be in use, clients making requests to this host will need to include an SNI header in the TLS initial handshake message. From a specification standpoint, TLS 1.0 supports SNI header extension, and all modern browsers includes the SNI header by default.
+
+In contrast, there can be older versions of browser clients or legacy library clients. For custom domains to work correctly for these clients, the site must be configured to have IPSSL bindings.
+<h3><strong><u>What is SNI and IP-SSL really and why does it matter?</u></strong></h3>
+When the initial SSL handshake request arrives at a web server, the mandatory parameters like the version of SSL being negotiated, the cipher suites the client supports are included in the clear text <strong>CLIENT HELLO</strong> message. From the server standpoint, with this information, the server needs to select the appropriate certificate to use for this request. For a web server with a single site/hostname, the matter is easy, you can configure the server with just one binding/certificate on a single port and all is fine.
+
+However, in a webserver which hosts multiple sites or hostnames, based on the version + cipher suites alone, the server cannot pick the correct certificate. Hence, this requires the bindings on the server to be configured based on a different IP for each of the hostname the server wishes to support.
+<h3><span style="text-decoration: underline"><strong>How does SNI help?</strong></span></h3>
+To solve the problem of not requiring unique IP address on the server side to support multiple hostnames with SSL, the concept of an SNI extension was introduced in RFC 3546 [<a href="https://tools.ietf.org/html/rfc3546">https://tools.ietf.org/html/rfc3546</a>], back in 2003.
+
+Per this spec a client can include the destination host name in the clear text <strong>CLIENT HELLO </strong>message as an additional server name extension. Now, at the server, based on this information, the server can select the appropriate certificate to use for the handshake, thus solving the problem of not requiring unique IP addresses.
+<h3><span style="text-decoration: underline"><strong>Why does Azure App Service support both SNI-SSL and IP-SSL bindings?</strong></span></h3>
+While the RFC for SNI was introduced in 2003, and all major browsers added support shortly after that, there are still legacy HTTPs clients which doesn’t include the SNI header extension in the client hello. If an azure app service customer anticipates such a client to use their site hosted in azure app service, it is recommended to add an IP-SSL binding, so that this site now has a dedicated IP Address. This allows us to pick the correct certificate for that hostname.
+<h3><span style="text-decoration: underline"><strong>What are the breaking changes with TLS 1.2 compliance initiative?</strong></span></h3>
+We now enforce TLS 1.2 for clients which arrive without SNI header. Note that these are typically old browser clients which do not support SNI or programmatic clients which were written long ago and not updated to include the SNI header name.
+<ol>
+<li><strong> </strong><strong>For sites which did not have a custom domain name configured:</strong></li>
+</ol>
+These hostnames are always <strong>SNI-SSL </strong>(or more like SNI-Required).
+
+For these sites, the hostnames used is the default sitename.azurewebsites.net. Customers can configure the minimum required TLS version on this site to be 1.0 and above, and we will honor it.
+
+However, if a request arrives without the SNI extension in the <strong>CLIENT HELLO</strong> message, we are unable to identify the exact site the request is eventually destined to, and hence we require this request to be at least of TLS 1.2 for compliance reasons.
+<ol start="2">
+<li><strong> </strong><strong>Sites with custom domain configured:</strong></li>
+</ol>
+<ul>
+<li><strong>SNI -SSL:</strong></li>
+</ul>
+For these sites just like default host name, the configuration for the minimum required TLS version can be set and will be honored by the system. However, if a request arrives without the SNI extension in the CLIENT HELLO, we require this client to at least negotiate TLS 1.2, just like the case of default hostname.
+<ul>
+<li><strong>IP-SSL: No breaking change, everything should continue to work as is.</strong></li>
+</ul>
+For IP-SSL bindings, since there is a dedicated IP for the hostname, our system can correctly determine the destination site based on the incoming IP address, and hence there is no requirement of SNI header or minimum TLS version requirement on requests without the SNI header. The minimum configured TLS version for the web app will take effect.
+<h3><span style="text-decoration: underline"><strong>I'm currently using SNI-SSL bindings: What do I do if I'm impacted?</strong></span></h3>
+<strong>For browser clients, upgrade browser clients to modern browsers.</strong> For security best practices, it is highly recommended to use modern up to date browsers to protect the site and the user.
+
+<strong>For programmatic scenarios, update application code to either use TLS 1.2</strong>, or explicitly include the hostname in the client hello handshake if using TLS 1.0
+
+To update the TLS version in a .NET app using HttpWebRequest or HttpClient, update the SecurityProtocol in the ServicePointManager as shown below.
+
+ 
+<pre>// To update the TLS version in a .NET C# app using HttpClient/HttpWebRequest, 
+
+ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;</pre>
+ 
+<ul>
+<li>Note that when using HttpWebRequest/HttpClient class to make SSL requests, SNI header is automatically added.</li>
+</ul>
+ 
+
+<strong>If both a) and b) are not an option</strong>, the last resort and the least preferred option, would be to use IP-SSL bindings.
+<ol>
+<li>If you are using the default hostname, then you will need to add a custom domain name with IP-SSL.</li>
+<li>If you are already using a custom domain name, you'll need to change the binding to IP-SSL.</li>
+</ol>
+ 
+<pre><span>/* Sample code */</span>
+
+<span> </span>
+
+<span>using</span><span> </span><span>System</span><span>;</span>
+
+<span>using</span><span> </span><span>System</span><span>.</span><span>Net</span><span>;</span>
+
+<span> </span>
+
+<span>namespace</span><span> </span><span>SNIClient</span><span></span>
+
+<span>{</span>
+
+<span>    </span><span>class</span><span> </span><span>Program</span><span></span>
+
+<span>    {</span>
+
+<span>        </span><span>static</span><span> </span><span>void</span><span> </span><span>Main</span><span>(</span><span>string</span><span>[] args)</span>
+
+<span>        {</span>
+
+<span>            </span><span>ServicePointManager</span><span>.</span><span>SecurityProtocol</span><span> = </span><span>SecurityProtocolType</span><span>.</span><span>Tls12</span><span>;</span>
+
+<span> </span>
+
+<span>            </span><span>HttpWebRequest</span><span> request = (</span><span>HttpWebRequest</span><span>)</span><span>HttpWebRequest</span><span>.</span><span>Create</span><span>(</span><span>"https://mysite.azurewebsites.net/"</span><span>);</span>
+
+<span>            </span><span>try</span><span></span>
+
+<span>            {</span>
+
+<span>                </span><span>HttpWebResponse</span><span> response = (</span><span>HttpWebResponse</span><span>)</span><span>request</span><span>.</span><span>GetResponse</span><span>();</span>
+
+<span>                </span><span>response</span><span>.</span><span>Close</span><span>();</span>
+
+<span>            }</span>
+
+<span>            </span><span>catch</span><span> (</span><span>WebException</span><span> ex)</span>
+
+<span>            {</span>
+
+<span>                </span><span>Console</span><span>.</span><span>WriteLine</span><span>(</span><span>ex</span><span>.</span><span>Message</span><span>);</span>
+
+<span>            }</span>
+
+<span>        }</span>
+
+<span>    }</span>
+
+<span>}</span></pre>
+ 
+<h3>What if I have questions?</h3>
+<ul>
+<li>Open a forum post on the <a href="https://social.msdn.microsoft.com/forums/azure/en-us/home?forum=windowsazurewebsitespreview">App Service forum</a> or on <a href="https://stackoverflow.com/questions/tagged/azure-web-app-service">Stack Overflow</a>.</li>
+<li>Open a <a href="https://portal.azure.com/#blade/Microsoft_Azure_Support/HelpAndSupportBlade/overview">support ticket</a>.</li>
+</ul></div>
+</div></body>
+<script src="/AppService/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="/AppService/resource/replace.js" type="text/javascript"></script>
+</html>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2018-05-02T00:00:00+00:00">May 02, 2018</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Breaking+change+for+SNI-SSL+hostnames+on+Azure+App+Service%20https%3A%2F%2Fazure.github.io%2FAppService%2F2018%2F05%2F02%2FBreaking-change-for-SNI-SSL-hostnames-on-Azure-App-Service.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2018%2F05%2F02%2FBreaking-change-for-SNI-SSL-hostnames-on-Azure-App-Service.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2018%2F05%2F02%2FBreaking-change-for-SNI-SSL-hostnames-on-Azure-App-Service.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2018/05/01/App-Service-Command-Line-Tools-Resources.html" class="pagination--pager" title="App Service Command Line Tools Resources
+">Previous</a>
+    
+    
+      <a href="/AppService/2018/05/03/Azure-Functions-Recipes.html" class="pagination--pager" title="Azure Functions Recipes
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

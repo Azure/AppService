@@ -1,0 +1,988 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Azure Functions The Journey - Azure App Service</title>
+<meta name="description" content="The Journey of the Azure Functions product and team.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Azure Functions The Journey">
+<meta property="og:url" content="https://azure.github.io/AppService/2016/04/27/Azure-Functions-The-Journey.html">
+
+
+  <meta property="og:description" content="The Journey of the Azure Functions product and team.">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2016-04-27T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2016/04/27/Azure-Functions-The-Journey.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Azure Functions The Journey">
+    <meta itemprop="description" content="The Journey of the Azure Functions product and team.">
+    <meta itemprop="datePublished" content="April 27, 2016">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Azure Functions The Journey
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  10 minute read
+
+            
+            
+              • By Mathew Charles
+            
+            • April 27, 2016
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#webjobs-sdk">WebJobs SDK</a></li>
+  <li><a href="#functions-runtime">Functions Runtime</a>
+    <ul>
+      <li><a href="#webhook-support">WebHook Support</a></li>
+    </ul>
+  </li>
+  <li><a href="#dynamic-compute">Dynamic Compute</a></li>
+  <li><a href="#functions-portal">Functions Portal</a>
+    <ul>
+      <li><a href="#templates">Templates</a></li>
+    </ul>
+  </li>
+  <li><a href="#extensibility">Extensibility</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <p>Our team was excited to recently release a preview of the new <a href="https://azure.microsoft.com/en-us/services/functions/">Azure Functions</a> service at <strong>//build</strong>. We’ve done some blogging about the service already (e.g. <a href="https://azure.microsoft.com/en-us/blog/introducing-azure-functions/">Introducing Azure Functions</a>), but in this post we’d like to delve a bit <em>behind the scenes</em> and discuss how the project started and the journey we’ve taken to arrive at where we are today. We’ll discuss the Functions Runtime, the Dynamic Compute layer (“Serverless”) as well as the Functions Portal, and see at a high level how all those pieces evolved and came together into a cohesive product. It’s been a fun ride for the team, and it’s only just begun :)</p>
+
+<p>The evolution of this project is a great example of identifying synergies across a bunch of existing platform pieces, and connecting them together into a new product offering. In Azure App Service we already had many of the building blocks in place to enable us to rather quickly execute on the Azure Functions vision. By leveraging these existing assets and bringing in new innovations and functionality we were able to pull the project together pretty quickly.</p>
+
+<h2 id="webjobs-sdk">WebJobs SDK</h2>
+
+<p>In Chris’s <strong>//build</strong> talk <a href="https://channel9.msdn.com/events/Build/2016/B858">Introducing Azure Functions</a> he explained how Azure Functions is built on the <a href="https://github.com/Azure/azure-webjobs-sdk">Azure WebJobs SDK</a>. The WebJobs SDK has existed for a couple years now, and we have many customers happily using it to build backend processing jobs that trigger on a wide variety of event sources. The WebJobs SDK has a simple declarative programming model that makes it very easy to write sophisticated job functions with a minimal amount of code. Here’s an example:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">static</span> <span class="k">void</span> <span class="nf">ProcessOrder</span><span class="p">(</span>  
+<span class="p">[</span><span class="nf">QueueTrigger</span><span class="p">(</span><span class="s">"orders"</span><span class="p">)]</span> <span class="n">Order</span> <span class="n">order</span><span class="p">,</span>  
+<span class="p">[</span><span class="nf">Blob</span><span class="p">(</span><span class="s">"processed/{Id}"</span><span class="p">)]</span> <span class="k">out</span> <span class="kt">string</span> <span class="n">receipt</span><span class="p">,</span>  
+<span class="n">TraceWriter</span> <span class="n">log</span><span class="p">)</span>  
+<span class="p">{</span>  
+    <span class="n">log</span><span class="p">.</span><span class="nf">Verbose</span><span class="p">(</span><span class="kt">string</span><span class="p">.</span><span class="nf">Format</span><span class="p">(</span><span class="s">"Processing Order {0}"</span><span class="p">,</span> <span class="n">order</span><span class="p">.</span><span class="n">Id</span><span class="p">));</span>
+    <span class="c1">// business logic</span>
+    <span class="n">receipt</span> <span class="p">=</span> <span class="s">"&lt;some value&gt;"</span><span class="p">;</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>When hosted by the WebJobs SDK <strong>JobHost</strong> in a vanilla .NET Console application, this function will be automatically triggered whenever a new queue message is added to Azure Queue “orders” and the queue payload will be deserialized into an instance of the Order POCO. The function also automatically binds to an output Blob using the “Id” property from the incoming message as part of the blob path. With this programming model, your job function just focuses on its business logic and doesn’t have to take care of any of the storage operations. Awesome!</p>
+
+<p>The hosting model for such functions using the WebJobs SDK is to deploy them as <a href="https://azure.microsoft.com/en-us/documentation/articles/web-sites-create-web-jobs/">Azure WebJobs</a>. This works great and offers a lot of flexibility, and continues to be a very popular feature of Azure App Service.</p>
+
+<h2 id="functions-runtime">Functions Runtime</h2>
+
+<p>Around the middle of last year, we started discussing what it would take to bring this simple programming model to other languages – we’d had customers ask us for this as well. Not everyone is a .NET C# programmer, yet many would like to use these WebJobs SDK patterns. So we started some prototyping efforts on this and came up with a model that allowed us to leverage the existing tried and true .NET WebJobs SDK runtime, layering on a new JSON description model for the metadata. The result is that you can write the same function as above in Node.js (or other languages):</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nf">function </span><span class="p">(</span><span class="nx">context</span><span class="p">,</span> <span class="nx">order</span><span class="p">)</span> <span class="p">{</span>  
+    <span class="nx">context</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">Processing order</span><span class="dl">'</span><span class="p">,</span> <span class="nx">order</span><span class="p">.</span><span class="nx">id</span><span class="p">);</span>
+    <span class="c1">// business logic</span>
+    <span class="nx">context</span><span class="p">.</span><span class="nx">bindings</span><span class="p">.</span><span class="nx">receipt</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">&lt;some value</span><span class="dl">"</span><span class="p">;</span>  
+    <span class="nx">context</span><span class="p">.</span><span class="nf">done</span><span class="p">();</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>You’ll notice that this function is structurally the same as the C# function above. That’s because it maps to the same runtime implementation. Declarative code attributes are just one way of specifying metadata. We realized that we could capture the same information in a simple JSON description file. Here’s the corresponding metadata file describing the bindings for this function (i.e. all the bits that are in the declarative attributes in the C# example):</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"bindings"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w">
+        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"queueTrigger"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"order"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"direction"</span><span class="p">:</span><span class="w"> </span><span class="s2">"in"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"queueName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"orders"</span><span class="w">
+    </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"blob"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"receipt"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"direction"</span><span class="p">:</span><span class="w"> </span><span class="s2">"out"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"processed/{id}"</span><span class="w">
+    </span><span class="p">}]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The basic idea is that we can use this metadata to generate an in memory adaptor between various languages and the .NET WebJobs SDK runtime. We effectively generate the C# function you see above, and the method body of that function simply delegates to the actual user function (i.e. the Node.js function you wrote). An Azure Function can then just be a simple <strong>function.json</strong> metadata file describing the function bindings, along with a collection of one or more script files implementing the function. Here’s the same example as above, using the same metadata file, with the function written as a Windows BAT file:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SET /p <span class="nv">order</span><span class="o">=</span>&lt;%order%&gt;
+<span class="nb">echo </span>Processing order <span class="s1">'%order%'</span>  
+<span class="nb">echo</span> <span class="s1">'&lt;some value&gt;'</span> <span class="o">&gt;</span> %receipt%
+</code></pre></div></div>
+
+<p>That same metadata file can be used to describe a function in any of our 7 supported languages. Of course each language has its own quirks and capabilities, and some are more suited than others for various tasks. The main point here is that we can have the same triggering/binding runtime for all of these languages, allowing each language to map to that model in its own way. BAT files are somewhat limited, but through environment variables and file streams, they can both receive inputs and write outputs, which the Functions runtime automatically maps to the underlying Azure Storage artifacts.</p>
+
+<p>Having Azure Functions build on the core WebJobs SDK means we don’t have to write and maintain different versions of the WebJobs SDK per language, which is a huge engineering win. We have a single core runtime that handles all our binding/triggering logic, and investments we make in that core benefit functions as well as all our WebJobs SDK customers. It also means that all the trigger/binding Extensions that people write for the core SDK can also be used in Functions. We’ll continue investing heavily in the core WebJobs SDK and Extensions both for our traditional customers as well as for Azure Functions.</p>
+
+<h3 id="webhook-support">WebHook Support</h3>
+
+<p>Another important area we started focusing on was our <strong>WebHooks</strong> story. The ability for functions to be triggered on Azure Storage events is great, but we’ve had WebJobs customers asking us for the ability to trigger their job functions via WebHook requests as well. We had already experimented with this last year by writing a <a href="https://www.nuget.org/packages/Microsoft.Azure.WebJobs.Extensions.WebHooks/1.0.0-beta4">WebHooks Extension</a> which worked well, but had a big drawback stemming from the fact that WebJobs run under the Kudu SCM site, which means that basic auth credentials are required to make requests. That’s a deal breaker for most WebHook integration scenarios, since you want the ability to hand out a URL with a simple auth code that is restricted to allowing only that endpoint to be reached.</p>
+
+<p>To address this, we decided to package the Functions Runtime as a <a href="https://github.com/projectkudu/kudu/wiki/Azure-Site-Extensions">site extension</a> that runs in root of a WebApp. This means that it is NOT behind the SCM endpoint, allowing us to achieve the auth patterns required. This enabled us to expose a simple set of authenticated endpoints for WebHook functions. We also integrated the <a href="https://github.com/aspnet/WebHooks">ASP.NET WebHooks</a> library into this, allowing us to leverage the large number of WebHook providers that library supports, giving us first class support for providers like GitHub, Slack, DropBox, Instagram, etc.</p>
+
+<p>So at this point we had a flexible Functions Runtime that supported the full WebJobs SDK triggering/binding model for 7 languages (Node.js, C#, F#, Bash, BAT, Python, PHP), that also had an HTTP head supporting a wide array of WebHook integration scenarios.</p>
+
+<h2 id="dynamic-compute">Dynamic Compute</h2>
+
+<p>In parallel with the above runtime work, we were also having discussions about <strong>Serverless Computing</strong> and what we wanted to do in that space. We realized that this work we were doing for WebJobs was highly synergistic. We were developing a flexible, multi-language function runtime that could run user code in a sandboxed environment at high scale. However, the traditional WebJobs model requires users to create and manage the WebApp host that those WebJobs run on. What if we were able to abstract that portion of things away so users only had to write the functions themselves, and we’d handle all the deployment and scale concerns? Basically we’d have the <strong>WebJobs SDK as a Service</strong>. Eureka!</p>
+
+<p>We spun up a team to go off and investigate that portion of the plan – “<strong>Dynamic Compute</strong>”. This was the point in the project where we grew quickly from a small handful of people into a much larger team – our scrum meetings were growing daily by 2-3 people it seemed :) Our Dynamic Compute layer is responsible for automatically scaling functions out as load increases, and scaling back when it decreases. The result for the end user is that they don’t have to worry about this at all, and they only get billed for the compute time they actually use. The Dynamic Compute area of the project is large and also includes other service aspects like monitoring and diagnostics, telemetry, etc. This area deserves its own blog post in the future.</p>
+
+<h2 id="functions-portal">Functions Portal</h2>
+
+<p>The next thing we started focusing on was a <strong>portal experience</strong> to make it really easy to author and manage these functions. In the traditional WebJobs SDK model, you compile and deploy a .NET Console application (<strong>JobHost</strong>) that contains all your precompiled job functions. For Azure Functions the deployment model is much simpler. The Functions Runtime was designed to have a very simple file system layout. That facilitates a straight forward Portal UI that operates on those files via the <a href="https://github.com/projectkudu/kudu">Kudu</a> APIs. We could have a simple portal editor that allowed you to create/edit these files and push them into the function container (the WebApp running the functions). The simple file system model also makes it possible to deploy Azure Functions via <a href="https://azure.microsoft.com/en-us/documentation/articles/resource-group-authoring-templates/">ARM templates</a>. That is actually possible today, but not documented well yet.</p>
+
+<p>The team was able to get a Portal up and running pretty quickly and we were all very excited to be able to start using it to play with the nascent product. With the Portal in place things really started feeling like they were coming together! We were able to start having the wider team play with the product which drove lots of usability discussions/improvements and also helped us start working the bugs out. When the Portal work started, as with the Functions Runtime we had one or two people working on it, but as that early work gained traction and our scope/plans increased, we on-boarded more people. Scrum meetings got larger still :)</p>
+
+<p><a href="/AppService/media/2016/04/Capture11.jpg"><img src="/AppService/media/2016/04/Capture_thumb3.jpg" alt="Capture" title="Capture" /></a></p>
+
+<h3 id="templates">Templates</h3>
+
+<p>The simple file system model for functions also allowed us to develop the awesome <strong>template model</strong> you see today in the Functions Portal. We started churning out simple metadata/script templates for common scenarios across the various languages: “QueueTrigger – Node”, “GitHub WebHook C#”, etc. The idea is to have simple “recipes” or starting points for your functions that run immediately out of the box, that you can then customize and extend to your needs. In the future we hope to allow the community to also author such templates to drive an ecosystem.</p>
+
+<p><a href="/AppService/media/2016/04/Capture21.png"><img src="/AppService/media/2016/04/Capture2_thumb.png" alt="Capture2" title="Capture2" /></a></p>
+
+<h2 id="extensibility">Extensibility</h2>
+
+<p>Another area we focused a lot on leading up to our <strong>//build</strong> announcement of Azure Functions was a new set of WebJobs SDK Extensions that we made available in Functions. We released the <a href="https://azure.microsoft.com/en-us/blog/extensible-triggers-and-binders-with-azure-webjobs-sdk-1-1-0-alpha1/">WebJobs SDK Extensibility</a> model last fall, which opened the programming model up to new trigger/binding sources. Our team had already seeded the community with some new useful extensions (e.g. TimerTrigger, FileTrigger, SendGrid binding, etc.) in the <a href="https://github.com/Azure/azure-webjobs-sdk-extensions">WebJobs SDK Exensions</a> repo. We’ve also had community members start authoring their own extensions. Since Functions is built on the SDK, all these extensions can be made available to Azure Functions as well. There were many extensions we knew we wanted to write but didn’t have the time, and with our new larger team we had the resources to start cranking some of those out. In the last couple months we’ve added the following additional extensions and made them first class in Functions: <strong>EventHub</strong>, <strong>DocumentDb</strong>, <strong>NotificationHub</strong>, <strong>MobileApps</strong>, and <strong>ApiHub</strong>. This is only the beginning – there are many more extensions planned, and we expect the community to author more as well. We’re also working on an easy model for allowing 3rd parties to onboard their extensions into Functions. Stay tuned for that.</p>
+
+<p>Another cool thing is that we decided early that we wanted to do all our work open source, just as we have with the core <a href="https://github.com/Azure/azure-webjobs-sdk">WebJobs SDK</a> and <a href="https://github.com/Azure/azure-webjobs-sdk-extensions">WebJobs SDK Extensions</a> repos. So we created the <a href="https://github.com/Azure/azure-webjobs-sdk-script">WebJobs SDK Script</a> containing the Functions Runtime. Similarly, the Functions Portal is also open source: <a href="https://github.com/projectkudu/AzureFunctionsPortal">AzureFunctionsPortal</a>.</p>
+
+<p>In closing, all of the above has been a pretty high level overview of the various pieces of the project and how they came together: the Functions Runtime, Functions Portal, and Dynamic Compute. In future posts, we’ll delve more into the details of these various areas :)</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2016-04-27T00:00:00+00:00">April 27, 2016</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Azure+Functions+The+Journey%20https%3A%2F%2Fazure.github.io%2FAppService%2F2016%2F04%2F27%2FAzure-Functions-The-Journey.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2016%2F04%2F27%2FAzure-Functions-The-Journey.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2016%2F04%2F27%2FAzure-Functions-The-Journey.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="#" class="pagination--pager disabled">Previous</a>
+    
+    
+      <a href="/AppService/2016/05/06/App-Service-supports-Node.js-v6.html" class="pagination--pager" title="App Service supports Node.js v6
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

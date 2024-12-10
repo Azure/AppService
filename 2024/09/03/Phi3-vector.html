@@ -1,0 +1,1136 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Implementing Local RAG using Phi-3 ONNX Runtime and Sidecar Pattern on Linux App Service - Azure App Service</title>
+<meta name="description" content="In our previous post, “Phi-3 ONNX: Leveraging the Power of ONNX Runtime to Run SLM on CPU”, we explored how to deploy and run the Phi-3 ONNX Runtime model on Linux App Service, enabling sophisticated language model capabilities without the need for a GPU. Building on that foundation, this blog post will take you through the implementation of Retrieval-Augmented Generation (RAG) using local resources.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Implementing Local RAG using Phi-3 ONNX Runtime and Sidecar Pattern on Linux App Service">
+<meta property="og:url" content="https://azure.github.io/AppService/2024/09/03/Phi3-vector.html">
+
+
+  <meta property="og:description" content="In our previous post, “Phi-3 ONNX: Leveraging the Power of ONNX Runtime to Run SLM on CPU”, we explored how to deploy and run the Phi-3 ONNX Runtime model on Linux App Service, enabling sophisticated language model capabilities without the need for a GPU. Building on that foundation, this blog post will take you through the implementation of Retrieval-Augmented Generation (RAG) using local resources.">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2024-09-03T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2024/09/03/Phi3-vector.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Implementing Local RAG using Phi-3 ONNX Runtime and Sidecar Pattern on Linux App Service">
+    <meta itemprop="description" content="In our previous post, “Phi-3 ONNX: Leveraging the Power of ONNX Runtime to Run SLM on CPU”, we explored how to deploy and run the Phi-3 ONNX Runtime model on Linux App Service, enabling sophisticated language model capabilities without the need for a GPU. Building on that foundation, this blog post will take you through the implementation of Retrieval-Augmented Generation (RAG) using local resources.">
+    <meta itemprop="datePublished" content="September 03, 2024">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Implementing Local RAG using Phi-3 ONNX Runtime and Sidecar Pattern on Linux App Service
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  7 minute read
+
+            
+            
+              • By Tulika Chaudharie
+            
+            • September 3, 2024
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#prerequisites">Prerequisites</a></li>
+  <li><a href="#setting-up-the-net-backend">Setting Up the .NET Backend</a>
+    <ul>
+      <li><a href="#key-dependencies">Key Dependencies</a></li>
+      <li><a href="#loading-the-model-and-creating-the-tokenizer">Loading the Model and Creating the Tokenizer</a></li>
+      <li><a href="#loading-documents-into-the-vector-database">Loading Documents into the Vector Database</a></li>
+      <li><a href="#generating-responses">Generating Responses</a></li>
+      <li><a href="#ai-response-generation">AI Response Generation</a></li>
+      <li><a href="#creating-the-container-image-for-the-backend">Creating the container image for the backend</a></li>
+    </ul>
+  </li>
+  <li><a href="#creating-the-frontend-chat-application">Creating the Frontend Chat Application</a>
+    <ul>
+      <li><a href="#flask-chat-application">Flask Chat Application</a></li>
+      <li><a href="#containerizing-the-flask-application">Containerizing the Flask Application</a></li>
+    </ul>
+  </li>
+</ul>
+            </nav>
+          </aside>
+        
+        <p>In our previous post, <a href="https://azure.github.io/AppService/2024/08/19/Phi-3-ONNX.html">“Phi-3 ONNX: Leveraging the Power of ONNX Runtime to Run SLM on CPU”</a>, we explored how to deploy and run the Phi-3 ONNX Runtime model on Linux App Service, enabling sophisticated language model capabilities without the need for a GPU. Building on that foundation, this blog post will take you through the implementation of Retrieval-Augmented Generation (RAG) using local resources.</p>
+
+<p>To recap, Retrieval-Augmented Generation (RAG) is a hybrid approach that enhances the capabilities of a language model by incorporating external knowledge. This technique combines the strengths of traditional retrieval systems and generative models to provide more accurate and contextually relevant responses. In our case, we’re applying this concept to build an intelligent Assistant for our Fashion Store.</p>
+
+<p>The Assistant we’re creating utilizes external knowledge stored in several markdown (.md) files. These files contain essential information about our store’s products, as well as shipping, payment, and exchange policies. The Assistant will leverage this knowledge to answer customer queries with relevance.</p>
+
+<p>Our sample application is composed of two main components:</p>
+
+<ol>
+  <li>
+    <p><strong>Frontend Chat Application</strong>: Built using Python Flask, this serves as the user interface where customers can interact with the Assistant.</p>
+  </li>
+  <li>
+    <p><strong>Backend Application</strong>: Developed in .NET, this application loads the markdown files into an in-memory vector database. Upon receiving a query, the backend performs a search within the vector database and passes the search results as context to the Phi-3 model. The generated response is then streamed back to the chat client.</p>
+  </li>
+</ol>
+
+<p>For the in-memory vector database, we’re using <a href="https://github.com/Build5Nines/SharpVector">Build5Nines.SharpVector</a>, an excellent open-source project by <a href="https://pietschsoft.com/">Chris Pietschmann</a>. SharpVector makes it easy to store and retrieve vectorized data, making it an ideal choice for our sample RAG implementation.</p>
+
+<p>It’s important to note that this setup is designed for demo purposes. For building enterprise-scale applications, you may need to consider using distributed solutions like Cosmos DB or other scalable data storage and retrieval systems to handle larger datasets and more complex operations.</p>
+
+<h3 id="prerequisites">Prerequisites</h3>
+
+<p>To build and run this demo, ensure you have the following:</p>
+
+<ul>
+  <li><strong>.NET 8 SDK</strong>: Required for the backend application. <a href="https://dotnet.microsoft.com/download/dotnet/8.0">Download .NET 8</a>.</li>
+  <li><strong>Visual Studio Code (VS Code)</strong>: For editing and developing project files. <a href="https://code.visualstudio.com/">Get VS Code</a>.</li>
+  <li><strong>Docker Desktop</strong>: Necessary for containerizing the applications. <a href="https://www.docker.com/products/docker-desktop">Install Docker</a>.</li>
+  <li><strong>Python 3.9 or higher</strong>: Used for the Python Flask frontend. <a href="https://www.python.org/downloads/">Download Python</a>.</li>
+  <li><strong>Git</strong>: To clone the sample repository. <a href="https://git-scm.com/downloads">Get Git</a>.</li>
+</ul>
+
+<p>Clone the sidecar samples repository to get started:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/Azure-Samples/sidecar-samples
+</code></pre></div></div>
+
+<h3 id="setting-up-the-net-backend">Setting Up the .NET Backend</h3>
+
+<p>Once you have cloned the application, you’ll find the code for the backend in the <code class="language-plaintext highlighter-rouge">phi3-vector-api</code> directory. This backend is responsible for loading and processing the markdown files into an in-memory vector database and then generating responses using the Phi-3 ONNX model. Most of the key logic is contained within the <code class="language-plaintext highlighter-rouge">PhiController.cs</code> file, which you can view <a href="https://github.com/Azure-Samples/sidecar-samples/blob/main/phi3-vector/phi3-vector-api/Controllers/Phi3Controller.cs">here</a>.</p>
+
+<h4 id="key-dependencies">Key Dependencies</h4>
+
+<p>We’ve added three important packages to the project:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">using</span> <span class="nn">Build5Nines.SharpVector</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Build5Nines.SharpVector.Data</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Microsoft.ML.OnnxRuntimeGenAI</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>These packages enable us to work with vector databases and integrate the ONNX runtime for AI-based generation.</p>
+
+<h4 id="loading-the-model-and-creating-the-tokenizer">Loading the Model and Creating the Tokenizer</h4>
+
+<p>The model is loaded from the filesystem, and a tokenizer is created to handle text processing:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">_model</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">Model</span><span class="p">(</span><span class="s">"/app/cpu_and_mobile/cpu-int4-rtn-block-32-acc-level-4"</span><span class="p">);</span>
+<span class="n">_tokenizer</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">Tokenizer</span><span class="p">(</span><span class="n">_model</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h4 id="loading-documents-into-the-vector-database">Loading Documents into the Vector Database</h4>
+
+<p>Next, we load all the <code class="language-plaintext highlighter-rouge">.md</code> files from the local filesystem into the in-memory vector database. In this demo, we’re using paragraph chunking, which breaks the text into paragraphs. However, you could opt for other chunking methods, such as line-based or character limit chunking:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="k">async</span> <span class="n">Task</span> <span class="nf">LoadAdditionalDocuments</span><span class="p">(</span><span class="kt">string</span> <span class="n">directoryPath</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">var</span> <span class="n">files</span> <span class="p">=</span> <span class="n">Directory</span><span class="p">.</span><span class="nf">GetFiles</span><span class="p">(</span><span class="n">directoryPath</span><span class="p">,</span> <span class="s">"*.*"</span><span class="p">,</span> <span class="n">SearchOption</span><span class="p">.</span><span class="n">AllDirectories</span><span class="p">)</span>
+                         <span class="p">.</span><span class="nf">Where</span><span class="p">(</span><span class="n">f</span> <span class="p">=&gt;</span> <span class="n">f</span><span class="p">.</span><span class="nf">EndsWith</span><span class="p">(</span><span class="s">".txt"</span><span class="p">,</span> <span class="n">StringComparison</span><span class="p">.</span><span class="n">OrdinalIgnoreCase</span><span class="p">)</span> <span class="p">||</span>
+                                     <span class="n">f</span><span class="p">.</span><span class="nf">EndsWith</span><span class="p">(</span><span class="s">".md"</span><span class="p">,</span> <span class="n">StringComparison</span><span class="p">.</span><span class="n">OrdinalIgnoreCase</span><span class="p">)</span> <span class="p">||</span>
+                                     <span class="n">f</span><span class="p">.</span><span class="nf">EndsWith</span><span class="p">(</span><span class="s">".mdx"</span><span class="p">,</span> <span class="n">StringComparison</span><span class="p">.</span><span class="n">OrdinalIgnoreCase</span><span class="p">)).</span><span class="nf">ToArray</span><span class="p">();</span>
+
+    <span class="kt">var</span> <span class="n">vectorDataLoader</span> <span class="p">=</span> <span class="k">new</span> <span class="n">TextDataLoader</span><span class="p">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">string</span><span class="p">&gt;(</span><span class="n">_vectorDatabase</span><span class="p">);</span>
+    <span class="kt">var</span> <span class="n">tasks</span> <span class="p">=</span> <span class="n">files</span><span class="p">.</span><span class="nf">Select</span><span class="p">(</span><span class="k">async</span> <span class="n">file</span> <span class="p">=&gt;</span>
+    <span class="p">{</span>
+        <span class="n">Console</span><span class="p">.</span><span class="nf">WriteLine</span><span class="p">(</span><span class="s">$"Loading </span><span class="p">{</span><span class="n">file</span><span class="p">}</span><span class="s">"</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">IO</span><span class="p">.</span><span class="n">File</span><span class="p">.</span><span class="nf">Exists</span><span class="p">(</span><span class="n">file</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="kt">var</span> <span class="n">fileContents</span> <span class="p">=</span> <span class="k">await</span> <span class="n">System</span><span class="p">.</span><span class="n">IO</span><span class="p">.</span><span class="n">File</span><span class="p">.</span><span class="nf">ReadAllTextAsync</span><span class="p">(</span><span class="n">file</span><span class="p">);</span>
+            <span class="k">await</span> <span class="n">vectorDataLoader</span><span class="p">.</span><span class="nf">AddDocumentAsync</span><span class="p">(</span><span class="n">fileContents</span><span class="p">,</span> <span class="k">new</span> <span class="n">TextChunkingOptions</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;</span>
+            <span class="p">{</span>
+                <span class="n">Method</span> <span class="p">=</span> <span class="n">TextChunkingMethod</span><span class="p">.</span><span class="n">Paragraph</span><span class="p">,</span>
+                <span class="n">RetrieveMetadata</span> <span class="p">=</span> <span class="p">(</span><span class="n">chunk</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="n">file</span>
+            <span class="p">});</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+
+    <span class="k">await</span> <span class="n">Task</span><span class="p">.</span><span class="nf">WhenAll</span><span class="p">(</span><span class="n">tasks</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="generating-responses">Generating Responses</h4>
+
+<p>When a user sends a query, we search the vector database for relevant information and use that as context for generating a response with the Phi-3 model. The response is then streamed back to the client as it’s generated:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="nf">HttpPost</span><span class="p">(</span><span class="s">"generate-response"</span><span class="p">)]</span>
+<span class="k">public</span> <span class="k">async</span> <span class="n">Task</span> <span class="nf">GenerateResponse</span><span class="p">([</span><span class="n">FromBody</span><span class="p">]</span> <span class="kt">string</span> <span class="n">userPrompt</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Console</span><span class="p">.</span><span class="nf">WriteLine</span><span class="p">(</span><span class="s">"Generate method called with : "</span> <span class="p">+</span> <span class="n">userPrompt</span><span class="p">);</span>
+    <span class="kt">string</span> <span class="n">resultText</span> <span class="p">=</span> <span class="k">await</span> <span class="nf">SearchVectorDatabase</span><span class="p">(</span><span class="n">_vectorDatabase</span><span class="p">,</span> <span class="n">userPrompt</span><span class="p">);</span>
+    <span class="n">Console</span><span class="p">.</span><span class="nf">WriteLine</span><span class="p">(</span><span class="s">"Vector search returned : "</span> <span class="p">+</span> <span class="n">resultText</span><span class="p">);</span>
+    <span class="kt">var</span> <span class="n">fullPrompt</span> <span class="p">=</span> <span class="s">$"</span><span class="p">{</span><span class="n">_systemPrompt</span><span class="p">}</span><span class="s">\n\n</span><span class="p">{</span><span class="n">resultText</span><span class="p">}</span><span class="s">\n\n</span><span class="p">{</span><span class="n">userPrompt</span><span class="p">}</span><span class="s">"</span><span class="p">;</span>
+
+    <span class="n">Response</span><span class="p">.</span><span class="n">ContentType</span> <span class="p">=</span> <span class="s">"text/plain"</span><span class="p">;</span>
+    <span class="k">await</span> <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">token</span> <span class="k">in</span> <span class="nf">GenerateAiResponse</span><span class="p">(</span><span class="n">fullPrompt</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">token</span> <span class="p">==</span> <span class="k">null</span> <span class="p">||</span> <span class="n">token</span> <span class="p">==</span> <span class="s">""</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">await</span> <span class="n">Response</span><span class="p">.</span><span class="nf">WriteAsync</span><span class="p">(</span><span class="n">token</span><span class="p">);</span>
+        <span class="k">await</span> <span class="n">Response</span><span class="p">.</span><span class="n">Body</span><span class="p">.</span><span class="nf">FlushAsync</span><span class="p">();</span> <span class="c1">// Flush the response stream to send the token immediately</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="ai-response-generation">AI Response Generation</h4>
+
+<p>Finally, in the <code class="language-plaintext highlighter-rouge">GenerateAiResponse</code> method, we call the generator and continuously produce the next token in the sequence:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="k">async</span> <span class="n">IAsyncEnumerable</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;</span> <span class="nf">GenerateAiResponse</span><span class="p">(</span><span class="kt">string</span> <span class="n">fullPrompt</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">var</span> <span class="n">tokens</span> <span class="p">=</span> <span class="n">_tokenizer</span><span class="p">.</span><span class="nf">Encode</span><span class="p">(</span><span class="n">fullPrompt</span><span class="p">);</span>
+    <span class="kt">var</span> <span class="n">generatorParams</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">GeneratorParams</span><span class="p">(</span><span class="n">_model</span><span class="p">);</span>
+    <span class="n">generatorParams</span><span class="p">.</span><span class="nf">SetSearchOption</span><span class="p">(</span><span class="s">"max_length"</span><span class="p">,</span> <span class="m">4096</span><span class="p">);</span>
+    <span class="n">generatorParams</span><span class="p">.</span><span class="nf">SetInputSequences</span><span class="p">(</span><span class="n">tokens</span><span class="p">);</span>
+    <span class="kt">var</span> <span class="n">generator</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">Generator</span><span class="p">(</span><span class="n">_model</span><span class="p">,</span> <span class="n">generatorParams</span><span class="p">);</span>
+    <span class="n">Console</span><span class="p">.</span><span class="nf">WriteLine</span><span class="p">(</span><span class="s">"Generator created."</span><span class="p">);</span>
+
+    <span class="k">while</span> <span class="p">(!</span><span class="n">generator</span><span class="p">.</span><span class="nf">IsDone</span><span class="p">())</span>
+    <span class="p">{</span>
+        <span class="n">generator</span><span class="p">.</span><span class="nf">ComputeLogits</span><span class="p">();</span>
+        <span class="n">generator</span><span class="p">.</span><span class="nf">GenerateNextToken</span><span class="p">();</span>
+        <span class="kt">var</span> <span class="n">output</span> <span class="p">=</span> <span class="nf">GetOutputTokens</span><span class="p">(</span><span class="n">generator</span><span class="p">,</span> <span class="n">_tokenizer</span><span class="p">);</span>
+        <span class="n">Console</span><span class="p">.</span><span class="nf">WriteLine</span><span class="p">(</span><span class="s">"Generating next token..."</span><span class="p">+</span><span class="n">output</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">output</span> <span class="p">==</span> <span class="k">null</span> <span class="p">||</span> <span class="n">output</span><span class="p">==</span><span class="s">""</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">yield</span> <span class="k">return</span> <span class="n">output</span><span class="p">;</span> <span class="c1">// Yield each token as it's generated</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><strong>Note: This demo focuses on the basic setup and functionality. We haven’t applied any optimizations to the response generation process. As a result, sometimes the output might be incorrect. For more advanced scenarios, consider tuning ONNX runtime parameters like <code class="language-plaintext highlighter-rouge">top_k</code>, <code class="language-plaintext highlighter-rouge">top_p</code>, <code class="language-plaintext highlighter-rouge">temperature</code>, and others to refine the model’s output. Refer to the documentation <a href="https://onnxruntime.ai/docs/genai/reference/config.html">here</a></strong></p>
+
+<h4 id="creating-the-container-image-for-the-backend">Creating the container image for the backend</h4>
+
+<p>Once the backend code is ready, the final step is to containerize the application for deployment. We’ve included a Dockerfile in the repository, which you can find <a href="https://github.com/Azure-Samples/sidecar-samples/blob/main/phi3-vector/phi3-vector-api/Dockerfile">here</a>. This Dockerfile is set up to build and run the .NET backend in a container.</p>
+
+<p>To containerize the backend, navigate to the <code class="language-plaintext highlighter-rouge">phi3-vector-api</code> directory and build the Docker image:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker build <span class="nt">-t</span> your-dockerhub-username/phi3-vector-api:latest <span class="nb">.</span>
+</code></pre></div></div>
+
+<p>Replace <code class="language-plaintext highlighter-rouge">your-registry-url</code> with the name of your container registry, such as Azure Container Registry, Docker Hub, or a private registry.</p>
+
+<p>After building the image, push it to your container registry:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker push your-registry-url/phi3-vector-api:latest
+</code></pre></div></div>
+
+<h3 id="creating-the-frontend-chat-application">Creating the Frontend Chat Application</h3>
+
+<p>To enable interaction with the backend API, we’ll set up a simple Python Flask app as the chat interface. One of the advantages of the Sidecar pattern is that it allows you to run multiple containers using different languages and frameworks side by side, seamlessly integrating them into a single application.</p>
+
+<h4 id="flask-chat-application">Flask Chat Application</h4>
+
+<p>Navigate to the <code class="language-plaintext highlighter-rouge">flask-chat-app</code> folder where the code resides in <code class="language-plaintext highlighter-rouge">app.py</code>. This method sends user input to the backend API and streams the response in real-time:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">generate</span><span class="p">():</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="nf">time</span><span class="p">()</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nf">post</span><span class="p">(</span><span class="n">API_URL</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">input_text</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Time taken: </span><span class="si">{</span><span class="n">time</span><span class="p">.</span><span class="nf">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s"> seconds</span><span class="sh">"</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">response</span><span class="p">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">response</span><span class="p">.</span><span class="nf">iter_content</span><span class="p">(</span><span class="n">chunk_size</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">chunk</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">chunk</span><span class="p">.</span><span class="nf">decode</span><span class="p">(</span><span class="sh">'</span><span class="s">utf-8</span><span class="sh">'</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="sh">'</span><span class="s">Error: </span><span class="sh">'</span> <span class="o">+</span> <span class="n">response</span><span class="p">.</span><span class="n">text</span>
+
+    <span class="k">return</span> <span class="nc">Response</span><span class="p">(</span><span class="nf">generate</span><span class="p">(),</span> <span class="n">content_type</span><span class="o">=</span><span class="sh">'</span><span class="s">text/plain</span><span class="sh">'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="containerizing-the-flask-application">Containerizing the Flask Application</h4>
+
+<p>To containerize the app, use the provided <a href="https://github.com/Azure-Samples/sidecar-samples/blob/main/phi3-vector/flask-chat-app/Dockerfile">Dockerfile</a> in the <code class="language-plaintext highlighter-rouge">flask-chat-app</code> directory. Build and push the image with:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker build <span class="nt">-t</span> your-registry-url/flask-chat-app:latest <span class="nb">.</span>
+docker push your-registry-url/flask-chat-app:latest
+</code></pre></div></div>
+
+<p><strong>Note: The Sidecar feature is currently enabled for custom-container scenarios on Linux App Service, with plans to support code-based scenarios soon.</strong></p>
+
+<h2 id="deploying-the-application-to-linux-app-service">Deploying the Application to Linux App Service</h2>
+
+<ol>
+  <li>
+    <p><strong>Create a New Linux Web App in Azure</strong></p>
+
+    <p>Create a new Linux Web App from the portal and choose the options for Container and Linux.</p>
+
+    <p><img src="/AppService/media/2024/07/CreateWebApp.jpg" alt="Create web app" /></p>
+
+    <p>On the Container tab, make sure that Sidecar support is Enabled.</p>
+
+    <p>Specify the details of your application image (Flask app).</p>
+
+    <p><img src="/AppService/media/2024/07/AddContainer.jpg" alt="Create web app" /></p>
+
+    <p><em>Make sure to set the port to 5000</em></p>
+
+    <p><em>Note: We strongly recommend enabling <a href="https://learn.microsoft.com/azure/app-service/overview-managed-identity?tabs=portal%2Chttp">Managed Identity</a> for your Azure resources.</em></p>
+  </li>
+  <li>
+    <p><strong>Add Phi-3 Vector API Sidecar</strong></p>
+
+    <p>Go to the Deployment Center for your application and add a sidecar container.</p>
+
+    <p><img src="/AppService/media/2024/09/vector-api.jpg" alt="Add Phi-3 Vector API sidecar" /></p>
+
+    <p><em>Make sure to set the port to 5045</em></p>
+
+    <p>This <a href="https://learn.microsoft.com/azure/app-service/tutorial-custom-container-sidecar">document</a> tells you how to add sidecars, step-by-step.</p>
+  </li>
+  <li>
+    <p><strong>Verify the deployment</strong></p>
+
+    <p>Once your deployment is complete, you can browse to your application URL and see the chat frontend.</p>
+
+    <p><img src="/AppService/media/2024/09/phi-vector-output.jpg" alt="Website output" /></p>
+
+    <p><em>Note: Since we are deploying a language model, please be aware that the application might take a little longer to start up the first time. This delay is due to the initial setup and loading of the Phi-3 model, which ensures that it is ready to handle requests efficiently. Subsequent startups should be faster once the model is properly initialized.</em></p>
+  </li>
+</ol>
+
+<h2 id="in-summary">In Summary</h2>
+
+<p>In this blog, we demonstrated how to implement a Retrieval-Augmented Generation (RAG) system using the Phi-3 ONNX Runtime on Linux App Service with the Sidecar pattern. We walked through setting up the .NET backend to load markdown files into an in-memory vector database, generating responses using the Phi-3 model. We then built a Python Flask frontend to interact with the backend, showcasing how different languages and frameworks can seamlessly work together using Sidecars. Finally, we containerized both the backend and frontend for deployment.</p>
+
+<p>We’d love to hear about your experiences and what you’re building with the Sidecar feature. Your feedback is crucial as we continue to expand its capabilities and add more scenarios.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2024-09-03T00:00:00+00:00">September 03, 2024</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Implementing+Local+RAG+using+Phi-3+ONNX+Runtime+and+Sidecar+Pattern+on+Linux+App+Service%20https%3A%2F%2Fazure.github.io%2FAppService%2F2024%2F09%2F03%2FPhi3-vector.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2024%2F09%2F03%2FPhi3-vector.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2024%2F09%2F03%2FPhi3-vector.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2024/08/19/net-9-preview-6-available-on-app-service.html" class="pagination--pager" title=".NET 9 Preview 6 now available on App Service
+">Previous</a>
+    
+    
+      <a href="/AppService/2024/09/04/App-Service-Community-Standup.html" class="pagination--pager" title="Azure App Service Community Standup: .NET 9 and App Configuration
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

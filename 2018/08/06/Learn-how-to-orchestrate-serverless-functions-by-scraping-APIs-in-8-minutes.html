@@ -1,0 +1,1014 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Learn how to orchestrate serverless functions by scraping APIs in 8 minutes - Azure App Service</title>
+<meta name="description" content="">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Learn how to orchestrate serverless functions by scraping APIs in 8 minutes">
+<meta property="og:url" content="https://azure.github.io/AppService/2018/08/06/Learn-how-to-orchestrate-serverless-functions-by-scraping-APIs-in-8-minutes.html">
+
+
+  <meta property="og:description" content="">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2018-08-06T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2018/08/06/Learn-how-to-orchestrate-serverless-functions-by-scraping-APIs-in-8-minutes.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Learn how to orchestrate serverless functions by scraping APIs in 8 minutes">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="August 06, 2018">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Learn how to orchestrate serverless functions by scraping APIs in 8 minutes
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  9 minute read
+
+            
+            
+            • August 6, 2018
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Maxime Rouiller" target="_blank">Maxime Rouiller</a>
+<time>    8/6/2018 9:00:33 AM</time>
+<hr/>
+<div id="content"><h1 class="code-line" id="our-scenario">Our scenario</h1>
+<p class="code-line">The project I'm working on requires me to retrieve information from multiple sources like the NuGet and GitHub API. Let's bring into focus how I'm downloading data from the GitHub API. If you follow me <a href="https://twitter.com/MaximRouiller/status/1019597611341402112" title="https://twitter.com/MaximRouiller/status/1019597611341402112">on Twitter</a>, you've probably already heard me talk about it.</p>
+<p class="code-line">Ever ended up on a sample that should be covering the problem you're having, but it just doesn't work? Then, you check the last commit date only to realize that it's been 2 years since the last commit. The way the cloud is evolving, that sample is almost no good to you.</p>
+<p class="code-line">Well, some of the repositories on the <code>Azure-Samples</code> organization have those exact issues, and it's one of the many problems that I'm trying to solve.</p>
+<p class="code-line">There are tons of samples on the <a href="https://github.com/Azure-Samples/" title="https://github.com/Azure-Samples/">Azure-Samples</a> organization on GitHub, and I want to be able to check them out to see which ones are "too old." What does a user consider a valid sample? For me, a valid sample is an up to date sample.</p>
+<p class="code-line">We need a way to retrieve those over 900 samples and validate their last commit date.</p>
+<p class="code-line">However, we first need to be able to retrieve all that information.</p>
+<h1 class="code-line" id="file---new-project---console-application">File -&gt; New Project -&gt; Console Application</h1>
+<p class="code-line">Our first instinct as programmers is to try to do it once through a console application. It's the minimum amount of complexity. If you can't make it work in a console, there's no hope of making it work anywhere else.</p>
+<p class="code-line">So, I went ahead and started by consulting the <a href="https://developer.github.com/v3/" title="https://developer.github.com/v3/">GitHub API documentation</a>, created a GitHub token and started hunting for the information I need.</p>
+<p class="code-line">I ended up using the <a href="https://www.nuget.org/packages/Octokit/" title="https://www.nuget.org/packages/Octokit/">Octokit</a> library to do all of my API access. The code to retrieve the last commit date is below.</p>
+<pre>var github = new GitHubClient(new ProductHeaderValue("AzureSampleChecker")) { Credentials = new Credentials("") };
+
+var lastCommit = await github.Repository.Commit.GetAll(repositoryId, new ApiOptions { PageSize = 1, PageCount = 1 });
+var commit = lastCommit.FirstOrDefault()?.Commit;
+var lastCommitDate = commit.Committer.Date;
+
+//snipped: saving to the database</pre>
+<h1 class="code-line" id="first-problem-running-locally">First problem: Running locally</h1>
+<p class="code-line">Everything was running fine, but the problem for me at that point was it was just a single console application running locally. I could have just taken the application as-is to containers, but I saw another way to solve this. I saw another way to scale it up. Azure Functions would help me scale it up.</p>
+<p class="code-line">By migrating the existing code into an Azure Function, the problem now was that it was still just a console application running inside an Azure Functions. This will just not cut it. We're just running the same workflow in sequence. We need to execute this workflow in parallel and be able to scale out.</p>
+<p class="code-line">Once you know all the repositories that you want to query, it becomes a distributed problem. How many repositories can I hit at once without having any state to correlate between them? The answer is all of them.</p>
+<p class="code-line">I needed to refactor to make this process more sturdy. I needed it to be durable.</p>
+<h1 class="code-line" id="introducing-durable-functions">Introducing Durable Functions</h1>
+<p class="code-line">If you are new to serverless, there's <a href="https://docs.microsoft.com/dotnet/standard/serverless-architecture/serverless-architecture?WT.mc_id=appserviceteam-blog-marouill" title="https://docs.microsoft.com/dotnet/standard/serverless-architecture/serverless-architecture?WT.mc_id=appserviceteam-blog-marouill">an excellent book</a> by Jeremy Likness that can bring you up to speed. Azure Functions is Microsoft's implementation of the serverless architecture. If you need a refresher, you can review the <a href="https://docs.microsoft.com/azure/azure-functions/functions-overview?WT.mc_id=appserviceteam-blog-marouill" title="https://docs.microsoft.com/azure/azure-functions/functions-overview?WT.mc_id=appserviceteam-blog-marouill">Azure Functions Overview</a> on what is possible.</p>
+<p class="code-line">What is a <em>Durable</em> Function? With durable, it's all about orchestration. Just like in music, the orchestrator ensures that everyone is following the melody, but it's the responsibility of each musician to play their instrument.</p>
+<p class="code-line">Regarding Durable Functions, an orchestrator is in charge of starting and tracking a series of functions, but it's the responsibility of each activities to execute their part. Think of the orchestrator as a workflow written in code and activities as the steps of the workflow. An orchestrator and an activity are still Azure Functions.</p>
+<p class="code-line">Let's introduce two patterns that I'm using in my code.</p>
+<h2 class="code-line" id="function-chaining">Function Chaining</h2>
+<p class="code-line">A pattern I want to cover quickly is <a href="https://docs.microsoft.com/azure/azure-functions/durable-functions-sequence?WT.mc_id=appserviceteam-blog-marouill" title="https://docs.microsoft.com/azure/azure-functions/durable-functions-sequence?WT.mc_id=appserviceteam-blog-marouill">function chaining</a>. It's the most straightforward and most commonly used pattern.</p>
+
+
+[caption id="attachment_9105" align="aligncenter" width="825"]<a href="/AppService/media/2018/08/function-chaining.png"><img alt="" class="wp-image-9105 size-full" height="147" src="/AppService/media/2018/08/function-chaining.png" title="Function Chaining" width="825"/></a> Function Chaining[/caption]
+
+<span>Everytime that your orchestrator </span><code>await</code><span>s a function before running another one, you're doing function chaining. Here's the above image visualized in a code example.</span>
+<pre>[FunctionName("FunctionChaining")]
+public static async Task RunFunctionChaining([OrchestrationTrigger]) DurableOrchestrationContext context)
+{
+    await context.CallActivityAsync("F1", null);
+    await context.CallActivityAsync("F2", null);
+    await context.CallActivityAsync("F3", null);
+    await context.CallActivityAsync("F4", null);
+}</pre>
+<h2 class="code-line" id="fan-outfan-in">Fan-Out/Fan-In</h2>
+<p class="code-line">One of the Durable Functions design patterns I used is <a href="https://docs.microsoft.com/azure/azure-functions/durable-functions-cloud-backup?WT.mc_id=appserviceteam-blog-marouill" title="https://docs.microsoft.com/azure/azure-functions/durable-functions-cloud-backup?WT.mc_id=appserviceteam-blog-marouill">Fan-Out/Fan-In</a>.</p>
+
+
+[caption id="attachment_9095" align="aligncenter" width="577"]<a href="/AppService/media/2018/08/fan-out-fan-in.png"><img alt="Fan-Out/Fan-In Pattern" class="wp-image-9095 size-full" height="286" src="/AppService/media/2018/08/fan-out-fan-in.png" title="Fan-Out/Fan-In Pattern" width="577"/></a> Fan-Out/Fan-In Pattern[/caption]
+<p class="code-line">Fanning out means that your orchestrator function (F1) starts as many functions (F2) as necessary in parallel with some initial parameters like the repository I want. Once all those functions have finished executing, we need a way to return the requested data to our orchestrator (F3). Keep in mind that, all those functions may not be executing on the same server. It is not as simple as a multi-threaded application. It's a multi-threaded, multi-server, highly parallel execution workflow.</p>
+<p class="code-line">How would you do that in a local data center? A console application would retrieve the list of items on which you want to fan-out. Then, it would queue that list into a messaging system. Once queued up, you would have to have dequeue those messages asynchronously by other console applications that are on different servers. Each console applications would then be responsible for storing the result of their execution on shared storage. Once completed, you'd have to find a way to get the first console application to finish the workflow. Finishing the workflow would involve fanning in all the results back, and saving it to a database.</p>
+<p class="code-line">With Azure Functions, it's as easy as returning an object. All the necessary work of storing the results of individual functions and aggregating them together is done automatically for you.</p>
+<p class="code-line">This scenario is a hard problem. Durable Functions just saved me easily one week of work and more days of testing, debugging, and refining the process.</p>
+<p class="code-line">Now that the introduction is complete let's jump back to our scenario.</p>
+<h1 class="code-line" id="orchestrators-are-special-functions">Orchestrators are special functions</h1>
+<p class="code-line">Functions with the <a href="https://docs.microsoft.com/azure/azure-functions/durable-functions-bindings?WT.mc_id=appserviceteam-blog-marouill#trigger-behavior" title="https://docs.microsoft.com/azure/azure-functions/durable-functions-bindings?WT.mc_id=appserviceteam-blog-marouill#trigger-behavior"><code>OrchestrationTrigger</code> behaves widely differently than normal Azure Function</a>. This trigger is what makes a normal Azure Function an Orchestrator Function. Just</p>
+<p class="code-line">Its behaviors are incredibly different than other Functions. It is called multiple times at different moment to orchestrate the execution of those functions. It is of the utmost importance that you do not calculate time and access external resources (e.g., SQL, Storage, API) in that context. The orchestrator is tasked to execute and track the status of those functions we started by executing itself repeatedly when something changes. You want the orchestrator function to be deterministic, meaning the same code executed at a different time need to give the same result. So no <code>DateTime</code>, no <code>Math.Random</code> or <code>Guid.NewGuid()</code> should be in an orchestrator.</p>
+<p class="code-line">It's also important to note that every call that you make using <code>CallActivityAsync</code> won't be executed more than once for the same orchestrator instance. Results are cached and handled by the Durable Functions.</p>
+<p class="code-line"><code>CallActivityAsync</code> is part of the concept that we call <a href="https://docs.microsoft.com/azure/azure-functions/durable-functions-checkpointing-and-replay?WT.mc_id=appserviceteam-blog-marouill" title="https://docs.microsoft.com/azure/azure-functions/durable-functions-checkpointing-and-replay?WT.mc_id=appserviceteam-blog-marouill">checkpoint and replay</a>. In simpler terms, this allows resuming the execution of the orchestrator while remembering the state of the execution of previous activities we ran in a reliable way across servers.</p>
+<h1 class="code-line" id="web-scraping-scenario">Web Scraping scenario</h1>
+<p class="code-line">Here's the code for my sample orchestrator.</p>
+<pre>[FunctionName("DownloadSamples_Orchestrator")]
+public static async Task RunOrchestrator([OrchestrationTrigger] DurableOrchestrationContext context, TraceWriter log)
+{
+    var repositories = await context.CallActivityAsync&lt;List&gt;("DownloadSamples_GetAllPublicRepositories", null);
+
+    var tasks = new Task[repositories.Count];
+    for (int i = 0; i &lt; repositories.Count; i++)
+    {
+        tasks[i] = context.CallActivityAsync("DownloadSamples_UpdateRepositoryData", repositories[i]);
+    }
+    await Task.WhenAll(tasks);
+
+    var samplesToAdd = tasks.Select(x =&gt; x.Result).ToList();
+    await context.CallActivityAsync("DownloadSamples_SaveAllToDatabase", samplesToAdd);
+}</pre>
+<p class="code-line">So let's decompose this together. First, I call a function to retrieve the list of over 900 Public Repositories available on <code>Azure-Samples</code> and <code>await</code> for the results before going any further. Then, we create an array of Tasks and go through our samples and start a function without an <code>await</code> for each of them. We're <em>fanning out</em> the execution of those functions to be run and scaled by the cloud automatically. We're not using <code>await</code> here. Otherwise, they would run sequentially instead of in parallel.</p>
+<p class="code-line">Then task then need to be <code>await</code>ed till completion. Finally, we aggregate the <code>Samples</code> object that has been returned by those functions into a list. Finally, we send it to a function to save them in a database. We've successfully <em>fanned-in</em> the results of 100s of functions. There is no need for a third-party system. No other configurations. No complex messaging architecture. Just code.</p>
+<p class="code-line">Just like that, we've made a complex parallel problem easy.</p>
+<h1 class="code-line" id="advanced-scenario-orchestrating-orchestrators-with-sub-orchestrators">Advanced Scenario: Orchestrating Orchestrators with Sub Orchestrators</h1>
+<p class="code-line">Isn't it amazing? Now, I have an Orchestrator that instantiates over 900 <code>DownloadSamples_UpdateRepositoryData</code> functions to download data from the GitHub API. What would happen if I have multiple orchestrators of data ingestion that I want to make?</p>
+<p class="code-line">How do I orchestrate the orchestrators? We need another orchestrator of course! Here's a simplified version of my code.</p>
+<pre>[FunctionName("MainDownloadOrchestrator_TimerStart")]
+public static async Task TimerStart([TimerTrigger("0 0 7 * * *")]TimerInfo myTimer,
+    [OrchestrationClient]DurableOrchestrationClient starter,
+    TraceWriter log)
+{
+    string instanceId = await starter.StartNewAsync("MainDownloadOrchestrator", null);
+    log.Info($"Started orchestration with ID = '{instanceId}'.");
+}
+
+[FunctionName("MainDownloadOrchestrator")]
+public static async Task RunOrchestrator(
+    [OrchestrationTrigger] DurableOrchestrationContext context)
+{
+    var runId = await context.CallActivityAsync("CommonActivityFunctions_CreateRun", null);
+
+    var downloadPipelines = new List();
+    downloadPipelines.Add(context.CallSubOrchestratorAsync("DownloadSamples_Orchestrator", runId));
+    downloadPipelines.Add(context.CallSubOrchestratorAsync("DownloadSomethingElse_Orchestration", runId));
+    //todo: add more orchestrators
+    await Task.WhenAll(downloadPipelines);
+
+    return context.InstanceId;
+}</pre>
+<p class="code-line">What does it do? Create a single <em>run</em> that is going to be used to invoke every other data ingestion orchestrator.</p>
+<p class="code-line">All those orchestrators are all going to start at 7 am every day at the same time. They are all going to run as described before. Only this time, they also report back to another orchestrator.</p>
+<p class="code-line">Once you start implementing simple workflows, it becomes effortless to build complex scenarios out of simple ones. The same patterns we approached that were used to build a single orchestrator can be used to orchestrate multiple sub-orchestrators.</p>
+<h1 class="code-line" id="why-do-i-want-this">Why do I want this?</h1>
+<p class="code-line">Imagine working on a team with many different processes that need to run in parallel. Maybe one team is working on the shipping process, the other on the payment process. With a single orchestrator to manage multiple sub orchestrators, it makes team collaboration easier.</p>
+<p class="code-line">In my case, what if someone else wants to add the parsing of another API? They can work on their orchestrator and plug it in my <code>MainDownloadOrchestrator</code> function, and that's it.</p>
+<p class="code-line">Scraping data from an API is just a single scenario. Whether you are building an order processing system, a conference organization tool or the next revolution in IoT data processing, we know that you need a way to organize complexity within your solution. We know that you want to reuse more significant part of your system than a single function.</p>
+<p class="code-line">Durable Functions is how you build complex systems with serverless.</p>
+<h1 class="code-line" id="what-is-missing">What is missing</h1>
+<p class="code-line">What you haven't seen implemented is how to handle rate limiting. GitHub API has a limit of 5000 (at the time of writing) API calls per hour which is more than enough for the use that I make of it.</p>
+<p class="code-line">However, if other teams were to query GitHub some more, I'd need to look into implementing it. I still don't have an elegant solution for this, but it's going to be something I'm looking to implement next.</p>
+<h1 class="code-line" id="try-it-out">Try it out</h1>
+<p class="code-line">If you want to try it out, Azure Functions comes with a free quota even with a trial account. If you need an account, <a href="https://azure.microsoft.com/free/?WT.mc_id=appserviceteam-blog-marouill" title="https://azure.microsoft.com/free/?WT.mc_id=appserviceteam-blog-marouill">you can create one for free</a>.</p>
+<h1 class="code-line" id="contribute">Contribute</h1>
+<p class="code-line">Azure Functions is also open source. Look at these repositories if you want to contribute or just want to know what's going on with the project.</p>
+<ul>
+<li class="code-line"><a href="https://github.com/Azure/azure-functions-host" title="https://github.com/Azure/azure-functions-host">Azure Function Runtime</a></li>
+<li class="code-line"><a href="https://github.com/Azure/azure-functions-core-tools" title="https://github.com/Azure/azure-functions-core-tools">Azure Function CLI for local development</a></li>
+<li class="code-line"><a href="https://github.com/Azure/azure-functions-ux" title="https://github.com/Azure/azure-functions-ux">Azure Function Portal</a></li>
+<li class="code-line"><a href="https://github.com/Azure/azure-functions-templates" title="https://github.com/Azure/azure-functions-templates">Azure Functions templates for the portal and Visual Studio</a></li>
+</ul>
+<h1 class="code-line" id="resources-to-get-you-started">Resources to get you started</h1>
+<ul>
+<li class="code-line"><a href="https://docs.microsoft.com/azure/azure-functions/functions-overview?WT.mc_id=appserviceteam-blog-marouill" title="https://docs.microsoft.com/azure/azure-functions/functions-overview?WT.mc_id=appserviceteam-blog-marouill">Introduction to Azure Functions</a></li>
+<li class="code-line"><a href="https://docs.microsoft.com/azure/azure-functions/functions-create-first-azure-function?WT.mc_id=appserviceteam-blog-marouill" title="https://docs.microsoft.com/azure/azure-functions/functions-create-first-azure-function?WT.mc_id=appserviceteam-blog-marouill">Creating your first function in the Azure Portal</a></li>
+<li class="code-line"><a href="https://docs.microsoft.com/azure/azure-functions/functions-create-scheduled-function?WT.mc_id=appserviceteam-blog-marouill" title="https://docs.microsoft.com/azure/azure-functions/functions-create-scheduled-function?WT.mc_id=appserviceteam-blog-marouill">Running Azure Functions on a Timer Trigger</a></li>
+<li class="code-line"><a href="https://docs.microsoft.com/en-us/azure/azure-functions/durable-functions-install?WT.mc_id=appserviceteam-blog-marouill" title="https://docs.microsoft.com/en-us/azure/azure-functions/durable-functions-install?WT.mc_id=appserviceteam-blog-marouill">Installing the Durable Functions extensions</a></li>
+<li class="code-line"><a href="https://docs.microsoft.com/en-us/dotnet/standard/serverless-architecture/durable-azure-functions?WT.mc_id=appserviceteam-blog-marouill" title="https://docs.microsoft.com/en-us/dotnet/standard/serverless-architecture/durable-azure-functions?WT.mc_id=appserviceteam-blog-marouill">What is Durable Azure Functions?</a></li>
+</ul></div>
+</div></body>
+<script src="/AppService/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="/AppService/resource/replace.js" type="text/javascript"></script>
+</html>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2018-08-06T00:00:00+00:00">August 06, 2018</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Learn+how+to+orchestrate+serverless+functions+by+scraping+APIs+in+8+minutes%20https%3A%2F%2Fazure.github.io%2FAppService%2F2018%2F08%2F06%2FLearn-how-to-orchestrate-serverless-functions-by-scraping-APIs-in-8-minutes.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2018%2F08%2F06%2FLearn-how-to-orchestrate-serverless-functions-by-scraping-APIs-in-8-minutes.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2018%2F08%2F06%2FLearn-how-to-orchestrate-serverless-functions-by-scraping-APIs-in-8-minutes.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2018/08/01/PHP-Minor-Version-Update-for-September-2018.html" class="pagination--pager" title="PHP Minor Version Update for September 2018
+">Previous</a>
+    
+    
+      <a href="/AppService/2018/08/08/Windows-Containers-on-Azure-App-Service-Public-Preview.html" class="pagination--pager" title="Windows Containers on Azure App Service Public Preview
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

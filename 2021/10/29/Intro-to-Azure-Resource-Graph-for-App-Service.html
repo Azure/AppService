@@ -1,0 +1,997 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Introduction to Azure Resource Graph for App Service - Azure App Service</title>
+<meta name="description" content="Azure Resource Graph (ARG) is an Azure service that gives you the ability to query and explore your Azure resources across a given set of subscriptions so that you can effectively govern your environments, especially if you manage multiple large scale environments. Azure Resource Graph powers Azure portal’s search bar, the new browse ‘All resources’ experience, and Azure Policy’s Change history visual diff.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Introduction to Azure Resource Graph for App Service">
+<meta property="og:url" content="https://azure.github.io/AppService/2021/10/29/Intro-to-Azure-Resource-Graph-for-App-Service.html">
+
+
+  <meta property="og:description" content="Azure Resource Graph (ARG) is an Azure service that gives you the ability to query and explore your Azure resources across a given set of subscriptions so that you can effectively govern your environments, especially if you manage multiple large scale environments. Azure Resource Graph powers Azure portal’s search bar, the new browse ‘All resources’ experience, and Azure Policy’s Change history visual diff.">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2021-10-29T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2021/10/29/Intro-to-Azure-Resource-Graph-for-App-Service.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Introduction to Azure Resource Graph for App Service">
+    <meta itemprop="description" content="Azure Resource Graph (ARG) is an Azure service that gives you the ability to query and explore your Azure resources across a given set of subscriptions so that you can effectively govern your environments, especially if you manage multiple large scale environments. Azure Resource Graph powers Azure portal’s search bar, the new browse ‘All resources’ experience, and Azure Policy’s Change history visual diff.">
+    <meta itemprop="datePublished" content="October 29, 2021">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Introduction to Azure Resource Graph for App Service
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+            
+            
+              • By Jordan Selig
+            
+            • October 29, 2021
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#benefits-of-azure-resource-graph">Benefits of Azure Resource Graph</a></li>
+  <li><a href="#azure-resource-graph-and-app-service">Azure Resource Graph and App Service</a>
+    <ul>
+      <li><a href="#limitations">Limitations</a></li>
+      <li><a href="#querying-resources">Querying resources</a></li>
+      <li><a href="#change-detection-preview">Change detection (preview)</a></li>
+    </ul>
+  </li>
+  <li><a href="#wrapping-up">Wrapping up</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <p><a href="https://docs.microsoft.com/azure/governance/resource-graph/overview">Azure Resource Graph (ARG)</a> is an Azure service that gives you the ability to query and explore your Azure resources across a given set of subscriptions so that you can effectively govern your environments, especially if you manage multiple large scale environments. Azure Resource Graph powers Azure portal’s search bar, the new browse ‘All resources’ experience, and Azure Policy’s <a href="https://docs.microsoft.com/azure/governance/policy/how-to/determine-non-compliance#change-history">Change history</a> visual diff.</p>
+
+<p>With Azure Resource Graph, you can:</p>
+
+<ul>
+  <li>Query resources with complex filtering, grouping, and sorting by resource properties</li>
+  <li>Iteratively explore resources based on governance requirements</li>
+  <li>Assess the impact of applying policies in a vast cloud environment</li>
+  <li>Detail <a href="https://docs.microsoft.com/azure/governance/policy/how-to/determine-non-compliance#change-history">changes made to resource properties</a> (preview)</li>
+</ul>
+
+<p>For more details on how to use Azure Resource Graph, see the <a href="https://docs.microsoft.com/azure/governance/resource-graph/">documentation</a>.</p>
+
+<h2 id="benefits-of-azure-resource-graph">Benefits of Azure Resource Graph</h2>
+
+<p>Prior to Azure Resource Graph, you had access to services like <a href="https://docs.microsoft.com/azure/azure-resource-manager/management/overview">Azure Resource Manager (ARM)</a> to query your resources. Resource Manager only supports queries over basic resource fields and provides the ability for calling individual resource providers for detailed properties one resource at a time. With Azure Resource Graph, you can access these properties the resource providers return without needing to make individual calls to each resource provider. This increases investigation efficiency and simplifies escalation paths for monitoring, incident response, and investigation teams.</p>
+
+<h2 id="azure-resource-graph-and-app-service">Azure Resource Graph and App Service</h2>
+
+<h3 id="limitations">Limitations</h3>
+
+<p>As of publishing this post, the following <code class="language-plaintext highlighter-rouge">Microsoft.web</code> resource types are supported by Azure Resource Graph:</p>
+
+<ul>
+  <li>microsoft.web/apimanagementaccounts</li>
+  <li>microsoft.web/apimanagementaccounts/apis</li>
+  <li>microsoft.web/certificates</li>
+  <li>Microsoft.Web/connectionGateways (On-premises Data Gateways)</li>
+  <li>Microsoft.Web/connections (API Connections)</li>
+  <li>Microsoft.Web/customApis (Logic Apps Custom Connector)</li>
+  <li>Microsoft.Web/HostingEnvironments (App Service Environments)</li>
+  <li>Microsoft.Web/KubeEnvironments (App Service Kubernetes Environments)</li>
+  <li>Microsoft.Web/serverFarms (App Service plans)</li>
+  <li>Microsoft.Web/sites (App Services)</li>
+  <li>microsoft.web/sites/premieraddons</li>
+  <li>Microsoft.Web/sites/slots (App Service (Slots))</li>
+  <li>Microsoft.Web/StaticSites (Static Web Apps)</li>
+  <li>Microsoft.Web/WorkerApps (Container Apps)</li>
+</ul>
+
+<p>For a full list of supported resource types, review the <a href="https://docs.microsoft.com/azure/governance/resource-graph/reference/supported-tables-resources">table and resource type reference</a>.</p>
+
+<p>Azure Resource Graph is currently receiving notifications for all resources tracked by ARM. If a resource or resource property changes outside of ARM (i.e. for resources not tracked by ARM), the team is currently working on onboarding these resources to enable users to have access to them using ARG. This is an ongoing process the ARG team is working through. Refer to the <a href="https://docs.microsoft.com/azure/governance/resource-graph/reference/supported-tables-resources">table and resource type reference</a> for updates as additional resources gain support.</p>
+
+<h3 id="querying-resources">Querying resources</h3>
+
+<p>There are a number of <a href="https://docs.microsoft.com/azure/governance/resource-graph/first-query-portal">quickstarts</a> provided by the ARG team to help you get started with running queries. The Portal is a good place to start as it gives you a GUI based experience and formatted results that link to the queried resources for easy navigation. The query structure is based on <a href="https://docs.microsoft.com/azure/data-explorer/kusto/query/index">Kusto Query Language (KQL)</a>.</p>
+
+<p>To get you started with ARG for App Service, below are basic queries to give you an idea of what you can query as well as what these queries can be used for.</p>
+
+<p>To see all sites across all subscriptions and resources groups:</p>
+
+<pre><code class="language-kusto">resources
+| where type == "microsoft.web/sites"
+</code></pre>
+
+<p>Below is a sample of the output. If you have more sites in your account, they will all be listed.</p>
+
+<p><img src="/AppService/media/2021/10/basicquery.png" alt="basic query" /></p>
+
+<p>You can select “See details” at the end of the row to view additional information about your resources.</p>
+
+<p>You can query on any of the available fields for the specific resource. For example, if you want to see all your sites that are located in Central US:</p>
+
+<pre><code class="language-kusto">resources
+| where type == "microsoft.web/sites"
+| where location == "centralus"
+</code></pre>
+
+<p>Or if you want to see all of your running sites, you can drill into the “properties” object:</p>
+
+<pre><code class="language-kusto">resources
+| where type == "microsoft.web/sites"
+| where properties.state == "Running"
+</code></pre>
+
+<p>Many of the fields, specifically in the “properties” object, at this time will be showing as “null.” For example, if you are looking for details about the “siteConfig” object, the resource provider does not expose them at this time. This is due to these properties not being tracked by ARM and not being onboarded to ARG yet. Review the <a href="#limitations">limitations</a> to understand what properties are currently available.</p>
+
+<p>Additionally, you can use ARG to do analytics and create <a href="https://docs.microsoft.com/azure/governance/resource-graph/first-query-portal#pin-the-query-visualization-to-a-dashboard">dashboards</a> to monitor your resources.</p>
+
+<p>To get a sites count by region:</p>
+
+<pre><code class="language-kusto">resources
+| where type == "microsoft.web/sites"
+| summarize count() by location
+</code></pre>
+
+<p>And to create a visual, you can select “Charts” under the query box and choose from the given visualization options. Below is a map of the distribution of sites in a demo account.</p>
+
+<p><img src="/AppService/media/2021/10/regionquery.png" alt="region query" /></p>
+
+<h3 id="change-detection-preview">Change detection (preview)</h3>
+
+<p>Change detection is now in public preview for all resources that support <a href="https://docs.microsoft.com/azure/azure-resource-manager/templates/deployment-complete-mode-deletion">complete mode deletion</a>. For App Service, as of writing this article, the relevant resources that are supported include <code class="language-plaintext highlighter-rouge">Microsoft.web/sites</code>, <code class="language-plaintext highlighter-rouge">Microsoft.web/sites/slots</code>, <code class="language-plaintext highlighter-rouge">Microsoft.Web/serverFarms</code> as well as a couple additional resources that can be found <a href="https://docs.microsoft.com/azure/azure-resource-manager/templates/deployment-complete-mode-deletion#microsoftweb">here</a>.</p>
+
+<p>With change detection, the last 14 days of change history (properties that are added, removed, or altered) for the supported resources are available and can be accessed from the <a href="https://docs.microsoft.com/azure/governance/resource-graph/how-to/get-resource-changes">APIs directly</a> or from the Portal which provides a <em>visual diff</em> for each change. Change history can assist in determining causes of non-compliance and help you determine when a change was made and by who so further investigation can be conducted.</p>
+
+<p>For example, if you want to see when an app setting was modified, head over to the “Activity log” for your App Service and filter to your resource. Select the relevant “Operation name” and then “Change detection (preview)” in the flyout on the right. Double clicking into the operation in the list will take you to a visual diff so you can see exactly what changed in the json config of the resource.</p>
+
+<p><img src="/AppService/media/2021/10/changeappsetting.png" alt="app setting change" /></p>
+
+<p>Or if you want to see when someone modifies access restrictions for an app, you can see all changes to your firewall rules:</p>
+
+<p><img src="/AppService/media/2021/10/securitychange.png" alt="security change" /></p>
+
+<p>Change detection should enable you to view changes for any field in the json config of the supported resources as long as the field does not have a “null” value. A value of “null” indicates the resource provider is either not exposing this information at this time, or the field does not apply for your resource.</p>
+
+<h2 id="wrapping-up">Wrapping up</h2>
+
+<p>The Azure Resource Graph team is continuously adding additional support for App Service to give users access to more information about their resources. Make sure to continuously check the <a href="https://docs.microsoft.com/azure/governance/resource-graph/reference/supported-tables-resources">table and resource type reference</a> for updates as additional resource types get supported.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-10-29T00:00:00+00:00">October 29, 2021</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Introduction+to+Azure+Resource+Graph+for+App+Service%20https%3A%2F%2Fazure.github.io%2FAppService%2F2021%2F10%2F29%2FIntro-to-Azure-Resource-Graph-for-App-Service.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2021%2F10%2F29%2FIntro-to-Azure-Resource-Graph-for-App-Service.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2021%2F10%2F29%2FIntro-to-Azure-Resource-Graph-for-App-Service.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2021/10/15/How-to-create-a-web-app-with-a-hybrid-connection.html" class="pagination--pager" title="How to Create a Web App with a Hybrid Connection
+">Previous</a>
+    
+    
+      <a href="/AppService/2021/11/01/Diagnostic-Tools-for-ASP-NET-Core-Linux-apps-are-now-publicly-available.html" class="pagination--pager" title="General availability of Diagnostics tools for App Service on Linux .NET core apps
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

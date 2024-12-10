@@ -1,0 +1,996 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>General Availability of new Azure App Service built-in policies - Azure App Service</title>
+<meta name="description" content="One of the tools that Azure provides to enforce governance and controls is Azure Policies. By employing Azure policies, IT organizations are able to enforce controls around provisioning Azure resources to ensure adherence to security and  compliance standards. Along with the ability to allow users to create custom Azure policies, Azure platform provides built-in policies around the use of each Azure service which can be employed as it is or could be further customized based on the requirements.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="General Availability of new Azure App Service built-in policies">
+<meta property="og:url" content="https://azure.github.io/AppService/2021/07/12/General-Availability-of-new-azure-built-in-policies.html">
+
+
+  <meta property="og:description" content="One of the tools that Azure provides to enforce governance and controls is Azure Policies. By employing Azure policies, IT organizations are able to enforce controls around provisioning Azure resources to ensure adherence to security and  compliance standards. Along with the ability to allow users to create custom Azure policies, Azure platform provides built-in policies around the use of each Azure service which can be employed as it is or could be further customized based on the requirements.">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2021-07-12T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2021/07/12/General-Availability-of-new-azure-built-in-policies.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="General Availability of new Azure App Service built-in policies">
+    <meta itemprop="description" content="One of the tools that Azure provides to enforce governance and controls is Azure Policies. By employing Azure policies, IT organizations are able to enforce controls around provisioning Azure resources to ensure adherence to security and  compliance standards. Along with the ability to allow users to create custom Azure policies, Azure platform provides built-in policies around the use of each Azure service which can be employed as it is or could be further customized based on the requirements.">
+    <meta itemprop="datePublished" content="July 12, 2021">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">General Availability of new Azure App Service built-in policies
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  6 minute read
+
+            
+            
+              • By Vivek Arya
+            
+            • July 12, 2021
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p>One of the tools that Azure provides to enforce governance and controls is <a href="https://docs.microsoft.com/azure/governance/policy/overview">Azure Policies</a>. By employing Azure policies, IT organizations are able to enforce controls around provisioning Azure resources to ensure adherence to security and  compliance standards. Along with the ability to allow users to create custom Azure policies, Azure platform provides built-in policies around the use of each Azure service which can be employed as it is or could be further customized based on the requirements.</p>
+
+<p>App Service provides many such <a href="https://docs.microsoft.com/azure/app-service/policy-reference">built-in policies</a> which help secure applications and promote best practices. In recent days, new built-in policies have been released which could be used to improve the security posture of the apps deployed and also help streamline the deployment standards. Some of these policies with <a href="https://docs.microsoft.com/azure/governance/policy/concepts/effects#audit">Audit</a> or <a href="https://docs.microsoft.com/azure/governance/policy/concepts/effects#auditifnotexists">AuditIfNotExists</a> effect result in creation of audit records for all applications that do not comply with the controls and others with <a href="https://docs.microsoft.com/azure/governance/policy/concepts/effects#deployifnotexists">DeployIfNotExists</a> results in execution of remediation tasks that makes changes to the configuration of the application to implement the desired controls. Policies with <a href="https://docs.microsoft.com/azure/governance/policy/concepts/effects#deny">Deny</a> effect cause a create or update request to fail if that request results in creation or update of an application that does not match the defined standards.</p>
+
+<p>Following table lists the new built-in policies categorized by the area of control that they address :</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Area of Concern</th>
+      <th>Policy</th>
+      <th>Effect</th>
+      <th>Application SKU</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Network Security</td>
+      <td>App Service should   disable public network access</td>
+      <td>AuditIfNotExists,   Disabled</td>
+      <td>All except   IsolatedV1 &amp; IsolatedV2</td>
+    </tr>
+    <tr>
+      <td>Network Security</td>
+      <td>Configure App   Service to disable public network access</td>
+      <td>DeployIfNotExists,   Disabled</td>
+      <td>All except   IsolatedV1 &amp; IsolatedV2</td>
+    </tr>
+    <tr>
+      <td>Network Security</td>
+      <td>App Service   Environment apps should not be reachable over public internet</td>
+      <td>AuditIfNotExists,   Disabled</td>
+      <td>IsolatedV1, IsolatedV2</td>
+    </tr>
+    <tr>
+      <td>Network Routing</td>
+      <td>App Service should   use private link</td>
+      <td>AuditIfNotExists,   Disabled</td>
+      <td>PremiumV2,   PremiumV3, Functions Premium</td>
+    </tr>
+    <tr>
+      <td>Network Routing</td>
+      <td>App Service apps should use a SKU that supports private link</td>
+      <td>AuditIfNotExists, Deny,  Disabled</td>
+      <td>PremiumV2,   PremiumV3, Functions Premium</td>
+    </tr>
+    <tr>
+      <td>Network Routing</td>
+      <td>Configure App   Service to use private DNS zones</td>
+      <td>DeployIfNotExists,   Disabled</td>
+      <td>PremiumV2,   PremiumV3, Functions Premium</td>
+    </tr>
+    <tr>
+      <td>Network Routing</td>
+      <td>App Service apps   should enable outbound non-RFC 1918 traffic to Azure Virtual Network</td>
+      <td>AuditIfNotExists,   Disabled</td>
+      <td>All except   IsolatedV1 &amp; IsolatedV2</td>
+    </tr>
+    <tr>
+      <td>Application   Security</td>
+      <td>App Service   Environment should enable internal encryption</td>
+      <td>Audit, Disabled</td>
+      <td>IsolatedV1, IsolatedV2</td>
+    </tr>
+    <tr>
+      <td>Application   Security</td>
+      <td>App Service   Environment should disable TLS 1.0 and 1.1</td>
+      <td>Audit, Disabled</td>
+      <td>IsolatedV1, IsolatedV2</td>
+    </tr>
+    <tr>
+      <td>Application   Security</td>
+      <td>App Service   Environment should be configured with strongest TLS Cipher Suites</td>
+      <td>Audit, Disabled</td>
+      <td>IsolatedV1, IsolatedV2</td>
+    </tr>
+    <tr>
+      <td>Service Governance</td>
+      <td>App Service   Environment should be provisioned with latest versions</td>
+      <td>Audit, Disabled</td>
+      <td>IsolatedV1, IsolatedV2</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="network-security">Network Security</h3>
+
+<h4 id="app-service-should-disable-public-network-access">App Service should disable public network access</h4>
+
+<p>Internal user facing applications should ensure that they are not accessible over public internet. Disabling inbound public network access improves security by ensuring that the app isn’t exposed on public internet. For applications deployed in the multi-tenant App Service, use this policy to flag all applications that are accessible over public network. If the organization mandates that applications should not be accessible over public internet, one could use “Configure App Service to disable public network access” policy to automatically disable the inbound public network access following the policy run.</p>
+
+<h4 id="app-service-environment-apps-should-not-be-reachable-over-public-internet">App Service Environment apps should not be reachable over public internet</h4>
+
+<p>Applications deployed in <a href="https://docs.microsoft.com/azure/app-service/environment/intro">App Service Environment</a> where the access from public internet is not desired, should be deployed in a private IP address inside the VNET. The internal endpoint is an internal load balancer. This policy could be used to audit applications that violate this control and are accessible over public internet.</p>
+
+<h3 id="network-routing">Network Routing</h3>
+
+<h4 id="app-service-should-use-private-link">App Service should use private link</h4>
+<p>To ensure that applications deployed in multi-tenant app service are only accessible privately on a non-public route, one should create <a href="https://docs.microsoft.com/azure/private-link/">private link</a> to provide private access to them. This could be done by creating a private link to the apps deployed in App Service, as described <a href="https://docs.microsoft.com/azure/private-link/tutorial-private-endpoint-webapp-portal">here</a>. Policy “App Service should use private link” creates an audit record for all apps that do not provide private link. These records can then be used to identify such applications to determine if a corrective action is required.</p>
+
+<h4 id="app-service-apps-should-use-a-sku-that-supports-private-link">App Service apps should use a SKU that supports private link</h4>
+<p>To ensure private access to applications deployed in multi-tenant app service, one requires to provision a private link to the application. Not all App Service SKUs support private link. Private Link is supported only on the following App Service Plans : PremiumV2, PremiumV3, Functions Premium (sometimes referred to as the Elastic Premium plan). This policy provides ability to audit or deny deployment of applications on App Service Plans that do not support private link.</p>
+
+<h4 id="configure-app-service-to-use-private-dns-zones">Configure App Service to use private DNS zones</h4>
+
+<p>On the creation of a private endpoint to a webapp, a DNS entry is required to be created to resolve the name of private endpoint IP address to the fully qualified domain name(FQDN) of the connection string. The network interface associated with the private endpoint contains information to configure DNS, that is FQDN and private IP address to the private link resource i.e. the app. It is recommended to setup a private DNS zone to override the DNS resolution for a private endpoint. A private DNS zone can be linked to the one’s virtual network to resolve specific domains. Policy “Configure App Service to use private DNS zones” automatically configures apps accessible over private endpoints to use a private DNS zone.</p>
+
+<h4 id="app-service-apps-should-enable-outbound-non-rfc-1918-traffic-to-azure-virtual-network">App Service apps should enable outbound non-RFC 1918 traffic to Azure Virtual Network</h4>
+<p>App Service provides a feature called Regional <a href="https://docs.microsoft.com/azure/app-service/web-sites-integrate-with-vnet#regional-vnet-integration">VNet Integration</a> to enable apps deployed in multi-tenant service to access resources in or through a VNET. The feature allows application routing to be controlled at the individual app level. When Route All is not enabled, the app only routes RFC1918 traffic into VNet. Enabling Route All allows NSGs and UDRs to be used for all outbound traffic from the App Service app. Steps to set up that setting are described <a href="https://docs.microsoft.com/azure/app-service/web-sites-integrate-with-vnet">here</a>. Policy “App Service apps should enable outbound non-RFC 1918 traffic to Azure Virtual Network” creates an audit record and thus helps identify applications that don’t have Route All enabled.</p>
+
+<h3 id="application-security">Application Security</h3>
+
+<h4 id="app-service-environment-should-enable-internal-encryption">App Service Environment should enable internal encryption</h4>
+<p>By default, to enable higher throughput, internal components of App Service Environment do not use encryption while communicating among themselves. If one has a compliance requirement that requires complete encryption of the end to end data path, encryption could be enabled by setting a <a href="https://docs.microsoft.com/azure/app-service/environment/app-service-app-service-environment-custom-settings#enable-internal-encryption">custom setting</a>. Policy “App Service Environment should enable internal encryption” creates an audit record for all App Service Environments that do not use internal encryption.</p>
+
+<h4 id="app-service-environment-should-disable-tls-10-and-11">App Service Environment should disable TLS 1.0 and 1.1</h4>
+<p>TLS 1.0 and 1.1 are out-of-date protocols that do not support modern cryptographic algorithms and thus are deemed vulnerable to attacks. To disable TLS 1.0 and 1.1 for all the apps in an ASE, one could set custom setting on the ASE as described <a href="https://docs.microsoft.com/azure/app-service/environment/app-service-app-service-environment-custom-settings#disable-tls-10-and-tls-11">here</a>. Policy “App Service Environment should disable TLS 1.0 and 1.1” help identify and create a record for all ASEs that have TLS 1.0 and 1.1 enabled.</p>
+
+<h4 id="app-service-environment-should-be-configured-with-strongest-tls-cipher-suites">App Service Environment should be configured with strongest TLS Cipher Suites</h4>
+<p>By default, ASE supports changing the TLS cipher suite by using custom setting as defined <a href="https://docs.microsoft.com/azure/app-service/environment/app-service-app-service-environment-custom-settings#change-tls-cipher-suite-order">here</a>. Changing the cipher suite affects an entire App Service Environment. For ASE to function, there are two cipher suites required; 
+TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, and TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256.  Default setting for ASE also has weaker ciphers included in the suite, if you wish to operate your ASE with the strongest and most minimal set of cipher suites, then one should use just the two required ciphers. “App Service Environment should be configured with strongest TLS Cipher Suites” creates an audit record for all those ASEs which do not use these required cipher suites or use cipher suites other than just these two.</p>
+
+<h3 id="service-governance">Service Governance</h3>
+
+<h4 id="app-service-environment-should-be-provisioned-with-latest-versions">App Service Environment should be provisioned with latest versions</h4>
+<p>Older version of App Service Environment requires manual management of Azure’s resources and have greater scaling limitations. It is recommended that one uses ASEv2 or ASEv3(in preview) while creating new App Service Environment. This policy identifies all App Service Environments that are ASEv1.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-07-12T00:00:00+00:00">July 12, 2021</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=General+Availability+of+new+Azure+App+Service+built-in+policies%20https%3A%2F%2Fazure.github.io%2FAppService%2F2021%2F07%2F12%2FGeneral-Availability-of-new-azure-built-in-policies.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2021%2F07%2F12%2FGeneral-Availability-of-new-azure-built-in-policies.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2021%2F07%2F12%2FGeneral-Availability-of-new-azure-built-in-policies.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2021/07/08/How-to-create-a-blazor-webassembly-grpc-web-app-using-app-service-on-an-azure-arc-enabled-kubernetes-cluster.html" class="pagination--pager" title="How to create a Blazor WebAssembly gRPC-Web app using App Service on an Azure Arc Enabled Kubernetes Cluster
+">Previous</a>
+    
+    
+      <a href="/AppService/2021/07/23/Quickstart-Intro-to-Bicep-with-Web-App-plus-DB.html" class="pagination--pager" title="Quickstart: Intro to Bicep with Web App and DB
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,1259 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Deploying Linux custom container from private Azure Container Registry - Azure App Service</title>
+<meta name="description" content="Securing access to your site is important, but securing access to the source of your site is often equally important.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Deploying Linux custom container from private Azure Container Registry">
+<meta property="og:url" content="https://azure.github.io/AppService/2021/07/03/Linux-container-from-ACR-with-private-endpoint.html">
+
+
+  <meta property="og:description" content="Securing access to your site is important, but securing access to the source of your site is often equally important.">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2021-07-03T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2021/07/03/Linux-container-from-ACR-with-private-endpoint.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Deploying Linux custom container from private Azure Container Registry">
+    <meta itemprop="description" content="Securing access to your site is important, but securing access to the source of your site is often equally important.">
+    <meta itemprop="datePublished" content="July 03, 2021">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Deploying Linux custom container from private Azure Container Registry
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  12 minute read
+
+            
+            
+              • By Mads Damgård
+            
+            • July 3, 2021
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#getting-started">Getting started</a></li>
+  <li><a href="#1-create-network-infrastructure">1. Create network infrastructure</a></li>
+  <li><a href="#2-set-up-azure-container-registry">2. Set up Azure Container Registry</a></li>
+  <li><a href="#3-create-the-network-integrated-web-app">3. Create the network integrated web app</a></li>
+  <li><a href="#4-pull-from-private-registry">4. Pull from private registry</a></li>
+  <li><a href="#advanced-scenarios">Advanced scenarios</a>
+    <ul>
+      <li><a href="#using-user-assigned-managed-identity">Using user-assigned managed identity</a></li>
+      <li><a href="#using-credentials-to-pull-images">Using credentials to pull images</a></li>
+      <li><a href="#using-a-custom-private-registry">Using a custom private registry</a></li>
+      <li><a href="#deploy-from-secure-registry-with-arm-template-using-credentials">Deploy from secure registry with ARM template using credentials</a></li>
+      <li><a href="#deploy-from-secure-registry-with-arm-template-using-managed-identity">Deploy from secure registry with ARM template using managed identity</a></li>
+    </ul>
+  </li>
+  <li><a href="#faq">FAQ</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <p>Securing access to your site is important, but securing access to the source of your site is often equally important.</p>
+
+<p>In this article, I will walk you through setting up a Linux web app with secure, network-isolated access to a container registry. The scenario is intentionally kept simple to focus on the architecture and configuration.</p>
+
+<p><img src="/AppService/media/2021/07/linux-container-acr-pe.png" alt="ACR pull over private endpoint" class="align-center" /></p>
+
+<p>This guide is organized into four steps:</p>
+
+<ol>
+  <li>Create network infrastructure</li>
+  <li>Set up Azure Container Registry</li>
+  <li>Create network integrated web app</li>
+  <li>Pull from private registry</li>
+</ol>
+
+<p>In closing, there are sections on advanced scenarios and FAQ.</p>
+
+<blockquote>
+  <p>The default scenario for the article is using system-assigned managed identity. An “Alternative scenarios” section with step for using credentials, user-assigned managed identity, and custom registries has been added.
+Notes:</p>
+
+  <ul>
+    <li>App Service Environment v2 (Isolated SKU) do not support pulling images from a registry url that needs to be resolved using custom DNS servers</li>
+  </ul>
+</blockquote>
+
+<h2 id="getting-started">Getting started</h2>
+
+<p>This is the third article in a series focusing on network security. If you missed the first two, you can find them here:</p>
+
+<ul>
+  <li><a href="https://azure.github.io/AppService/2021/03/26/Secure-resilient-site-with-custom-domain.html">Deploying a secure, resilient site with a custom domain</a></li>
+  <li><a href="https://azure.github.io/AppService/2021/03/26/Secure-resilient-site-with-custom-domain.html">Deploying a site with secure backend communication</a></li>
+</ul>
+
+<p>This article will also use the Azure CLI executed in bash shell on WSL to set up the environment. It could be done using the Azure portal, Resource Manager templates, or Azure PowerShell. CLI was chosen as I find it easier to follow and explain the individual steps and configurations needed.</p>
+
+<p><strong>Remember</strong> in the scripts to replace all the resource names that need to be unique. This would be the name of the web app and Azure Container Registry. You may also change location if you want something closer to home. All other changes are optional.</p>
+
+<blockquote>
+  <p><strong>Tip</strong>: You can search/replace the word “secureacr” with something unique to make all the scripts unique.</p>
+</blockquote>
+
+<h2 id="1-create-network-infrastructure">1. Create network infrastructure</h2>
+
+<p>First, set up a Resource Group with a Virtual Network. The virtual network should have at least two subnets: one for the regional virtual network integration and one for the private endpoints. The address-prefix size must be at least /28 for both subnets; small subnets can affect scaling limits and the number of private endpoints. Go with /24 for both subnets if you are not under constraints.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az group create <span class="nt">--name</span> secureacrsetup <span class="nt">--location</span> westcentralus
+az network vnet create <span class="nt">--resource-group</span> secureacrsetup <span class="nt">--location</span> westcentralus <span class="nt">--name</span> secureacr-vnet <span class="nt">--address-prefixes</span> 10.0.0.0/16
+</code></pre></div></div>
+
+<p>For the subnets, there are two settings that we need to pay attention to. This is often set by the portal or scripts, but here it is called out directly. <a href="https://docs.microsoft.com/azure/virtual-network/subnet-delegation-overview">Delegation</a> “Microsoft.Web/serverfarms” informs the subnet that it is reserved for virtual network integration:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az network vnet subnet create <span class="nt">--resource-group</span> secureacrsetup <span class="nt">--vnet-name</span> secureacr-vnet <span class="nt">--name</span> vnet-integration-subnet <span class="nt">--address-prefixes</span> 10.0.0.0/24 <span class="nt">--delegations</span> Microsoft.Web/serverfarms
+az network vnet subnet create <span class="nt">--resource-group</span> secureacrsetup <span class="nt">--vnet-name</span> secureacr-vnet <span class="nt">--name</span> private-endpoint-subnet <span class="nt">--address-prefixes</span> 10.0.1.0/24
+</code></pre></div></div>
+
+<p>The last part of the network infrastructure is the Private DNS Zone. The zone is used to host the DNS records for private endpoint allowing the web app to find the container registry by name. Go <a href="https://docs.microsoft.com/azure/private-link/private-endpoint-overview">here for a primer on Azure Private Endpoints</a> and <a href="https://docs.microsoft.com/azure/private-link/private-endpoint-dns">go here for how DNS Zones fits into private endpoints</a>.</p>
+
+<p>Create the Private DNS Zone:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az network private-dns zone create <span class="nt">--resource-group</span> secureacrsetup <span class="nt">--name</span> privatelink.azurecr.io
+</code></pre></div></div>
+
+<p>Link the zone to the virtual network:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az network private-dns <span class="nb">link </span>vnet create <span class="nt">--resource-group</span> secureacrsetup <span class="nt">--name</span> acr-zonelink <span class="nt">--zone-name</span> privatelink.azurecr.io <span class="nt">--virtual-network</span> secureacr-vnet <span class="nt">--registration-enabled</span> <span class="nb">false</span>
+</code></pre></div></div>
+
+<p>… and now the core network setup is done.</p>
+
+<h2 id="2-set-up-azure-container-registry">2. Set up Azure Container Registry</h2>
+
+<p>In this section, we will set up the Azure Container Registry account. We will also create the private endpoint and configure the service to block public traffic. First create the service. We need Premium SKU to enable private endpoint:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az acr create <span class="nt">--resource-group</span> secureacrsetup <span class="nt">--name</span> secureacr2021 <span class="nt">--location</span> westcentralus <span class="nt">--sku</span> Premium
+</code></pre></div></div>
+
+<p>Before we lock the registry down, let’s push a few images to it for testing. After you lock it down, you might get a conflict with the ACR firewall. If you are using docker locally, you will need to allow your local IP. If you are running the build from somewhere else, this location will also need access to the registry.</p>
+
+<p>I will create a simple static html site, add it to an nginx container, and use ACR Tasks to build the container. You can of course also use native docker commands on your local machine:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir source
+cd source
+echo</span> <span class="nt">-e</span> <span class="s1">'FROM nginx\nCOPY index.html /usr/share/nginx/html'</span> <span class="o">&gt;</span> Dockerfile
+
+<span class="nb">echo</span> <span class="s1">'&lt;html&gt;&lt;head&gt;&lt;title&gt;Private ACR v1&lt;/title&gt;&lt;link rel="shortcut icon" href="https://appservice.azureedge.net/images/app-service/v4/favicon.ico" type="image/x-icon"/&gt;&lt;/head&gt;&lt;body bgcolor=lightblue&gt;&lt;h1&gt;Hello Linux v1 from private Azure Container Registry&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;'</span> <span class="o">&gt;</span> index.html
+az acr build <span class="nt">--registry</span> secureacr2021 <span class="nt">--platform</span> Linux <span class="nt">--image</span> privatewebsite:lnx-v1 <span class="nb">.</span>
+
+<span class="nb">echo</span> <span class="s1">'&lt;html&gt;&lt;head&gt;&lt;title&gt;Private ACR v2&lt;/title&gt;&lt;link rel="shortcut icon" href="https://appservice.azureedge.net/images/app-service/v4/favicon.ico" type="image/x-icon"/&gt;&lt;/head&gt;&lt;body bgcolor=lightgreen&gt;&lt;h1&gt;Hello Linux v2 from private Azure Container Registry&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;'</span> <span class="o">&gt;</span> index.html
+az acr build <span class="nt">--registry</span> secureacr2021 <span class="nt">--platform</span> Linux <span class="nt">--image</span> privatewebsite:lnx-v2 <span class="nb">.</span>
+</code></pre></div></div>
+
+<p>Next, let’s create the private endpoints to connect the backend services to the virtual network. Get the Resource ID of the registry and store it in a variable:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">acr_resource_id</span><span class="o">=</span><span class="si">$(</span>az acr show <span class="nt">--name</span> secureacr2021 <span class="nt">--query</span> <span class="nb">id</span> <span class="nt">--output</span> tsv<span class="si">)</span>
+</code></pre></div></div>
+
+<p>Create the private endpoint:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az network private-endpoint create <span class="nt">--resource-group</span> secureacrsetup <span class="nt">--name</span> secureacr-pe <span class="nt">--location</span> westcentralus <span class="nt">--connection-name</span> secureacr-pc <span class="nt">--private-connection-resource-id</span> <span class="nv">$acr_resource_id</span> <span class="nt">--group-id</span> registry <span class="nt">--vnet-name</span> secureacr-vnet <span class="nt">--subnet</span> private-endpoint-subnet
+</code></pre></div></div>
+
+<p>… and create a DNS Zone Group. This will create the DNS record for the private endpoint in the DNS Zone (and remove it if the private endpoint is deleted):</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az network private-endpoint dns-zone-group create <span class="nt">--resource-group</span> secureacrsetup <span class="nt">--endpoint-name</span> secureacr-pe <span class="nt">--name</span> secureacr-zg <span class="nt">--private-dns-zone</span> privatelink.azurecr.io <span class="nt">--zone-name</span> privatelink.azurecr.io
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az acr update <span class="nt">--resource-group</span> secureacrsetup <span class="nt">--name</span> secureacr2021 <span class="nt">--public-network-enabled</span> <span class="nb">false</span>
+</code></pre></div></div>
+
+<p>Everything is locked down now and you cannot even get to the ACR repositories through the Azure portal. In the ACR Networking section in Azure portal, you can add the public IP of your client if you need to view the registries (images) and other IPs needed to to push an image from remote clients. This will allow your local machine to access the registry:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">my_ip</span><span class="o">=</span><span class="si">$(</span>curl https://ifconfig.me<span class="si">)</span>
+az acr update <span class="nt">--resource-group</span> secureacrsetup <span class="nt">--name</span> secureacr2021 <span class="nt">--public-network-enabled</span> <span class="nt">--default-action</span> Deny
+az acr network-rule add <span class="nt">--resource-group</span> secureacrsetup <span class="nt">--name</span> secureacr2021 <span class="nt">--ip-address</span> <span class="nv">$my_ip</span>
+</code></pre></div></div>
+
+<h2 id="3-create-the-network-integrated-web-app">3. Create the network integrated web app</h2>
+
+<p>Now we get to creating the actual web app. To use virtual network integration, we need at least the Basic SKU, and then there are a few commands to secure the app and add the integration:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az appservice plan create <span class="nt">--resource-group</span> secureacrsetup <span class="nt">--name</span> secureacrplan <span class="nt">--sku</span> P1V3 <span class="nt">--is-linux</span>
+az webapp create <span class="nt">--resource-group</span> secureacrsetup <span class="nt">--plan</span> secureacrplan <span class="nt">--name</span> secureacrweb2021 <span class="nt">--https-only</span> <span class="nt">--deployment-container-image-name</span> <span class="s1">'mcr.microsoft.com/appsvc/staticsite:latest'</span>
+az webapp vnet-integration add <span class="nt">--resource-group</span> secureacrsetup <span class="nt">--name</span> secureacrweb2021 <span class="nt">--vnet</span> secureacr-vnet <span class="nt">--subnet</span> vnet-integration-subnet
+</code></pre></div></div>
+
+<p>As the last configuration step, we will assign a managed identity to the web app and grant the app access to pull images from the registry.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp identity assign <span class="nt">--resource-group</span> secureacrsetup <span class="nt">--name</span> secureacrweb2021 <span class="nt">--scope</span> <span class="nv">$acr_resource_id</span> <span class="nt">--role</span> AcrPull
+</code></pre></div></div>
+
+<p>You can now browse to the web app and <strong>outbound</strong> traffic from the web app will be routed through the virtual network.</p>
+
+<h2 id="4-pull-from-private-registry">4. Pull from private registry</h2>
+
+<p>All the infrastructure is now in place and we just need to glue it all together. The web app needs some configuration values from the registry.</p>
+
+<p>Images will by default be pulled over public route, but by setting <code class="language-plaintext highlighter-rouge">vnetImagePullEnabled</code> site property to true, you tell the platform to use the virtual network integration for pulling the image:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az resource update <span class="nt">--resource-group</span> secureacrsetup <span class="nt">--name</span> secureacrweb2021 <span class="nt">--set</span> properties.vnetImagePullEnabled<span class="o">=</span><span class="nb">true</span> <span class="nt">--resource-type</span> <span class="s1">'Microsoft.Web/sites'</span>
+</code></pre></div></div>
+
+<p>Configure the container image and set image pull to use managed identity:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp config <span class="nb">set</span> <span class="nt">--resource-group</span> secureacrsetup <span class="nt">--name</span> secureacrweb2021 <span class="nt">--linux-fx-version</span> <span class="s1">'DOCKER|secureacr2021.azurecr.io/privatewebsite:lnx-v1'</span>
+az resource update <span class="nt">--resource-group</span> secureacrsetup <span class="nt">--name</span> secureacrweb2021/config/web <span class="nt">--set</span> properties.acrUseManagedIdentityCreds<span class="o">=</span><span class="nb">true</span> <span class="nt">--resource-type</span> <span class="s1">'Microsoft.Web/sites/config'</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Note</strong>: The app might attempt to pull the image before the configuration is complete which will show up as failed attempts in the logs. Give it a minute or two and the pull will retry with the correct configuration.</p>
+</blockquote>
+
+<h2 id="advanced-scenarios">Advanced scenarios</h2>
+
+<h3 id="using-user-assigned-managed-identity">Using user-assigned managed identity</h3>
+
+<p>System-assigned managed identity is convenient as you do not have any additional resources to manage and it is uniquely associated with your web app. However, there are scenarios where user-assigned managed identity is preferred. It can be configured ahead of the web app and assigning permissions can be delegated. You can also reuse the same managed identity across multiple web apps.</p>
+
+<p>Create a user-assigned managed identity and assign permissions to pull from ACR:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az identity create <span class="nt">--resource-group</span> secureacrsetup <span class="nt">--name</span> secureacr-identity
+<span class="nv">identity_principal_id</span><span class="o">=</span><span class="si">$(</span>az identity show <span class="nt">--resource-group</span> secureacrsetup <span class="nt">--name</span> secureacr-identity <span class="nt">--query</span> principalId <span class="nt">--output</span> tsv<span class="si">)</span>
+az role assignment create <span class="nt">--role</span> <span class="s2">"AcrPull"</span> <span class="nt">--assignee-object-id</span> <span class="nv">$identity_principal_id</span> <span class="nt">--scope</span> <span class="nv">$acr_resource_id</span> <span class="nt">--assignee-principal-type</span> ServicePrincipal
+</code></pre></div></div>
+
+<p>Assign the identity to the web app:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">identity_resource_id</span><span class="o">=</span><span class="si">$(</span>az identity show <span class="nt">--resource-group</span> secureacrsetup <span class="nt">--name</span> secureacr-identity <span class="nt">--query</span> <span class="nb">id</span> <span class="nt">--output</span> tsv<span class="si">)</span>
+az webapp identity assign <span class="nt">--resource-group</span> secureacrsetup <span class="nt">--name</span> secureacrweb2021 <span class="nt">--identities</span> <span class="nv">$identity_resource_id</span>
+</code></pre></div></div>
+
+<p>Configure the web app to pull the image using the user-assigned managed identity:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">identity_client_id</span><span class="o">=</span><span class="si">$(</span>az identity show <span class="nt">--resource-group</span> secureacrsetup <span class="nt">--name</span> secureacr-identity <span class="nt">--query</span> clientId <span class="nt">--output</span> tsv<span class="si">)</span>
+az resource update <span class="nt">--resource-group</span> secureacrsetup <span class="nt">--name</span> secureacrweb2021/config/web <span class="nt">--set</span> properties.acrUserManagedIdentityID<span class="o">=</span><span class="nv">$identity_client_id</span> <span class="nt">--resource-type</span> <span class="s1">'Microsoft.Web/sites/config'</span>
+az resource update <span class="nt">--resource-group</span> secureacrsetup <span class="nt">--name</span> secureacrweb2021/config/web <span class="nt">--set</span> properties.acrUseManagedIdentityCreds<span class="o">=</span><span class="nb">true</span> <span class="nt">--resource-type</span> <span class="s1">'Microsoft.Web/sites/config'</span>
+az webapp config <span class="nb">set</span> <span class="nt">--resource-group</span> secureacrsetup <span class="nt">--name</span> secureacrweb2021 <span class="nt">--linux-fx-version</span> <span class="s1">'DOCKER|secureacr2021.azurecr.io/privatewebsite:lnx-v2'</span>
+</code></pre></div></div>
+
+<h3 id="using-credentials-to-pull-images">Using credentials to pull images</h3>
+
+<p>Instead of using managed identity, you can use admin credentials or an Azure AD Service Principal. These values can optionally be stored in Key Vault and configured as Key Vault referenced app settings.</p>
+
+<p>Configure ACR to enable admin credentials:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az acr update <span class="nt">--resource-group</span> secureacrsetup <span class="nt">--name</span> secureacr2021 <span class="nt">--admin-enabled</span>
+</code></pre></div></div>
+
+<p>Set the registry credentials and disable using managed identity (remember to ensure the <code class="language-plaintext highlighter-rouge">vnetImagePullEnabled</code> is configured if you want to pull the image over the virtual network integration).</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">acr_server_url</span><span class="o">=</span><span class="s2">"https://</span><span class="si">$(</span>az acr show <span class="nt">--name</span> secureacr2021 <span class="nt">--query</span> loginServer <span class="nt">--output</span> tsv<span class="si">)</span><span class="s2">"</span>
+<span class="nv">acr_username</span><span class="o">=</span><span class="si">$(</span>az acr credential show <span class="nt">--name</span> secureacr2021 <span class="nt">--query</span> username <span class="nt">--output</span> tsv<span class="si">)</span>
+<span class="nv">acr_password</span><span class="o">=</span><span class="si">$(</span>az acr credential show <span class="nt">--name</span> secureacr2021 <span class="nt">--query</span> passwords[0].value <span class="nt">--output</span> tsv<span class="si">)</span>
+az webapp config appsettings <span class="nb">set</span> <span class="nt">--resource-group</span> secureacrsetup <span class="nt">--name</span> secureacrweb2021 <span class="nt">--settings</span> <span class="nv">DOCKER_REGISTRY_SERVER_URL</span><span class="o">=</span><span class="nv">$acr_server_url</span> <span class="nv">DOCKER_REGISTRY_SERVER_USERNAME</span><span class="o">=</span><span class="nv">$acr_username</span> <span class="nv">DOCKER_REGISTRY_SERVER_PASSWORD</span><span class="o">=</span><span class="nv">$acr_password</span>
+az resource update <span class="nt">--resource-group</span> secureacrsetup <span class="nt">--name</span> secureacrweb2021/config/web <span class="nt">--set</span> properties.acrUseManagedIdentityCreds<span class="o">=</span><span class="nb">false</span> <span class="nt">--resource-type</span> <span class="s1">'Microsoft.Web/sites/config'</span>
+az webapp config <span class="nb">set</span> <span class="nt">--resource-group</span> secureacrsetup <span class="nt">--name</span> secureacrweb2021 <span class="nt">--linux-fx-version</span> <span class="s1">'DOCKER|secureacr2021.azurecr.io/privatewebsite:lnx-v1'</span>
+</code></pre></div></div>
+
+<h3 id="using-a-custom-private-registry">Using a custom private registry</h3>
+
+<p>App Service also support pulling from a custom private registry using the v2 API. If you are using a custom private registry such as <a href="https://docs.docker.com/registry/">Docker Registry</a>, there are no specific changes you need to make except ensure that the registry is reachable and DNS resolvable from the integration virtual network. Setting up a custom private registry depends on the chosen product and platform. A simple test configuration can be setup using App Service to actually host the registry and protect it with a private endpoint. Other apps can then pull from this registry.</p>
+
+<p>To set up a custom private registry in the existing setup:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp create <span class="nt">--resource-group</span> secureacrsetup <span class="nt">--plan</span> secureacrplan <span class="nt">--name</span> secureacrwebregistry2021 <span class="nt">--https-only</span> <span class="nt">--deployment-container-image-name</span> <span class="s1">'registry:2'</span>
+</code></pre></div></div>
+
+<p>Push a few images to the registry using the docker client:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="nt">-e</span> <span class="s1">'FROM nginx\nCOPY index.html /usr/share/nginx/html'</span> <span class="o">&gt;</span> Dockerfile
+
+<span class="nb">echo</span> <span class="s1">'&lt;html&gt;&lt;head&gt;&lt;title&gt;Custom registry v1&lt;/title&gt;&lt;link rel="shortcut icon" href="https://appservice.azureedge.net/images/app-service/v4/favicon.ico" type="image/x-icon"/&gt;&lt;/head&gt;&lt;body bgcolor=lightblue&gt;&lt;h1&gt;Hello Linux v1 from custom registry&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;'</span> <span class="o">&gt;</span> index.html
+
+docker build <span class="nt">-t</span> customwebsite:lnx-v1 <span class="nb">.</span>
+docker tag customwebsite:lnx-v1 secureacrwebregistry2021.azurewebsites.net/customwebsite:lnx-v1
+docker push secureacrwebregistry2021.azurewebsites.net/customwebsite:lnx-v1
+
+<span class="nb">echo</span> <span class="s1">'&lt;html&gt;&lt;head&gt;&lt;title&gt;Custom registry v2&lt;/title&gt;&lt;link rel="shortcut icon" href="https://appservice.azureedge.net/images/app-service/v4/favicon.ico" type="image/x-icon"/&gt;&lt;/head&gt;&lt;body bgcolor=lightblue&gt;&lt;h1&gt;Hello Linux v2 from custom registry&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;'</span> <span class="o">&gt;</span> index.html
+
+docker build <span class="nt">-t</span> customwebsite:lnx-v2 <span class="nb">.</span>
+docker tag customwebsite:lnx-v2 secureacrwebregistry2021.azurewebsites.net/customwebsite:lnx-v2
+docker push secureacrwebregistry2021.azurewebsites.net/customwebsite:lnx-v2
+</code></pre></div></div>
+
+<p>Secure the registry with a private endpoint and add a private DNS zone to ensure DNS resolution is working:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az network private-dns zone create <span class="nt">--resource-group</span> secureacrsetup <span class="nt">--name</span> privatelink.azurewebsites.net
+az network private-dns <span class="nb">link </span>vnet create <span class="nt">--resource-group</span> secureacrsetup <span class="nt">--name</span> websites-zonelink <span class="nt">--zone-name</span> privatelink.azurewebsites.net <span class="nt">--virtual-network</span> secureacr-vnet <span class="nt">--registration-enabled</span> <span class="nb">false
+</span><span class="nv">webregistry_resource_id</span><span class="o">=</span><span class="si">$(</span>az webapp show <span class="nt">--resource-group</span> secureacrsetup <span class="nt">--name</span> secureacrwebregistry2021 <span class="nt">--query</span> <span class="nb">id</span> <span class="nt">--output</span> tsv<span class="si">)</span>
+az network private-endpoint create <span class="nt">--resource-group</span> secureacrsetup <span class="nt">--name</span> securewebregistry-pe <span class="nt">--location</span> westcentralus <span class="nt">--connection-name</span> securewebregistry-pc <span class="nt">--private-connection-resource-id</span> <span class="nv">$webregistry_resource_id</span> <span class="nt">--group-id</span> sites <span class="nt">--vnet-name</span> secureacr-vnet <span class="nt">--subnet</span> private-endpoint-subnet
+az network private-endpoint dns-zone-group create <span class="nt">--resource-group</span> secureacrsetup <span class="nt">--endpoint-name</span> securewebregistry-pe <span class="nt">--name</span> securewebregistry-zg <span class="nt">--private-dns-zone</span> privatelink.azurewebsites.net <span class="nt">--zone-name</span> privatelink.azurewebsites.net
+</code></pre></div></div>
+
+<p>Finally, disable using managed identity and update the image the app is using:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az resource update <span class="nt">--resource-group</span> secureacrsetup <span class="nt">--name</span> secureacrweb2021/config/web <span class="nt">--set</span> properties.acrUseManagedIdentityCreds<span class="o">=</span><span class="nb">false</span> <span class="nt">--resource-type</span> <span class="s1">'Microsoft.Web/sites/config'</span>
+az webapp config <span class="nb">set</span> <span class="nt">--resource-group</span> secureacrsetup <span class="nt">--name</span> secureacrweb2021 <span class="nt">--linux-fx-version</span> <span class="s1">'DOCKER|secureacrwebregistry2021.azurewebsites.net/customwebsite:lnx-v1'</span>
+</code></pre></div></div>
+
+<p>After about a minute, you should see the new image served from the web app.</p>
+
+<h3 id="deploy-from-secure-registry-with-arm-template-using-credentials">Deploy from secure registry with ARM template using credentials</h3>
+
+<p>In this scenario, you will deploy an app with an ARM template from a registry that uses credentials (username/password) for authentication. If you are using ACR, you can use either Admin credentials or a Service Principal. Pulling over virtual network is optional, but if you are using Azure Container Registry with private endpoint, you will have to pull over virtual network.</p>
+
+<p>The template also assumes the App Service plan and the virtual network exist. If not, you can add this to the template as well.</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"$schema"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"contentVersion"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0.0.0"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"parameters"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"webAppName"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"defaultValue"</span><span class="p">:</span><span class="w"> </span><span class="s2">"secureacrweb2021"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"variables"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"appServicePlanName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"secureacrplan"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"virtualNetworkName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"secureacr-vnet"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"subnetName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vnet-integration-subnet"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"westcentralus"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"webAppName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"[parameters('webAppName')]"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"resources"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"[variables('webAppName')]"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Microsoft.Web/sites"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"apiVersion"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2021-02-01"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"[variables('location')]"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"serverFarmId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"virtualNetworkSubnetId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnetName'))]"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"vnetImagePullEnabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"siteConfig"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"linuxFxVersion"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DOCKER|secureacr2021.azurecr.io/privatewebsite:lnx-v1"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"appSettings"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+              </span><span class="nl">"name"</span><span class="p">:</span><span class="s2">"DOCKER_REGISTRY_SERVER_USERNAME"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"secureacr2021"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+              </span><span class="nl">"name"</span><span class="p">:</span><span class="s2">"DOCKER_REGISTRY_SERVER_PASSWORD"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"[INSERT_REGISTRY_PASSWORD]"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+          </span><span class="p">]</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nl">"httpsOnly"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="deploy-from-secure-registry-with-arm-template-using-managed-identity">Deploy from secure registry with ARM template using managed identity</h3>
+
+<p>As an alternative to using credentials, you can use Managed Identity when pulling images from Azure Container Registry. Pulling over virtual network is again optional and is configured using the <code class="language-plaintext highlighter-rouge">vnetImagePullEnabled</code> site config, but is of course required if your registry is only visible from the virtual network.</p>
+
+<p>Since we need to grant the permissions ahead of creating the app, only User-Assigned Managed Identity will work, and you have to grant the identity AcrPull permissions on the registry. See <a href="#using-user-assigned-managed-identity">the section on using user-managed identity</a>.</p>
+
+<p>Even though the managed identity exists when deploying the template, the resource must be in the template to use the reference method to fetch the clientId. You can work around this by inserting the clientId manually.</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"$schema"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"contentVersion"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0.0.0"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"parameters"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"webAppName"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"defaultValue"</span><span class="p">:</span><span class="w"> </span><span class="s2">"secureacrweb2021"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"variables"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"appServicePlanName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"secureacrplan"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"virtualNetworkName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"secureacr-vnet"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"subnetName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vnet-integration-subnet"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"userAssignedIdentityName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"secureacr-identity"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"westcentralus"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"webAppName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"[parameters('webAppName')]"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"resources"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Microsoft.ManagedIdentity/userAssignedIdentities"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"[variables('userAssignedIdentityName')]"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"apiVersion"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-11-30"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"[variables('location')]"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"[variables('webAppName')]"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Microsoft.Web/sites"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"apiVersion"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2021-02-01"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"[variables('location')]"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"dependsOn"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="s2">"[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('userAssignedIdentityName'))]"</span><span class="w">
+      </span><span class="p">],</span><span class="w">
+      </span><span class="nl">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"serverFarmId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"virtualNetworkSubnetId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnetName'))]"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"siteConfig"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"acrUseManagedIdentityCreds"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"acrUserManagedIdentityID"</span><span class="p">:</span><span class="w"> </span><span class="s2">"[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('userAssignedIdentityName'))).clientId]"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"linuxFxVersion"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DOCKER|secureacr2021.azurecr.io/privatewebsite:lnx-v2"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nl">"vnetImagePullEnabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"httpsOnly"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nl">"identity"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UserAssigned"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"userAssignedIdentities"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('userAssignedIdentityName'))]"</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span></code></pre></div></div>
+
+<h2 id="faq">FAQ</h2>
+
+<p><strong>Q: Can I apply the same steps to a Function app?</strong></p>
+
+<p>Yes, but you will need a Premium Elastic plan or an App Service plan to use virtual network integration with Function apps.</p>
+
+<p><strong>Q: Can I apply the same steps to a Windows container app?</strong></p>
+
+<p>Windows container apps do not yet support pulling containers over virtual network, but you can use managed identity to pull from Azure Container Registry and you can pull from custom registries that are accessible from the internet.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-07-03T00:00:00+00:00">July 03, 2021</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Deploying+Linux+custom+container+from+private+Azure+Container+Registry%20https%3A%2F%2Fazure.github.io%2FAppService%2F2021%2F07%2F03%2FLinux-container-from-ACR-with-private-endpoint.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2021%2F07%2F03%2FLinux-container-from-ACR-with-private-endpoint.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2021%2F07%2F03%2FLinux-container-from-ACR-with-private-endpoint.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2021/06/25/Dot-Net-6-Preview-5-on-App-Service.html" class="pagination--pager" title=".NET 6 Preview 5 on App Service
+">Previous</a>
+    
+    
+      <a href="/AppService/2021/07/08/How-to-create-a-blazor-webassembly-grpc-web-app-using-app-service-on-an-azure-arc-enabled-kubernetes-cluster.html" class="pagination--pager" title="How to create a Blazor WebAssembly gRPC-Web app using App Service on an Azure Arc Enabled Kubernetes Cluster
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

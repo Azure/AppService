@@ -1,0 +1,981 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Cross-Post App Service Auth and Azure AD B2C (Part 2) - Azure App Service</title>
+<meta name="description" content="">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Cross-Post App Service Auth and Azure AD B2C (Part 2)">
+<meta property="og:url" content="https://azure.github.io/AppService/2016/08/15/Cross-Post-App-Service-Auth-and-Azure-AD-B2C-(Part-2).html">
+
+
+  <meta property="og:description" content="">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2016-08-15T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2016/08/15/Cross-Post-App-Service-Auth-and-Azure-AD-B2C-(Part-2).html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Cross-Post App Service Auth and Azure AD B2C (Part 2)">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="August 15, 2016">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Cross-Post App Service Auth and Azure AD B2C (Part 2)
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  6 minute read
+
+            
+            
+            • August 15, 2016
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Chris Gillum (MSFT)" target="_blank">Chris Gillum (MSFT)</a>
+<time>    8/15/2016 8:44:05 AM</time>
+<hr/>
+<div id="content"><header><em>Note: This post was cross-posted from <a href="https://cgillum.tech/2016/08/10/app-service-auth-and-azure-ad-b2c-part-2/">CGillum Dev Blog</a>.</em>
+<em>EDIT 1/23/2017: Updated token refresh section with simplified instructions and added code snippets.</em>
+</header>This post is a continuation of my previous post on <a href="https://blogs.msdn.microsoft.com/appserviceteam/2016/06/22/app-service-auth-and-azure-ad-b2c/">App Service Auth and Azure AD B2C</a>, where I demonstrated how you can create a web app that uses Azure AD B2C without writing any code. If you haven't done so already, be sure to read that post to get proper context for this one.
+
+In a recent service update, we've improved our overall support for B2C in Azure App Service. This includes enhancing our existing web app support, but more importantly includes adding full support for leveraging B2C in mobile, API and function apps. More specifically, support has been added for the <a href="https://cgillum.tech/2016/03/07/app-service-token-store/">Easy Auth Token Refresh API</a>. Additionally, the Login API has been updated to support specifying specific B2C policies as arguments. If you're a Mobile app developer, these improvements will make using Azure AD B2C in your mobile app <em>significantly</em> easier.
+
+This post will go into more details about these improvements, show a few code snippets, and conclude by demonstrating these B2C capabilities in a simple demo web app.
+<h1 id="policies">Pick Your Policy</h1>
+Specific B2C policies can be invoked using the built-in Easy Auth login API for AAD. If you're not familiar with the Easy Auth login API, it works by allowing you to initiate a server-directed login by sending a GET request to your web, mobile, API, or function app's built-in <strong>{root}/.auth/login/aad</strong> endpoint. This endpoint supports the <a href="https://azure.microsoft.com/en-us/documentation/articles/active-directory-v2-protocols-oidc/#send-the-sign-in-request">standard sign-in query string parameters for AAD</a>, including the newly added <strong>p={policy}</strong> query string parameter which allows you to specify a B2C policy by name.
+
+For example, one could use the following HTML in a web app to create hyperlinks that invoke specific B2C policy workflows, such as editing the user profile or resetting the password:
+
+[html]
+&lt;a href="/.auth/login/aad?p=B2C_1_EditProfile&amp;post_login_redirect_uri=/"&gt;Edit Profile&lt;/a&gt;
+&lt;a href="/.auth/login/aad?p=B2C_1_ResetPassword&amp;post_login_redirect_uri=/"&gt;Reset Password&lt;/a&gt;
+[/html]
+
+Clicking one of these links will automatically redirect the user to the corresponding B2C policy page and allow the user to edit their user profile or reset their password accordingly.
+
+If you're writing a native client which uses one of the <a href="https://azure.microsoft.com/en-us/documentation/articles/app-service-mobile-dotnet-how-to-use-client-library/">App Service Mobile Client SDK flavors</a>, you could write something similar in platform-specific code. The example below shows how a mobile client app written in C# can invoke a B2C sign-in policy that requires MFA:
+
+[csharp]
+App.MobileClient.LoginAsync(
+  MobileServiceAuthenticationProvider.WindowsAzureActiveDirectory,
+  new Dictionary&amp;lt;string, string&amp;gt;
+  {
+    { "p", "B2C_1_SignInWithMFA" }
+  }
+[/csharp]
+
+In this case, the user will presented with a native web view dialog which allows the end user to sign in using MFA (phone authentication, etc.). The primary thing to keep in mind about this experience is that these B2C policies can be easily invoked with just a few simple lines of client-side code. No platform-specific middleware or server-side code is required.
+
+<em>One important note of caution: the claims associated with the signed-in user will be updated every time you invoke a B2C policy. If your app depends on the presence of specific claims, make sure they are explicitly configured in each of your B2C policies.</em>
+<h1 id="refresh">Refreshing Tokens (Optional)</h1>
+Easy Auth also has a built-in API for refreshing both provider-specific OAuth tokens and the app-specific authentication tokens. It works similar to the login API, in that it requires a GET request to the app's built-in <strong>{root}</strong><strong>/.auth/refresh</strong> endpoint.  More information on token refresh (and our token management story all-up) can be found in my earlier <a href="https://cgillum.tech/2016/03/07/app-service-token-store/">App Service Token Store</a> blog post.
+
+This token refresh support also extends to Azure AD B2C apps and is completely optional. However, leveraging token refresh is very important if you're building a native app to ensure a smooth user experience. In order to set this up, you will need to do the following:
+<h3>Create an app key for your B2C application</h3>
+Creating app keys can be done in the Azure management portal for B2C.
+
+[caption id="attachment_198" align="aligncenter" width="951"]<a href="https://cgillum.tech/wp-content/uploads/2016/08/B2CDemo-CreateClientSecret.png"><img alt="Generating an App Key in the B2C Management Portal" class="size-full wp-image-198" height="659" src="https://cgillum.tech/wp-content/uploads/2016/08/B2CDemo-CreateClientSecret.png" width="951"/></a> Generating an App Key in the B2C Management Portal[/caption]
+
+Make a note of the app key that gets auto-generated by the portal. We'll need it to configure Easy Auth in the next step.
+<h3 id="settings">Update the Easy Auth Settings</h3>
+Easy Auth doesn't require an app key by default and instead relies on the <a href="http://openid.net/specs/openid-connect-core-1_0.html#ImplicitFlowAuth">OpenID Connect Implicit Flow</a> to implement secure logins. In order to get refresh tokens, however, we need to switch to the <a href="http://openid.net/specs/openid-connect-core-1_0.html#HybridFlowAuth">Hybrid Flow</a> (Don't worry if you don't understand what these mean, Easy Auth will take care of the protocol details for you).
+
+To make this protocol switch, you need to update the App Service Auth settings for your app with the key from the previous step. This can be done in the Advanced tab in the Azure Active Directory portal.
+
+[caption id="attachment_2865" align="alignnone" width="1190"]<a href="/AppService/media/2016/08/B2CDemo-EasyAuthAppSecret.png"><img alt="Setting the B2C app key as the Easy Auth client secret." class="size-full wp-image-2865" height="437" src="/AppService/media/2016/08/B2CDemo-EasyAuthAppSecret.png" width="1190"/></a> Setting the B2C app key as the Easy Auth client secret.[/caption]
+
+Now that you’ve enabled the hybrid flow, your app needs to start requesting refresh tokens from B2C. This can be done by updating the login parameters in your app code to include the <strong>offline_access</strong> scope.
+
+<strong>Updated HTML Example</strong>
+
+[html]
+&lt;a href="/.auth/login/aad?p=B2C_1_EditProfile&amp;post_login_redirect_uri=/&amp;scope=openid+offline_access"&gt;Edit Profile&lt;/a&gt;
+
+&lt;a href="/.auth/login/aad?p=B2C_1_ResetPassword&amp;post_login_redirect_uri=/&amp;scope=openid+offline_access"&gt;Reset Password&lt;/a&gt;
+[/html]
+
+<strong>Updated Mobile App SDK C# Example</strong>
+
+[csharp]
+App.MobileClient.LoginAsync(
+  MobileServiceAuthenticationProvider.WindowsAzureActiveDirectory,
+  new Dictionary&amp;lt;string, string&amp;gt;
+  {
+    { "p", "B2C_1_SignInWithMFA" },
+    { "scope", "openid+offline_access" }
+  }
+[/csharp]
+
+Once this is done, all future logins should result in refresh tokens in the app's built-in token store. You can then write client code which invokes the <strong>{root}/.auth/refresh</strong> API (or use the corresponding Mobile Client SDK method) to periodically refresh these tokens, which allows your app to function for longer periods of time without requiring a re-auth.
+<h1 id="demo">Demo App</h1>
+To demonstrate all of this, I've created a single-page application (aka a SPA app) written using HTML, jQuery, and Bootstrap. It's a trivial app written by someone who is clearly not a UI designer (me) and demonstrates the various patterns described in this blog post.  You can browse to it <a href="https://easyauth-b2c.azurewebsites.net/">here</a> and play around with it (I promise not to give out your information if you decide to provide it), or simply copy the source code and host it yourself in your own App Service web app. Note that I theoretically could have also built this using the <a href="https://azure.microsoft.com/en-us/documentation/articles/app-service-mobile-ios-how-to-use-client-library/">iOS</a>, <a href="https://azure.microsoft.com/en-us/documentation/articles/app-service-mobile-android-how-to-use-client-library/">Android</a>, <a href="https://azure.microsoft.com/en-us/documentation/articles/app-service-mobile-dotnet-how-to-use-client-library/">UWP/Xamarin</a>, or one of the other mobile SDKs that are provided, but it was simpler for me to build a plain-old HTML web app. :)
+
+<em>The important thing to keep in mind is that there is absolutely no auth code in this sample (in fact, no backend code at all). All of this is implemented on the client and in the App Service platform with the help of Azure AD B2C. No SDKs required.</em>
+
+When you first visit the demo page, you will be given two login options. One is a standard email-based login and the other is an MFA login which requires you to register a phone number for phone authentication.
+
+[caption id="attachment_183" align="aligncenter" width="510"]<a href="/AppService/media/2016/08/B2CDemo-UnauthenticatedPage.png"><img alt="Starting page when unauthenticated" class="size-full wp-image-183" height="287" src="/AppService/media/2016/08/B2CDemo-UnauthenticatedPage.png" width="510"/></a> Demo app starting page when unauthenticated[/caption]
+
+The phone authentication provided by B2C allows you to do phone calls or SMS in my case. You can enter the provided code to complete the authentication.
+
+[caption id="attachment_182" align="aligncenter" width="419"]<a href="/AppService/media/2016/08/B2CDemo-PhoneAuth.png"><img alt="Phone authentication" class="size-full wp-image-182" height="224" src="/AppService/media/2016/08/B2CDemo-PhoneAuth.png" width="419"/></a> Phone authentication when using Azure AD B2C[/caption]
+
+Once signed-in, you will see a few B2C policy actions that you can invoke as well as a set of user claims displayed on the page. There's also a sign-out button which uses Easy Auth's built-in Logout API to clear the session.
+
+[caption id="attachment_185" align="aligncenter" width="992"]<a href="/AppService/media/2016/08/B2CDemo-PolicyActions.png"><img alt="Policy Actions" class="size-full wp-image-185" height="211" src="/AppService/media/2016/08/B2CDemo-PolicyActions.png" width="992"/></a> This B2C demo app supports updating the user profile and resetting the password used for logging in.[/caption]
+
+[caption id="attachment_189" align="aligncenter" width="1003"]<a href="/AppService/media/2016/08/B2CDemo-Claims.png"><img alt="B2C Claims" class="size-full wp-image-189" height="713" src="/AppService/media/2016/08/B2CDemo-Claims.png" width="1003"/></a> This B2C policy is configured to return the object ID, postal code, name and email address.[/caption]
+
+Note that one of the claims, <em>https://schemas.microsoft.com/claims/authnclassreference</em>, contains the name of the B2C policy that the user logged-in with. Your application code can take advantage of this if, for example, you want to grant special permissions to users who log in using a higher-privilege B2C policy.
+
+Again, it's a very simple app to quickly demonstrate some of the powerful capabilities of the App Service "Easy Auth" platform when combined with Azure AD B2C.  My hope is that this is enough to give you some ideas about how you can leverage the Azure AD B2C platform in your own App Service apps.
+<h1>Following Up</h1>
+Have a technical questions about Azure App Service and/or Azure AD B2C? Head over to <a href="http://stackoverflow.com/">StackOverflow.com</a> and tag your questions with <a href="http://stackoverflow.com/questions/tagged/azure-app-service"><strong>azure-app-service </strong></a>and/or <a href="http://stackoverflow.com/questions/tagged/azure-ad-b2c"><strong>azure-ad-b2c</strong></a> accordingly. We monitor posts with these tags and are happy to help.
+
+<footer><em>Note: This post was cross-posted from <a href="https://cgillum.tech/2016/08/10/app-service-auth-and-azure-ad-b2c-part-2/">CGillum Dev Blog</a>.</em>
+</footer></div>
+</div></body>
+<script src="/AppService/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="/AppService/resource/replace.js" type="text/javascript"></script>
+</html>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2016-08-15T00:00:00+00:00">August 15, 2016</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Cross-Post+App+Service+Auth+and+Azure+AD+B2C+%28Part+2%29%20https%3A%2F%2Fazure.github.io%2FAppService%2F2016%2F08%2F15%2FCross-Post-App-Service-Auth-and-Azure-AD-B2C-%28Part-2%29.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2016%2F08%2F15%2FCross-Post-App-Service-Auth-and-Azure-AD-B2C-%28Part-2%29.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2016%2F08%2F15%2FCross-Post-App-Service-Auth-and-Azure-AD-B2C-%28Part-2%29.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2016/08/11/Patching-Swagger-UI-Vulnerabilities-in-Azure-Mobile-Apps.html" class="pagination--pager" title="Patching Swagger-UI Vulnerabilities in Azure Mobile Apps
+">Previous</a>
+    
+    
+      <a href="/AppService/2016/08/18/Announcing-MySQL-in-app-for-Web-Apps-(Windows).html" class="pagination--pager" title="Announcing  MySQL in-app for Web Apps (Windows)
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

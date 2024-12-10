@@ -1,0 +1,1060 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Deploying Azure Web App Certificate through Key Vault - Azure App Service</title>
+<meta name="description" content="How to deploy an App Service Certificate through Azure Key Vault">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Deploying Azure Web App Certificate through Key Vault">
+<meta property="og:url" content="https://azure.github.io/AppService/2016/05/24/Deploying-Azure-Web-App-Certificate-through-Key-Vault.html">
+
+
+  <meta property="og:description" content="How to deploy an App Service Certificate through Azure Key Vault">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2016-05-24T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2016/05/24/Deploying-Azure-Web-App-Certificate-through-Key-Vault.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Deploying Azure Web App Certificate through Key Vault">
+    <meta itemprop="description" content="How to deploy an App Service Certificate through Azure Key Vault">
+    <meta itemprop="datePublished" content="May 24, 2016">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Deploying Azure Web App Certificate through Key Vault
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  6 minute read
+
+            
+            
+              • By Ashish Kurmi
+            
+            • May 24, 2016
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#prerequisites">Prerequisites</a></li>
+  <li><a href="#deploying-key-vault-certificate-into-web-app">Deploying Key Vault Certificate into Web App</a></li>
+  <li><a href="#rotating-certificate">Rotating Certificate</a></li>
+  <li><a href="#deploying-other-secrets-from-key-vault">Deploying other secrets from Key Vault</a></li>
+  <li><a href="#arm-template-to-deploy-and-assign-kv-certificate">ARM Template to deploy and Assign KV Certificate</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <p>As part of <a href="https://azure.microsoft.com/en-us/blog/internals-of-app-service-certificate/">App Service Certificate (ASC)</a> offering, we now support certificate deployment through Azure Key Vault (AKV). ASC stores the private certificate into a user provided Key Vault Secret (KVS). When an ASC is deployed into a Web App, Web App Resource Provider (RP) actually deploys it from the KVS associated with ASC. Essentially, ASC and Web App are loosely connected through Azure Key Vault. If you manually upload a private certificate into a KVS then you can use the same feature for deploying your own certificate into Web App through AKV.</p>
+
+<h2 id="prerequisites">Prerequisites</h2>
+
+<p>In order to use this feature, first you need an Azure Key Vault. This Key Vault needs to be in the same subscription as your web app but it need not be in the same region as your Web App. Web App doesn’t have a runtime dependency on Key Vault. When you deploy a certificate, Web App RP reads it from the KV and caches it in its management database. It need not even be in the same resource group. If you don’t have a KV then you can use the following PowerShell command to create a new one:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">New-AzureRmKeyVault</span><span class="w"> </span><span class="nt">-VaultName</span><span class="w"> </span><span class="nx">akurmitestvault</span><span class="w"> </span><span class="nt">-ResourceGroupName</span><span class="w"> </span><span class="nx">keyvaulttestrg</span><span class="w"> </span><span class="nt">-Location</span><span class="w"> </span><span class="s2">"eastus2"</span><span class="w"> </span><span class="nt">-Sku</span><span class="w"> </span><span class="nx">standard</span><span class="w">
+</span></code></pre></div></div>
+
+<p>By default, the Web App RP doesn’t have access to customer KV. In order to use a KV for certificate deployment, you need to authorize the RP by executing the following PowerShell command:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Set-AzureRmKeyVaultAccessPolicy</span><span class="w"> </span><span class="nt">-VaultName</span><span class="w"> </span><span class="nx">akurmitestvault</span><span class="w"> </span><span class="nt">-ServicePrincipalName</span><span class="w"> </span><span class="nx">abfa0a7c-a6b6-4736-8310-5855508787cd</span><span class="w"> </span><span class="nt">-PermissionsToSecrets</span><span class="w"> </span><span class="nx">get</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The RP requires read access to KV. <code class="language-plaintext highlighter-rouge">abfa0a7c-a6b6-4736-8310-5855508787cd</code> is the RP service principal name and it remains same for all Azure subscriptions. Note for Azure Gov cloud environment you will need to use <code class="language-plaintext highlighter-rouge">6a02c803-dafd-4136-b4c3-5a6f318b4714</code> as the RP service principal name in the above command instead of ‘abfa0a7c-a6b6-4736-8310-5855508787cd’. Last thing you need is a KVS that contains the PFX certificate you would like to deploy. Before deploying a certificate, the RP performs the following checks on KVS:</p>
+
+<ul>
+  <li>It actually contains a PFX certificate that’s not password protected</li>
+  <li>Content type of the secret should be ‘application/x-pkcs12’</li>
+</ul>
+
+<p>You can use the following PowerShell snippet to upload a PFX certificate from your machine into a Key Vault secret:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$pfxFilePath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"F:\KeyVault\PrivateCertificate.pfx"</span><span class="w">
+</span><span class="nv">$pwd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"[2+)t^BgfYZ2C0WAu__gw["</span><span class="w">
+</span><span class="nv">$flag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">System.Security.Cryptography.X509Certificates.X509KeyStorageFlags</span><span class="p">]::</span><span class="n">Exportable</span><span class="w">
+</span><span class="nv">$collection</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">New-Object</span><span class="w"> </span><span class="nx">System.Security.Cryptography.X509Certificates.X509Certificate2Collection</span><span class="w">  
+</span><span class="nv">$collection</span><span class="o">.</span><span class="nf">Import</span><span class="p">(</span><span class="nv">$pfxFilePath</span><span class="p">,</span><span class="w"> </span><span class="nv">$pwd</span><span class="p">,</span><span class="w"> </span><span class="nv">$flag</span><span class="p">)</span><span class="w">
+</span><span class="nv">$pkcs12ContentType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">System.Security.Cryptography.X509Certificates.X509ContentType</span><span class="p">]::</span><span class="n">Pkcs12</span><span class="w">
+</span><span class="nv">$clearBytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$collection</span><span class="o">.</span><span class="nf">Export</span><span class="p">(</span><span class="nv">$pkcs12ContentType</span><span class="p">)</span><span class="w">
+</span><span class="nv">$fileContentEncoded</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">System.Convert</span><span class="p">]::</span><span class="n">ToBase64String</span><span class="p">(</span><span class="nv">$clearBytes</span><span class="p">)</span><span class="w">
+</span><span class="nv">$secret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ConvertTo-SecureString</span><span class="w"> </span><span class="nt">-String</span><span class="w"> </span><span class="nv">$fileContentEncoded</span><span class="w"> </span><span class="nt">-AsPlainText</span><span class="w"> </span><span class="err">–</span><span class="nx">Force</span><span class="w">
+</span><span class="nv">$secretContentType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'application/x-pkcs12'</span><span class="w">
+</span><span class="n">Set-AzureKeyVaultSecret</span><span class="w"> </span><span class="nt">-VaultName</span><span class="w"> </span><span class="nx">akurmitestvault</span><span class="w"> </span><span class="nt">-Name</span><span class="w"> </span><span class="nx">keyVaultCert</span><span class="w"> </span><span class="nt">-SecretValue</span><span class="w"> </span><span class="nv">$Secret</span><span class="w"> </span><span class="nt">-ContentType</span><span class="w"> </span><span class="nv">$secretContentType</span><span class="w"> </span><span class="c"># Change the Key Vault name and secret name</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="deploying-key-vault-certificate-into-web-app">Deploying Key Vault Certificate into Web App</h2>
+
+<p>After completing all prerequisites, now we are ready to deploy the certificate into a Web App. Currently, Azure portal doesn’t support deploying external certificate from Key Vault, you need to call Web App ARM APIs directly using <a href="https://github.com/projectkudu/ARMClient">ArmClient</a>, <a href="https://resources.azure.com/">Resource Explorer</a>, or <a href="https://azure.microsoft.com/en-us/documentation/articles/resource-group-template-deploy/">Template Deployment Engine</a>. I will be using ARMClient for the rest of this blogpost. You can also use Resource Explorer to do everything described below.</p>
+
+<p>We need to find the resource group for certificate resource before calling the ARM APIs as it ideally we should use App Service Plan’s resource group, you can find this from ‘serverFarmId’ property of the site resource:</p>
+
+<pre><code class="language-txt">ARMClient GET /subscriptions/fb2c25dc-6bab-45c4-8cc9-cece7c42a95a/resourceGroups/Default-Web-EastAsia/providers/Microsoft.Web/sites/appservicecertificatedemo?api-version=2016-03-01`
+</code></pre>
+
+<p>And here is the response:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/subscriptions/fb2c25dc-6bab-45c4-8cc9-cece7c42a95a/resourceGroups/Default-Web-EastAsia/providers/Microsoft.Web/sites/appservicecertificatedemo"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"appservicecertificatedemo"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Microsoft.Web/sites"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;strong&gt;East Asia&lt;/strong&gt;"</span><span class="p">,</span><span class="w">
+  </span><span class="err">...</span><span class="w">
+    </span><span class="nl">"serverFarmId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;strong&gt;/subscriptions/fb2c25dc-6bab-45c4-8cc9-cece7c42a95a/resourceGroups/Default-Web-EastAsia/providers/Microsoft.Web/serverfarms/appservicecertificatedemoplan&lt;/strong&gt;"</span><span class="p">,</span><span class="w">
+    </span><span class="err">...</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Also note the following properties from this response:</p>
+
+<ul>
+  <li>Location since certificate resource needs be created in the same location as server farm.</li>
+  <li>ServerFarmId as it would be required to create certificate resource. We would also use the resource group name specified in this resource id.</li>
+</ul>
+
+<p>We also need Key Vault resource URI to deploy the certificate. You can get this value by executing the following PowerShell command:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Get-AzureRmKeyVault</span><span class="w"> </span><span class="nt">-VaultName</span><span class="w"> </span><span class="nx">akurmitestvault</span><span class="w">
+</span><span class="n">Vault</span><span class="w"> </span><span class="nx">Name</span><span class="w">                       </span><span class="p">:</span><span class="w"> </span><span class="nx">akurmitestvault</span><span class="w">
+</span><span class="n">Resource</span><span class="w"> </span><span class="nx">Group</span><span class="w"> </span><span class="nx">Name</span><span class="w">              </span><span class="p">:</span><span class="w"> </span><span class="nx">keyvaulttestrg</span><span class="w">
+</span><span class="n">Location</span><span class="w">                         </span><span class="p">:</span><span class="w"> </span><span class="nx">eastus2</span><span class="w">
+</span><span class="n">Resource</span><span class="w"> </span><span class="nx">ID</span><span class="w">                      </span><span class="p">:</span><span class="w"> </span><span class="err">&lt;</span><span class="nx">strong</span><span class="err">&gt;</span><span class="nx">/subscriptions/fb2c25dc-6bab-45c4-8cc9-cece7c42a95a/resourceGroups/keyvaulttestrg/providers/Microsoft.KeyVault/vaults/akurmitestvault</span><span class="err">&lt;</span><span class="nx">/strong</span><span class="err">&gt;</span><span class="w">
+</span><span class="n">Vault</span><span class="w"> </span><span class="nx">URI</span><span class="w">                        </span><span class="p">:</span><span class="w"> </span><span class="nx">https://akurmitestvault.vault.azure.net/</span><span class="w">
+</span><span class="o">...</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Once you have these values, you can use the following ARMClient command to upload the certificate into your Web App. Note that in order to call this API, the caller needs to have write access to the Key Vault account specified in the request body.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ARMClient.exe PUT /subscriptions/&lt;Subscription Id&gt;/resourceGroups/&lt;Server Farm Resource Group&gt;/providers/Microsoft.Web/certificates/&lt;User Friendly Resource Name&gt;?api-version<span class="o">=</span>2016-03-01 <span class="s2">"{'Location':'&amp;lt;Web App Location&amp;gt;','Properties':{'KeyVaultId':'&lt;Key Vault Resource Id&gt;', 'KeyVaultSecretName':'&lt;Secret Name&gt;', 'serverFarmId':'&lt;Server Farm (App Service Plan) resource Id&gt;'}}"</span>
+</code></pre></div></div>
+
+<p>Here is an example wil my values, yours will be different.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ARMClient.exe PUT /subscriptions/fb2c25dc-6bab-45c4-8cc9-cece7c42a95a/resourceGroups/Default-Web-EastAsia/providers/Microsoft.Web/certificates/keyvaultcertificate?api-version<span class="o">=</span>2016-03-01 <span class="s2">"{'Location':'East Asia','Properties':{'KeyVaultId':'/subscriptions/fb2c25dc-6bab-45c4-8cc9-cece7c42a95a/resourceGroups/keyvaulttestrg/providers/Microsoft.KeyVault/vaults/akurmitestvault', 'KeyVaultSecretName':'keyVaultCert', 'serverFarmId': '/subscriptions/fb2c25dc-6bab-45c4-8cc9-cece7c42a95a/resourceGroups/Default-Web-EastAsia/providers/Microsoft.Web/serverfarms/appservicecertificatedemoplan'}}"</span>
+</code></pre></div></div>
+
+<p>And here is the response:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w"> 
+  </span><span class="nl">"id"</span><span class="p">:</span><span class="s2">"/subscriptions/fb2c25dc-6bab-45c4-8cc9-cece7c42a95a/resourceGroups/Default-Web-EastAsia/providers/Microsoft.Web/certificates/keyvaultcertificate"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"name"</span><span class="p">:</span><span class="s2">"keyvaultcertificate"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"type"</span><span class="p">:</span><span class="s2">"Microsoft.Web/certificates"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"location"</span><span class="p">:</span><span class="s2">"East Asia"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"tags"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"properties"</span><span class="p">:{</span><span class="w"> 
+    </span><span class="nl">"friendlyName"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"subjectName"</span><span class="p">:</span><span class="s2">"appservicecertificatedemo.com"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"hostNames"</span><span class="p">:[</span><span class="w"> 
+        </span><span class="s2">"appservicecertificatedemo.com"</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="nl">"pfxBlob"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"siteName"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"selfLink"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"issuer"</span><span class="p">:</span><span class="s2">"appservicecertificatedemo.com"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"issueDate"</span><span class="p">:</span><span class="s2">"2016-05-02T21:09:24-07:00"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"expirationDate"</span><span class="p">:</span><span class="s2">"2017-05-02T00:00:00-07:00"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"password"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"thumbprint"</span><span class="p">:</span><span class="s2">"**F454D4277D449D8CD2384B63D7AA2F2F7F3766E4**"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"valid"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"toDelete"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"cerBlob"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"publicKeyHash"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"hostingEnvironment"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"hostingEnvironmentProfile"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"keyVaultId"</span><span class="p">:</span><span class="s2">"/subscriptions/fb2c25dc-6bab-45c4-8cc9-cece7c42a95a/resourcegroups/keyvaulttestrg/providers/microsoft.keyvault/vaults/akurmitestvault"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"keyVaultSecretName"</span><span class="p">:</span><span class="s2">"keyvaultcert"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"webSpace"</span><span class="p">:</span><span class="s2">"eastasiawebspace"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"tags"</span><span class="p">:</span><span class="kc">null</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>After executing this command, the certificate would be listed under ‘Custom Domains and SSL’ blade in Azure portal. Now you can use this certificate to create SSL bindings just like a regular certificate as described in this article. You can also use the following ARMClient command to create SSL binding for custom hostname ‘appservicecertificatedemo.com’. If the custom hostname you want to use in this call is not already added to the website, then you should also create the DNS records required for verification as described <a href="">here</a>.</p>
+
+<p>Command:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ARMClient.exe PUT /subscriptions/fb2c25dc-6bab-45c4-8cc9-cece7c42a95a/resourceGroups/Default-Web-EastAsia/providers/Microsoft.Web/sites/appservicecertificatedemo/hostnameBindings/appservicecertificatedemo.com?api-version<span class="o">=</span>2016-03-01 <span class="s2">"{'Location':'East Asia','properties':{'sslState':'SniEnabled','thumbprint':'F454D4277D449D8CD2384B63D7AA2F2F7F3766E4'}}"</span>
+</code></pre></div></div>
+
+<p>Response:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/subscriptions/fb2c25dc-6bab-45c4-8cc9-cece7c42a95a/resourceGroups/Default-Web-EastAsia/providers/Microsoft.Web/sites/appservicecertificatedemo/hostNameBindings/appservicecertificatedemo.com"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"appservicecertificatedemo/appservicecertificatedemo.com"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Microsoft.Web/sites/hostNameBindings"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"East Asia"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"tags"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"siteName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"appservicecertificatedemo"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"domainId"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"azureResourceName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"appservicecertificatedemo"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"azureResourceType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Website"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"customHostNameDnsRecordType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"A"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"hostNameType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Managed"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"sslState"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SniEnabled"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"thumbprint"</span><span class="p">:</span><span class="w"> </span><span class="s2">"F454D4277D449D8CD2384B63D7AA2F2F7F3766E4"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>If you want to create an IP-based SSL binding instead of SNI then replace ‘SniEnabled’ with ‘IpBasedEnabled’ in the ARMClient command. You can also access this certificate from your Web App once it’s uploaded instead of creating SSL binding as described in this blog.</p>
+
+<h2 id="rotating-certificate">Rotating Certificate</h2>
+
+<p>Once a certificate has been deployed through KVS, follow these steps to rotate it:</p>
+
+<ol>
+  <li>Update the KVS with a new certificate</li>
+  <li>Call the Create Certificate API again with the same body. This would update the certificate resource and migrate all Web Apps that are using it to the new certificate The Web App RP has a batch job that periodically syncs all Web App certificate resources with the associated Key Vault secret so if you don’t call the Create Certificate API after updating the KVS, then this periodic job would eventually migrate the Web Apps to the new certificate.</li>
+</ol>
+
+<h2 id="deploying-other-secrets-from-key-vault">Deploying other secrets from Key Vault</h2>
+
+<p>You may ask, deploying a certificate from KVS is fine. But what about deploying other secrets from KV such as connection strings? Currently, our platform only supports certificate deployment through Key Vault. You can however, use this feature and write some custom code to deploy generic Key Vault secrets into your Web App. Say your application requires a symmetric encryption key and a SQL connection string. You can follow these steps to deploy your app secrets through Key Vault:</p>
+
+<ol>
+  <li>Store the connection string and symmetric key in a Key Vault as individual secrets</li>
+  <li>Create a self-signed certificate and authorize it to read Key Vault Secrets as described here</li>
+  <li>Store this certificate in the Key Vault</li>
+  <li>Deploy the certificate through KVS and create the required App Setting so that it would be available locally for your Web App to use</li>
+  <li>In the Application_Start event, use this certificate to read secrets from Key Vault and update web.config if required</li>
+</ol>
+
+<h2 id="arm-template-to-deploy-and-assign-kv-certificate">ARM Template to deploy and Assign KV Certificate</h2>
+
+<p>You can use the following ARM template to deploy a certificate through KVS and create SSL bindings for a custom hostname: https://azure.microsoft.com/en-us/documentation/templates/201-web-app-certificate-from-key-vault/</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2016-05-24T00:00:00+00:00">May 24, 2016</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Deploying+Azure+Web+App+Certificate+through+Key+Vault%20https%3A%2F%2Fazure.github.io%2FAppService%2F2016%2F05%2F24%2FDeploying-Azure-Web-App-Certificate-through-Key-Vault.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2016%2F05%2F24%2FDeploying-Azure-Web-App-Certificate-through-Key-Vault.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2016%2F05%2F24%2FDeploying-Azure-Web-App-Certificate-through-Key-Vault.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2016/05/18/Azure-App-Service-Web-App-troubleshooting-blade-and-tools.html" class="pagination--pager" title="Azure App Service Web App troubleshooting blade and tools
+">Previous</a>
+    
+    
+      <a href="/AppService/2016/06/02/Introducing-Failure-History-(appLens)-for-Azure-App-Service-Web-App.html" class="pagination--pager" title="Introducing Failure History (appLens) for Azure App Service Web App
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

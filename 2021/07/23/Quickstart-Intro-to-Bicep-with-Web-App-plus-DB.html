@@ -1,0 +1,1387 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Quickstart: Intro to Bicep with Web App and DB - Azure App Service</title>
+<meta name="description" content="Get started with Azure App Service by deploying an app to the cloud using a Bicep file and Azure CLI in Cloud Shell. Because you use a free App Service tier, you incur no costs to complete this quickstart.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Quickstart: Intro to Bicep with Web App and DB">
+<meta property="og:url" content="https://azure.github.io/AppService/2021/07/23/Quickstart-Intro-to-Bicep-with-Web-App-plus-DB.html">
+
+
+  <meta property="og:description" content="Get started with Azure App Service by deploying an app to the cloud using a Bicep file and Azure CLI in Cloud Shell. Because you use a free App Service tier, you incur no costs to complete this quickstart.">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2021-07-23T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2021/07/23/Quickstart-Intro-to-Bicep-with-Web-App-plus-DB.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Quickstart: Intro to Bicep with Web App and DB">
+    <meta itemprop="description" content="Get started with Azure App Service by deploying an app to the cloud using a Bicep file and Azure CLI in Cloud Shell. Because you use a free App Service tier, you incur no costs to complete this quickstart.">
+    <meta itemprop="datePublished" content="July 23, 2021">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Quickstart: Intro to Bicep with Web App and DB
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  8 minute read
+
+            
+            
+              • By Jordan Selig
+            
+            • July 23, 2021
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#prerequisites">Prerequisites</a></li>
+  <li><a href="#review-the-template">Review the template</a></li>
+  <li><a href="#deploy-the-template">Deploy the template</a></li>
+  <li><a href="#validate-the-deployment">Validate the deployment</a></li>
+  <li><a href="#clean-up-resources">Clean up resources</a></li>
+  <li><a href="#optional-additional-sample-apps">Optional additional sample apps</a>
+    <ul>
+      <li><a href="#webapp-with-cosmosdb">Webapp with CosmosDB</a></li>
+      <li><a href="#webapp-with-custom-dns-name-with-a-tlsssl-binding">Webapp with custom DNS name with a TLS/SSL binding</a></li>
+    </ul>
+  </li>
+  <li><a href="#clean-up-resources-1">Clean up resources</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <p>Get started with <a href="https://azure.microsoft.com/en-us/services/app-service/">Azure App Service</a> by deploying an app to the cloud using a <a href="https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/">Bicep</a> file and <a href="https://docs.microsoft.com/en-us/cli/azure/get-started-with-azure-cli">Azure CLI</a> in Cloud Shell. Because you use a free App Service tier, you incur no costs to complete this quickstart.</p>
+
+<p>Bicep is a domain-specific language (DSL) that uses declarative syntax to deploy Azure resources. It provides concise syntax, reliable type safety, and support for code reuse. You can use Bicep instead of JSON to develop your Azure Resource Manager templates (<a href="https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/overview">ARM templates</a>). The JSON syntax to create an ARM template can be verbose and require complicated expressions. Bicep syntax reduces that complexity and improves the development experience. Bicep is a transparent abstraction over ARM template JSON and doesn’t lose any of the JSON template capabilities. During deployment, the Bicep CLI transpiles a Bicep file into ARM template JSON.</p>
+
+<h2 id="prerequisites">Prerequisites</h2>
+
+<p>If you don’t have an <a href="https://docs.microsoft.com/en-us/azure/guides/developer/azure-developer-guide#understanding-accounts-subscriptions-and-billing">Azure subscription</a>, create a <a href="https://azure.microsoft.com/free/?ref=microsoft.com&amp;utm_source=microsoft.com&amp;utm_medium=docs&amp;utm_campaign=visualstudio">free account</a> before you begin.</p>
+
+<p>In order to effectively create resources with Bicep, you will need to <a href="https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/install">install Bicep</a>. The Bicep extension for <a href="https://code.visualstudio.com/">Visual Studio Code</a> provides language support and resource autocompletion. The extension helps you create and validate Bicep files and is recommended for those that will continue to create resources using Bicep upon completing this quickstart.</p>
+
+<h2 id="review-the-template">Review the template</h2>
+
+<p>The template used in this quickstart is shown below. It deploys an App Service plan, an App Service app on Linux, and a sample Node.js “Hello World” app from the <a href="https://github.com/Azure-Samples">Azure Samples</a> repo.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">param</span> <span class="nx">webAppName</span> <span class="nx">string</span> <span class="o">=</span> <span class="nf">uniqueString</span><span class="p">(</span><span class="nf">resourceGroup</span><span class="p">().</span><span class="nx">id</span><span class="p">)</span> <span class="c1">// Generate unique String for web app name</span>
+<span class="nx">param</span> <span class="nx">sku</span> <span class="nx">string</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">P1V2</span><span class="dl">'</span> <span class="c1">// The SKU of App Service Plan</span>
+<span class="nx">param</span> <span class="nx">linuxFxVersion</span> <span class="nx">string</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">node|14-lts</span><span class="dl">'</span> <span class="c1">// The runtime stack of web app</span>
+<span class="nx">param</span> <span class="nx">location</span> <span class="nx">string</span> <span class="o">=</span> <span class="nf">resourceGroup</span><span class="p">().</span><span class="nx">location</span> <span class="c1">// Location for all resources</span>
+<span class="nx">param</span> <span class="nx">repositoryUrl</span> <span class="nx">string</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">https://github.com/Azure-Samples/nodejs-docs-hello-world</span><span class="dl">'</span>
+<span class="nx">param</span> <span class="nx">branch</span> <span class="nx">string</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">master</span><span class="dl">'</span>
+
+<span class="kd">var</span> <span class="nx">appServicePlanName</span> <span class="o">=</span> <span class="nf">toLower</span><span class="p">(</span><span class="dl">'</span><span class="s1">AppServicePlan-${webAppName}</span><span class="dl">'</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">webSiteName</span> <span class="o">=</span> <span class="nf">toLower</span><span class="p">(</span><span class="dl">'</span><span class="s1">wapp-${webAppName}</span><span class="dl">'</span><span class="p">)</span>
+
+<span class="nx">resource</span> <span class="nx">appServicePlan</span> <span class="dl">'</span><span class="s1">Microsoft.Web/serverfarms@2020-06-01</span><span class="dl">'</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="nx">appServicePlanName</span>
+  <span class="na">location</span><span class="p">:</span> <span class="nx">location</span>
+  <span class="na">properties</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">reserved</span><span class="p">:</span> <span class="kc">true</span>
+  <span class="p">}</span>
+  <span class="nl">sku</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">name</span><span class="p">:</span> <span class="nx">sku</span>
+  <span class="p">}</span>
+  <span class="nl">kind</span><span class="p">:</span> <span class="dl">'</span><span class="s1">linux</span><span class="dl">'</span>
+<span class="p">}</span>
+
+<span class="nx">resource</span> <span class="nx">appService</span> <span class="dl">'</span><span class="s1">Microsoft.Web/sites@2020-06-01</span><span class="dl">'</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="nx">webSiteName</span>
+  <span class="na">location</span><span class="p">:</span> <span class="nx">location</span>
+  <span class="na">properties</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">serverFarmId</span><span class="p">:</span> <span class="nx">appServicePlan</span><span class="p">.</span><span class="nx">id</span>
+    <span class="na">siteConfig</span><span class="p">:</span> <span class="p">{</span>
+      <span class="na">linuxFxVersion</span><span class="p">:</span> <span class="nx">linuxFxVersion</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nx">resource</span> <span class="nx">srcControls</span> <span class="dl">'</span><span class="s1">Microsoft.Web/sites/sourcecontrols@2021-01-01</span><span class="dl">'</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">${appService.name}/web</span><span class="dl">'</span>
+  <span class="na">properties</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">repoUrl</span><span class="p">:</span> <span class="nx">repositoryUrl</span>
+    <span class="na">branch</span><span class="p">:</span> <span class="nx">branch</span>
+    <span class="na">isManualIntegration</span><span class="p">:</span> <span class="kc">true</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Three Azure resources are defined in the template:</p>
+
+<ul>
+  <li><a href="https://docs.microsoft.com/en-us/azure/templates/microsoft.web/2020-06-01/serverfarms?tabs=bicep"><strong>Microsoft.Web/serverfarms</strong></a>: create an App Service plan.</li>
+  <li><a href="https://docs.microsoft.com/en-us/azure/templates/microsoft.web/sites?tabs=bicep"><strong>Microsoft.Web/sites</strong></a>: create an App Service app.</li>
+  <li><a href="https://docs.microsoft.com/en-us/azure/templates/microsoft.web/sourcecontrols?tabs=bicep"><strong>Microsoft.Web/sites/sourcecontrols</strong></a>: create an external git deployment configuration.</li>
+</ul>
+
+<p>This template contains several parameters that are predefined for your convenience. See the table below for parameter defaults and their descriptions:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Parameters</th>
+      <th>Type</th>
+      <th>Default value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>webAppName</td>
+      <td>string</td>
+      <td>“webApp-<strong><code class="language-plaintext highlighter-rouge">&lt;uniqueString&gt;</code></strong>”</td>
+      <td>App name</td>
+    </tr>
+    <tr>
+      <td>location</td>
+      <td>string</td>
+      <td>“resourceGroup().location”</td>
+      <td>App region</td>
+    </tr>
+    <tr>
+      <td>sku</td>
+      <td>string</td>
+      <td>“P1V2”</td>
+      <td>Instance size</td>
+    </tr>
+    <tr>
+      <td>linuxFxVersion</td>
+      <td>string</td>
+      <td>“NODE|14-LTS”</td>
+      <td>A two-part string defining the runtime and version: “language|Version”</td>
+    </tr>
+    <tr>
+      <td>repositoryUrl</td>
+      <td>string</td>
+      <td>“https://github.com/Azure-Samples/nodejs-docs-hello-world”</td>
+      <td>External Git repo (optional)</td>
+    </tr>
+    <tr>
+      <td>branch</td>
+      <td>string</td>
+      <td>“master”</td>
+      <td>Default branch for code sample</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="deploy-the-template">Deploy the template</h2>
+
+<p>Copy and paste the template to your preferred editor/IDE and save the file to your local working directory.</p>
+
+<p>Azure CLI is used here to deploy the template. You can also use the Azure portal, Azure PowerShell, or REST API. To learn other deployment methods, see <a href="https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/deploy-cli">Bicep Deployment Commands</a>.</p>
+
+<p>The following code creates a resource group, an App Service plan, and a web app. A default resource group, App Service plan, and location have been set for you. Replace <code class="language-plaintext highlighter-rouge">&lt;app-name&gt;</code> with a globally unique app name (valid characters are <code class="language-plaintext highlighter-rouge">a-z</code>, <code class="language-plaintext highlighter-rouge">0-9</code>, and <code class="language-plaintext highlighter-rouge">-</code>).</p>
+
+<p>Open up a terminal where the Azure CLI has been installed and run the code below to create a Node.js app on Linux.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az group create <span class="nt">--name</span> myResourceGroup <span class="nt">--location</span> <span class="s2">"southcentralus"</span> <span class="o">&amp;&amp;</span>
+az deployment group create <span class="nt">--resource-group</span> myResourceGroup <span class="nt">--template-file</span> &lt;path-to-template&gt;
+</code></pre></div></div>
+
+<p>To deploy a different language stack, update <code class="language-plaintext highlighter-rouge">linuxFxVersion</code> with appropriate values. Samples are shown below. To show current versions, run the following command in the Cloud Shell: <code class="language-plaintext highlighter-rouge">az webapp config show --resource-group myResourceGroup --name &lt;app-name&gt; --query linuxFxVersion</code></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Language</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>.NET</strong></td>
+      <td>linuxFxVersion=”DOTNETCORE|3.0”</td>
+    </tr>
+    <tr>
+      <td><strong>PHP</strong></td>
+      <td>linuxFxVersion=”PHP|7.4”</td>
+    </tr>
+    <tr>
+      <td><strong>Node.js</strong></td>
+      <td>linuxFxVersion=”NODE|10.15”</td>
+    </tr>
+    <tr>
+      <td><strong>Java</strong></td>
+      <td>linuxFxVersion=”JAVA|1.8|TOMCAT|9.0”</td>
+    </tr>
+    <tr>
+      <td><strong>Python</strong></td>
+      <td>linuxFxVersion=”PYTHON|3.7”</td>
+    </tr>
+    <tr>
+      <td><strong>Ruby</strong></td>
+      <td>linuxFxVersion=”RUBY|2.6”</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="validate-the-deployment">Validate the deployment</h2>
+
+<p>Browse to <code class="language-plaintext highlighter-rouge">http://&lt;app_name&gt;.azurewebsites.net/</code> and verify it’s been created.</p>
+
+<h2 id="clean-up-resources">Clean up resources</h2>
+
+<p>When no longer needed, <a href="https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/delete-resource-group?tabs=azure-cli">delete the resource group</a>.</p>
+
+<h2 id="optional-additional-sample-apps">Optional additional sample apps</h2>
+
+<p>If you would like to continue learning about Bicep and App Service, below are additional samples you can review and deploy following the same process described above. Note that if you did not already delete the previously created resources, updating your existing template and redeploying will update the current app. Optionally, you can start from scratch and create new resources for the next part of this quickstart.</p>
+
+<h3 id="webapp-with-cosmosdb">Webapp with CosmosDB</h3>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">description</span><span class="p">(</span><span class="dl">'</span><span class="s1">Application Name</span><span class="dl">'</span><span class="p">)</span>
+<span class="p">@</span><span class="nd">maxLength</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+<span class="nx">param</span> <span class="nx">applicationName</span> <span class="nx">string</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">to-do-app${uniqueString(resourceGroup().id)}</span><span class="dl">'</span>
+
+<span class="p">@</span><span class="nd">description</span><span class="p">(</span><span class="dl">'</span><span class="s1">Location for all resources.</span><span class="dl">'</span><span class="p">)</span>
+<span class="nx">param</span> <span class="nx">location</span> <span class="nx">string</span> <span class="o">=</span> <span class="nf">resourceGroup</span><span class="p">().</span><span class="nx">location</span>
+
+<span class="p">@</span><span class="nd">description</span><span class="p">(</span><span class="dl">'</span><span class="s1">App Service Plan</span><span class="se">\'</span><span class="s1">s pricing tier. Details at https://azure.microsoft.com/en-us/pricing/details/app-service/</span><span class="dl">'</span><span class="p">)</span>
+<span class="nx">param</span> <span class="nx">appServicePlanTier</span> <span class="nx">string</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">P1V2</span><span class="dl">'</span>
+
+<span class="p">@</span><span class="nd">minValue</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">@</span><span class="nd">maxValue</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="p">@</span><span class="nd">description</span><span class="p">(</span><span class="dl">'</span><span class="s1">App Service Plan</span><span class="se">\'</span><span class="s1">s instance count</span><span class="dl">'</span><span class="p">)</span>
+<span class="nx">param</span> <span class="nx">appServicePlanInstances</span> <span class="nx">int</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="p">@</span><span class="nd">description</span><span class="p">(</span><span class="dl">'</span><span class="s1">The URL for the GitHub repository that contains the project to deploy.</span><span class="dl">'</span><span class="p">)</span>
+<span class="nx">param</span> <span class="nx">repositoryUrl</span> <span class="nx">string</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">https://github.com/Azure-Samples/cosmos-dotnet-core-todo-app.git</span><span class="dl">'</span>
+
+<span class="p">@</span><span class="nd">description</span><span class="p">(</span><span class="dl">'</span><span class="s1">The branch of the GitHub repository to use.</span><span class="dl">'</span><span class="p">)</span>
+<span class="nx">param</span> <span class="nx">branch</span> <span class="nx">string</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">main</span><span class="dl">'</span>
+
+<span class="p">@</span><span class="nd">description</span><span class="p">(</span><span class="dl">'</span><span class="s1">The Cosmos DB database name.</span><span class="dl">'</span><span class="p">)</span>
+<span class="nx">param</span> <span class="nx">databaseName</span> <span class="nx">string</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">Tasks</span><span class="dl">'</span>
+
+<span class="p">@</span><span class="nd">description</span><span class="p">(</span><span class="dl">'</span><span class="s1">The Cosmos DB container name.</span><span class="dl">'</span><span class="p">)</span>
+<span class="nx">param</span> <span class="nx">containerName</span> <span class="nx">string</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">Items</span><span class="dl">'</span>
+
+<span class="kd">var</span> <span class="nx">cosmosAccountName</span> <span class="o">=</span> <span class="nf">toLower</span><span class="p">(</span><span class="nx">applicationName</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">websiteName</span> <span class="o">=</span> <span class="nx">applicationName</span>
+<span class="kd">var</span> <span class="nx">appServicePlanName</span> <span class="o">=</span> <span class="nx">applicationName</span>
+
+<span class="nx">resource</span> <span class="nx">cosmosAccount</span> <span class="dl">'</span><span class="s1">Microsoft.DocumentDB/databaseAccounts@2021-04-15</span><span class="dl">'</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="nx">cosmosAccountName</span>
+  <span class="na">kind</span><span class="p">:</span> <span class="dl">'</span><span class="s1">GlobalDocumentDB</span><span class="dl">'</span>
+  <span class="na">location</span><span class="p">:</span> <span class="nx">location</span>
+  <span class="na">properties</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">consistencyPolicy</span><span class="p">:</span> <span class="p">{</span>
+      <span class="na">defaultConsistencyLevel</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Session</span><span class="dl">'</span>
+    <span class="p">}</span>
+    <span class="nl">locations</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="na">locationName</span><span class="p">:</span> <span class="nx">location</span>
+        <span class="na">failoverPriority</span><span class="p">:</span> <span class="mi">0</span>
+        <span class="na">isZoneRedundant</span><span class="p">:</span> <span class="kc">false</span>
+      <span class="p">}</span>
+    <span class="p">]</span>
+    <span class="na">databaseAccountOfferType</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Standard</span><span class="dl">'</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nx">resource</span> <span class="nx">appServicePlan</span> <span class="dl">'</span><span class="s1">Microsoft.Web/serverfarms@2021-01-01</span><span class="dl">'</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="nx">appServicePlanName</span>
+  <span class="na">location</span><span class="p">:</span> <span class="nx">location</span>
+  <span class="na">sku</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">name</span><span class="p">:</span> <span class="nx">appServicePlanTier</span>
+    <span class="na">capacity</span><span class="p">:</span> <span class="nx">appServicePlanInstances</span>
+  <span class="p">}</span>
+  <span class="nl">kind</span><span class="p">:</span> <span class="dl">'</span><span class="s1">linux</span><span class="dl">'</span>
+<span class="p">}</span>
+
+<span class="nx">resource</span> <span class="nx">appService</span> <span class="dl">'</span><span class="s1">Microsoft.Web/sites@2021-01-01</span><span class="dl">'</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="nx">websiteName</span>
+  <span class="na">location</span><span class="p">:</span> <span class="nx">location</span>
+  <span class="na">properties</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">serverFarmId</span><span class="p">:</span> <span class="nx">appServicePlan</span><span class="p">.</span><span class="nx">id</span>
+    <span class="na">httpsOnly</span><span class="p">:</span> <span class="kc">true</span>
+    <span class="na">siteConfig</span><span class="p">:</span> <span class="p">{</span>
+      <span class="na">http20Enabled</span><span class="p">:</span> <span class="kc">true</span>
+
+      <span class="na">appSettings</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+          <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">CosmosDb:Account</span><span class="dl">'</span>
+          <span class="na">value</span><span class="p">:</span> <span class="nx">cosmosAccount</span><span class="p">.</span><span class="nx">properties</span><span class="p">.</span><span class="nx">documentEndpoint</span>
+        <span class="p">}</span>
+        <span class="p">{</span>
+          <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">CosmosDb:Key</span><span class="dl">'</span>
+          <span class="na">value</span><span class="p">:</span> <span class="nf">listKeys</span><span class="p">(</span><span class="nx">cosmosAccount</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="nx">cosmosAccount</span><span class="p">.</span><span class="nx">apiVersion</span><span class="p">).</span><span class="nx">primaryMasterKey</span>
+        <span class="p">}</span>
+        <span class="p">{</span>
+          <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">CosmosDb:DatabaseName</span><span class="dl">'</span>
+          <span class="na">value</span><span class="p">:</span> <span class="nx">databaseName</span>
+        <span class="p">}</span>
+        <span class="p">{</span>
+          <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">CosmosDb:ContainerName</span><span class="dl">'</span>
+          <span class="na">value</span><span class="p">:</span> <span class="nx">containerName</span>
+        <span class="p">}</span>
+      <span class="p">]</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nx">resource</span> <span class="nx">srcControls</span> <span class="dl">'</span><span class="s1">Microsoft.Web/sites/sourcecontrols@2021-01-01</span><span class="dl">'</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">${appService.name}/web</span><span class="dl">'</span>
+  <span class="na">properties</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">repoUrl</span><span class="p">:</span> <span class="nx">repositoryUrl</span>
+    <span class="na">branch</span><span class="p">:</span> <span class="nx">branch</span>
+    <span class="na">isManualIntegration</span><span class="p">:</span> <span class="kc">true</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This app uses Microsoft Azure Cosmos DB service to store and access data from an ASP.NET Core MVC application hosted on Azure App Service. More details for this app can be found <a href="https://github.com/Azure-Samples/cosmos-dotnet-core-todo-app">here</a>. Most of the parameters and resources are the same, but you now additionally have resources for the Cosmos DB account and you set the app settings as part of the “sites” (web app) resource.</p>
+
+<h3 id="webapp-with-custom-dns-name-with-a-tlsssl-binding">Webapp with custom DNS name with a TLS/SSL binding</h3>
+
+<p>If you would like to continue with this app by adding a SSL binding and a custom domain, the sample bicep files will be given below. Please note that you will need to purchase a custom domain and input the relevant info into the dnsZone parameter of the template. For more information about custom domains and SSL bindings, please see <a href="https://docs.microsoft.com/en-us/azure/app-service/configure-ssl-bindings">Secure a custom DNS name with a TLS/SSL binding in Azure App Service</a>.</p>
+
+<p>In order to complete this sample, you will need to modify the above file or create a new Bicep file as well as create an additional Bicep file in the same directory for sni enablement. This is due to an ARM limitation that forbids using resources with this same type-name combination twice in one deployment.</p>
+
+<p>Create another bicep file named <code class="language-plaintext highlighter-rouge">sni-enable.bicep</code> in the same directory with the contents below.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">param</span> <span class="nx">webAppName</span> <span class="nx">string</span>
+<span class="nx">param</span> <span class="nx">webAppHostname</span> <span class="nx">string</span>
+<span class="nx">param</span> <span class="nx">certificateThumbprint</span> <span class="nx">string</span>
+
+<span class="nx">resource</span> <span class="nx">webAppCustomHostEnable</span> <span class="dl">'</span><span class="s1">Microsoft.Web/sites/hostNameBindings@2020-06-01</span><span class="dl">'</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">${webAppName}/${webAppHostname}</span><span class="dl">'</span>
+  <span class="na">properties</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">sslState</span><span class="p">:</span> <span class="dl">'</span><span class="s1">SniEnabled</span><span class="dl">'</span>
+    <span class="na">thumbprint</span><span class="p">:</span> <span class="nx">certificateThumbprint</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The following highlight the changes to the <code class="language-plaintext highlighter-rouge">webapp-cosmosdb</code> file for reference. Making these updates to your existing file will update your existing deployment if you did not already delete your app.</p>
+
+<ol>
+  <li>Add a parameter for dnsZone where you input your custom domain (i.e. “customdomain.com”)</li>
+  <li>Add a <a href="https://docs.microsoft.com/en-us/azure/templates/microsoft.network/dnszones/txt?tabs=bicep"><strong>Microsoft.Network/dnsZones/TXT</strong></a> resource</li>
+  <li>Add a <a href="https://docs.microsoft.com/en-us/azure/templates/microsoft.network/dnszones/cname?tabs=bicep"><strong>Microsoft.Network/dnsZones/CNAME</strong></a> resource</li>
+  <li>Add a <a href="https://docs.microsoft.com/en-us/azure/templates/microsoft.web/2019-08-01/sites/hostnamebindings?tabs=bicep"><strong>Microsoft.Web/sites/hostNameBindings</strong></a> resource</li>
+  <li>Add a <a href="https://docs.microsoft.com/en-us/azure/templates/microsoft.web/2020-12-01/certificates?tabs=bicep"><strong>Microsoft.Web/certificates</strong></a> resource</li>
+  <li>Chain the sni-enable module you created earlier</li>
+</ol>
+
+<p>The file should end up like the below.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">description</span><span class="p">(</span><span class="dl">'</span><span class="s1">Application Name</span><span class="dl">'</span><span class="p">)</span>
+<span class="p">@</span><span class="nd">maxLength</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+<span class="nx">param</span> <span class="nx">applicationName</span> <span class="nx">string</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">to-do-app${uniqueString(resourceGroup().id)}</span><span class="dl">'</span>
+
+<span class="p">@</span><span class="nd">description</span><span class="p">(</span><span class="dl">'</span><span class="s1">Location for all resources.</span><span class="dl">'</span><span class="p">)</span>
+<span class="nx">param</span> <span class="nx">location</span> <span class="nx">string</span> <span class="o">=</span> <span class="nf">resourceGroup</span><span class="p">().</span><span class="nx">location</span>
+
+<span class="p">@</span><span class="nd">description</span><span class="p">(</span><span class="dl">'</span><span class="s1">App Service Plan</span><span class="se">\'</span><span class="s1">s pricing tier. Details at https://azure.microsoft.com/en-us/pricing/details/app-service/</span><span class="dl">'</span><span class="p">)</span>
+<span class="nx">param</span> <span class="nx">appServicePlanTier</span> <span class="nx">string</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">P1V2</span><span class="dl">'</span>
+
+<span class="p">@</span><span class="nd">minValue</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">@</span><span class="nd">maxValue</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="p">@</span><span class="nd">description</span><span class="p">(</span><span class="dl">'</span><span class="s1">App Service Plan</span><span class="se">\'</span><span class="s1">s instance count</span><span class="dl">'</span><span class="p">)</span>
+<span class="nx">param</span> <span class="nx">appServicePlanInstances</span> <span class="nx">int</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="p">@</span><span class="nd">description</span><span class="p">(</span><span class="dl">'</span><span class="s1">The URL for the GitHub repository that contains the project to deploy.</span><span class="dl">'</span><span class="p">)</span>
+<span class="nx">param</span> <span class="nx">repositoryUrl</span> <span class="nx">string</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">https://github.com/Azure-Samples/cosmos-dotnet-core-todo-app.git</span><span class="dl">'</span>
+
+<span class="p">@</span><span class="nd">description</span><span class="p">(</span><span class="dl">'</span><span class="s1">The branch of the GitHub repository to use.</span><span class="dl">'</span><span class="p">)</span>
+<span class="nx">param</span> <span class="nx">branch</span> <span class="nx">string</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">main</span><span class="dl">'</span>
+
+<span class="p">@</span><span class="nd">description</span><span class="p">(</span><span class="dl">'</span><span class="s1">Existing Azure DNS zone in target resource group</span><span class="dl">'</span><span class="p">)</span>
+<span class="nx">param</span> <span class="nx">dnsZone</span> <span class="nx">string</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">&lt;YOUR CUSTOM DOMAIN i.e. "customdomain.com"&gt;</span><span class="dl">'</span>
+
+<span class="p">@</span><span class="nd">description</span><span class="p">(</span><span class="dl">'</span><span class="s1">The Cosmos DB database name.</span><span class="dl">'</span><span class="p">)</span>
+<span class="nx">param</span> <span class="nx">databaseName</span> <span class="nx">string</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">Tasks</span><span class="dl">'</span>
+
+<span class="p">@</span><span class="nd">description</span><span class="p">(</span><span class="dl">'</span><span class="s1">The Cosmos DB container name.</span><span class="dl">'</span><span class="p">)</span>
+<span class="nx">param</span> <span class="nx">containerName</span> <span class="nx">string</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">Items</span><span class="dl">'</span>
+
+<span class="kd">var</span> <span class="nx">cosmosAccountName</span> <span class="o">=</span> <span class="nf">toLower</span><span class="p">(</span><span class="nx">applicationName</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">websiteName</span> <span class="o">=</span> <span class="nx">applicationName</span>
+<span class="kd">var</span> <span class="nx">appServicePlanName</span> <span class="o">=</span> <span class="nx">applicationName</span>
+
+<span class="nx">resource</span> <span class="nx">cosmosAccount</span> <span class="dl">'</span><span class="s1">Microsoft.DocumentDB/databaseAccounts@2021-04-15</span><span class="dl">'</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="nx">cosmosAccountName</span>
+  <span class="na">kind</span><span class="p">:</span> <span class="dl">'</span><span class="s1">GlobalDocumentDB</span><span class="dl">'</span>
+  <span class="na">location</span><span class="p">:</span> <span class="nx">location</span>
+  <span class="na">properties</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">consistencyPolicy</span><span class="p">:</span> <span class="p">{</span>
+      <span class="na">defaultConsistencyLevel</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Session</span><span class="dl">'</span>
+    <span class="p">}</span>
+    <span class="nl">locations</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="na">locationName</span><span class="p">:</span> <span class="nx">location</span>
+        <span class="na">failoverPriority</span><span class="p">:</span> <span class="mi">0</span>
+        <span class="na">isZoneRedundant</span><span class="p">:</span> <span class="kc">false</span>
+      <span class="p">}</span>
+    <span class="p">]</span>
+    <span class="na">databaseAccountOfferType</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Standard</span><span class="dl">'</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nx">resource</span> <span class="nx">appServicePlan</span> <span class="dl">'</span><span class="s1">Microsoft.Web/serverfarms@2021-01-01</span><span class="dl">'</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="nx">appServicePlanName</span>
+  <span class="na">location</span><span class="p">:</span> <span class="nx">location</span>
+  <span class="na">sku</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">name</span><span class="p">:</span> <span class="nx">appServicePlanTier</span>
+    <span class="na">capacity</span><span class="p">:</span> <span class="nx">appServicePlanInstances</span>
+  <span class="p">}</span>
+  <span class="nl">kind</span><span class="p">:</span> <span class="dl">'</span><span class="s1">linux</span><span class="dl">'</span>
+<span class="p">}</span>
+
+<span class="nx">resource</span> <span class="nx">appService</span> <span class="dl">'</span><span class="s1">Microsoft.Web/sites@2021-01-01</span><span class="dl">'</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="nx">websiteName</span>
+  <span class="na">location</span><span class="p">:</span> <span class="nx">location</span>
+  <span class="na">properties</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">serverFarmId</span><span class="p">:</span> <span class="nx">appServicePlan</span><span class="p">.</span><span class="nx">id</span>
+    <span class="na">httpsOnly</span><span class="p">:</span> <span class="kc">true</span>
+    <span class="na">siteConfig</span><span class="p">:</span> <span class="p">{</span>
+      <span class="na">http20Enabled</span><span class="p">:</span> <span class="kc">true</span>
+      
+      <span class="na">appSettings</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+          <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">CosmosDb:Account</span><span class="dl">'</span>
+          <span class="na">value</span><span class="p">:</span> <span class="nx">cosmosAccount</span><span class="p">.</span><span class="nx">properties</span><span class="p">.</span><span class="nx">documentEndpoint</span>
+        <span class="p">}</span>
+        <span class="p">{</span>
+          <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">CosmosDb:Key</span><span class="dl">'</span>
+          <span class="na">value</span><span class="p">:</span> <span class="nf">listKeys</span><span class="p">(</span><span class="nx">cosmosAccount</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="nx">cosmosAccount</span><span class="p">.</span><span class="nx">apiVersion</span><span class="p">).</span><span class="nx">primaryMasterKey</span>
+        <span class="p">}</span>
+        <span class="p">{</span>
+          <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">CosmosDb:DatabaseName</span><span class="dl">'</span>
+          <span class="na">value</span><span class="p">:</span> <span class="nx">databaseName</span>
+        <span class="p">}</span>
+        <span class="p">{</span>
+          <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">CosmosDb:ContainerName</span><span class="dl">'</span>
+          <span class="na">value</span><span class="p">:</span> <span class="nx">containerName</span>
+        <span class="p">}</span>
+      <span class="p">]</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nx">resource</span> <span class="nx">srcControls</span> <span class="dl">'</span><span class="s1">Microsoft.Web/sites/sourcecontrols@2021-01-01</span><span class="dl">'</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">${appService.name}/web</span><span class="dl">'</span>
+  <span class="na">properties</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">repoUrl</span><span class="p">:</span> <span class="nx">repositoryUrl</span>
+    <span class="na">branch</span><span class="p">:</span> <span class="nx">branch</span>
+    <span class="na">isManualIntegration</span><span class="p">:</span> <span class="kc">true</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nx">resource</span> <span class="nx">dnsTxt</span> <span class="dl">'</span><span class="s1">Microsoft.Network/dnsZones/TXT@2018-05-01</span><span class="dl">'</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">${dnsZone}/asuid.${applicationName}</span><span class="dl">'</span>
+  <span class="na">properties</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">TTL</span><span class="p">:</span> <span class="mi">3600</span>
+    <span class="na">TXTRecords</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="na">value</span><span class="p">:</span> <span class="p">[</span>
+          <span class="dl">'</span><span class="s1">${appService.properties.customDomainVerificationId}</span><span class="dl">'</span>
+        <span class="p">]</span>
+      <span class="p">}</span>
+    <span class="p">]</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nx">resource</span> <span class="nx">dnsCname</span> <span class="dl">'</span><span class="s1">Microsoft.Network/dnsZones/CNAME@2018-05-01</span><span class="dl">'</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">${dnsZone}/${applicationName}</span><span class="dl">'</span>
+  <span class="na">properties</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">TTL</span><span class="p">:</span> <span class="mi">3600</span>
+    <span class="na">CNAMERecord</span><span class="p">:</span> <span class="p">{</span>
+      <span class="na">cname</span><span class="p">:</span> <span class="dl">'</span><span class="s1">${appService.name}.azurewebsites.net</span><span class="dl">'</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// Enabling Managed certificate for a webapp requires 3 steps</span>
+<span class="c1">// 1. Add custom domain to webapp with SSL in disabled state</span>
+<span class="c1">// 2. Generate certificate for the domain</span>
+<span class="c1">// 3. enable SSL</span>
+
+<span class="c1">// The last step requires deploying again Microsoft.Web/sites/hostNameBindings - and ARM template forbids this in one deplyment, therefore we need to use modules to chain this.</span>
+
+<span class="nx">resource</span> <span class="nx">webAppCustomHost</span> <span class="dl">'</span><span class="s1">Microsoft.Web/sites/hostNameBindings@2020-06-01</span><span class="dl">'</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">${appService.name}/${applicationName}.${dnsZone}</span><span class="dl">'</span>
+  <span class="na">dependsOn</span><span class="p">:</span> <span class="p">[</span>
+    <span class="nx">dnsTxt</span>
+    <span class="nx">dnsCname</span>
+  <span class="p">]</span>
+  <span class="na">properties</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">hostNameType</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Verified</span><span class="dl">'</span>
+    <span class="na">sslState</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Disabled</span><span class="dl">'</span>
+    <span class="na">customHostNameDnsRecordType</span><span class="p">:</span> <span class="dl">'</span><span class="s1">CName</span><span class="dl">'</span>
+    <span class="na">siteName</span><span class="p">:</span> <span class="nx">appService</span><span class="p">.</span><span class="nx">name</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nx">resource</span> <span class="nx">webAppCustomHostCertificate</span> <span class="dl">'</span><span class="s1">Microsoft.Web/certificates@2020-06-01</span><span class="dl">'</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">${applicationName}.${dnsZone}</span><span class="dl">'</span>
+  <span class="c1">// name: dnsZone</span>
+  <span class="na">location</span><span class="p">:</span> <span class="nx">location</span>
+  <span class="na">dependsOn</span><span class="p">:</span> <span class="p">[</span>
+    <span class="nx">webAppCustomHost</span>
+  <span class="p">]</span>
+  <span class="na">properties</span><span class="p">:</span> <span class="nf">any</span><span class="p">({</span>
+    <span class="na">serverFarmId</span><span class="p">:</span> <span class="nx">appServicePlan</span><span class="p">.</span><span class="nx">id</span>
+    <span class="na">canonicalName</span><span class="p">:</span> <span class="dl">'</span><span class="s1">${applicationName}.${dnsZone}</span><span class="dl">'</span>
+  <span class="p">})</span>
+<span class="p">}</span>
+
+<span class="c1">// we need to use a module to enable sni, as ARM forbids using resource with this same type-name combination twice in one deployment.</span>
+<span class="nx">module</span> <span class="nx">webAppCustomHostEnable</span> <span class="dl">'</span><span class="s1">./sni-enable.bicep</span><span class="dl">'</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">${deployment().name}-${applicationName}-sni-enable</span><span class="dl">'</span>
+  <span class="na">params</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">webAppName</span><span class="p">:</span> <span class="nx">appService</span><span class="p">.</span><span class="nx">name</span>
+    <span class="na">webAppHostname</span><span class="p">:</span> <span class="dl">'</span><span class="s1">${webAppCustomHostCertificate.name}</span><span class="dl">'</span>
+    <span class="na">certificateThumbprint</span><span class="p">:</span> <span class="nx">webAppCustomHostCertificate</span><span class="p">.</span><span class="nx">properties</span><span class="p">.</span><span class="nx">thumbprint</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="clean-up-resources-1">Clean up resources</h2>
+
+<p>As before, when no longer needed, <a href="https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/delete-resource-group?tabs=azure-cli">delete the resource group</a> to prevent incurring any additional costs.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-07-23T00:00:00+00:00">July 23, 2021</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Quickstart%3A+Intro+to+Bicep+with+Web+App+and+DB%20https%3A%2F%2Fazure.github.io%2FAppService%2F2021%2F07%2F23%2FQuickstart-Intro-to-Bicep-with-Web-App-plus-DB.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2021%2F07%2F23%2FQuickstart-Intro-to-Bicep-with-Web-App-plus-DB.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2021%2F07%2F23%2FQuickstart-Intro-to-Bicep-with-Web-App-plus-DB.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2021/07/12/General-Availability-of-new-azure-built-in-policies.html" class="pagination--pager" title="General Availability of new Azure App Service built-in policies
+">Previous</a>
+    
+    
+      <a href="/AppService/2021/07/29/Deploying-Your-Infrastructure-to-App-Service.html" class="pagination--pager" title="Overview of the Various Methods for Deploying Your Infrastructure to App Service
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

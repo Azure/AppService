@@ -1,0 +1,3351 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Azure App Service</title>
+<meta name="description" content="Announcements, updates, and release notes from the Azure App Service product team.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Azure App Service">
+<meta property="og:url" content="https://azure.github.io/AppService/2017/">
+
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2017-01-01T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2017/">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--archive-year">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+
+  <div class="archive">
+    
+      
+        <h1 id="page-title" class="page__title"></h1>
+      
+    
+    
+
+<h1>Posts from 2017</h1>
+<section id="year" class="taxonomy__section">
+    <div class="entries-list">
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/12/14/PHP-Minor-Version-Update-for-January-2018.html" rel="permalink">PHP Minor Version Update for January 2018
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+        • December 14, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/12/12/November-2017-App-Service-Update.html" rel="permalink">November 2017 App Service Update
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+        • December 12, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/12/05/Announcing-Azure-Functions-Runtime-preview-2.html" rel="permalink">Announcing Azure Functions Runtime preview 2
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+        • December 5, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/12/01/PHP-updated-to-latest-versions.html" rel="permalink">PHP updated to latest versions
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+        • December 1, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/11/15/The-Azure-Functions-on-Linux-Preview.html" rel="permalink">The Azure Functions on Linux Preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+        
+        
+        • November 15, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/11/15/Azure-Functions-on-IoT-Edge.html" rel="permalink">Azure Functions on IoT Edge
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+        
+        
+        • November 15, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/11/15/Azure-Functions-Proxies-is-now-Generally-Available.html" rel="permalink">Azure Functions Proxies is now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+        • November 15, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/11/06/Running-a-popular-Content-management-solution-on-Web-App-for-Containers.html" rel="permalink">Running a popular Content management solution on Web App for Containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  9 minute read
+
+        
+        
+        • November 6, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/11/02/October-2017-App-Service-Update.html" rel="permalink">October 2017 App Service Update
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+        • November 2, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/11/01/App-Service-Certificates-now-supports-public-certificates-(.cer).html" rel="permalink">App Service Certificates now supports public certificates (.cer)
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+        • November 1, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/10/26/Configure-App-Service-Certificate-to-Azure-Virtual-machines.html" rel="permalink">Configure App Service Certificate to Azure Virtual machines
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+        • October 26, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/10/16/Zip-Push-Deployment-for-Web-Apps,-Functions-and-WebJobs.html" rel="permalink">Zip Push Deployment for Web Apps, Functions and WebJobs
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+        • October 16, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/10/11/Retirement-of-the-PHP-5.5-runtime-from-App-Service.html" rel="permalink">Retirement of the PHP 5.5 runtime from App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+        • October 11, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/10/10/Durable-Functions-and-Bindings-Extensibility-Preview-Announcement.html" rel="permalink">Durable Functions and Bindings Extensibility Preview Announcement
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+        
+        
+        • October 10, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/10/09/September-2017-App-Service-Update.html" rel="permalink">September 2017 App Service Update
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+        • October 9, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/09/28/Introducing-the-New-App-Service-Support-Center-(Preview).html" rel="permalink">Introducing the New App Service Support Center (Preview)
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+        
+        
+        • September 28, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/09/25/My-Intern-Project-Microsoft-Graph-Bindings-for-Azure-Functions.html" rel="permalink">My Intern Project Microsoft Graph Bindings for Azure Functions
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  6 minute read
+
+        
+        
+        • September 25, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/09/25/Develop-Azure-Functions-on-any-platform.html" rel="permalink">Develop Azure Functions on any platform
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+        
+        
+        • September 25, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/09/19/Processing-100,000-Events-Per-Second-on-Azure-Functions.html" rel="permalink">Processing 100,000 Events Per Second on Azure Functions
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  6 minute read
+
+        
+        
+        • September 19, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/09/14/Function-Proxies-adds-Mock-APIs-to-the-Portal.html" rel="permalink">Function Proxies adds Mock APIs to the Portal
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+        • September 14, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/09/13/August-2017-App-Service-update.html" rel="permalink">August 2017 App Service update
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+        • September 13, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/09/12/How-to-For-WordPress-on-App-Service-(WindowsLinux-).html" rel="permalink">How-to  For WordPress on App Service (WindowsLinux )
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+        
+        
+        • September 12, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/08/23/Web-App-on-Linux-&lt;3-Azure-Container-Registry.html" rel="permalink">Web App on Linux &lt;3 Azure Container Registry
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+        • August 23, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/08/17/Introducing-Proactive-Auto-Heal.html" rel="permalink">Introducing Proactive Auto Heal
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+        
+        
+        • August 17, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/08/14/Azure-Functions-Tools-released-for-Visual-Studio-2017-Update-3.html" rel="permalink">Azure Functions Tools released for Visual Studio 2017 Update 3
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+        • August 14, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/08/08/New-tabbed-experience-for-Azure-Functions-UX.html" rel="permalink">New tabbed experience for Azure Functions UX
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+        • August 8, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/08/08/FAQ-App-Service-Domain-and-Custom-Domains.html" rel="permalink">FAQ  App Service Domain and Custom Domains
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  7 minute read
+
+        
+        
+        • August 8, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/07/31/July-2017-App-Service-update.html" rel="permalink">July 2017 App Service update
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+        • July 31, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/07/31/Assign-App-Service-domain-to-Azure-VM-or-Azure-Storage.html" rel="permalink">Assign App Service domain to Azure VM or Azure Storage
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+        
+        
+        • July 31, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/07/24/FAQ-SSL-certificates-for-Web-Apps-and-App-Service-Certificates.html" rel="permalink">FAQ  SSL certificates for Web Apps and  App Service Certificates
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  9 minute read
+
+        
+        
+        • July 24, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/07/10/Azure-Web-App-PHP-updates.html" rel="permalink">Azure Web App PHP updates
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+        • July 10, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/07/06/Alpha-Preview-for-Durable-Functions.html" rel="permalink">Alpha Preview for Durable Functions
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+        
+        
+        • July 6, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/06/30/June-2017-App-Service-update.html" rel="permalink">June 2017 App Service update
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+        • June 30, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/06/29/FAQ-Azure-marketplace-for-Web-Apps.html" rel="permalink">FAQ  Azure marketplace for Web Apps
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+        • June 29, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/06/27/Installing-public-certificates-in-App-Service.html" rel="permalink">Installing public certificates in App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+        • June 27, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/06/21/Custom-hostnames-with-App-Service.html" rel="permalink">Custom hostnames with App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+        
+        
+        • June 21, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/06/13/Deployment-Slots-Preview-for-Azure-Functions.html" rel="permalink">Deployment Slots Preview  for Azure Functions
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+        • June 13, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/06/08/Pick-the-right-data-solution-for-Azure-App-Service.html" rel="permalink">Pick the right data solution for Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+        • June 8, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/06/07/MySQL-in-app-feature-for-Web-Apps-on-Linux.html" rel="permalink">MySQL in-app feature for Web Apps on Linux
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+        • June 7, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/06/01/May-2017-App-Service-update.html" rel="permalink">May 2017 App Service update
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+        • June 1, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/06/01/Deploying-Visual-Studio-2017-Function-Projects-with-VSTS.html" rel="permalink">Deploying Visual Studio 2017 Function Projects with VSTS
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+        • June 1, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/05/16/Wiki-WordPress-on-App-Service.html" rel="permalink">Wiki  WordPress on App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+        • May 16, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/05/16/Connecting-existing-Web-App-to-Azure-database-for-MySQL-(Preview).html" rel="permalink">Connecting existing Web App to Azure Database for MySQL (Preview)
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+        • May 16, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/05/10/Introducing-Azure-App-Service-Support-Center.html" rel="permalink">Introducing Azure App Service Support Center
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+        
+        
+        • May 10, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/05/10/Create-Django-Web-app-with-PostgreSQL.html" rel="permalink">Create Django Web app with PostgreSQL
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+        
+        
+        • May 10, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/05/10/Connect-Azure-App-Service-to-Azure-database-for-MySQL-and-PostgreSQL-via-SSL.html" rel="permalink">Connect Azure App Service to Azure database for MySQL and PostgreSQL via SSL
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+        • May 10, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/05/10/Azure-Functions-API-development-updates.html" rel="permalink">Azure Functions API development updates
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+        • May 10, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/05/10/Application-Insights-integration-with-Functions-now-in-preview.html" rel="permalink">Application Insights integration with Functions now in preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+        
+        
+        • May 10, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/05/10/Announcing-Try-App-Service-Web-App-on-Linux-(Containers).html" rel="permalink">Announcing Try App Service Web App on Linux (Containers)
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+        • May 10, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/05/04/Enable-PHP-error-logging-in-App-Service.html" rel="permalink">Enable PHP error logging in App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+        • May 4, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/05/01/April-2017-App-Service-update.html" rel="permalink">April 2017 App Service update
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+        • May 1, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/04/24/Azure-Mobile-Apps-Quickstart-Samples-available-as-GitHub-repositories.html" rel="permalink">Azure Mobile Apps Quickstart Samples available as GitHub repositories
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+        • April 24, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/04/16/WordPress-on-Web-app-for-Containers.html" rel="permalink">WordPress on Web app for Containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  7 minute read
+
+        
+        
+        • April 16, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/04/14/Announcing-Try-App-Service-API-Apps.html" rel="permalink">Announcing Try App Service API Apps
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+        • April 14, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/04/10/New-integrated-portal-for-Azure-Functions.html" rel="permalink">New integrated portal for Azure Functions
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+        
+        
+        • April 10, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/04/06/Azure-Functions-now-has-direct-integration-with-Application-Insights.html" rel="permalink">Azure Functions now has direct integration with Application Insights
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+        
+        
+        • April 6, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/04/04/March-2017-App-Service-Update.html" rel="permalink">March 2017 App Service Update
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+        • April 4, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/03/30/Updating-Migrated-Azure-Mobile-Services-Sites-for-Facebook-Auth.html" rel="permalink">Updating Migrated Azure Mobile Services Sites for Facebook Auth
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+        • March 30, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/03/30/Announcing-Azure-Functions-OpenAPI-(Swagger)-support-preview.html" rel="permalink">Announcing Azure Functions OpenAPI (Swagger) support preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+        • March 30, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/03/23/Azure-App-Service-(Web,-API,-Mobile,-ASE)-&amp;-Azure-Functions-SKU-Comparison-Matrix.html" rel="permalink">Azure App Service (Web, API, Mobile, ASE) &amp; Azure Functions SKU Comparison Matrix
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+        
+        
+        • March 23, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/03/16/Publishing-a-.NET-class-library-as-a-Function-App.html" rel="permalink">Publishing a .NET class library as a Function App
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  6 minute read
+
+        
+        
+        • March 16, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/03/16/Azure-Functions-F-support-is-now-generally-available.html" rel="permalink">Azure Functions F# support is now generally available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+        • March 16, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/03/09/JanuaryFebruary-2017-App-Service-Update.html" rel="permalink">JanuaryFebruary 2017 App Service Update
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+        • March 9, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/03/06/Migrate-development-database-on-MySQL-in-app-to-production-MySQL-database.html" rel="permalink">Migrate development database on MySQL in-app to production MySQL database
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+        • March 6, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/03/06/Announcing-general-availability-for-MySQL-in-app.html" rel="permalink">Announcing general availability for MySQL in-app
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+        • March 6, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/02/24/Creating-a-local-PFX-copy-of-App-Service-Certificate.html" rel="permalink">Creating a local PFX copy of App Service Certificate
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  7 minute read
+
+        
+        
+        • February 24, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/02/23/Making-your-APIs-available-to-PowerApps-and-Microsoft-Flow.html" rel="permalink">Making your APIs available to PowerApps and Microsoft Flow
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+        • February 23, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/02/23/Announcing-Azure-Functions-support-for-Serverless-Framework.html" rel="permalink">Announcing Azure Functions support for Serverless Framework
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+        • February 23, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/02/22/Azure-Functions-Proxies-public-preview.html" rel="permalink">Azure Functions Proxies public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+        • February 22, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/02/22/App-Service-Companion-for-iOS-update.html" rel="permalink">App Service Companion for iOS update
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+        • February 22, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/01/25/ClearDB-maintenance-for-Mercury-databases-on-Microsoft-Azure.html" rel="permalink">ClearDB maintenance for Mercury databases on Microsoft Azure
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+        • January 25, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/01/19/Revisiting-Windows-Azure-Pack-Web-Sites-V2-Support-Lifecycle-Dates.html" rel="permalink">Revisiting Windows Azure Pack Web Sites V2 Support Lifecycle Dates
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+        • January 19, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/01/19/Azure-Mobile-Apps-iOS-SDK-v3.3.0-Released.html" rel="permalink">Azure Mobile Apps iOS SDK v3.3.0 Released
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+        • January 19, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/01/18/Preview-API-Apps-Deprecation.html" rel="permalink">Preview API Apps Deprecation
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+        • January 18, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/01/18/Parse-Server-on-Azure-App-Service-Updated.html" rel="permalink">Parse Server on Azure App Service Updated
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+        • January 18, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/01/18/Notification-Hubs-Java-SDK-Improvements-Direct-Send,-Cancel-Scheduled-Pushes,-Get-Telemetry.html" rel="permalink">Notification Hubs Java SDK Improvements - Direct Send, Cancel Scheduled Pushes, Get Telemetry
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+        • January 18, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/01/10/Azure-Mobile-Apps-.NET-SDK-Releases.html" rel="permalink">Azure Mobile Apps .NET SDK Releases
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+        • January 10, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2017/01/03/Azure-Functions-preview-versioning-update.html" rel="permalink">Azure Functions preview versioning update
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+        • January 3, 2017
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+
+
+
+</p>
+  </article>
+</div>
+
+        
+    </div>
+    <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+</section>
+  </div>
+</div>
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

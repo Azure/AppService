@@ -1,0 +1,1154 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Hosting .NET 5 Applications on Azure App Service - Azure App Service</title>
+<meta name="description" content="With the newly announced launch of .NET 5 General Availability, App Service is offering immediate support for .NET 5 via Early Access stack.  The new Early Access stack feature on app service enables faster and more frequent updates for new versions of supported languages.  To learn more about Early Access, please visit the Early Access Runtime  document.  .NET 5 (Early Access) applications are supported across all public regions for both Windows and Linux scenarios. The following outlines how you can use .NET 5 with App Service via the Azure Portal, GitHub Actions, Azure DevOps, and custom containers.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Hosting .NET 5 Applications on Azure App Service">
+<meta property="og:url" content="https://azure.github.io/AppService/2020/11/16/Hosting-dotnet-five-Applications-on-Azure-App-Service.html">
+
+
+  <meta property="og:description" content="With the newly announced launch of .NET 5 General Availability, App Service is offering immediate support for .NET 5 via Early Access stack.  The new Early Access stack feature on app service enables faster and more frequent updates for new versions of supported languages.  To learn more about Early Access, please visit the Early Access Runtime  document.  .NET 5 (Early Access) applications are supported across all public regions for both Windows and Linux scenarios. The following outlines how you can use .NET 5 with App Service via the Azure Portal, GitHub Actions, Azure DevOps, and custom containers.">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2020-11-16T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2020/11/16/Hosting-dotnet-five-Applications-on-Azure-App-Service.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Hosting .NET 5 Applications on Azure App Service">
+    <meta itemprop="description" content="With the newly announced launch of .NET 5 General Availability, App Service is offering immediate support for .NET 5 via Early Access stack.  The new Early Access stack feature on app service enables faster and more frequent updates for new versions of supported languages.  To learn more about Early Access, please visit the Early Access Runtime  document.  .NET 5 (Early Access) applications are supported across all public regions for both Windows and Linux scenarios. The following outlines how you can use .NET 5 with App Service via the Azure Portal, GitHub Actions, Azure DevOps, and custom containers.">
+    <meta itemprop="datePublished" content="November 16, 2020">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Hosting .NET 5 Applications on Azure App Service
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  9 minute read
+
+            
+            
+              • By Jeff Martinez
+            
+            • November 16, 2020
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#local-setup">Local Setup</a></li>
+  <li><a href="#create-a-net-5-web-app-in-the-portal">Create a .NET 5 Web App in the Portal</a></li>
+  <li><a href="#deploying-via-cli">Deploying via CLI</a></li>
+  <li><a href="#continuous-deployment-with-github-actions">Continuous deployment with GitHub Actions</a>
+    <ul>
+      <li><a href="#create-a-service-principal">Create a Service Principal</a></li>
+      <li><a href="#secure-secrets">Secure Secrets</a></li>
+      <li><a href="#setup-workflow-file">Setup Workflow file</a></li>
+    </ul>
+  </li>
+  <li><a href="#continuous-deployment-with-azure-devops">Continuous deployment with Azure DevOps</a></li>
+  <li><a href="#container-deployment-with-net-5">Container Deployment with .NET 5</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <p>With the newly announced launch of <a href="https://devblogs.microsoft.com/aspnet/announcing-asp-net-core-in-net-5/">.NET 5 General Availability</a>, App Service is offering immediate support for .NET 5 via Early Access stack.  The new Early Access stack feature on app service enables faster and more frequent updates for new versions of supported languages.  To learn more about Early Access, please visit the <a href="https://github.com/Azure/app-service-linux-docs/blob/master/Runtime_Support/early_access.md">Early Access Runtime</a>  document.  .NET 5 (Early Access) applications are supported across all public regions for both Windows and Linux scenarios. The following outlines how you can use .NET 5 with App Service via the Azure Portal, GitHub Actions, Azure DevOps, and custom containers.</p>
+
+<blockquote>
+  <p>For Sovereign cloud deployment progress, follow this <a href="https://github.com/Azure/app-service-announcements/issues/302">GitHub issue</a> for periodic updates</p>
+</blockquote>
+
+<h2 id="local-setup">Local Setup</h2>
+<p>In order to develop with .NET 5 locally you will first need the newly released <a href="https://dotnet.microsoft.com/download/dotnet/5.0">.NET 5 SDK</a> .  If you are using Visual Studio you will need to download and use the latest Visual Studio 2019 version(<a href="https://visualstudio.microsoft.com/downloads/">16.8</a>) which will allow you to create a .NET 5 application from the Visual Studio UI and publish your code to your web app.</p>
+
+<p><img src="/AppService/media/2020/11/net5_1.png" alt="createapp" /></p>
+
+<blockquote>
+  <p>If you would like to upgrade an existing project to .NET 5, please see <a href="https://devblogs.microsoft.com/aspnet/announcing-asp-net-core-in-net-5/">this announcement</a> to get started.</p>
+</blockquote>
+
+<h2 id="create-a-net-5-web-app-in-the-portal">Create a .NET 5 Web App in the Portal</h2>
+<p>The first option you must create and deploy a .NET 5 application is directly through the portal for both Windows and Linux apps.  You will create a Web App like you normally would (see our <a href="https://docs.microsoft.com/azure/app-service/quickstart-dotnetcore?pivots=platform-linux">Quickstart</a> for details).</p>
+
+<p>When selecting the runtime stack you will see an option to choose .NET 5 (Early Access).</p>
+
+<p><img src="/AppService/media/2020/11/net5_2.png" alt="createappearlyaccess" /></p>
+
+<p>Choose this option when creating your application, review your web app configuration and create the .NET 5 web app.  When your web app is published you are now ready to deploy code to your application through Visual Studio or with continuous deployment via GitHub Actions and Azure DevOps.  If deploying with Visual Studio using <a href="https://docs.microsoft.com/visualstudio/deployment/quickstart-deploy-to-azure?view=vs-2019">right-click Publish</a>, you’ll need to create the web app in the portal first using the directions above.  Full support with Visual Studio will be available by the end of the month.</p>
+
+<h2 id="deploying-via-cli">Deploying via CLI</h2>
+<p>Another option to create a Web App with a .NET 5 runtime is through the Azure CLI with the az webapp create and az webapp up commands.  Before you run these commands,  make sure you are  up to date  on the most recent version of the Azure CLI first.</p>
+
+<ol>
+  <li>Once you are on the latest version,  you can run <code class="language-plaintext highlighter-rouge">az webapp list-runtimes -linux</code> or <code class="language-plaintext highlighter-rouge">az webapp list-runtimes</code> (for windows) and you will find <strong>“DOTNET|5.0”</strong> in the list of available runtimes.</li>
+  <li>
+    <p>Next run the follwing command to create a web app with a .NET 5 runtime.</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp create <span class="nt">-g</span> MyResourceGroup <span class="nt">-p</span> MyPlan <span class="nt">-n</span> MyUniqueAppName <span class="nt">--runtime</span> <span class="s2">"DOTNET |5.0"</span> <span class="nt">--deployment-local-git</span>
+</code></pre></div>    </div>
+  </li>
+  <li>Verify that your web app was created on the Azure portal</li>
+</ol>
+
+<p>You may also use the <code class="language-plaintext highlighter-rouge">az webapp up</code> command to deploy to App Service, which allows you to deploy your code quickly from a local workspace where the code is present.</p>
+<ol>
+  <li>Use the <code class="language-plaintext highlighter-rouge">az login</code> command to login into Azure</li>
+  <li>
+    <p>Go to the source of where your code is and run the command where your code is located (for .NET apps, this is where the .csproj is located).</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp up <span class="nt">-n</span> myUniqueAppName
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>This will deploy your .NET 5 application directly to App Service.  For more arguments and examples of az webapp up, please see the <a href="https://docs.microsoft.com/cli/azure/webapp?view=azure-cli-latest#az_webapp_up">documentation</a>.</p>
+
+<h2 id="continuous-deployment-with-github-actions">Continuous deployment with GitHub Actions</h2>
+<p>GitHub Actions enables you to automate your deployment workflows through a defined YAML file added to your repository containing a collection of actions that run when triggered.  Before the workflow file is setup, you will need to grab azure credentials by creating a service principal and save them as a secret in GitHub to add to your workflow file.</p>
+
+<blockquote>
+  <p>If you would like to setup GitHub Actions through the App Service Deployment Center to automatically generate a workflow file, see our <a href="https://docs.microsoft.com/azure/app-service/deploy-github-actions?tabs=applevel#use-the-deployment-center">documentation</a>.</p>
+</blockquote>
+
+<h3 id="create-a-service-principal">Create a Service Principal</h3>
+<p>Our workflow will use a Service Principal to authenticate with Azure when deploying the container to App Service. A service principal is an Active Directory Identity created for use with automation scenarios, such as GitHub Actions.</p>
+
+<ol>
+  <li>
+    <p>Run the following command in Azure CLI in PowerShell to get the credentials needed to run the login action. The output of this command will be a collection of key value pairs that you’ll need to add to your GitHub secrets.</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> az ad sp create-for-rbac <span class="nt">--name</span> <span class="s2">"&lt;appservice-name&gt;"</span> <span class="nt">--role</span> contributor <span class="se">\</span>
+   <span class="nt">--scopes</span> /subscriptions/<span class="o">{</span>subscription-id<span class="o">}</span>/resourceGroups/<span class="o">{</span>resource-group<span class="o">}</span> <span class="se">\</span>
+   <span class="nt">--sdk-auth</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Copy the output into your GitHub secrets to use as your <code class="language-plaintext highlighter-rouge">AZURE_CREDENTIALS</code> secret.</p>
+
+    <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">   </span><span class="p">{</span><span class="w">
+     </span><span class="nl">"clientId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;GUID&gt;"</span><span class="p">,</span><span class="w">
+     </span><span class="nl">"clientSecret"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;GUID&gt;"</span><span class="p">,</span><span class="w">
+     </span><span class="nl">"subscriptionId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;GUID&gt;"</span><span class="p">,</span><span class="w">
+     </span><span class="nl">"tenantId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;GUID&gt;"</span><span class="w">
+   </span><span class="p">}</span><span class="w">
+</span></code></pre></div>    </div>
+  </li>
+</ol>
+
+<h3 id="secure-secrets">Secure Secrets</h3>
+<p>Since we are using sensitive information that you don’t want others to access, we will use GitHub secrets to protect our information. Create a secret by following the directions <a href="https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets">here</a>. Add the GitHub secrets variables below with your own secrets appropriate from each resource.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">AZURE_WEBAPP_NAME</code>: web-app-name</li>
+  <li><code class="language-plaintext highlighter-rouge">AZURE_CREDENTIALS</code>: the JSON output of the <code class="language-plaintext highlighter-rouge">az ad sp create-for-rbac</code> command</li>
+</ul>
+
+<h3 id="setup-workflow-file">Setup Workflow file</h3>
+<p>To setup your GitHub workflow file, go to the <strong>Actions</strong> tab in your repository and <strong>set up a workflow yourself</strong>.  This will lead you to an editing page where you can add a workflow.  At this point you can save and commit the code.  Remove the default code in the workflow file and replace it with the yaml sample below.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">.NET Core</span> 
+<span class="na">on</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">push</span><span class="pi">]</span> 
+<span class="na">env</span><span class="pi">:</span> 
+  <span class="na">AZURE_WEBAPP_PACKAGE_PATH</span><span class="pi">:</span> <span class="s1">'</span><span class="s">.'</span>      <span class="c1"># set this to the path to your web app project, defaults to the repository root </span>
+  <span class="na">DOTNET_VERSION</span><span class="pi">:</span> <span class="s1">'</span><span class="s">5.0.100'</span>           <span class="c1"># this is set to the GA version of .NET 5</span>
+<span class="na">jobs</span><span class="pi">:</span> 
+  <span class="na">build</span><span class="pi">:</span> 
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">windows-latest</span> 
+    <span class="na">steps</span><span class="pi">:</span> 
+      <span class="c1"># Checkout the repo </span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@master</span> 
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">azure/login@v1</span> 
+        <span class="na">with</span><span class="pi">:</span> 
+          <span class="na">creds</span><span class="pi">:</span> <span class="s">$</span> 
+       
+      <span class="c1"># Setup .NET Core SDK </span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Setup .NET Core</span> 
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/setup-dotnet@v1</span> 
+        <span class="na">with</span><span class="pi">:</span> 
+          <span class="na">dotnet-version</span><span class="pi">:</span> <span class="s">$</span>  
+       
+      <span class="c1"># Run dotnet build and publish </span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">dotnet build and publish</span> 
+        <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span> 
+          <span class="s">dotnet restore </span>
+          <span class="s">dotnet build --configuration Release </span>
+          <span class="s">dotnet publish -c Release -o '$/myapp'  </span>
+          <span class="no"> </span>
+      <span class="c1"># Deploy to Azure Web apps </span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Run</span><span class="nv"> </span><span class="s">Azure</span><span class="nv"> </span><span class="s">webapp</span><span class="nv"> </span><span class="s">deploy</span><span class="nv"> </span><span class="s">action</span><span class="nv"> </span><span class="s">using</span><span class="nv"> </span><span class="s">azure</span><span class="nv"> </span><span class="s">credentials'</span> 
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">azure/webapps-deploy@v2</span> 
+        <span class="na">with</span><span class="pi">:</span>  
+          <span class="na">app-name</span><span class="pi">:</span> <span class="s">$</span> <span class="c1"># Replace with your app name </span>
+          <span class="na">package</span><span class="pi">:</span> <span class="s1">'</span><span class="s">$/myapp'</span> 
+       
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">logout</span> 
+        <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span> 
+          <span class="s">az logout</span>
+</code></pre></div></div>
+
+<p>Before you save and commit the code you will need to adjust the ‘runs-on:’ argument to either ‘windows-latest’ or ‘ubuntu-latest’ depending on your application.  Once that is done you can hit <strong>Save and commit</strong>.  The workflow file will use the secret you created earlier from ‘secrets.AZURE_CREDENTIALS’ and secrets.AZURE_WEBAPP_NAME’ to run the actions and deploy your code.  Verify that it has deployed by going to your Web App in the Azure Portal and launching your application.</p>
+
+<h2 id="continuous-deployment-with-azure-devops">Continuous deployment with Azure DevOps</h2>
+<p>Azure DevOps is another option for deploying your code with continuous deployment to your .NET 5 Web App enabling you to host, build, plan and test your code through Azure Pipelines.  To get started, you will need to first <strong>Create a new project</strong> and <a href="https://docs.microsoft.com/azure/devops/repos/git/import-git-repository?view=azure-devops">Import a Git repo</a>.  Once you have your code uploaded to your DevOps project, you can start building your Pipeline to deploy to your Web App.</p>
+
+<ol>
+  <li>Go to <strong>Pipelines</strong> in the left menu and click the <strong>Create Pipeline</strong> button on the following page</li>
+  <li>Connect to your <strong>Azure Repos Git</strong>, Select your repository and Configure your pipeline choosing the <strong>ASP.NET</strong> option. Azure DevOps will suggest a pipeline configuration, but we will be replacing it with the example below</li>
+  <li>
+    <p>After the above step you will be taken to the Review tab.  Replace the suggested code with the template below:</p>
+
+    <p>If you are using Windows, replace the  <code class="language-plaintext highlighter-rouge">vmImage:</code> value with <code class="language-plaintext highlighter-rouge">windows-latest</code></p>
+
+    <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="na">trigger</span><span class="pi">:</span>
+ <span class="pi">-</span> <span class="s">master</span>
+
+ <span class="na">pool</span><span class="pi">:</span>
+   <span class="na">vmImage</span><span class="pi">:</span> <span class="s1">'</span><span class="s">ubuntu-latest'</span>
+
+ <span class="na">variables</span><span class="pi">:</span>
+   <span class="na">buildConfiguration</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Release'</span>
+
+ <span class="na">steps</span><span class="pi">:</span>
+ <span class="pi">-</span> <span class="na">task</span><span class="pi">:</span> <span class="s">UseDotNet@2</span>
+   <span class="na">inputs</span><span class="pi">:</span>
+     <span class="na">packageType</span><span class="pi">:</span> <span class="s1">'</span><span class="s">sdk'</span>
+     <span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">5.0.100'</span>
+     <span class="na">includePreviewVersions</span><span class="pi">:</span> <span class="kc">true</span>
+
+ <span class="pi">-</span> <span class="na">task</span><span class="pi">:</span> <span class="s">DotNetCoreCLI@2</span>
+   <span class="na">displayName</span><span class="pi">:</span> <span class="s">Build</span>
+   <span class="na">inputs</span><span class="pi">:</span>
+     <span class="na">command</span><span class="pi">:</span> <span class="s">build</span>
+     <span class="na">projects</span><span class="pi">:</span> <span class="s1">'</span><span class="s">**/*.csproj'</span>
+     <span class="na">arguments</span><span class="pi">:</span> <span class="s1">'</span><span class="s">--configuration</span><span class="nv"> </span><span class="s">$(buildConfiguration)'</span> <span class="c1"># Update this to match your need)'</span>
+
+ <span class="pi">-</span> <span class="na">task</span><span class="pi">:</span> <span class="s">DotNetCoreCLI@2</span>
+   <span class="na">inputs</span><span class="pi">:</span>
+     <span class="na">command</span><span class="pi">:</span> <span class="s">publish</span>
+     <span class="na">publishWebProjects</span><span class="pi">:</span> <span class="s">True</span>
+     <span class="na">arguments</span><span class="pi">:</span> <span class="s1">'</span><span class="s">--configuration</span><span class="nv"> </span><span class="s">$(BuildConfiguration)</span><span class="nv"> </span><span class="s">--output</span><span class="nv"> </span><span class="s">$(Build.ArtifactStagingDirectory)'</span>
+     <span class="na">zipAfterPublish</span><span class="pi">:</span> <span class="s">True</span>
+
+ <span class="c1"># this code takes all the files in $(Build.ArtifactStagingDirectory) and uploads them as an artifact of your build.</span>
+ <span class="pi">-</span> <span class="na">task</span><span class="pi">:</span> <span class="s">PublishBuildArtifacts@1</span>
+   <span class="na">inputs</span><span class="pi">:</span>
+     <span class="na">pathtoPublish</span><span class="pi">:</span> <span class="s1">'</span><span class="s">$(Build.ArtifactStagingDirectory)'</span> 
+     <span class="na">artifactName</span><span class="pi">:</span> <span class="s1">'</span><span class="s">myWebsiteName'</span>
+</code></pre></div>    </div>
+  </li>
+  <li>Now <strong>Save and run</strong> your build pipeline.  This will build your application and create an artifact that will be used for your release pipeline.  After the run, you can create your release pipeline.</li>
+  <li>Go to <strong>Releases</strong> in the left menu area and click the <strong>New Pipeline</strong> button on the following page</li>
+  <li>Next, select the <strong>Azure App Service deployment</strong> template and hit <strong>Apply</strong></li>
+  <li>
+    <p>In the following page, select the +Add an artifact box on the left to add the artifact we previously created in the Build pipeline</p>
+
+    <p><img src="/AppService/media/2020/11/net5_3.png" alt="devops" /></p>
+  </li>
+  <li>Choose your <strong>Source(build pipeline)</strong> and hit the <strong>Add</strong> button</li>
+  <li>Once that is set you’ll want to setup the trigger by clicking the lightning bolt icon in the top right of your artifact</li>
+  <li>
+    <p>A new window will pop up. Switch the <strong>Continuous  deployment trigger</strong> to <strong>Enabled</strong> and close the window</p>
+
+    <p><img src="/AppService/media/2020/11/net5_4.png" alt="devops" /></p>
+  </li>
+  <li>Next, you can click on the 1 job, 1 task link to setup your deployment stage</li>
+  <li>Fill in your Parameters under “Stage 1”
+    <ul>
+      <li><strong>Azure subscription:</strong> your azure subscription</li>
+      <li><strong>App type:</strong> Web App on Linux OR Web App on Windows</li>
+      <li><strong>App service name:</strong> your App Service name</li>
+    </ul>
+  </li>
+  <li>After your “Stage 1” parameters are filled in, click the <strong>Run on agent</strong> box and modify the <strong>Agent Specification</strong> to run the appropriate ubuntu or windows agent</li>
+  <li>Now you can click the <strong>Deploy Azure App Service</strong> box and review the pre-filled parameters.  Update any parameters if needed</li>
+  <li>Click on the <strong>Save</strong> icon on the top right menu</li>
+  <li>Click <strong>OK</strong> for the folder location and Create release</li>
+  <li>
+    <p>Select the “Stage 1” trigger from the drop down menu and click <strong>Create</strong></p>
+
+    <p><img src="/AppService/media/2020/11/net5_4.png" alt="devops" /></p>
+  </li>
+  <li>Once the release is created it will be named “Release-1” and you will be able to see a similar screen as above.  Click <strong>Deploy</strong> under the Stage 1 and <strong>Deploy</strong> again on the next screen to start your deployment to your Azure App Service Web App.</li>
+  <li>Verify that your application has been published by launching your Web App in the Azure Portal.</li>
+</ol>
+
+<h2 id="container-deployment-with-net-5">Container Deployment with .NET 5</h2>
+<p>.NET 5 applications are easily deployable to a custom container on App Service using Linux or Windows. When deploying a container, you are packaging the application and its dependencies into a Linux or Windows based image to run on the App Service platform enabling your application to be more portable.</p>
+
+<p>The steps for containerizing a .NET 5 application are the same as it would be for other applications.</p>
+<ol>
+  <li><strong>Right-click</strong> your project</li>
+  <li><strong>Add</strong> -&gt;  <strong>Docker Support</strong></li>
+</ol>
+
+<p>Your .NET 5 project will have a new Dockerfile added with the .NET 5.0 base image and SDK ready for you to publish.</p>
+
+<blockquote>
+  <p>For more information on .NET 5 Docker images, please see the <a href="https://hub.docker.com/_/microsoft-dotnet-aspnet">official images for ASP.NET Core runtimes</a> on docker.</p>
+</blockquote>
+
+<p>If you are using Windows your base image will be <code class="language-plaintext highlighter-rouge">FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base</code> using the <code class="language-plaintext highlighter-rouge">FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build</code> SDK.</p>
+
+<p>For Linux applications, your base image will be <code class="language-plaintext highlighter-rouge">FROM mcr.microsoft.com/dotnet/aspnet:5.0-buster-slim AS base</code> using the <code class="language-plaintext highlighter-rouge">FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build</code> SDK.</p>
+
+<div class="language-docker highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="w"> </span><span class="s">mcr.microsoft.com/dotnet/aspnet:5.0</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s">base  # For Windows apps</span>
+<span class="c"># FROM mcr.microsoft.com/dotnet/aspnet:5.0-buster-slim AS base # For Linux apps</span>
+<span class="k">WORKDIR</span><span class="s"> /app</span>
+<span class="k">EXPOSE</span><span class="s"> 80</span>
+<span class="k">EXPOSE</span><span class="s"> 443</span>
+
+<span class="k">FROM</span><span class="w"> </span><span class="s">mcr.microsoft.com/dotnet/sdk:5.0</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s">build  # For Windows apps</span>
+<span class="c"># FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build # For Linux apps</span>
+<span class="k">WORKDIR</span><span class="s"> /src</span>
+<span class="k">COPY</span><span class="s"> ["dotnet5app/dotnet5app.csproj", "dotnet5app/"]</span>
+<span class="k">RUN </span>dotnet restore <span class="s2">"dotnet5app/dotnet5app.csproj"</span>
+<span class="k">COPY</span><span class="s"> . .</span>
+<span class="k">WORKDIR</span><span class="s"> "/src/dotnet5containerwindows"</span>
+<span class="k">RUN </span>dotnet build <span class="s2">"dotnet5app.csproj"</span> <span class="nt">-c</span> Release <span class="nt">-o</span> /app/build
+
+<span class="k">FROM</span><span class="w"> </span><span class="s">build</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s">publish</span>
+<span class="k">RUN </span>dotnet publish <span class="s2">"dotnet5app.csproj"</span> <span class="nt">-c</span> Release <span class="nt">-o</span> /app/publish
+
+<span class="k">FROM</span><span class="w"> </span><span class="s">base</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s">final</span>
+<span class="k">WORKDIR</span><span class="s"> /app</span>
+<span class="k">COPY</span><span class="s"> --from=publish /app/publish .</span>
+<span class="k">ENTRYPOINT</span><span class="s"> ["dotnet", "dotnet5app.dll"]</span>
+</code></pre></div></div>
+
+<p>After you have added Docker support, you will publish it to a registry, and create your App Service as usual. See our documentation for more detail on <a href="https://docs.microsoft.com/azure/app-service/app-service-web-get-started-windows-container">deploying a containerized application</a>.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2020-11-16T00:00:00+00:00">November 16, 2020</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Hosting+.NET+5+Applications+on+Azure+App+Service%20https%3A%2F%2Fazure.github.io%2FAppService%2F2020%2F11%2F16%2FHosting-dotnet-five-Applications-on-Azure-App-Service.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2020%2F11%2F16%2FHosting-dotnet-five-Applications-on-Azure-App-Service.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2020%2F11%2F16%2FHosting-dotnet-five-Applications-on-Azure-App-Service.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2020/11/15/web-app-nat-gateway.html" class="pagination--pager" title="NAT Gateway and app integration
+">Previous</a>
+    
+    
+      <a href="/AppService/2020/11/18/asev3-public-preview-announcement.html" class="pagination--pager" title="App Service Environment v3 public preview
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

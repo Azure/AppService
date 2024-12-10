@@ -1,0 +1,927 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Zip Push Deployment for Web Apps, Functions and WebJobs - Azure App Service</title>
+<meta name="description" content="">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Zip Push Deployment for Web Apps, Functions and WebJobs">
+<meta property="og:url" content="https://azure.github.io/AppService/2017/10/16/Zip-Push-Deployment-for-Web-Apps,-Functions-and-WebJobs.html">
+
+
+  <meta property="og:description" content="">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2017-10-16T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2017/10/16/Zip-Push-Deployment-for-Web-Apps,-Functions-and-WebJobs.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Zip Push Deployment for Web Apps, Functions and WebJobs">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="October 16, 2017">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Zip Push Deployment for Web Apps, Functions and WebJobs
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+            
+            
+            • October 16, 2017
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Nick Walker" target="_blank">Nick Walker</a>
+<time>    10/16/2017 10:20:11 AM</time>
+<hr/>
+<div id="content"><a href="/AppService/media/2017/10/zip-kudu-appsvc.png"><img alt="" class="size-medium wp-image-6285 aligncenter" height="105" src="/AppService/media/2017/10/zip-kudu-appsvc-300x105.png" width="300"/></a>
+
+With our most recent release of <a href="https://github.com/projectkudu/kudu/wiki">Kudu</a>, we have introduced a new deployment option for web apps, Azure Functions and WebJobs: <strong>zip push deployment. </strong><a href="https://github.com/projectkudu/kudu/wiki/Deploying-from-a-zip-file">Zipdeploy</a> combines the simplicity of Kudu’s <a href="https://github.com/projectkudu/kudu/wiki/REST-API#zip">zip API</a> with the flexibility and robustness of Kudu’s deployment features, like deletion of unused files from old deployments, history tracking and Auto Swap support.
+<h2>Why a new API?</h2>
+Since App Service and Kudu were first introduced, the deployment needs of developers have evolved.
+<ul>
+<li>Availability and adoption of mature continuous integration and delivery (CI/CD) tools and services like <a href="https://www.visualstudio.com/team-services/">VSTS</a> have grown significantly. Developers are increasingly looking to deploy tested, ready-to-run apps from these services instead of from source code.</li>
+<li>The ability of many app stacks to enable rapid iteration has improved. Many contemporary developer workflows require the ability to quickly deploy directly from a development environment.</li>
+<li>The introduction of Azure Functions has further driven the popularity of rapid-iteration workflows. The nature of Functions encourages developers to repeatedly prototype and deploy small packages of functionality.</li>
+</ul>
+Kudu features a variety of mechanisms for deploying code to App Service that make use of its underlying deployment platform, which provides for safe, tracked deployments. But despite its relative lack of features, feedback has indicated that many developers favor using Kudu’s <a href="https://github.com/projectkudu/kudu/wiki/REST-API#zip">zip API</a> for deployments, especially in the above scenarios. For many workflows, the pure simplicity and cross-platform availability of the push-based zip API and of zip files themselves wins out over the features of other available deployment mechanisms:
+<ul>
+<li><a href="https://docs.microsoft.com/en-us/azure/app-service/app-service-deploy-local-git"><strong>Git deployment</strong></a> restricts your site contents to files that are in the repository and requires a commit to deploy. Triggering deployments with pushes to hosted providers like GitHub requires some setup before getting started. Git deployment also engages Kudu's CI build system by default, <span>which detects your app's runtime stack and generates scripts to do things like restore packages or compile code. This is undesirable when deploying an app that's already been built by your CI/CD service or deploying a working app from your local environment.</span></li>
+<li><a href="https://docs.microsoft.com/en-us/iis/publish/using-web-deploy/introduction-to-web-deploy"><strong>Web Deploy</strong></a> (aka msdeploy) is extremely powerful but challenging to configure. It's not supported on App Service on Linux and can't be used from non-Windows clients.</li>
+<li><a href="https://docs.microsoft.com/en-us/azure/app-service/app-service-deploy-ftp"><strong>FTP</strong></a> requires tools that many developers don't have handy or aren't familiar with. Many of them require scripting to achieve the desired result.</li>
+</ul>
+Zips are simple and ubiquitous, but without a connection to Kudu's deployment features, the zip API is only fit for general-purpose file transfers and is not robust enough for deployments. Deploying via the zip API can leave old files lying around that can break your application or Function unless you completely erase the existing files first. It doesn't create any deployment history, and there is no first-class way of verifying that deployment operations performed via the zip API are 100% successful.
+
+Why not combine the ease of pushing a zip file up to your site with Kudu's comprehensive deployment features? Enter zipdeploy!
+<h2>Usage</h2>
+Create a zip file containing the files you want deployed to wwwroot and POST it as binary data to /api/zipdeploy on your site’s Kudu instance.
+
+Here’s how to do it with curl:
+<pre>curl -X POST -u &lt;publishing-user&gt; --data-binary @&lt;zipfile&gt; https://{sitename}.scm.azurewebsites.net/api/zipdeploy</pre>
+<strong>Be aware that this operation may delete files currently in your site </strong>depending on the contents of your deployment! See Features below for more information.
+
+Add ?isAsync=true to the URL to perform an async deployment. A response will be returned as soon as the file is uploaded, and the deployment will continue on the server. The response will include a Location header with a URL that can be queried for realtime deployment status.
+
+By default, Kudu assumes that zip deployments do not require any build-related actions like <em>npm install</em> or <em>dotnet publish</em>. This can be overridden by setting the <a href="https://github.com/projectkudu/kudu/wiki/Configurable-settings#enabledisable-build-actions">SCM_DO_BUILD_DURING_DEPLOYMENT</a> deployment setting to <em>true</em> to enable Kudu’s detection logic and build script generation process.
+
+As with all web app deployments, modifying the files of a running app is a potentially dangerous operation that exposes your app to clients in a partially-deployed state. Apps that need atomic, zero-downtime deployments, smoke testing and/or rollback support should always use a <a href="https://docs.microsoft.com/en-us/azure/app-service/web-sites-staged-publishing">staging environment and a slot swap</a> as part of deployment.
+<h2>Features</h2>
+<ul>
+<li><strong>Flexibility: </strong>Push-based zip deployment eliminates the need to host your build output on the web or create a git commit. Zip deployments do not require any setup in Kudu or the Azure portal and can be run at any time with nothing but an HTTP client, regardless of whether your application is already <a href="https://docs.microsoft.com/en-us/azure/app-service/app-service-continuous-deployment">synced with a source control provider</a>.</li>
+<li><strong>Deletion of files left over from the previous deployment:</strong> Deployments use the <a href="https://github.com/projectkudu/KuduSync.NET">KuduSync</a> utility to track and delete files and directories that were created by a previous deployment if they’re not included in the new deployment. Any other files and directories found in the site that aren't being overwritten by the deployment will be preserved, such as files deployed via FTP, created in the Functions portal or created by your app during runtime.</li>
+<li><strong>Function trigger sync</strong>: If you are running Functions on a <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-scale#consumption-plan">Consumption plan</a>, modifying their triggers requires a synchronization process that doesn't occur with file-based deployment methods like FTP or the zip API. Zipdeploy will perform this synchronization for you.</li>
+<li><strong>Efficient file copy:</strong> KuduSync will only overwrite an existing file if its last-modified timestamp doesn’t match what’s in the deployment. You can speed up your deployments by using a build process that preserves timestamps on files that do not change across builds.</li>
+<li><strong>Logging, status tracking and history:</strong> Zipdeploy generates live status, deployment logs and recorded history in Kudu's <a href="https://github.com/projectkudu/kudu/wiki/REST-API#deployment">deployment API</a>. However, zip deployments cannot be redeployed.</li>
+<li><strong>Async support:</strong> By adding ?isAsync=true to the URL, a response will be returned as soon as the zip has been uploaded to the site. Deployment will continue asynchronously on the server. The Location header of the response will contain the deployment URL that can be polled for deployment status. <a href="https://github.com/projectkudu/kudu/wiki/Web-hooks">Webhooks</a> can be used for fully asynchronous notification of completion.</li>
+<li><strong>Customization:</strong> <a href="https://github.com/projectkudu/kudu/wiki/Configurable-settings#repository-and-deployment-related-settings">Deployment-related settings</a> will be respected, including those in app settings as well as configuration placed in a <a href="https://github.com/projectkudu/kudu/wiki/Customizing-deployments#deployment-file">.deployment file</a> located in the root of the zip.</li>
+<li><strong>Build script support:</strong> By default, zipdeploy assumes that the zip contains a ready-to-run app. Kudu's continuous integration build process can be enabled via the <a href="https://github.com/projectkudu/kudu/wiki/Configurable-settings#enabledisable-build-actions">SCM_DO_BUILD_DURING_DEPLOYMENT</a> deployment setting, or by providing a custom build command with the <a href="https://github.com/projectkudu/kudu/wiki/Configurable-settings#take-over-the-whole-deployment-script">COMMAND</a> setting.</li>
+<li><strong>Safe deployment:</strong> Zipdeploy engages Kudu's deployment locks, preventing multiple simultaneous deployments from clobbering your site.</li>
+<li><strong>Auto Swap and container restart support:</strong> A zip deployment will trigger an <a href="https://docs.microsoft.com/en-us/azure/app-service/web-sites-staged-publishing#configure-auto-swap">Auto Swap</a> if your site is configured for it. On App Service on Linux, zip deployment will trigger a restart of the app container.</li>
+</ul>
+<h2>Feedback</h2>
+Please give zipdeploy a try and let us know what you think, especially if you're currently using the zip API for deployments. We’d love to hear your feedback – we’ll be watching the Issues tab on <a href="https://github.com/projectkudu/kudu">Kudu’s GitHub page</a>, as well as the <a href="https://social.msdn.microsoft.com/forums/azure/en-US/home?forum=windowsazurewebsitespreview">MSDN forums</a>, <a href="https://stackoverflow.com/questions/tagged/azure-web-sites">Stack Overflow</a> and <a href="https://feedback.azure.com/forums/169385-web-apps">Uservoice</a>.</div>
+</div></body>
+<script src="/AppService/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="/AppService/resource/replace.js" type="text/javascript"></script>
+</html>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2017-10-16T00:00:00+00:00">October 16, 2017</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Zip+Push+Deployment+for+Web+Apps%2C+Functions+and+WebJobs%20https%3A%2F%2Fazure.github.io%2FAppService%2F2017%2F10%2F16%2FZip-Push-Deployment-for-Web-Apps%2C-Functions-and-WebJobs.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2017%2F10%2F16%2FZip-Push-Deployment-for-Web-Apps%2C-Functions-and-WebJobs.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2017%2F10%2F16%2FZip-Push-Deployment-for-Web-Apps%2C-Functions-and-WebJobs.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2017/10/11/Retirement-of-the-PHP-5.5-runtime-from-App-Service.html" class="pagination--pager" title="Retirement of the PHP 5.5 runtime from App Service
+">Previous</a>
+    
+    
+      <a href="/AppService/2017/10/26/Configure-App-Service-Certificate-to-Azure-Virtual-machines.html" class="pagination--pager" title="Configure App Service Certificate to Azure Virtual machines
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

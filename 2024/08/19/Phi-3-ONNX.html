@@ -1,0 +1,1123 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Optimizing SLM with ONNX Runtime: Phi-3 on CPU with Sidecars for App Service - Azure App Service</title>
+<meta name="description" content="In my previous blog post, Using SLM with Sidecar, we explored the integration of Small Language Models (SLM), specifically Phi-3, with the Sidecar pattern on Linux App Service. This approach offered a flexible and scalable solution to enhance application functionality, particularly in scenarios requiring lightweight language models.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Optimizing SLM with ONNX Runtime: Phi-3 on CPU with Sidecars for App Service">
+<meta property="og:url" content="https://azure.github.io/AppService/2024/08/19/Phi-3-ONNX.html">
+
+
+  <meta property="og:description" content="In my previous blog post, Using SLM with Sidecar, we explored the integration of Small Language Models (SLM), specifically Phi-3, with the Sidecar pattern on Linux App Service. This approach offered a flexible and scalable solution to enhance application functionality, particularly in scenarios requiring lightweight language models.">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2024-08-19T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2024/08/19/Phi-3-ONNX.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Optimizing SLM with ONNX Runtime: Phi-3 on CPU with Sidecars for App Service">
+    <meta itemprop="description" content="In my previous blog post, Using SLM with Sidecar, we explored the integration of Small Language Models (SLM), specifically Phi-3, with the Sidecar pattern on Linux App Service. This approach offered a flexible and scalable solution to enhance application functionality, particularly in scenarios requiring lightweight language models.">
+    <meta itemprop="datePublished" content="August 19, 2024">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Optimizing SLM with ONNX Runtime: Phi-3 on CPU with Sidecars for App Service
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  6 minute read
+
+            
+            
+              • By Tulika Chaudharie
+            
+            • August 19, 2024
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#prerequisites">Prerequisites</a></li>
+  <li><a href="#creating-the-container-image-for-phi-3-onnx-runtime">Creating the Container Image for Phi-3 ONNX Runtime</a></li>
+  <li><a href="#setting-up-the-chat-application">Setting Up the Chat Application</a></li>
+  <li><a href="#deploying-the-application-to-linux-app-service">Deploying the Application to Linux App Service</a></li>
+  <li><a href="#summary">Summary</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <p>In my previous blog post, <a href="https://azure.github.io/AppService/2024/08/05/Using-SLM-with-Sidecar.html">Using SLM with Sidecar</a>, we explored the integration of Small Language Models (SLM), specifically Phi-3, with the Sidecar pattern on Linux App Service. This approach offered a flexible and scalable solution to enhance application functionality, particularly in scenarios requiring lightweight language models.</p>
+
+<p>Building on that foundation, this post delves into the next step: leveraging the power of the ONNX Runtime to run Phi-3 on CPU. ONNX Runtime is a high-performance inference engine for deploying machine learning models in production. It offers several advantages, such as cross-platform support, optimized performance for a variety of hardware, and the ability to run models efficiently on CPUs without the need for specialized GPUs.</p>
+
+<p>By using Phi-3 with ONNX Runtime on CPU, you can achieve a more accessible and cost-effective deployment, making it an excellent choice for applications where GPU resources are limited or unnecessary. In this post, we’ll walk through the process of setting up Phi-3 with ONNX Runtime and demonstrate how it can be integrated with the Sidecar pattern on Linux App Service.</p>
+
+<h2 id="prerequisites">Prerequisites</h2>
+
+<ul>
+  <li><a href="https://www.docker.com/products/docker-desktop/">Docker Desktop</a></li>
+  <li><a href="https://code.visualstudio.com/Download">Visual Studio Code</a></li>
+  <li><a href="https://www.python.org/downloads/">Python 3.9 or higher</a></li>
+  <li>The code for this project is available <a href="https://github.com/Azure-Samples/sidecar-samples/tree/main/phi-3">here</a></li>
+</ul>
+
+<h2 id="creating-the-container-image-for-phi-3-onnx-runtime">Creating the Container Image for Phi-3 ONNX Runtime</h2>
+
+<p>In this section, we’ll walk through the process of creating a container image for the <a href="https://huggingface.co/microsoft/Phi-3-mini-4k-instruct-onnx">Phi-3 model using ONNX Runtime on CPU</a>. This image will be ready to serve the model via an API and can be deployed as a sidecar on Linux App Service.</p>
+
+<ol>
+  <li>
+    <p><strong>Set Up the Project Directory</strong>
+ First, create a directory to hold all the files related to this project. You can name it something like phi-3-sidecar:</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nb">mkdir </span>phi-3-sidecar
+ <span class="nb">cd </span>phi-3-sidecar
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><strong>Download the Hugging Face CLI</strong>
+ To download the Phi-3 model, you’ll need the Hugging Face CLI. If you don’t have it installed yet, you can do so using pip:</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> pip <span class="nb">install </span>huggingface-hub
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><strong>Download the CPU Model</strong>
+ Use the Hugging Face CLI to download the specific version of the Phi-3 model optimized for CPU:</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> huggingface-cli download microsoft/Phi-3-mini-4k-instruct-onnx <span class="nt">--include</span> cpu_and_mobile/cpu-int4-rtn-block-32-acc-level-4/<span class="k">*</span> <span class="nt">--local-dir</span> <span class="nb">.</span>
+</code></pre></div>    </div>
+
+    <p>This command downloads the necessary model files into your project directory.</p>
+  </li>
+  <li>
+    <p><strong>Create the model_api.py File</strong>
+ Next, create a Python script named model_api.py to serve the model via an API. This script will handle incoming requests and use the ONNX Runtime to generate output. This is a sample <a href="https://github.com/Azure-Samples/sidecar-samples/blob/main/phi-3/phi-3-sidecar/model_api.py">model_api.py</a> that you can use.</p>
+
+    <p>These are the key parts of the code</p>
+    <ul>
+      <li>
+        <p>Load the model and the tokenizer</p>
+
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">model_path</span> <span class="o">=</span> <span class="sh">"</span><span class="s">/app/cpu_and_mobile/cpu-int4-rtn-block-32-acc-level-4</span><span class="sh">"</span>
+  <span class="n">model</span> <span class="o">=</span> <span class="n">og</span><span class="p">.</span><span class="nc">Model</span><span class="p">(</span><span class="n">model_path</span><span class="p">)</span>
+
+  <span class="c1"># Load the tokenizer from onnxruntime_genai
+</span>  <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">og</span><span class="p">.</span><span class="nc">Tokenizer</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+  <span class="n">tokenizer_stream</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">.</span><span class="nf">create_stream</span><span class="p">()</span>
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>Preprocess the input text and pass it to the model</p>
+
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">input_text</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="n">input_text</span>
+
+  <span class="n">chat_template</span> <span class="o">=</span> <span class="sh">'</span><span class="s">&lt;|user|&gt;</span><span class="se">\n</span><span class="s">{input} &lt;|end|&gt;</span><span class="se">\n</span><span class="s">&lt;|assistant|&gt;</span><span class="sh">'</span>
+  <span class="n">prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="sh">'</span><span class="si">{</span><span class="n">chat_template</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="nb">input</span><span class="o">=</span><span class="n">input_text</span><span class="p">)</span><span class="si">}</span><span class="sh">'</span>
+  <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Prompt</span><span class="sh">"</span><span class="p">,</span> <span class="n">prompt</span><span class="p">)</span>
+  <span class="n">input_tokens</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">.</span><span class="nf">encode</span><span class="p">(</span><span class="n">prompt</span><span class="p">)</span>
+
+  <span class="n">params</span> <span class="o">=</span> <span class="n">og</span><span class="p">.</span><span class="nc">GeneratorParams</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+  <span class="n">params</span><span class="p">.</span><span class="nf">set_search_options</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">2048</span><span class="p">)</span>
+  <span class="n">params</span><span class="p">.</span><span class="nf">set_search_options</span><span class="p">(</span><span class="n">do_sample</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+  <span class="n">params</span><span class="p">.</span><span class="n">input_ids</span> <span class="o">=</span> <span class="n">input_tokens</span>
+
+  <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Input tokens</span><span class="sh">"</span><span class="p">,</span> <span class="n">input_tokens</span><span class="p">)</span>
+  <span class="n">generator</span> <span class="o">=</span> <span class="n">og</span><span class="p">.</span><span class="nc">Generator</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>Generate the output tokens and return it as a streaming response</p>
+
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">def</span> <span class="nf">token_generator</span><span class="p">():</span>
+      <span class="n">generated_text</span> <span class="o">=</span> <span class="sh">""</span>
+      <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Starting generator</span><span class="sh">"</span><span class="p">,</span> <span class="n">generator</span><span class="p">.</span><span class="nf">is_done</span><span class="p">())</span>
+      <span class="k">while</span> <span class="ow">not</span> <span class="n">generator</span><span class="p">.</span><span class="nf">is_done</span><span class="p">():</span>
+          <span class="n">generator</span><span class="p">.</span><span class="nf">compute_logits</span><span class="p">()</span>
+          <span class="n">generator</span><span class="p">.</span><span class="nf">generate_next_token</span><span class="p">()</span>
+            
+          <span class="n">new_token</span> <span class="o">=</span> <span class="n">generator</span><span class="p">.</span><span class="nf">get_next_tokens</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+          <span class="n">generated_text</span> <span class="o">+=</span> <span class="n">tokenizer_stream</span><span class="p">.</span><span class="nf">decode</span><span class="p">(</span><span class="n">new_token</span><span class="p">)</span>
+          <span class="k">yield</span> <span class="n">tokenizer_stream</span><span class="p">.</span><span class="nf">decode</span><span class="p">(</span><span class="n">new_token</span><span class="p">)</span> 
+                
+  <span class="k">return</span> <span class="nc">StreamingResponse</span><span class="p">(</span><span class="nf">token_generator</span><span class="p">(),</span> <span class="n">media_type</span><span class="o">=</span><span class="sh">"</span><span class="s">text/plain</span><span class="sh">"</span><span class="p">)</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Create a Dockerfile</strong>
+ To containerize the application, you’ll need a Dockerfile. This file will define the environment, dependencies, and steps required to run the model_api.py script inside a container. A sample Dockerfile can be found <a href="https://github.com/Azure-Samples/sidecar-samples/blob/main/phi-3/phi-3-sidecar/Dockerfile">here</a>.</p>
+
+    <p>The Dockerfile typically includes:</p>
+
+    <ul>
+      <li><em>Base Image:</em> A lightweight Python image is used as the base.</li>
+      <li><em>Dependencies:</em> Instructions to install necessary Python libraries and ONNX Runtime.</li>
+      <li><em>Copying Files:</em> The model files and the model_api.py script are copied into the container.</li>
+      <li><em>Run command:</em> The container exposes a port and runs the model_api.py script when started.</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Build and Push the Image</strong>
+ Finally, build the Docker image and push it to your preferred container registry. Here’s how you can do it:</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="c"># Build the Docker image</span>
+ docker build <span class="nt">-t</span> phi-3-sidecar:latest <span class="nb">.</span>
+
+ <span class="c"># Tag the image for your container registry</span>
+ docker tag phi-3-sidecar:latest &lt;registry-name&gt;/phi-3-sidecar:latest
+
+ <span class="c"># Push the image to your registry</span>
+ docker push &lt;registry-name&gt;/phi-3-sidecar:latest
+</code></pre></div>    </div>
+
+    <p>Replace <code class="language-plaintext highlighter-rouge">registry-name</code> with the name of your container registry, such as Azure Container Registry, Docker Hub, or a private registry.</p>
+  </li>
+</ol>
+
+<h2 id="setting-up-the-chat-application">Setting Up the Chat Application</h2>
+
+<p>Now that we’ve created the container image for our Phi-3 ONNX Runtime model, the next step is to set up a chat application that leverages this model to generate responses. This application will serve as the main app, calling the SLM image running as a sidecar to handle user inputs.</p>
+
+<ol>
+  <li>
+    <p><strong>Implementing the Chat Application</strong>
+ The core of our chat application is a Python script, <code class="language-plaintext highlighter-rouge">app.py</code>, which handles the communication between the user and the SLM. Here’s how we set it up:</p>
+
+    <ul>
+      <li>
+        <p><em>Calling the Sidecar:</em> The application communicates with the SLM sidecar using the localhost URL. The API endpoint /predict is called to process the input text and generate responses.</p>
+
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">API_URL</span> <span class="o">=</span> <span class="sh">"</span><span class="s">http://localhost:8000/predict</span><span class="sh">"</span>
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p><em>Streaming the Response:</em> The response from the SLM is streamed back to the user. This approach ensures that the user receives a continuous stream of text, enhancing the interaction experience.</p>
+
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">Copy</span> <span class="n">code</span>
+  <span class="k">def</span> <span class="nf">generate</span><span class="p">():</span>
+      <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="nf">time</span><span class="p">()</span>  <span class="c1"># Start the timer
+</span>      <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nf">post</span><span class="p">(</span><span class="n">API_URL</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="sh">"</span><span class="s">input_text</span><span class="sh">"</span><span class="p">:</span> <span class="n">input_text</span><span class="p">},</span> <span class="n">stream</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+      <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="nf">time</span><span class="p">()</span>  <span class="c1"># End the timer
+</span>
+      <span class="n">time_taken</span> <span class="o">=</span> <span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span>  <span class="c1"># Calculate the time taken
+</span>      <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Time taken for API response: </span><span class="si">{</span><span class="n">time_taken</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s"> seconds</span><span class="sh">"</span><span class="p">)</span>  <span class="c1"># Print the time taken
+</span>
+      <span class="k">if</span> <span class="n">response</span><span class="p">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+          <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">response</span><span class="p">.</span><span class="nf">iter_content</span><span class="p">(</span><span class="n">chunk_size</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+              <span class="k">if</span> <span class="n">chunk</span><span class="p">:</span>
+                  <span class="k">yield</span> <span class="n">chunk</span><span class="p">.</span><span class="nf">decode</span><span class="p">(</span><span class="sh">'</span><span class="s">utf-8</span><span class="sh">'</span><span class="p">)</span>
+      <span class="k">else</span><span class="p">:</span>
+          <span class="k">yield</span> <span class="sh">'</span><span class="s">Error: </span><span class="sh">'</span> <span class="o">+</span> <span class="n">response</span><span class="p">.</span><span class="n">text</span>
+
+  <span class="k">return</span> <span class="nc">Response</span><span class="p">(</span><span class="nf">generate</span><span class="p">(),</span> <span class="n">content_type</span><span class="o">=</span><span class="sh">'</span><span class="s">text/plain</span><span class="sh">'</span><span class="p">)</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+
+    <p>This code starts a timer when the request is made, logs the time taken for the API to respond, and then streams the response to the client. If the API call is successful, the chunks of the response are decoded and sent to the user. If there’s an error, it returns the error message.</p>
+
+    <p>The full implementation of this script can be found <a href="https://github.com/Azure-Samples/sidecar-samples/blob/main/phi-3/main-app/app.py">here</a>.</p>
+  </li>
+  <li>
+    <p><strong>Containerizing Your Python Application</strong>
+ We’ll containerize our chat application by creating a Dockerfile in the root directory of the project. This Dockerfile will set up the environment, install dependencies, and define how the application is run inside a container.</p>
+
+    <p><em>Note: The Sidecar feature is currently enabled for custom-container scenarios for Linux App Service. We are working on enabling it for code scenarios as well. We will update the blog soon for the code-based web applications</em></p>
+
+    <p>The Dockerfile for this project is available <a href="https://github.com/Azure-Samples/sidecar-samples/blob/main/phi-3/main-app/Dockerfile">here</a>.</p>
+  </li>
+  <li>
+    <p><strong>Build and Push the Docker Image</strong>
+ Once the Dockerfile is ready, you can build the Docker image and push it to your preferred container registry. Here are the commands:</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="c"># Build the Docker image</span>
+ docker build <span class="nt">-t</span> &lt;your-registry&gt;/&lt;your-image-name&gt;:&lt;tag&gt; <span class="nb">.</span>
+
+ <span class="c"># Push the image to your registry</span>
+ docker push &lt;your-registry&gt;/&lt;your-image-name&gt;:&lt;tag&gt;
+</code></pre></div>    </div>
+
+    <p>Replace <code class="language-plaintext highlighter-rouge">&lt;your-registry&gt;</code>, <code class="language-plaintext highlighter-rouge">&lt;your-image-name&gt;</code>, and <code class="language-plaintext highlighter-rouge">&lt;tag&gt;</code> with the appropriate values for your container registry, image name, and version tag.</p>
+  </li>
+</ol>
+
+<h2 id="deploying-the-application-to-linux-app-service">Deploying the Application to Linux App Service</h2>
+
+<ol>
+  <li>
+    <p><strong>Create a New Linux Web App in Azure</strong></p>
+
+    <p>Create a new Linux Web App from the portal and choose the options for Container and Linux.</p>
+
+    <p><img src="/AppService/media/2024/07/CreateWebApp.jpg" alt="Create web app" /></p>
+
+    <p>On the Container tab, make sure that Sidecar support is Enabled.</p>
+
+    <p>Specify the details of your application image.</p>
+
+    <p><img src="/AppService/media/2024/07/AddContainer.jpg" alt="Create web app" /></p>
+
+    <p><em>Note: We strongly recommend enabling <a href="https://learn.microsoft.com/azure/app-service/overview-managed-identity?tabs=portal%2Chttp">Managed Identity</a> for your Azure resources.</em></p>
+  </li>
+  <li>
+    <p><strong>Add Phi-3 ONNX Sidecar</strong></p>
+
+    <p>Go to the Deployment Center for your application and add a sidecar container.</p>
+
+    <p><img src="/AppService/media/2024/08/phi-onnx-sidecar.jpg" alt="Add Phi-3 sidecar" /></p>
+
+    <p>This <a href="https://learn.microsoft.com/azure/app-service/tutorial-custom-container-sidecar">document</a> tells you how to add sidecars, step-by-step.</p>
+  </li>
+  <li>
+    <p><strong>Verify the deployment</strong></p>
+
+    <p>Once your deployment is complete, you can browse to your application URL and see the chat frontend.</p>
+
+    <p><img src="/AppService/media/2024/08/phi-onnx-output.jpg" alt="Website output" /></p>
+
+    <p><em>Note: Since we are deploying a language model, please be aware that the application might take a little longer to start up the first time. This delay is due to the initial setup and loading of the Phi-3 model, which ensures that it is ready to handle requests efficiently. Subsequent startups should be faster once the model is properly initialized.</em></p>
+  </li>
+</ol>
+
+<h2 id="summary">Summary</h2>
+
+<p>In this blog post, we extended our exploration of Small Language Models (SLMs) by focusing on the integration of Phi-3 ONNX Runtime for CPU with the Sidecar pattern on Linux App Service. This powerful combination offers a robust scenario for building intelligent applications that can efficiently run on CPU, making advanced AI capabilities more accessible and cost-effective.</p>
+
+<p>We are actively working on more AI scenarios for Azure App Service and would love to hear what you are building. Your feedback and ideas are invaluable as we continue to explore the possibilities of AI and cloud-based deployments.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2024-08-19T00:00:00+00:00">August 19, 2024</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Optimizing+SLM+with+ONNX+Runtime%3A+Phi-3+on+CPU+with+Sidecars+for+App+Service%20https%3A%2F%2Fazure.github.io%2FAppService%2F2024%2F08%2F19%2FPhi-3-ONNX.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2024%2F08%2F19%2FPhi-3-ONNX.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2024%2F08%2F19%2FPhi-3-ONNX.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2024/08/08/App-Service-Community-Standup.html" class="pagination--pager" title="Azure App Service Community Standup: Integrating Datadog with Linux App Service using Sidecars
+">Previous</a>
+    
+    
+      <a href="/AppService/2024/08/19/net-9-preview-6-available-on-app-service.html" class="pagination--pager" title=".NET 9 Preview 6 now available on App Service
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

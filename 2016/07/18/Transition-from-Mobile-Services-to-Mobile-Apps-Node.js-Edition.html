@@ -1,0 +1,1009 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Transition from Mobile Services to Mobile Apps Node.js Edition - Azure App Service</title>
+<meta name="description" content="">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Transition from Mobile Services to Mobile Apps Node.js Edition">
+<meta property="og:url" content="https://azure.github.io/AppService/2016/07/18/Transition-from-Mobile-Services-to-Mobile-Apps-Node.js-Edition.html">
+
+
+  <meta property="og:description" content="">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2016-07-18T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2016/07/18/Transition-from-Mobile-Services-to-Mobile-Apps-Node.js-Edition.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Transition from Mobile Services to Mobile Apps Node.js Edition">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="July 18, 2016">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Transition from Mobile Services to Mobile Apps Node.js Edition
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  7 minute read
+
+            
+            
+            • July 18, 2016
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Adrian Hall (MSFT)" target="_blank">Adrian Hall (MSFT)</a>
+<time>    7/18/2016 1:20:30 PM</time>
+<hr/>
+<div id="content">We <a href="https://azure.microsoft.com/en-us/blog/transition-of-azure-mobile-services/" target="_blank">recently announced</a> that Azure Mobile Services will be deprecated and all services will be migrated to Azure App Service. At this point, you will become responsible for the code running your app. You may want to upgrade your site to take advantage of the additional facilities that Azure App Service provides you, such as staging slots and picking the Node version that is run when you run your site.  The<a href="https://www.npmjs.com/package/azure-mobile-apps-compatibility" target="_blank"> Azure Mobile Apps compatibility</a> package allows you to convert older Azure Mobile Services applications written for the Node platform so that they can utilize the latest Azure Mobile Apps Node SDK.
+
+<h3>How Does it Work?</h3>
+
+The package takes the raw source code from a Node-based Azure Mobile Service and generates the equivalent set of table and custom API definitions that will work with the <a href="https://www.npmjs.com/package/azure-mobile-apps" target="_blank">Azure Mobile Apps Server SDK for Node</a>. You will have a new project at the end that you can deploy as a 
+new site to Azure App Service. Both platforms offer a similar set of functionality, but with different APIs. The compatibility package maps the Mobile Services API to the newer Mobile Apps API.
+
+The generated app is ready to deploy to an Azure App Service and should work for most applications. It's important to review the code afterwards as some common scenarios (such as authentication) will require specific configuration or code changes in addition to the conversion.
+
+<h3>Performing a Conversion</h3>
+
+Because the conversion produces a new site, there is a natural process to the conversion. If you run into problems, please get live help - we listen in on <a href="http://stackoverflow.com/" target="_blank">Stack Overflow</a>, the <a href="https://social.msdn.microsoft.com/forums/azure/en-US/home?forum=azuremobile" target="_blank">Azure Forums</a> and have a <a href="https://gitter.im/Azure/azure-mobile-apps-node" target="_blank">Gitter channel</a> for live assistance during normal (West US) working hours.
+
+Note that this process cannot be attempted until AFTER you have <a href="https://azure.microsoft.com/en-us/documentation/articles/app-service-mobile-migrating-from-mobile-services/" target="_blank">migrated the site from Azure Mobile Services to Azure App Service</a>. 
+
+<h4>Obtain your Azure Mobile Services Scripts</h4>
+
+Open the Debug Console in your browser (it's at http://<i>yourMobileService</i>.scm.azure-mobile.net/DebugConsole).  Navigate by clicking on the directory names to <tt>site/wwwroot/App_Data/config</tt>.  Download the <tt>scripts</tt> directory in ZIP format by clicking on the download icon next to the folder name.
+
+<h4>Create the Azure Mobile App</h4>
+
+First, install the compatibility package by executing the following with elevated privileges:
+
+<pre>npm i -g azure-mobile-apps-compatibility</pre>
+
+This installs a command line utility with the following usage:
+
+<pre>scaffold-mobile-app &lt;inputPath&gt; &lt;outputPath&gt;</pre>
+
+For example,
+
+<pre>scaffold-mobile-app scripts out</pre>
+
+This reads the Azure Mobile Service definition from the <tt>scripts</tt> directory located in the current working directory and creates a directory called <tt>out</tt> with a scaffolded Mobile App.  Once the app has been created, check the target folder to make sure it contains files for the tables and custom APIs you defined in your mobile service.
+
+Your app is almost ready to deploy!
+
+<h3>Deploying and Testing</h3>
+
+During deployment, you will need to update your database and create a new App Service, linking the updated SQL database to the new App Service.
+
+<h4>Create Database Compatibility Views</h4>
+
+Mobile Services created a specific schema to hold the Mobile Services data and had system column names preceded by a double-underscore.  Mobile Apps has changed these requirements.  We can map one to the other using SQL Views.  The scaffolded app includes a SQL script called <tt>createViews.sql</tt>. This script must be executed against the target database. The connection string for the target database can be obtained from your Mobile Service or migrated Mobile App from the <strong>Settings</strong> blade under the <strong>Connection Strings</strong> section. The connection string name is <tt>MS_TableConnectionString</tt>.   This script creates read / write views in the dbo database schema that map older reserved column names to new column names.  This script can also be obtained from <a href="https://raw.githubusercontent.com/Azure/azure-mobile-apps-node-compatibility/master/static/createViews.sql" target="_blank">our GitHub repository</a>.
+
+<h4>Create the Target Mobile App</h4>
+
+Create a new App Service Mobile App using the Azure portal and perform the following tasks:
+
+<ul>
+<li>Take note of the URL for your Mobile App. You will need it later.</li>
+<li>Configure a data connection that points to the Mobile Service database.</li>
+<li>Configure push settings to use the same configuration as the Mobile Service.</li>
+</ul>
+
+If you previously used one of the built in authentication providers, there are additional steps that you must take. Read about these changes in <a href="https://azure.microsoft.com/en-us/documentation/articles/app-service-mobile-net-upgrading-from-mobile-services/#authentication" target="_blank">the .NET documentation</a> - they are valid to all migrations.
+
+<h4>Deploy your new Mobile App</h4>
+
+The simplest way to get your app onto Azure is using FTP. The URL, username and password can be obtained from the portal. Before copying the files, you must run <tt>npm install</tt> in a console window from the output folder created above. Copy the entire contents of the output folder to the <tt>site/wwwroot</tt> folder of the FTP host.  Alternatively, if you are familiar with git, we recommend you follow <a href="https://azure.microsoft.com/en-us/documentation/articles/web-sites-publish-source-control/" target="_blank">publish from source control</a>.  You can also use WebDeploy or hook up continuous deployment.
+
+After you have deployed your app, open your browser and navigate to the URL of your Mobile App. You should see the home page for your app.  Additionally, the Easy Tables and Easy API sections for your app in the portal should now be functional.
+
+<h4>Update Your Client</h4>
+
+The client application must be updated to use the latest version of the Azure Mobile Apps SDK. In many cases, this may simply be a matter of updating the Azure Mobile Apps libraries to the latest version.  Note that some libraries changed names:
+
+<ul>
+<li>The C#/.NET/Xamarin library is now <a href="https://www.nuget.org/packages/Microsoft.Azure.Mobile.Client/" target="_blank">Microsoft.Azure.Mobile.Client</a></li>
+<li>The JavaScript library is now <a href="https://www.npmjs.com/package/azure-mobile-apps-client" target="_blank">azure-mobile-apps-client</a></li>
+<li>The Apache Cordova library is now <a href="https://www.npmjs.com/package/cordova-plugin-ms-azure-mobile-apps" target="_blank">cordova-plugin-ms-azure-mobile-apps</a></li>
+</ul>
+
+However, in some cases, additional code changes may be required.  You also need to update the URL that is passed to the constructor of the Mobile App client object to the URL of the mobile app you created above and remove the API Key, which is no longer required.  Each client SDK has a new HOWTO document to aid in development:
+
+<ul>
+<li><a href="https://azure.microsoft.com/en-us/documentation/articles/app-service-mobile-dotnet-how-to-use-client-library/" target="_blank">C#/.NET/Xamarin</a></li>
+<li><a href="https://azure.microsoft.com/en-us/documentation/articles/app-service-mobile-html-how-to-use-client-library/" target="_blank">JavaScript</a></li>
+<li><a href="https://azure.microsoft.com/en-us/documentation/articles/app-service-mobile-cordova-how-to-use-client-library/" target="_blank">Apache Cordova</a></li>
+<li><a href="https://azure.microsoft.com/en-us/documentation/articles/app-service-mobile-ios-how-to-use-client-library/" target="_blank">iOS: Swift or Objective-C</a></li>
+<li><a href="https://azure.microsoft.com/en-us/documentation/articles/app-service-mobile-android-how-to-use-client-library/" target="_blank">Android: Java</a></li>
+</ul>
+
+Consult these documents for your client platform if you run into problems with the client SDK.
+
+<h3>Troubleshooting</h3>
+
+If you run into a problem, you should debug the issue just like you would any other development issue.  Generally, this means you should <a href="https://azure.microsoft.com/en-us/documentation/articles/web-sites-enable-diagnostic-log/" target="_blank">enable diagnostic logs</a> for your app.  Explicitly, you should turn on <strong>Application Logs (Filesystem)</strong> to see most of the issues with the code.  Here are some of the more common errors you may encounter with their solutions.
+
+<h4>Cannot find module 'xxx'</h4>
+
+Dependencies on external modules such as <tt>async</tt> have not been included by default to reduce the size of the application. If you are using any external modules, you will need to install them by opening a browser to <tt>https://_yourMobileService_.scm.azurewebsites.net/DebugConsole</tt> , navigating to the site/wwwroot folder and executing:
+
+<pre>npm i &lt;module name&gt;</pre>
+
+You can also add an options <tt>@&lt;version&gt;</tt> - this is recommended to install the same package versions that were used in your original Mobile Service.
+
+<h4>The table 'xxx' does not exist</h4>
+
+The <tt>getTable</tt> function is now case-sensitive.  Check to ensure the appropriate case is being used.
+
+<h4>Invalid column name '__createdAt'</h4>
+
+The double underscore notation for createdAt, updatedAt, version and deleted columns have been removed. You will need to update any explicit column references manually within your code.  The SQL script <tt>createViews.sql</tt> will take care of these columns in your database.
+
+<h4>Can't set headers after they are sent</h4>
+
+Calling request.respond or response.send more than once per request will result in this error. Older versions of the web framework used by Mobile Services, express, allowed this behavior, but the current version does not.  Use the generated stack trace to identify the offending module and change the code to ensure these functions are only called once.
+
+<h4>Error in sideband demultiplexer</h4>
+
+This usually indicates a corrupt git repository. You can fix this by running:
+
+<pre>git remote set-head origin master</pre>
+
+This assumes your remote repository uses the default name <tt>origin</tt> and the branch you are pushing to is called <tt>master</tt>.
+
+<h3>Caveats</h3>
+
+There are a couple of areas that require additional changes. For example, if you are using Mobile Services authentication, you need to update redirect URLs on your identity provider as they have changed. Read <a href="https://azure.microsoft.com/en-us/documentation/articles/app-service-mobile-net-upgrading-from-mobile-services/#authentication" target="_blank">this article</a> for more information. Custom authentication (i.e. not using an identity provider such as facebook) should not be affected.
+
+<h3>Other issues</h3>
+
+Our <a href="https://github.com/Azure/azure-mobile-apps-node-compatibility" target="_blank">github repository</a> will be updated with new troubleshooting steps as common cases are uncovered.
+
+It's important to note that this package is experimental. We need your help to make the experience as seamless as possible. Join the conversation on <a href="https://gitter.im/Azure/azure-mobile-apps-node" target="_blank">gitter </a>and let us know about your experiences.  Post any issues within our GitHub repository, and ask questions on Azure Forums or Stack Overflow.
+
+</div>
+</div></body>
+<script src="/AppService/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="/AppService/resource/replace.js" type="text/javascript"></script>
+</html>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2016-07-18T00:00:00+00:00">July 18, 2016</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Transition+from+Mobile+Services+to+Mobile+Apps+Node.js+Edition%20https%3A%2F%2Fazure.github.io%2FAppService%2F2016%2F07%2F18%2FTransition-from-Mobile-Services-to-Mobile-Apps-Node.js-Edition.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2016%2F07%2F18%2FTransition-from-Mobile-Services-to-Mobile-Apps-Node.js-Edition.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2016%2F07%2F18%2FTransition-from-Mobile-Services-to-Mobile-Apps-Node.js-Edition.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2016/07/18/Azure-Mobile-Supporting-IPv6-and-the-Apple-Submission-Process.html" class="pagination--pager" title="Azure Mobile Supporting IPv6 and the Apple Submission Process
+">Previous</a>
+    
+    
+      <a href="/AppService/2016/08/04/Upgrading-Python-on-Azure-App-Service.html" class="pagination--pager" title="Upgrading Python on Azure App Service
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
