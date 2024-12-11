@@ -116,7 +116,7 @@ Azure App Service on Azure Stack Hub 24R1 is now available for customers to down
 
 - Continual accessibility and usability updates
 
-All other fixes and updates are detailed in the App Service on [Azure Stack Hub 24R1Release Notes](https://learn.microsoft.com/azure-stack/operator/app-service-release-notes-2024r1)
+All other fixes and updates are detailed in the App Service on [Azure Stack Hub 24R1 Release Notes](https://learn.microsoft.com/azure-stack/operator/app-service-release-notes-2024r1)
 The App Service on Azure Stack Hub 24R1 build number is **102.0.2.5** and requires **Azure Stack Hub** to be updated with **2311** or later prior to deployment/upgrade.
 
 You can download the new installer and helper scripts:
