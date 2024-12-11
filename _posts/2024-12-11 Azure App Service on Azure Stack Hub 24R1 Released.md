@@ -9,7 +9,7 @@ Azure App Service on Azure Stack Hub 24R1 is now available for customers to down
 
 ## What's New?
 
-- Kestrel and YARP (Yet Another Reverse Proxy) now power App Service on Azure Stack Hub front ends in alignment with investments made in public cloud. For more information on what this means and how it impacted the public cloud service, read the detailed information on the App Service Team Blog - "A Heavy Lift: Bringing Kestrel + YARP to Azure App Services"
+- Kestrel and YARP (Yet Another Reverse Proxy) now power App Service on Azure Stack Hub front ends in alignment with investments made in public cloud. For more information on what this means and how it impacted the public cloud service, read the detailed information on the [App Service Team Blog - "A Heavy Lift: Bringing Kestrel + YARP to Azure App Services"](https://azure.github.io/AppService/2022/08/16/A-Heavy-Lift.html)
 - Updates to many application stacks, bringing latest Long Term Support (LTS) releases of .NET, Java, Tomcat, and more.
 - Tenants can make use of the Health check feature for monitoring of instance health
 
