@@ -20,6 +20,7 @@ The 2022 H1 update to Azure App Service on Azure Stack Hub is now available. Thi
 - Updates to core service to improve reliability and error messaging enabling easier diagnosis of common issues.
 
 **Updates to the following application frameworks and tools**:
+
  - Azure Functions runtime to v1.0.13154
  - ASP.NET Core
     - 3.1.18
