@@ -1,0 +1,1256 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Get some hands-on time with Serverless development right now, for free - Azure App Service</title>
+<meta name="description" content="">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Get some hands-on time with Serverless development right now, for free">
+<meta property="og:url" content="https://azure.github.io/AppService/2016/10/04/Get-some-hands-on-time-with-Serverless-development-right-now,-for-free.html">
+
+
+  <meta property="og:description" content="">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2016-10-04T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2016/10/04/Get-some-hands-on-time-with-Serverless-development-right-now,-for-free.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Get some hands-on time with Serverless development right now, for free">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="October 04, 2016">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Get some hands-on time with Serverless development right now, for free
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  14 minute read
+
+            
+            
+            • October 4, 2016
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/Yochay Kiriaty" target="_blank">Yochay Kiriaty</a>
+<time>    10/4/2016 4:38:07 PM</time>
+<hr/>
+<div id="content">If you are reading this blog, you have most likely heard the term Serverless once or twice in the past few months. In a nutshell, Serverless means a fully managed platform capable of running your code (in the form of functions), at almost any given scale while paying only for the time when your code is running. Serverless is sometimes categorized as ‘reactive’ compute, where functions are executed (react) when specific events occur. For the purpose of this blog, I will focus on the developer experience.
+
+<a href="https://azure.microsoft.com/services/functions/"><img alt="Try_00_ACOM" class="alignleft size-mediumlarge wp-image-1576" height="293" src="/AppService/media/2016/10/Try_00_ACOM-500x293.jpg" width="500"/></a>There are several options to get firsthand experience with Serverless development, but all options require creating an account (typically providing credit card information) with a vendor. This changes today. Now you you can get a peek into the world of Serverless for free (no credit card required) with no commitment. If you have a Microsoft, Google, or Facebook account you can get started immediately. To get an hour of free Azure Functions experience browse to <a href="https://functions.azure.com">https://functions.azure.com</a> and click the big green Try-It-For-Free button. <a href="https://azure.microsoft.com/services/functions">Azure Functions</a> is a Serverless compute, event driven experience that extends the existing Azure App Service platform. Azure Functions can scale based on demand and are billed only for resources consumed.
+
+<a href="https://functions.azure.com/try">Try Azure Function</a> experience gives you the ability to create Azure functions and run them, even without an Azure account. Since this a “Try” experience, you don’t have access to all binding and triggers supported by Azure Functions, and you only have one hour each time you log-in. However, even with these limitations you can create cool Serverless examples.
+
+<strong>Ready? let’s get started </strong>
+
+Let’s start out by using the Try Azure Functions experience to create a simple HTTP trigger function..
+
+Here is a very simple HTTP trigger “Hello World” example. Try it yourself:
+<ol>
+<li>Login to Try Functions (go to <a href="https://functions.azure.com">https://functions.azure.com</a> and click the green Try-It-For-Free button)</li>
+<li>Choose Webhook + API scenario (many other templates are available for other scenarios)</li>
+<li>Choose your programming language between C# or JavaScript (node.js). Azure Functions support additional languages like F#, Python, PowerShell and CMD.</li>
+<li>Click “Create this function” button, which will prompt you to login</li>
+<li>Login with your selected social identity, wait for few seconds… and you have an HTTP trigger function ready for use</li>
+</ol>
+<a href="http://functions.azure.com/try"><img alt="Try_0" class="aligncenter wp-image-1555 size-large" height="476" src="/AppService/media/2016/10/Try_0-1024x555.jpg" width="879"/></a>
+
+ 
+
+You can copy the Azure Function URL (highlighted below) and paste it into your browser. You should receive a response. You might want to add <em>&amp;name=YourName</em> to the Function URL as the default http trigger template expects name query parameter. Just like that, you created a fully working HTTP endpoint in the cloud.
+
+<a href="/AppService/media/2016/10/Try_11.jpg"><img alt="Try_1" class="aligncenter size-large wp-image-1585" height="577" src="/AppService/media/2016/10/Try_11-1024x672.jpg" width="879"/></a>
+
+While this was is an impressive example of how easy it is to create an HTTP endpoint in the cloud, it turns out you can do quite a lot more!  Let’s put together the following scenario. Upload an image that includes some text in it, run an OCR on the image to extract the text, store the text, and finally retrieve both image and text. For small images or for a low volume of image uploads, you can probably do it all in a single Function. However, we want to leverage the Serverless nature of Azure Functions to create a scalable and highly performant design. To do so, we will create three functions:
+<ul>
+<li>An HTTP trigger function exposing simple REST API to upload an image.</li>
+<li>A blob trigger function that will extract the text from the image when it id uploaded to the blob storage.</li>
+<li>Another HTTP trigger function exposing simple REST API to query the results of the text extraction.</li>
+</ul>
+<a href="/AppService/media/2016/10/scenario_description.png"><img alt="scenario_description" class="aligncenter size-full wp-image-1595" height="365" src="/AppService/media/2016/10/scenario_description.png" width="624"/></a>
+
+ 
+<h2>First Function – a simple REST API uploading an image to Azure Blob</h2>
+You can imagine a scenario in which you have a web or mobile app that needs to upload images for processing. A function receiving the uploaded image can expect an HTTP POST from an HTML form that might look like this:
+
+<em>    &lt;label&gt;</em>
+<em>        Using JQuery</em>
+<em>    &lt;/label&gt;</em>
+<em>    &lt;input name="file" type="file" id="me" /&gt;</em>
+<em>    &lt;input type="button" id="Upload" value="Upload" /&gt;</em>
+<em>&lt;/form&gt;</em>
+
+ 
+
+We want our function to receive an image and store it in Azure Blob Storage. This is a classic reader/writer pattern, where you want your API layer to do as little complex computing as possible.  The Azure Functions concept of Bindings enables developers to directly interact with the input and output values of Functions data sources. Those include Azure Storage Queue, Tables, and Blobs as well as Azure Event Hubs, Azure DocumentDB and more. <a href="/AppService//azure.microsoft.com/en-us/documentation/articles/functions-reference/#bindings]">Click here for full list of binding</a>.
+
+Let’s add an Azure Blob output binding. On the <strong>Integrate</strong> tab, click New Output and choose Azure Storage Blob.
+
+<a href="/AppService/media/2016/10/Try_21.jpg"><img alt="Try_2" class="aligncenter size-large wp-image-1605" height="476" src="/AppService/media/2016/10/Try_21-1024x555.jpg" width="879"/></a>
+
+The Blob parameter name, is an input argument (parameter) passed to your Function. Just like you would expect when programing any regular function. Azure Functions takes it one step further, enabling to use such bindings without knowing anything about the underlying infrastructure. This means that you don’t need to know how Azure Storage works or install Storage SDKs to use Azure Blob as your function output. You just use the <em>outputBlob </em>object in your function, save the image to that blob and the uploaded image will appear in your Storage Blob. In the try experience you don’t have a direct access to the underline storage account powering your Functions. However, you will see it in action by the time you complete the 3<sup>rd</sup> function. Make sure you update the Path to include <em>“.jpg</em>”, and hit Save.
+
+<a href="/AppService/media/2016/10/Try_31.jpg"><img alt="Try_3" class="aligncenter size-large wp-image-1615" height="476" src="/AppService/media/2016/10/Try_31-1024x555.jpg" width="879"/></a>
+
+In the function code, we refer to <em>outputBlob </em>as an object that is ready to be used. This function is implemented in C# and uses <em>StreamProvider </em>to read the image data from the HTTP request and store it to an Azure Blob. I don’t have any idea how Azure Storage works. Behind the scenes Azure Functions takes care of moving data in to and out from my functions. It is like magic, quick and easy to use.
+<pre><em>#r "Microsoft.WindowsAzure.Storage"
+
+using System.Net;
+using Microsoft.WindowsAzure.Storage.Blob;
+
+public static HttpResponseMessage Run(HttpRequestMessage req, Stream outputBlob, TraceWriter log) 
+{
+    log.Info($"C# HTTP trigger function processed a request. RequestUri={req.RequestUri}");
+
+    HttpResponseMessage result = null; 
+     
+    if (req.Content.IsMimeMultipartContent())
+    {
+            // memory stream of the incomping request 
+            var streamProvider = new MultipartMemoryStreamProvider ();
+
+            log.Info($" ***\t before await on ReadMultpart...");
+            req.Content.ReadAsMultipartAsync(streamProvider);
+            log.Info($" ***\t after await on ReadMultpart...");
+            
+            //using a stream saves the 'last' iamge if multiple are uplaoded
+            foreach (HttpContent ctnt in streamProvider.Contents)
+            {
+                // You would get hold of the inner memory stream here
+                Stream stream = ctnt.ReadAsStreamAsync().Result;
+                log.Info($"stream length = {stream.Length}"); // just to verify
+                
+                // save the stream to output blob, which will save it to Azure stroage blob
+                stream.CopyTo(outputBlob);
+
+                result = req.CreateResponse(HttpStatusCode.OK, "great ");
+            }            
+        }
+        else
+        {
+            log.Info($" ***\t ERROR!!! bad format request ");
+            result = req.CreateResponse(HttpStatusCode.NotAcceptable,"This request is not properly formatted");
+        }
+    return result;
+}
+</em></pre>
+ 
+<h2>Second Function – Performs OCR</h2>
+Let’s create the second function, called ImageOCR. This function will be triggered every time a new image file is uploaded to the blob storage container (named <em>outcontainer</em>) by the first function. Then the function will run OCR on that image to extract text embedded in it. Note, this function will run only when a new image (or any other file…) is uploaded to the blob. Again, this is Serverless in its best form, your code will run only when needed and you will pay only for that time.
+
+<a href="/AppService/media/2016/10/Try_4.jpg"><img alt="Try_4" class="aligncenter size-large wp-image-1505" height="476" src="/AppService/media/2016/10/Try_4-1024x555.jpg" width="879"/></a>
+
+Make sure the Azure Storage Blob container name you use to trigger is the same as the Blob container name used to write the image from the first function. If you have not changed the default, the container name of the first function is <em>outcontainer</em>.
+<pre>#r "System.IO"
+#r "System.Runtime"
+#r "System.Threading.Tasks"
+#r "Microsoft.WindowsAzure.Storage"
+
+using System;
+using System.IO;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.ProjectOxford.Vision;
+using Microsoft.ProjectOxford.Vision.Contract;
+using Microsoft.WindowsAzure.Storage.Table;
+
+public class ImageText : TableEntity
+{
+    public string Text { get; set; }
+    public string Uri {get; set; }
+}
+
+public static void Run( ICloudBlob myBlob, ICollector outputTable, TraceWriter log) 
+{
+     try  
+    {
+        using (Stream imageFileStream = new MemoryStream())
+        {
+
+            myBlob.DownloadToStream(imageFileStream); 
+            log.Info($"stream length = {imageFileStream.Length}"); // just to verify
+
+            //
+            var visionClient = new VisionServiceClient("YOUR_KEY_GOES_HERE");
+
+            // reset stream position to begining 
+            imageFileStream.Position = 0;
+            // Upload an image and perform OCR
+            var ocrResult = visionClient.RecognizeTextAsync(imageFileStream, "en");
+            //log.Info($"ocrResult");
+
+            string OCRText = LogOcrResults(ocrResult.Result);
+            log.Info($"image text = {OCRText}");
+
+            outputTable.Add(new ImageText()
+                            {
+                                PartitionKey = "TryFunctions",
+                                RowKey = myBlob.Name,
+                                Text = OCRText,
+                                Uri = myBlob.Uri.ToString()
+                            });            
+        }
+
+    }
+    catch (Exception e) 
+    {
+        log.Info(e.Message);
+    }
+}
+
+// helper function to parse OCR results 
+static string LogOcrResults(OcrResults results)
+{
+    StringBuilder stringBuilder = new StringBuilder();
+    if (results != null &amp;&amp; results.Regions != null)
+    {
+        stringBuilder.Append(" ");
+        stringBuilder.AppendLine();
+        foreach (var item in results.Regions)
+        {
+            foreach (var line in item.Lines)
+            {
+                foreach (var word in line.Words)
+                {
+                    stringBuilder.Append(word.Text);
+                    stringBuilder.Append(" ");
+                }
+                stringBuilder.AppendLine();
+            }
+            stringBuilder.AppendLine();
+        }
+    }
+    return stringBuilder.ToString();
+}
+</pre>
+The function is triggered by any file uploaded to the blob container. The default input parameter type of the function is string, but I will be using <em>ICloudBlob</em>, as I want to read the image as a stream and I want to get the image file name and URI. As you can see, Azure Functions binding provides a very rich experience.
+
+To perform the OCR on a given image, I am going to use using <a href="https://www.microsoft.com/en-us/microsoftservices/">Microsoft Cognitive Services</a> , also known as Project Oxford. I could use any 3<sup>rd</sup> party tool, bring a dll that implements the algorithm, or write my own. However, leveraging other services as much as possible is a core tenant of Serverless architecture. If you don’t have a Cognitive Services account, sign up for free at <a href="https://www.microsoft.com/cognitive-services">https://www.microsoft.com/cognitive-services</a>
+
+Using the Cognitive Services is very easy, it comes down to two lines of code:
+<pre><em><strong>  var visionClient = new VisionServiceClient("YOUR_KEY_GOES_HERE");</strong></em>
+<em>   // reset stream position to begining</em>
+<em>   imageFileStream.Position = 0;</em>
+<em>   // Upload an image and perform OCR</em>
+<em><strong>   var ocrResult = visionClient.RecognizeTextAsync(imageFileStream, "en");</strong></em>
+</pre>
+In order to make the <em>ImageOCR</em> function code work, you’ll need to import <em>ProjectOxford</em> assemblies. Azure functions support <em>project.json</em> files to identify nuget packages (for C#) to be automatically restore with the function. For node.js Azure Functions support npm.
+
+In the Functions UI, click on View files and add project.json with the following text. once you save this file, Azure Functions will automatically restore the ProjectOxford package.
+
+<a href="/AppService/media/2016/10/Try_5.jpg"><img alt="Try_5" class="aligncenter size-large wp-image-1515" height="476" src="/AppService/media/2016/10/Try_5-1024x555.jpg" width="879"/></a>
+
+ 
+
+In order to make the ImageOCR fFunction code work, you’ll need to import Project Oxford assemblies. Azure Ffunctions supports a project.json files to identify nuget NuGet packages (for C#) to be automatically restored with the functionFunction. For node.js, Azure Functions supports npm.
+
+In the Functions UI, click on View files and add project.json with the following text. Oonce you save this file, Azure Functions will automatically restore the Project Oxford packages.
+<pre>  project.json 
+  {
+    "frameworks": {
+      "net46":{
+        "dependencies": {
+          "Microsoft.ProjectOxford.Vision": "1.0.370"
+        }
+      }
+    }
+  }
+</pre>
+ 
+
+We want to save the results somewhere. In this Try Functions example we are using Azure Storage Table. Note – if you have an Azure Subscription, you can use many other Data Services provided by Azure to store and process the results.
+
+Let’s add an output binding to Azure Table Store
+
+<a href="/AppService/media/2016/10/Try_5_1.jpg"><img alt="Try_5_1" class="aligncenter size-large wp-image-1516" height="476" src="/AppService/media/2016/10/Try_5_1-1024x555.jpg" width="879"/></a>
+
+ 
+
+Next, change the Table name from the default to <em>ImagesText</em>. The Table parameter name, <em>outputTable</em> will be used in the function code.
+
+<a href="/AppService/media/2016/10/Try_5_2.jpg"><img alt="Try_5_2" class="aligncenter size-large wp-image-1526" height="476" src="/AppService/media/2016/10/Try_5_2-1024x555.jpg" width="879"/></a>
+
+ 
+
+And again, just like with the blob, I don’t need to know a lot about how Azure Storage Tables work. Azure Functions is doing all the heavy lifting. We are using the <em>ImageText</em> table to store the image Uri (pointer to the blob storing the image), the OCR results, and the table keys in the form of a GUID.
+
+You have now completed the creation of a function that scans an image, extracts text from it and stores the results into persistent storage.
+<h2>Third Function – simple REST API to query OCR results</h2>
+The last function we are going to create is of type HTTP trigger and will be used to return list of images and the text we extracted from the images in the second function.
+
+This time we will add an Azure Storage table as an input binding, because you would expect your function to receive the table store object to work with and extract the data. As before, make sure you are using the same table name you used in the second function. Note the Partition Key, which is optional was hard-coded for <em>TryFunctions</em>.
+
+<a href="/AppService/media/2016/10/Try_61.jpg"><img alt="Try_6" class="aligncenter size-large wp-image-1625" height="476" src="/AppService/media/2016/10/Try_61-1024x555.jpg" width="879"/></a>
+
+The function input argument is of type <em>IQueryable&lt;ImageText&gt;</em>, which represent a collection of results queried from Table Storage. Its ready to use without any knowledge of how Azure Table Storage works, I get a list I can work with. We create a <em>SimpleImageText </em>object representing the response and return a JSON representation of the data.
+<pre>  #r "System.IO"
+  #r "System.Runtime"
+  #r "System.Threading.Tasks"
+  #r "Microsoft.WindowsAzure.Storage"
+  #r "Newtonsoft.Json"
+
+  using System;
+  using System.Net;
+  using System.IO;
+  using System.Text;
+  using System.Threading.Tasks;
+  using Microsoft.WindowsAzure.Storage.Table;
+  using Newtonsoft.Json;
+
+  public static async Task Run(HttpRequestMessage req, IQueryable inputTable,  TraceWriter log)
+  {
+      log.Info($"C# HTTP trigger function processed a request. RequestUri={req.RequestUri}");
+
+      var result = new List();
+
+      var query = from ImageText in inputTable select ImageText;
+      //log.Info($"original query --&gt; {JsonConvert.SerializeObject(query)}");
+
+      foreach (ImageText imageText in query)
+      {
+          result.Add( new SimpleImageText(){Text = imageText.Text, Uri = imageText.Uri});
+          //log.Info($"{JsonConvert.SerializeObject()}");
+      }
+//    log.Info($"list of results --&gt; {JsonConvert.SerializeObject(result)}");
+
+      return req.CreateResponse(HttpStatusCode.OK, JsonConvert.SerializeObject(result));
+  }
+
+  // used to get rows from table
+  public class ImageText : TableEntity
+  {
+      public string Text { get; set; }
+      public string Uri {get; set; }
+  }
+
+  public class SimpleImageText
+  {
+      public string Text { get; set; }
+      public string Uri {get; set; }
+  }
+</pre>
+ 
+<h2>We created three functions, it is time to test them.</h2>
+You can use any of your favorite tools to generate HTTP calls, including CURL, writing a simple html / Java script, or anything else. To test both HTTP functions I’ll use <a href="https://www.getpostman.com/">Postman</a>, using form-data as a Body to POST to the first function URL. You should receive “great” as a response and if you look at the first function log, in the Try Azure Function UI, you will notice traces from your function. If something went wrong, try debugging it… or ping me on Twitter (@yochayk)
+
+<a href="/AppService/media/2016/10/Try_7.jpg"><img alt="Try_7" class="aligncenter wp-image-1545 size-mediumlarge" height="278" src="/AppService/media/2016/10/Try_7-500x278.jpg" width="500"/></a>
+
+ 
+
+Assuming your first function worked, go to the OCR image function and upload another image. You will notice that the OCR function got triggered, which means your first function successfully saved the image to storage and your second function picked it up. Again, you should see in the log traces from your function.
+
+Use Postman to call the last function and you should see JSON array including two images and the text extracted from them.
+
+<a href="/AppService/media/2016/10/Try_8.jpg"><img alt="Try_8" class="aligncenter size-full wp-image-1635" height="393" src="/AppService/media/2016/10/Try_8.jpg" width="623"/></a>
+
+ 
+
+here is <a href="https://github.com/yochay/FunctionSimpleImageUpload">repo</a> with the function. Note, my solution is a little more complex and includes handling multiple uploaded files and adding a SAS token to the container.
+
+One small note: if you want to view the images, you will need to generate a SAS token for the container, as by default, an Azure Blob Storage container permission blocks public read access. I’ve added the required code, which generates a 24 access token to images, to the <em>ImageViewText</em> functions. You will also need to pass the blob container as input argument for the functions.
+<pre>  // IQueryable return list of image text objects
+  // CloudBlobContainer used to generate SAS token to allow secure access to image file
+  public static async Task Run(HttpRequestMessage req, IQueryable inputTable, CloudBlobContainer inputContainer,  TraceWriter log)
+  {
+      log.Info($"C# HTTP trigger function processed a request. RequestUri={req.RequestUri}");
+
+      //get container sas token
+      var st = GetContainerSasToken(inputContainer);
+      //log.Info($"token --&gt; {st}");
+      var result = new List();
+
+      var query = from ImageText in inputTable select ImageText;
+      //log.Info($"original query --&gt; {JsonConvert.SerializeObject(query)}");
+
+      foreach (ImageText imageText in query)
+      {
+          result.Add( new SimpleImageText(){Text = imageText.Text, Uri = imageText.Uri + st});
+          //log.Info($"{JsonConvert.SerializeObject()}");
+      }
+
+      return req.CreateResponse(HttpStatusCode.OK, JsonConvert.SerializeObject(result));
+  }
+
+  // used to get rows from table
+  public class ImageText : TableEntity
+  {
+      public string Text { get; set; }
+      public string Uri {get; set; }
+  }
+
+  public class SimpleImageText
+  {
+      public string Text { get; set; }
+      public string Uri {get; set; }
+  }
+
+  // generate 24 hour SAS token for the container. Will allow read for all images
+  // TBD -  shoudl be done once every 24 hours via timer, rather than each time in the funciton 
+  static string GetContainerSasToken(CloudBlobContainer container)
+  {
+      //Set the expiry time and permissions for the container.
+      //In this case no start time is specified, so the shared access signature becomes valid immediately.
+      SharedAccessBlobPolicy sasConstraints = new SharedAccessBlobPolicy();
+      sasConstraints.SharedAccessExpiryTime = DateTime.UtcNow.AddHours(24);
+      sasConstraints.Permissions = SharedAccessBlobPermissions.Read;
+
+      //Generate the shared access signature on the container, setting the constraints directly on the signature.
+      string sasContainerToken = container.GetSharedAccessSignature(sasConstraints);
+
+      //Return the URI string for the container, including the SAS token.
+      return sasContainerToken;
+  }
+</pre>
+ 
+
+With the updated <em>ImageViewText</em> function you can now test your application with a simple Single Page Application I host on Azure Storage <a href="http://tryfunctionsdemo.blob.core.windows.net/static-site/test-try-functions.html">http://tryfunctionsdemo.blob.core.windows.net/static-site/test-try-functions.html</a>
+<a href="/AppService/media/2016/10/testingWitaSPA.jpg"><img alt="testingWitaSPA" class="aligncenter size-large wp-image-1547" height="590" src="/AppService/media/2016/10/testingWitaSPA-1024x687.jpg" width="879"/></a>
+
+This simple HTML application has two text box for you to paste the URL of your function. You upload an image by dragging and dropping. You can get images by clinking the GetImages button. The screen capture shows the network calls and console for getting images. You can see on the console, the get images return array of images, with respective URIs and each image text, which we use to then display. Note the images have SAS tokens.
+
+Hope you enjoy trying Azure Functions as much as I enjoyed writing this little demo. If you have any issues ping me on Twitter (@yochayk).</div>
+</div></body>
+<script src="/AppService/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="/AppService/resource/replace.js" type="text/javascript"></script>
+</html>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2016-10-04T00:00:00+00:00">October 04, 2016</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Get+some+hands-on+time+with+Serverless+development+right+now%2C+for+free%20https%3A%2F%2Fazure.github.io%2FAppService%2F2016%2F10%2F04%2FGet-some-hands-on-time-with-Serverless-development-right-now%2C-for-free.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2016%2F10%2F04%2FGet-some-hands-on-time-with-Serverless-development-right-now%2C-for-free.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2016%2F10%2F04%2FGet-some-hands-on-time-with-Serverless-development-right-now%2C-for-free.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2016/09/14/PHP-troubleshooting-guide-for-common-errors.html" class="pagination--pager" title="PHP troubleshooting guide for common errors
+">Previous</a>
+    
+    
+      <a href="/AppService/2016/10/06/App-Service-Mobile-Apps-.NET-Client-SDK-3.0.1-Release.html" class="pagination--pager" title="App Service Mobile Apps .NET Client SDK 3.0.1 Release
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

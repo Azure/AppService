@@ -1,0 +1,1131 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Azure Key Vault References with Spring Apps - Azure App Service</title>
+<meta name="description" content="Securely store and access your connection strings with minimal code changes.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Azure Key Vault References with Spring Apps">
+<meta property="og:url" content="https://azure.github.io/AppService/2019/07/30/Key-Vault-References-with-Spring-Apps.html">
+
+
+  <meta property="og:description" content="Securely store and access your connection strings with minimal code changes.">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/media/2019/07/locks-header.jpg">
+
+
+
+
+
+  <meta property="article:published_time" content="2019-07-30T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2019/07/30/Key-Vault-References-with-Spring-Apps.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+  
+
+
+
+
+
+
+
+
+
+
+
+<div class="page__hero--overlay"
+  style=" background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/AppService/media/2019/07/locks-header.jpg');"
+>
+  
+    <div class="wrapper">
+      <h1 id="page-title" class="page__title" itemprop="headline">
+        
+          Azure Key Vault References with Spring Apps
+
+        
+      </h1>
+      
+        <p class="page__lead">Securely store and access your connection strings with minimal code changes.
+</p>
+      
+      
+        <!-- <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+</p> -->
+        <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+ | By Jason Freeberg</p>
+        
+      
+      
+    </div>
+  
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Azure Key Vault References with Spring Apps">
+    <meta itemprop="description" content="Securely store and access your connection strings with minimal code changes.">
+    <meta itemprop="datePublished" content="July 30, 2019">
+    
+
+    <div class="page__inner-wrap">
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#set-up-a-managed-identity">Set up a Managed Identity</a></li>
+  <li><a href="#provision-the-key-vault">Provision the Key Vault</a></li>
+  <li><a href="#configuring-our-app">Configuring our App</a>
+    <ul>
+      <li><a href="#key-vault-references">Key Vault References</a></li>
+      <li><a href="#environment-configuration">Environment Configuration</a></li>
+    </ul>
+  </li>
+  <li><a href="#deploy-and-test">Deploy and Test</a></li>
+  <li><a href="#next-steps">Next Steps</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <p><a href="https://docs.microsoft.com/en-us/azure/key-vault/">Azure Key Vault</a> provides a centralized service for managing secrets and certificates with full control over access policies and auditing capabilities. This article will show how to wire up a Spring Boot application on App Service to read a database username, password, and URL from Key Vault. Using Key Vault references requires <strong>no</strong> code changes, but we will need to do some configuration acrobatics.</p>
+
+<blockquote>
+  <p>See <a href="https://jasonfreeberg.com/Data-Sources-with-Spring/">the previous article</a> for instructions on setting up the Postgres server and deploying the starter app to App Service.</p>
+</blockquote>
+
+<h2 id="set-up-a-managed-identity">Set up a Managed Identity</h2>
+
+<p>A managed identity acts as a user in your Active Directory for automation purposes. It is inherently tied to your web app and will be deleted if the web app is deleted. For this scenario, the identity will be used to retrieve the secrets from Key Vault when the app starts. Run the following command to create a manged identity:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp identity assign <span class="nt">--name</span> &lt;app_from_last_article&gt; <span class="nt">--resource-group</span> &lt;resource_group_of_app&gt;
+</code></pre></div></div>
+
+<p>In the console output, save the <code class="language-plaintext highlighter-rouge">principalId</code> for later.</p>
+
+<h2 id="provision-the-key-vault">Provision the Key Vault</h2>
+
+<ol>
+  <li>
+    <p>Let’s spin up a Key Vault named <code class="language-plaintext highlighter-rouge">java-app-key-vault</code>. For information about the parameters specified below, run <code class="language-plaintext highlighter-rouge">az keyvault create --help</code>.</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> az keyvault create <span class="nt">--name</span> java-app-key-vault              <span class="se">\</span>
+                    <span class="nt">--resource-group</span> &lt;your_resource_group&gt; <span class="se">\</span>
+                    <span class="nt">--location</span> &lt;location&gt;                  <span class="se">\</span>
+                    <span class="nt">--enabled-for-deployment</span> <span class="nb">true</span>          <span class="se">\</span>
+                    <span class="nt">--enabled-for-disk-encryption</span> <span class="nb">true</span>     <span class="se">\</span>
+                    <span class="nt">--enabled-for-template-deployment</span> <span class="nb">true</span> <span class="se">\</span>
+                    <span class="nt">--sku</span> standard
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Now we will grant the managed identity <code class="language-plaintext highlighter-rouge">get</code> and <code class="language-plaintext highlighter-rouge">list</code> access to the Key Vault.</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> az keyvault set-policy <span class="nt">--name</span> java-app-key-vault     <span class="se">\</span>
+                        <span class="nt">--secret-permission</span> get list  <span class="se">\</span>
+                        <span class="nt">--object-id</span> &lt;the principal ID from earlier&gt;
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Finally, we will add the Postgres username, password, and URL to the Key Vault. If you followed the tutorial on data sources, you should still have the secrets saved as environment variables on your machine. (If you are using Powershell, use the <code class="language-plaintext highlighter-rouge">$env:ENV_VAR</code> syntax to inject the environment variables into the following command).</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> az keyvault secret <span class="nb">set</span> <span class="nt">--name</span> POSTGRES-USERNAME      <span class="se">\</span>
+                    <span class="nt">--value</span> <span class="nv">$POSTGRES_USERNAME</span>        <span class="se">\</span>
+                    <span class="nt">--vault-name</span> java-app-key-vault
+ az keyvault secret <span class="nb">set</span> <span class="nt">--name</span> POSTGRES-PASSWORD      <span class="se">\</span>
+                    <span class="nt">--value</span> <span class="nv">$POSTGRES_PASSWORD</span>        <span class="se">\</span>
+                    <span class="nt">--vault-name</span> java-app-key-vault
+ az keyvault secret <span class="nb">set</span> <span class="nt">--name</span> POSTGRES-URL           <span class="se">\</span>
+                    <span class="nt">--value</span> <span class="nv">$POSTGRES_URL</span>             <span class="se">\</span>
+                    <span class="nt">--vault-name</span> java-app-key-vault
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="configuring-our-app">Configuring our App</h2>
+
+<p>The following instructions assume you have completed the <a href="https://jasonfreeberg.com/Data-Sources-with-Spring/">previous tutorial</a>.</p>
+
+<h3 id="key-vault-references">Key Vault References</h3>
+
+<p>When our Spring app is running on App Service, the secrets will be exposed as environment variables or “<a href="https://docs.microsoft.com/en-us/azure/app-service/web-sites-configure#app-settings">Application Settings</a>”. We will now create these app settings using the Azure CLI.</p>
+
+<ol>
+  <li>
+    <p>First, we need the URI’s of our three secrets. Run the commands below and copy the <code class="language-plaintext highlighter-rouge">id</code> value in the console output.</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> az keyvault secret show <span class="nt">--vault-name</span> java-app-key-vault <span class="nt">--name</span> POSTGRES-URL
+ az keyvault secret show <span class="nt">--vault-name</span> java-app-key-vault <span class="nt">--name</span> POSTGRES-USERNAME
+ az keyvault secret show <span class="nt">--vault-name</span> java-app-key-vault <span class="nt">--name</span> POSTGRES-PASSWORD
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Now we will create the app settings with the Key Vault references. For each setting, replace “YOUR_SECRET_URI” with the corresponding id’s from the previous step.</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> az webapp config appsettings <span class="nb">set</span> <span class="nt">-n</span> &lt;your_app_name&gt; <span class="nt">-g</span> &lt;resource_group&gt; <span class="nt">--settings</span> <span class="se">\</span>
+     <span class="nv">SPRING_DATASOURCE_URL</span><span class="o">=</span>@Microsoft.KeyVault<span class="o">(</span><span class="nv">SecretUri</span><span class="o">=</span>YOUR_SECRET_URI<span class="o">)</span><span class="se">\</span>
+     <span class="nv">SPRING_DATASOURCE_USERNAME</span><span class="o">=</span>@Microsoft.KeyVault<span class="o">(</span><span class="nv">SecretUri</span><span class="o">=</span>YOUR_SECRET_URI<span class="o">)</span><span class="se">\</span>
+     <span class="nv">SPRING_DATASOURCE_PASSWORD</span><span class="o">=</span>@Microsoft.KeyVault<span class="o">(</span><span class="nv">SecretUri</span><span class="o">=</span>YOUR_SECRET_URI<span class="o">)</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>A Key Vault reference is of the form <code class="language-plaintext highlighter-rouge">@Microsoft.KeyVault(SecretUri=&lt;SecretURI&gt;)</code>, where <code class="language-plaintext highlighter-rouge">&lt;SecretURI&gt;</code> is data-plane URI of a secret in Key Vault, including a version. There is an alternate syntax <a href="https://docs.microsoft.com/en-us/azure/app-service/app-service-key-vault-references#reference-syntax">documented here</a>.</p>
+
+<h3 id="environment-configuration">Environment Configuration</h3>
+
+<p>The Key Vault references will be replaced with the actual secrets when our App Service boots up. This means our Spring application needs to resolve the connection strings at <em>runtime</em>. (It currently resolves these strings at build time.) We also want to be able to use our H2 database for development, and optionally connect to the production DB from our local machine to run tests. To fill all these requirements, we will create two new configuration files: <code class="language-plaintext highlighter-rouge">application-dev.properties</code>, and <code class="language-plaintext highlighter-rouge">application-prod.properties</code>.</p>
+
+<ol>
+  <li>
+    <p>Create a file under <code class="language-plaintext highlighter-rouge">src/main/resources</code> named <code class="language-plaintext highlighter-rouge">application-dev.properties</code>. Copy/paste the following into the file:</p>
+
+    <div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="c1"># ===============================</span>
+ <span class="c1"># = DATA SOURCE</span>
+ <span class="c1"># ===============================</span>
+ <span class="c1"># Set here configurations for the database connection</span>
+ <span class="s">spring.datasource.url=jdbc:h2:mem:testdb</span>
+ <span class="s">spring.datasource.username=sa</span>
+ <span class="s">spring.datasource.password=</span>
+ <span class="s">spring.datasource.driver-class-name=org.h2.Driver</span>
+
+ <span class="s"># ===============================</span>
+ <span class="s"># = JPA / HIBERNATE</span>
+ <span class="s"># ===============================</span>
+
+ <span class="s"># Allows Hibernate to generate SQL optimized for a particular DBMS</span>
+ <span class="s">spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect</span>
+
+ <span class="s"># App Service</span>
+ <span class="s">server.port=8080</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Create a file under <code class="language-plaintext highlighter-rouge">src/main/resources</code> named <code class="language-plaintext highlighter-rouge">application-dev.properties</code>. Copy/paste the following into the file. Notice that we do not set the connection strings here. Instead, Spring will resolve them at runtime by looking for the uppercase and underscored versions of <code class="language-plaintext highlighter-rouge">spring.datasource.url</code>, <code class="language-plaintext highlighter-rouge">spring.datasource.username</code>, and <code class="language-plaintext highlighter-rouge">spring.datasource.password</code>.</p>
+
+    <div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="c1"># ===============================</span>
+ <span class="c1"># = DATA SOURCE</span>
+ <span class="c1"># ===============================</span>
+
+ <span class="c1"># The connection URL, username, and password will be sourced from environment variables</span>
+ <span class="c1"># on App Service</span>
+
+ <span class="c1"># Set here configurations for the database connection</span>
+ <span class="s">spring.datasource.driver-class-name=org.postgresql.Driver</span>
+
+ <span class="s"># ===============================</span>
+ <span class="s"># = JPA / HIBERNATE</span>
+ <span class="s"># ===============================</span>
+
+ <span class="s"># Allows Hibernate to generate SQL optimized for a particular DBMS</span>
+ <span class="s">spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect</span>
+
+ <span class="s"># App Service</span>
+ <span class="s">server.port=80</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Now we can slim-down our original <code class="language-plaintext highlighter-rouge">application.properties</code> file. Replace the contents of <code class="language-plaintext highlighter-rouge">application.properties</code> with the following:</p>
+
+    <div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="c1"># Active profile is set by Maven</span>
+ <span class="s">spring.profiles.active=@spring.profiles.active@</span>
+
+ <span class="s"># ===============================</span>
+ <span class="s"># = DATA SOURCE</span>
+ <span class="s"># ===============================</span>
+
+ <span class="s"># Keep the connection alive if idle for a long time (needed in production)</span>
+ <span class="s">spring.datasource.testWhileIdle=true</span>
+ <span class="s">spring.datasource.validationQuery=SELECT </span><span class="m">1</span>
+
+ <span class="c1"># ===============================</span>
+ <span class="c1"># = JPA / HIBERNATE</span>
+ <span class="c1"># ===============================</span>
+ <span class="c1"># Show or not log for each sql query</span>
+ <span class="s">spring.jpa.show-sql=true</span>
+
+ <span class="s"># Hibernate ddl auto (create, create-drop, update)</span><span class="err">:</span> <span class="s">with "create-drop" the database</span>
+ <span class="s"># schema will be automatically created afresh for every start of application</span>
+ <span class="s">spring.jpa.hibernate.ddl-auto=create</span>
+
+ <span class="s"># Naming strategy</span>
+ <span class="s">spring.jpa.hibernate.naming.implicit-strategy=org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl</span>
+ <span class="s">spring.jpa.hibernate.naming.physical-strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Finally, we can also slim down our Maven profiles because we have moved th information to the new properties files. The profile section of your <code class="language-plaintext highlighter-rouge">pom.xml</code> should now be the following:</p>
+
+    <div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nt">&lt;profiles&gt;</span>
+   <span class="nt">&lt;profile&gt;</span>
+     <span class="c">&lt;!-- This profile will configure Spring to use an in-memory database for local development and testing. --&gt;</span>  
+     <span class="nt">&lt;id&gt;</span>dev<span class="nt">&lt;/id&gt;</span>  
+     <span class="nt">&lt;activation&gt;</span>
+       <span class="nt">&lt;activeByDefault&gt;</span>true<span class="nt">&lt;/activeByDefault&gt;</span>
+     <span class="nt">&lt;/activation&gt;</span>  
+     <span class="nt">&lt;properties&gt;</span>
+       <span class="nt">&lt;spring.profiles.active&gt;</span>dev<span class="nt">&lt;/spring.profiles.active&gt;</span>
+     <span class="nt">&lt;/properties&gt;</span>
+   <span class="nt">&lt;/profile&gt;</span>  
+   <span class="nt">&lt;profile&gt;</span>
+     <span class="c">&lt;!-- This profile will configure the application to use our Azure PostgreSQL server. --&gt;</span>  
+     <span class="nt">&lt;id&gt;</span>prod<span class="nt">&lt;/id&gt;</span>  
+     <span class="nt">&lt;properties&gt;</span>  
+       <span class="nt">&lt;spring.profiles.active&gt;</span>prod<span class="nt">&lt;/spring.profiles.active&gt;</span>
+     <span class="nt">&lt;/properties&gt;</span>
+   <span class="nt">&lt;/profile&gt;</span>
+ <span class="nt">&lt;/profiles&gt;</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>See <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html">this article</a> for more information on Spring configurations and precedence.</p>
+
+<h2 id="deploy-and-test">Deploy and Test</h2>
+
+<p>Check that the development profile works as expected by running the following commands and opening a browser to <code class="language-plaintext highlighter-rouge">http://localhost:8080/</code>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn clean package <span class="nt">-Pdev</span>
+java <span class="nt">-jar</span> target/app.jar
+</code></pre></div></div>
+
+<p>Before deploying to App Service, build your application with the production profile and test against your PostgreSQL DB from your local machine. To do so, rename the three environment variables beginning with <code class="language-plaintext highlighter-rouge">POSTGRES_</code> to <code class="language-plaintext highlighter-rouge">SPRING_DATASOURCE_URL</code>, <code class="language-plaintext highlighter-rouge">SPRING_DATASOURCE_USERNAME</code>, and <code class="language-plaintext highlighter-rouge">SPRING_DATASOURCE_PASSWORD</code> respectively. Run the following commands to build and start your app. Thanks to our new configuration, Spring will resolve the connection strings in the environment variables <em>at runtime</em>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn clean package <span class="nt">-Pprod</span>
+java <span class="nt">-jar</span> target/app.jar
+</code></pre></div></div>
+
+<p>Finally, deploy the production app to App Service with <code class="language-plaintext highlighter-rouge">mvn azure-webapp:deploy</code>. Browse to the application and test that it works properly.</p>
+
+<h2 id="next-steps">Next Steps</h2>
+
+<p>See the <a href="https://docs.microsoft.com/en-us/azure/app-service/containers/configure-language-java">Java Developer Guide</a> for more documentation and best practices for Java on App Service. Check back in the future for more articles. Thanks for reading!</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-07-30T00:00:00+00:00">July 30, 2019</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Azure+Key+Vault+References+with+Spring+Apps%20https%3A%2F%2Fazure.github.io%2FAppService%2F2019%2F07%2F30%2FKey-Vault-References-with-Spring-Apps.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2019%2F07%2F30%2FKey-Vault-References-with-Spring-Apps.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2019%2F07%2F30%2FKey-Vault-References-with-Spring-Apps.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2019/07/25/Removing-Easy-Tables-and-Easy-APIs-from-Azure-App-Services.html" class="pagination--pager" title="Removing Easy Tables and Easy APIs from Azure App Service
+">Previous</a>
+    
+    
+      <a href="/AppService/2019/08/06/Bring-visibility-to-your-app-and-its-dependencies-with-Navigator.html" class="pagination--pager" title="Get visibility into your app’s dependencies with Navigator
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

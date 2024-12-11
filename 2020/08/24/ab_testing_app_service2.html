@@ -1,0 +1,1107 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>A/B Testing with App Service, Part 2: Server-side configuration - Azure App Service</title>
+<meta name="description" content="This is the second article in our guide for A/B testing with App Service. See the first article for more information about A/B testing and how to set up your client-side project Share your thoughts in the comments section).">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="A/B Testing with App Service, Part 2: Server-side configuration">
+<meta property="og:url" content="https://azure.github.io/AppService/2020/08/24/ab_testing_app_service2.html">
+
+
+  <meta property="og:description" content="This is the second article in our guide for A/B testing with App Service. See the first article for more information about A/B testing and how to set up your client-side project Share your thoughts in the comments section).">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2020-08-24T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2020/08/24/ab_testing_app_service2.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="A/B Testing with App Service, Part 2: Server-side configuration">
+    <meta itemprop="description" content="This is the second article in our guide for A/B testing with App Service. See the first article for more information about A/B testing and how to set up your client-side project Share your thoughts in the comments section).">
+    <meta itemprop="datePublished" content="August 24, 2020">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">A/B Testing with App Service, Part 2: Server-side configuration
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+            
+            
+              • By Jason Freeberg and Shubham Dhond
+            
+            • August 24, 2020
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#add-the-slot-name">Add the slot name</a></li>
+  <li><a href="#configure-your-project">Configure your project</a>
+    <ul>
+      <li><a href="#net">.NET</a></li>
+      <li><a href="#java">Java</a>
+        <ul>
+          <li><a href="#spring">Spring</a></li>
+          <li><a href="#other-frameworks">Other frameworks</a></li>
+        </ul>
+      </li>
+      <li><a href="#node">Node</a></li>
+      <li><a href="#python">Python</a></li>
+    </ul>
+  </li>
+  <li><a href="#summary">Summary</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <p>This is the second article in our guide for A/B testing with App Service. See <a href="https://azure.github.io/AppService/2020/08/03/ab_testing_app_service.html">the first article</a> for more information about A/B testing and how to set up your client-side project Share your thoughts in the <a href="#disqus_thread">comments section</a>).</p>
+
+<h2 id="add-the-slot-name">Add the slot name</h2>
+
+<p>First, you will need to add the name of the slot as an app setting. For example, if you have a slot named staging, create an app setting named <code class="language-plaintext highlighter-rouge">SLOT_NAME</code> and set its value to <code class="language-plaintext highlighter-rouge">staging</code>. If you have a slot named dev, create an app setting named <code class="language-plaintext highlighter-rouge">SLOT_NAME</code> with a value of <code class="language-plaintext highlighter-rouge">dev</code>. In the next section, the telemetry initializer will use this app setting to tag the outgoing telemetry.</p>
+
+<p>For example, here is an Azure CLI command to set the app setting and value for a slot named “staging” on a webapp named “my-webapp” in a resource group called “my-resource-group”.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp config <span class="nt">--name</span> my-webapp <span class="nt">-g</span> my-resource-group <span class="nt">-slot</span> staging <span class="nt">--settings</span> <span class="nv">SLOT_NAME</span><span class="o">=</span>staging
+</code></pre></div></div>
+
+<h2 id="configure-your-project">Configure your project</h2>
+
+<p>Like in the first article, you will need to add a telemetry initializer to your project and register it with the Application Insights SDK. The telemetry initializer will tag all outgoing events and metrics with the slot’s name, so you can split and filter the data during analysis later. In some cases, you will need to register the initializer with the App Insights SDK. Instructions are below for common backend languages; please jump to the section for your language.</p>
+
+<h3 id="net">.NET</h3>
+
+<p>For <strong>.NET Core</strong> apps, follow the <a href="https://docs.microsoft.com/azure/azure-monitor/app/asp-net-core">instructions shown here</a> to add App Insights to your project. if you are using ASP.NET, follow these <a href="https://docs.microsoft.com/azure/azure-monitor/app/asp-net">instructions instead</a>. Once you have added the SDK, copy and paste the custom telemetry initializer below.</p>
+
+<div class="language-c# highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Microsoft.ApplicationInsights.Channel</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Microsoft.ApplicationInsights.DataContracts</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Microsoft.ApplicationInsights.Extensibility</span><span class="p">;</span>
+
+<span class="k">public</span> <span class="k">class</span> <span class="nc">MyTelemetryInitializer</span> <span class="p">:</span> <span class="n">ITelemetryInitializer</span>
+<span class="p">{</span>
+  <span class="k">public</span> <span class="k">void</span> <span class="nf">Initialize</span><span class="p">(</span><span class="n">ITelemetry</span> <span class="n">telemetry</span><span class="p">)</span>
+  <span class="p">{</span>
+      <span class="n">String</span> <span class="n">SLOT_ENV_VAR</span> <span class="p">=</span> <span class="s">"SLOT_NAME"</span><span class="p">;</span>
+      <span class="kt">var</span> <span class="n">requestTelemetry</span> <span class="p">=</span> <span class="n">telemetry</span> <span class="k">as</span> <span class="n">RequestTelemetry</span><span class="p">;</span>
+      <span class="n">slot</span> <span class="p">=</span> <span class="n">Environment</span><span class="p">.</span><span class="nf">GetEnvironmentVariable</span><span class="p">(</span><span class="n">SLOT_ENV_VAR</span><span class="p">);</span>
+
+      <span class="n">requestTelemetry</span><span class="p">.</span><span class="n">Properties</span><span class="p">[</span><span class="n">SLOT_ENV_VAR</span><span class="p">]</span> <span class="p">=</span> <span class="n">slot</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>For more information, see the Application Insights documentation for <a href="https://docs.microsoft.com/azure/azure-monitor/app/asp-net-core">.NET Core</a> and <a href="https://docs.microsoft.com/azure/azure-monitor/app/asp-net">ASP.NET</a></p>
+</blockquote>
+
+<h3 id="java">Java</h3>
+
+<h4 id="spring">Spring</h4>
+
+<ol>
+  <li>
+    <p>Add the Spring Starter for Application Insights to the dependencies of your pom.xml.</p>
+
+    <div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nt">&lt;dependency&gt;</span>
+     <span class="nt">&lt;groupId&gt;</span>com.microsoft.azure<span class="nt">&lt;/groupId&gt;</span>
+     <span class="nt">&lt;artifactId&gt;</span>applicationinsights-spring-boot-starter<span class="nt">&lt;/artifactId&gt;</span>
+     <span class="nt">&lt;version&gt;</span>1.1.1<span class="nt">&lt;/version&gt;</span>
+ <span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Create a new class and paste the following definition. The <code class="language-plaintext highlighter-rouge">initialize()</code> method will retrieve the name of the current slot from the app setting and attach it to the outgoing telemetry. If you are not using Lombok, you can remove the import and log statement for Lombok.</p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">import</span> <span class="nn">com.microsoft.applicationinsights.extensibility.TelemetryInitializer</span><span class="o">;</span>
+ <span class="kn">import</span> <span class="nn">com.microsoft.applicationinsights.telemetry.Telemetry</span><span class="o">;</span>
+ <span class="kn">import</span> <span class="nn">lombok.extern.slf4j.Slf4j</span><span class="o">;</span>
+ <span class="kn">import</span> <span class="nn">org.springframework.stereotype.Component</span><span class="o">;</span>
+
+ <span class="nd">@Component</span>
+ <span class="nd">@Slf4j</span>
+ <span class="kd">public</span> <span class="kd">class</span> <span class="nc">CustomTelemetryInitializer</span> <span class="kd">implements</span> <span class="nc">TelemetryInitializer</span> <span class="o">{</span>
+
+     <span class="cm">/**
+     * Get the slot name from the env var and attach it to the outgoing telemetry.
+     * @param telemetry Outgoing telemetry
+     */</span>
+     <span class="nd">@Override</span>
+     <span class="kd">public</span> <span class="kt">void</span> <span class="nf">initialize</span><span class="o">(</span><span class="nc">Telemetry</span> <span class="n">telemetry</span><span class="o">)</span> <span class="o">{</span>
+         <span class="kd">final</span> <span class="nc">String</span> <span class="no">SLOT_ENV_VAR</span> <span class="o">=</span> <span class="s">"SLOT_NAME"</span><span class="o">;</span>
+         <span class="kd">final</span> <span class="nc">String</span> <span class="n">slot</span> <span class="o">=</span> <span class="nc">System</span><span class="o">.</span><span class="na">getenv</span><span class="o">(</span><span class="no">SLOT_ENV_VAR</span><span class="o">);</span>
+         <span class="k">if</span> <span class="o">(</span><span class="n">slot</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+             <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"Tagging telemetry with slot name: "</span><span class="o">+</span><span class="n">slot</span><span class="o">);</span>
+             <span class="n">telemetry</span><span class="o">.</span><span class="na">getProperties</span><span class="o">().</span><span class="na">put</span><span class="o">(</span><span class="no">SLOT_ENV_VAR</span><span class="o">,</span> <span class="n">slot</span><span class="o">);</span>
+         <span class="o">}</span>
+     <span class="o">}</span>
+ <span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h4 id="other-frameworks">Other frameworks</h4>
+
+<p>For other Java frameworks you can install the core SDK, coordinates shown below. Once the SDK is added to your dependency list, create an <code class="language-plaintext highlighter-rouge">ApplicationInsights.xml</code> file in your app’s classpath. Copy the file contents from <a href="https://docs.microsoft.com/azure-monitor/app/java-get-started?tabs=maven#add-an-applicationinsightsxml-file">here</a>.</p>
+
+<ol>
+  <li>
+    <p>Add the Application Insights SDK to the dependencies of your pom.xml.</p>
+
+    <div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nt">&lt;dependency&gt;</span>
+     <span class="nt">&lt;groupId&gt;</span>com.microsoft.azure<span class="nt">&lt;/groupId&gt;</span>
+     <span class="nt">&lt;artifactId&gt;</span>applicationinsights-web-auto<span class="nt">&lt;/artifactId&gt;</span>
+     <span class="nt">&lt;version&gt;</span>2.5.0<span class="nt">&lt;/version&gt;</span>
+ <span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Create an <code class="language-plaintext highlighter-rouge">ApplicationInsights.xml</code> file in your app’s classpath. Copy the file contents from <a href="https://docs.microsoft.com/azure-monitor/app/java-get-started?tabs=maven#add-an-applicationinsightsxml-file">here</a>.</p>
+  </li>
+  <li>
+    <p>Create a new class and paste the following definition. The <code class="language-plaintext highlighter-rouge">initialize()</code> method will retrieve the name of the current slot from the app setting and attach it to the outgoing telemetry. If you are not using Lombok, you can remove the import and log statement for Lombok.</p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">import</span> <span class="nn">com.microsoft.applicationinsights.extensibility.TelemetryInitializer</span><span class="o">;</span>
+ <span class="kn">import</span> <span class="nn">com.microsoft.applicationinsights.telemetry.Telemetry</span><span class="o">;</span>
+ <span class="kn">import</span> <span class="nn">lombok.extern.slf4j.Slf4j</span><span class="o">;</span>
+
+ <span class="nd">@Slf4j</span>
+ <span class="kd">public</span> <span class="kd">class</span> <span class="nc">CustomTelemetryInitializer</span> <span class="kd">implements</span> <span class="nc">TelemetryInitializer</span> <span class="o">{</span>
+
+     <span class="cm">/**
+     * Get the slot name from the env var and attach it to the outgoing telemetry.
+     * @param telemetry Outgoing telemetry
+     */</span>
+     <span class="nd">@Override</span>
+     <span class="kd">public</span> <span class="kt">void</span> <span class="nf">initialize</span><span class="o">(</span><span class="nc">Telemetry</span> <span class="n">telemetry</span><span class="o">)</span> <span class="o">{</span>
+         <span class="kd">final</span> <span class="nc">String</span> <span class="no">SLOT_ENV_VAR</span> <span class="o">=</span> <span class="s">"SLOT_NAME"</span><span class="o">;</span>
+         <span class="kd">final</span> <span class="nc">String</span> <span class="n">slot</span> <span class="o">=</span> <span class="nc">System</span><span class="o">.</span><span class="na">getenv</span><span class="o">(</span><span class="no">SLOT_ENV_VAR</span><span class="o">);</span>
+         <span class="k">if</span> <span class="o">(</span><span class="n">slot</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+             <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"Tagging telemetry with slot name: "</span><span class="o">+</span><span class="n">slot</span><span class="o">);</span>
+             <span class="n">telemetry</span><span class="o">.</span><span class="na">getProperties</span><span class="o">().</span><span class="na">put</span><span class="o">(</span><span class="no">SLOT_ENV_VAR</span><span class="o">,</span> <span class="n">slot</span><span class="o">);</span>
+         <span class="o">}</span>
+     <span class="o">}</span>
+ <span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Register the telemetry initializer with the App Insights SDK by adding the following line to your ApplicationInsights.xml file. Replace the example package name with your project’s package name.</p>
+
+    <div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nt">&lt;TelemetryInitializers&gt;</span>
+   ...
+   <span class="nt">&lt;Add</span> <span class="na">type=</span><span class="s">"org.example.package.CustomTelemetryInitializer"</span><span class="nt">/&gt;</span>
+ <span class="nt">&lt;/TelemetryInitializers&gt;</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<blockquote>
+  <p>For more information, see the Application Insights documentation for <a href="https://docs.microsoft.com/azure/azure-monitor/app/java-get-started">Java</a> and <a href="https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-java-applicationinsights">Spring</a>.</p>
+</blockquote>
+
+<h3 id="node">Node</h3>
+
+<ol>
+  <li>
+    <p>Install the App Insights package.</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> npm <span class="nb">install </span>applicationinsights <span class="nt">--save</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Create a telemetry initializer, just like in the other examples.</p>
+
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kd">var</span> <span class="nx">tagSlotName</span> <span class="o">=</span> <span class="p">(</span><span class="nx">envelope</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+   <span class="kd">const</span> <span class="nx">SLOT_ENV_VAR</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">SLOT_NAME</span><span class="dl">"</span><span class="p">;</span>
+   <span class="kd">let</span> <span class="nx">slot</span> <span class="o">=</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">[</span><span class="nx">SLOT_ENV_VAR</span><span class="p">];</span>
+   <span class="k">if </span><span class="p">(</span><span class="nx">slot</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+     <span class="nx">envelope</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="nx">SLOT_ENV_VAR</span><span class="p">]</span> <span class="o">=</span> <span class="nx">slot</span><span class="p">;</span>
+   <span class="p">}</span>
+ <span class="p">};</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Import the package, then register the telemetry initializer as shown below.</p>
+
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kd">let</span> <span class="nx">appInsights</span> <span class="o">=</span> <span class="nf">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">applicationinsights</span><span class="dl">'</span><span class="p">);</span>
+ <span class="nx">appInsights</span><span class="p">.</span><span class="nf">addTelemetryInitializer</span><span class="p">(</span><span class="nx">tagSlotName</span><span class="p">);</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<blockquote>
+  <p>For more information, see the <a href="https://docs.microsoft.com/azure/azure-monitor/app/nodejs">App Insights documentation for Node.js</a></p>
+</blockquote>
+
+<h3 id="python">Python</h3>
+
+<p>Please refer to the <a href="https://docs.microsoft.com/azure/azure-monitor/app/opencensus-python">Python documentation for Application Insights</a> for instructions on installation and configuration. Once App Insights is added to your Python app, you can tag the outgoing telemetry with the slot name using the <a href="https://docs.microsoft.com/azure/azure-monitor/app/api-filtering-sampling#opencensus-python-telemetry-processors">OpenCensus Python telemetry processors</a>.</p>
+
+<h2 id="summary">Summary</h2>
+
+<p>In this article you added Application Insights and a custom telemetry initializer to your backend project. The custom initializer reads the slot name from the app setting and tags all outgoing telemetry with it. This process is similar to the process in the <a href="https://azure.github.io/AppService/2020/08/03/ab_testing_app_service.html">first article</a>, but applied to the server-side code. The next article will show how to split and analyze the data.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2020-08-24T00:00:00+00:00">August 24, 2020</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=A%2FB+Testing+with+App+Service%2C+Part+2%3A+Server-side+configuration%20https%3A%2F%2Fazure.github.io%2FAppService%2F2020%2F08%2F24%2Fab_testing_app_service2.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2020%2F08%2F24%2Fab_testing_app_service2.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2020%2F08%2F24%2Fab_testing_app_service2.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2020/08/19/github-actions-code-ga.html" class="pagination--pager" title="GitHub Actions integration is now Generally Available
+">Previous</a>
+    
+    
+      <a href="/AppService/2020/08/24/healthcheck-on-app-service.html" class="pagination--pager" title="Health Check is now Generally Available
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+      <div class="page__comments">
+  
+  
+      <h4 class="page__comments-title">Leave a comment</h4>
+      <section id="disqus_thread"></section>
+    
+</div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "https://azure.github.io/AppService/2020/08/24/ab_testing_app_service2.html";  // Replace PAGE_URL with your page's canonical URL variable
+      this.page.identifier = "/2020/08/24/ab_testing_app_service2"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://app-service-blog.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,1081 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>WordPress on Web app for Containers - Azure App Service</title>
+<meta name="description" content="">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="WordPress on Web app for Containers">
+<meta property="og:url" content="https://azure.github.io/AppService/2017/04/16/WordPress-on-Web-app-for-Containers.html">
+
+
+  <meta property="og:description" content="">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2017-04-16T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2017/04/16/WordPress-on-Web-app-for-Containers.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="WordPress on Web app for Containers">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="April 16, 2017">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">WordPress on Web app for Containers
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  7 minute read
+
+            
+            
+            • April 16, 2017
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/mksunitha" target="_blank">mksunitha</a>
+<time>    4/16/2017 9:23:18 PM</time>
+<hr/>
+<div id="content"><a href="https://docs.microsoft.com/en-us/azure/app-service-web/app-service-linux-intro">Web Apps on Linux </a>allows running web apps natively on Linux. WordPress is popular blogging platform primarily used on Linux distributions.  Today we have released <a href="https://portal.azure.com/?feature.customportal=false#create/WordPress.WordPressonlinux">WordPress for App Service on Linux</a> in the Azure marketplace that helps you quickly create a WordPress application on Web apps (Linux) .
+
+This docker image enables you to run a WordPress site on Azure Web App on Linux  using either :
+<ol>
+<li style="list-style-type: none">
+<ol>
+<li><a href="https://azure.microsoft.com/en-us/services/mysql"><strong>Azure Database for MySQL</strong> </a>: It is a Microsoft solution for MySQL service on Azure that provides a managed database service for app development and deployment that allows you to stand up a MySQL database in minutes and scale on the fly .</li>
+<li><strong><a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/03/21/create-wordpress-using-web-apps-on-linux#local-db">Local Database </a> : </strong>You can manually setup your web app to use Local database. This option is not provided from Azure portal for WordPress on Linux template.</li>
+</ol>
+</li>
+</ol>
+<h2>Before you begin</h2>
+If you don't have an Azure subscription, create a <a href="https://azure.microsoft.com/free/?WT.mc_id=A261C142F">free account</a> before you begin.
+<h2>Deploy from Marketplace</h2>
+Log in to the <a href="https://portal.azure.com">Azure portal</a>.Click <a href="https://portal.azure.com/?feature.customportal=false#create/WordPress.WordPressonlinux">here</a> to create the WordPress application.<a href="/AppService/media/2017/05/wordpress-linux.png"><img alt="wordpress-linux" class="alignnone size-large wp-image-4695" height="1024" src="/AppService/media/2017/05/wordpress-linux-358x1024.png" width="358"/></a>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>App Name</td>
+<td>
+<div>
+<div><span>Enter a unique app name for your </span><span>**Web App Name**</span><span>. This name is used as part of the default DNS name for your app </span><em>&lt;app_name&gt;.azurewebsites.net</em><span>, so it needs to be unique across all apps in Azure. You can later map a custom domain name to your app before you expose it to your users </span></div>
+</div></td>
+</tr>
+<tr>
+<td>Subscription</td>
+<td>Select a <span><strong>Subscription</strong></span><span>. If you have multiple subscriptions, choose the appropriate subscription.</span></td>
+</tr>
+<tr>
+<td>Resource group</td>
+<td>
+<div>
+<div><span>Enter a </span><span><strong>resource group</strong></span><span>. A resource group is a logical container into which Azure resources like web apps, databases that is deployed and managed. You can create a resource group or use an existing one</span></div>
+</div></td>
+</tr>
+<tr>
+<td>App Service Plan</td>
+<td>
+<div>
+<div style="text-align: left"><span>App Service plans represent the collection of physical resources used to host your apps. Select the </span><span><strong>Location</strong></span><span> and the </span><span><strong>Pricing tier</strong></span><span>. For more information on pricing, see <a href="https://azure.microsoft.com/pricing/details/app-service"> App service pricing tier</a> </span></div>
+</div></td>
+</tr>
+<tr>
+<td>Database Provider</td>
+<td>Use <strong>Azure Database for MySQL</strong> for database solution</td>
+</tr>
+</tbody>
+</table>
+This will deploy a WordPress custom image on to Web Apps on Linux . Note there might be cold start for the first request to the site created.
+<h2>Using GIT repo for WordPress code</h2>
+Version 0.3 pulls wordpress code from our <a href="https://github.com/azureappserviceoss/wordpress-azure">GIT repo</a> when you create a when app using this Docker image .  If you have custom code on Github as well , you can edit GIT_REPO after the app is created and GIT_BRANCH values in app settings.
+<ol>
+<li>Create a Web App for Containers</li>
+<li>Add new App Settings</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GIT_REPO</td>
+<td><a href="https://github.com/azureappserviceoss/wordpress-azure">https://github.com/azureappserviceoss/wordpress-azure</a></td>
+</tr>
+<tr>
+<td>GIT_BRANCH</td>
+<td>linux_appservice</td>
+</tr>
+</tbody>
+</table>
+<ol start="4">
+<li>Browse your site</li>
+</ol>
+<i><strong>Note:</strong> GIT directory: /home/site/wwwroot. </i><em>When you deploy it first time, Sometimes need to check wp-config.php. RM it and re-config DB information is necessary. </em><em>Before restart web app, need to store your changes by "git push", it will be pulled again after restart.</em>
+<h2 id="local-db">How to configure to use Local Database with web app</h2>
+<ol>
+<li>Create a Web App for Containers</li>
+<li>Update App Setting<span> </span><code>WEBSITES_ENABLE_APP_SERVICE_STORAGE</code><span> </span>= true (If you like to keep you DB after restart.)</li>
+<li>Add new App Settings</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DATABASE_TYPE</td>
+<td>local</td>
+</tr>
+<tr>
+<td>DATABASE_USERNAME</td>
+<td>wordpress</td>
+</tr>
+<tr>
+<td>DATABASE_PASSWORD</td>
+<td>some-string</td>
+</tr>
+</tbody>
+</table>
+<i>Note: We create a database "azurelocaldb" when using local mysql . Hence use this name when setting up the app</i>
+<ol start="4">
+<li>Browse your site</li>
+<li>Complete WordPress install</li>
+</ol>
+<i>Note: Do not use the app setting DATABASE_TYPE=local if using Azure database for MySQL</i>
+<h2>How to update WordPress core , theme or plugins</h2>
+<div>If WEBSITES_ENABLE_APP_SERVICE_STORAGE= false  ( which is the default setting ) , we recommend you <em><span style="text-decoration: underline"><strong>DO NOT update</strong> the WordPress core version , themes or files from WordPress admin dashboard. </span></em></div>
+<div></div>
+<div>There is a trade off between file server stability and file persistence . Choose either one option to updated your files :</div>
+<div></div>
+<div><b><span>OPTION 1 : </span></b></div>
+<div><span>Since we are using local storage for better stability for the web app , you will not get file persistence.  In this case , we recommend to follow these steps to update WordPress Core  or a theme or a Plugins version :</span></div>
+<ol>
+<li><span>Fork the repo </span><a class="OWAAutoLink" href="https://github.com/azureappserviceoss/wordpress-azure" id="LPlnk679334"><span> https://github.com/azureappserviceoss/wordpress-azure</span></a><span> </span></li>
+<li><span>Clone your repo locally and make sure to use ONLY linux-appservice branch </span></li>
+<li><span>Download the latest version of WordPress , plugin or theme being used locally </span></li>
+<li><span>Commit the latest version bits into local folder of your cloned repo </span></li>
+<li><span>Push your changes to the your forked repo </span></li>
+<li><span>Login to Azure portal and select your web app </span></li>
+<li><span>Click on </span><b><span>Application Settings -&gt; App Settings </span></b><span>and change GIT_REPO to use your repository from step #1. If you have changed the branch name , you can continue to use</span><b><span> linux-apservice</span></b><span> . If you wish to use a different branch , update GIT_BRANCH setting as well. </span></li>
+</ol>
+<div><span> </span></div>
+<div><b><span>OPTION 2 :</span></b><span>  You can update WEBSITES_ENABLE_APP_SERVICE_STORAGE =true  to enable app service storage to have file persistence . Note when there are issues with storage  due to networking or when app service platform is being updated , your app can be impacted . </span></div>
+<h2>How to turn on Xdebug</h2>
+<ol>
+<li>By default Xdebug is turned off as turning it on impacts performance.</li>
+<li>Connect by SSH.</li>
+<li>Go to<span> </span><code>/usr/local/php/etc/conf.d</code>, Update<span> </span><code>xdebug.ini</code><span> </span>as wish, don't modify the path of below line.<code>zend_extension=/usr/local/php/lib/php/extensions/no-debug-non-zts-20170718/xdebug.so</code></li>
+<li>Save<span> </span><code>xdebug.ini</code>, Restart apache by below cmd:<span> </span><code>apachectl restart</code></li>
+<li>Xdebug is turned on.</li>
+</ol>
+<h2>Limitations</h2>
+<ul>
+<li>Some unexpected issues may happen after you scale out your site to multiple instances, if you deploy a WordPress site on Azure with this docker image and use the MariaDB built in this docker image as the database.</li>
+<li>The phpMyAdmin built in this docker image is available only when you use the MariaDB built in this docker image as the database.</li>
+<li>Please Include App Setting<span> </span><code>WEBSITES_ENABLE_APP_SERVICE_STORAGE</code><span> </span>= true when use built in MariaDB since we need files to be persisted.</li>
+</ul>
+<h2>Change Log</h2>
+<ul>
+<li><strong>Version 0.3</strong>
+<ol>
+<li>Use Git to deploy wordpress.</li>
+<li>Update version of PHP/Apache/Mariadb/Phpmyadmin.</li>
+<li>Add Xdebug extenstion of PHP.</li>
+<li>Use supervisord to keep SSHD and Apache.</li>
+<li>This is NOT compatible with tag 0.2 and tag 0.1 for Docker image <a href="https://hub.docker.com/r/appsvcorg/wordpress-alpine-php/">wordpress-alpine-php</a></li>
+</ol>
+</li>
+</ul>
+<h2>Migrating an existing WordPress site</h2>
+This image creates a new WordPress application every time it is deployed. If you are migrating your application to this site , please follow directions to <a href="https://codex.wordpress.org/Tools_Export_Screen">export</a> and<a href="https://codex.wordpress.org/Tools_Import_Screen"> import </a>as mentioned on Wordpress Codex.
+
+If you have a complex WordPress application where the above mentioned export and import options are not effective, Web Apps on Linux supports git deployment and you use <a href="https://docs.microsoft.com/en-us/azure/app-service-web/app-service-deploy-content-sync">FTP</a>  or <a href="https://docs.microsoft.com/en-us/azure/app-service-web/app-service-deploy-local-git">GIT</a> deployment to replace the file system on the site created with this template to bring your own content. You can use PHPmyadmin available with this solution to import your application database content.
+<h2 id="troubleshooting">Troubleshooting</h2>
+The docker image has been updated from this  <a href="https://github.com/Azure-App-Service/apps/tree/master/Wordpress/0.2">docker image </a> to using a new format where the docker image only contains the server components. The application code for WordPress is deployed via GIT from  <a href="https://github.com/azureappserviceoss/wordpress-azure">github repo</a> .
+<h4 id="update-image">Update your application to use the new image appsvc/apps:<span>apache-php-mysql-0.1</span></h4>
+<ul>
+<li>If you have an existing application created using the WordPress image , check the Application setting to verfiy which image is being used with DOCKER_CUSTOM_IMAGE setting .</li>
+<li>If the setting value is <strong>apache-php-mysql-0.1 </strong>, no changes needed .</li>
+<li>If the value is <strong>wordpress-0.2</strong> or <strong>wordpress-0.1</strong> or<strong> wordpress</strong>  and  follow the steps below based on the database being used :
+<ul>
+<li>Azure Database for MySQL
+<ul>
+<li>Create a new web app with WordPress  from the Azure marketplace.</li>
+<li>Select "Existing resource group"  and choose the resource group in which your <span>Azure Database for MySQL </span> database exists.</li>
+<li>Select the same app service plan in which the current site assigned to.</li>
+<li>If using Azure Database for MySQL   , select your existing database that is being used by your web app.   Test the new site to make sure it is working as expected before deleting the older app.</li>
+</ul>
+</li>
+<li>Local database
+<ul>
+<li>Backup your web app and database manually.</li>
+<li>Create a new web app with WordPress  from the Azure marketplace and choose Azure database for MySQL</li>
+<li>Migrate your database to the new database and your files to newly created web app.</li>
+<li><strong>Note :</strong> There is bug with Local database causing the application to break once the app is  provisioned which will be fixed in early August 2017 . If you wish to use Local database , wait until Local database is support for WordPress template next month.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<strong>Using App  Service Storage </strong>
+
+If you using a web app that was created from Azure marketplace for Web App on Linux using WordPress , Drupal , Mediawiki and  Joomla  , please add the following app setting <code>WEBSITES_ENABLE_APP_SERVICE_STORAGE</code><span> app setting to </span><code>true</code><span> to continue using App service Storage  (platform SMB share i.e /home/ folder ) . Use the platform file storage in these  two scenarios :</span>
+<ol>
+<li><span></span><span>When you scale out using the autoscale feature in Web app for Linux. </span></li>
+<li><span style="color: #222222;font-family: segoe-ui_normal, 'Segoe UI', Segoe, 'Segoe WP', 'Helvetica Neue', Helvetica, sans-serif">If your application modifies the the files system and you need this new changes to the file system to be persistent . For example , with a WordPress app if you install a plugin , Wordpress adds a few files to the files system for the plugin and modifies the database. If you scale up or the instance your app is running on is recycled you will loose the plugin files which can break your production application.   Hence in such cases it is recommended to set the app setting to true. </span></li>
+</ol>
+<div><span style="color: #222222;font-family: segoe-ui_normal, 'Segoe UI', Segoe, 'Segoe WP', 'Helvetica Neue', Helvetica, sans-serif"></span><em><span style="color: #222222;font-family: segoe-ui_normal, 'Segoe UI', Segoe, 'Segoe WP', 'Helvetica Neue', Helvetica, sans-serif">NOTE: If the setting is not set to <code>true</code>  the changes to the file system are not persisted.  </span></em></div></div>
+</div></body>
+<script src="/AppService/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="/AppService/resource/replace.js" type="text/javascript"></script>
+</html>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2017-04-16T00:00:00+00:00">April 16, 2017</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=WordPress+on+Web+app+for+Containers%20https%3A%2F%2Fazure.github.io%2FAppService%2F2017%2F04%2F16%2FWordPress-on-Web-app-for-Containers.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2017%2F04%2F16%2FWordPress-on-Web-app-for-Containers.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2017%2F04%2F16%2FWordPress-on-Web-app-for-Containers.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2017/04/14/Announcing-Try-App-Service-API-Apps.html" class="pagination--pager" title="Announcing Try App Service API Apps
+">Previous</a>
+    
+    
+      <a href="/AppService/2017/04/24/Azure-Mobile-Apps-Quickstart-Samples-available-as-GitHub-repositories.html" class="pagination--pager" title="Azure Mobile Apps Quickstart Samples available as GitHub repositories
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

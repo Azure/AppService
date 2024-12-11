@@ -1,0 +1,1112 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>A/B Testing with App Service, Part 1: Client-side configuration - Azure App Service</title>
+<meta name="description" content="In software development, A/B testing is the process of comparing two versions of a webpage or application to determine which version improves a metric or KPI. Depending on your role, there a few reasons why you should start A/B testing your applications.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="A/B Testing with App Service, Part 1: Client-side configuration">
+<meta property="og:url" content="https://azure.github.io/AppService/2020/08/03/ab_testing_app_service.html">
+
+
+  <meta property="og:description" content="In software development, A/B testing is the process of comparing two versions of a webpage or application to determine which version improves a metric or KPI. Depending on your role, there a few reasons why you should start A/B testing your applications.">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2020-08-03T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2020/08/03/ab_testing_app_service.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="A/B Testing with App Service, Part 1: Client-side configuration">
+    <meta itemprop="description" content="In software development, A/B testing is the process of comparing two versions of a webpage or application to determine which version improves a metric or KPI. Depending on your role, there a few reasons why you should start A/B testing your applications.">
+    <meta itemprop="datePublished" content="August 03, 2020">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">A/B Testing with App Service, Part 1: Client-side configuration
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  8 minute read
+
+            
+            
+              • By Jason Freeberg, Shubham Dhond
+            
+            • August 3, 2020
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#overview">Overview</a></li>
+  <li><a href="#prerequisites">Prerequisites</a></li>
+  <li><a href="#create-an-application-insights-resource">Create an Application Insights Resource</a></li>
+  <li><a href="#install-application-insights">Install Application Insights</a>
+    <ul>
+      <li><a href="#react">React</a></li>
+      <li><a href="#vuejs">Vue.js</a></li>
+      <li><a href="#other-js-frameworks">Other JS Frameworks</a></li>
+      <li><a href="#html-templates">HTML Templates</a></li>
+    </ul>
+  </li>
+  <li><a href="#tag-the-telemetry">Tag the telemetry</a>
+    <ul>
+      <li><a href="#npm-based-applications">NPM-based applications</a></li>
+      <li><a href="#snippet-based-applications">Snippet-based applications</a></li>
+    </ul>
+  </li>
+  <li><a href="#deploy-and-split-traffic">Deploy and split traffic</a>
+    <ul>
+      <li><a href="#optional-deploy-prs-to-staging-slots">(Optional) Deploy PR’s to staging slots</a></li>
+    </ul>
+  </li>
+  <li><a href="#summary">Summary</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <p>In software development, A/B testing is the process of comparing two versions of a webpage or application to determine which version improves a metric or KPI. Depending on your role, there a few reasons why you should start A/B testing your applications.</p>
+
+<ul>
+  <li>A frontend developer can test if a refactor improves page load time under real-world conditions</li>
+  <li>A backend developer can deploy two versions of an API to determine any performance gains of a new implementation</li>
+  <li>A designer can check if a new UI layout improves usability metrics</li>
+  <li>A product manager can test different product landing pages to see how different value propositions affect click-through and average time-on-page</li>
+</ul>
+
+<p>A/B testing is a powerful technique for software professionals of all types, but it is not without its complexities. For example, how does one deploy two versions of the application? How is user traffic split between the versions? And most importantly… how is the data tracked, tagged, and analyzed? This blog series will show how to accomplish all these tasks. This first article explains how to instrument your client-side code with a monitoring agent and tag the metrics with the version. The following articles will show how to instrument your backend services and how to analyze the results.</p>
+
+<blockquote>
+  <p>Have any thoughts about this guide? Let us know in <a href="#disqus_thread">the comments below</a>!</p>
+</blockquote>
+
+<h2 id="overview">Overview</h2>
+
+<p>To do A/B testing with App Service, we will use App Service’s deployment slots and Application Insights. Deployment slots allow developers to deploy their new application builds to independent staging environments. Once a new build is deployed to a slot, you can route a percentage of your production traffic to the slot. Once the traffic is split, Application Insights will capture usage and performance metrics tagged with the slot name. The Application Insights blade in the Portal allows you to filter, visualize, and compare data from the different versions.</p>
+
+<h2 id="prerequisites">Prerequisites</h2>
+
+<p>You will need to have an Azure Subscription and an App Service before starting this guide. You should also have CI/CD (Continuous Integration and Delivery) set up for the App Service. All these steps are covered in parts <a href="https://azure.github.io/AppService/2020/06/29/zero_to_hero_pt1.html">one</a>, <a href="https://azure.github.io/AppService/2020/06/29/zero_to_hero_pt2.html">two</a>, and <a href="https://azure.github.io/AppService/2020/06/29/zero_to_hero_pt3.html">three</a> of our <em>Zero to Hero with App Service</em> series. Please refer to those articles to create an App Service and set up CI/CD. Once you have that set up, continue to the next section to create an App Insights resource.</p>
+
+<h2 id="create-an-application-insights-resource">Create an Application Insights Resource</h2>
+
+<p><a href="https://docs.microsoft.com/azure/azure-monitor/app/app-insights-overview">Application Insights</a> is a Application Performance Management (APM) service for client-side and backend apps. App Insights (AI) has SDKs for JavaScript, .NET, Java, Python, Node, and more. You will use AI to capture metrics, tag the data, and analyze the results.</p>
+
+<p>Create an App Insights resource in the Portal by <a href="https://docs.microsoft.com/azure/azure-monitor/app/create-new-resource">following these instructions</a>. If you prefer using the Azure CLI, you can run the following command instead. Replace <code class="language-plaintext highlighter-rouge">&lt;name&gt;</code> and <code class="language-plaintext highlighter-rouge">&lt;group&gt;</code> with your desired name for the AI resource, and name for the resource group.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az extension add <span class="nt">-n</span> application-insights
+az monitor app-insights component create <span class="nt">--app</span> &lt;name&gt; <span class="nt">-resource-group</span> &lt;group&gt; <span class="nt">--location</span> westus2
+</code></pre></div></div>
+
+<p>Once the AI resource is created, <strong>copy the instrumentation key</strong> from the Portal or CLI output. You will need this key in the next section.</p>
+
+<blockquote>
+  <p>You may need to <a href="https://docs.microsoft.com/cli/azure/install-azure-cli-windows?view=azure-cli-latest&amp;tabs=azure-cli">update your Azure CLI</a> to install the <code class="language-plaintext highlighter-rouge">application-insights</code> module.</p>
+</blockquote>
+
+<h2 id="install-application-insights">Install Application Insights</h2>
+
+<p>You will now add App Insights to your client-side code. Jump to the section for your app’s frontend framework.</p>
+
+<h3 id="react">React</h3>
+
+<p>App Insights has purpose-built plugins for <a href="https://github.com/microsoft/ApplicationInsights-JS/blob/17ef50442f73fd02a758fbd74134933d92607ecf/extensions/applicationinsights-react-js/README.md">React</a> and <a href="https://github.com/microsoft/ApplicationInsights-JS/blob/17ef50442f73fd02a758fbd74134933d92607ecf/extensions/applicationinsights-react-native/README.md">React Native</a>. Follow the linked instructions to add the plugins to your React project.</p>
+
+<h3 id="vuejs">Vue.js</h3>
+
+<p>The Vue.js community has created a wrapper for App Insights to register it as a Vue plugin, <code class="language-plaintext highlighter-rouge">vue-app-insights</code>. You can install the package with <code class="language-plaintext highlighter-rouge">npm install vue-application-insights --save</code>. Once the package is installed, register it as a plugin on the root Vue instance (this is usually in your <code class="language-plaintext highlighter-rouge">main.js</code> file). An example is shown below.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nx">Vue</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">vue</span><span class="dl">'</span>
+<span class="k">import</span> <span class="nx">router</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./router</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">VueAppInsights</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">vue-application-insights</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="nx">Vue</span><span class="p">.</span><span class="nf">use</span><span class="p">(</span><span class="nx">VueAppInsights</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">id</span><span class="p">:</span> <span class="dl">'</span><span class="s1">da2fab5d-c6fb-4688-8823-303dda0c7ad6</span><span class="dl">'</span><span class="p">,</span>
+  <span class="nx">router</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+<p>Since Vue is a framework for Single Page Applications (SPA’s), the snippet above also passes the Vue <code class="language-plaintext highlighter-rouge">router</code> to App Insights so that it can record view changes as proper page views.</p>
+
+<h3 id="other-js-frameworks">Other JS Frameworks</h3>
+
+<p>If you are using a different JavaScript framework, you can install the Application Insights SDK using NPM, as shown below.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm i <span class="nt">--save</span> @microsoft/applicationinsights-web
+</code></pre></div></div>
+
+<p>Once the package is installed, declare the App Insights object and provide your instrumentation key from the previous section.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">ApplicationInsights</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@microsoft/applicationinsights-web</span><span class="dl">'</span>
+
+<span class="kd">const</span> <span class="nx">appInsights</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ApplicationInsights</span><span class="p">({</span> <span class="na">config</span><span class="p">:</span> <span class="p">{</span>
+  <span class="na">instrumentationKey</span><span class="p">:</span> <span class="dl">'</span><span class="s1">YOUR_INSTRUMENTATION_KEY_GOES_HERE</span><span class="dl">'</span><span class="p">;</span>
+  <span class="cm">/* ...Other Configuration Options... */</span>
+<span class="p">}</span> <span class="p">});</span>
+<span class="nx">appInsights</span><span class="p">.</span><span class="nf">loadAppInsights</span><span class="p">();</span>
+<span class="nx">appInsights</span><span class="p">.</span><span class="nf">trackPageView</span><span class="p">();</span> <span class="c1">// Manually call trackPageView to establish the current user/session/pageview</span>
+</code></pre></div></div>
+
+<p>Next, you will need to register this object with your chosen framework. Most client-side frameworks provide an initialization hook where you can register objects with the root object or module. For Angular apps, <a href="https://devblogs.microsoft.com/premier-developer/angular-how-to-add-application-insights-to-an-angular-spa/">follow this blog guide</a>. For Ember.js, you can register the <code class="language-plaintext highlighter-rouge">appInsights</code> object in the <a href="https://guides.emberjs.com/release/applications/initializers/">Application Instance Initializer</a>. Configurations for all other frameworks are left as an exercise to the reader.</p>
+
+<h3 id="html-templates">HTML Templates</h3>
+
+<p>If you are using an HTML template engine (like Django, Thymeleaf, or Jekyll) add the following <code class="language-plaintext highlighter-rouge">&lt;script&gt;</code> snippet to the <code class="language-plaintext highlighter-rouge">&lt;head&gt;</code> of your base template. This will add AI to each of your app’s web pages.</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;</span>
+<span class="o">!</span><span class="kd">function</span><span class="p">(</span><span class="nx">T</span><span class="p">,</span><span class="nx">l</span><span class="p">,</span><span class="nx">y</span><span class="p">){</span><span class="kd">var</span> <span class="nx">S</span><span class="o">=</span><span class="nx">T</span><span class="p">.</span><span class="nx">location</span><span class="p">,</span><span class="nx">u</span><span class="o">=</span><span class="dl">"</span><span class="s2">script</span><span class="dl">"</span><span class="p">,</span><span class="nx">k</span><span class="o">=</span><span class="dl">"</span><span class="s2">instrumentationKey</span><span class="dl">"</span><span class="p">,</span><span class="nx">D</span><span class="o">=</span><span class="dl">"</span><span class="s2">ingestionendpoint</span><span class="dl">"</span><span class="p">,</span><span class="nx">C</span><span class="o">=</span><span class="dl">"</span><span class="s2">disableExceptionTracking</span><span class="dl">"</span><span class="p">,</span><span class="nx">E</span><span class="o">=</span><span class="dl">"</span><span class="s2">ai.device.</span><span class="dl">"</span><span class="p">,</span><span class="nx">I</span><span class="o">=</span><span class="dl">"</span><span class="s2">toLowerCase</span><span class="dl">"</span><span class="p">,</span><span class="nx">b</span><span class="o">=</span><span class="dl">"</span><span class="s2">crossOrigin</span><span class="dl">"</span><span class="p">,</span><span class="nx">w</span><span class="o">=</span><span class="dl">"</span><span class="s2">POST</span><span class="dl">"</span><span class="p">,</span><span class="nx">e</span><span class="o">=</span><span class="dl">"</span><span class="s2">appInsightsSDK</span><span class="dl">"</span><span class="p">,</span><span class="nx">t</span><span class="o">=</span><span class="nx">y</span><span class="p">.</span><span class="nx">name</span><span class="o">||</span><span class="dl">"</span><span class="s2">appInsights</span><span class="dl">"</span><span class="p">;(</span><span class="nx">y</span><span class="p">.</span><span class="nx">name</span><span class="o">||</span><span class="nx">T</span><span class="p">[</span><span class="nx">e</span><span class="p">])</span><span class="o">&amp;&amp;</span><span class="p">(</span><span class="nx">T</span><span class="p">[</span><span class="nx">e</span><span class="p">]</span><span class="o">=</span><span class="nx">t</span><span class="p">);</span><span class="kd">var</span> <span class="nx">n</span><span class="o">=</span><span class="nx">T</span><span class="p">[</span><span class="nx">t</span><span class="p">]</span><span class="o">||</span><span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">){</span><span class="kd">var</span> <span class="nx">g</span><span class="o">=!</span><span class="mi">1</span><span class="p">,</span><span class="nx">f</span><span class="o">=!</span><span class="mi">1</span><span class="p">,</span><span class="nx">m</span><span class="o">=</span><span class="p">{</span><span class="na">initialize</span><span class="p">:</span><span class="o">!</span><span class="mi">0</span><span class="p">,</span><span class="na">queue</span><span class="p">:[],</span><span class="na">sv</span><span class="p">:</span><span class="dl">"</span><span class="s2">4</span><span class="dl">"</span><span class="p">,</span><span class="na">version</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="na">config</span><span class="p">:</span><span class="nx">d</span><span class="p">};</span><span class="kd">function</span> <span class="nf">v</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span><span class="nx">t</span><span class="p">){</span><span class="kd">var</span> <span class="nx">n</span><span class="o">=</span><span class="p">{},</span><span class="nx">a</span><span class="o">=</span><span class="dl">"</span><span class="s2">Browser</span><span class="dl">"</span><span class="p">;</span><span class="k">return</span> <span class="nx">n</span><span class="p">[</span><span class="nx">E</span><span class="o">+</span><span class="dl">"</span><span class="s2">id</span><span class="dl">"</span><span class="p">]</span><span class="o">=</span><span class="nx">a</span><span class="p">[</span><span class="nx">I</span><span class="p">](),</span><span class="nx">n</span><span class="p">[</span><span class="nx">E</span><span class="o">+</span><span class="dl">"</span><span class="s2">type</span><span class="dl">"</span><span class="p">]</span><span class="o">=</span><span class="nx">a</span><span class="p">,</span><span class="nx">n</span><span class="p">[</span><span class="dl">"</span><span class="s2">ai.operation.name</span><span class="dl">"</span><span class="p">]</span><span class="o">=</span><span class="nx">S</span><span class="o">&amp;&amp;</span><span class="nx">S</span><span class="p">.</span><span class="nx">pathname</span><span class="o">||</span><span class="dl">"</span><span class="s2">_unknown_</span><span class="dl">"</span><span class="p">,</span><span class="nx">n</span><span class="p">[</span><span class="dl">"</span><span class="s2">ai.internal.sdkVersion</span><span class="dl">"</span><span class="p">]</span><span class="o">=</span><span class="dl">"</span><span class="s2">javascript:snippet_</span><span class="dl">"</span><span class="o">+</span><span class="p">(</span><span class="nx">m</span><span class="p">.</span><span class="nx">sv</span><span class="o">||</span><span class="nx">m</span><span class="p">.</span><span class="nx">version</span><span class="p">),{</span><span class="na">time</span><span class="p">:</span><span class="kd">function</span><span class="p">(){</span><span class="kd">var</span> <span class="nx">e</span><span class="o">=</span><span class="k">new</span> <span class="nb">Date</span><span class="p">;</span><span class="kd">function</span> <span class="nf">t</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span><span class="kd">var</span> <span class="nx">t</span><span class="o">=</span><span class="dl">""</span><span class="o">+</span><span class="nx">e</span><span class="p">;</span><span class="k">return</span> <span class="mi">1</span><span class="o">===</span><span class="nx">t</span><span class="p">.</span><span class="nx">length</span><span class="o">&amp;&amp;</span><span class="p">(</span><span class="nx">t</span><span class="o">=</span><span class="dl">"</span><span class="s2">0</span><span class="dl">"</span><span class="o">+</span><span class="nx">t</span><span class="p">),</span><span class="nx">t</span><span class="p">}</span><span class="k">return</span> <span class="nx">e</span><span class="p">.</span><span class="nf">getUTCFullYear</span><span class="p">()</span><span class="o">+</span><span class="dl">"</span><span class="s2">-</span><span class="dl">"</span><span class="o">+</span><span class="nf">t</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="nx">e</span><span class="p">.</span><span class="nf">getUTCMonth</span><span class="p">())</span><span class="o">+</span><span class="dl">"</span><span class="s2">-</span><span class="dl">"</span><span class="o">+</span><span class="nf">t</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nf">getUTCDate</span><span class="p">())</span><span class="o">+</span><span class="dl">"</span><span class="s2">T</span><span class="dl">"</span><span class="o">+</span><span class="nf">t</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nf">getUTCHours</span><span class="p">())</span><span class="o">+</span><span class="dl">"</span><span class="s2">:</span><span class="dl">"</span><span class="o">+</span><span class="nf">t</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nf">getUTCMinutes</span><span class="p">())</span><span class="o">+</span><span class="dl">"</span><span class="s2">:</span><span class="dl">"</span><span class="o">+</span><span class="nf">t</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nf">getUTCSeconds</span><span class="p">())</span><span class="o">+</span><span class="dl">"</span><span class="s2">.</span><span class="dl">"</span><span class="o">+</span><span class="p">((</span><span class="nx">e</span><span class="p">.</span><span class="nf">getUTCMilliseconds</span><span class="p">()</span><span class="o">/</span><span class="mi">1</span><span class="nx">e3</span><span class="p">).</span><span class="nf">toFixed</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">+</span><span class="dl">""</span><span class="p">).</span><span class="nf">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span><span class="o">+</span><span class="dl">"</span><span class="s2">Z</span><span class="dl">"</span><span class="p">}(),</span><span class="na">iKey</span><span class="p">:</span><span class="nx">e</span><span class="p">,</span><span class="na">name</span><span class="p">:</span><span class="dl">"</span><span class="s2">Microsoft.ApplicationInsights.</span><span class="dl">"</span><span class="o">+</span><span class="nx">e</span><span class="p">.</span><span class="nf">replace</span><span class="p">(</span><span class="sr">/-/g</span><span class="p">,</span><span class="dl">""</span><span class="p">)</span><span class="o">+</span><span class="dl">"</span><span class="s2">.</span><span class="dl">"</span><span class="o">+</span><span class="nx">t</span><span class="p">,</span><span class="na">sampleRate</span><span class="p">:</span><span class="mi">100</span><span class="p">,</span><span class="na">tags</span><span class="p">:</span><span class="nx">n</span><span class="p">,</span><span class="na">data</span><span class="p">:{</span><span class="na">baseData</span><span class="p">:{</span><span class="na">ver</span><span class="p">:</span><span class="mi">2</span><span class="p">}}}}</span><span class="kd">var</span> <span class="nx">h</span><span class="o">=</span><span class="nx">d</span><span class="p">.</span><span class="nx">url</span><span class="o">||</span><span class="nx">y</span><span class="p">.</span><span class="nx">src</span><span class="p">;</span><span class="k">if</span><span class="p">(</span><span class="nx">h</span><span class="p">){</span><span class="kd">function</span> <span class="nf">a</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span><span class="kd">var</span> <span class="nx">t</span><span class="p">,</span><span class="nx">n</span><span class="p">,</span><span class="nx">a</span><span class="p">,</span><span class="nx">i</span><span class="p">,</span><span class="nx">r</span><span class="p">,</span><span class="nx">o</span><span class="p">,</span><span class="nx">s</span><span class="p">,</span><span class="nx">c</span><span class="p">,</span><span class="nx">p</span><span class="p">,</span><span class="nx">l</span><span class="p">,</span><span class="nx">u</span><span class="p">;</span><span class="nx">g</span><span class="o">=!</span><span class="mi">0</span><span class="p">,</span><span class="nx">m</span><span class="p">.</span><span class="nx">queue</span><span class="o">=</span><span class="p">[],</span><span class="nx">f</span><span class="o">||</span><span class="p">(</span><span class="nx">f</span><span class="o">=!</span><span class="mi">0</span><span class="p">,</span><span class="nx">t</span><span class="o">=</span><span class="nx">h</span><span class="p">,</span><span class="nx">s</span><span class="o">=</span><span class="kd">function</span><span class="p">(){</span><span class="kd">var</span> <span class="nx">e</span><span class="o">=</span><span class="p">{},</span><span class="nx">t</span><span class="o">=</span><span class="nx">d</span><span class="p">.</span><span class="nx">connectionString</span><span class="p">;</span><span class="k">if</span><span class="p">(</span><span class="nx">t</span><span class="p">)</span><span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">n</span><span class="o">=</span><span class="nx">t</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="dl">"</span><span class="s2">;</span><span class="dl">"</span><span class="p">),</span><span class="nx">a</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="nx">a</span><span class="o">&lt;</span><span class="nx">n</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span><span class="nx">a</span><span class="o">++</span><span class="p">){</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="nx">n</span><span class="p">[</span><span class="nx">a</span><span class="p">].</span><span class="nf">split</span><span class="p">(</span><span class="dl">"</span><span class="s2">=</span><span class="dl">"</span><span class="p">);</span><span class="mi">2</span><span class="o">===</span><span class="nx">i</span><span class="p">.</span><span class="nx">length</span><span class="o">&amp;&amp;</span><span class="p">(</span><span class="nx">e</span><span class="p">[</span><span class="nx">i</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="nx">I</span><span class="p">]()]</span><span class="o">=</span><span class="nx">i</span><span class="p">[</span><span class="mi">1</span><span class="p">])}</span><span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">e</span><span class="p">[</span><span class="nx">D</span><span class="p">]){</span><span class="kd">var</span> <span class="nx">r</span><span class="o">=</span><span class="nx">e</span><span class="p">.</span><span class="nx">endpointsuffix</span><span class="p">,</span><span class="nx">o</span><span class="o">=</span><span class="nx">r</span><span class="p">?</span><span class="nx">e</span><span class="p">.</span><span class="nx">location</span><span class="p">:</span><span class="kc">null</span><span class="p">;</span><span class="nx">e</span><span class="p">[</span><span class="nx">D</span><span class="p">]</span><span class="o">=</span><span class="dl">"</span><span class="s2">https://</span><span class="dl">"</span><span class="o">+</span><span class="p">(</span><span class="nx">o</span><span class="p">?</span><span class="nx">o</span><span class="o">+</span><span class="dl">"</span><span class="s2">.</span><span class="dl">"</span><span class="p">:</span><span class="dl">""</span><span class="p">)</span><span class="o">+</span><span class="dl">"</span><span class="s2">dc.</span><span class="dl">"</span><span class="o">+</span><span class="p">(</span><span class="nx">r</span><span class="o">||</span><span class="dl">"</span><span class="s2">services.visualstudio.com</span><span class="dl">"</span><span class="p">)}</span><span class="k">return</span> <span class="nx">e</span><span class="p">}(),</span><span class="nx">c</span><span class="o">=</span><span class="nx">s</span><span class="p">[</span><span class="nx">k</span><span class="p">]</span><span class="o">||</span><span class="nx">d</span><span class="p">[</span><span class="nx">k</span><span class="p">]</span><span class="o">||</span><span class="dl">""</span><span class="p">,</span><span class="nx">p</span><span class="o">=</span><span class="nx">s</span><span class="p">[</span><span class="nx">D</span><span class="p">],</span><span class="nx">l</span><span class="o">=</span><span class="nx">p</span><span class="p">?</span><span class="nx">p</span><span class="o">+</span><span class="dl">"</span><span class="s2">/v2/track</span><span class="dl">"</span><span class="p">:</span><span class="nx">config</span><span class="p">.</span><span class="nx">endpointUrl</span><span class="p">,(</span><span class="nx">u</span><span class="o">=</span><span class="p">[]).</span><span class="nf">push</span><span class="p">((</span><span class="nx">n</span><span class="o">=</span><span class="dl">"</span><span class="s2">SDK LOAD Failure: Failed to load Application Insights SDK script (See stack for details)</span><span class="dl">"</span><span class="p">,</span><span class="nx">a</span><span class="o">=</span><span class="nx">t</span><span class="p">,</span><span class="nx">i</span><span class="o">=</span><span class="nx">l</span><span class="p">,(</span><span class="nx">o</span><span class="o">=</span><span class="p">(</span><span class="nx">r</span><span class="o">=</span><span class="nf">v</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span><span class="dl">"</span><span class="s2">Exception</span><span class="dl">"</span><span class="p">)).</span><span class="nx">data</span><span class="p">).</span><span class="nx">baseType</span><span class="o">=</span><span class="dl">"</span><span class="s2">ExceptionData</span><span class="dl">"</span><span class="p">,</span><span class="nx">o</span><span class="p">.</span><span class="nx">baseData</span><span class="p">.</span><span class="nx">exceptions</span><span class="o">=</span><span class="p">[{</span><span class="na">typeName</span><span class="p">:</span><span class="dl">"</span><span class="s2">SDKLoadFailed</span><span class="dl">"</span><span class="p">,</span><span class="na">message</span><span class="p">:</span><span class="nx">n</span><span class="p">.</span><span class="nf">replace</span><span class="p">(</span><span class="sr">/</span><span class="se">\.</span><span class="sr">/g</span><span class="p">,</span><span class="dl">"</span><span class="s2">-</span><span class="dl">"</span><span class="p">),</span><span class="na">hasFullStack</span><span class="p">:</span><span class="o">!</span><span class="mi">1</span><span class="p">,</span><span class="na">stack</span><span class="p">:</span><span class="nx">n</span><span class="o">+</span><span class="dl">"</span><span class="se">\n</span><span class="s2">Snippet failed to load [</span><span class="dl">"</span><span class="o">+</span><span class="nx">a</span><span class="o">+</span><span class="dl">"</span><span class="s2">] -- Telemetry is disabled</span><span class="se">\n</span><span class="s2">Help Link: https://go.microsoft.com/fwlink/?linkid=2128109</span><span class="se">\n</span><span class="s2">Host: </span><span class="dl">"</span><span class="o">+</span><span class="p">(</span><span class="nx">S</span><span class="o">&amp;&amp;</span><span class="nx">S</span><span class="p">.</span><span class="nx">pathname</span><span class="o">||</span><span class="dl">"</span><span class="s2">_unknown_</span><span class="dl">"</span><span class="p">)</span><span class="o">+</span><span class="dl">"</span><span class="se">\n</span><span class="s2">Endpoint: </span><span class="dl">"</span><span class="o">+</span><span class="nx">i</span><span class="p">,</span><span class="na">parsedStack</span><span class="p">:[]}],</span><span class="nx">r</span><span class="p">)),</span><span class="nx">u</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span><span class="nx">t</span><span class="p">,</span><span class="nx">n</span><span class="p">,</span><span class="nx">a</span><span class="p">){</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="nf">v</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span><span class="dl">"</span><span class="s2">Message</span><span class="dl">"</span><span class="p">),</span><span class="nx">r</span><span class="o">=</span><span class="nx">i</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span><span class="nx">r</span><span class="p">.</span><span class="nx">baseType</span><span class="o">=</span><span class="dl">"</span><span class="s2">MessageData</span><span class="dl">"</span><span class="p">;</span><span class="kd">var</span> <span class="nx">o</span><span class="o">=</span><span class="nx">r</span><span class="p">.</span><span class="nx">baseData</span><span class="p">;</span><span class="k">return</span> <span class="nx">o</span><span class="p">.</span><span class="nx">message</span><span class="o">=</span><span class="dl">'</span><span class="s1">AI (Internal): 99 message:"</span><span class="dl">'</span><span class="o">+</span><span class="p">(</span><span class="dl">"</span><span class="s2">SDK LOAD Failure: Failed to load Application Insights SDK script (See stack for details) (</span><span class="dl">"</span><span class="o">+</span><span class="nx">n</span><span class="o">+</span><span class="dl">"</span><span class="s2">)</span><span class="dl">"</span><span class="p">).</span><span class="nf">replace</span><span class="p">(</span><span class="sr">/</span><span class="se">\"</span><span class="sr">/g</span><span class="p">,</span><span class="dl">""</span><span class="p">)</span><span class="o">+</span><span class="dl">'</span><span class="s1">"</span><span class="dl">'</span><span class="p">,</span><span class="nx">o</span><span class="p">.</span><span class="nx">properties</span><span class="o">=</span><span class="p">{</span><span class="na">endpoint</span><span class="p">:</span><span class="nx">a</span><span class="p">},</span><span class="nx">i</span><span class="p">}(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="nx">t</span><span class="p">,</span><span class="nx">l</span><span class="p">)),</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span><span class="nx">t</span><span class="p">){</span><span class="k">if</span><span class="p">(</span><span class="nx">JSON</span><span class="p">){</span><span class="kd">var</span> <span class="nx">n</span><span class="o">=</span><span class="nx">T</span><span class="p">.</span><span class="nx">fetch</span><span class="p">;</span><span class="k">if</span><span class="p">(</span><span class="nx">n</span><span class="o">&amp;&amp;!</span><span class="nx">y</span><span class="p">.</span><span class="nx">useXhr</span><span class="p">)</span><span class="nf">n</span><span class="p">(</span><span class="nx">t</span><span class="p">,{</span><span class="na">method</span><span class="p">:</span><span class="nx">w</span><span class="p">,</span><span class="na">body</span><span class="p">:</span><span class="nx">JSON</span><span class="p">.</span><span class="nf">stringify</span><span class="p">(</span><span class="nx">e</span><span class="p">),</span><span class="na">mode</span><span class="p">:</span><span class="dl">"</span><span class="s2">cors</span><span class="dl">"</span><span class="p">});</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">XMLHttpRequest</span><span class="p">){</span><span class="kd">var</span> <span class="nx">a</span><span class="o">=</span><span class="k">new</span> <span class="nx">XMLHttpRequest</span><span class="p">;</span><span class="nx">a</span><span class="p">.</span><span class="nf">open</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span><span class="nx">t</span><span class="p">),</span><span class="nx">a</span><span class="p">.</span><span class="nf">setRequestHeader</span><span class="p">(</span><span class="dl">"</span><span class="s2">Content-type</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">application/json</span><span class="dl">"</span><span class="p">),</span><span class="nx">a</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nf">stringify</span><span class="p">(</span><span class="nx">e</span><span class="p">))}}}(</span><span class="nx">u</span><span class="p">,</span><span class="nx">l</span><span class="p">))}</span><span class="kd">function</span> <span class="nf">i</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span><span class="nx">t</span><span class="p">){</span><span class="nx">f</span><span class="o">||</span><span class="nf">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="o">!</span><span class="nx">t</span><span class="o">&amp;&amp;</span><span class="nx">m</span><span class="p">.</span><span class="nx">core</span><span class="o">||</span><span class="nf">a</span><span class="p">()},</span><span class="mi">500</span><span class="p">)}</span><span class="kd">var</span> <span class="nx">e</span><span class="o">=</span><span class="kd">function</span><span class="p">(){</span><span class="kd">var</span> <span class="nx">n</span><span class="o">=</span><span class="nx">l</span><span class="p">.</span><span class="nf">createElement</span><span class="p">(</span><span class="nx">u</span><span class="p">);</span><span class="nx">n</span><span class="p">.</span><span class="nx">src</span><span class="o">=</span><span class="nx">h</span><span class="p">;</span><span class="kd">var</span> <span class="nx">e</span><span class="o">=</span><span class="nx">y</span><span class="p">[</span><span class="nx">b</span><span class="p">];</span><span class="k">return</span><span class="o">!</span><span class="nx">e</span><span class="o">&amp;&amp;</span><span class="dl">""</span><span class="o">!==</span><span class="nx">e</span><span class="o">||</span><span class="dl">"</span><span class="s2">undefined</span><span class="dl">"</span><span class="o">==</span><span class="nx">n</span><span class="p">[</span><span class="nx">b</span><span class="p">]</span><span class="o">||</span><span class="p">(</span><span class="nx">n</span><span class="p">[</span><span class="nx">b</span><span class="p">]</span><span class="o">=</span><span class="nx">e</span><span class="p">),</span><span class="nx">n</span><span class="p">.</span><span class="nx">onload</span><span class="o">=</span><span class="nx">i</span><span class="p">,</span><span class="nx">n</span><span class="p">.</span><span class="nx">onerror</span><span class="o">=</span><span class="nx">a</span><span class="p">,</span><span class="nx">n</span><span class="p">.</span><span class="nx">onreadystatechange</span><span class="o">=</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span><span class="nx">t</span><span class="p">){</span><span class="dl">"</span><span class="s2">loaded</span><span class="dl">"</span><span class="o">!==</span><span class="nx">n</span><span class="p">.</span><span class="nx">readyState</span><span class="o">&amp;&amp;</span><span class="dl">"</span><span class="s2">complete</span><span class="dl">"</span><span class="o">!==</span><span class="nx">n</span><span class="p">.</span><span class="nx">readyState</span><span class="o">||</span><span class="nf">i</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nx">t</span><span class="p">)},</span><span class="nx">n</span><span class="p">}();</span><span class="nx">y</span><span class="p">.</span><span class="nx">ld</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">?</span><span class="nx">l</span><span class="p">.</span><span class="nf">getElementsByTagName</span><span class="p">(</span><span class="dl">"</span><span class="s2">head</span><span class="dl">"</span><span class="p">)[</span><span class="mi">0</span><span class="p">].</span><span class="nf">appendChild</span><span class="p">(</span><span class="nx">e</span><span class="p">):</span><span class="nf">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">l</span><span class="p">.</span><span class="nf">getElementsByTagName</span><span class="p">(</span><span class="nx">u</span><span class="p">)[</span><span class="mi">0</span><span class="p">].</span><span class="nx">parentNode</span><span class="p">.</span><span class="nf">appendChild</span><span class="p">(</span><span class="nx">e</span><span class="p">)},</span><span class="nx">y</span><span class="p">.</span><span class="nx">ld</span><span class="o">||</span><span class="mi">0</span><span class="p">)}</span><span class="k">try</span><span class="p">{</span><span class="nx">m</span><span class="p">.</span><span class="nx">cookie</span><span class="o">=</span><span class="nx">l</span><span class="p">.</span><span class="nx">cookie</span><span class="p">}</span><span class="k">catch</span><span class="p">(</span><span class="nx">p</span><span class="p">){}</span><span class="kd">function</span> <span class="nf">t</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span><span class="k">for</span><span class="p">(;</span><span class="nx">e</span><span class="p">.</span><span class="nx">length</span><span class="p">;)</span><span class="o">!</span><span class="kd">function</span><span class="p">(</span><span class="nx">t</span><span class="p">){</span><span class="nx">m</span><span class="p">[</span><span class="nx">t</span><span class="p">]</span><span class="o">=</span><span class="kd">function</span><span class="p">(){</span><span class="kd">var</span> <span class="nx">e</span><span class="o">=</span><span class="nx">arguments</span><span class="p">;</span><span class="nx">g</span><span class="o">||</span><span class="nx">m</span><span class="p">.</span><span class="nx">queue</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">m</span><span class="p">[</span><span class="nx">t</span><span class="p">].</span><span class="nf">apply</span><span class="p">(</span><span class="nx">m</span><span class="p">,</span><span class="nx">e</span><span class="p">)})}}(</span><span class="nx">e</span><span class="p">.</span><span class="nf">pop</span><span class="p">())}</span><span class="kd">var</span> <span class="nx">n</span><span class="o">=</span><span class="dl">"</span><span class="s2">track</span><span class="dl">"</span><span class="p">,</span><span class="nx">r</span><span class="o">=</span><span class="dl">"</span><span class="s2">TrackPage</span><span class="dl">"</span><span class="p">,</span><span class="nx">o</span><span class="o">=</span><span class="dl">"</span><span class="s2">TrackEvent</span><span class="dl">"</span><span class="p">;</span><span class="nf">t</span><span class="p">([</span><span class="nx">n</span><span class="o">+</span><span class="dl">"</span><span class="s2">Event</span><span class="dl">"</span><span class="p">,</span><span class="nx">n</span><span class="o">+</span><span class="dl">"</span><span class="s2">PageView</span><span class="dl">"</span><span class="p">,</span><span class="nx">n</span><span class="o">+</span><span class="dl">"</span><span class="s2">Exception</span><span class="dl">"</span><span class="p">,</span><span class="nx">n</span><span class="o">+</span><span class="dl">"</span><span class="s2">Trace</span><span class="dl">"</span><span class="p">,</span><span class="nx">n</span><span class="o">+</span><span class="dl">"</span><span class="s2">DependencyData</span><span class="dl">"</span><span class="p">,</span><span class="nx">n</span><span class="o">+</span><span class="dl">"</span><span class="s2">Metric</span><span class="dl">"</span><span class="p">,</span><span class="nx">n</span><span class="o">+</span><span class="dl">"</span><span class="s2">PageViewPerformance</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">start</span><span class="dl">"</span><span class="o">+</span><span class="nx">r</span><span class="p">,</span><span class="dl">"</span><span class="s2">stop</span><span class="dl">"</span><span class="o">+</span><span class="nx">r</span><span class="p">,</span><span class="dl">"</span><span class="s2">start</span><span class="dl">"</span><span class="o">+</span><span class="nx">o</span><span class="p">,</span><span class="dl">"</span><span class="s2">stop</span><span class="dl">"</span><span class="o">+</span><span class="nx">o</span><span class="p">,</span><span class="dl">"</span><span class="s2">addTelemetryInitializer</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">setAuthenticatedUserContext</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">clearAuthenticatedUserContext</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">flush</span><span class="dl">"</span><span class="p">]),</span><span class="nx">m</span><span class="p">.</span><span class="nx">SeverityLevel</span><span class="o">=</span><span class="p">{</span><span class="na">Verbose</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="na">Information</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="na">Warning</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="na">Error</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span><span class="na">Critical</span><span class="p">:</span><span class="mi">4</span><span class="p">};</span><span class="kd">var</span> <span class="nx">s</span><span class="o">=</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">extensionConfig</span><span class="o">||</span><span class="p">{}).</span><span class="nx">ApplicationInsightsAnalytics</span><span class="o">||</span><span class="p">{};</span><span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="mi">0</span><span class="o">!==</span><span class="nx">d</span><span class="p">[</span><span class="nx">C</span><span class="p">]</span><span class="o">&amp;&amp;!</span><span class="mi">0</span><span class="o">!==</span><span class="nx">s</span><span class="p">[</span><span class="nx">C</span><span class="p">]){</span><span class="nx">method</span><span class="o">=</span><span class="dl">"</span><span class="s2">onerror</span><span class="dl">"</span><span class="p">,</span><span class="nf">t</span><span class="p">([</span><span class="dl">"</span><span class="s2">_</span><span class="dl">"</span><span class="o">+</span><span class="nx">method</span><span class="p">]);</span><span class="kd">var</span> <span class="nx">c</span><span class="o">=</span><span class="nx">T</span><span class="p">[</span><span class="nx">method</span><span class="p">];</span><span class="nx">T</span><span class="p">[</span><span class="nx">method</span><span class="p">]</span><span class="o">=</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span><span class="nx">t</span><span class="p">,</span><span class="nx">n</span><span class="p">,</span><span class="nx">a</span><span class="p">,</span><span class="nx">i</span><span class="p">){</span><span class="kd">var</span> <span class="nx">r</span><span class="o">=</span><span class="nx">c</span><span class="o">&amp;&amp;</span><span class="nf">c</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span><span class="nx">t</span><span class="p">,</span><span class="nx">n</span><span class="p">,</span><span class="nx">a</span><span class="p">,</span><span class="nx">i</span><span class="p">);</span><span class="k">return</span><span class="o">!</span><span class="mi">0</span><span class="o">!==</span><span class="nx">r</span><span class="o">&amp;&amp;</span><span class="nx">m</span><span class="p">[</span><span class="dl">"</span><span class="s2">_</span><span class="dl">"</span><span class="o">+</span><span class="nx">method</span><span class="p">]({</span><span class="na">message</span><span class="p">:</span><span class="nx">e</span><span class="p">,</span><span class="na">url</span><span class="p">:</span><span class="nx">t</span><span class="p">,</span><span class="na">lineNumber</span><span class="p">:</span><span class="nx">n</span><span class="p">,</span><span class="na">columnNumber</span><span class="p">:</span><span class="nx">a</span><span class="p">,</span><span class="na">error</span><span class="p">:</span><span class="nx">i</span><span class="p">}),</span><span class="nx">r</span><span class="p">},</span><span class="nx">d</span><span class="p">.</span><span class="nx">autoExceptionInstrumented</span><span class="o">=!</span><span class="mi">0</span><span class="p">}</span><span class="k">return</span> <span class="nx">m</span><span class="p">}(</span><span class="nx">y</span><span class="p">.</span><span class="nx">cfg</span><span class="p">);(</span><span class="nx">T</span><span class="p">[</span><span class="nx">t</span><span class="p">]</span><span class="o">=</span><span class="nx">n</span><span class="p">).</span><span class="nx">queue</span><span class="o">&amp;&amp;</span><span class="mi">0</span><span class="o">===</span><span class="nx">n</span><span class="p">.</span><span class="nx">queue</span><span class="p">.</span><span class="nx">length</span><span class="o">&amp;&amp;</span><span class="nx">n</span><span class="p">.</span><span class="nf">trackPageView</span><span class="p">({})}(</span><span class="nb">window</span><span class="p">,</span><span class="nb">document</span><span class="p">,{</span>
+<span class="na">src</span><span class="p">:</span> <span class="dl">"</span><span class="s2">https://az416426.vo.msecnd.net/scripts/b/ai.2.min.js</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// The SDK URL Source</span>
+<span class="c1">//name: "appInsights", // Global SDK Instance name defaults to "appInsights" when not supplied</span>
+<span class="c1">//ld: 0, // Defines the load delay (in ms) before attempting to load the sdk. -1 = block page load and add to head. (default) = 0ms load after timeout,</span>
+<span class="c1">//useXhr: 1, // Use XHR instead of fetch to report failures (if available),</span>
+<span class="c1">//crossOrigin: "anonymous", // When supplied this will add the provided value as the cross origin attribute on the script tag </span>
+<span class="na">cfg</span><span class="p">:</span> <span class="p">{</span> <span class="c1">// Application Insights Configuration</span>
+    <span class="na">instrumentationKey</span><span class="p">:</span> <span class="dl">"</span><span class="s2">YOUR_INSTRUMENTATION_KEY_GOES_HERE</span><span class="dl">"</span>
+    <span class="cm">/* ...Other Configuration Options... */</span>
+<span class="p">}});</span>
+<span class="nt">&lt;/script&gt;</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>More information on the snippet-based setup can be found <a href="https://docs.microsoft.com/azure/azure-monitor/app/javascript#snippet-based-setup">here</a>.</p>
+</blockquote>
+
+<h2 id="tag-the-telemetry">Tag the telemetry</h2>
+
+<p>You now have AppInsights installed. However, the outgoing data needs to be tagged with the slot name so you can correctly filter and analyze the data in the Portal. To do this, add a <a href="https://docs.microsoft.com/azure/azure-monitor/app/api-filtering-sampling#javascript-web-applications">TelemetryInitializer</a> to your project and register it with the AI object. The telemetry intializer below will get the name of the slot from the <code class="language-plaintext highlighter-rouge">x-ms-routing-name</code> cookie and add it as a property on the outgoing data object.</p>
+
+<h3 id="npm-based-applications">NPM-based applications</h3>
+
+<p>If you are using React, Angular, Vue, or another NPM-based framework, copy and paste the following method definitions into your project.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * Tags the outgoing telemetry with the slot name taken from the cookie.
+ * @param {object} envelope The outgoing AI telemetry object 
+ */</span>
+<span class="kd">var</span> <span class="nx">telemetryInitializer</span> <span class="o">=</span> <span class="p">(</span><span class="nx">envelope</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">environment</span> <span class="o">=</span> <span class="nf">getCookieValue</span><span class="p">(</span><span class="dl">'</span><span class="s1">x-ms-routing-name</span><span class="dl">'</span><span class="p">)</span> <span class="o">||</span> <span class="dl">'</span><span class="s1">production</span><span class="dl">'</span><span class="p">;</span>
+  <span class="nx">envelope</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="dl">'</span><span class="s1">slot</span><span class="dl">'</span><span class="p">]</span> <span class="o">=</span> <span class="nx">environment</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * Returns the value of the specified cookie. If the cookie cannot be found, returns null;
+ * @param {string} key The key of the cookie
+ */</span>
+<span class="k">export</span> <span class="kd">function</span> <span class="nf">getCookieValue</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">cookie</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">cookie</span>
+    <span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="dl">'</span><span class="s1">; </span><span class="dl">'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="nx">cookie</span> <span class="o">=&gt;</span> <span class="nx">cookie</span><span class="p">.</span><span class="nf">startsWith</span><span class="p">(</span><span class="nx">key</span><span class="p">));</span>
+  
+  <span class="k">return</span> <span class="nx">cookie</span> <span class="p">?</span> <span class="nx">cookie</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="dl">'</span><span class="s1">=</span><span class="dl">'</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="p">:</span> <span class="kc">null</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Finally, register the <code class="language-plaintext highlighter-rouge">telemetryInitializer</code> method with the AppInsights instance.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">appInsights</span><span class="p">.</span><span class="nf">addTelemetryInitializer</span><span class="p">(</span><span class="nx">telemetryInitializer</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h3 id="snippet-based-applications">Snippet-based applications</h3>
+
+<p>If you installed App Insights using the HTML snippet from the previous section, you will need to add the following <code class="language-plaintext highlighter-rouge">&lt;script&gt;</code> to your root HTML template. This script will add the TelemetryInitializer and register it with App Insights. This script should be pasted <strong>after</strong> the script that installs App Insights.</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;script&gt;</span>
+<span class="kd">function</span> <span class="nf">getCookieValue</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">cookie</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">cookie</span>
+    <span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="dl">'</span><span class="s1">; </span><span class="dl">'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="nx">cookie</span> <span class="o">=&gt;</span> <span class="nx">cookie</span><span class="p">.</span><span class="nf">startsWith</span><span class="p">(</span><span class="nx">key</span><span class="p">));</span>
+  
+  <span class="k">return</span> <span class="nx">cookie</span> <span class="p">?</span> <span class="nx">cookie</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="dl">'</span><span class="s1">=</span><span class="dl">'</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="p">:</span> <span class="kc">null</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">telemetryInitializer</span> <span class="o">=</span> <span class="p">(</span><span class="nx">envelope</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">environment</span> <span class="o">=</span> <span class="nf">getCookieValue</span><span class="p">(</span><span class="dl">'</span><span class="s1">x-ms-routing-name</span><span class="dl">'</span><span class="p">)</span> <span class="o">||</span> <span class="dl">'</span><span class="s1">production</span><span class="dl">'</span><span class="p">;</span>
+  <span class="nx">envelope</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="dl">'</span><span class="s1">slot</span><span class="dl">'</span><span class="p">]</span> <span class="o">=</span> <span class="nx">environment</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">appInsights</span><span class="p">.</span><span class="nf">addTelemetryInitializer</span><span class="p">(</span><span class="nx">telemetryInitializer</span><span class="p">);</span>
+<span class="nt">&lt;/script&gt;</span>
+</code></pre></div></div>
+
+<h2 id="deploy-and-split-traffic">Deploy and split traffic</h2>
+
+<p>Your client-side code is now instrumented with App Insights and will tag any outgoing telemetry with the slot’s name. Now all that is left to do is deploy the application. If you followed parts <a href="https://azure.github.io/AppService/2020/06/29/zero_to_hero_pt2.html">two</a> and <a href="https://azure.github.io/AppService/2020/06/29/zero_to_hero_pt3.html">three</a> of <em>Zero to Hero with App Service</em>, then you can simply commit your changes to the master branch and let the CI/CD pipeline deploy the new build to your staging slot.</p>
+
+<p><img src="/AppService/media/2020/07/CICD_overview.png" alt="Overview of the CI/CD process" class="align-center" /></p>
+
+<p>Once your instrumented code is deployed to the staging slot, it is time to start routing some production traffic to the staging slot. In the Azure Portal, go to the <strong>Deployment Slots</strong> menu. In the table of your slots, you will see a column for <strong>Traffic %</strong>. By default, all your traffic is routed to the production slot. Try setting the traffic percentage to <strong>10%</strong> on the staging slot. Then click <strong>Save</strong>. With that simple change, a tenth of your production traffic will now go to the new build!</p>
+
+<p><img src="/AppService/media/2020/07/slots_TIP_menu.png" alt="Slots menu" class="align-center" /></p>
+
+<h3 id="optional-deploy-prs-to-staging-slots">(Optional) Deploy PR’s to staging slots</h3>
+
+<p>To do A/B testing with App Service, you need at least two slots: production and staging (which map to the A and B versions). However, you can also spin up a staging slot for Pull Requests to your main tracking branch. This allows your teammates to see the requested changes deployed to a staging server and makes it easy to try the changes live. Even more powerful, you can route a percentage of your traffic to these deployed PR’s as well.</p>
+
+<p>You can set up the automation for this process using GitHub Actions. It requires two workflow files: one to create the slot and deploy the Pull Request contents, and another to delete the slot once the PR has been closed. We put together example workflows for this, <a href="https://github.com/JasonFreeberg/create-and-delete-slots">check them out in this repository</a>.</p>
+
+<h2 id="summary">Summary</h2>
+
+<p>In this article, you instrumented your client-side code or HTML templates. In the next article you will instrument your backend code. We are considering building this functionality into the default behavior of the App Insights SDK (so you don’t have to create your own TelemetryInitializer). If you have thoughts on this guide, please <a href="#disqus_thread">comment below</a> and share! Your input will help us improve this whole story.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2020-08-03T00:00:00+00:00">August 03, 2020</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=A%2FB+Testing+with+App+Service%2C+Part+1%3A+Client-side+configuration%20https%3A%2F%2Fazure.github.io%2FAppService%2F2020%2F08%2F03%2Fab_testing_app_service.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2020%2F08%2F03%2Fab_testing_app_service.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2020%2F08%2F03%2Fab_testing_app_service.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2020/07/28/zero_to_hero_pt5.html" class="pagination--pager" title="Zero to Hero with App Service, Part 5: Add and Secure a Custom Domain on Your Azure App Service Web App
+">Previous</a>
+    
+    
+      <a href="/AppService/2020/08/10/securing-data-plane-access.html" class="pagination--pager" title="Disabling basic auth on App Service
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+      <div class="page__comments">
+  
+  
+      <h4 class="page__comments-title">Leave a comment</h4>
+      <section id="disqus_thread"></section>
+    
+</div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "https://azure.github.io/AppService/2020/08/03/ab_testing_app_service.html";  // Replace PAGE_URL with your page's canonical URL variable
+      this.page.identifier = "/2020/08/03/ab_testing_app_service"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://app-service-blog.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>

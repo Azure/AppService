@@ -1,0 +1,977 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Assign App Service domain to Azure VM or Azure Storage - Azure App Service</title>
+<meta name="description" content="">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Assign App Service domain to Azure VM or Azure Storage">
+<meta property="og:url" content="https://azure.github.io/AppService/2017/07/31/Assign-App-Service-domain-to-Azure-VM-or-Azure-Storage.html">
+
+
+  <meta property="og:description" content="">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2017-07-31T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2017/07/31/Assign-App-Service-domain-to-Azure-VM-or-Azure-Storage.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Assign App Service domain to Azure VM or Azure Storage">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="July 31, 2017">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Assign App Service domain to Azure VM or Azure Storage
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+            
+            
+            • July 31, 2017
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/mksunitha" target="_blank">mksunitha</a>
+<time>    7/31/2017 10:16:06 AM</time>
+<hr/>
+<div id="content"><p class="lf-text-block lf-block"><a href="https://azuremarketplace.microsoft.com/en-us/marketplace/apps/Microsoft.Domain?tab=Overview">App Service domains (preview)</a> simplifies to create and manage domains for various Azure services. App Service domains leverages Azure DNS for hosting the domain and GoDaddy as the domain registrar.In addition to the domain registration fee, usage charges for Azure DNS apply. For information, see<span> </span><a href="https://azure.microsoft.com/pricing/details/dns/">Azure DNS Pricing</a>.</p>
+<p class="lf-text-block lf-block">This tutorial shows you how to buy an App Service domain and assign DNS names a Virtual machine and Azure Storage <span class="lf-thread-btn"></span></p>
+<h3 id="sign-in-to-azure">Sign in to Azure</h3>
+<p class="lf-text-block lf-block">Open the<span> </span><a href="https://portal.azure.com/">Azure portal</a><span> </span>and sign in with your Azure account.<span class="lf-thread-btn"></span></p>
+<h3 id="navigate-to-the-app-in-the-azure-portal">Navigate to the app in the Azure portal</h3>
+<p class="lf-text-block lf-block">From the left menu, select<span> </span><strong>New -&gt; Everything -&gt; App Service Domain (preview)</strong></p>
+<p class="lf-text-block lf-block"><a href="/AppService/media/2017/07/domain-marketplace.png"><img alt="" class="alignnone wp-image-5335 size-large" height="229" src="/AppService/media/2017/07/domain-marketplace-1024x267.png" width="879"/></a></p>
+<h3 id="configure-the-domain-purchase">Purchase a domain</h3>
+<p class="lf-text-block lf-block">In the<span> </span><strong>App Service Domain</strong><span> </span>page, in the<span> </span><strong>Search for domain</strong><span> </span>box, type the domain name you want to buy and type<span> </span><code>Enter</code>. The suggested available domains are shown just below the text box. Select one or more domains you want to buy.<span class="lf-thread-btn"></span></p>
+<a href="/AppService/media/2017/07/create-domain.png"><img alt="" class="alignnone wp-image-5345" height="750" src="/AppService/media/2017/07/create-domain-370x1024.png" width="271"/></a>
+<p class="lf-text-block lf-block">Click the<span> </span><strong>Contact Information</strong><span> </span>and fill out the domain's contact information form. When finished, click<span> </span><strong>OK</strong><span> </span>to return to the App Service Domain page. Next, select the desired options for your domain. See the following table for explanations:<span class="lf-thread-btn"></span></p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Suggested Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Subscription</td>
+<td>Pay-As-You-Go</td>
+<td>Select a<span> </span><strong>Subscription</strong>. If you have multiple subscriptions, choose the appropriate subscription.</td>
+</tr>
+<tr>
+<td>Contact Information</td>
+<td>Enter your contact information  such as address, phone number etc ..</td>
+<td>Fill out the domain's contact information form. When finished, click OK to return to the App Service Domain page.</td>
+</tr>
+<tr>
+<td>Resource Group</td>
+<td>myprojectgroup</td>
+<td>Enter a<span> </span><strong>resource group</strong>. A resource group is a logical container into which Azure resources like web apps, databases that is deployed and managed. You can create a resource group or use an existing one</td>
+</tr>
+<tr>
+<td>Auto renew</td>
+<td>Enable</td>
+<td>Renews your App Service Domain automatically every year. Your credit card is charged the same purchase price at the time of renewal.</td>
+</tr>
+<tr>
+<td>Privacy protection</td>
+<td>Enable</td>
+<td>Opt in to "Privacy protection", which is included in the purchase price<span> </span><em>for free</em>(except for top-level domains whose registry do not support privacy protection, such as<span> </span><em>.co.in</em>,<span> </span><em>.co.uk</em>, and so on).</td>
+</tr>
+<tr>
+<td>Accept terms and purchase</td>
+<td>Accept</td>
+<td>Click Legal Terms to review the terms and the charges, then click Buy.</td>
+</tr>
+</tbody>
+</table>
+<h3>Assign domain to Azure Virtual machine</h3>
+Resource Manager VMs can have a Public IP. A VM with a Public IP address may also be behind a load balancer. You can create a DNS A or CNAME record for the Public address. This custom name can be used to bypass the VIP on the load balancer.
+
+To verify if you VM has a public IP , go the resource group used by the VM to see if you have a resource "Public IP address" .
+
+<a href="/AppService/media/2017/07/ip-address-vm.png"><img alt="" class="alignnone wp-image-5365" height="443" src="/AppService/media/2017/07/ip-address-vm-1024x844.png" width="537"/></a>
+
+You can get the IP address by selecting the Public IP address resource or select your Virtual machine to get the IP address
+
+<a href="/AppService/media/2017/07/get-ip-vm.png"><img alt="" class="alignnone size-large wp-image-5376" height="332" src="/AppService/media/2017/07/get-ip-vm-1024x387.png" width="879"/></a>
+
+Select your domain and choose DNS Zone setting
+
+<a href="/AppService/media/2017/07/dns-zone.png"><img alt="" class="alignnone wp-image-5405" height="482" src="/AppService/media/2017/07/dns-zone-501x1024.png" width="236"/></a>
+
+Click on <strong>Add a Record Set </strong>. Add an A record for your Public IP  configured to <span>a subdomain alias such </span>as <strong>www </strong>or <strong>blog  </strong>as<strong> </strong>shown below. Configure your TTL setting on when your domain should resolve to the new domain hosting service.
+<h3><a href="/AppService/media/2017/07/add-record-set.png"><img alt="" class="alignnone size-large wp-image-5386" height="313" src="/AppService/media/2017/07/add-record-set-1024x365.png" width="879"/></a></h3>
+Enter your domain in a browser address bar based on your TTL configuration.
+<h3><a href="/AppService/media/2017/07/resolve-domain.png"><img alt="" class="alignnone wp-image-5396" height="201" src="/AppService/media/2017/07/resolve-domain-1024x376.png" width="548"/></a>Add Custom domain for Azure storage</h3>
+Create an App Service Domain . Once provisioned , select <strong>DNS Zone</strong> setting and <strong>Add a record set .</strong>
+
+Create a new <strong>CNAME</strong> record and provide a subdomain alias such as<span> </span><strong>www</strong><span> </span>or<span> <strong>images</strong></span>. Then provide a host name, which is your Blob service endpoint, in the format<span> <strong>my-storage-account-name</strong></span><strong>.blob.core.windows.net</strong><span> </span>(where<span> </span><em>my-storage-account-name</em><span> </span>is the name of your storage account).
+
+<a href="/AppService/media/2017/07/add-storage-record-set.png"><img alt="" class="alignnone wp-image-5415" height="433" src="/AppService/media/2017/07/add-storage-record-set-986x1024.png" width="417"/></a>
+
+Go to your storage resource in the <a href="https://portal.azure.com/">Azure portal</a> and select Custom Domain setting. In the text box on the<span> </span><em>Custom domain</em><span> </span>blade in the<span> </span><a href="https://portal.azure.com/">Azure portal</a>, enter the name of your custom domain, including the subdomain. For example, if your domain is<span> <strong>example.</strong></span><strong>com</strong><span> </span>and your subdomain alias is<span> </span><strong>www</strong>, enter<span> </span><strong>www.example.com</strong>. If your subdomain is<span> </span><strong>images</strong>, enter<span> </span><strong>images.contoso.com</strong>. The subdomain is<span> </span><em>required</em>.
+
+<a href="/AppService/media/2017/07/map-storage-domain.png"><img alt="" class="alignnone size-large wp-image-5425" height="640" src="/AppService/media/2017/07/map-storage-domain-1024x745.png" width="879"/></a>
+
+Click on <strong>Save. </strong>Access your files on Azure storage using the custom domain.
+<h3>Auto Renew your Domain</h3>
+You can change your billing setup for your domain registration anytime to either enable or disable auto-renew by selecting <strong>Domain Renewal </strong>setting
+
+<a href="/AppService/media/2017/07/domain-renewal.png"><img alt="" class="alignnone size-large wp-image-5355" height="423" src="/AppService/media/2017/07/domain-renewal-1024x493.png" width="879"/></a>
+
+App Service domains can be used to setup domain for other Azure services as stated in this <a href="https://docs.microsoft.com/en-us/azure/dns/dns-for-azure-services">article</a>.
+
+<em>Note : The hostname bindings setting only shows Web Apps and Traffic Manager if confugred to your domain for now. Your VM or Storage or any other Azure service using this domain will not show up in hostname binding setting. We will continue to work on improving this experience to display other services assigned to the domain. </em>
+<div class="NOTE alert">
+
+Submit your ideas/feedback in <a href="https://aka.ms/webapps-uservoice" title="">UserVoice</a>. Please add [Domain] at the beginning of the title.
+
+</div>
+<p class="lf-text-block lf-block"></p></div>
+</div></body>
+<script src="/AppService/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="/AppService/resource/replace.js" type="text/javascript"></script>
+</html>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2017-07-31T00:00:00+00:00">July 31, 2017</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Assign+App+Service+domain+to+Azure+VM+or+Azure+Storage%20https%3A%2F%2Fazure.github.io%2FAppService%2F2017%2F07%2F31%2FAssign-App-Service-domain-to-Azure-VM-or-Azure-Storage.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2017%2F07%2F31%2FAssign-App-Service-domain-to-Azure-VM-or-Azure-Storage.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2017%2F07%2F31%2FAssign-App-Service-domain-to-Azure-VM-or-Azure-Storage.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2017/07/24/FAQ-SSL-certificates-for-Web-Apps-and-App-Service-Certificates.html" class="pagination--pager" title="FAQ  SSL certificates for Web Apps and  App Service Certificates
+">Previous</a>
+    
+    
+      <a href="/AppService/2017/07/31/July-2017-App-Service-update.html" class="pagination--pager" title="July 2017 App Service update
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

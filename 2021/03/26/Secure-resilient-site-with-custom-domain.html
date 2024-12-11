@@ -1,0 +1,1371 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Deploying a secure, resilient site with a custom domain - Azure App Service</title>
+<meta name="description" content="In this article I will walk you through setting up a secure, resilient site with Azure App Service using some new features that have recently been released or are very close to release. The image below shows the basic architecture. One or more instances of your Web App in multiple regions with Azure AD authentication. Azure Front Door (AFD) will provide global load balancing and custom domain with certificates, and the Web Apps will be isolated to only receive traffic from the specific AFD instance.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Deploying a secure, resilient site with a custom domain">
+<meta property="og:url" content="https://azure.github.io/AppService/2021/03/26/Secure-resilient-site-with-custom-domain.html">
+
+
+  <meta property="og:description" content="In this article I will walk you through setting up a secure, resilient site with Azure App Service using some new features that have recently been released or are very close to release. The image below shows the basic architecture. One or more instances of your Web App in multiple regions with Azure AD authentication. Azure Front Door (AFD) will provide global load balancing and custom domain with certificates, and the Web Apps will be isolated to only receive traffic from the specific AFD instance.">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2021-03-26T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2021/03/26/Secure-resilient-site-with-custom-domain.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Deploying a secure, resilient site with a custom domain">
+    <meta itemprop="description" content="In this article I will walk you through setting up a secure, resilient site with Azure App Service using some new features that have recently been released or are very close to release. The image below shows the basic architecture. One or more instances of your Web App in multiple regions with Azure AD authentication. Azure Front Door (AFD) will provide global load balancing and custom domain with certificates, and the Web Apps will be isolated to only receive traffic from the specific AFD instance.">
+    <meta itemprop="datePublished" content="March 26, 2021">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Deploying a secure, resilient site with a custom domain
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  16 minute read
+
+            
+            
+              • By Mads Damgård
+            
+            • March 26, 2021
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#getting-started">Getting started</a></li>
+  <li><a href="#1-basic-web-app-with-azure-ad-authentication">1. Basic Web App with Azure AD Authentication</a>
+    <ul>
+      <li><a href="#debug-page-optional">Debug page (optional)</a></li>
+      <li><a href="#debug-page-on-linux-optional">Debug page on Linux (optional)</a></li>
+      <li><a href="#authentication-setup">Authentication setup</a></li>
+    </ul>
+  </li>
+  <li><a href="#2-add-azure-front-door">2. Add Azure Front Door</a>
+    <ul>
+      <li><a href="#alter-authentication-settings">Alter authentication settings</a></li>
+    </ul>
+  </li>
+  <li><a href="#3-optional-add-custom-domain-and-certificate">3. (Optional) Add Custom Domain and Certificate</a>
+    <ul>
+      <li><a href="#alter-authentication-settings-1">Alter authentication settings</a></li>
+      <li><a href="#associate-and-map-custom-domain">Associate and map custom domain</a></li>
+    </ul>
+  </li>
+  <li><a href="#4-restrict-traffic-from-front-door-to-web-app">4. Restrict traffic from Front Door to Web App</a></li>
+  <li><a href="#5-increase-resiliency-with-multiple-geo-distributed-web-apps">5. Increase resiliency with multiple geo-distributed Web Apps</a></li>
+  <li><a href="#alternative-approaches-and-advanced-scenarios">Alternative approaches and advanced scenarios</a>
+    <ul>
+      <li><a href="#application-gateway">Application Gateway</a></li>
+      <li><a href="#private-endpoint">Private endpoint</a></li>
+      <li><a href="#custom-domain-for-scm-site">Custom domain for SCM Site</a></li>
+      <li><a href="#custom-health-probe-path">Custom health probe path</a></li>
+    </ul>
+  </li>
+  <li><a href="#faq">FAQ</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <p>In this article I will walk you through setting up a secure, resilient site with Azure App Service using some new features that have recently been released or are very close to release. The image below shows the basic architecture. One or more instances of your Web App in multiple regions with Azure AD authentication. Azure Front Door (AFD) will provide global load balancing and custom domain with certificates, and the Web Apps will be isolated to only receive traffic from the specific AFD instance.</p>
+
+<p><img src="/AppService/media/2021/03/secureapp-final-setup.png" alt="Final setup" class="align-center" /></p>
+
+<p>This guide is organized into five steps:</p>
+
+<ol>
+  <li>Create a basic Web App with Azure AD Authentication</li>
+  <li>Add Azure Front Door</li>
+  <li>Add Custom Domain and Certificate</li>
+  <li>Restrict traffic from Front Door to Web App</li>
+  <li>Increase resiliency with multiple geo-distributed Web Apps</li>
+</ol>
+
+<p>In closing, there are sections on alternative approaches, advanced scenarios, and an FAQ section.</p>
+
+<h2 id="getting-started">Getting started</h2>
+
+<p>You can complete most of this guide using the Azure portal, but there are some advanced features that require scripting. I will be using Azure CLI throughout the walk-through, however Azure PowerShell or Azure Resource Manager templates will work as well. I am using bash through <a href="https://docs.microsoft.com/windows/wsl/about">Windows Subsystem for Linux (WSL)</a> to run the commands. If you are using a PowerShell or Cmd prompt, small syntax tweaks may be needed.</p>
+
+<p>If you are new to scripting, you will find <a href="https://docs.microsoft.com/cli/azure/install-azure-cli">overview and instructions on installing Azure CLI here</a>. You can also use <a href="https://docs.microsoft.com/azure/cloud-shell/overview">Azure Cloud Shell</a> from the portal. It even has a nice file editor that you can use for some of the steps, so no local install is needed.</p>
+
+<h2 id="1-basic-web-app-with-azure-ad-authentication">1. Basic Web App with Azure AD Authentication</h2>
+
+<p><img src="/AppService/media/2021/03/secureapp-step1.png" alt="Step 1" class="align-center" /></p>
+
+<p>First, setup a Resource Group and a Web App with Azure AD Authentication. Choose a unique name for your Web App and feel free to change name of the resource group and location. If you have preferences for App Service Plan or other options, you can configure this as well.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az group create <span class="nt">--name</span> securewebsetup <span class="nt">--location</span> westeurope
+az appservice plan create <span class="nt">--resource-group</span> securewebsetup <span class="nt">--name</span> securewebplan <span class="nt">--sku</span> B1
+az webapp create <span class="nt">--resource-group</span> securewebsetup <span class="nt">--plan</span> securewebplan <span class="nt">--name</span> securewebapp2021 <span class="nt">--https-only</span> <span class="c"># Web App name must be globally unique</span>
+</code></pre></div></div>
+
+<h3 id="debug-page-optional">Debug page (optional)</h3>
+
+<p>To help debug the application, you can create a file called <strong>default.cshtml</strong> with the following content</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@using System.Web.Configuration
+@using System.Net;
+<span class="nt">&lt;html&gt;</span>
+
+<span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;title&gt;</span>Debug page<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+
+<span class="nt">&lt;body</span> <span class="na">style=</span><span class="s">"background-color: #00E60A;"</span><span class="nt">&gt;</span>
+  @{
+    var pubIp = new System.Net.WebClient().DownloadString("https://api.ipify.org");
+  }
+  <span class="nt">&lt;h3&gt;</span>Debug information<span class="nt">&lt;/h3&gt;</span>
+  <span class="nt">&lt;ul&gt;</span>
+    <span class="nt">&lt;li&gt;&lt;strong&gt;</span>Request Url<span class="nt">&lt;/strong&gt;&lt;span&gt;</span>: @Request.Url<span class="nt">&lt;/span&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;li&gt;&lt;strong&gt;</span>Outbound public IP<span class="nt">&lt;/strong&gt;&lt;span&gt;</span>: @pubIp<span class="nt">&lt;/span&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;li&gt;&lt;strong&gt;</span>Inbound client IP<span class="nt">&lt;/strong&gt;&lt;span&gt;</span>: @Request.ServerVariables["REMOTE_ADDR"]<span class="nt">&lt;/span&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;/ul&gt;</span>
+  <span class="nt">&lt;strong&gt;</span>Headers<span class="nt">&lt;/strong&gt;</span>
+  <span class="nt">&lt;ul&gt;</span>
+    @foreach (var h in Request.Headers)
+    {
+      <span class="nt">&lt;li&gt;&lt;strong&gt;</span>@h<span class="nt">&lt;/strong&gt;&lt;span&gt;</span>: @Request.Headers[h.ToString()]<span class="nt">&lt;/span&gt;&lt;/li&gt;</span>
+    }
+  <span class="nt">&lt;/ul&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>Zip the file and push it to the Web App. Afterwards you should see a site with a green background and some Debug information:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>zip debug.zip default.cshtml
+az webapp deployment <span class="nb">source </span>config-zip <span class="nt">--resource-group</span> securewebsetup <span class="nt">--name</span> securewebapp2021 <span class="nt">--src</span> ./debug.zip
+</code></pre></div></div>
+
+<p><img src="/AppService/media/2021/03/debug-page.png" alt="Debug Page" class="align-center" /></p>
+
+<h3 id="debug-page-on-linux-optional">Debug page on Linux (optional)</h3>
+
+<p>If you are using App Service on Linux with Code deployment, you can use a php debug file. Create a file named <strong>index.php</strong> with the following content:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
+
+<span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;title&gt;</span>Debug page<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+
+<span class="nt">&lt;body</span> <span class="na">style=</span><span class="s">"background-color: #00E60A;"</span><span class="nt">&gt;</span>
+  <span class="cp">&lt;?php
+    $requestPageUrl = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"];
+    $pubIp = file_get_contents('https://api.ipify.org');
+  ?&gt;</span>
+  <span class="nt">&lt;h3&gt;</span>Debug information<span class="nt">&lt;/h3&gt;</span>
+  <span class="nt">&lt;ul&gt;</span>
+    <span class="nt">&lt;li&gt;&lt;strong&gt;</span>Request Url<span class="nt">&lt;/strong&gt;&lt;span&gt;</span>: <span class="cp">&lt;?php echo $requestPageUrl; ?&gt;</span><span class="nt">&lt;/span&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;li&gt;&lt;strong&gt;</span>Outbound public IP<span class="nt">&lt;/strong&gt;&lt;span&gt;</span>: <span class="cp">&lt;?php echo $pubIp ?&gt;</span><span class="nt">&lt;/span&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;li&gt;&lt;strong&gt;</span>Inbound client IP<span class="nt">&lt;/strong&gt;&lt;span&gt;</span>: <span class="cp">&lt;?php echo $_SERVER['REMOTE_ADDR']; ?&gt;</span><span class="nt">&lt;/span&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;/ul&gt;</span>
+  <span class="nt">&lt;strong&gt;</span>Headers<span class="nt">&lt;/strong&gt;</span>
+  <span class="nt">&lt;ul&gt;</span>
+    <span class="cp">&lt;?php
+      foreach (getallheaders() as $name =&gt; $value) {
+        echo "&lt;li&gt;&lt;strong&gt;$name&lt;/strong&gt;&lt;span&gt;: $value&lt;/span&gt;&lt;/li&gt;";
+      }
+    ?&gt;</span>
+  <span class="nt">&lt;/ul&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>Zip the file and push it to the Web App. Afterwards you should see a site with a green background and some Debug information:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>zip debug.zip index.php
+az webapp deployment <span class="nb">source </span>config-zip <span class="nt">--resource-group</span> securewebsetup <span class="nt">--name</span> securewebapp2021 <span class="nt">--src</span> ./debug.zip
+</code></pre></div></div>
+
+<h3 id="authentication-setup">Authentication setup</h3>
+
+<p>App Service provides a simple way to setup authentication. The feature is sometimes referred to as Easy Auth. There is a new version just released and for this setup some of the new options are needed. The new Authentication feature is available in the Azure portal, but a few advanced configuration options are not yet exposed in the portal, so let’s look under the hood using the REST API.</p>
+
+<p>You have to get the Resource ID of the Web App. It was returned when you created the Web App in the previous steps, and you can also find it in the portal under <strong>Properties</strong>. This goes for any resource.</p>
+
+<p><img src="/AppService/media/2021/03/webapp-resourceid.png" alt="Resource ID" class="align-center" /></p>
+
+<p>Ensure that you can read the settings first. Pay attention to the <code class="language-plaintext highlighter-rouge">api-version</code>. You should see a lot of json returned when running this command:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az rest <span class="nt">--uri</span> /subscriptions/REPLACE-ME-SUBSCRIPTIONID/resourceGroups/REPLACE-ME-RESOURCEGROUP/providers/Microsoft.Web/sites/REPLACE-ME-APPNAME?api-version<span class="o">=</span>2020-09-01 <span class="nt">--method</span> get
+</code></pre></div></div>
+
+<p>All the Authentication settings are defined in a <a href="https://docs.microsoft.com/azure/app-service/app-service-authentication-how-to#configuration-file-reference">json structure</a>. There are many options to fine tune the configuration, but the snippet below is an extraction of the required settings needed for this scenario. Copy this into a file called auth.json:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"platform"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nl">"globalValidation"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"unauthenticatedClientAction"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RedirectToLoginPage"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"redirectToProvider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"azureActiveDirectory"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nl">"httpSettings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"requireHttps"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nl">"login"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"preserveUrlFragmentsForLogins"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"allowedExternalRedirectUrls"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="s2">"https://REPLACE-ME-WEBAPP-NAME.azurewebsites.net/"</span><span class="w">
+            </span><span class="p">]</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nl">"identityProviders"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"azureActiveDirectory"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"registration"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"openIdIssuer"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://sts.windows.net/REPLACE-ME-TENANTID/v2.0"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"clientId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"REPLACE-ME-APPID"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"clientSecretSettingName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"REPLACE-ME-SECRETNAME"</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"validation"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"allowedAudiences"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="s2">"https://REPLACE-ME-WEBAPP-NAME.azurewebsites.net"</span><span class="w">
+                    </span><span class="p">]</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The file has some placeholders that you need to fill in with your own values. You will generate these values in the next few steps. You have already come across the first two <code class="language-plaintext highlighter-rouge">REPLACE-ME-WEBAPP-NAME</code> occurrences. This value should be replaced with the name of your Web App (in my case this was “securewebapp2021”).</p>
+
+<p>You can find the value for <code class="language-plaintext highlighter-rouge">REPLACE-ME-TENANTID</code> by running <code class="language-plaintext highlighter-rouge">az account show</code> and looking in the <code class="language-plaintext highlighter-rouge">homeTenantId</code> property.</p>
+
+<p>Next, create an App registration in Azure AD. An App registration is a way to tell Azure AD that this Web App is allowed to authenticate users in the directory and that it can do so only using specific urls. The display name can be anything. The reply-url is your base url combined with a special callback path: https://securewebapp2021.azurewebsites.net/.auth/login/aad/callback</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az ad app create <span class="nt">--display-name</span> securewebapp2021 <span class="nt">--reply-urls</span> https://securewebapp2021.azurewebsites.net/.auth/login/aad/callback
+</code></pre></div></div>
+
+<p>Replace <code class="language-plaintext highlighter-rouge">REPLACE-ME-APPID</code> in auth.json with the the appId from the returned output.</p>
+
+<p>For the last placeholder <code class="language-plaintext highlighter-rouge">REPLACE-ME-SECRETNAME</code>, this will be the name of an App Setting in your Web App that contains the secret. The App Setting can <a href="https://docs.microsoft.com/azure/app-service/app-service-key-vault-references">reference a Key Vault secret</a> if you prefer. You can pick any name. I will choose AAD_CLIENT_SECRET. To add the secret, run the following command (with the AppId from the previous step). If you leave out the password parameter, it will auto-generate a complex password:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az ad app credential reset <span class="nt">--id</span> REPLACE-ME-APPID <span class="nt">--password</span> <span class="s2">"reP!@ce-w!th.VeRys3cr3tC0d!"</span>
+</code></pre></div></div>
+
+<p>Add the value of the generated password to the App Settings of the Web App:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp config appsettings <span class="nb">set</span> <span class="nt">--resource-group</span> securewebsetup <span class="nt">--name</span> securewebapp2021 <span class="nt">--settings</span> <span class="s2">"AAD_CLIENT_SECRET=reP!@ce-w!th.VeRys3cr3tC0d!"</span>
+</code></pre></div></div>
+
+<p>Finally, let’s update the Web App with the Authentication configuration (make sure you save your auth.json file and append /config/authsettingsV2 to the Resource ID):</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az rest <span class="nt">--uri</span> /subscriptions/REPLACE-ME-SUBSCRIPTIONID/resourceGroups/REPLACE-ME-RESOURCEGROUP/providers/Microsoft.Web/sites/REPLACE-ME-APPNAME/config/authsettingsV2?api-version<span class="o">=</span>2020-09-01 <span class="nt">--method</span> put <span class="nt">--body</span> @auth.json 
+</code></pre></div></div>
+
+<p>If you browse to the site now, you should be redirected to consent to the App permissions and login to your Azure AD tenant. If you deployed the debug site, you will notice some extra headers prefixed with X-MS-CLIENT-PRINCIPAL.</p>
+
+<h2 id="2-add-azure-front-door">2. Add Azure Front Door</h2>
+
+<p><a href="https://docs.microsoft.com/azure/frontdoor/standard-premium/overview">Azure Front Door</a> is a global, scalable entry-point that uses the Microsoft global edge network to create fast, secure, and widely scalable web applications. With Front Door, you can transform your global consumer and enterprise applications into robust, high-performing personalized modern applications with contents that reach a global audience through Azure.</p>
+
+<p>Azure Front Door (Standard and Premium) combines the existing features of Front Door (Classic) with integrated CDN and WAF capabilities as well as some new advanced options to use private endpoints as origin (backend) and onboard Managed Certificates using TXT records, which can be helpful in a migration scenario.</p>
+
+<p><img src="/AppService/media/2021/03/secureapp-step2.png" alt="Step 2" class="align-center" /></p>
+
+<p>Open the <a href="https://portal.azure.com/">Azure portal</a>. Create a new resource, search for Front Door, and select “Front Door and CDN profiles”</p>
+
+<p><img src="/AppService/media/2021/03/frontdoor-new.png" alt="Azure Front Door Standard/Premium" class="align-center" /></p>
+
+<p>Use the Quick Create and under Basics, use the existing resource group. Give it a name and endpoint name, and select your App Service Web App. If you want to try out the private endpoint feature or WAF capabilities later, you should select the <a href="https://docs.microsoft.com/azure/frontdoor/standard-premium/tier-comparison">Premium tier</a>. Once it is created, it typically takes 5-10 minutes to replicate globally. Go grab a coffee and come back when this is complete.</p>
+
+<p><img src="/AppService/media/2021/03/frontdoor-basics.png" alt="Azure Front Door Basics" class="align-center" /></p>
+
+<h3 id="alter-authentication-settings">Alter authentication settings</h3>
+
+<p>After a good coffee, try to browse to the Front Door URL. In my case: https://secureweb.z01.azurefd.net. It appears to be working, but notice the address bar. It redirected you directly back to your Web App. To fix that you need to do a few things. First, update the App registration in Azure AD to allow authentication request coming from the new url. You can add multiple reply-urls by separating them with a space, but if you only want to allow authentication through Front Door, you can just replace it.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az ad app update <span class="nt">--id</span> REPLACE-ME-APPID <span class="nt">--reply-urls</span> https://secureweb.z01.azurefd.net/.auth/login/aad/callback https://securewebapp2021.azurewebsites.net/.auth/login/aad/callback
+</code></pre></div></div>
+
+<p>Second, it is time to look at one of the new features of Authentication in App Service. Open up the auth.json file again and in the login section under allowedExternalRedirectUrls, add the Azure Front Door url. You should also add it in the AAD validation section under allowedAudiences (remember the comma in both settings).</p>
+
+<p>Finally, in auth.json, configure the Authentication framework to look for the original address. In forward proxies like Front Door, the address is typically sent in an http header called X-Forwarded-Host, which is covered by the Standard convention. The forwardProxy section goes to httpSettings. The final json file looks like this:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"platform"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nl">"globalValidation"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"unauthenticatedClientAction"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RedirectToLoginPage"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"redirectToProvider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"azureActiveDirectory"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nl">"httpSettings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"requireHttps"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"forwardProxy"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"convention"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Standard"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nl">"login"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"preserveUrlFragmentsForLogins"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"allowedExternalRedirectUrls"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="s2">"https://securewebapp2021.azurewebsites.net"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"https://secureweb.z01.azurefd.net"</span><span class="w">
+            </span><span class="p">]</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nl">"identityProviders"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"azureActiveDirectory"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"registration"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"openIdIssuer"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://sts.windows.net/REPLACE-ME-TENANTID/v2.0"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"clientId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"REPLACE-ME-APPID"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"clientSecretSettingName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"AAD_CLIENT_SECRET"</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="nl">"validation"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"allowedAudiences"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="s2">"https://securewebapp2021.azurewebsites.net"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"https://secureweb.z01.azurefd.net"</span><span class="w">
+                    </span><span class="p">]</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Save the file and run the <code class="language-plaintext highlighter-rouge">az rest</code> command again to update the settings:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az rest <span class="nt">--uri</span> /subscriptions/REPLACE-ME-SUBSCRIPTIONID/resourceGroups/REPLACE-ME-RESOURCEGROUP/providers/Microsoft.Web/sites/REPLACE-ME-APPNAME/config/authsettingsV2?api-version<span class="o">=</span>2020-09-01 <span class="nt">--method</span> put <span class="nt">--body</span> @auth.json 
+</code></pre></div></div>
+
+<p>You should now be able to access the Web App through Front Door and be authenticated. If you added the debug page, you should also see a few additional headers. One being X-Forwarded-Host that contains the url of the Front Door and the other being X-Azure-FDID which contains the unique ID of your Front Door instance (make a note of this as it will be used in step 4).</p>
+
+<h2 id="3-optional-add-custom-domain-and-certificate">3. (Optional) Add Custom Domain and Certificate</h2>
+
+<p><img src="/AppService/media/2021/03/secureapp-step3.png" alt="Step 3" class="align-center" /></p>
+
+<p>With Azure Front Door, it’s easy to add a custom domain and certificate. If you do not already have a custom domain, you can purchase one from Azure App Service Domains. For this demo, I will be using a domain called reddoglabs.com purchased through App Service Domains and I will be using Azure DNS to host the public DNS records. Note that any domain registrar and public DNS provider can be used. If you are using an Azure DNS Zone in the same subscription, you have the added benefit of having Front Door add the needed records for you.</p>
+
+<p>For the certificate, you can bring your own certificate or you can use the Managed Certificate option. With the latter, Front Door will take care of enrolling and renewing the certificate - I like that so I do not forget to update my certificate when it expires.</p>
+
+<p>My DNS is in another subscription, so I will have to add it myself, but it will also explicitly show the steps needed.</p>
+
+<p><img src="/AppService/media/2021/03/frontdoor-customdomain.png" alt="Azure Front Door Custom Domain" class="align-center" /></p>
+
+<p>After you added the domain, you need to prove that you own it. The new Front Door gives you a nice overview of the steps needed.</p>
+
+<p><img src="/AppService/media/2021/03/frontdoor-domainvalidation.png" alt="Azure Front Door Validate Domain" class="align-center" /></p>
+
+<p>When clicking the Pending link in the Validation state column, you will get instruction for adding a TXT record to validate your domain ownership.</p>
+
+<p><img src="/AppService/media/2021/03/dns-addtxtrecord.png" alt="Azure DNS Add TXT Record" class="align-center" /></p>
+
+<p>Time for another cup of coffee. The validation of the TXT record and the replication of the settings can take 5-10 minutes again.</p>
+
+<h3 id="alter-authentication-settings-1">Alter authentication settings</h3>
+
+<p>Azure AD App registration and App Service Authentication need to be aware of the new url. You can either append or overwrite with the new url depending on whether you want the other urls to work as well. Update the App registration with the this command (here I am appending):</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az ad app update <span class="nt">--id</span> REPLACE-ME-APPID <span class="nt">--reply-urls</span> https://secure.reddoglabs.com/.auth/login/aad/callback https://secureweb.z01.azurefd.net/.auth/login/aad/callback https://securewebapp2021.azurewebsites.net/.auth/login/aad/callback
+</code></pre></div></div>
+
+<p>Modify the auth.json file and update the Authentication settings.</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="err">...</span><span class="w">
+        </span><span class="nl">"login"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"preserveUrlFragmentsForLogins"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"allowedExternalRedirectUrls"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="s2">"https://secure.reddoglabs.com"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"https://securewebapp2021.azurewebsites.net"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"https://secureweb.z01.azurefd.net"</span><span class="w">
+            </span><span class="p">]</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nl">"identityProviders"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="err">...</span><span class="w">
+                </span><span class="nl">"validation"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"allowedAudiences"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="s2">"https://secure.reddoglabs.com"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"https://securewebapp2021.azurewebsites.net"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"https://secureweb.z01.azurefd.net"</span><span class="w">
+                    </span><span class="p">]</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az rest <span class="nt">--uri</span> /subscriptions/REPLACE-ME-SUBSCRIPTIONID/resourceGroups/REPLACE-ME-RESOURCEGROUP/providers/Microsoft.Web/sites/REPLACE-ME-APPNAME/config/authsettingsV2?api-version<span class="o">=</span>2020-09-01 <span class="nt">--method</span> put <span class="nt">--body</span> @auth.json 
+</code></pre></div></div>
+
+<h3 id="associate-and-map-custom-domain">Associate and map custom domain</h3>
+
+<p>The final steps are to go back to the Domains overview in Front Door and associate the custom domain with the endpoint,</p>
+
+<p><img src="/AppService/media/2021/03/frontdoor-associateendpoint.png" alt="Azure Front Door Associate Endpoint" class="align-center" /></p>
+
+<p>and add a CNAME DNS record to map the actual domain:</p>
+
+<p><img src="/AppService/media/2021/03/dns-addcnamerecord.png" alt="Azure DNS Add CNAME Record" class="align-center" /></p>
+
+<p>Allow another 5-10 minutes to replicate the settings globally, and you should now be able to access an authenticated Web App through Front Door using a custom domain and certificate.</p>
+
+<h2 id="4-restrict-traffic-from-front-door-to-web-app">4. Restrict traffic from Front Door to Web App</h2>
+
+<p><img src="/AppService/media/2021/03/secureapp-step4.png" alt="Step 4" class="align-center" /></p>
+
+<p>At this point, you are still able to access the Web App directly. In this step, you will restrict access to the Web App so traffic will only be allowed through Front Door. To do this, another new feature will be used. Access restrictions in App Service recently added the ability to create rules based on Service Tags and filter by http headers. Azure CLI support for the new features is still under construction, but since you are familiar with using REST calls by now, let’s do that.</p>
+
+<p>Create a json file named restrictions.json with the the following content and replace the placeholder with the specific Front Door ID found in step 2. It is also visible in the Overview section of the Front Door instance in the Azure portal:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"ipSecurityRestrictions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"action"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Allow"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"ipAddress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"AzureFrontDoor.Backend"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"tag"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ServiceTag"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"priority"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"headers"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"X-Azure-FDID"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="s2">"REPLACE-ME-FRONTDOORID"</span><span class="w">
+          </span><span class="p">]</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>After you added the Front Door ID in the json file, run the following script to deploy the restriction (notice the change in the URI: /web instead of /authsettingsV2):</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az rest <span class="nt">--uri</span> /subscriptions/REPLACE-ME-SUBSCRIPTIONID/resourceGroups/REPLACE-ME-RESOURCEGROUP/providers/Microsoft.Web/sites/REPLACE-ME-APPNAME/config/web?api-version<span class="o">=</span>2020-09-01 <span class="nt">--method</span> put <span class="nt">--body</span> @restrictions.json 
+</code></pre></div></div>
+
+<p>Now, if you access the site directly, you should immediately see the blue 403 - Forbidden error.</p>
+
+<h2 id="5-increase-resiliency-with-multiple-geo-distributed-web-apps">5. Increase resiliency with multiple geo-distributed Web Apps</h2>
+
+<p><img src="/AppService/media/2021/03/secureapp-final-setup.png" alt="Step 5" class="align-center" /></p>
+
+<p>To improve resiliency of your App and protect against regional outages, you can deploy your app to multiple regions. Let’s add an instance in West US. You can reuse most of the scripts, but of course you need to change the name in all lines. Since direct access to the Web App is already blocked, you can either remove or ignore the direct Web App url reference in auth.json.</p>
+
+<p>To make it easier to notice which site is accessed, you can change the background color of the debug page in the alternative site by changing the last two digits of the body background-color to FF (light blue) and create a new zip file:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az appservice plan create <span class="nt">--resource-group</span> securewebsetup <span class="nt">--name</span> securewebplan-westus <span class="nt">--sku</span> B1 <span class="nt">--location</span> westus
+az webapp create <span class="nt">--resource-group</span> securewebsetup <span class="nt">--plan</span> securewebplan-westus <span class="nt">--name</span> securewebapp2021-westus
+az webapp update <span class="nt">--resource-group</span> securewebsetup <span class="nt">--name</span> securewebapp2021-westus <span class="nt">--https-only</span>
+
+zip debug-blue.zip default.cshtml
+az webapp deployment <span class="nb">source </span>config-zip <span class="nt">--resource-group</span> securewebsetup <span class="nt">--name</span> securewebapp2021-westus <span class="nt">--src</span> ./debug-blue.zip
+
+az webapp config appsettings <span class="nb">set</span> <span class="nt">--resource-group</span> securewebsetup <span class="nt">--name</span> securewebapp2021-westus <span class="nt">--settings</span> <span class="s2">"AAD_CLIENT_SECRET=reP!@ce-w!th.VeRys3cr3tC0d!"</span>
+
+az rest <span class="nt">--uri</span> /subscriptions/REPLACE-ME-SUBSCRIPTIONID/resourceGroups/REPLACE-ME-RESOURCEGROUP/providers/Microsoft.Web/sites/REPLACE-ME-WESTUS-APPNAME/config/authsettingsV2?api-version<span class="o">=</span>2020-09-01 <span class="nt">--method</span> put <span class="nt">--body</span> @auth.json 
+
+az rest <span class="nt">--uri</span> /subscriptions/REPLACE-ME-SUBSCRIPTIONID/resourceGroups/REPLACE-ME-RESOURCEGROUP/providers/Microsoft.Web/sites/REPLACE-ME-WESTUS-APPNAME/config/web?api-version<span class="o">=</span>2020-09-01 <span class="nt">--method</span> put <span class="nt">--body</span> @restrictions.json 
+</code></pre></div></div>
+
+<p>After the Web App is configured, open the Front Door instance in the Azure portal and add the new Web App as origin (backend) in the current origin group and update it:</p>
+
+<p><img src="/AppService/media/2021/03/frontdoor-updateorigingroup.png" alt="Azure Front Door Update Origin Group" class="align-center" /></p>
+
+<p>Front Door default load balancing behavior is to round robin traffic between the fastest and the next fastest origins within the configured latency sensitivity, but you can modify that. If you refresh enough times, you should be seeing the page change color (and the Request url in the debug page change).</p>
+
+<h2 id="alternative-approaches-and-advanced-scenarios">Alternative approaches and advanced scenarios</h2>
+
+<p>In this section, I will discuss some alternative approaches and advanced scenarios.</p>
+
+<h3 id="application-gateway">Application Gateway</h3>
+
+<p>Instead of Front Door, or in addition to Front Door, you can use Azure Application Gateway to add WAF capabilities and advanced routing and rewrite logic. It can also be used to provide regional load balancing. Application Gateway currently does not support Managed Certificate, so you will have to bring your own certificate.</p>
+
+<p>Application Gateway deviates from the standard http header used for the forwarded host. It uses a header called X-Original-Host. For the Authentication configuration in auth.json, you will have to change the convention to Custom and specify X-Original-Host as the customHostHeaderName. The rest of the settings and steps should be identical.</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"forwardProxy"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"convention"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Custom"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"customHostHeaderName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"X-Original-Host"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="private-endpoint">Private endpoint</h3>
+
+<p>To secure the incoming traffic to the Web App(s), the access restriction feature was used. If you prefer private endpoints, this is also possible. The next generation Azure Front Door supports setting up a private endpoint from your Front Door instance directly to your Web App. For App Service, private endpoints require the Premium tier, so you need to scale up the App Service Plan. Besides that, the only change will be the setup of origin in Front Door, which is where you can request the creation of a private endpoint, and then from the Web App(s) you can approve it.</p>
+
+<p>The step of uploading the debug page will require some additional setup. The SCM site will also only be available through the private endpoint. You will have to run the script from within a network with line-of-sight and proper DNS resolution for the private endpoint.</p>
+
+<h3 id="custom-domain-for-scm-site">Custom domain for SCM Site</h3>
+
+<p>While not directly related to the Authentication part, you may want/need to expose the SCM site through a proxy if you want access through a custom domain or if you want to expose a private endpoint enabled SCM site externally. <a href="https://azure.github.io/AppService/2021/03/03/Custom-domain-for-scm-site.html">A post on how to do that</a> was recently published.</p>
+
+<h3 id="custom-health-probe-path">Custom health probe path</h3>
+
+<p>If you have a custom health probe path, you can configure the Authentication layer in App Service to allow unauthenticated traffic on specific paths. These paths are configured in the auth.json file in excludedPaths under globalValidation. An example of excluding the debug page if accessed directly will look like this:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"globalValidation"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"unauthenticatedClientAction"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RedirectToLoginPage"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"redirectToProvider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"azureActiveDirectory"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"excludedPaths"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="s2">"/default.cshtml"</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>You can now browse directly to that page (but will be asked for authentication if you just go to /)</p>
+
+<h2 id="faq">FAQ</h2>
+
+<p><strong>Q: On sign in, I get error AADSTS50011: The reply URL specified … What is wrong?</strong></p>
+
+<p>Most likely this is because the address does not match the reply-url configured for the Azure AD App registration.</p>
+
+<p><img src="/AppService/media/2021/03/error-aadsts50011.png" alt="Error AADSTS50011" class="align-center" /></p>
+
+<p><strong>Q: I am using custom routing rules in Front Door. Anything I should pay attention to?</strong></p>
+
+<p>Make sure you have a routing rule for .auth/* in addition to your content rules.</p>
+
+<p><strong>Q: I do not have permissions to create App registrations in my Azure AD tenant, what to do?</strong></p>
+
+<p>If your organization locked down the ability to create App registrations, you will need to find someone in your organization with these permissions. It can either be the tenant admin or delegated with the built-in Application developer og Application administrator roles; or a custom <a href="https://docs.microsoft.com/azure/active-directory/roles/quickstart-app-registration-limits">Application registration creator role</a> specific for this purpose.</p>
+
+<p>Alternatively you can use another identity provider such as Facebook, GitHub, Twitter or any custom provider using the OpenIdConnect specification.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-03-26T00:00:00+00:00">March 26, 2021</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Deploying+a+secure%2C+resilient+site+with+a+custom+domain%20https%3A%2F%2Fazure.github.io%2FAppService%2F2021%2F03%2F26%2FSecure-resilient-site-with-custom-domain.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2021%2F03%2F26%2FSecure-resilient-site-with-custom-domain.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2021%2F03%2F26%2FSecure-resilient-site-with-custom-domain.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2021/03/15/How-to-use-gRPC-Web-with-Blazor-WebAssembly-on-App-Service.html" class="pagination--pager" title="How to use gRPC-Web with Blazor WebAssembly on App Service
+">Previous</a>
+    
+    
+      <a href="/AppService/2021/03/29/General-Availability-of-new-access-restriction-features.html" class="pagination--pager" title="General Availability of new Access Restriction Features
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,1005 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>A Heavy Lift: Bringing Kestrel + YARP to Azure App Services - Azure App Service</title>
+<meta name="description" content="In this post, we get a behind-the-scenes look at the engineering work required to change a critical platform component with code paths that are exercised billions of times a day while minimizing service disruptions and maintaining SLA for our customers. We provide a brief introduction to help cover the basics, go over motivations for doing this work, explain some of the more interesting challenges, issues, and bugs encountered along the way, and close with the results and the new customers scenarios enabled.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="A Heavy Lift: Bringing Kestrel + YARP to Azure App Services">
+<meta property="og:url" content="https://azure.github.io/AppService/2022/08/16/A-Heavy-Lift.html">
+
+
+  <meta property="og:description" content="In this post, we get a behind-the-scenes look at the engineering work required to change a critical platform component with code paths that are exercised billions of times a day while minimizing service disruptions and maintaining SLA for our customers. We provide a brief introduction to help cover the basics, go over motivations for doing this work, explain some of the more interesting challenges, issues, and bugs encountered along the way, and close with the results and the new customers scenarios enabled.">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2022-08-16T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2022/08/16/A-Heavy-Lift.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="A Heavy Lift: Bringing Kestrel + YARP to Azure App Services">
+    <meta itemprop="description" content="In this post, we get a behind-the-scenes look at the engineering work required to change a critical platform component with code paths that are exercised billions of times a day while minimizing service disruptions and maintaining SLA for our customers. We provide a brief introduction to help cover the basics, go over motivations for doing this work, explain some of the more interesting challenges, issues, and bugs encountered along the way, and close with the results and the new customers scenarios enabled.">
+    <meta itemprop="datePublished" content="August 16, 2022">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">A Heavy Lift: Bringing Kestrel + YARP to Azure App Services
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  8 minute read
+
+            
+            
+              • By David Fowler, Suwat Bodin, Chris Rosenblatt, Jenny Lawrance, Stephen Kou, Chris Ross, Miha Zupan, Aditya Mandaleeka, Bilal Alam
+            
+            • August 16, 2022
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p>In this post, we get a behind-the-scenes look at the engineering work required to change a critical platform component with code paths that are exercised billions of times a day while minimizing service disruptions and maintaining SLA for our customers. We provide a brief introduction to help cover the basics, go over motivations for doing this work, explain some of the more interesting challenges, issues, and bugs encountered along the way, and close with the results and the new customers scenarios enabled.</p>
+
+<p>The challenge was huge, but we’re excited about the benefits this brings to Azure App Services and our customers:</p>
+
+<ul>
+  <li>Almost 80% improvement in throughput in performance tests designed to isolate the benefits.</li>
+  <li>Greener Azure data centers from significantly decreased per-request CPU usage.</li>
+  <li>Support for modern protocols like HTTP/3.</li>
+  <li>Support for new customer scenarios such as gRPC applications, per-host cipher suite configuration, custom error pages, and more.</li>
+</ul>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>In 2021, a group of engineers across multiple teams, including .NET and Azure, got together to transition the <strong>App Service Frontend</strong> fleet to <strong>Kestrel + <a href="https://github.com/microsoft/reverse-proxy">YARP</a></strong>. As we celebrate the completion of this major lift and collaboration, we decided to write down the journey and describe some of the challenges of completing such a change to a live service, the wins we achieved, and the future work enabled by this transition. We hope you enjoy it.</p>
+
+<h3 id="azure-app-service-in-a-nutshell">Azure App Service in a nutshell</h3>
+
+<p>Azure App Service recently celebrated its 10 year anniversary (we launched it on June 7th, 2012).  We are grateful and humbled by our customers who have helped us grow into a big service (affectionately called an XXL service in Azure internally, a designation only shared with 3 other services). Here are some numbers that provide a glimpse into our scale:</p>
+
+<ul>
+  <li>160B+ daily HTTP requests served by applications</li>
+  <li>14M+ host names</li>
+  <li>1.5K+ multi-tenant scale units and an additional 10K+ dedicated scale units (App Service Environments aka App Service Isolated SKU)</li>
+</ul>
+
+<p>One of the key architectural pieces of this system is our <strong>FrontEndRole</strong>. The <strong>FrontEndRole</strong> main purposes are:</p>
+
+<ul>
+  <li>Receiving traffic on HTTP/HTTPS from public virtual IP addresses associated with a scale unit</li>
+  <li>Terminating SSL if required</li>
+  <li>Determining which set of VMs are the origin-servers for the application (called Workers) and then routing to them</li>
+</ul>
+
+<p><img src="/AppService/media/2022/08/FE_Diagram.jpg" alt="FrontEndRole diagram" /></p>
+
+<p>App Service was originally built as a Cloud Service and this role is just called FrontEndRole. With our transition to VM Scale Sets, the FrontEndRole is a separate scale set which is part of each scale unit.</p>
+
+<p>The original App Service FrontEndRole, which runs on Windows Server, consisted of:</p>
+
+<ul>
+  <li>IIS running on HTTP.sys, both operating system components of Windows Server</li>
+  <li><a href="https://www.iis.net/downloads/microsoft/application-request-routing">Application Request Routing (ARR)</a>, which does request forwarding using WinHTTP</li>
+</ul>
+
+<h3 id="kestrel-and-yarp-in-a-nutshell">Kestrel and YARP in a nutshell</h3>
+
+<p>The first release of .NET Core introduced the <strong>Kestrel webserver</strong>: an open-source, cross-platform, and fast webserver implementation built using modern .NET. Performance is a key focus for the .NET team, and with each .NET release, <strong>Kestrel</strong> has gotten ever faster and more full-featured. As an example, recent changes made to <strong>Kestrel</strong> include:</p>
+
+<ul>
+  <li>Significant scalability improvements on many-core machines</li>
+  <li>Significant HTTP/2 performance enhancements when running with many concurrent streams</li>
+  <li>Support for new standards like HTTP/3</li>
+</ul>
+
+<p><strong>YARP (“Yet Another Reverse Proxy”)</strong> is a reverse proxy toolkit that enables building fast proxy servers using infrastructure from ASP.NET and .NET, focusing on easy customization. It is developed in the open at <a href="https://github.com/microsoft/reverse-proxy">https://github.com/microsoft/reverse-proxy</a>. YARP’s toolkit/extensibility model made it easy for us to incorporate our routing and TLS handling with its request forwarding capabilities. <strong>YARP</strong> includes support for modern protocols like HTTP/2 &amp; HTTP/3, which App Service customers can now expose.
+In addition, being based on the fast-evolving .NET platform means that every release, <strong>Kestrel</strong> and <strong>YARP</strong> benefit from improvements up and down the .NET stack, including everything from networking libraries all the way down to JIT compiler improvements that improve the quality of generated code. For a sampling of the types of improvements that went into just the .NET 6 release in 2021, see <a href="https://devblogs.microsoft.com/dotnet/performance-improvements-in-net-6/#gc">Performance Improvements in .NET 6</a>.</p>
+
+<h2 id="betting-on-kestrel--yarp-for-app-service-why">Betting on Kestrel + YARP for App Service: Why?</h2>
+
+<p>The previous <strong>FrontEndRole</strong> architecture of App Service built on IIS/HTTP.SYS has served us well, but the promise of a modern HTTP stack in <strong>Kestrel + YARP</strong> could deliver new benefits to all App Service customers.  Specifically:</p>
+
+<ul>
+  <li>Performance improvements, including significantly decreased per-request CPU cost and per-connection memory cost.</li>
+  <li>More flexible extensibility points into SSL termination path, allowing for easier dynamic SNI host selection.</li>
+  <li>Enable new customer scenarios like support for gRPC, per-host cipher suite configuration, custom error pages, and more.</li>
+</ul>
+
+<p>With all that context and motivation, the goal of the V-Team was clear:</p>
+<blockquote>
+  <p><strong>“Transition the 200K+ dedicated cores running FrontEndRole to use Kestrel + YARP (and thus move away from IIS/HTTP.SYS/ARR)”</strong></p>
+</blockquote>
+
+<h2 id="challenge-server-framework-diversity">Challenge: Server Framework Diversity</h2>
+
+<p>App Service is not the first Microsoft service to transition to Kestrel and YARP. Microsoft has already documented the journeys of Bing, Azure Active Directory (AAD), and Dynamics 365 to .NET; these efforts have proven out the stability and performance of .NET for critical service workloads.</p>
+
+<ul>
+  <li><a href="https://devblogs.microsoft.com/dotnet/bing-com-runs-on-net-core-2-1/">Bing.com runs on .NET Core 2.1!</a></li>
+  <li><a href="https://devblogs.microsoft.com/dotnet/azure-active-directorys-gateway-is-on-net-6-0/">Azure Active Directory’s gateway is on .NET 6.0!</a></li>
+  <li><a href="https://youtu.be/67tCWKnweso?t=1803">Dynamics 365 using YARP</a></li>
+</ul>
+
+<p>The unique challenge that App Service adds to the mix is the diversity of server implementations.  The previously mentioned Microsoft services are written by server engineers working for … Microsoft.  This is definitely not the case for App Service, which enables customers to <em>bring their own server frameworks</em> and <em>write their own applications with varying levels of standards compliance</em>.  Hosting customer applications brings a unique set of challenges described below.</p>
+
+<h2 id="challenge-platform-versus-organic-health">Challenge: Platform versus Organic Health</h2>
+
+<p>Because App Service enables customers to write their own applications, the concept of <em>“service health”</em> is a nuanced discussion.  App Service measures the health of the platform; we ensure that customers have a running VM which can connect to storage and can execute a simple canary request.  But App Service cannot easily measure the organic health (HTTP request success rate) since we do not control the application. As a result, we primarily focused on platform health as our main metric.</p>
+
+<p>For our transition to <strong>Kestrel + YARP</strong>, we needed to broaden our measurement to include organic health.  Rather than looking for an absolute bar (say &gt;99.99% success), we needed to compare <em>“before Kestrel + YARP”</em> and <em>“after Kestrel + YARP”</em> organic success and look for anomalies that would point out potential problems.</p>
+
+<h2 id="challenge-quick-rollback-in-production">Challenge: Quick Rollback in Production</h2>
+
+<p>With a broadened approach to assessing organic health anomalies caused by a diverse set of applications/frameworks on our platform, we required fast mechanisms to undo our <strong>Kestrel + YARP</strong> transition on a per scale-unit basis; in other words, we needed to be able to <em>“break glass”</em> quickly when we encountered problems and return to using IIS/HTTP.SYS.</p>
+
+<h2 id="the-journey-100-frontendroles-using-kestrelyarp">The Journey: 100% FrontEndRoles using Kestrel/YARP</h2>
+
+<p>With all the context and challenges described, here is how the journey looked like in a picture.</p>
+
+<p><img src="/AppService/media/2022/08/FE_Migration.jpg" alt="FrontEndRole Migration" /></p>
+
+<p>As you can see this journey took a lot of time. 6 months passed between the first Kestrel/YARP deployment and 100%.</p>
+
+<h2 id="the-bugs-encountered">The Bugs Encountered</h2>
+
+<p>We encountered multiple bugs on our journey to <strong>Kestrel + YARP</strong>. Apart from bugs in our business logic, one of the interesting classes of issue we encountered was the treatment of edge-cases in the HTTP specification. A diversity of clients hit our <strong>FrontEndRole</strong>. We need to be generous in accepting behavior that may not be exactly the HTTP spec’s letter and intent.</p>
+
+<p>A simple example of one of these cases is when a request has leading newline characters (CR and/or LF). Strictly speaking, this isn’t allowed, but it turns out that there are some clients that send requests that start like:</p>
+
+<pre><code class="language-aspx-csharp">\rGET / HTTP/1.1\r\n
+...
+</code></pre>
+
+<p>This is a case that IIS (and some other servers) allow, but because <strong>Kestrel</strong> historically has taken a fairly strict stance, we saw its parser rejecting requests like this with a <code class="language-plaintext highlighter-rouge">BadHttpRequestException</code>. Working closely with the ASP.NET Core team, we were able to make <strong>Kestrel</strong> a bit more generous in what it accepts (the example above now works in <strong>Kestrel</strong> in .NET 6.0.5 and newer releases).</p>
+
+<p>Some other <em>interesting</em> issues uncovered can be found <a href="https://github.com/dotnet/aspnetcore/pull/40833">here</a>, <a href="https://github.com/dotnet/aspnetcore/pull/40633">here</a> and <a href="https://github.com/microsoft/reverse-proxy/pull/1773">here</a>.</p>
+
+<p>As a result of investigating and addressing this class of issues, we’ve made <strong>Kestrel</strong> a more capable server without compromising the core principle of security.</p>
+
+<h2 id="the-payoff-performance-and-new-features-now-and-in-the-future">The Payoff: Performance and New Features, Now and in the Future</h2>
+
+<p>Now that we have moved our <strong>FrontEndRoles</strong> to <strong>Kestrel + YARP</strong> we have realized multiple benefits in production.</p>
+
+<p>Performance tests designed to isolate the benefits of our <strong>FrontEndRole</strong> change showed an <strong>almost 80% improvement in throughput</strong> (tested using a simple 1K <em>helloworld</em> response from a single dedicated worker in a test environment).  App Service over-provisions <strong>FrontEndRole</strong> instances, so the realized benefit across our aggregate fleet is a large decrease in CPU% which provides more CPU headroom for the fleet. We are still in the early days of monitoring the fleet post-move; we may eventually be able to decrease our cores assigned to this role to reduce operating costs and data center energy usage. More investigation to follow.</p>
+
+<p>With our move to <strong>Kestrel + YARP</strong>  on our <strong>FrontEndRoles</strong>, we were also able to move our <strong>Linux worker VMs</strong> to use <strong>Kestrel+YARP</strong>. This change allows us to replace nginx, commonize the codebase, and <a href="https://azure.github.io/AppService/2022/05/23/gRPC-support-on-App-Service.html">light up gRPC for our App Service Linux SKUs</a>. gRPC support has been a popular feature request from Azure App Services users and we’re excited to add this capability.</p>
+
+<p>With this platform work complete we are now working on enabling two of the most frequently requested features in App Service; more news coming soon as we complete these improvements:</p>
+<ul>
+  <li>Ability to configure custom error pages for requests that terminate on the front end (Specifically: HTTP 503, HTTP 502 and HTTP 403).</li>
+  <li>Ability to specify TLS cipher suite allowed per given application.  Today customers can only configure allowed cipher suites on our Isolated SKUs.</li>
+</ul>
+
+<h2 id="a-great-partnership">A Great Partnership</h2>
+
+<p>Once you have a live multi-tenant service running with millions of VMs globally, you learn to be very careful with how and when you advance it. That said, the innovations with <strong>Kestrel + YARP</strong> being developed by the .NET core team were just too valuable to pass up. At the same time, the .NET team would tell you the experience of supporting this migration was a whole new challenge for that team as they experienced the breadth and diversity of App Service scenarios. This was a great journey for both teams and we landed it. Now that we have this new platform in place, we look forward to continued innovation between our teams.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2022-08-16T00:00:00+00:00">August 16, 2022</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=A+Heavy+Lift%3A+Bringing+Kestrel+%2B+YARP+to+Azure+App+Services%20https%3A%2F%2Fazure.github.io%2FAppService%2F2022%2F08%2F16%2FA-Heavy-Lift.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2022%2F08%2F16%2FA-Heavy-Lift.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2022%2F08%2F16%2FA-Heavy-Lift.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2022/08/11/gRPC-support-on-App-Service-now-in-Public-Preview.html" class="pagination--pager" title="gRPC support on App Service now in Public Preview
+">Previous</a>
+    
+    
+      <a href="/AppService/2022/08/18/Configure-Azure-Firewall-With-ASEv3.html" class="pagination--pager" title="Configure Azure Firewall with ASEv3
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

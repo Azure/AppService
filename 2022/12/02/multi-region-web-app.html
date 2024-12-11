@@ -1,0 +1,1875 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>How to deploy a highly available multi-region web app - Azure App Service</title>
+<meta name="description" content="High availability and fault tolerance are key components of a well-architected solution. It’s always best to prepare for the unexpected and having an emergency plan that can shorten downtime and keep your systems up an running automatically when something fails can help you do that.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="How to deploy a highly available multi-region web app">
+<meta property="og:url" content="https://azure.github.io/AppService/2022/12/02/multi-region-web-app.html">
+
+
+  <meta property="og:description" content="High availability and fault tolerance are key components of a well-architected solution. It’s always best to prepare for the unexpected and having an emergency plan that can shorten downtime and keep your systems up an running automatically when something fails can help you do that.">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2022-12-02T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2022/12/02/multi-region-web-app.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="How to deploy a highly available multi-region web app">
+    <meta itemprop="description" content="High availability and fault tolerance are key components of a well-architected solution. It’s always best to prepare for the unexpected and having an emergency plan that can shorten downtime and keep your systems up an running automatically when something fails can help you do that.">
+    <meta itemprop="datePublished" content="December 02, 2022">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">How to deploy a highly available multi-region web app
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  32 minute read
+
+            
+            
+              • By Jordan Selig
+            
+            • December 2, 2022
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#architecture">Architecture</a>
+    <ul>
+      <li><a href="#workflow">Workflow</a></li>
+    </ul>
+  </li>
+  <li><a href="#recommendations-and-considerations">Recommendations and considerations</a>
+    <ul>
+      <li><a href="#regional-pairing">Regional pairing</a></li>
+      <li><a href="#resource-groups">Resource groups</a></li>
+      <li><a href="#front-door-configuration">Front Door configuration</a></li>
+      <li><a href="#infrastructure-deployment">Infrastructure deployment</a></li>
+      <li><a href="#security">Security</a></li>
+      <li><a href="#cost-optimization">Cost optimization</a></li>
+    </ul>
+  </li>
+  <li><a href="#infrastructure-deployment-tutorial">Infrastructure deployment tutorial</a>
+    <ul>
+      <li><a href="#prerequisites">Prerequisites</a></li>
+      <li><a href="#create-two-instances-of-a-web-app">Create two instances of a web app</a></li>
+      <li><a href="#disable-basic-auth-for-the-web-apps">Disable basic auth for the web apps</a></li>
+      <li><a href="#create-azure-front-door">Create Azure Front Door</a></li>
+      <li><a href="#restrict-access-to-web-apps-to-the-azure-front-door-instance">Restrict access to web apps to the Azure Front Door instance</a></li>
+      <li><a href="#lock-down-scmadvanced-tool-site">Lock down SCM/advanced tool site</a></li>
+      <li><a href="#verify-azure-front-door">Verify Azure Front Door</a></li>
+    </ul>
+  </li>
+  <li><a href="#managing-source-code">Managing source code</a>
+    <ul>
+      <li><a href="#prerequisites-for-source-code-deployment">Prerequisites for source code deployment</a></li>
+      <li><a href="#configure-the-deployment-source">Configure the deployment source</a></li>
+      <li><a href="#configure-authentication-with-app-service-for-github-actions-with-openid-connect">Configure authentication with App Service for GitHub Actions with OpenID Connect</a></li>
+      <li><a href="#deploy-the-code">Deploy the code</a></li>
+      <li><a href="#create-the-github-actions-workflow">Create the GitHub Actions workflow</a></li>
+      <li><a href="#slot-traffic-routing">Slot traffic routing</a></li>
+      <li><a href="#slot-swap">Slot swap</a></li>
+      <li><a href="#additional-guidance">Additional guidance</a></li>
+    </ul>
+  </li>
+  <li><a href="#clean-up-resources">Clean up resources</a></li>
+  <li><a href="#next-steps">Next steps</a></li>
+  <li><a href="#deploy-from-armbicep">Deploy from ARM/Bicep</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <p>High availability and fault tolerance are key components of a well-architected solution. It’s always best to prepare for the unexpected and having an emergency plan that can shorten downtime and keep your systems up an running automatically when something fails can help you do that.</p>
+
+<p>When you deploy your application to the cloud, you choose a region in that cloud where your application infrastructure is based. Regions are essentially data centers is various parts of the world. In a world where unpredictable severe weather events, natural disasters, or human errors are inevitable, there’s the imminent possibility of events that may disturb the functionality of a region or take it down altogether for a period of time. If your application is deployed to a single region, and the region becomes unavailable, your application will also be unavailable. This may be unacceptable under the terms of your application’s SLA. If so, deploying your application and its services across multiple regions is a good idea. A multi-region deployment can use an active-active or active-passive configuration. An active-active configuration distributes requests across multiple active regions. An active-passive configuration keeps warm instances in the secondary region, but doesn’t send traffic there unless the primary region fails. For multi-region deployments, we recommend deploying to <a href="https://learn.microsoft.com/azure/availability-zones/cross-region-replication-azure#azure-cross-region-replication-pairings-for-all-geographies">paired regions</a>. For more information on this topic, see <a href="https://learn.microsoft.com/azure/architecture/reliability/architect">Architect Azure applications for resiliency and availability</a>.</p>
+
+<p>In this blog post, we’ll walk through deploying a highly available multi-region web app. We’ll start with deploying the necessary infrastructure, and then move into managing the application source code. We’ll have a look at some of the different offerings Azure provides to enable this architecture as well as go over best practices and recommendations. We’ll keep the scenario simple by restricting our application components to just a web app, but the info shared here can definitely be expanded and applied to many other infrastructure patterns. For example, if your application connects to an Azure database offering or storage account, a quick search through the Azure docs will reveal built-in solutions as <a href="https://learn.microsoft.com/azure/azure-sql/database/active-geo-replication-overview">active geo-replication for SQL databases</a> and <a href="https://learn.microsoft.com/azure/storage/common/storage-redundancy">redundancy options for storage accounts</a>. For a reference architecture for a more detailed scenario, see <a href="https://learn.microsoft.com/azure/architecture/reference-architectures/app-service-web-app/multi-region">Highly available multi-region web application</a>.</p>
+
+<h2 id="architecture">Architecture</h2>
+
+<p><img src="/AppService/media/2022/11/multi-region-app-service.png" alt="" /></p>
+
+<h3 id="workflow">Workflow</h3>
+
+<p>The architecture is shown in the diagram above.</p>
+
+<ul>
+  <li><strong>Primary and secondary regions</strong>. This architecture uses two regions to achieve higher availability. The application is deployed to each region. During normal operations, network traffic is routed to the primary region. If the primary region becomes unavailable, traffic is routed to the secondary region.</li>
+  <li><strong>Front Door</strong>. <a href="https://learn.microsoft.com/azure/frontdoor/">Front Door</a> routes incoming requests to the primary region. If the application running in that region becomes unavailable, Front Door fails over to the secondary region.</li>
+</ul>
+
+<p>There are several general approaches to achieve high availability across regions. This reference focuses on active/passive with hot standby. It replicates the infrastructure in the secondary region, however traffic only goes to the primary region. If something happens in the primary region, traffic will automatically divert to the secondary region.</p>
+
+<h2 id="recommendations-and-considerations">Recommendations and considerations</h2>
+
+<p>Your requirements might differ from the architecture described here, however you can use the recommendations and considerations in this section as a starting point as they apply to almost all multi-region scenarios. The considerations come from the <a href="https://learn.microsoft.com/azure/architecture/framework/">Microsoft Azure Well-Architected Framework</a>, which is a set of guiding tenets that can be used to improve the quality of a workload.</p>
+
+<h3 id="regional-pairing">Regional pairing</h3>
+
+<p>Deciding on your primary region is relatively straightforward - pick the region that supports the features you’re using and is closest to you/your customers to reduce latency. When deciding on your secondary region, consider using the <a href="https://learn.microsoft.com/azure/availability-zones/cross-region-replication-azure#azure-cross-region-replication-pairings-for-all-geographies">region Azure paired with your primary</a>.</p>
+
+<h3 id="resource-groups">Resource groups</h3>
+
+<p>Consider placing the primary region, secondary region, and Front Door into separate <a href="https://learn.microsoft.com/azure/azure-resource-manager/management/overview#resource-groups">resource groups</a>. This lets you manage the resources deployed to each region as a single collection.</p>
+
+<h3 id="front-door-configuration">Front Door configuration</h3>
+
+<ul>
+  <li><strong>Routing</strong>. Front Door supports several <a href="https://learn.microsoft.com/azure/frontdoor/routing-methods#priority-based-traffic-routing">routing mechanisms</a>. We will be using <em>priority</em> routing in the scenario here as described in the workflow. Other routing mechanisms can direct traffic based on pre-defined weighting or lowest latency. Consider cost when choosing a routing mechanism because for example if you decide to use priority routing, you can scale down your application in your secondary region and only scale up when traffic is directed to it.</li>
+  <li><strong>Tier</strong>. Azure Front Door is offered in a variety of flavors including the Standard and Premium tiers as well as Azure Front Door (classic). For a comparison of the various tiers, see the <a href="https://learn.microsoft.com/azure/frontdoor/standard-premium/tier-comparison">Front Door tier overview</a>. We will be using the <em>standard</em> tier in the scenario here.</li>
+  <li><strong>Load balancing options</strong>. Azure provides multiple load balancing options to help direct traffic for your applications. Choosing the most appropriate one for your scenario can be based on a number of factors including traffic type, cost, features, and limitations. To help you decide, see the <a href="https://learn.microsoft.com/azure/architecture/guide/technology-choices/load-balancing-overview#decision-tree-for-load-balancing-in-azure">Decision tree for load balancing in Azure</a>. We will be using Azure Front Door for this scenario because we are deploying an internet facing web application (HTTP/HTTPS) deployed to multiple regions hosted on App Service.</li>
+  <li><strong>Reliability</strong>. Azure Front Door automatically fails over if the primary region becomes unavailable. When Front Door fails over, there is a period of time (usually about 20-60 seconds) when clients cannot reach the application. The duration is affected by the frequency of health probes and sample size configuration. For more information on Front Door reliability, see <a href="https://learn.microsoft.com/azure/architecture/reference-architectures/app-service-web-app/multi-region#azure-front-door">Azure Front Door reliability</a>.</li>
+</ul>
+
+<h3 id="infrastructure-deployment">Infrastructure deployment</h3>
+
+<p>Consider configuring a continuous deployment mechanism to manage your application source code as well as application infrastructure. Since you’re deploying resources in different regions, you’ll need to independently manage those resources. To ensure the resources are in sync and assuming you want essentially identical applications and infrastructures in each region, infrastructure as code (IaC) such as <a href="https://azure.microsoft.com/get-started/azure-portal/resource-manager/">Azure Resource Manager templates</a> or <a href="https://learn.microsoft.com/azure/developer/terraform/overview">Terraform</a> should be used with deployment pipelines such as <a href="https://learn.microsoft.com/azure/devops/pipelines/get-started/what-is-azure-pipelines?view=azure-devops">Azure DevOps pipelines</a> or <a href="https://docs.github.com/actions">GitHub Actions</a>. This way, if configured appropriately, any change to resources or source code would trigger updates across all regions you’re deployed to. See <a href="https://learn.microsoft.com/azure/app-service/deploy-continuous-deployment">Continuous deployment to Azure App Service</a> for recommendations on how to manage your source code. We’ll go over in detail how to do this for a multi-region deployment later on in this post.</p>
+
+<h3 id="security">Security</h3>
+
+<p>For this scenario, you’ll want to ensure <a href="https://learn.microsoft.com/azure/frontdoor/origin-security?tabs=app-service-functions&amp;pivots=front-door-standard-premium">the only principal that can access your applications is Front Door</a>. Front Door’s features work best when traffic only flows through Front Door. You should configure your origin to block traffic that hasn’t been sent through Front Door. Otherwise, traffic might bypass Front Door’s web application firewall, DDoS protection, and other security features. We’ll configure this as part of the tutorial later on in this post.</p>
+
+<p>Additionally, for scenarios using App Services, consider <a href="https://learn.microsoft.com/azure/app-service/app-service-ip-restrictions#restrict-access-to-an-scm-site">locking down the SCM/advanced tools site</a> as this site will not likely need to be reached through Front Door. You’ll likely want to set up access restrictions that only allow you to conduct your testing as well as enable continuous deployment from your tool of choice. We’ll go into more detail on how to do this during the tutorial later on in this post.</p>
+
+<p>Lastly, for scenarios using App Services, consider <a href="https://azure.github.io/AppService/2020/08/10/securing-data-plane-access.html">disabling basic auth on App Service</a>, which limits access to the FTP and SCM endpoints to users that are backed by Azure Active Directory (AAD). Disabling basic auth will require additional steps to configure continuous deployment. We’ll go through this as well later on in this post.</p>
+
+<h3 id="cost-optimization">Cost optimization</h3>
+
+<p>Choose the Azure Front Door tier that meets your data transfer, routing, and security requirements. See <a href="https://azure.microsoft.com/pricing/details/frontdoor/">Azure Front Door pricing</a> for more details.</p>
+
+<p>Additionally, if you’re using an active/passive multi-region deployment, consider scaling down your App Services in the secondary region and configuring autoscale rules to handle the traffic when traffic is re-directed there. For more details, see the <a href="https://learn.microsoft.com/azure/app-service/manage-scale-up">App Service scaling docs</a>.</p>
+
+<h2 id="infrastructure-deployment-tutorial">Infrastructure deployment tutorial</h2>
+
+<p>In this tutorial, you’ll deploy the scenario shown in the <a href="#workflow">workflow</a> which includes two web apps behind Azure Front Door with access restrictions that only give Front Door direct access to the apps. We’ll use the Azure CLI to create the initial web apps and we’ll use the portal to create the Azure Front Door.</p>
+
+<h3 id="prerequisites">Prerequisites</h3>
+
+<p>An Azure account with an active subscription. <a href="https://azure.microsoft.com/free">Create an account for free</a>.</p>
+
+<h3 id="create-two-instances-of-a-web-app">Create two instances of a web app</h3>
+
+<p>You’ll need two instances of a web app that run in different Azure regions for this tutorial. We’ll use the region pair East US/West US as our two regions and create two quick empty web apps. Feel free to choose you’re own regions or use existing web apps if you already have some deployed.</p>
+
+<p>I’m going to use a single resource group for all resources to make management and clean-up simpler, however consider using separate resource groups for each region/resource as this will further isolate your resources.</p>
+
+<p>Run the following command to create your resource group. Replace the placeholder for “resource-group-name”.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az group create <span class="nt">--name</span> &lt;resource-group-name&gt; <span class="nt">--location</span> eastus
+</code></pre></div></div>
+
+<p>Run the following commands to create the App Service plans. Replace the placeholders for App Service plan name and resource group name.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az appservice plan create <span class="nt">--name</span> &lt;app-service-plan-east-us&gt; <span class="nt">--resource-group</span> &lt;resource-group-name&gt; <span class="nt">--is-linux</span> <span class="nt">--location</span> eastus
+az appservice plan create <span class="nt">--name</span> &lt;app-service-plan-west-us&gt; <span class="nt">--resource-group</span> &lt;resource-group-name&gt; <span class="nt">--is-linux</span> <span class="nt">--location</span> westus
+</code></pre></div></div>
+
+<p>Once the App Service plans are created, run the following commands to create the web apps. Replace the placeholders and be sure to pay attention to the <code class="language-plaintext highlighter-rouge">--plan</code> parameter so that you place one app in each plan (and therefore each region).</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp create <span class="nt">--name</span> &lt;web-app-east-us&gt; <span class="nt">--resource-group</span> &lt;resource-group-name&gt; <span class="nt">--plan</span> &lt;app-service-plan-east-us&gt;
+az webapp create <span class="nt">--name</span> &lt;web-app-west-us&gt; <span class="nt">--resource-group</span> &lt;resource-group-name&gt; <span class="nt">--plan</span> &lt;app-service-plan-west-us&gt;
+</code></pre></div></div>
+
+<p>Make note of the default host name of each web app so you can define the backend addresses when you deploy the Front Door in the next step. It should be in the format <code class="language-plaintext highlighter-rouge">&lt;web-app-name&gt;.azurewebsites.net</code>. This can be found by running the following command or by navigating to the app’s <strong>Overview</strong> page in the <a href="https://portal.azure.com">Azure portal</a>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp show <span class="nt">--name</span> &lt;web-app-name&gt; <span class="nt">--resource-group</span> &lt;resource-group-name&gt; <span class="nt">--query</span> <span class="s2">"hostNames"</span>
+</code></pre></div></div>
+
+<h3 id="disable-basic-auth-for-the-web-apps">Disable basic auth for the web apps</h3>
+
+<p>To disable FTP access to the site, run the following CLI command. Replace the placeholders with your resource group and site name. Be sure to run this command for each of your apps.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az resource update <span class="nt">--resource-group</span> &lt;resource-group-name&gt; <span class="nt">--name</span> ftp <span class="nt">--namespace</span> Microsoft.Web <span class="nt">--resource-type</span> basicPublishingCredentialsPolicies <span class="nt">--parent</span> sites/&lt;web-app-east-us&gt; <span class="nt">--set</span> properties.allow<span class="o">=</span><span class="nb">false</span>
+</code></pre></div></div>
+
+<p>To disable basic auth access to the WebDeploy port and SCM site, run the following CLI command. Replace the placeholders with your resource group and site name.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az resource update <span class="nt">--resource-group</span> &lt;resource-group-name&gt; <span class="nt">--name</span> scm <span class="nt">--namespace</span> Microsoft.Web <span class="nt">--resource-type</span> basicPublishingCredentialsPolicies <span class="nt">--parent</span> sites/&lt;web-app-east-us&gt; <span class="nt">--set</span> properties.allow<span class="o">=</span><span class="nb">false</span>
+</code></pre></div></div>
+
+<p>For more information on disabling basic auth including how to test and monitor logins, see <a href="https://azure.github.io/AppService/2020/08/10/securing-data-plane-access.html">Disabling basic auth on App Service</a>.</p>
+
+<h3 id="create-azure-front-door">Create Azure Front Door</h3>
+
+<p>I’m going to use the portal to create the Front Door since it will help us visualize the various components, however the <a href="https://learn.microsoft.com/azure/frontdoor/create-front-door-cli">CLI or templates</a> can just as easily be used.</p>
+
+<p>Front Door will be configured with priority routing where East US will be our primary region and West US will be the secondary. We’ll use the standard tier which gives us the option to use a Web Application Firewall (WAF) policy for enhanced security.</p>
+
+<ol>
+  <li>From the home page or the Azure menu in the portal, select <strong>+ Create a resource</strong>. Search for ”Front Door and CDN profiles”. Then select <strong>Create</strong>.</li>
+  <li>
+    <p>On the Compare offerings page, select <strong>Custom create</strong>. Then select <strong>Continue</strong> to create a Front Door.</p>
+
+    <p><img src="/AppService/media/2022/11/afd-create-1.png" alt="" /></p>
+  </li>
+  <li>
+    <p>On the ”Basics” tab, enter the following information:</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Setting</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Subscription</td>
+          <td><em>select your subscription</em></td>
+        </tr>
+        <tr>
+          <td>Resource group</td>
+          <td><code class="language-plaintext highlighter-rouge">&lt;resource-group-name&gt;</code></td>
+        </tr>
+        <tr>
+          <td>Name</td>
+          <td><code class="language-plaintext highlighter-rouge">&lt;unique-name&gt;</code></td>
+        </tr>
+        <tr>
+          <td>Tier</td>
+          <td>Standard</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>In the “Endpoint” tab, select <strong>Add an endpoint</strong> and give your endpoint a globally unique name.</li>
+  <li>Next, select <strong>+ Add a route</strong> to configure routing to your Web App origin.</li>
+  <li>
+    <p>On the <strong>Add a route</strong> page, enter the following information and select <strong>Add</strong> to add the route to the endpoint configuration.</p>
+
+    <p><img src="/AppService/media/2022/11/afd-create-2.png" alt="" /></p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Setting</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Name</td>
+          <td>Enter a name to identify the mapping between domains and origin group.</td>
+        </tr>
+        <tr>
+          <td>Domains</td>
+          <td>A domain name has been auto-generated for you to use. If you want to add a custom domain, select <strong>Add a new domain</strong>. This example will use the default.</td>
+        </tr>
+        <tr>
+          <td>Patterns to match</td>
+          <td>Set all the URLs this route will accept. This example will use the default, and accept all URL paths.</td>
+        </tr>
+        <tr>
+          <td>Accepted protocols</td>
+          <td>Select the protocol the route will accept. This example will accept both HTTP and HTTPS requests.</td>
+        </tr>
+        <tr>
+          <td>Redirect</td>
+          <td>Enable this setting to redirect all HTTP traffic to the HTTPS endpoint.</td>
+        </tr>
+        <tr>
+          <td>Origin group</td>
+          <td>Select <strong>Add a new origin group</strong>. For the origin group name, enter <strong>myOriginGroup</strong>. Then select <strong>+ Add an origin</strong>. For the first origin (primary region), enter the name of one of the web apps you’re using for this tutorial for the <em>Name</em> and then for the <em>Origin Type</em> select <strong>App Services</strong>. For the <em>Host name</em>, select the hostname you queried/found in the portal earlier. Leave the rest of the default values the same. Select <strong>Add</strong> to add the origin to the origin group. Repeat the steps to add the second web app as an origin, however when adding the second origin, set the <em>Priority</em> to “2”. This will direct all traffic to the primary origin unless the primary goes down. Once both web app origins have been added, select <strong>Add</strong> to save the origin group configuration.</td>
+        </tr>
+        <tr>
+          <td>Origin path</td>
+          <td>Leave blank.</td>
+        </tr>
+        <tr>
+          <td>Forwarding protocol</td>
+          <td>Select the protocol that will be forwarded to the origin group. This example will match the incoming requests to origins.</td>
+        </tr>
+        <tr>
+          <td>Caching</td>
+          <td>Select the check box if you want to cache contents closer to your users globally using Azure Front Door’s edge POPs and the Microsoft network.</td>
+        </tr>
+        <tr>
+          <td>Rules</td>
+          <td>Once you’ve deployed the Azure Front Door profile, you can configure Rules to apply to your route.</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>Select <strong>+ Add a policy</strong> to apply a Web Application Firewall (WAF) policy to one or more domains in the Azure Front Door profile.</li>
+  <li>On the <strong>Add security policy</strong> page, enter a name to identify this security policy. Then select domains you want to associate the policy with. For <em>WAF Policy</em>, you can select a previously created policy or select <strong>Create New</strong> to create a new policy. Select <strong>Save</strong> to add the security policy to the endpoint configuration.</li>
+  <li>Select <strong>Review + Create</strong>, and then <strong>Create</strong> to deploy the Azure Front Door profile. It will take a few minutes for configurations to be propagated to all edge locations.</li>
+</ol>
+
+<h3 id="restrict-access-to-web-apps-to-the-azure-front-door-instance">Restrict access to web apps to the Azure Front Door instance</h3>
+
+<p>Traffic from Azure Front Door to your application originates from a well known set of IP ranges defined in the AzureFrontDoor.Backend service tag. By using a service tag restriction rule, you can <a href="https://learn.microsoft.com/azure/frontdoor/origin-security">restrict traffic to only originate from Azure Front Door</a>.</p>
+
+<p>Before setting up the App Service access restriction, take note of the <em>Front Door ID</em> which can be found on the <strong>Overview</strong> page for the Front Door instance in the <strong>Essentials</strong> section. This will be needed to ensure traffic only originates from your specific Front Door instance by further filtering the incoming requests based on the unique http header that your Azure Front Door sends.</p>
+
+<p>For your first web app, navigate to the <strong>Access restriction (preview)</strong> page.</p>
+
+<p><img src="/AppService/media/2022/11/web-app-access-restrictions-1.png" alt="" /></p>
+
+<p>For the <em>Main site</em> add the following rule. Insert the Front Door ID which you copied earlier under <em>X-Azure-FDID</em>.</p>
+
+<p><img src="/AppService/media/2022/11/web-app-access-restrictions-2.png" alt="" /></p>
+
+<p>Be sure to repeat these same steps for the other web app.</p>
+
+<h3 id="lock-down-scmadvanced-tool-site">Lock down SCM/advanced tool site</h3>
+
+<p>Earlier on when you were creating the web apps, you disabled basic authentication to the WebDeploy port and SCM site. You’ll want to also disable all public access to the SCM site. Doing this, however, limits how code can be deployed to your app. Later on, we’ll walk through how to give a service principal access to deploy your source code. To disable public access, navigate to the <strong>Access restriction (preview)</strong> page for your app and select the <em>Advanced tool site</em> tab. For the <em>Unmatched rule action</em>, select “Deny” and then <strong>Save</strong>. Repeat this process for the other app.</p>
+
+<p>You can optionally <a href="https://learn.microsoft.com/azure/app-service/app-service-ip-restrictions#restrict-access-to-an-scm-site">configure access restrictions to the SCM site</a> as well for the app if you need to give other principals access. To do so, navigate to the <em>Advanced tool site</em> tab and add any needed rules. The access restrictions you apply to the SCM site will depend on how you’re managing and deploying your source code and conducting your testing.</p>
+
+<h3 id="verify-azure-front-door">Verify Azure Front Door</h3>
+
+<p>To confirm access to your apps is restricted to Front Door, try navigating to your apps directly using their endpoints. If you are able to access them, review their access restrictions and ensure access is limited to only Front Door.</p>
+
+<p>Now that a couple minutes have passed since the Front Door instance has been created, it should be ready and deployed globally. In a browser, enter the endpoint hostname for the Front Door. This endpoint can be found on the <strong>Overview</strong> page for your Front Door. If everything has been configured correctly, you should be reaching your app in your primary region.</p>
+
+<p>You can test failover by stopping the app in your primary region and then navigating to your Front Door endpoint again. Note that there may be a delay between when the traffic will be directed to the second web app depending on your health probe frequency. You may need to refresh the page a couple times. Try stopping the second web app as well and you should see an error page. This proves it redirected to the secondary region.</p>
+
+<h2 id="managing-source-code">Managing source code</h2>
+
+<p>At this point, you’ve provisioned all of the resources you need to run a highly available multi-region web app. All that’s left is deploying the actual web app source code as well as understanding how to keep the app updated across the various regions over time as changes and updates are made. As mentioned in the <a href="#infrastructure-deployment">infrastructure deployment</a> section, just like for your infrastructure, it’s a good idea to use a CI/CD tool to manage your source code as well so any changes you make can automatically get deployed across all instances of your app. If you don’t configure continuous deployment, you’ll need to manually update each app in each region every time there is a code change.</p>
+
+<p>App Service supports <a href="https://learn.microsoft.com/azure/app-service/deploy-continuous-deployment">continuous deployment from GitHub and Azure Repos</a>. For this tutorial, we’ll use GitHub and a repo that already <a href="https://learn.microsoft.com/azure/app-service/deploy-continuous-deployment?tabs=github#prepare-your-repository">meets the requirements for continuous deployment with App Service</a>. Feel free to use an app of your choosing, but be sure it meets the defined requirements.</p>
+
+<p>We’re going to go over the following concepts in this next section including:</p>
+
+<ul>
+  <li>Configuring the deployment source for each app</li>
+  <li>Keeping the apps updated over time across multiple regions</li>
+  <li>Best practices for making source code updates by using deployment slots, slot swap, and updating Azure Front Door’s route/origin groups</li>
+</ul>
+
+<h3 id="prerequisites-for-source-code-deployment">Prerequisites for source code deployment</h3>
+
+<p>We’ll be using a .NET 6.0 sample app from GitHub. If you don’t already have a GitHub account, <a href="https://github.com/">create an account for free</a>.</p>
+
+<ol>
+  <li>Go to the <a href="https://github.com/Azure-Samples/dotnetcore-docs-hello-world">.NET 6.0 sample app</a>.</li>
+  <li>Select the <strong>Fork</strong> button in the upper right on the GitHub page.</li>
+  <li>Select the <strong>Owner</strong> and leave the default Repository name.</li>
+  <li>Select <strong>Create</strong> fork.</li>
+</ol>
+
+<p>At this point, your source code is all set up and ready to be deployed to your apps.</p>
+
+<h3 id="configure-the-deployment-source">Configure the deployment source</h3>
+
+<p>You’ll need to update your app’s stack settings to match the source code if you’ve been following along in this tutorial.</p>
+
+<ol>
+  <li>Go to one of your apps.</li>
+  <li>In the left pane, select <strong>Configuration</strong> and then select the <strong>General settings</strong> tab.</li>
+  <li>Under <strong>Stack settings</strong>, set the <em>Stack</em> to “.NET” and the <em>.NET version</em> to “.NET 6 (LTS)”.</li>
+  <li>Select <strong>Save</strong> and then <strong>Continue</strong> to confirm the update.</li>
+  <li>Repeat the above steps for your other app.</li>
+</ol>
+
+<p>As mentioned earlier, since you locked down the SCM site and disabled basic auth, the default method for deploying code with GitHub Actions isn’t going to work. This is because the default method uses a publishing profile. Instead, you have two options to authenticate with App Service for GitHub Actions - using a service principal or OpenID Connect. We have a detailed doc that goes through how to do this for each of your options - <a href="https://learn.microsoft.com/azure/app-service/deploy-github-actions?tabs=userlevel">Deploy to App Service using GitHub Actions</a>. We also have guidance for <a href="https://learn.microsoft.com/azure/app-service/deploy-azure-pipelines?tabs=yaml">Azure DevOps using Azure Pipelines</a>. Additionally, for more info on this topic as well as additional examples, we have a series of blog posts that walk through scenarios you may be interested in.</p>
+
+<ul>
+  <li><a href="https://azure.github.io/AppService/2021/01/04/deploying-to-network-secured-sites.html">Deploying to Network-secured sites</a></li>
+  <li><a href="https://azure.github.io/AppService/2021/03/01/deploying-to-network-secured-sites-2.html">Deploying to Network-secured sites, Part 2</a></li>
+</ul>
+
+<p>For this blog post, we’ll walk through how to authenticate with App Service for GitHub Actions with the most secure option, which is OpenID Connect. You can choose to use a service principal which follows the same general process but omits a couple steps.</p>
+
+<h3 id="configure-authentication-with-app-service-for-github-actions-with-openid-connect">Configure authentication with App Service for GitHub Actions with OpenID Connect</h3>
+
+<ol>
+  <li>
+    <p>Run the following command to create the Active Directory application.</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> az ad app create <span class="nt">--display-name</span> myApp
+</code></pre></div>    </div>
+
+    <p>This command will output JSON with an <code class="language-plaintext highlighter-rouge">appId</code>. Copy this, you’ll need it in the next step.</p>
+  </li>
+  <li>
+    <p>Run the following command to create a service principal. Replace the <code class="language-plaintext highlighter-rouge">appId</code> placeholder with the value you copied in the previous step.</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> az ad sp create <span class="nt">--id</span> &lt;appId&gt;
+</code></pre></div>    </div>
+  </li>
+  <li>You’ll now need to create a new role assignment for your newly created service principal so that it has access to your resources. You’ll need to grant access at the subscription level and give it the “Contributor” role. You can scope the role assignment down further based on your use case. To create this role assignment, search for “Subscriptions” in the search box at the top of the portal and select your subscription.</li>
+  <li>Select <strong>Access Control (IAM)</strong> in the left-hand menu.</li>
+  <li>Select <strong>+ Add</strong> at the top and then <strong>Add role assignment</strong>.</li>
+  <li>Select the <strong>Contributor</strong> role and then go to the <strong>Members</strong> tab.</li>
+  <li>Select <strong>+ Select members</strong> and then find your service principal.</li>
+  <li>Select <strong>Review + assign</strong>.</li>
+  <li>Once the service principal has the needed role assignment, <a href="https://learn.microsoft.com/graph/api/application-post-federatedidentitycredentials?view=graph-rest-beta&amp;preserve-view=true&amp;tabs=http">create a new federated identity credential</a> for your active directory application. For detailed guidance, see <a href="https://learn.microsoft.com/azure/developer/github/connect-from-azure?tabs=azure-portal%2Clinux#add-federated-credentials">Add federated credentials</a>.
+    <ol>
+      <li>In the portal, search for in the search box and then go to <strong>App Registrations</strong> and then select the app you created earlier.</li>
+      <li>Select <strong>Certificates &amp; secrets</strong> in the left-hand menu.</li>
+      <li>In the <strong>Federated credentials</strong> tab, select <strong>Add credential</strong>.</li>
+      <li>
+        <p>Select the credential scenario <strong>GitHub Actions deploying Azure resources</strong>. Generate your credential by entering your credential details.</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Field</th>
+              <th>Description</th>
+              <th>Example</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Organization</td>
+              <td>Your GitHub organization name or GitHub username.</td>
+              <td>contoso</td>
+            </tr>
+            <tr>
+              <td>Repository</td>
+              <td>Your GitHub Repository name.</td>
+              <td>dotnetcore-docs-hello-world</td>
+            </tr>
+            <tr>
+              <td>Entity type</td>
+              <td>The filter used to scope the OIDC requests from GitHub workflows. This field is used to generate the <strong>subject</strong> claim.</td>
+              <td>Branch</td>
+            </tr>
+            <tr>
+              <td>GitHub branch name</td>
+              <td>The name of the environment, branch, or tag.</td>
+              <td>master</td>
+            </tr>
+            <tr>
+              <td>Name</td>
+              <td>Identifier for the federated credential.</td>
+              <td>myCredential</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+    </ol>
+  </li>
+  <li>You need to provide your application’s <strong>Client ID</strong>, <strong>Tenant ID</strong>, and <strong>Subscription ID</strong> to the login action as part of the GitHub Action workflow we will be working on. These values can either be provided directly in the workflow or can be stored in GitHub secrets and referenced in your workflow. Saving the values as GitHub secrets is the more secure option.
+    <ol>
+      <li>Open your GitHub repository and go to <strong>Settings</strong> &gt; <strong>Security</strong> &gt; <strong>Secrets and variables</strong> &gt; <strong>Actions</strong> &gt; <strong>New repository secret</strong>.</li>
+      <li>
+        <p>Create the following secrets. To find the values for <strong>Client ID</strong> and <strong>Tenant ID</strong>, go back to <strong>App Registrations</strong> in the portal and select the app you created earlier. The values will be under the <strong>Essentials</strong> on the <strong>Overview</strong> page.</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>AZURE_CLIENT_ID</td>
+              <td><code class="language-plaintext highlighter-rouge">&lt;application/client-id&gt;</code></td>
+            </tr>
+            <tr>
+              <td>AZURE_TENANT_ID</td>
+              <td><code class="language-plaintext highlighter-rouge">&lt;directory/tenant-id&gt;</code></td>
+            </tr>
+            <tr>
+              <td>AZURE_SUBSCRIPTION_ID</td>
+              <td><code class="language-plaintext highlighter-rouge">&lt;subscription-id&gt;</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+    </ol>
+  </li>
+</ol>
+
+<h3 id="deploy-the-code">Deploy the code</h3>
+
+<p>You’re now ready to deploy the code. However, configuring continuous deployment for production apps is not recommended because it makes testing and validation more complicated. Instead, use a combination of staging slots and slot swap to move code from your testing environment to production.</p>
+
+<p>We’ll create deployment slots for each instance of our app and then walk through how to slot swap to get the code into production.</p>
+
+<ol>
+  <li>Go to one of your apps.</li>
+  <li>In the left pane, select <strong>Deployment slots</strong>.</li>
+  <li>Select <strong>+ Add Slot</strong>.</li>
+  <li>Input “stage” for <em>Name</em> and to keep things simple, we’ll clone the settings from the production slot by selecting the app’s name from the <em>Clone settings from:</em> dropdown.</li>
+  <li>Select <strong>Close</strong> at the bottom of the slot configuration pane.</li>
+  <li>Select the newly created stage slot.</li>
+  <li>
+    <p>In the left pane, select <strong>Deployment Center</strong> and make sure you’re on the <strong>Settings</strong> tab.</p>
+
+    <p><img src="/AppService/media/2022/11/deployment-source.png" alt="" /></p>
+  </li>
+  <li>For <strong>Source</strong>, select “GitHub”.</li>
+  <li>If you’re deploying from GitHub for the first time, select <strong>Authorize</strong> and follow the authorization prompts.</li>
+  <li>
+    <p>After you authorize your Azure account with GitHub, select the Organization, Repository, and Branch to configure CI/CD as shown below. If you can’t find an organization or repository, you might need to enable more permissions on GitHub. For more information, see <a href="https://docs.github.com/organizations/managing-user-access-to-your-organizations-repositories">Managing access to your organization’s repositories</a>.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Setting</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Organization</td>
+          <td><code class="language-plaintext highlighter-rouge">&lt;your GitHub username&gt;</code></td>
+        </tr>
+        <tr>
+          <td>Repository</td>
+          <td>dotnetcore-docs-hello-world</td>
+        </tr>
+        <tr>
+          <td>Branch</td>
+          <td>master</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>Leave the remaining defaults and select <strong>Save</strong>. You can track the deployment and commits in the <strong>Logs</strong> tab in the <strong>Deployment Center</strong> to monitor progress.</li>
+  <li>Repeat the above steps for your other app.</li>
+</ol>
+
+<h3 id="create-the-github-actions-workflow">Create the GitHub Actions workflow</h3>
+
+<p>If you wait a couple minutes and review the deployment logs, you’ll see that the deployment to your apps failed. This is happening for two reasons - the default workflow created in the previous step when you were configuring continuous deployment with GitHub Actions uses a publishing profile to authenticate and you disabled this level of access, and the access restrictions for the SCM site for your staging slot deny all traffic. You first need to update the unmatched rule action for the Advanced tool site just for your staging slots to “Allow”. You’ve already disabled basic auth to your SCM site so access to it is already restricted to Azure AD authenticated principals. Allowing traffic using the access restrictions allows GitHub to reach your app and deploy your code. If you’re using GitHub Enterprise or another privately hosted source code repo, you can define specific access restrictions for your IP ranges instead. You then need to edit the GitHub Actions workflow as shown below so that it uses your OpenID Connect credentials instead of the publish profile. For sample workflows, see the OpenID Connect tab in <a href="https://learn.microsoft.com/azure/app-service/deploy-github-actions?tabs=openid#deploy-to-app-service">Deploy to App Service</a>. If you’ve been following along, use the below workflow.</p>
+
+<ol>
+  <li>Open your GitHub repository and go to the <code class="language-plaintext highlighter-rouge">dotnetcore-docs-hello-world/.github/workflows/</code> directory. You’ll see two autogenerated workflows, one for each app you created. Repeat the next step for each of them.</li>
+  <li>
+    <p>Select the “pencil” button in the top right to edit the file. Replace the contents with the below, which assumes you created the GitHub secrets earlier, update the placeholder for <code class="language-plaintext highlighter-rouge">AZURE_WEBAPP_NAME</code> for your apps, and then commit directly to the master branch. This commit will trigger the GitHub Action to run again and deploy your code, this time using OpenID Connect to authenticate.</p>
+
+    <div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="na">name</span><span class="pi">:</span> <span class="s">.NET Core</span>
+    
+ <span class="na">on</span><span class="pi">:</span> 
+   <span class="na">push</span><span class="pi">:</span>
+     <span class="na">branches</span><span class="pi">:</span>
+       <span class="pi">-</span> <span class="s">master</span>
+   <span class="na">workflow_dispatch</span><span class="pi">:</span>
+    
+ <span class="na">permissions</span><span class="pi">:</span>
+   <span class="na">id-token</span><span class="pi">:</span> <span class="s">write</span>
+   <span class="na">contents</span><span class="pi">:</span> <span class="s">read</span>
+    
+ <span class="na">env</span><span class="pi">:</span>
+   <span class="na">AZURE_WEBAPP_NAME</span><span class="pi">:</span> <span class="s">&lt;web-app-name&gt;</span>    <span class="c1"># set this to your application's name</span>
+   <span class="na">AZURE_WEBAPP_PACKAGE_PATH</span><span class="pi">:</span> <span class="s1">'</span><span class="s">.'</span>      <span class="c1"># set this to the path to your web app project, defaults to the repository root</span>
+   <span class="na">DOTNET_VERSION</span><span class="pi">:</span> <span class="s1">'</span><span class="s">6.0.x'</span>           <span class="c1"># set this to the dot net version to use</span>
+    
+ <span class="na">jobs</span><span class="pi">:</span>
+   <span class="na">build</span><span class="pi">:</span>
+     <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    
+     <span class="na">steps</span><span class="pi">:</span>
+       <span class="c1"># Checkout the repo</span>
+       <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@main</span>
+       <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">azure/login@v1</span>
+         <span class="na">with</span><span class="pi">:</span>
+           <span class="na">client-id</span><span class="pi">:</span> <span class="s">${{ secrets.AZURE_CLIENT_ID }}</span>
+           <span class="na">tenant-id</span><span class="pi">:</span> <span class="s">${{ secrets.AZURE_TENANT_ID }}</span>
+           <span class="na">subscription-id</span><span class="pi">:</span> <span class="s">${{ secrets.AZURE_SUBSCRIPTION_ID }}</span>
+    
+       <span class="c1"># Setup .NET Core SDK</span>
+       <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Setup .NET Core</span>
+         <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/setup-dotnet@v1</span>
+         <span class="na">with</span><span class="pi">:</span>
+           <span class="na">dotnet-version</span><span class="pi">:</span> <span class="s">${{ env.DOTNET_VERSION }}</span> 
+          
+       <span class="c1"># Run dotnet build and publish</span>
+       <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">dotnet build and publish</span>
+         <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+           <span class="s">dotnet restore</span>
+           <span class="s">dotnet build --configuration Release</span>
+           <span class="s">dotnet publish -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp' </span>
+           <span class="no">   </span>
+       <span class="c1"># Deploy to Azure Web apps</span>
+       <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Run</span><span class="nv"> </span><span class="s">Azure</span><span class="nv"> </span><span class="s">webapp</span><span class="nv"> </span><span class="s">deploy</span><span class="nv"> </span><span class="s">action</span><span class="nv"> </span><span class="s">using</span><span class="nv"> </span><span class="s">publish</span><span class="nv"> </span><span class="s">profile</span><span class="nv"> </span><span class="s">credentials'</span>
+             <span class="na">uses</span><span class="pi">:</span> <span class="s">azure/webapps-deploy@v2</span>
+             <span class="na">with</span><span class="pi">:</span> 
+               <span class="na">app-name</span><span class="pi">:</span> <span class="s">${{ env.AZURE_WEBAPP_NAME }}</span>
+           <span class="na">slot-name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">stage'</span> <span class="c1"># replace with your slot name</span>
+           <span class="na">package</span><span class="pi">:</span> <span class="s1">'</span><span class="s">${{</span><span class="nv"> </span><span class="s">env.AZURE_WEBAPP_PACKAGE_PATH</span><span class="nv"> </span><span class="s">}}/myapp'</span>
+          
+       <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">logout</span>
+         <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+           <span class="s">az logout</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>After a couple minutes, once the deployments to the staging slots complete, if you try accessing your slot’s endpoint directly, you’ll receive an “Error 403 - Forbidden” because the access restrictions were cloned from the production site. There are a couple strategies that can be used to review the staging site and then eventually get it into production. To quickly validate that your staging site is working, you can temporarily update its access restrictions by adding your IP to the allow list for example and then attempt to reach it’s endpoint again. Be sure to remove that rule once you are done validating. Alternatively, if you don’t plan on using slot traffic routing as described in the next section, you can update the access restrictions to meet your testing specifications.</p>
+
+<p>Since your Front Door is still pointing to your production apps, if you go to your Front Door’s endpoint now, you’ll still see the initial empty apps that were created earlier. You have a couple options here - you can either slot swap and your new code will move into production all at once, or you can try a variation of A/B testing using slot traffic routing. We’ll go over both of these features.</p>
+
+<h3 id="slot-traffic-routing">Slot traffic routing</h3>
+
+<p>Traffic routing with slots allows you to direct a pre-defined portion of your user traffic to each slot. Initially, 100% of traffic is directed to the production site. However, you have the ability, for example, to send 10% of your traffic to your staging slot. So when users try to access your app, 10% of them will automatically be routed there. No changes are needed on your Front Door instance to accomplish this. To learn more about slot swaps and staging environments in App Service see <a href="https://learn.microsoft.com/azure/app-service/deploy-staging-slots">Set up staging environments in Azure App Service</a>.</p>
+
+<p><img src="/AppService/media/2022/11/routetraffic.png" alt="" /></p>
+
+<p>If you want to validate this feature as part of this tutorial, it will take some trial and error. The best way to validate it would be to send 100% of the traffic to the staging slot and then go the Front Door endpoint. You may need to clear your browser’s cache, refresh the page, or purge Front Door’s cache if you’re still not seeing your deployed changes.</p>
+
+<p><img src="/AppService/media/2022/11/purge-cache.png" alt="" /></p>
+
+<h3 id="slot-swap">Slot swap</h3>
+
+<p>Once you’re done testing and validating, you can perform a <a href="https://learn.microsoft.com/azure/app-service/deploy-staging-slots#swap-two-slots">slot swap</a> from your staging site to your production site. You’ll need to do this for both instances of you app. During a slot swap, the App Service platform <a href="https://learn.microsoft.com/azure/app-service/deploy-staging-slots#swap-operation-steps">ensures the target slot doesn’t experience downtime</a>.</p>
+
+<p>To perform the swap:</p>
+
+<ol>
+  <li>
+    <p>Go to your app’s <strong>Deployment slots</strong> page and select <strong>Swap</strong>. The <strong>Swap</strong> dialog box shows settings in the selected source and target slots that will be changed.</p>
+
+    <p><img src="/AppService/media/2022/11/swapbuttonbar.png" alt="" /></p>
+  </li>
+  <li>
+    <p>Select the desired <strong>Source</strong> and <strong>Target</strong> slots. Also, select the <strong>Source Changes</strong> and <strong>Target Changes</strong> tabs and verify that the configuration changes are expected. When you’re finished, you can swap the slots immediately by selecting <strong>Swap</strong>.</p>
+
+    <p><img src="/AppService/media/2022/11/swapimmediately.png" alt="" /></p>
+  </li>
+  <li>
+    <p>Repeat the process for your other app.</p>
+  </li>
+</ol>
+
+<p>After a few minutes, you can navigate to your Front Door’s endpoint to validate the slot swap succeeded. Ensure you reset the slot traffic routing if needed. You may need to clear your browser’s cache, refresh the page, or purge Front Door’s cache if you’re still not seeing your deployed changes.</p>
+
+<p>At this point, your apps are up and running and any changes you make to your source code will automatically trigger an update to both of your staging apps. You can then repeat the slot swap process described above when you’re ready to move that code into production.</p>
+
+<h3 id="additional-guidance">Additional guidance</h3>
+
+<p>If you’re concerned about potential disruptions or issues with continuity across regions, as in some customers seeing one version of your app while others see another, or if you’re making significant changes to your apps, you can temporarily remove the site that’s undergoing the slot swap from your Front Door’s origin group and all traffic will be directed to the other origin. To do this, navigate to the <strong>Update origin group</strong> pane as shown below and <strong>Delete</strong> the origin that is undergoing the change. Once you’ve made all of your changes and are ready to serve traffic there again, you can return to the same pane and select <strong>+ Add an origin</strong> to re-add the origin.</p>
+
+<p><img src="/AppService/media/2022/11/removeorigin.png" alt="" /></p>
+
+<p>If you’d prefer to not delete and then add re-add origins, you can create additional origin groups for your Front Door instance. You can then associate the route to the origin group pointing to the intended origin. For example, you can create two new origin groups, one for your primary region and one for your secondary region. When your primary region is undergoing a change, associate the route with your secondary region and vice versa when your secondary region is undergoing a change. When all changes are complete, you can associate the route with your original origin group which contains both regions. This method works because a route can only be associated with one origin group at a time. However, if you have many regions and apps, it will get messy since you’ll need one origin group per region and potentially additional origin groups if you have multiple apps.</p>
+
+<p>To demonstrate working with multiple origins, in the screenshot below, there are three origin groups. “MyOriginGroup” consists of both web apps, and the other two origin groups each consist of the web app in their respective region. In the example here, the app in the primary region is undergoing a change, so before I started that change, I associated the route with “MySecondaryRegion” so all traffic would be sent to the app in my secondary region during the change period. You can update the route by selecting “Unassociated” which will bring up the <strong>Associate routes</strong> pane.</p>
+
+<p><img src="/AppService/media/2022/11/associateroutes.png" alt="" /></p>
+
+<h2 id="clean-up-resources">Clean up resources</h2>
+
+<p>After you’re done, you can remove all the items you created. Deleting a resource group also deletes its contents. If you don’t intend to use this Azure Front Door, you should remove these resources to avoid unnecessary charges.</p>
+
+<h2 id="next-steps">Next steps</h2>
+
+<p>If you’re interested in learning about another web app pattern for n-tier web applications, see the next post in this series called <a href="https://azure.github.io/AppService/2022/12/02/n-tier-web-app.html">How to deploy a secure n-tier web app</a>.</p>
+
+<p>Zone redundancy is another infrastructure pattern that can provide high availability by replicating your services and data across availability zones to protect against single points of failure. For a detailed reference architecture on this for App Service, see <a href="https://learn.microsoft.com/azure/architecture/reference-architectures/app-service-web-app/zone-redundant">Highly available zone-redundant web application</a>.</p>
+
+<h2 id="deploy-from-armbicep">Deploy from ARM/Bicep</h2>
+
+<p>All of the resources in this post can be deployed using an ARM/Bicep template. A sample template is shown below, which creates empty apps and staging slots behind Front Door following the security best practices outlined in this post. You’ll need to configure the deployment source as well as the service principal once the template resources are created. To learn how to deploy ARM/Bicep templates, see <a href="https://learn.microsoft.com/azure/azure-resource-manager/bicep/deploy-cli">How to deploy resources with Bicep and Azure CLI</a>.</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">@</span><span class="s">description('The location into which regionally scoped resources should be deployed. Note that Front Door is a global resource.')</span>
+<span class="s">param location string = 'canadacentral'</span>
+
+<span class="err">@</span><span class="s">description('The location into which regionally scoped resources for the secondary should be deployed.')</span>
+<span class="s">param secondaryLocation string = 'canadaeast'</span>
+
+<span class="err">@</span><span class="s">description('The name of the App Service application to create. This must be globally unique.')</span>
+<span class="s">param appName string = 'myapp-${uniqueString(resourceGroup().id)}'</span>
+
+<span class="err">@</span><span class="s">description('The name of the secondary App Service application to create. This must be globally unique.')</span>
+<span class="s">param secondaryAppName string = 'mysecondaryapp-${uniqueString(resourceGroup().id)}'</span>
+
+<span class="err">@</span><span class="s">description('The name of the SKU to use when creating the App Service plan.')</span>
+<span class="s">param appServicePlanSkuName string = 'S1'</span>
+
+<span class="err">@</span><span class="s">description('The number of worker instances of your App Service plan that should be provisioned.')</span>
+<span class="s">param appServicePlanCapacity int = </span><span class="m">1</span>
+
+<span class="err">@</span><span class="s">description('The name of the Front Door endpoint to create. This must be globally unique.')</span>
+<span class="s">param frontDoorEndpointName string = 'afd-${uniqueString(resourceGroup().id)}'</span>
+
+<span class="err">@</span><span class="s">description('The name of the SKU to use when creating the Front Door profile.')</span>
+<span class="err">@</span><span class="s">allowed([</span>
+  <span class="s">'Standard_AzureFrontDoor'</span>
+  <span class="s">'Premium_AzureFrontDoor'</span>
+<span class="err">]</span><span class="s">)</span>
+<span class="s">param frontDoorSkuName string = 'Standard_AzureFrontDoor'</span>
+
+<span class="s">var appServicePlanName = 'AppServicePlan'</span>
+<span class="s">var secondaryAppServicePlanName = 'SecondaryAppServicePlan'</span>
+
+<span class="s">var frontDoorProfileName = 'MyFrontDoor'</span>
+<span class="s">var frontDoorOriginGroupName = 'MyOriginGroup'</span>
+<span class="s">var frontDoorOriginName = 'MyAppServiceOrigin'</span>
+<span class="s">var secondaryFrontDoorOriginName = 'MySecondaryAppServiceOrigin'</span>
+<span class="s">var frontDoorRouteName = 'MyRoute'</span>
+
+<span class="s">resource frontDoorProfile 'Microsoft.Cdn/profiles@2021-06-01' = {</span>
+  <span class="s">name</span><span class="err">:</span> <span class="s">frontDoorProfileName</span>
+  <span class="s">location</span><span class="err">:</span> <span class="s1">'</span><span class="s">global'</span>
+  <span class="na">sku</span><span class="pi">:</span> <span class="pi">{</span>
+    <span class="nv">name</span><span class="pi">:</span> <span class="nv">frontDoorSkuName</span>
+  <span class="pi">}</span>
+<span class="err">}</span>
+
+<span class="s">resource appServicePlan 'Microsoft.Web/serverFarms@2020-06-01' = {</span>
+  <span class="s">name</span><span class="err">:</span> <span class="s">appServicePlanName</span>
+  <span class="s">location</span><span class="err">:</span> <span class="s">location</span>
+  <span class="s">sku</span><span class="err">:</span> <span class="pi">{</span>
+    <span class="nv">name</span><span class="pi">:</span> <span class="nv">appServicePlanSkuName</span>
+    <span class="nv">capacity</span><span class="pi">:</span> <span class="nv">appServicePlanCapacity</span>
+  <span class="pi">}</span>
+  <span class="na">properties</span><span class="pi">:</span> <span class="pi">{</span>
+    <span class="nv">reserved</span><span class="pi">:</span> <span class="nv">true</span>
+  <span class="pi">}</span>
+  <span class="na">kind</span><span class="pi">:</span> <span class="s1">'</span><span class="s">app'</span>
+<span class="err">}</span>
+
+<span class="s">resource secondaryAppServicePlan 'Microsoft.Web/serverFarms@2020-06-01' = {</span>
+  <span class="s">name</span><span class="err">:</span> <span class="s">secondaryAppServicePlanName</span>
+  <span class="s">location</span><span class="err">:</span> <span class="s">secondaryLocation</span>
+  <span class="s">sku</span><span class="err">:</span> <span class="pi">{</span>
+    <span class="nv">name</span><span class="pi">:</span> <span class="nv">appServicePlanSkuName</span>
+    <span class="nv">capacity</span><span class="pi">:</span> <span class="nv">appServicePlanCapacity</span>
+  <span class="pi">}</span>
+  <span class="na">properties</span><span class="pi">:</span> <span class="pi">{</span>
+    <span class="nv">reserved</span><span class="pi">:</span> <span class="nv">true</span>
+  <span class="pi">}</span>
+  <span class="na">kind</span><span class="pi">:</span> <span class="s1">'</span><span class="s">app'</span>
+<span class="err">}</span>
+
+<span class="s">resource app 'Microsoft.Web/sites@2020-06-01' = {</span>
+  <span class="s">name</span><span class="err">:</span> <span class="s">appName</span>
+  <span class="s">location</span><span class="err">:</span> <span class="s">location</span>
+  <span class="s">kind</span><span class="err">:</span> <span class="s1">'</span><span class="s">app'</span>
+  <span class="na">identity</span><span class="pi">:</span> <span class="pi">{</span>
+    <span class="nv">type</span><span class="pi">:</span> <span class="s1">'</span><span class="s">SystemAssigned'</span>
+  <span class="pi">}</span>
+  <span class="na">properties</span><span class="pi">:</span> <span class="pi">{</span>
+    <span class="nv">serverFarmId</span><span class="pi">:</span> <span class="nv">appServicePlan.id</span>
+    <span class="nv">httpsOnly</span><span class="pi">:</span> <span class="nv">true</span>
+    <span class="nv">siteConfig</span><span class="pi">:</span> <span class="pi">{</span>
+      <span class="nv">detailedErrorLoggingEnabled</span><span class="pi">:</span> <span class="nv">true</span>
+      <span class="nv">httpLoggingEnabled</span><span class="pi">:</span> <span class="nv">true</span>
+      <span class="nv">requestTracingEnabled</span><span class="pi">:</span> <span class="nv">true</span>
+      <span class="nv">ftpsState</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Disabled'</span>
+      <span class="nv">minTlsVersion</span><span class="pi">:</span> <span class="s1">'</span><span class="s">1.2'</span>
+      <span class="nv">ipSecurityRestrictions</span><span class="pi">:</span> <span class="pi">[</span>
+        <span class="pi">{</span>
+          <span class="nv">tag</span><span class="pi">:</span> <span class="s1">'</span><span class="s">ServiceTag'</span>
+          <span class="nv">ipAddress</span><span class="pi">:</span> <span class="s1">'</span><span class="s">AzureFrontDoor.Backend'</span>
+          <span class="nv">action</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Allow'</span>
+          <span class="nv">priority</span><span class="pi">:</span> <span class="nv">100</span>
+          <span class="nv">headers</span><span class="pi">:</span> <span class="pi">{</span>
+            <span class="s1">'</span><span class="s">x-azure-fdid'</span><span class="pi">:</span> <span class="pi">[</span>
+              <span class="nv">frontDoorProfile.properties.frontDoorId</span>
+            <span class="pi">]</span>
+          <span class="pi">}</span>
+          <span class="nv">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Allow</span><span class="nv"> </span><span class="s">traffic</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">Front</span><span class="nv"> </span><span class="s">Door'</span>
+        <span class="pi">}</span>
+      <span class="pi">]</span>
+      <span class="nv">scmIpSecurityRestrictionsDefaultAction</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Deny'</span>
+    <span class="pi">}</span>
+  <span class="pi">}</span>
+<span class="err">}</span>
+
+<span class="s">resource ftpPolicy 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022-03-01' = {</span>
+  <span class="s">name</span><span class="err">:</span> <span class="s1">'</span><span class="s">ftp'</span>
+  <span class="na">kind</span><span class="pi">:</span> <span class="s1">'</span><span class="s">string'</span>
+  <span class="na">parent</span><span class="pi">:</span> <span class="s">app</span>
+  <span class="na">location</span><span class="pi">:</span> <span class="s">location</span>
+  <span class="na">properties</span><span class="pi">:</span> <span class="pi">{</span>
+    <span class="nv">allow</span><span class="pi">:</span> <span class="nv">false</span>
+  <span class="pi">}</span>
+<span class="err">}</span>
+
+<span class="s">resource scmPolicy 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022-03-01' = {</span>
+  <span class="s">name</span><span class="err">:</span> <span class="s1">'</span><span class="s">scm'</span>
+  <span class="na">kind</span><span class="pi">:</span> <span class="s1">'</span><span class="s">string'</span>
+  <span class="na">parent</span><span class="pi">:</span> <span class="s">app</span>
+  <span class="na">location</span><span class="pi">:</span> <span class="s">location</span>
+  <span class="na">properties</span><span class="pi">:</span> <span class="pi">{</span>
+    <span class="nv">allow</span><span class="pi">:</span> <span class="nv">false</span>
+  <span class="pi">}</span>
+<span class="err">}</span>
+
+<span class="s">resource appSlot 'Microsoft.Web/sites/slots@2020-06-01' = {</span>
+  <span class="s">name</span><span class="err">:</span> <span class="s1">'</span><span class="s">${appName}/stage'</span>
+  <span class="na">location</span><span class="pi">:</span> <span class="s">location</span>
+  <span class="na">kind</span><span class="pi">:</span> <span class="s1">'</span><span class="s">app'</span>
+  <span class="na">identity</span><span class="pi">:</span> <span class="pi">{</span>
+    <span class="nv">type</span><span class="pi">:</span> <span class="s1">'</span><span class="s">SystemAssigned'</span>
+  <span class="pi">}</span>
+  <span class="na">properties</span><span class="pi">:</span> <span class="pi">{</span>
+    <span class="nv">serverFarmId</span><span class="pi">:</span> <span class="nv">appServicePlan.id</span>
+    <span class="nv">httpsOnly</span><span class="pi">:</span> <span class="nv">true</span>
+    <span class="nv">siteConfig</span><span class="pi">:</span> <span class="pi">{</span>
+      <span class="nv">detailedErrorLoggingEnabled</span><span class="pi">:</span> <span class="nv">true</span>
+      <span class="nv">httpLoggingEnabled</span><span class="pi">:</span> <span class="nv">true</span>
+      <span class="nv">requestTracingEnabled</span><span class="pi">:</span> <span class="nv">true</span>
+      <span class="nv">ftpsState</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Disabled'</span>
+      <span class="nv">minTlsVersion</span><span class="pi">:</span> <span class="s1">'</span><span class="s">1.2'</span>
+      <span class="nv">ipSecurityRestrictions</span><span class="pi">:</span> <span class="pi">[</span>
+        <span class="pi">{</span>
+          <span class="nv">tag</span><span class="pi">:</span> <span class="s1">'</span><span class="s">ServiceTag'</span>
+          <span class="nv">ipAddress</span><span class="pi">:</span> <span class="s1">'</span><span class="s">AzureFrontDoor.Backend'</span>
+          <span class="nv">action</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Allow'</span>
+          <span class="nv">priority</span><span class="pi">:</span> <span class="nv">100</span>
+          <span class="nv">headers</span><span class="pi">:</span> <span class="pi">{</span>
+            <span class="s1">'</span><span class="s">x-azure-fdid'</span><span class="pi">:</span> <span class="pi">[</span>
+              <span class="nv">frontDoorProfile.properties.frontDoorId</span>
+            <span class="pi">]</span>
+          <span class="pi">}</span>
+          <span class="nv">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Allow</span><span class="nv"> </span><span class="s">traffic</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">Front</span><span class="nv"> </span><span class="s">Door'</span>
+        <span class="pi">}</span>
+      <span class="pi">]</span>
+    <span class="pi">}</span>
+  <span class="pi">}</span>
+  <span class="na">dependsOn</span><span class="pi">:</span> <span class="pi">[</span>
+    <span class="nv">app</span>
+  <span class="pi">]</span>
+<span class="err">}</span>
+
+<span class="s">resource ftpPolicySlot 'Microsoft.Web/sites/slots/basicPublishingCredentialsPolicies@2022-03-01' = {</span>
+  <span class="s">name</span><span class="err">:</span> <span class="s1">'</span><span class="s">ftp'</span>
+  <span class="na">kind</span><span class="pi">:</span> <span class="s1">'</span><span class="s">string'</span>
+  <span class="na">parent</span><span class="pi">:</span> <span class="s">appSlot</span>
+  <span class="na">location</span><span class="pi">:</span> <span class="s">location</span>
+  <span class="na">properties</span><span class="pi">:</span> <span class="pi">{</span>
+    <span class="nv">allow</span><span class="pi">:</span> <span class="nv">false</span>
+  <span class="pi">}</span>
+<span class="err">}</span>
+
+<span class="s">resource scmPolicySlot 'Microsoft.Web/sites/slots/basicPublishingCredentialsPolicies@2022-03-01' = {</span>
+  <span class="s">name</span><span class="err">:</span> <span class="s1">'</span><span class="s">scm'</span>
+  <span class="na">kind</span><span class="pi">:</span> <span class="s1">'</span><span class="s">string'</span>
+  <span class="na">parent</span><span class="pi">:</span> <span class="s">appSlot</span>
+  <span class="na">location</span><span class="pi">:</span> <span class="s">location</span>
+  <span class="na">properties</span><span class="pi">:</span> <span class="pi">{</span>
+    <span class="nv">allow</span><span class="pi">:</span> <span class="nv">false</span>
+  <span class="pi">}</span>
+<span class="err">}</span>
+
+<span class="s">resource secondaryApp 'Microsoft.Web/sites@2020-06-01' = {</span>
+  <span class="s">name</span><span class="err">:</span> <span class="s">secondaryAppName</span>
+  <span class="s">location</span><span class="err">:</span> <span class="s">secondaryLocation</span>
+  <span class="s">kind</span><span class="err">:</span> <span class="s1">'</span><span class="s">app'</span>
+  <span class="na">identity</span><span class="pi">:</span> <span class="pi">{</span>
+    <span class="nv">type</span><span class="pi">:</span> <span class="s1">'</span><span class="s">SystemAssigned'</span>
+  <span class="pi">}</span>
+  <span class="na">properties</span><span class="pi">:</span> <span class="pi">{</span>
+    <span class="nv">serverFarmId</span><span class="pi">:</span> <span class="nv">secondaryAppServicePlan.id</span>
+    <span class="nv">httpsOnly</span><span class="pi">:</span> <span class="nv">true</span>
+    <span class="nv">siteConfig</span><span class="pi">:</span> <span class="pi">{</span>
+      <span class="nv">detailedErrorLoggingEnabled</span><span class="pi">:</span> <span class="nv">true</span>
+      <span class="nv">httpLoggingEnabled</span><span class="pi">:</span> <span class="nv">true</span>
+      <span class="nv">requestTracingEnabled</span><span class="pi">:</span> <span class="nv">true</span>
+      <span class="nv">ftpsState</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Disabled'</span>
+      <span class="nv">minTlsVersion</span><span class="pi">:</span> <span class="s1">'</span><span class="s">1.2'</span>
+      <span class="nv">ipSecurityRestrictions</span><span class="pi">:</span> <span class="pi">[</span>
+        <span class="pi">{</span>
+          <span class="nv">tag</span><span class="pi">:</span> <span class="s1">'</span><span class="s">ServiceTag'</span>
+          <span class="nv">ipAddress</span><span class="pi">:</span> <span class="s1">'</span><span class="s">AzureFrontDoor.Backend'</span>
+          <span class="nv">action</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Allow'</span>
+          <span class="nv">priority</span><span class="pi">:</span> <span class="nv">100</span>
+          <span class="nv">headers</span><span class="pi">:</span> <span class="pi">{</span>
+            <span class="s1">'</span><span class="s">x-azure-fdid'</span><span class="pi">:</span> <span class="pi">[</span>
+              <span class="nv">frontDoorProfile.properties.frontDoorId</span>
+            <span class="pi">]</span>
+          <span class="pi">}</span>
+          <span class="nv">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Allow</span><span class="nv"> </span><span class="s">traffic</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">Front</span><span class="nv"> </span><span class="s">Door'</span>
+        <span class="pi">}</span>
+      <span class="pi">]</span>
+      <span class="nv">scmIpSecurityRestrictionsDefaultAction</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Deny'</span>
+    <span class="pi">}</span>
+  <span class="pi">}</span>
+<span class="err">}</span>
+
+<span class="s">resource secondaryFtpPolicy 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022-03-01' = {</span>
+  <span class="s">name</span><span class="err">:</span> <span class="s1">'</span><span class="s">ftp'</span>
+  <span class="na">kind</span><span class="pi">:</span> <span class="s1">'</span><span class="s">string'</span>
+  <span class="na">parent</span><span class="pi">:</span> <span class="s">secondaryApp</span>
+  <span class="na">location</span><span class="pi">:</span> <span class="s">secondaryLocation</span>
+  <span class="na">properties</span><span class="pi">:</span> <span class="pi">{</span>
+    <span class="nv">allow</span><span class="pi">:</span> <span class="nv">false</span>
+  <span class="pi">}</span>
+<span class="err">}</span>
+
+<span class="s">resource secondaryScmPolicy 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022-03-01' = {</span>
+  <span class="s">name</span><span class="err">:</span> <span class="s1">'</span><span class="s">scm'</span>
+  <span class="na">kind</span><span class="pi">:</span> <span class="s1">'</span><span class="s">string'</span>
+  <span class="na">parent</span><span class="pi">:</span> <span class="s">secondaryApp</span>
+  <span class="na">location</span><span class="pi">:</span> <span class="s">secondaryLocation</span>
+  <span class="na">properties</span><span class="pi">:</span> <span class="pi">{</span>
+    <span class="nv">allow</span><span class="pi">:</span> <span class="nv">false</span>
+  <span class="pi">}</span>
+<span class="err">}</span>
+
+<span class="s">resource secondaryAppSlot 'Microsoft.Web/sites/slots@2020-06-01' = {</span>
+  <span class="s">name</span><span class="err">:</span> <span class="s1">'</span><span class="s">${secondaryAppName}/stage'</span>
+  <span class="na">location</span><span class="pi">:</span> <span class="s">secondaryLocation</span>
+  <span class="na">kind</span><span class="pi">:</span> <span class="s1">'</span><span class="s">app'</span>
+  <span class="na">identity</span><span class="pi">:</span> <span class="pi">{</span>
+    <span class="nv">type</span><span class="pi">:</span> <span class="s1">'</span><span class="s">SystemAssigned'</span>
+  <span class="pi">}</span>
+  <span class="na">properties</span><span class="pi">:</span> <span class="pi">{</span>
+    <span class="nv">serverFarmId</span><span class="pi">:</span> <span class="nv">secondaryAppServicePlan.id</span>
+    <span class="nv">httpsOnly</span><span class="pi">:</span> <span class="nv">true</span>
+    <span class="nv">siteConfig</span><span class="pi">:</span> <span class="pi">{</span>
+      <span class="nv">detailedErrorLoggingEnabled</span><span class="pi">:</span> <span class="nv">true</span>
+      <span class="nv">httpLoggingEnabled</span><span class="pi">:</span> <span class="nv">true</span>
+      <span class="nv">requestTracingEnabled</span><span class="pi">:</span> <span class="nv">true</span>
+      <span class="nv">ftpsState</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Disabled'</span>
+      <span class="nv">minTlsVersion</span><span class="pi">:</span> <span class="s1">'</span><span class="s">1.2'</span>
+      <span class="nv">ipSecurityRestrictions</span><span class="pi">:</span> <span class="pi">[</span>
+        <span class="pi">{</span>
+          <span class="nv">tag</span><span class="pi">:</span> <span class="s1">'</span><span class="s">ServiceTag'</span>
+          <span class="nv">ipAddress</span><span class="pi">:</span> <span class="s1">'</span><span class="s">AzureFrontDoor.Backend'</span>
+          <span class="nv">action</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Allow'</span>
+          <span class="nv">priority</span><span class="pi">:</span> <span class="nv">100</span>
+          <span class="nv">headers</span><span class="pi">:</span> <span class="pi">{</span>
+            <span class="s1">'</span><span class="s">x-azure-fdid'</span><span class="pi">:</span> <span class="pi">[</span>
+              <span class="nv">frontDoorProfile.properties.frontDoorId</span>
+            <span class="pi">]</span>
+          <span class="pi">}</span>
+          <span class="nv">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Allow</span><span class="nv"> </span><span class="s">traffic</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">Front</span><span class="nv"> </span><span class="s">Door'</span>
+        <span class="pi">}</span>
+      <span class="pi">]</span>
+    <span class="pi">}</span>
+  <span class="pi">}</span>
+  <span class="na">dependsOn</span><span class="pi">:</span> <span class="pi">[</span>
+    <span class="nv">secondaryApp</span>
+  <span class="pi">]</span>
+<span class="err">}</span>
+
+<span class="s">resource secondaryFtpPolicySlot 'Microsoft.Web/sites/slots/basicPublishingCredentialsPolicies@2022-03-01' = {</span>
+  <span class="s">name</span><span class="err">:</span> <span class="s1">'</span><span class="s">ftp'</span>
+  <span class="na">kind</span><span class="pi">:</span> <span class="s1">'</span><span class="s">string'</span>
+  <span class="na">parent</span><span class="pi">:</span> <span class="s">secondaryAppSlot</span>
+  <span class="na">location</span><span class="pi">:</span> <span class="s">secondaryLocation</span>
+  <span class="na">properties</span><span class="pi">:</span> <span class="pi">{</span>
+    <span class="nv">allow</span><span class="pi">:</span> <span class="nv">false</span>
+  <span class="pi">}</span>
+<span class="err">}</span>
+
+<span class="s">resource secondaryScmPolicySlot 'Microsoft.Web/sites/slots/basicPublishingCredentialsPolicies@2022-03-01' = {</span>
+  <span class="s">name</span><span class="err">:</span> <span class="s1">'</span><span class="s">scm'</span>
+  <span class="na">kind</span><span class="pi">:</span> <span class="s1">'</span><span class="s">string'</span>
+  <span class="na">parent</span><span class="pi">:</span> <span class="s">secondaryAppSlot</span>
+  <span class="na">location</span><span class="pi">:</span> <span class="s">secondaryLocation</span>
+  <span class="na">properties</span><span class="pi">:</span> <span class="pi">{</span>
+    <span class="nv">allow</span><span class="pi">:</span> <span class="nv">false</span>
+  <span class="pi">}</span>
+<span class="err">}</span>
+
+<span class="s">resource frontDoorEndpoint 'Microsoft.Cdn/profiles/afdEndpoints@2021-06-01' = {</span>
+  <span class="s">name</span><span class="err">:</span> <span class="s">frontDoorEndpointName</span>
+  <span class="s">parent</span><span class="err">:</span> <span class="s">frontDoorProfile</span>
+  <span class="s">location</span><span class="err">:</span> <span class="s1">'</span><span class="s">global'</span>
+  <span class="na">properties</span><span class="pi">:</span> <span class="pi">{</span>
+    <span class="nv">enabledState</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Enabled'</span>
+  <span class="pi">}</span>
+<span class="err">}</span>
+
+<span class="s">resource frontDoorOriginGroup 'Microsoft.Cdn/profiles/originGroups@2021-06-01' = {</span>
+  <span class="s">name</span><span class="err">:</span> <span class="s">frontDoorOriginGroupName</span>
+  <span class="s">parent</span><span class="err">:</span> <span class="s">frontDoorProfile</span>
+  <span class="s">properties</span><span class="err">:</span> <span class="pi">{</span>
+    <span class="nv">loadBalancingSettings</span><span class="pi">:</span> <span class="pi">{</span>
+      <span class="nv">sampleSize</span><span class="pi">:</span> <span class="nv">4</span>
+      <span class="nv">successfulSamplesRequired</span><span class="pi">:</span> <span class="nv">3</span>
+    <span class="pi">}</span>
+    <span class="nv">healthProbeSettings</span><span class="pi">:</span> <span class="pi">{</span>
+      <span class="nv">probePath</span><span class="pi">:</span> <span class="s1">'</span><span class="s">/'</span>
+      <span class="nv">probeRequestType</span><span class="pi">:</span> <span class="s1">'</span><span class="s">HEAD'</span>
+      <span class="nv">probeProtocol</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Http'</span>
+      <span class="nv">probeIntervalInSeconds</span><span class="pi">:</span> <span class="nv">100</span>
+    <span class="pi">}</span>
+  <span class="pi">}</span>
+<span class="err">}</span>
+
+<span class="s">resource frontDoorOrigin 'Microsoft.Cdn/profiles/originGroups/origins@2021-06-01' = {</span>
+  <span class="s">name</span><span class="err">:</span> <span class="s">frontDoorOriginName</span>
+  <span class="s">parent</span><span class="err">:</span> <span class="s">frontDoorOriginGroup</span>
+  <span class="s">properties</span><span class="err">:</span> <span class="pi">{</span>
+    <span class="nv">hostName</span><span class="pi">:</span> <span class="nv">app.properties.defaultHostName</span>
+    <span class="nv">httpPort</span><span class="pi">:</span> <span class="nv">80</span>
+    <span class="nv">httpsPort</span><span class="pi">:</span> <span class="nv">443</span>
+    <span class="nv">originHostHeader</span><span class="pi">:</span> <span class="nv">app.properties.defaultHostName</span>
+    <span class="nv">priority</span><span class="pi">:</span> <span class="nv">1</span>
+    <span class="nv">weight</span><span class="pi">:</span> <span class="nv">1000</span>
+  <span class="pi">}</span>
+<span class="err">}</span>
+
+<span class="s">resource secondaryFrontDoorOrigin 'Microsoft.Cdn/profiles/originGroups/origins@2021-06-01' = {</span>
+  <span class="s">name</span><span class="err">:</span> <span class="s">secondaryFrontDoorOriginName</span>
+  <span class="s">parent</span><span class="err">:</span> <span class="s">frontDoorOriginGroup</span>
+  <span class="s">properties</span><span class="err">:</span> <span class="pi">{</span>
+    <span class="nv">hostName</span><span class="pi">:</span> <span class="nv">secondaryApp.properties.defaultHostName</span>
+    <span class="nv">httpPort</span><span class="pi">:</span> <span class="nv">80</span>
+    <span class="nv">httpsPort</span><span class="pi">:</span> <span class="nv">443</span>
+    <span class="nv">originHostHeader</span><span class="pi">:</span> <span class="nv">app.properties.defaultHostName</span>
+    <span class="nv">priority</span><span class="pi">:</span> <span class="nv">2</span>
+    <span class="nv">weight</span><span class="pi">:</span> <span class="nv">1000</span>
+  <span class="pi">}</span>
+<span class="err">}</span>
+
+<span class="s">resource frontDoorRoute 'Microsoft.Cdn/profiles/afdEndpoints/routes@2021-06-01' = {</span>
+  <span class="s">name</span><span class="err">:</span> <span class="s">frontDoorRouteName</span>
+  <span class="s">parent</span><span class="err">:</span> <span class="s">frontDoorEndpoint</span>
+  <span class="s">dependsOn</span><span class="err">:</span> <span class="pi">[</span>
+    <span class="nv">frontDoorOrigin // This explicit dependency is required to ensure that the origin group is not empty when the route is created.</span>
+  <span class="pi">]</span>
+  <span class="na">properties</span><span class="pi">:</span> <span class="pi">{</span>
+    <span class="nv">originGroup</span><span class="pi">:</span> <span class="pi">{</span>
+      <span class="nv">id</span><span class="pi">:</span> <span class="nv">frontDoorOriginGroup.id</span>
+    <span class="pi">}</span>
+    <span class="nv">supportedProtocols</span><span class="pi">:</span> <span class="pi">[</span>
+      <span class="s1">'</span><span class="s">Http'</span>
+      <span class="s1">'</span><span class="s">Https'</span>
+    <span class="pi">]</span>
+    <span class="nv">patternsToMatch</span><span class="pi">:</span> <span class="pi">[</span>
+      <span class="s1">'</span><span class="s">/*'</span>
+    <span class="pi">]</span>
+    <span class="nv">forwardingProtocol</span><span class="pi">:</span> <span class="s1">'</span><span class="s">HttpsOnly'</span>
+    <span class="nv">linkToDefaultDomain</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Enabled'</span>
+    <span class="nv">httpsRedirect</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Enabled'</span>
+  <span class="pi">}</span>
+<span class="err">}</span>
+
+<span class="s">output appServiceHostName string = app.properties.defaultHostName</span>
+<span class="s">output secondaryAppServiceHostName string = secondaryApp.properties.defaultHostName</span>
+<span class="s">output appServiceSlotHostName string = appSlot.properties.defaultHostName</span>
+<span class="s">output secondaryAppServiceSlotHostName string = secondaryAppSlot.properties.defaultHostName</span>
+<span class="s">output frontDoorEndpointHostName string = frontDoorEndpoint.properties.hostName</span>
+</code></pre></div></div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2022-12-02T00:00:00+00:00">December 02, 2022</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=How+to+deploy+a+highly+available+multi-region+web+app%20https%3A%2F%2Fazure.github.io%2FAppService%2F2022%2F12%2F02%2Fmulti-region-web-app.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2022%2F12%2F02%2Fmulti-region-web-app.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2022%2F12%2F02%2Fmulti-region-web-app.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2022/12/01/Announcing-Larger-Isolatedv2-SKUs.html" class="pagination--pager" title="Announcing Larger SKUs for App Service Environment v3
+">Previous</a>
+    
+    
+      <a href="/AppService/2022/12/02/n-tier-web-app.html" class="pagination--pager" title="How to deploy a secure n-tier web app
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

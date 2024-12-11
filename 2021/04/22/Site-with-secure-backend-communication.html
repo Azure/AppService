@@ -1,0 +1,1130 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Deploying a site with secure backend communication - Azure App Service</title>
+<meta name="description" content="“Rød grød med fløde” - hmm, what language is that? Keep reading if you want to find out.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Deploying a site with secure backend communication">
+<meta property="og:url" content="https://azure.github.io/AppService/2021/04/22/Site-with-secure-backend-communication.html">
+
+
+  <meta property="og:description" content="“Rød grød med fløde” - hmm, what language is that? Keep reading if you want to find out.">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2021-04-22T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2021/04/22/Site-with-secure-backend-communication.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Deploying a site with secure backend communication">
+    <meta itemprop="description" content="“Rød grød med fløde” - hmm, what language is that? Keep reading if you want to find out.">
+    <meta itemprop="datePublished" content="April 22, 2021">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Deploying a site with secure backend communication
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  10 minute read
+
+            
+            
+              • By Mads Damgård
+            
+            • April 22, 2021
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#getting-started">Getting Started</a></li>
+  <li><a href="#1-create-network-infrastructure">1. Create Network Infrastructure</a></li>
+  <li><a href="#2-set-up-backend-services">2. Set Up Backend Services</a></li>
+  <li><a href="#3-create-network-integrated-web-app">3. Create Network Integrated Web App</a></li>
+  <li><a href="#4-connect-the-dots">4. Connect “The Dots”</a></li>
+  <li><a href="#in-closing">In Closing</a></li>
+  <li><a href="#alternative-approaches-and-advanced-scenarios">Alternative Approaches and Advanced Scenarios</a>
+    <ul>
+      <li><a href="#service-endpoints">Service endpoints</a></li>
+    </ul>
+  </li>
+  <li><a href="#faq">FAQ</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <p><em>“Rød grød med fløde”</em> - hmm, what language is that? Keep reading if you want to find out.</p>
+
+<p>In this article I will walk you through setting up a Web App with secure, network-isolated communication to backend services. The Web App will allow you to type in a text, and using Cognitive Services Language Detection, you can detect the language of the given text. The authentication key for Cognitive Services will be stored in Key Vault, and App Service will authenticate with Key Vault using Managed Identity. All traffic will be isolated within your Virtual Network using virtual network integration and private endpoints.</p>
+
+<p>The scenario is intentionally kept simple to focus on the architecture and configuration; but with a practical purpose I find it more easy to relate to. The backend services can be extended with the many other services supporting Private Endpoint like Azure SQL, Cosmos DB, App Configuration, and even other App Service Web Apps or Functions by following the same pattern.</p>
+
+<p><img src="/AppService/media/2021/04/securebackend-final-setup.png" alt="Final setup" class="align-center" /></p>
+
+<p>This guide is organized into four steps:</p>
+
+<ol>
+  <li>Create network infrastructure</li>
+  <li>Set up backend services</li>
+  <li>Create network integrated Web App</li>
+  <li>Connect “the dots”</li>
+</ol>
+
+<p>In closing, there are sections on alternative approaches, advanced scenarios, and FAQ.</p>
+
+<h2 id="getting-started">Getting Started</h2>
+
+<p>This is the second article in a series focusing on network security. If you missed the first one, you can <a href="https://azure.github.io/AppService/2021/03/26/Secure-resilient-site-with-custom-domain.html">find it here</a>, and it includes a more detailed getting started section covering setting up the scripting environment.</p>
+
+<p>This article will also use the Azure CLI executed in bash shell on WSL to set up the environment. It could be done using teh Azure portal, Resource Manager templates or Azure PowerShell. CLI was chosen as I find it easier to follow and explain the individual steps and configurations needed.</p>
+
+<p><strong>Remember</strong> in the scripts to replace all the resource names that need to be unique. This would be the name of the Web App, Key Vault, Cognitive Services account, and custom domain. You may also change location if you want something closer to home. All other changes are optional.</p>
+
+<h2 id="1-create-network-infrastructure">1. Create Network Infrastructure</h2>
+
+<p>First, set up a Resource Group with a Virtual Network. The virtual network should have at least two subnets: one for the virtual network integration and one for the private endpoints. The address-prefix size must be at least /28 for both subnets; small subnets can affect scaling limits and the number of private endpoints. Go with /24 for both subnets if you are not under constraints.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az group create <span class="nt">--name</span> securebackendsetup <span class="nt">--location</span> westeurope
+az network vnet create <span class="nt">--resource-group</span> securebackendsetup <span class="nt">--location</span> westeurope <span class="nt">--name</span> securebackend-vnet <span class="nt">--address-prefixes</span> 10.0.0.0/16
+</code></pre></div></div>
+
+<p>For the subnets, there are two settings that we need to pay attention to. This is often set by the portal or scripts, but here it is called out directly. <a href="https://docs.microsoft.com/azure/virtual-network/subnet-delegation-overview">Delegation</a> “Microsoft.Web/serverfarms” informs the subnet that it is reserved for virtual network integration:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az network vnet subnet create <span class="nt">--resource-group</span> securebackendsetup <span class="nt">--vnet-name</span> securebackend-vnet <span class="nt">--name</span> vnet-integration-subnet <span class="nt">--address-prefixes</span> 10.0.0.0/24 <span class="nt">--delegations</span> Microsoft.Web/serverfarms
+az network vnet subnet create <span class="nt">--resource-group</span> securebackendsetup <span class="nt">--vnet-name</span> securebackend-vnet <span class="nt">--name</span> private-endpoint-subnet <span class="nt">--address-prefixes</span> 10.0.1.0/24
+</code></pre></div></div>
+
+<p>The last part of the network infrastructure is the Private DNS Zones. These zones are used to host the DNS records for private endpoints allowing the clients to find the backend services by name. We need a zone for Key Vault and a zone for Text Analytics (Cognitive Services). Go <a href="https://docs.microsoft.com/azure/private-link/private-endpoint-overview">here for a primer on Azure Private Endpoints</a> and <a href="https://docs.microsoft.com/azure/private-link/private-endpoint-dns">go here for how DNS Zones fits into private endpoints</a>.</p>
+
+<p>Create the Private DNS Zones for Key Vault and Cognitive Services:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az network private-dns zone create <span class="nt">--resource-group</span> securebackendsetup <span class="nt">--name</span> privatelink.cognitiveservices.azure.com
+az network private-dns zone create <span class="nt">--resource-group</span> securebackendsetup <span class="nt">--name</span> privatelink.vaultcore.azure.net
+</code></pre></div></div>
+
+<p>Link the zones to the virtual network:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az network private-dns <span class="nb">link </span>vnet create <span class="nt">--resource-group</span> securebackendsetup <span class="nt">--name</span> cognitiveservices-zonelink <span class="nt">--zone-name</span> privatelink.cognitiveservices.azure.com <span class="nt">--virtual-network</span> securebackend-vnet <span class="nt">--registration-enabled</span> False
+az network private-dns <span class="nb">link </span>vnet create <span class="nt">--resource-group</span> securebackendsetup <span class="nt">--name</span> vaultcore-zonelink <span class="nt">--zone-name</span> privatelink.vaultcore.azure.net <span class="nt">--virtual-network</span> securebackend-vnet <span class="nt">--registration-enabled</span> False
+</code></pre></div></div>
+
+<p>… and now the core network setup is done. We can now create our backend resources.</p>
+
+<h2 id="2-set-up-backend-services">2. Set Up Backend Services</h2>
+
+<p>In this section, we will set up the Key Vault and the Cognitive Services (CS) account and store the access key for CS in Key Vault. We will also create the private endpoints and configure the services to block public traffic. First create the services:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az keyvault create <span class="nt">--resource-group</span> securebackendsetup <span class="nt">--name</span> securekeyvault2021 <span class="nt">--location</span> westeurope <span class="nt">--sku</span> standard <span class="nt">--enable-rbac-authorization</span>
+az cognitiveservices account create <span class="nt">--resource-group</span> securebackendsetup <span class="nt">--name</span> securecstext2021 <span class="nt">--location</span> westeurope <span class="nt">--kind</span> TextAnalytics <span class="nt">--sku</span> F0 <span class="nt">--custom-domain</span> securecstext2021
+</code></pre></div></div>
+
+<p>Then we need to add the access key from CS as a secret in Key Vault. There are several ways to do this: directly in the Portal or using the CLI. What matters here is that the Identity (in this case, you) must have permissions to write secrets to Key Vault. We are using a new permission model in Key Vault, where <a href="https://docs.microsoft.com/azure/key-vault/general/rbac-guide?tabs=azure-cli">the data plane permissions are set as RBAC permissions</a>. In this mode, no default data plane permissions are set when creating the Key Vault.</p>
+
+<p>I am storing properties in variables for reuse in later steps. The <code class="language-plaintext highlighter-rouge">--output tsv</code> will ensure that the values do not have quotes. The <code class="language-plaintext highlighter-rouge">--query</code> parameter will allow me to return only a specific property.</p>
+
+<blockquote>
+  <p><strong>Note:</strong> The syntax for using variables depends on your choice of OS, shell and scripting language.</p>
+</blockquote>
+
+<p>Assign permissions for you (the signed in user) to write secrets. You can optionally use a service principal or other users if you have delegated responsibility:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">my_id</span><span class="o">=</span><span class="si">$(</span>az ad signed-in-user show <span class="nt">--query</span> objectId <span class="nt">--output</span> tsv<span class="si">)</span>
+<span class="nv">kv_resource_id</span><span class="o">=</span><span class="si">$(</span>az keyvault show <span class="nt">--name</span> securekeyvault2021 <span class="nt">--query</span> <span class="nb">id</span> <span class="nt">--output</span> tsv<span class="si">)</span>
+az role assignment create <span class="nt">--role</span> <span class="s2">"Key Vault Secrets Officer"</span> <span class="nt">--assignee-object-id</span> <span class="nv">$my_id</span> <span class="nt">--scope</span> <span class="nv">$kv_resource_id</span>
+</code></pre></div></div>
+
+<p>Then get the key from CS and store as a secret in Key Vault. We extract the URI of the secret as we need this in a later step. You can perhaps copy the secret in your notes if you plan on finishing later. The <code class="language-plaintext highlighter-rouge">secret set</code> command will display the secret in the shell if you are not querying a specific property. An alternative to tsv is to use <code class="language-plaintext highlighter-rouge">--output none</code>.</p>
+
+<blockquote>
+  <p><strong>Tip:</strong> In bash shell, which I am using, you can see the values of a variable by using the echo command, e.g. <code class="language-plaintext highlighter-rouge">echo $kv_secret_uri</code></p>
+</blockquote>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">cs_key1</span><span class="o">=</span><span class="si">$(</span>az cognitiveservices account keys list <span class="nt">--resource-group</span> securebackendsetup <span class="nt">--name</span> securecstext2021 <span class="nt">--query</span> key1 <span class="nt">--output</span> tsv<span class="si">)</span>
+<span class="nv">kv_secret_uri</span><span class="o">=</span><span class="si">$(</span>az keyvault secret <span class="nb">set</span> <span class="nt">--vault-name</span> securekeyvault2021 <span class="nt">--name</span> cskey <span class="nt">--value</span> <span class="nv">$cs_key1</span> <span class="nt">--query</span> <span class="nb">id</span> <span class="nt">--output</span> tsv<span class="si">)</span>
+</code></pre></div></div>
+
+<p>Next, let’s create the Private Endpoints to connect the backend services to the virtual network. We already have the needed Key Vault Resource ID <code class="language-plaintext highlighter-rouge">$kv_resource_id</code> in a variable from a previous step:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az network private-endpoint create <span class="nt">--resource-group</span> securebackendsetup <span class="nt">--name</span> securekeyvault-pe <span class="nt">--location</span> westeurope <span class="nt">--connection-name</span> securekeyvault-pc <span class="nt">--private-connection-resource-id</span> <span class="nv">$kv_resource_id</span> <span class="nt">--group-id</span> vault <span class="nt">--vnet-name</span> securebackend-vnet <span class="nt">--subnet</span> private-endpoint-subnet
+</code></pre></div></div>
+
+<p>… and create a DNS Zone Group. This will create the DNS record for the private endpoint in the DNS Zone (and remove it if the private endpoint is deleted):</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az network private-endpoint dns-zone-group create <span class="nt">--resource-group</span> securebackendsetup <span class="nt">--endpoint-name</span> securekeyvault-pe <span class="nt">--name</span> securekeyvault-zg <span class="nt">--private-dns-zone</span> privatelink.vaultcore.azure.net <span class="nt">--zone-name</span> privatelink.vaultcore.azure.net
+</code></pre></div></div>
+
+<p>Do the same for the Cognitive Services account:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">cs_resource_id</span><span class="o">=</span><span class="si">$(</span>az cognitiveservices account show <span class="nt">--resource-group</span> securebackendsetup <span class="nt">--name</span> securecstext2021 <span class="nt">--query</span> <span class="nb">id</span> <span class="nt">--output</span> tsv<span class="si">)</span>
+az network private-endpoint create <span class="nt">--resource-group</span> securebackendsetup <span class="nt">--name</span> securecstext-pe <span class="nt">--location</span> westeurope <span class="nt">--connection-name</span> securecstext-pc <span class="nt">--private-connection-resource-id</span> <span class="nv">$cs_resource_id</span> <span class="nt">--group-id</span> account <span class="nt">--vnet-name</span> securebackend-vnet <span class="nt">--subnet</span> private-endpoint-subnet
+az network private-endpoint dns-zone-group create <span class="nt">--resource-group</span> securebackendsetup <span class="nt">--endpoint-name</span> securecstext-pe <span class="nt">--name</span> securecstext-zg <span class="nt">--private-dns-zone</span> privatelink.cognitiveservices.azure.com <span class="nt">--zone-name</span> privatelink.cognitiveservices.azure.com
+</code></pre></div></div>
+
+<p>Finally, let’s block public traffic. For CS, this property is not exposed in the official command, but we know our way around. You may need to fiddle a bit with the syntax for the <code class="language-plaintext highlighter-rouge">az rest</code> command if you are using an alternative shell/OS combination:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az rest <span class="nt">--uri</span> <span class="nv">$cs_resource_id</span>?api-version<span class="o">=</span>2017-04-18 <span class="nt">--method</span> PATCH <span class="nt">--body</span> <span class="s1">'{"properties":{"publicNetworkAccess":"Disabled"}}'</span> <span class="nt">--headers</span> <span class="s1">'Content-Type=application/json'</span>
+az keyvault update <span class="nt">--name</span> securekeyvault2021 <span class="nt">--default-action</span> Deny
+</code></pre></div></div>
+
+<p>Everything is locked down now and you cannot even get to the Key Vault secrets through the Azure portal. In the Key Vault Networking blade, you can add the public IP of your client if you need to view or update the secrets.</p>
+
+<h2 id="3-create-network-integrated-web-app">3. Create Network Integrated Web App</h2>
+
+<p>Now we get to creating the actual Web App. To use virtual network integration, we need at least the Basic SKU. The virtual network integration feature allows <strong>outbound</strong> traffic to flow directly into the virtual network:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az appservice plan create <span class="nt">--resource-group</span> securebackendsetup <span class="nt">--name</span> securebackendplan <span class="nt">--sku</span> P1V2
+az webapp create <span class="nt">--resource-group</span> securebackendsetup <span class="nt">--plan</span> securebackendplan <span class="nt">--name</span> securebackend2021 <span class="nt">--https-only</span>
+az webapp vnet-integration add <span class="nt">--resource-group</span> securebackendsetup <span class="nt">--name</span> securebackend2021 <span class="nt">--vnet</span> securebackend-vnet <span class="nt">--subnet</span> vnet-integration-subnet
+</code></pre></div></div>
+
+<p>Now, store the name of your CS account for the code to query. Replace <code class="language-plaintext highlighter-rouge">securecstext2021</code> with the name of your account:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp config appsettings <span class="nb">set</span> <span class="nt">--resource-group</span> securebackendsetup <span class="nt">--name</span> securebackend2021 <span class="nt">--settings</span> <span class="nv">CS_ACCOUNT_NAME</span><span class="o">=</span>securecstext2021
+</code></pre></div></div>
+
+<p>As a last step in this section, we need to generate a Managed Identity, grant this identity read secrets permissions on the Key Vault, and reference the secret in an App Setting. We will reuse the Resource ID variable from a previous step. Go back up if you missed that. The identity command can directly assign permissions as part of the command, so we will grant the Web App “Key Vault Secrets User” (read) permissions:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp identity assign <span class="nt">--resource-group</span> securebackendsetup <span class="nt">--name</span> securebackend2021 <span class="nt">--scope</span> <span class="nv">$kv_resource_id</span> <span class="nt">--role</span>  <span class="s2">"Key Vault Secrets User"</span>
+az webapp config appsettings <span class="nb">set</span> <span class="nt">--resource-group</span> securebackendsetup <span class="nt">--name</span> securebackend2021 <span class="nt">--settings</span> <span class="nv">CS_ACCOUNT_KEY</span><span class="o">=</span><span class="s2">"@Microsoft.KeyVault(SecretUri=</span><span class="nv">$kv_secret_uri</span><span class="s2">)"</span>
+</code></pre></div></div>
+
+<p>You can now browse to the Web App and all <strong>outbound</strong> traffic from the Web App will be routed through the virtual network.</p>
+
+<h2 id="4-connect-the-dots">4. Connect “The Dots”</h2>
+
+<p>All the infrastructure is now in place and we just need a bit of code to glue it all together.</p>
+
+<p>I will be using php as it can run on both Windows and Linux App Service Plans, is easy to read, and allows for a single-file solution. Please do not mind the missing error handling, retry logic, etc. as this is a proof-of-concept. Copy the following code into a file called <strong>index.php</strong> and run these commands:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>zip default.zip index.php
+az webapp deployment <span class="nb">source </span>config-zip <span class="nt">--resource-group</span> securebackendsetup <span class="nt">--name</span> securebackend2021 <span class="nt">--src</span> ./default.zip
+</code></pre></div></div>
+
+<p>The code for <strong>index.php</strong>:</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">empty</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'text'</span><span class="p">]))</span> <span class="p">{</span>
+    <span class="nv">$text</span> <span class="o">=</span> <span class="nb">urldecode</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'text'</span><span class="p">]);</span>
+    <span class="nv">$payload</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">'documents'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">([</span>
+            <span class="s1">'id'</span> <span class="o">=&gt;</span> <span class="s1">'1'</span><span class="p">,</span>
+            <span class="s1">'text'</span> <span class="o">=&gt;</span> <span class="nv">$text</span>
+        <span class="p">])</span>
+    <span class="p">];</span>
+    <span class="nv">$json_payload</span> <span class="o">=</span> <span class="nb">json_encode</span><span class="p">(</span><span class="nv">$payload</span><span class="p">);</span>
+    <span class="nv">$cs_key</span> <span class="o">=</span> <span class="nb">getenv</span><span class="p">(</span><span class="s1">'CS_ACCOUNT_KEY'</span><span class="p">);</span>
+    <span class="nv">$cs_name</span> <span class="o">=</span> <span class="nb">getenv</span><span class="p">(</span><span class="s1">'CS_ACCOUNT_NAME'</span><span class="p">);</span>
+
+    <span class="nv">$options</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">'http'</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+          <span class="s1">'method'</span><span class="o">=&gt;</span><span class="s2">"POST"</span><span class="p">,</span>
+          <span class="s1">'header'</span><span class="o">=&gt;</span><span class="s2">"Ocp-Apim-Subscription-Key: "</span> <span class="mf">.</span> <span class="nv">$cs_key</span> <span class="mf">.</span> <span class="s2">"</span><span class="se">\r\n</span><span class="s2">"</span> <span class="mf">.</span>
+                    <span class="s2">"Content-Type: application/json</span><span class="se">\r\n</span><span class="s2">"</span> <span class="mf">.</span>
+                    <span class="s2">"Accept: application/json</span><span class="se">\r\n</span><span class="s2">"</span> <span class="mf">.</span>
+                    <span class="s2">"Connection: close</span><span class="se">\r\n</span><span class="s2">"</span> <span class="mf">.</span>
+                    <span class="s2">"Content-length: "</span> <span class="mf">.</span> <span class="nb">strlen</span><span class="p">(</span><span class="nv">$json_payload</span><span class="p">)</span> <span class="mf">.</span> <span class="s2">"</span><span class="se">\r\n</span><span class="s2">"</span><span class="p">,</span>
+          <span class="s1">'content'</span><span class="o">=&gt;</span><span class="nv">$json_payload</span>
+        <span class="p">)</span>
+      <span class="p">);</span>
+
+    <span class="nv">$context</span> <span class="o">=</span> <span class="nb">stream_context_create</span><span class="p">(</span><span class="nv">$options</span><span class="p">);</span>
+    <span class="nv">$cs_text_api_url</span> <span class="o">=</span> <span class="s1">'https://'</span> <span class="mf">.</span> <span class="nv">$cs_name</span> <span class="mf">.</span> <span class="s1">'.cognitiveservices.azure.com/text/analytics/v3.0/languages'</span><span class="p">;</span>
+    <span class="nv">$detection_result</span> <span class="o">=</span> <span class="nb">file_get_contents</span><span class="p">(</span><span class="nv">$cs_text_api_url</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="nv">$context</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="cp">?&gt;</span>
+<span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">"en"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"utf-8"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;title&gt;</span>Language detector<span class="nt">&lt;/title&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"script.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+<span class="nt">&lt;h3&gt;</span>Language detector<span class="nt">&lt;/h3&gt;</span>
+<span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">""</span> <span class="na">method=</span><span class="s">"get"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">name=</span><span class="s">"text"</span> <span class="na">value=</span><span class="s">"</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$text</span><span class="p">;</span><span class="cp">?&gt;</span><span class="s">"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;button</span> <span class="na">type=</span><span class="s">"submit"</span><span class="nt">&gt;</span>Detect<span class="nt">&lt;/button&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+<span class="nt">&lt;br/&gt;</span>
+<span class="cp">&lt;?php</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">empty</span><span class="p">(</span><span class="nv">$detection_result</span><span class="p">))</span> <span class="p">{</span>
+        <span class="nv">$json_result</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$detection_result</span><span class="p">);</span>
+        <span class="nv">$detected_language</span> <span class="o">=</span> <span class="nv">$json_result</span><span class="o">-&gt;</span><span class="n">documents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">detectedLanguage</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">;</span>
+        <span class="nv">$confidence_score</span> <span class="o">=</span> <span class="nv">$json_result</span><span class="o">-&gt;</span><span class="n">documents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">detectedLanguage</span><span class="o">-&gt;</span><span class="n">confidenceScore</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$confidence_score</span> <span class="o">&gt;</span> <span class="mf">0.9</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">echo</span> <span class="s1">'&lt;div&gt;&lt;strong&gt;I am quite sure this is: '</span> <span class="mf">.</span> <span class="nv">$detected_language</span> <span class="mf">.</span> <span class="s1">'&lt;/strong&gt;&lt;/div&gt;&lt;br/&gt;'</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$confidence_score</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">echo</span> <span class="s1">'&lt;div&gt;&lt;strong&gt;I have no clue - type in some more text&lt;/strong&gt;&lt;/div&gt;&lt;br/&gt;'</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$confidence_score</span> <span class="o">&lt;</span> <span class="mf">0.3</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">echo</span> <span class="s1">'&lt;div&gt;&lt;strong&gt;Here is a wild guess: '</span> <span class="mf">.</span> <span class="nv">$detected_language</span> <span class="mf">.</span> <span class="s1">'&lt;/strong&gt;&lt;/div&gt;&lt;br/&gt;'</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="k">echo</span> <span class="s1">'&lt;div&gt;&lt;strong&gt;I could be wrong, but it sounds a bit like: '</span> <span class="mf">.</span> <span class="nv">$detected_language</span> <span class="mf">.</span> <span class="s1">'&lt;/strong&gt;&lt;/div&gt;&lt;br/&gt;'</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">echo</span> <span class="s1">'&lt;span style="color:white"&gt;Raw: '</span> <span class="mf">.</span> <span class="nv">$detection_result</span> <span class="mf">.</span> <span class="s1">'&lt;/span&gt;&lt;br/&gt;'</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="cp">?&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>You are now ready to test the service.</p>
+
+<h2 id="in-closing">In Closing</h2>
+
+<p>What language is “Rød grød med fløde”? With this new solution, you should be able to use the AI engine to determine that it is Danish - my native language. It is a well known challenge for foreigners to pronounce, and you can probably find videos of this online. You may also have noticed in the code, that I added the “classic” same font color debug output for convenience.</p>
+
+<p><img src="/AppService/media/2021/04/securebackend-result.png" alt="Final setup" class="align-center" /></p>
+
+<p>As a bonus challenge, you can try to extend the solution to be able to translate into English and find out what it means. You should find what you need for that <a href="https://docs.microsoft.com/azure/cognitive-services/translator/reference/v3-0-reference">here</a>.</p>
+
+<h2 id="alternative-approaches-and-advanced-scenarios">Alternative Approaches and Advanced Scenarios</h2>
+
+<p>In this section, I will discuss some alternative approaches and advanced scenarios.</p>
+
+<h3 id="service-endpoints">Service endpoints</h3>
+
+<p><a href="https://docs.microsoft.com/azure/virtual-network/virtual-network-service-endpoints-overview">Service endpoint</a> is an alternative Azure Networking technology you can use to secure your network traffic. Essentially, you register specific service endpoints like Microsoft.KeyVault on the subnet where traffic originates from - in this case the virtual network integration subnet. With this registration, Azure will append metadata to the traffic towards the specific service to allow the service to restrict which subnet to accept traffic from, and block all other traffic. Unlike private endpoint, it still uses the public IP of the service for routing, and therefore doesn’t need the setup of Azure Private DNS Zones.</p>
+
+<h2 id="faq">FAQ</h2>
+
+<p><strong>Q: Can I apply the same steps to a Function App?</strong></p>
+
+<p>You will need a Premium Elastic plan to use virtual network integration with Function Apps. Further, if you would like to also have the storage account that Functions uses for code and state, you will need to initially create it with the storage publicly available. <a href="https://docs.microsoft.com/azure/azure-functions/configure-networking-how-to#restrict-your-storage-account-to-a-virtual-network">The steps and limitations for that are documented here</a>.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-04-22T00:00:00+00:00">April 22, 2021</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Deploying+a+site+with+secure+backend+communication%20https%3A%2F%2Fazure.github.io%2FAppService%2F2021%2F04%2F22%2FSite-with-secure-backend-communication.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2021%2F04%2F22%2FSite-with-secure-backend-communication.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2021%2F04%2F22%2FSite-with-secure-backend-communication.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2021/04/21/Announcing-Autoheal-for-Azure-App-Service-Linux.html" class="pagination--pager" title="Announcing Auto Heal for Linux
+">Previous</a>
+    
+    
+      <a href="/AppService/2021/05/10/codeless-monitoring-for-java-node.html" class="pagination--pager" title="Auto-instrumentation Monitoring for Java and Node.js on App Service (Preview)
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

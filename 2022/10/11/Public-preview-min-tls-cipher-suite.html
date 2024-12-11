@@ -1,0 +1,953 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Public Preview: Disabling Weaker TLS Cipher Suites for Web Apps on Multi-tenant Premium App Service Plans - Azure App Service</title>
+<meta name="description" content="Public preview of the minimum TLS cipher suite feature that allows customers to disable weaker TLS cipher suites for their App Service web apps">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Public Preview: Disabling Weaker TLS Cipher Suites for Web Apps on Multi-tenant Premium App Service Plans">
+<meta property="og:url" content="https://azure.github.io/AppService/2022/10/11/Public-preview-min-tls-cipher-suite.html">
+
+
+  <meta property="og:description" content="Public preview of the minimum TLS cipher suite feature that allows customers to disable weaker TLS cipher suites for their App Service web apps">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2022-10-11T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2022/10/11/Public-preview-min-tls-cipher-suite.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Public Preview: Disabling Weaker TLS Cipher Suites for Web Apps on Multi-tenant Premium App Service Plans">
+    <meta itemprop="description" content="Public preview of the minimum TLS cipher suite feature that allows customers to disable weaker TLS cipher suites for their App Service web apps">
+    <meta itemprop="datePublished" content="October 11, 2022">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Public Preview: Disabling Weaker TLS Cipher Suites for Web Apps on Multi-tenant Premium App Service Plans
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+            
+            
+              • By Yutang Lin
+            
+            • October 11, 2022
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#what-are-cipher-suites-and-how-do-they-work-on-app-service">What are cipher suites and how do they work on App Service?</a></li>
+  <li><a href="#minimum-tls-cipher-suite-feature">Minimum TLS Cipher Suite Feature</a>
+    <ul>
+      <li><a href="#what-cipher-suites-are-supported-and-how-are-they-prioritized-">What cipher suites are supported and how are they prioritized? </a></li>
+      <li><a href="#how-to-disable-weaker-cipher-suites">How to disable weaker cipher suites?</a>
+        <ul>
+          <li><a href="#sample-api-call">Sample API call</a></li>
+        </ul>
+      </li>
+      <li><a href="#what-is-the-default-behavior">What is the default behavior?</a></li>
+    </ul>
+  </li>
+</ul>
+            </nav>
+          </aside>
+        
+        <p>For a few years, the only way to disable weaker TLS Cipher Suites for web apps is to host these web apps in an App Service Environment (ASE). The recent update to the App Service front-ends <a href="https://aka.ms/appservicekestrelyarp">mentioned earlier</a> has allowed the capability to bring this type of TLS cipher suite customization to customers running on the public multi-tenant footprint. <strong>We are excited to announce a public preview of the minimum TLS cipher suite feature that allows web apps in multi-tenant premium App Service Plans to disable weaker cipher suites!</strong> This feature enables our security conscious customers to trim off older cipher suites that the App Service platform supports for client compatibility.</p>
+
+<h2 id="what-are-cipher-suites-and-how-do-they-work-on-app-service">What are cipher suites and how do they work on App Service?</h2>
+
+<p>A cipher suite is a set of instructions that contains algorithms and protocols to help secure network connections between clients and servers. By default, the front-end’s OS would pick the most secure cipher suite that is supported by both the front-end and the client. However, if the client only supports weak cipher suites, then the front-end’s OS would end up picking a weak cipher suite that is supported by them both.</p>
+
+<p>If a customer’s organization has restrictions on what cipher suites are not be allowed, they may update their web app’s minimum TLS cipher suite property to ensure that the weaker cipher suites would be disabled for their web app. The next part of the article will go through the new minimum TLS cipher suite feature that is currently in public preview.</p>
+
+<h2 id="minimum-tls-cipher-suite-feature">Minimum TLS Cipher Suite Feature</h2>
+
+<p>The minimum TLS cipher suite feature comes with a pre-determined list of cipher suites that cannot be reordered nor reprioritized. Since the service is already using the ideal priority order, it is not recommended for customers to reprioritize the the cipher suite order. Customers can potentially leave their web apps exposed if weaker cipher suites are prioritized over the stronger ones. Customers also cannot add newer or different cipher suites to the list of supported cipher suites. When a minimum cipher suite is selected, all the cipher suites that are less secure than the selected minimum one would be disabled for the web app. There is no support to make exceptions and to disable only some of the cipher suites that are weaker than the selected minimum cipher suite.</p>
+
+<h3 id="what-cipher-suites-are-supported-and-how-are-they-prioritized-">What cipher suites are supported and how are they prioritized? <a name="supported-cipher-suites"></a></h3>
+
+<p>Refer to below for the list of supported cipher suites. These cipher suites are listed in order from most secure to the least secure. The service may update the list of supported cipher suite later on, though not very frequently.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, 
+TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, 
+TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, 
+TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, 
+TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, 
+TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384, 
+TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256, 
+TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, 
+TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, 
+TLS_RSA_WITH_AES_256_GCM_SHA384, 
+TLS_RSA_WITH_AES_128_GCM_SHA256, 
+TLS_RSA_WITH_AES_256_CBC_SHA256, 
+TLS_RSA_WITH_AES_128_CBC_SHA256, 
+TLS_RSA_WITH_AES_256_CBC_SHA, 
+TLS_RSA_WITH_AES_128_CBC_SHA 
+</code></pre></div></div>
+
+<h3 id="how-to-disable-weaker-cipher-suites">How to disable weaker cipher suites?</h3>
+
+<p>Minimum TLS cipher suite is a property that resides in the site’s config and customers can make changes to disable weaker cipher suites by updating the site config through API calls. The minimum TLS cipher suite feature is currently not yet supported on the Azure Portal.</p>
+
+<h4 id="sample-api-call">Sample API call</h4>
+
+<p>This part of the article will show an example on how to select a minimum TLS cipher suite in order to disable weaker cipher suites.</p>
+
+<p>Let’s say, based from the <a href="#supported-cipher-suites">list of supported TLS cipher suites</a>, we would like to disable all the cipher suites that are weaker than <code class="language-plaintext highlighter-rouge">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</code>. In order to do this, we can call the <a href="https://learn.microsoft.com/rest/api/appservice/web-apps/update-configuration">Update Config API</a> to set the property <code class="language-plaintext highlighter-rouge">minTlsCipherSuite</code> to <code class="language-plaintext highlighter-rouge">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</code>. Refer to the sample API call below.</p>
+
+<p>Take note that the API parameter for <code class="language-plaintext highlighter-rouge">minTlsCipherSuite</code> is <strong>case sensitive</strong>.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PATCH https://management.azure.com/subscriptions/&lt;subscriptionId&gt;/resourceGroups/&lt;resourceGroup&gt;/providers/Microsoft.Web/sites/&lt;siteName&gt;/config/web?api-version=2022-03-01 
+</code></pre></div></div>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w"> 
+  </span><span class="nl">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> 
+    </span><span class="nl">"minTlsCipherSuite"</span><span class="p">:</span><span class="w"> </span><span class="s2">"TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA"</span><span class="w"> 
+  </span><span class="p">}</span><span class="w"> 
+</span><span class="p">}</span><span class="w"> 
+</span></code></pre></div></div>
+
+<p>After successfully updating the site config, we will see the value of the property <code class="language-plaintext highlighter-rouge">minTlsCipherSuite</code> change to the selected cipher suite, <code class="language-plaintext highlighter-rouge">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</code> from the example above.</p>
+
+<p>We will also see the value of the property <code class="language-plaintext highlighter-rouge">supportedTlsCipherSuites</code> show a list of all the cipher suites that are enabled for the web app. In this case, the cipher suites that are weaker than the selected minimum cipher suite, <code class="language-plaintext highlighter-rouge">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</code>,  will not show up in the <code class="language-plaintext highlighter-rouge">supportedTlsCipherSuites</code> property because they have been disabled for the web app.</p>
+
+<h3 id="what-is-the-default-behavior">What is the default behavior?</h3>
+
+<p>By default, without making any changes to the minimum TLS cipher suite property, the web app will support all the cipher suites the front-end supports. The <code class="language-plaintext highlighter-rouge">minTlsCipherSuite</code> property would be <code class="language-plaintext highlighter-rouge">null</code> and the <code class="language-plaintext highlighter-rouge">supportedTlsCipherSuites</code> property would also be <code class="language-plaintext highlighter-rouge">null</code>; this just means that the web app will allow all <a href="#supported-cipher-suites">the supported cipher suites</a> as the default behavior.</p>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2022-10-11T00:00:00+00:00">October 11, 2022</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Public+Preview%3A+Disabling+Weaker+TLS+Cipher+Suites+for+Web+Apps+on+Multi-tenant+Premium+App+Service+Plans%20https%3A%2F%2Fazure.github.io%2FAppService%2F2022%2F10%2F11%2FPublic-preview-min-tls-cipher-suite.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2022%2F10%2F11%2FPublic-preview-min-tls-cipher-suite.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2022%2F10%2F11%2FPublic-preview-min-tls-cipher-suite.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2022/10/07/Configure-automation-for-upgrade-preferences-in-App-Service-Environment-part2.html" class="pagination--pager" title="Control and automate planned maintenance for App Service Environment v3 part 2
+">Previous</a>
+    
+    
+      <a href="/AppService/2022/10/12/Announcing-Preview-of-Azure-Front-Door-integration-with-Azure-App-Service.html" class="pagination--pager" title="WordPress on Azure App Service supports Azure Front Door Integration
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

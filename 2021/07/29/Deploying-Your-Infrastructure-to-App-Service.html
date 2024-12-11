@@ -1,0 +1,1623 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Overview of the Various Methods for Deploying Your Infrastructure to App Service - Azure App Service</title>
+<meta name="description" content="There are a number of ways to deploy infrastructure to Azure, what you pick depends on a number of factors including skill level, experience, job requirement, or perhaps company policy. In the end, they’ll essentially get you to the same place - infrastructure deployed to the cloud. This article will cover infrastructure deployment methods including using the Azure Portal, Azure CLI in Cloud Shell or on your local machine, PowerShell, an Azure Resource Manager (ARM) template, Bicep, and Terraform by HashiCorp. Feel free to follow along with the samples as step-by-step guidance will be provided.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Overview of the Various Methods for Deploying Your Infrastructure to App Service">
+<meta property="og:url" content="https://azure.github.io/AppService/2021/07/29/Deploying-Your-Infrastructure-to-App-Service.html">
+
+
+  <meta property="og:description" content="There are a number of ways to deploy infrastructure to Azure, what you pick depends on a number of factors including skill level, experience, job requirement, or perhaps company policy. In the end, they’ll essentially get you to the same place - infrastructure deployed to the cloud. This article will cover infrastructure deployment methods including using the Azure Portal, Azure CLI in Cloud Shell or on your local machine, PowerShell, an Azure Resource Manager (ARM) template, Bicep, and Terraform by HashiCorp. Feel free to follow along with the samples as step-by-step guidance will be provided.">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2021-07-29T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2021/07/29/Deploying-Your-Infrastructure-to-App-Service.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Overview of the Various Methods for Deploying Your Infrastructure to App Service">
+    <meta itemprop="description" content="There are a number of ways to deploy infrastructure to Azure, what you pick depends on a number of factors including skill level, experience, job requirement, or perhaps company policy. In the end, they’ll essentially get you to the same place - infrastructure deployed to the cloud. This article will cover infrastructure deployment methods including using the Azure Portal, Azure CLI in Cloud Shell or on your local machine, PowerShell, an Azure Resource Manager (ARM) template, Bicep, and Terraform by HashiCorp. Feel free to follow along with the samples as step-by-step guidance will be provided.">
+    <meta itemprop="datePublished" content="July 29, 2021">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Overview of the Various Methods for Deploying Your Infrastructure to App Service
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  23 minute read
+
+            
+            
+              • By Jordan Selig
+            
+            • July 29, 2021
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#general-prerequisites">General Prerequisites</a></li>
+  <li><a href="#app-overview">App Overview</a></li>
+  <li><a href="#azure-portal">Azure Portal</a>
+    <ul>
+      <li><a href="#prerequisites">Prerequisites</a></li>
+      <li><a href="#tutorial">Tutorial</a></li>
+    </ul>
+  </li>
+  <li><a href="#azure-cli">Azure CLI</a>
+    <ul>
+      <li><a href="#prerequisites-1">Prerequisites</a></li>
+      <li><a href="#tutorial-1">Tutorial</a></li>
+    </ul>
+  </li>
+  <li><a href="#powershell">PowerShell</a>
+    <ul>
+      <li><a href="#prerequisites-2">Prerequisites</a></li>
+      <li><a href="#tutorial-2">Tutorial</a></li>
+    </ul>
+  </li>
+  <li><a href="#azure-resource-manager-arm-template">Azure Resource Manager (ARM) Template</a>
+    <ul>
+      <li><a href="#prerequisites-3">Prerequisites</a></li>
+      <li><a href="#tutorial-3">Tutorial</a></li>
+    </ul>
+  </li>
+  <li><a href="#bicep-file">Bicep File</a>
+    <ul>
+      <li><a href="#prerequisites-4">Prerequisites</a></li>
+      <li><a href="#tutorial-4">Tutorial</a></li>
+    </ul>
+  </li>
+  <li><a href="#terraform">Terraform</a>
+    <ul>
+      <li><a href="#prerequisites-5">Prerequisites</a></li>
+      <li><a href="#tutorial-5">Tutorial</a></li>
+    </ul>
+  </li>
+  <li><a href="#wrapping-up">Wrapping Up</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <p>There are a number of ways to deploy infrastructure to Azure, what you pick depends on a number of factors including skill level, experience, job requirement, or perhaps company policy. In the end, they’ll essentially get you to the same place - infrastructure deployed to the cloud. This article will cover infrastructure deployment methods including using the <a href="https://portal.azure.com/">Azure Portal</a>, <a href="https://docs.microsoft.com/en-us/cli/azure/get-started-with-azure-cli">Azure CLI</a> in Cloud Shell or on your local machine, <a href="https://docs.microsoft.com/en-us/powershell/">PowerShell</a>, an <a href="https://docs.microsoft.com/azure/azure-resource-manager/management/overview">Azure Resource Manager (ARM)</a> template, <a href="https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/">Bicep</a>, and <a href="https://www.terraform.io/">Terraform</a> by HashiCorp. Feel free to follow along with the samples as step-by-step guidance will be provided.</p>
+
+<h2 id="general-prerequisites">General Prerequisites</h2>
+
+<p>Since there are a number of deployment methods in this article, prerequisites will be given on a case by case basis. However to start, if you would like to follow along and you don’t have an <a href="https://docs.microsoft.com/en-us/azure/guides/developer/azure-developer-guide#understanding-accounts-subscriptions-and-billing">Azure subscription</a>, create a <a href="https://azure.microsoft.com/free/?ref=microsoft.com&amp;utm_source=microsoft.com&amp;utm_medium=docs&amp;utm_campaign=visualstudio">free account</a> before you begin. Be mindful when creating and deleting resources as some of the samples in this article may incur charges if you choose certain deployment settings or if you keep your app running for an extended period of time. If you are trying to prevent racking up an charges, please be sure to review the documentation and billing pages closely prior to any deployments.</p>
+
+<h2 id="app-overview">App Overview</h2>
+
+<p>You will be creating a to-do-list app that uses Microsoft Azure Cosmos DB service to store and access data from an ASP.NET Core MVC application hosted on Azure App Service. More details for this app can be found <a href="https://github.com/Azure-Samples/cosmos-dotnet-core-todo-app">here</a>.</p>
+
+<p>We will be creating the following primary resources:</p>
+
+<ol>
+  <li><a href="https://docs.microsoft.com/en-us/azure/cosmos-db/create-cosmosdb-resources-portal">Cosmos DB account</a> to act as the database to store the data from our app</li>
+  <li><a href="https://docs.microsoft.com/en-us/azure/app-service/overview-hosting-plans">App Service Plan</a> which defines the set of compute resources for the web app to run</li>
+  <li><a href="https://docs.microsoft.com/en-us/azure/app-service/overview">App Service</a> which is an HTTP-based service for hosting web applications, REST APIs, and mobile back ends</li>
+</ol>
+
+<p><a href="https://docs.microsoft.com/en-us/azure/app-service/deploy-github-actions?tabs=applevel">Code deployment</a> in App Service is another topic that will not be covered in depth in this article, but feel free to browse the <a href="https://docs.microsoft.com/en-us/azure/app-service/deploy-github-actions?tabs=applevel">docs</a> to understand the various methods. For the purpose of this article, you will stick to one method (External Git) to keep things as consistent as possible.</p>
+
+<h2 id="azure-portal">Azure Portal</h2>
+
+<h3 id="prerequisites">Prerequisites</h3>
+<p>No additional prerequisites for this tutorial.</p>
+
+<h3 id="tutorial">Tutorial</h3>
+
+<p>In my opinion, the <a href="https://portal.azure.com/">Azure Portal</a> is the most user friendly method for infrastructure deployment, especially for those who are just starting with Azure or do not have much experience with the cloud or infrastructure-as-code. It provides a user interface where you will get to explore the various available services and see step-by-step what is happening as you move through the infrastructure creation process.</p>
+
+<p>Navigate to the <a href="https://portal.azure.com/">Azure Portal</a>. At this point, you should have already created an <a href="https://docs.microsoft.com/en-us/azure/guides/developer/azure-developer-guide#understanding-accounts-subscriptions-and-billing">Azure subscription</a> and a <a href="https://azure.microsoft.com/free/?ref=microsoft.com&amp;utm_source=microsoft.com&amp;utm_medium=docs&amp;utm_campaign=visualstudio">free account</a>. If not, navigate back to the <a href="#general-prerequisites">General Prerequisites</a> and complete those steps.</p>
+
+<ol>
+  <li>To start, you will need to create a <a href="https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/manage-resource-groups-portal">resource group</a> to hold and manage the resources related to this app. From the home page, click “Create a resource” and search for “resource group.” Select and fill in the following details:
+    <ol>
+      <li><strong>Subscription</strong>: the name of the subscription you created (or already had if you were an existing Azure user)</li>
+      <li><strong>Resource Group</strong>: give your resource group a name that is unique to your Subscription</li>
+      <li><strong>Region</strong>: select your preferred region for where you would like the resource group to be located. (Typically you choose a region that is physically close to you to reduce latency, or sometimes certain features/services are only available in certain regions - for the purposes of this article, it does not matter which region you choose.)</li>
+    </ol>
+  </li>
+  <li>Select “Review + create” at the bottom left of your screen and wait for validation to complete. If you get an error, review and address as needed.</li>
+  <li>Select “Create” at the bottom left and your resource group will be created</li>
+  <li>Next, you will need to create a Cosmos DB account. For more details on how to do this, see <a href="https://docs.microsoft.com/en-us/azure/cosmos-db/create-cosmosdb-resources-portal">this</a> doc. For this article, I will give quick step-by-step guidance. Navigate back to the “Create a resource” page and search for Cosmos DB. Select “Create” under “Azure Cosmos DB” ane then select “Azure Cosmos DB” again.</li>
+  <li>On the following page, select create under “Core (SQL) - Recommended” as the account type</li>
+  <li>Fill in the following details for your Cosmos DB account:
+    <ol>
+      <li><strong>Subscription</strong>: the name of the subscription you created (or already had if you were an existing Azure user)</li>
+      <li><strong>Resource Group</strong>: the resource group you created earlier</li>
+      <li><strong>Account Name</strong>: a unique name to identify the account. The name can only contain lowercase letters, numbers, and the hyphen (-) character. It must be between 3-44 characters in length.</li>
+      <li><strong>Location</strong>: a geographic location to host your Azure Cosmos DB account. Use the location that is closest to your users to give them the fastest access to the data. You can use the same or different location as you selected for your resource group since this is only a tutorial, however if you were to put this into production, you would want to think more carefully about this location as well as <a href="https://docs.microsoft.com/en-us/azure/cosmos-db/distribute-data-globally">geo-redundancy</a> options.</li>
+      <li>To keep things as cheap as possible, for “Capacity mode”, select “Provisioned throughput” which gives you the option to “Apply Free Tier Discount.” Select “Apply” if this is your intention.</li>
+    </ol>
+  </li>
+  <li>Feel free to browse the remaining settings, but this tutorial will leave them as defaults</li>
+  <li>Select “Review + create” at the bottom left of your screen and wait for validation to complete. If you get an error, review and address as needed.</li>
+  <li>Select “Create” at the bottom left and your Cosmos DB account will be created after a couple minutes</li>
+  <li>While the Cosmos DB account is being provisioned, which can take 5-10 minutes, you can move on to creating the App Service. Navigate back to the “Create a resource” page and search for “Web App.” Make sure you don’t select any of the recommended options and just hit enter to search.</li>
+  <li>Review the results and select “Create” under “Web App.” This will take you to the Web App creation page.</li>
+  <li>Fill in the following details for your Web App:
+    <ol>
+      <li><strong>Subscription</strong>: the name of the subscription you created (or already had if you were an existing Azure user)</li>
+      <li><strong>Resource Group</strong>: the resource group you created earlier</li>
+      <li><strong>Name</strong>: a unique name to identify the web app. This will become part of the domain for the app.</li>
+      <li><strong>Publish</strong>: “Code” - we will cover this in the next step</li>
+      <li><strong>Runtime stack</strong>: “.NET Core 3.1”</li>
+      <li><strong>Operating System</strong>: “Windows”</li>
+      <li><strong>Region</strong>: a geographic location close to your Azure Cosmos DB account.</li>
+      <li>You will now be selecting the details for the App Service Plan (ASP). Pay close attention here to avoid incurring any unwanted costs.
+        <ol>
+          <li><strong>Windows Plan</strong>: select “Create new” and give the A**: a name</li>
+          <li><strong>Sku and size</strong>: select “Change size” and choose the**:ier that fits your budget. “F1” is the free tier and should be sufficient for this tutorial. I would recommend using “S1” or higher for this however since it gives you more features to experiment with. Select your tier and hit “Apply.”</li>
+        </ol>
+      </li>
+    </ol>
+  </li>
+  <li>Feel free to browse the remaining settings, but this tutorial will leave them as defaults.</li>
+  <li>Select “Review + create” at the bottom left of your screen and wait for validation to complete. If you get an error, review and address as needed.</li>
+  <li>Select “Create” at the bottom left and your web app will be created after a couple minutes</li>
+  <li>While the web app is being provisioned, navigate to your newly created Cosmos DB account. The easiest way to do this is to go to your Resource Group to view all of the resources you have created so far.</li>
+  <li>You will now create the container in the Cosmos DB account that will hold the data for our app
+    <ol>
+      <li>Make sure you are on the “Overview” page and select “Add Container” at the top left</li>
+      <li>Fill in the following values, leaving the remaining as default:
+        <ol>
+          <li><strong>Database id</strong>: select “Create new” and call it <code class="language-plaintext highlighter-rouge">Tasks</code></li>
+          <li><strong>Database throughput</strong>: select “Manual” and change the value to <code class="language-plaintext highlighter-rouge">400</code> which should be sufficient for this tutorial</li>
+          <li><strong>Container id</strong>: <code class="language-plaintext highlighter-rouge">Items</code></li>
+          <li><strong>Partition key</strong>: <code class="language-plaintext highlighter-rouge">/id</code></li>
+        </ol>
+      </li>
+      <li>Select “OK” to close out the dialog. Your container and empty table will get provisioned after a couple seconds</li>
+    </ol>
+  </li>
+  <li>Now it is time to connect your database to your web app. Under “Settings” on the left hand side, select “Keys” to show the various keys and connection strings associated with your database. Copy and paste the following into a text editor:
+    <ol>
+      <li>URI</li>
+      <li>Primary Key</li>
+    </ol>
+  </li>
+  <li>Once you have these values, navigate to your Web App. You can do this by retuning to your Resource Group and selecting the Web App from there. Make sure you select the resource with the type “App Service.”</li>
+  <li>Under “Settings” on the left hand side, select “Configuration” to add the connection to your database</li>
+  <li>Under “Application settings” select “New application setting” and create the following (you will need to hit “New application setting” for each one)
+    <ol>
+      <li>Name = CosmosDb:Account, Value = <code class="language-plaintext highlighter-rouge">&lt;database URI&gt;</code></li>
+      <li>Name = CosmosDb:Key, Value = <code class="language-plaintext highlighter-rouge">&lt;database Primary key&gt;</code></li>
+      <li>Name = CosmosDb:DatabaseName, Value = <code class="language-plaintext highlighter-rouge">Tasks</code></li>
+      <li>Name = CosmosDb:ContainerName, Value = <code class="language-plaintext highlighter-rouge">Items</code></li>
+    </ol>
+  </li>
+  <li>Hit “Save” at the top and then “Continue” for the notification saying your app will be restarted</li>
+  <li>Finally, your app is configured and you can upload your code. Head over to “Deployment Center” under “Deployment” on the left hand side</li>
+  <li>Use the following settings:
+    <ol>
+      <li><strong>Source</strong>: “External Git”</li>
+      <li><strong>Repository</strong>: <code class="language-plaintext highlighter-rouge">https://github.com/Azure-Samples/cosmos-dotnet-core-todo-app.git</code></li>
+      <li><strong>Branch</strong>: <code class="language-plaintext highlighter-rouge">main</code></li>
+      <li><strong>Repository Type</strong>: “Public”</li>
+    </ol>
+  </li>
+  <li>Hit “Save” at the top and give your app time to build and deploy the code. You can review the status by selecting “Logs” next to the “Settings” tab in the Deployment Center. When Status says “Success (Active)” your app should be up and running!</li>
+  <li>Navigate to the “Overview” tab on the left hand side and find your app’s URL. Hit that and it should open your app in a new tab. Feel free to play around with it and see what you’ve created! If your app doesn’t open immediately or you get a generic landing page, wait a couple minutes and try again. If needed, restart your app by hitting “Restart” at the top of the “Overview” tab.</li>
+  <li>When you are done, you can delete your resources. You can do this by <a href="https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/delete-resource-group?tabs=azure-portal">deleting the resource group</a>.</li>
+</ol>
+
+<p>Congratulations! You just deployed a web app connected to a database on Azure. Continue to the next section to learn about another deployment method.</p>
+
+<h2 id="azure-cli">Azure CLI</h2>
+
+<h3 id="prerequisites-1">Prerequisites</h3>
+
+<p>Azure hosts Azure Cloud Shell, an interactive shell environment that you can use through your browser. You can use either Bash or PowerShell with Cloud Shell to work with Azure services. You can use the Cloud Shell preinstalled commands to run the code in this article without having to install anything on your local environment. If you prefer to use your local environment, follow the steps <a href="https://docs.microsoft.com/en-us/cli/azure/install-azure-cli">here</a> to install the latest version.</p>
+
+<p>If you are using the Azure CLI from your local environment, you will need to login first with the <a href="https://docs.microsoft.com/en-us/cli/azure/get-started-with-azure-cli#sign-in"><code class="language-plaintext highlighter-rouge">az login</code></a> command. Proceed to the tutorial once logged in. If you would like to use the Azure Cloud Shell either navigate to the <a href="https://portal.azure.com/">Azure portal</a> and select the <strong>Cloud Shell</strong> button on the menu bar at the upper right, or just navigate to <a href="https://shell.azure.com/">https://shell.azure.com/</a>. Confirm you have a Bash shell opened by checking the top left of the Cloud Shell and select “Bash” from the drop down.</p>
+
+<h3 id="tutorial-1">Tutorial</h3>
+
+<p>The <a href="https://docs.microsoft.com/en-us/cli/azure/what-is-azure-cli">Azure CLI</a> is a cross-platform command-line tool to connect to Azure and execute administrative commands on Azure resources. It allows the execution of commands through a terminal using interactive command-line prompts or a script. It is a great tool for those who have experience working from a command line and are comfortable with either bash or PowerShell. For those with less experience, there is an <a href="https://docs.microsoft.com/en-us/cli/azure/interactive-azure-cli">interactive mode</a> which can be activated by running the <code class="language-plaintext highlighter-rouge">az interactive</code> command.</p>
+
+<p>Below is a script which if you copy and paste into your CLI/shell will run all of the commands and deploy the application in one shot. I recommend however that you copy and paste each of the commands one at a time to get a better understanding of what is happening during each step. You can navigate between your CLI and the portal to see the resources in your resource group as they get created.</p>
+
+<p>Comments have provided throughout the script to identify what each of the commands is doing.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Variables</span>
+<span class="nv">resourceGroupName</span><span class="o">=</span><span class="s2">"myResourceGroup"</span>
+<span class="nv">appName</span><span class="o">=</span><span class="s2">"webappwithcosmosdb</span><span class="nv">$RANDOM</span><span class="s2">"</span>
+<span class="nv">location</span><span class="o">=</span><span class="s2">"eastus"</span>
+<span class="nv">appServicePlanName</span><span class="o">=</span><span class="s2">"</span><span class="nv">$appName</span><span class="s2">-ASP"</span>
+<span class="c"># Do not change these</span>
+<span class="nv">databaseName</span><span class="o">=</span><span class="s2">"Tasks"</span>
+<span class="nv">containerName</span><span class="o">=</span><span class="s2">"Items"</span>
+
+<span class="c"># Create a Resource Group </span>
+az group create <span class="nt">--name</span> <span class="nv">$resourceGroupName</span> <span class="nt">--location</span> <span class="nv">$location</span>
+
+<span class="c"># Create an App Service Plan</span>
+az appservice plan create <span class="nt">--resource-group</span> <span class="nv">$resourceGroupName</span> <span class="nt">--name</span> <span class="nv">$appServicePlanName</span> <span class="nt">--sku</span> S1 <span class="nt">--location</span> <span class="nv">$location</span>
+
+<span class="c"># Create a Web App in the App Service Plan</span>
+az webapp create <span class="nt">--name</span> <span class="nv">$appName</span> <span class="nt">--plan</span> <span class="nv">$appServicePlanName</span> <span class="nt">--resource-group</span> <span class="nv">$resourceGroupName</span>
+
+<span class="c"># Create a Cosmos DB account</span>
+az cosmosdb create <span class="nt">--name</span> <span class="nv">$appName</span> <span class="nt">--resource-group</span> <span class="nv">$resourceGroupName</span> <span class="nt">--kind</span> GlobalDocumentDB
+
+<span class="c"># Get the database connection details and store them as variables. Make sure there is only one Cosmos DB account in your resource group. Otherwise, you will need to further parse the response from the below command to obtain the needed info.</span>
+<span class="nv">databaseUri</span><span class="o">=</span><span class="si">$(</span>az cosmosdb list <span class="nt">--resource-group</span> <span class="nv">$resourceGroupName</span> <span class="nt">--query</span> <span class="o">[</span>0].documentEndpoint <span class="nt">--output</span> tsv<span class="si">)</span>
+<span class="nv">primaryMasterKey</span><span class="o">=</span><span class="si">$(</span>az cosmosdb keys list <span class="nt">--name</span> <span class="nv">$appName</span> <span class="nt">--resource-group</span> <span class="nv">$resourceGroupName</span> <span class="nt">--type</span> keys <span class="nt">--query</span> primaryMasterKey <span class="nt">--output</span> tsv<span class="si">)</span>
+
+<span class="c"># Assign the database details to App Settings in the Web App</span>
+az webapp config appsettings <span class="nb">set</span> <span class="nt">--name</span> <span class="nv">$appName</span> <span class="nt">--resource-group</span> <span class="nv">$resourceGroupName</span> <span class="nt">--settings</span> <span class="s2">"CosmosDb:Account=</span><span class="nv">$databaseUri</span><span class="s2">"</span>
+az webapp config appsettings <span class="nb">set</span> <span class="nt">--name</span> <span class="nv">$appName</span> <span class="nt">--resource-group</span> <span class="nv">$resourceGroupName</span> <span class="nt">--settings</span> <span class="s2">"CosmosDb:Key=</span><span class="nv">$primaryMasterKey</span><span class="s2">"</span>
+az webapp config appsettings <span class="nb">set</span> <span class="nt">--name</span> <span class="nv">$appName</span> <span class="nt">--resource-group</span> <span class="nv">$resourceGroupName</span> <span class="nt">--settings</span> <span class="s2">"CosmosDb:DatabaseName=</span><span class="nv">$databaseName</span><span class="s2">"</span>
+az webapp config appsettings <span class="nb">set</span> <span class="nt">--name</span> <span class="nv">$appName</span> <span class="nt">--resource-group</span> <span class="nv">$resourceGroupName</span> <span class="nt">--settings</span> <span class="s2">"CosmosDb:ContainerName=</span><span class="nv">$containerName</span><span class="s2">"</span>
+
+<span class="c"># Upload the code using External Git</span>
+az webapp deployment <span class="nb">source </span>config <span class="nt">--resource-group</span> <span class="nv">$resourceGroupName</span> <span class="nt">--name</span> <span class="nv">$appName</span> <span class="nt">--repo-url</span> https://github.com/Azure-Samples/cosmos-dotnet-core-todo-app.git <span class="nt">--branch</span> main <span class="nt">--manual-integration</span>
+</code></pre></div></div>
+
+<p>And that’s it! Give your app a couple minutes to deploy, and then navigate to your app’s URL (<code class="language-plaintext highlighter-rouge">&lt;https://APP-NAME.azurewebsites.net&gt;</code>) to validate everything was created as intended. When you are done, <a href="https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/delete-resource-group?tabs=azure-cli">delete the resource group</a> to delete the resources.</p>
+
+<h2 id="powershell">PowerShell</h2>
+
+<p>The Az PowerShell module is a set of cmdlets for managing Azure resources directly from PowerShell. PowerShell provides powerful features for automation that can be leveraged for managing your Azure resources for examples in the context of a CI/CD pipeline.</p>
+
+<p>You can use the Az PowerShell module with one of the following methods:</p>
+
+<ul>
+  <li><a href="https://docs.microsoft.com/en-us/powershell/azure/install-az-ps?view=azps-6.3.0">Install the Az PowerShell module via PowerShellGet</a> (recommended option).</li>
+  <li><a href="https://docs.microsoft.com/en-us/powershell/azure/install-az-ps-msi?view=azps-6.3.0">Install the Az PowerShell module with MSI</a>.</li>
+  <li><a href="https://docs.microsoft.com/en-us/azure/cloud-shell/overview">Use Azure Cloud Shell</a>.</li>
+  <li><a href="https://docs.microsoft.com/en-us/powershell/azure/azureps-in-docker?view=azps-6.3.0">Use the Az PowerShell Docker container</a>.</li>
+</ul>
+
+<h3 id="prerequisites-2">Prerequisites</h3>
+
+<p>If needed, install the Azure PowerShell using the instruction found in the <a href="https://docs.microsoft.com/en-us/powershell/azure/">Azure PowerShell guide</a>, and then run <code class="language-plaintext highlighter-rouge">Connect-AzAccount</code> to create a connection with Azure. If you would like to use the Azure Cloud Shell either navigate to the <a href="https://portal.azure.com/">Azure portal</a> and select the <strong>Cloud Shell</strong> button on the menu bar at the upper right, or just navigate to <a href="https://shell.azure.com/">https://shell.azure.com/</a>. Ensure you have a PowerShell type shell opened (not Bash) by selecting PowerShell from the top left corner of the Cloud Shell.</p>
+
+<h3 id="tutorial-2">Tutorial</h3>
+
+<p>Below is a commented script that will deploy the necessary resources for this application. Take some time to go through each cmdlet to understand what each is doing. You will notice that this script is very similar to the CLI script given previously.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Generates a Random Value</span><span class="w">
+</span><span class="nv">$Random</span><span class="o">=</span><span class="p">(</span><span class="n">New-Guid</span><span class="p">)</span><span class="o">.</span><span class="nf">ToString</span><span class="p">()</span><span class="o">.</span><span class="nf">Substring</span><span class="p">(</span><span class="nx">0</span><span class="p">,</span><span class="nx">8</span><span class="p">)</span><span class="w">
+
+</span><span class="c"># Variables</span><span class="w">
+</span><span class="nv">$ResourceGroup</span><span class="o">=</span><span class="s2">"MyResourceGroup</span><span class="nv">$Random</span><span class="s2">"</span><span class="w">
+</span><span class="nv">$AppName</span><span class="o">=</span><span class="s2">"webappwithcosmosdb</span><span class="nv">$Random</span><span class="s2">"</span><span class="w">
+</span><span class="nv">$Location</span><span class="o">=</span><span class="s2">"East US"</span><span class="w">
+</span><span class="nv">$ServerName</span><span class="o">=</span><span class="s2">"</span><span class="nv">$AppName</span><span class="s2">-ASP"</span><span class="w">
+</span><span class="c"># Do not change these</span><span class="w">
+</span><span class="nv">$DatabaseName</span><span class="o">=</span><span class="s2">"Tasks"</span><span class="w">
+</span><span class="nv">$ContainerName</span><span class="o">=</span><span class="s2">"Items"</span><span class="w">
+
+</span><span class="c"># Create a Resource Group</span><span class="w">
+</span><span class="n">New-AzResourceGroup</span><span class="w"> </span><span class="nt">-Name</span><span class="w"> </span><span class="nv">$ResourceGroup</span><span class="w"> </span><span class="nt">-Location</span><span class="w"> </span><span class="nv">$Location</span><span class="w">
+
+</span><span class="c"># Create an App Service Plan</span><span class="w">
+</span><span class="n">New-AzAppservicePlan</span><span class="w"> </span><span class="nt">-Name</span><span class="w"> </span><span class="nv">$ServerName</span><span class="w"> </span><span class="nt">-ResourceGroupName</span><span class="w"> </span><span class="nv">$ResourceGroup</span><span class="w"> </span><span class="nt">-Location</span><span class="w"> </span><span class="nv">$Location</span><span class="w"> </span><span class="nt">-Tier</span><span class="w"> </span><span class="nx">Basic</span><span class="w">
+
+</span><span class="c"># Create a Web App in the App Service Plan</span><span class="w">
+</span><span class="n">New-AzWebApp</span><span class="w"> </span><span class="nt">-Name</span><span class="w"> </span><span class="nv">$AppName</span><span class="w"> </span><span class="nt">-ResourceGroupName</span><span class="w"> </span><span class="nv">$ResourceGroup</span><span class="w"> </span><span class="nt">-Location</span><span class="w"> </span><span class="nv">$Location</span><span class="w"> </span><span class="nt">-AppServicePlan</span><span class="w"> </span><span class="nv">$ServerName</span><span class="w">
+
+</span><span class="c"># Create a Cosmos DB account</span><span class="w">
+</span><span class="n">New-AzCosmosDBAccount</span><span class="w"> </span><span class="nt">-ResourceGroupName</span><span class="w"> </span><span class="nv">$ResourceGroup</span><span class="w"> </span><span class="nt">-Name</span><span class="w"> </span><span class="nv">$AppName</span><span class="w"> </span><span class="nt">-Location</span><span class="w"> </span><span class="nv">$Location</span><span class="w"> </span><span class="nt">-ApiKind</span><span class="w"> </span><span class="nx">GlobalDocumentDB</span><span class="w">
+
+</span><span class="c"># Get the database connection details and store them as variables. Make sure there is only one Cosmos DB account in your resource group. Otherwise, you will need to further parse the response from the below command to obtain the needed info.</span><span class="w">
+</span><span class="nv">$DatabaseUri</span><span class="o">=</span><span class="p">(</span><span class="n">Get-AzCosmosDBAccount</span><span class="w"> </span><span class="nt">-ResourceGroupName</span><span class="w"> </span><span class="nv">$ResourceGroup</span><span class="p">)</span><span class="o">.</span><span class="nf">DocumentEndpoint</span><span class="w">
+</span><span class="nv">$PrimaryMasterKey</span><span class="o">=</span><span class="p">(</span><span class="n">Get-AzCosmosDBAccountKey</span><span class="w"> </span><span class="nt">-ResourceGroupName</span><span class="w"> </span><span class="nv">$ResourceGroup</span><span class="w"> </span><span class="nt">-Name</span><span class="w"> </span><span class="nv">$AppName</span><span class="w"> </span><span class="nt">-Type</span><span class="w"> </span><span class="nx">Keys</span><span class="p">)</span><span class="o">.</span><span class="nf">PrimaryMasterKey</span><span class="w">
+
+</span><span class="c"># Assign the database details to App Settings in the Web App</span><span class="w">
+</span><span class="nv">$hashtable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">@{</span><span class="w">
+  </span><span class="s2">"CosmosDb:Account"</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$DatabaseUri</span><span class="w">
+  </span><span class="s2">"CosmosDb:Key"</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$PrimaryMasterKey</span><span class="w">
+  </span><span class="s2">"CosmosDb:DatabaseName"</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$DatabaseName</span><span class="w">
+  </span><span class="s2">"CosmosDb:ContainerName"</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$ContainerName</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span><span class="n">Set-AzWebApp</span><span class="w"> </span><span class="nt">-ResourceGroupName</span><span class="w"> </span><span class="nv">$ResourceGroup</span><span class="w"> </span><span class="nt">-Name</span><span class="w"> </span><span class="nv">$AppName</span><span class="w"> </span><span class="nt">-AppSettings</span><span class="w"> </span><span class="nv">$hashtable</span><span class="w">
+
+</span><span class="c"># Upload the code using External Git</span><span class="w">
+</span><span class="nv">$PropertiesObject</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">@{</span><span class="w">
+  </span><span class="nx">repoUrl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"https://github.com/Azure-Samples/cosmos-dotnet-core-todo-app.git"</span><span class="p">;</span><span class="w">
+  </span><span class="nx">branch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"main"</span><span class="p">;</span><span class="w">
+  </span><span class="nx">isManualIntegration</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"true"</span><span class="p">;</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span><span class="n">Set-AzResource</span><span class="w"> </span><span class="nt">-Properties</span><span class="w"> </span><span class="nv">$PropertiesObject</span><span class="w"> </span><span class="nt">-ResourceGroupName</span><span class="w"> </span><span class="nv">$ResourceGroup</span><span class="w"> </span><span class="nt">-ResourceType</span><span class="w"> </span><span class="nx">Microsoft.Web/sites/sourcecontrols</span><span class="w"> </span><span class="nt">-ResourceName</span><span class="w"> </span><span class="nv">$AppName</span><span class="nx">/web</span><span class="w"> </span><span class="nt">-ApiVersion</span><span class="w"> </span><span class="nx">2015-08-01</span><span class="w"> </span><span class="nt">-Force</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Give your app a couple minutes to deploy, and then navigate to your app’s URL (<code class="language-plaintext highlighter-rouge">&lt;https://APP-NAME.azurewebsites.net&gt;</code>) to validate everything was created as intended. When you are done, <a href="https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/delete-resource-group?tabs=azure-cli">delete the resource group</a> to delete the resources.</p>
+
+<h2 id="azure-resource-manager-arm-template">Azure Resource Manager (ARM) Template</h2>
+
+<p>An <a href="https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/overview">ARM template</a> is a JavaScript Object Notation (JSON) file that defines the infrastructure and configuration for your project. This is also known as “Infrasture as Code (IaC).” The template uses declarative syntax. In declarative syntax, you describe your intended deployment without writing the sequence of programming commands to create the deployment.</p>
+
+<p>ARM templates are great for companies or people that need reusable templates to manage their infrastructure in a secure and consistent manner. For example, if a development team from a company requires a VM with a database to deploy a certain application, the approved ARM template for this configuration can be used which ensures this team is given approved and secure infrastructure and prevents the team from configuring something that can potentially lead to a hack or unidentified vulnerability. There are numerous linters and scanners that can review templates to ensure they are following certain security and regulatory standards as well which further adds to the sense of security companies can have when they use this deployment method.</p>
+
+<h3 id="prerequisites-3">Prerequisites</h3>
+
+<p>You will need a text editor or IDE to carry out this tutorial. I would recommend <a href="https://code.visualstudio.com/">Visual Studio Code</a>. You will also need to install the <a href="https://docs.microsoft.com/en-us/cli/azure/what-is-azure-cli">Azure CLI</a>. You have the option of using the <a href="https://shell.azure.com/">Azure Cloud Shell</a> which does not require any additional installation. The Azure Cloud Shell has a built in editor which can be opened by clicking the button that looks like “{ }” at the top of the screen.</p>
+
+<h3 id="tutorial-3">Tutorial</h3>
+
+<p>Review the below template. You will recognize that all of the resources in the template, including the settings, are what you created previously.</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"$schema"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"contentVersion"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0.0.0"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"metadata"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"_generator"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"bicep"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dev"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"templateHash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"108437092261803770"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"parameters"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"applicationName"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"defaultValue"</span><span class="p">:</span><span class="w"> </span><span class="s2">"[format('to-do-app{0}', uniqueString(resourceGroup().id))]"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"maxLength"</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"metadata"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Application Name"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"location"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"defaultValue"</span><span class="p">:</span><span class="w"> </span><span class="s2">"[resourceGroup().location]"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"metadata"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Location for all resources."</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"appServicePlanTier"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"defaultValue"</span><span class="p">:</span><span class="w"> </span><span class="s2">"S1"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"metadata"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"App Service Plan's pricing tier. Details at https://azure.microsoft.com/en-us/pricing/details/app-service/"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nl">"allowedValues"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="s2">"F1"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"D1"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"B1"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"B2"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"B3"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"S1"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"S2"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"S3"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"P1V2"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"P2V2"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"P3V2"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"P1V3"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"P2V3"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"P3V3"</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"appServicePlanInstances"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"int"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"defaultValue"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"metadata"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"App Service Plan's instance count"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nl">"maxValue"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"minValue"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"repositoryUrl"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"defaultValue"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://github.com/Azure-Samples/cosmos-dotnet-core-todo-app.git"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"metadata"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"The URL for the GitHub repository that contains the project to deploy."</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"branch"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"defaultValue"</span><span class="p">:</span><span class="w"> </span><span class="s2">"main"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"metadata"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"The branch of the GitHub repository to use."</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"databaseName"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"defaultValue"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Tasks"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"metadata"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"The Cosmos DB database name."</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"containerName"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"defaultValue"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Items"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"metadata"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"The Cosmos DB container name."</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"functions"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+  </span><span class="nl">"variables"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"cosmosAccountName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"[toLower(parameters('applicationName'))]"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"websiteName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"[parameters('applicationName')]"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"hostingPlanName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"[parameters('applicationName')]"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"resources"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Microsoft.DocumentDB/databaseAccounts"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"apiVersion"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2021-04-15"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"[variables('cosmosAccountName')]"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"GlobalDocumentDB"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"[parameters('location')]"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"consistencyPolicy"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"defaultConsistencyLevel"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Session"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nl">"locations"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"locationName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"[parameters('location')]"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"failoverPriority"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"isZoneRedundant"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">],</span><span class="w">
+        </span><span class="nl">"databaseAccountOfferType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Standard"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Microsoft.Web/serverfarms"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"apiVersion"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2020-06-01"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"[variables('hostingPlanName')]"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"[parameters('location')]"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"sku"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"[parameters('appServicePlanTier')]"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"capacity"</span><span class="p">:</span><span class="w"> </span><span class="s2">"[parameters('appServicePlanInstances')]"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Microsoft.Web/sites"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"apiVersion"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2020-06-01"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"[variables('websiteName')]"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"[parameters('location')]"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"serverFarmId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"siteConfig"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"appSettings"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+              </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CosmosDb:Account"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"[reference(resourceId('Microsoft.DocumentDB/databaseAccounts', variables('cosmosAccountName'))).documentEndpoint]"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+              </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CosmosDb:Key"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"[listKeys(resourceId('Microsoft.DocumentDB/databaseAccounts', variables('cosmosAccountName')), '2021-04-15').primaryMasterKey]"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+              </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CosmosDb:DatabaseName"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"[parameters('databaseName')]"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+              </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CosmosDb:ContainerName"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"[parameters('containerName')]"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+          </span><span class="p">]</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nl">"dependsOn"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="s2">"[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('cosmosAccountName'))]"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]"</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Microsoft.Web/sites/sourcecontrols"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"apiVersion"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2020-06-01"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"[format('{0}/web', variables('websiteName'))]"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"repoUrl"</span><span class="p">:</span><span class="w"> </span><span class="s2">"[parameters('repositoryUrl')]"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"branch"</span><span class="p">:</span><span class="w"> </span><span class="s2">"[parameters('branch')]"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"isManualIntegration"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nl">"dependsOn"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="s2">"[resourceId('Microsoft.Web/sites', variables('websiteName'))]"</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The template starts with the parameters for the infrastructure.</p>
+
+<p>Following the parameters are the resources. I will not repeat what these resources are since they are the same as those created before. Feel free to browse <a href="https://docs.microsoft.com/en-us/azure/templates/">here</a> to learn more about the various resources.</p>
+
+<p>In order to deploy this template, follow these steps:</p>
+
+<ol>
+  <li>Copy and paste the template to your preferred editor/IDE/Cloud Shell and save the file to your working directory</li>
+  <li>
+    <p>Open up a terminal where the Azure CLI has been installed and run the code below to create a resource group</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> az group create <span class="nt">--name</span> myResourceGroup <span class="nt">--location</span> <span class="s2">"eastus"</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Deploy the template using the following:</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> az deployment group create <span class="nt">--resource-group</span> myResourceGroup <span class="nt">--template-file</span> &lt;path-to-template&gt;
+</code></pre></div>    </div>
+  </li>
+  <li>And that’s it! Wait for a success message and navigate to your web app URL to prove that everything was created as intended.</li>
+  <li>When you are done, <a href="https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/delete-resource-group?tabs=azure-cli">delete the resource group</a> to delete the resources</li>
+</ol>
+
+<h2 id="bicep-file">Bicep File</h2>
+
+<p>Bicep is a domain-specific language (DSL) that uses declarative syntax to deploy Azure resources. It provides concise syntax, reliable type safety, and support for code reuse. You can use Bicep instead of JSON to develop your Azure Resource Manager templates (<a href="https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/overview">ARM templates</a>). The JSON syntax to create an ARM template can be verbose and require complicated expressions. Bicep syntax reduces that complexity and improves the development experience. Bicep is a transparent abstraction over ARM template JSON and doesn’t lose any of the JSON template capabilities. During deployment, the Bicep CLI transpiles a Bicep file into ARM template JSON.</p>
+
+<p>I would recommend Bicep to developers who are looking to create reusable templates for their infrastructure. If you have used ARM templates previously, it would be good to take a look at Bicep to see how it simplifies and speeds up template creation. Click <a href="https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/overview">here</a> if you are interested in learning more about Bicep.</p>
+
+<h3 id="prerequisites-4">Prerequisites</h3>
+
+<p>The Azure CLI is used here to deploy the template. You can also use the Azure portal, Azure PowerShell, or REST API. To learn about other deployment methods, see <a href="https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/deploy-cli">Bicep Deployment Commands</a>.</p>
+
+<p>In order to effectively create resources with Bicep, you will need to set up a Bicep <a href="https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/install">development environment</a>. Feel free to use the Azure Cloud Shell or your IDE of choice (this requires installing the Azure CLI locally). The Bicep extension for <a href="https://code.visualstudio.com/">Visual Studio Code</a> provides language support and resource autocompletion. The extension helps you create and validate Bicep files and is recommended for those that will continue to create resources using Bicep upon completing this tutorial.</p>
+
+<h3 id="tutorial-4">Tutorial</h3>
+
+<p>I’ll start off by giving you the file. You will recognize that all of the resources in the template, including the settings, are what you created previously. Compared to the ARM template, we reduced the number of lines and complexity significantly.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">param</span> <span class="nx">appServicePlanTier</span> <span class="nx">string</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">S1</span><span class="dl">'</span>
+
+<span class="p">@</span><span class="nd">minValue</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">@</span><span class="nd">maxValue</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="p">@</span><span class="nd">description</span><span class="p">(</span><span class="dl">'</span><span class="s1">App Service Plan</span><span class="se">\'</span><span class="s1">s instance count</span><span class="dl">'</span><span class="p">)</span>
+<span class="nx">param</span> <span class="nx">appServicePlanInstances</span> <span class="nx">int</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="p">@</span><span class="nd">description</span><span class="p">(</span><span class="dl">'</span><span class="s1">The URL for the GitHub repository that contains the project to deploy.</span><span class="dl">'</span><span class="p">)</span>
+<span class="nx">param</span> <span class="nx">repositoryUrl</span> <span class="nx">string</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">https://github.com/Azure-Samples/cosmos-dotnet-core-todo-app.git</span><span class="dl">'</span>
+
+<span class="p">@</span><span class="nd">description</span><span class="p">(</span><span class="dl">'</span><span class="s1">The branch of the GitHub repository to use.</span><span class="dl">'</span><span class="p">)</span>
+<span class="nx">param</span> <span class="nx">branch</span> <span class="nx">string</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">main</span><span class="dl">'</span>
+
+<span class="p">@</span><span class="nd">description</span><span class="p">(</span><span class="dl">'</span><span class="s1">The Cosmos DB database name.</span><span class="dl">'</span><span class="p">)</span>
+<span class="nx">param</span> <span class="nx">databaseName</span> <span class="nx">string</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">Tasks</span><span class="dl">'</span>
+
+<span class="p">@</span><span class="nd">description</span><span class="p">(</span><span class="dl">'</span><span class="s1">The Cosmos DB container name.</span><span class="dl">'</span><span class="p">)</span>
+<span class="nx">param</span> <span class="nx">containerName</span> <span class="nx">string</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">Items</span><span class="dl">'</span>
+
+<span class="kd">var</span> <span class="nx">cosmosAccountName</span> <span class="o">=</span> <span class="nf">toLower</span><span class="p">(</span><span class="nx">applicationName</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">websiteName</span> <span class="o">=</span> <span class="nx">applicationName</span>
+<span class="kd">var</span> <span class="nx">appServicePlanName</span> <span class="o">=</span> <span class="nx">applicationName</span>
+
+<span class="nx">resource</span> <span class="nx">cosmosAccount</span> <span class="dl">'</span><span class="s1">Microsoft.DocumentDB/databaseAccounts@2021-04-15</span><span class="dl">'</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="nx">cosmosAccountName</span>
+  <span class="na">kind</span><span class="p">:</span> <span class="dl">'</span><span class="s1">GlobalDocumentDB</span><span class="dl">'</span>
+  <span class="na">location</span><span class="p">:</span> <span class="nx">location</span>
+  <span class="na">properties</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">consistencyPolicy</span><span class="p">:</span> <span class="p">{</span>
+      <span class="na">defaultConsistencyLevel</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Session</span><span class="dl">'</span>
+    <span class="p">}</span>
+    <span class="nl">locations</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="na">locationName</span><span class="p">:</span> <span class="nx">location</span>
+        <span class="na">failoverPriority</span><span class="p">:</span> <span class="mi">0</span>
+        <span class="na">isZoneRedundant</span><span class="p">:</span> <span class="kc">false</span>
+      <span class="p">}</span>
+    <span class="p">]</span>
+    <span class="na">databaseAccountOfferType</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Standard</span><span class="dl">'</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nx">resource</span> <span class="nx">appServicePlan</span> <span class="dl">'</span><span class="s1">Microsoft.Web/serverfarms@2021-01-01</span><span class="dl">'</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="nx">appServicePlanName</span>
+  <span class="na">location</span><span class="p">:</span> <span class="nx">location</span>
+  <span class="na">sku</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">name</span><span class="p">:</span> <span class="nx">appServicePlanTier</span>
+    <span class="na">capacity</span><span class="p">:</span> <span class="nx">appServicePlanInstances</span>
+  <span class="p">}</span>
+  <span class="nl">kind</span><span class="p">:</span> <span class="dl">'</span><span class="s1">linux</span><span class="dl">'</span>
+<span class="p">}</span>
+
+<span class="nx">resource</span> <span class="nx">appService</span> <span class="dl">'</span><span class="s1">Microsoft.Web/sites@2021-01-01</span><span class="dl">'</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="nx">websiteName</span>
+  <span class="na">location</span><span class="p">:</span> <span class="nx">location</span>
+  <span class="na">properties</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">serverFarmId</span><span class="p">:</span> <span class="nx">appServicePlan</span><span class="p">.</span><span class="nx">id</span>
+    <span class="na">httpsOnly</span><span class="p">:</span> <span class="kc">true</span>
+    <span class="na">siteConfig</span><span class="p">:</span> <span class="p">{</span>
+      <span class="na">http20Enabled</span><span class="p">:</span> <span class="kc">true</span>
+      
+      <span class="na">appSettings</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+          <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">CosmosDb:Account</span><span class="dl">'</span>
+          <span class="na">value</span><span class="p">:</span> <span class="nx">cosmosAccount</span><span class="p">.</span><span class="nx">properties</span><span class="p">.</span><span class="nx">documentEndpoint</span>
+        <span class="p">}</span>
+        <span class="p">{</span>
+          <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">CosmosDb:Key</span><span class="dl">'</span>
+          <span class="na">value</span><span class="p">:</span> <span class="nf">listKeys</span><span class="p">(</span><span class="nx">cosmosAccount</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="nx">cosmosAccount</span><span class="p">.</span><span class="nx">apiVersion</span><span class="p">).</span><span class="nx">primaryMasterKey</span>
+        <span class="p">}</span>
+        <span class="p">{</span>
+          <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">CosmosDb:DatabaseName</span><span class="dl">'</span>
+          <span class="na">value</span><span class="p">:</span> <span class="nx">databaseName</span>
+        <span class="p">}</span>
+        <span class="p">{</span>
+          <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">CosmosDb:ContainerName</span><span class="dl">'</span>
+          <span class="na">value</span><span class="p">:</span> <span class="nx">containerName</span>
+        <span class="p">}</span>
+      <span class="p">]</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nx">resource</span> <span class="nx">srcControls</span> <span class="dl">'</span><span class="s1">Microsoft.Web/sites/sourcecontrols@2021-01-01</span><span class="dl">'</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">${appService.name}/web</span><span class="dl">'</span>
+  <span class="na">properties</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">repoUrl</span><span class="p">:</span> <span class="nx">repositoryUrl</span>
+    <span class="na">branch</span><span class="p">:</span> <span class="nx">branch</span>
+    <span class="na">isManualIntegration</span><span class="p">:</span> <span class="kc">true</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The file starts with the parameters for the infrastructure. They are defined in the template itself, but you are free to leave them as inputs which can be added during deployment.</p>
+
+<p>Following the parameters are the resources. Feel free to browse <a href="https://docs.microsoft.com/en-us/azure/templates/">here</a> to learn more about the various resources. There are tabs for ARM and Bicep.</p>
+
+<p>In order to deploy this template follow these steps:</p>
+
+<ol>
+  <li>Copy and paste the template to your preferred editor/IDE/Cloud Shell and save the file to your working directory</li>
+  <li>
+    <p>Open up a terminal where the Azure CLI has been installed and run the code below to create a resource group</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> az group create <span class="nt">--name</span> myResourceGroup <span class="nt">--location</span> <span class="s2">"eastus"</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Deploy the template using the following:</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> az deployment group create <span class="nt">--resource-group</span> myResourceGroup <span class="nt">--template-file</span> &lt;path-to-template&gt;
+</code></pre></div>    </div>
+  </li>
+  <li>And that’s it! Wait for a success message and navigate to your web app URL to prove that everything was created as intended.</li>
+  <li>When you are done, <a href="https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/delete-resource-group?tabs=azure-cli">delete the resource group</a> to delete the resources</li>
+</ol>
+
+<h2 id="terraform">Terraform</h2>
+
+<p><a href="https://www.terraform.io/">Terraform by Hashicorp</a> is an open source tool that codifies APIs into declarative configuration files that can be used to create, manage, and update infrastructure resources such as virtual machines (VMs), networks, and containers. It is becoming the deployment method of choice for many large enterprises since it can provision infrastructure across 300+ public clouds and services using a single workflow and consistent syntax. For this reason, many companies that are choosing multi-cloud leverage Terraform.</p>
+
+<h3 id="prerequisites-5">Prerequisites</h3>
+
+<p>I would recommend going to the <a href="https://learn.hashicorp.com/collections/terraform/azure-get-started">Terraform documentation</a> for getting started on Azure to learn more about Terraform and understand how to configure your environment as they will do a much better job than I can here.</p>
+
+<p>Once you have reviewed their materials, the below template is all you need!</p>
+
+<h3 id="tutorial-5">Tutorial</h3>
+
+<p>Follow the guidance as provided by <a href="https://learn.hashicorp.com/tutorials/terraform/azure-build?in=terraform/azure-get-started">this doc</a> to deploy this template. Replace the contents of their “main.tf” with the below.</p>
+
+<p>For a quick summary of what is needed to get this deployed (ignoring many of the great features Terraform has to offer which I do recommend reviewing at some point):</p>
+
+<ol>
+  <li>Open up your IDE of choice where Terraform has been installed</li>
+  <li>Created a new directory and <code class="language-plaintext highlighter-rouge">cd</code> into it</li>
+  <li>Create a main.tf file and copy and paste the below template into there</li>
+  <li>Run <code class="language-plaintext highlighter-rouge">terraform init</code></li>
+  <li>Run <code class="language-plaintext highlighter-rouge">terraform apply</code></li>
+  <li>Once complete, navigate to the web app URL to view your app</li>
+  <li>When you are done, <a href="https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/delete-resource-group?tabs=azure-cli">delete the resource group</a> to delete the resources
+    <ol>
+      <li>You can also run a <code class="language-plaintext highlighter-rouge">terraform destroy</code> command here as an alternative</li>
+    </ol>
+  </li>
+</ol>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">variable</span> <span class="dl">"</span><span class="s2">failover_location</span><span class="dl">"</span> <span class="p">{</span>
+  <span class="k">default</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">westus</span><span class="dl">"</span>
+<span class="p">}</span>
+
+<span class="nx">terraform</span> <span class="p">{</span>
+  <span class="nx">required_providers</span> <span class="p">{</span>
+    <span class="nx">azurerm</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="nx">source</span>  <span class="o">=</span> <span class="dl">"</span><span class="s2">hashicorp/azurerm</span><span class="dl">"</span>
+      <span class="nx">version</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">~&gt;2.0</span><span class="dl">"</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="nx">provider</span> <span class="dl">"</span><span class="s2">azurerm</span><span class="dl">"</span> <span class="p">{</span>
+  <span class="nx">features</span> <span class="p">{}</span>
+<span class="p">}</span>
+
+<span class="nx">resource</span> <span class="dl">"</span><span class="s2">azurerm_resource_group</span><span class="dl">"</span> <span class="dl">"</span><span class="s2">rg</span><span class="dl">"</span> <span class="p">{</span>
+  <span class="nx">name</span>     <span class="o">=</span> <span class="dl">"</span><span class="s2">myResourceGroup</span><span class="dl">"</span>
+  <span class="nx">location</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">eastus</span><span class="dl">"</span>
+<span class="p">}</span>
+
+<span class="nx">resource</span> <span class="dl">"</span><span class="s2">random_integer</span><span class="dl">"</span> <span class="dl">"</span><span class="s2">ri</span><span class="dl">"</span> <span class="p">{</span>
+  <span class="nx">min</span> <span class="o">=</span> <span class="mi">10000</span>
+  <span class="nx">max</span> <span class="o">=</span> <span class="mi">99999</span>
+<span class="p">}</span>
+
+<span class="nx">resource</span> <span class="dl">"</span><span class="s2">azurerm_cosmosdb_account</span><span class="dl">"</span> <span class="dl">"</span><span class="s2">db</span><span class="dl">"</span> <span class="p">{</span>
+  <span class="nx">name</span>                <span class="o">=</span> <span class="dl">"</span><span class="s2">webapp-cosmos-db-${random_integer.ri.result}</span><span class="dl">"</span>
+  <span class="nx">location</span>            <span class="o">=</span> <span class="nx">azurerm_resource_group</span><span class="p">.</span><span class="nx">rg</span><span class="p">.</span><span class="nx">location</span>
+  <span class="nx">resource_group_name</span> <span class="o">=</span> <span class="nx">azurerm_resource_group</span><span class="p">.</span><span class="nx">rg</span><span class="p">.</span><span class="nx">name</span>
+  <span class="nx">offer_type</span>          <span class="o">=</span> <span class="dl">"</span><span class="s2">Standard</span><span class="dl">"</span>
+  <span class="nx">kind</span>                <span class="o">=</span> <span class="dl">"</span><span class="s2">GlobalDocumentDB</span><span class="dl">"</span>
+
+  <span class="nx">consistency_policy</span> <span class="p">{</span>
+    <span class="nx">consistency_level</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Session</span><span class="dl">"</span>
+  <span class="p">}</span>
+
+  <span class="nx">geo_location</span> <span class="p">{</span>
+    <span class="nx">location</span>          <span class="o">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">failover_location</span>
+    <span class="nx">failover_priority</span> <span class="o">=</span> <span class="mi">1</span>
+  <span class="p">}</span>
+
+  <span class="nx">geo_location</span> <span class="p">{</span>
+    <span class="nx">location</span>          <span class="o">=</span> <span class="nx">azurerm_resource_group</span><span class="p">.</span><span class="nx">rg</span><span class="p">.</span><span class="nx">location</span>
+    <span class="nx">failover_priority</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nx">resource</span> <span class="dl">"</span><span class="s2">azurerm_app_service_plan</span><span class="dl">"</span> <span class="dl">"</span><span class="s2">appserviceplan</span><span class="dl">"</span> <span class="p">{</span>
+  <span class="nx">name</span>                <span class="o">=</span> <span class="dl">"</span><span class="s2">webapp-cosmos-db-${random_integer.ri.result}</span><span class="dl">"</span>
+  <span class="nx">location</span>            <span class="o">=</span> <span class="nx">azurerm_resource_group</span><span class="p">.</span><span class="nx">rg</span><span class="p">.</span><span class="nx">location</span>
+  <span class="nx">resource_group_name</span> <span class="o">=</span> <span class="nx">azurerm_resource_group</span><span class="p">.</span><span class="nx">rg</span><span class="p">.</span><span class="nx">name</span>
+
+  <span class="nx">sku</span> <span class="p">{</span>
+    <span class="nx">tier</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Standard</span><span class="dl">"</span>
+    <span class="nx">size</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">S1</span><span class="dl">"</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nx">resource</span> <span class="dl">"</span><span class="s2">azurerm_app_service</span><span class="dl">"</span> <span class="dl">"</span><span class="s2">webapp</span><span class="dl">"</span> <span class="p">{</span>
+  <span class="nx">name</span>                <span class="o">=</span> <span class="dl">"</span><span class="s2">webapp-cosmos-db-${random_integer.ri.result}</span><span class="dl">"</span>
+  <span class="nx">location</span>            <span class="o">=</span> <span class="nx">azurerm_resource_group</span><span class="p">.</span><span class="nx">rg</span><span class="p">.</span><span class="nx">location</span>
+  <span class="nx">resource_group_name</span> <span class="o">=</span> <span class="nx">azurerm_resource_group</span><span class="p">.</span><span class="nx">rg</span><span class="p">.</span><span class="nx">name</span>
+  <span class="nx">app_service_plan_id</span> <span class="o">=</span> <span class="nx">azurerm_app_service_plan</span><span class="p">.</span><span class="nx">appserviceplan</span><span class="p">.</span><span class="nx">id</span>
+
+  <span class="nx">app_settings</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">CosmosDb:Account</span><span class="dl">"</span> <span class="p">:</span> <span class="nx">azurerm_cosmosdb_account</span><span class="p">.</span><span class="nx">db</span><span class="p">.</span><span class="nx">endpoint</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">CosmosDb:Key</span><span class="dl">"</span> <span class="p">:</span> <span class="nx">azurerm_cosmosdb_account</span><span class="p">.</span><span class="nx">db</span><span class="p">.</span><span class="nx">primary_key</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">CosmosDb:DatabaseName</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">Tasks</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">CosmosDb:ContainerName</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">Items</span><span class="dl">"</span>
+  <span class="p">}</span>
+
+  <span class="nx">source_control</span> <span class="p">{</span>
+    <span class="nx">repo_url</span>           <span class="o">=</span> <span class="dl">"</span><span class="s2">https://github.com/Azure-Samples/cosmos-dotnet-core-todo-app.git</span><span class="dl">"</span>
+    <span class="nx">branch</span>             <span class="o">=</span> <span class="dl">"</span><span class="s2">main</span><span class="dl">"</span>
+    <span class="nx">manual_integration</span> <span class="o">=</span> <span class="kc">true</span>
+    <span class="nx">use_mercurial</span>      <span class="o">=</span> <span class="kc">false</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="wrapping-up">Wrapping Up</h2>
+
+<p>Thanks for taking the time to go through this tutorial. <strong>Again, please ensure you have deleted any resources you do not intend to keep.</strong> I hope you learned something about the various ways the App Service team has worked to create a platform that meets as many of your web app needs as possible and reach a variety of customers. If you have any questions, feedback, or requests, feel free to share using the links below. Also note that App Service is constantly updated to improve functionality and usability. If anything from the article no longer applies or if you get stuck, always feel free to reach out!</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-07-29T00:00:00+00:00">July 29, 2021</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Overview+of+the+Various+Methods+for+Deploying+Your+Infrastructure+to+App+Service%20https%3A%2F%2Fazure.github.io%2FAppService%2F2021%2F07%2F29%2FDeploying-Your-Infrastructure-to-App-Service.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2021%2F07%2F29%2FDeploying-Your-Infrastructure-to-App-Service.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2021%2F07%2F29%2FDeploying-Your-Infrastructure-to-App-Service.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2021/07/23/Quickstart-Intro-to-Bicep-with-Web-App-plus-DB.html" class="pagination--pager" title="Quickstart: Intro to Bicep with Web App and DB
+">Previous</a>
+    
+    
+      <a href="/AppService/2021/08/09/setup-github-actions-azurecli.html" class="pagination--pager" title="Set up GitHub Actions with the Azure CLI
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,1053 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Announcing  MySQL in-app for Web Apps (Windows) - Azure App Service</title>
+<meta name="description" content="">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Announcing  MySQL in-app for Web Apps (Windows)">
+<meta property="og:url" content="https://azure.github.io/AppService/2016/08/18/Announcing-MySQL-in-app-for-Web-Apps-(Windows).html">
+
+
+  <meta property="og:description" content="">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2016-08-18T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2016/08/18/Announcing-MySQL-in-app-for-Web-Apps-(Windows).html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Announcing  MySQL in-app for Web Apps (Windows)">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="August 18, 2016">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Announcing  MySQL in-app for Web Apps (Windows)
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  8 minute read
+
+            
+            
+            • August 18, 2016
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <html><head>
+<meta charset="utf-8"/>
+</head>
+<body>
+<div id="page">
+
+<a class="url fn n profile-usercard-hover" href="https://social.msdn.microsoft.com/profile/mksunitha" target="_blank">mksunitha</a>
+<time>    8/18/2016 4:26:55 PM</time>
+<hr/>
+<div id="content">MySQL in-app feature enables running MySql natively on Azure App Service platform.You don’t need to provision a database explicitly as during the creation of the web app when using this feature,  we take care of enabling it if you select “MySQL in-app ” during creation or if the feature is turned ON for existing web app. To understand what MySQL in-app means , I have highlighted core functionality supported with the preview release of the feature:
+<ul>
+<li>Support PHP , MYSQL applications like WordPress, Joomla , Drupal etc .</li>
+<li>MySQL server running on the same instance side by side with your web server hosting the site. This will boost performance of your application</li>
+<li>Storage is shared between both MySQL and your web app files. Note with Free and Shared plans you may hit our quota limits when using the site based on the actions you perform . Check out <a href="https://azure.microsoft.com/en-us/pricing/details/app-service/plans/" target="_blank">quota limitations </a>for Free and Shared plans.</li>
+<li>You can turn on Slow query logging and general logging for MySQL . Note that this can impact the site performance and should NOT always be turned ON . The logging feature will help investigation any application issues .</li>
+</ul>
+ 
+
+<em>Note : This MySQL in-app is specific to Windows version of Azure app service. If you are looking for local mysql on Linux MySQL app service , click <a href="https://blogs.msdn.microsoft.com/appserviceteam/2017/06/07/mysql-in-app-feature-for-web-apps-on-linux/">here.</a></em>
+<h3>Create new Web App with MySQL in-app</h3>
+Login to <a href="https://portal.azure.com" target="_blank">Azure portal</a>  and launch Web App + MySQL template by clicking <a href="https://portal.azure.com/#create/Microsoft.WebSiteMySQLDatabase">here</a> .Enter the Site name and select <strong>MySQL in-app </strong> as the database provider. Click on <strong>Create</strong> to deploy a web app using MySQL in-app.
+
+<a href="/AppService/media/2016/08/webappmysqlcreate.png"><img alt="webappmysqlcreate" class="alignnone wp-image-4855" height="515" src="/AppService/media/2016/08/webappmysqlcreate-618x1024.png" width="311"/></a>
+
+You may also create a <a href="https://portal.azure.com#create/WordPress.WordPress">WordPress application</a> with MySQL in-app from Azure marketplace. Test drive our <a href="https://wordpress3295.azurewebsites.net">demo site</a> here using MySQL in-app.You can login with username : <strong><em>demo</em></strong> and password: <em><strong>demopassword</strong> . </em>
+<h2>Limitations</h2>
+For preview release the feature has some limitations that to keep in mind.
+<ul>
+<li><a href="https://azure.microsoft.com/en-us/documentation/articles/web-sites-scale/">Auto scale feature</a> is not supported since MySQL currently runs on on <span style="text-decoration: underline">a single instance </span>.</li>
+<li>Enabling <a href="https://azure.microsoft.com/en-us/documentation/articles/app-service-local-cache/">Local cache</a> is not supported.</li>
+<li>MySQL database cannot be accessed remotely. You can only access your database content using <a href="https://blogs.msdn.microsoft.com/appserviceteam/?p=805#phpmyadmin">PHPMyadmin</a> or using MySQL utilities in <a href="https://blogs.msdn.microsoft.com/appserviceteam/?p=805#kuduconsole">KUDU debug console</a>. This is described in detail below.</li>
+<li><a href="https://portal.azure.com/#create/WordPress.WordPress">WordPress</a> and <a href="https://portal.azure.com/#create/Microsoft.WebSiteMySQLDatabase">Web App + MySQL</a> templates currently support MySQL in-app in the create experience.We are working on bringing this feature in for other MySQL based applications in Web category for Azure marketplace.</li>
+</ul>
+<p id="manage-mysqlinapp"></p>
+<h2>Manage MySQL in-app</h2>
+Go to your web app and select <strong>MySQL in-app </strong> in the Menu blade on the right. You can use the setting here to manage your MySQL in-app feature , turn on logging , access PHPmyadmin etc.
+
+<img alt="localmysql8" class="alignnone wp-image-1155" height="582" src="/AppService/media/2016/08/localmysql8-1024x904.png" width="660"/>
+
+ 
+<h2>Access database content</h2>
+The database is protected by our sandbox environment and hence cannot be accessed remotely through MySQL workbench or MySQL command line tools (running on remote machine) . There are two ways you can manage your database content :
+<ul>
+<ul>
+<li>
+<p id="phpmyadmin"><strong>Using PHPMyAdmin</strong>:  With MySQL in-app , the MySQL process ( mysqld.exe) must be ready for connections before using PHPmyadmin tool to access the database. This means your web app has to open the mysql connection. You can use the sample code mentioned in section <a href="https://blogs.msdn.microsoft.com/appserviceteam/?p=805#mysqlconnect">Get database connection string</a> to open mysql connection.
+<span>Go to your web app and select </span><strong>MySQL in-app </strong><span> in the Menu blade on the right</span><strong> . </strong>Click on the <strong>Browse</strong> button to open PHPmyadmin.</p>
+</li>
+</ul>
+</ul>
+<a href="/AppService/media/2016/08/localmysql3-2.png"><img alt="localmysql3 (2)" class="alignnone wp-image-1195" height="106" src="/AppService/media/2016/08/localmysql3-2-1024x206.png" width="530"/></a>
+
+The database enabled with your web app is "<strong>localdb</strong>". You are now ready to import your database schema or create a new one for your web app.
+
+<a href="/AppService/media/2016/08/localmysql5.png"><img alt="localmysql5" class="alignnone wp-image-926 size-large" height="512" src="/AppService/media/2016/08/localmysql5-1024x596.png" width="879"/></a>
+<ul>
+<li>
+<p id="kuduconsole"><strong>Using Kudu Debug console:</strong> Access your <a href="https://blogs.msdn.microsoft.com/benjaminperkins/2014/03/24/using-kudu-with-windows-azure-web-sites/">Kudu debug console</a>  from the portal , go to your web app and Select Advanced Tools or use use a URL in this format <a href="https://sitename.scm.azurewebsites.net/debugconsole">https://sitename.scm.azurewebsites.net/debugconsole</a> (replace sitename with your web app name).<a href="/AppService/media/2016/08/kuduconsoleportal.png"><img alt="kuduconsoleportal" class="alignnone wp-image-1185" height="574" src="/AppService/media/2016/08/kuduconsoleportal-984x1024.png" width="552"/></a></p>
+<p id="kuduconsole">Run the following command to run your query <span style="text-decoration: underline">(remember to update the <strong>port</strong> number to your web app’s MySQL port</span> since this feature does not use 3306 port)</p>
+</li>
+</ul>
+<pre class="prettyprint">D:\Program Files (x86)\mysql\5.7.9.0\bin\mysql.exe -e "ENTER SQL STATEMENTS" --user=azure --password=password --port=49175 --bind-address=127.0.0.1  
+</pre>
+Example:
+<pre class="prettyprint">D:\Program Files (x86)\mysql\5.7.9.0\bin\mysql.exe -e "USE localdb;Select * from tasks;" --user=azure --password=password --port=49175 --bind-address=127.0.0.1  
+mysql: [Warning] Using a password on the command line interface can be insecure.
+mysql: Unknown OS character set 'cp0'.
+mysql: Switching to the default character set 'latin1'.
+task_id    subject    start_date    end_date    description
+1    task1    2016-02-18    2016-02-19     sample task
+</pre>
+The mysql warning statements can be ignored in the output. You can use mysqladmin.exe and mysqld.exe as well , in the similar format as above .Please review the password and database information from <strong>D:\home\data\mysql\MYSQLCONNSTR_localdb.ini </strong> before entering the connection information in the commands below. Here is an example to flush logs
+<pre class="prettyprint">mysqladmin.exe flush-logs --user=azure --password=password --port=49175 --bind-address=127.0.0.1</pre>
+<h3>Logging</h3>
+Turn on slow query logs or general logs for MySQL . Once turned on , you can find these logs in <strong>D:\home\logfiles\mysql</strong> folder. Note if these settings are always on , then this can impact your web app performance
+
+<a href="/AppService/media/2016/08/localmysql6.png"><img alt="localmysql6" class="alignnone wp-image-936" height="360" src="/AppService/media/2016/08/localmysql6-1024x558.png" width="661"/></a>
+<h2>How to deploy your web app to using MySQL in-app</h2>
+<h3>Get the database connection string</h3>
+<p id="mysqlconnect">Before you deploy your web app code , the key thing to note when using this feature is to use ENVIRONMENT VARIABLES since the database connection information is not accessible directly. You can get the database connection information using <strong>MYSQLCONNSTR_localdb</strong> environment variable . You can also get the connection string from <strong>D:\home\data\mysql\MYSQLCONNSTR_localdb.ini </strong><span>.</span>Here is a sample code snippet that you can use in your application to get the database host, port, database name , database user, database password.</p>
+<pre class="prettyprint">$connectstr_dbhost = '';
+$connectstr_dbname = '';
+$connectstr_dbusername = '';
+$connectstr_dbpassword = '';
+
+foreach ($_SERVER as $key =&gt; $value) {
+    if (strpos($key, "MYSQLCONNSTR_localdb") !== 0) {
+        continue;
+    }
+    
+    $connectstr_dbhost = preg_replace("/^.*Data Source=(.+?);.*$/", "\\1", $value);
+    $connectstr_dbname = preg_replace("/^.*Database=(.+?);.*$/", "\\1", $value);
+    $connectstr_dbusername = preg_replace("/^.*User Id=(.+?);.*$/", "\\1", $value);
+    $connectstr_dbpassword = preg_replace("/^.*Password=(.+?)$/", "\\1", $value);
+}
+
+$link = mysqli_connect($connectstr_dbhost, $connectstr_dbusername, $connectstr_dbpassword,$connectstr_dbname);
+
+if (!$link) {
+    echo "Error: Unable to connect to MySQL." . PHP_EOL;
+    echo "Debugging errno: " . mysqli_connect_errno() . PHP_EOL;
+    echo "Debugging error: " . mysqli_connect_error() . PHP_EOL;
+    exit;
+}
+
+echo "Success: A proper connection to MySQL was made! The my_db database is great." . PHP_EOL;
+echo "Host information: " . mysqli_get_host_info($link) . PHP_EOL;
+
+mysqli_close($link);
+</pre>
+As an example , if you are running a WordPress site you need to update wp-config.php such that it reads the connection string from the environment variable .
+<pre class="prettyprint">/*Add at the begining of the file*/
+
+$connectstr_dbhost = '';
+$connectstr_dbname = '';
+$connectstr_dbusername = '';
+$connectstr_dbpassword = '';
+
+foreach ($_SERVER as $key =&gt; $value) {
+    if (strpos($key, "MYSQLCONNSTR_localdb") !== 0) {
+        continue;
+    }
+    
+    $connectstr_dbhost = preg_replace("/^.*Data Source=(.+?);.*$/", "\\1", $value);
+    $connectstr_dbname = preg_replace("/^.*Database=(.+?);.*$/", "\\1", $value);
+    $connectstr_dbusername = preg_replace("/^.*User Id=(.+?);.*$/", "\\1", $value);
+    $connectstr_dbpassword = preg_replace("/^.*Password=(.+?)$/", "\\1", $value);
+}
+
+// ** MySQL settings - You can get this info from your web host ** //
+/** The name of the database for WordPress */
+define('DB_NAME', $connectstr_dbname);
+
+/** MySQL database username */
+define('DB_USER', $connectstr_dbusername);
+
+/** MySQL database password */
+define('DB_PASSWORD', $connectstr_dbpassword);
+
+/** MySQL hostname : this contains the port number in this format host:port . Port is not 3306 when using this feature*/
+define('DB_HOST', $connectstr_dbhost);
+</pre>
+As a <strong>BEST PRACTICE</strong> when using MySQL in-app, we recommend to ALWAYS use Environment variables for the database information to prevent database connection issues with your web app. If your application requires a separate variable for port , you can use <strong>WEBSITE_MYSQL_PORT </strong>environment variable. The port number selected can vary if the instance is recycled and hence <strong><em>ALWAYS use environment variables.</em></strong>
+<h3>Deploy you code</h3>
+Deploy your web app code using GIT or FTP or any one of the supported deployment processes with Azure Web Apps . Refer <a href="https://azure.microsoft.com/en-us/documentation/articles/web-sites-deploy/">Deploy to Azure app service web apps</a> for details .
+<h3>Deploy your database</h3>
+You cannot directly deploy you database . Hence , export your local database into a SQL script . Access your web app MySQL in-app database using PHPmyAdmin ( <a href="https://sitename.scm.azurewebsites.net/phpmyadmin">https://sitename.scm.azurewebsites.net/phpmyadmin</a>) and click on the IMPORT tab to import your script into the <strong>localdb</strong>database . For example:
+<pre class="prettyprint">USE localdb;
+
+CREATE TABLE IF NOT EXISTS tasks (
+  task_id INT(11) NOT NULL AUTO_INCREMENT,
+  subject VARCHAR(45) DEFAULT NULL,
+  start_date DATE DEFAULT NULL,
+  end_date DATE DEFAULT NULL,
+  description VARCHAR(200) DEFAULT NULL,
+  PRIMARY KEY (task_id)
+) ENGINE=InnoDB</pre>
+Remember to include <em><strong>USE localdb; </strong></em> statement in your script so that the your schema and data are imported into the correct database.
+<h3>How to turn on MySQL for existing Web Apps</h3>
+<span>Go to your web app and select </span><strong>MySQL in-app </strong><span> in the Menu blade on the right</span><strong> . </strong>Turn ON MySQL in-app feature.
+
+<a href="/AppService/media/2016/08/localmysql9.png"><img alt="localmysql9" class="alignnone wp-image-1175" height="228" src="/AppService/media/2016/08/localmysql9-1024x468.png" width="499"/></a>
+
+Browse your web app and Check the process explorer to verify if mysqld.exe is running. If the process is running, then MySQL server is ready to use. Remember to open the MySQL connection to your MySQL in-app database , <strong>localdb</strong> in your web app.
+
+<a href="/AppService/media/2016/08/processexploreremysql.png"><img alt="processexploreremysql" class="alignnone wp-image-1165" height="473" src="/AppService/media/2016/08/processexploreremysql-1024x715.png" width="677"/></a>
+<h3>Migration to production database</h3>
+You can easily migrate this database when ready for production to
+<ul>
+<li><a href="http://azure.microsoft.com/services/mysql">Azure database for MySQL(Preview)</a></li>
+<li><a href="https://azuremarketplace.microsoft.com/en-us/marketplace/apps/SuccessBricksInc.ClearDBMySQLDatabase">ClearDB database</a></li>
+<li>MySQL on virtual machine on <a href="https://azure.microsoft.com/en-us/documentation/articles/virtual-machines-linux-classic-mysql-on-opensuse/">Linux</a> or <a href="https://azure.microsoft.com/en-us/documentation/articles/virtual-machines-windows-classic-mysql-2008r2/">Windows</a> OS</li>
+</ul>
+<h3>Best practices</h3>
+<ul>
+<li>When using Web app with MySQL in-app provider with Basic, Standard or Premium app service plans, turn on ALWAYS ON setting as described here. By default, web apps are unloaded if they are idle for some period of time which means both the web app and MySQL in-app server will be take a longer time to load from an idle state. PHPMyadmin may not be accessible during the idle state. With ALWAYS ON feature, you can keep your web app from getting into an idle state.</li>
+<li>When using this feature with Free and Shared Web App pricing plans, add the app setting WEBSITE_FASTCGI_MAXINSTANCES and set its value to 3 if your web app is likely to get traffic from a few users say between 10-20. This setting will prevent creating too many PHP FastCGI instances which will consume all the memory causing your web app to hit the quota too early. Checkout <a href="/AppService///blogs.msdn.microsoft.com/appserviceteam/2016/08/02/benchmarking-mysql-in-app-performance">benchmarking blog post</a> for more information.</li>
+</ul>
+<h3>References</h3>
+<a href="https://blogs.msdn.microsoft.com/appserviceteam/2016/08/18/exporting-your-database-to-local-mysql/">Exporting your MySQL database to MySQL in-app database</a>
+<a href="https://blogs.msdn.microsoft.com/appserviceteam/2016/08/18/benchmarking-mysql-in-app-performance/">Benchmarking MySQL in-app performance</a></div>
+</div></body>
+<script src="/AppService/resource/jquery-1.12.1.min.js" type="text/javascript"></script>
+<script src="/AppService/resource/replace.js" type="text/javascript"></script>
+</html>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2016-08-18T00:00:00+00:00">August 18, 2016</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Announcing++MySQL+in-app+for+Web+Apps+%28Windows%29%20https%3A%2F%2Fazure.github.io%2FAppService%2F2016%2F08%2F18%2FAnnouncing-MySQL-in-app-for-Web-Apps-%28Windows%29.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2016%2F08%2F18%2FAnnouncing-MySQL-in-app-for-Web-Apps-%28Windows%29.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2016%2F08%2F18%2FAnnouncing-MySQL-in-app-for-Web-Apps-%28Windows%29.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2016/08/15/Cross-Post-App-Service-Auth-and-Azure-AD-B2C-(Part-2).html" class="pagination--pager" title="Cross-Post App Service Auth and Azure AD B2C (Part 2)
+">Previous</a>
+    
+    
+      <a href="/AppService/2016/08/18/Benchmarking-MySQL-in-app-performance.html" class="pagination--pager" title="Benchmarking MySQL in-app performance
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/12/dotnet9-ga.html" rel="permalink">.NET 9 GA available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 12, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We have completed the rollout for .NET 9 GA support on Azure App Service.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Global-Availability-Sidecars.html" rel="permalink">Introducing Sidecars for Azure App Service for Linux: Now Generally Available
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The sidecar pattern is an architectural approach that allows you to deploy components of an application in separate processes or containers, providing both i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/11/08/Announcing-Inbound-IPv6-support.html" rel="permalink">Announcing inbound IPv6 support in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • November 8, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to s...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2024/09/17/How-to-pull-from-ACR-with-Managed-Identity-using-Windows-containers.html" rel="permalink">How to pull from ACR with Managed Identity using Windows containers
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jeff Martinez
+        
+        • September 17, 2024
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Managed identities offer a way to secure communications between Azure resources without having to manage any credentials. The following are the steps to enab...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
