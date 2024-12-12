@@ -7,6 +7,8 @@ author_name: "Andrew Westgarth"
 
 Azure App Service on Azure Stack Hub 24R1 is now available for customers to download and update their Azure Stack Hub deployments.  This release contains a number of new capabilities, updates to application stacks and improvements to Azure App Service on Azure Stack Hub and we encourage customers to review the full [release notes](https://learn.microsoft.com/azure-stack/operator/app-service-release-notes-2024r1), follow the [update documentation](https://learn.microsoft.com/azure-stack/operator/azure-stack-app-service-update) to deploy to their systems and take advantage of this new update.
 
+![Azure App Service on Azure Stack Hub 24R1 Installer]({{site.baseurl}}/media/2024/12/24r1.png)
+
 ## What's New?
 
 - Kestrel and YARP (Yet Another Reverse Proxy) now power App Service on Azure Stack Hub front ends in alignment with investments made in public cloud. For more information on what this means and how it impacted the public cloud service, read the detailed information on the [App Service Team Blog - "A Heavy Lift: Bringing Kestrel + YARP to Azure App Services"](https://azure.github.io/AppService/2022/08/16/A-Heavy-Lift.html)
