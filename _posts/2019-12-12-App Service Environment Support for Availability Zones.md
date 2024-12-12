@@ -4,6 +4,8 @@ author_name: "Stefan Schackow"
 category: networking
 ---
 
+> NOTE! As of March 2023, the content in this post may be outdated. For the latest information on Availability Zone support for App Service Environment, see [Azure App Service and reliability](https://learn.microsoft.com/azure/architecture/framework/services/compute/azure-app-service/reliability) and [Migrate App Service Environment to availability zone support](https://learn.microsoft.com/azure/reliability/migrate-app-service-environment).
+
 App Service has GA'd App Service Environment (ASE) support for deploying into Availability Zones (AZ).  Customers can choose to optionally deploy internal load balancer (ILB) ASEs into a specific AZ (Zone 1, 2 or 3) within an Azure region, and the resources used by that ILB ASE will either be pinned to the specified AZ, or deployed in a zone redundant manner.  
 
 An ILB ASE that is explicitly deployed into an AZ is considered a zonal resource because the ILB ASE is pinned to a specific zone. The following ILB ASE dependencies will be located (pinned) in the specified zone:
@@ -21,7 +23,7 @@ Zonal ILB ASEs can be created in any of the following regions:
 - East US
 - East US 2
 - East US 2 (EUAP)
-- France Central 
+- France Central
 - Japan East
 - North Europe
 - West Europe

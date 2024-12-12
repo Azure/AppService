@@ -31,7 +31,10 @@ The App Service Team Blog is a great place to share content with our users. Befo
 
 ### Get access
 
-1. Get contributor access to the repository. Email Jason Freeberg with your GitHub username. This will allow you to submit pull requests without creating and maintaining your own fork of the repository.
+1. Get contributor access to the repository. Email Jeff Martinez with your GitHub username. This will allow you to submit pull requests without creating and maintaining your own fork of the repository.
+
+> **NOTE**
+You cannot contribute from a forked repository
 
 ### Set up your environment
 
@@ -124,7 +127,7 @@ You can add images, GIFs, or other digital content to your post by adding it to 
 
 1. Submit a pull request. You can use [GitHub Desktop](https://help.github.com/en/desktop/contributing-to-projects/creating-a-pull-request) or the command line.
 
-1. Assign `jasonfreeberg` as a reviewer for your pull request. Send an email to Jason if it is high priority.
+1. Assign `jeffwmartinez` as a reviewer for your pull request. Send an email to Jeff if it is high priority.
 
 ## The team pages
 
@@ -135,7 +138,7 @@ There are team pages in the left sidebar to help organize content from that team
 1. Find your team's page under `_pages/team_pages/`
 1. Edit the markdown content as you wish. You can use in-line HTML as well, see the [theme's utility classes](https://mmistakes.github.io/minimal-mistakes/docs/utility-classes/) for more information.
 1. Any images should be placed under `media/pages/team_pages/your-team-name/`. See [adding digital content](#adding-digital-content) for more information on adding these images to your post.
-1. When you're done making changes, submit a Pull Request and add `jasonfreeberg` as a reviewer
+1. When you're done making changes, submit a Pull Request and add `jeffwmartinez` as a reviewer
 
 ### Add a team page
 

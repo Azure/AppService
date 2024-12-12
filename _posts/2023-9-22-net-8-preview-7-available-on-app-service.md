@@ -1,0 +1,17 @@
+---
+title: ".Net 8 Preview 7 now available on App Service"
+author_name: "Tulika Chaudharie"
+toc: true
+---
+
+We are happy to announce that App Service now supports apps targeting [.Net 8 Preview 7](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) across all public regions on Azure App Service. It is available for both Windows and Linux App Service Plans.
+
+Want to get started with .Net 8? Follow these:
+
+1. [Learn more about .Net 8 Preview 7](https://devblogs.microsoft.com/dotnet/announcing-dotnet-8-preview-7/)
+2. [ASP.Net Core in .Net 8](https://devblogs.microsoft.com/dotnet/asp-net-core-updates-in-dotnet-8-preview-7/)
+3. [Download .Net 8 Preview 7](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
+4. [Deploy a .Net app to App Service](https://docs.microsoft.com/azure/app-service/quickstart-dotnetcore?tabs=net60&pivots=development-environment-vs)
+
+You can also follow us on twitter for more updates and news: [@AzAppService](https://twitter.com/AzAppService/)
+

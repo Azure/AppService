@@ -30,11 +30,17 @@ To avoid a single point-of-failure, run your app with **at least 2-3 instances**
 
 ## Update your default settings
 
-App Service has many settings for developers to configure the web app to their use case. **Always-On** keeps your VM instances alive even when no requests have been received in the last 20 minutes. By default, Always-On is disabled; enabling Always-On will limit application cold starts. **ARR Affinity** creates sticky sessions so that clients will connect to the same app instance on subsequent requests. However, ARR Affinity can cause unequal distribution of requests between your instances and possibly overload an instance. For production apps that are aiming to be robust, it is recommended to set **Always on to On** and **ARR Affinity to Off**. Disabling ARR Affinity assumes that your application is either stateless, or the session state is stored on a remote service such as a cache or database.
+App Service has many settings for developers to configure the web app to their use case. **Always-On** keeps your VM instances alive even when no requests have been received in the last 20 minutes. By default, Always-On is disabled; enabling Always-On will limit application cold starts.
+
+**ARR Affinity** creates sticky sessions so that clients will connect to the same app instance on subsequent requests. However, ARR Affinity can cause unequal distribution of requests between your instances and possibly overload an instance. Disabling ARR Affinity assumes that your application is either stateless, or the session state is stored on a remote service such as a cache or database.
+
+Lastly, please set the **Platform** setting from 32 Bit to 64 Bit. The maximum available amount of memory for a 32-bit process (even on a 64-bit operating system) is 2 GB. By default, the worker process is set to 32-bit in App Service (for compatibility with legacy web applications). Consider switching to 64-bit processes so you can take advantage of the additional memory available in your Web Worker role.
+
+For production apps that are aiming to be robust, it is recommended to set **Always on to On**, **ARR Affinity to Off** and **Platform to 64 Bit**.
 
 You can change these settings in the configurations section of the Azure Portal, under the *General Settings* tab:
 
-![alwayson]({{site.baseurl}}/media/2020/04/alwayson.jpg)
+![alwayson]({{site.baseurl}}/media/2020/04/alwayson.png)
 
 **Learn More**
 
@@ -73,7 +79,7 @@ We highly recommend using **Swap with Preview**. Swap with Preview allows you to
 
 - [Set up staging environments in Azure App Service](https://docs.microsoft.com/azure/app-service/deploy-staging-slots)
 - [Azure Web App Deployment Slot Swap with Preview](https://ruslany.net/2015/10/azure-web-app-deployment-slot-swap-with-preview/)
-- [Deployment best practices](https://docs.microsoft.com/azure/app-service/deploy-best-practices#use-deployment-slots) 
+- [Deployment best practices](https://docs.microsoft.com/azure/app-service/deploy-best-practices#use-deployment-slots)
 
 ## Set your Health Check path
 
@@ -95,7 +101,7 @@ App Service allows you to specify a health check path on your apps. The platform
 
 ## Use Application Initialization
 
-Application Initialization ensures that your app instances have fully started before they are added to they start serving requests. Application Initialization is used during site restarts, auto scaling, and manual scaling. This is a critical feature where hitting the site's root path is not sufficient to start the application. For this purpose a warm-up path must be created on the app which should be unauthenticated and App Init should be configured to use this url path. 
+Application Initialization ensures that your app instances have fully started before they are added to they start serving requests. Application Initialization is used during site restarts, auto scaling, and manual scaling. This is a critical feature where hitting the site's root path is not sufficient to start the application. For this purpose a warm-up path must be created on the app which should be unauthenticated and App Init should be configured to use this url path.
 
 Try to make sure that the method implemented by the warm-up url takes care of touching the functions of all important routes and it returns a response only when warm-up is complete. The site will be put into production only when it returns a response (success or failure) and app initialization will assume "everything is fine with the app". App Initialization can be configured for your app within web.config file.
 
@@ -123,7 +129,6 @@ External storage like storage containers, db or cosmosDB should be used for stor
 
 Sometimes your application might experience unexpected behaviors that could be resolved by a simple restart. The Auto-Heal features allows you to do exactly that! It allows you to define the 'condition' that would trigger Auto-Heal and the 'action' that Auto-Heal will initiate when the condition is met.
 
-
 You can create an Auto-Heal mitigation rule by going to "Diagnose and Solve problems" section -> "Diagnostic Tools" tile and then "Auto-Heal" under Proactive Tools section.
 
 ![multiple-instances]({{site.baseurl}}/media/2020/04/auto-heal.png)
@@ -138,12 +143,12 @@ Below are example filter values to set up, however if some other value of error 
 | Win32-status code| 0              |
 | Frequency in seconds| 60          |
 
-
 Once the condition above is met, we recommend configuring an action to:
+
 - Recycle Process
 
+and add an 'Override when Action Executes':
 
-and add an 'Override when Action Executes': 
 - Startup Time for process before auto heal executes: 3600 seconds (1 hour)
 
 **Learn More**
@@ -169,7 +174,7 @@ Ensure that the disk space used by www folder should be less than 1GB. It is a v
 
 Application Insights offers a suite of features that empower you to troubleshoot incidents that happen on your app. You can use it to debug code errors, diagnose performance degradations caused by dependencies and more.
 
-One of the powerful features of Application Insights is the App Insights Profiler. Enabling Application Insights Profiler provides you with performance traces for your applications that are running in production in Azure. Profiler captures the data automatically at scale without negatively affecting your users. Profiler helps you identify the "hot" code paths that take the longest when handling a web request. Profiler works with .NET applications. To enable it, go to your Application Insights in Azure portal. Click on Performance under Investigate. 
+One of the powerful features of Application Insights is the App Insights Profiler. Enabling Application Insights Profiler provides you with performance traces for your applications that are running in production in Azure. Profiler captures the data automatically at scale without negatively affecting your users. Profiler helps you identify the "hot" code paths that take the longest when handling a web request. Profiler works with .NET applications. To enable it, go to your Application Insights in Azure portal. Click on Performance under Investigate.
 
 1. In the Performance pane click on "Configure Profiler"
 
@@ -179,8 +184,8 @@ One of the powerful features of Application Insights is the App Insights Profile
 
     ![ai-2]({{site.baseurl}}/media/2020/04/aiprofiler-2.jpg)
 
-1. When Profiler is running, it profiles randomly about once per hour and for a duration of two minutes. If your application is handling a steady stream of requests, Profiler uploads traces every hour. 
-To view traces, in the Performance pane, select Take Actions, and then select the Profiler Traces button. 
+1. When Profiler is running, it profiles randomly about once per hour and for a duration of two minutes. If your application is handling a steady stream of requests, Profiler uploads traces every hour.
+To view traces, in the Performance pane, select Take Actions, and then select the Profiler Traces button.
 
     ![ai-3]({{site.baseurl}}/media/2020/04/aiprofiler-3.jpg)
 
@@ -205,7 +210,7 @@ You can also leverage our newly released [App Insights integration with App Serv
 
 ## Deploy in Multiple Regions
 
-You can deploy Azure Front Door or Azure Traffic Manager to intercept traffic before they hit your site. They help in routing & distributing traffic between your instances/regions. In the event that a catastrophic incident happens in one of the Azure Datacenters, you can still guarantee that your app will run and serve requests by investing in one of them. 
+You can deploy Azure Front Door or Azure Traffic Manager to intercept traffic before they hit your site. They help in routing & distributing traffic between your instances/regions. In the event that a catastrophic incident happens in one of the Azure Datacenters, you can still guarantee that your app will run and serve requests by investing in one of them.
 <br>
 There are additional benefits to using Front Door or Traffic Manager, such as routing incoming requests based the customers' geography to provide the shortest respond time to customers and distribute the load among your instances in order not to overload one of them with requests.
 

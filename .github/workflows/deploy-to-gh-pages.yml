@@ -4,22 +4,26 @@ on:
   push:
     branches:
     - master
+  # Run build every day at 00:00 UTC every day for future-dated articles
   schedule:
-    - cron:  '0 0 * * *'  # Run build every day at 00:00 UTC every day for future-dated articles
+    - cron:  '0 0 * * *' 
+
+permissions:
+  contents: write
+  pages: write
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
     - name: Check out repo
       uses: actions/checkout@v1
 
-    - name: Set up Ruby 2.6
-      uses: actions/setup-ruby@v1
+    - name: Set up Ruby 3.0
+      uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 2.6.x
+        ruby-version: '3.0'
 
     - name: Install Ruby dependencies
       run: |
@@ -31,5 +35,5 @@ jobs:
         chmod 750 deployment-script.sh
         ./deployment-script.sh
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         JEKYLL_ENV: production
