@@ -5,6 +5,12 @@ toc: true
 toc_sticky: true
 ---
 
+Update 2 - November 8, 2024: IPv6 non-vnet outbound support is rolling out soon. We expect public preview to begin in late Q1 2025. Azure portal support to set the `IPMode` property is now available. A screenshot is included below.
+
+Update 1 - August 1, 2024: All but two regions are now supported and we have Azure portal support rolling out soon. We also added a CLI sample for configuration IPv6 support on a deployment slot.
+
+## Introduction
+
 I am happy to announce the first part of our IPv6 implementation in App Service. Public preview of inbound IPv6 support for multi-tenant apps on Premium SKUs, Functions Consumption, Functions Elastic Premium, and Logic Apps Standard. We'll be adding IPv6 support in four stages.
 
 1. This announcement: IPv6 inbound support (multi-tenant)
@@ -44,6 +50,18 @@ To update an app to return IPv6 DNS records:
 ```bash
 az resource update --name <app-name> --set properties.ipMode="IPv6" -g <resource-group-name> --resource-type "Microsoft.Web/sites"
 ```
+
+If you are updating a slot, you'll need the resource id of the slot. Here is an example:
+
+```bash
+az resource update --ids '/subscriptions/<sub-id>/resourceGroups/<resource-group-name>/providers/Microsoft.Web/sites/<app-name>/slots/<slot-name>' --set properties.ipMode='IPv6'
+```
+
+## Update using Azure portal
+
+To update an app to return IPv6 DNS records, you can use the Azure portal. Go to the app, and under the **Configuration** blade, you'll find the `Inbound IP mode (preview)` property.
+
+![Inbound IP mode portal setting]({{site.baseurl}}/media/2024/11/ipmode.png)
 
 ## Create or update using Azure Resource Manager templates
 
@@ -101,7 +119,7 @@ This is the current list of supported regions in preview.
 | -------------------- | :-------------------: |
 | Australia Central    | :heavy_check_mark:    |
 | Australia Central 2  | :heavy_check_mark:    |
-| Australia East       |                       |
+| Australia East       | :heavy_check_mark:                      |
 | Australia Southeast  | :heavy_check_mark:    |
 | Brazil South         | :heavy_check_mark:    |
 | Brazil Southeast     | :heavy_check_mark:    |
@@ -109,40 +127,40 @@ This is the current list of supported regions in preview.
 | Canada East          | :heavy_check_mark:    |
 | Central India        | :heavy_check_mark:    |
 | Central US           | :heavy_check_mark:    |
-| East Asia            |                       |
-| East US              |                       |
-| East US 2            |                       |
-| France Central       |                       |
+| East Asia            | :heavy_check_mark:                      |
+| East US              | :heavy_check_mark:                      |
+| East US 2            | :heavy_check_mark:                      |
+| France Central       | :heavy_check_mark:                      |
 | France South         | :heavy_check_mark:    |
 | Germany North        | :heavy_check_mark:    |
 | Germany West Central |                       |
 | Italy North          | :heavy_check_mark:    |
 | Japan East           | :heavy_check_mark:    |
 | Japan West           | :heavy_check_mark:    |
-| Jio India West       |                       |
+| Jio India West       | :heavy_check_mark:                      |
 | Korea Central        | :heavy_check_mark:    |
 | Korea South          | :heavy_check_mark:    |
-| North Central US     |                       |
-| North Europe         |                       |
+| North Central US     | :heavy_check_mark:                      |
+| North Europe         | :heavy_check_mark:                      |
 | Norway East          | :heavy_check_mark:    |
 | Norway West          | :heavy_check_mark:    |
 | Poland Central       | :heavy_check_mark:    |
 | Qatar Central        | :heavy_check_mark:    |
-| South Africa North   |                       |
+| South Africa North   | :heavy_check_mark:                      |
 | South Africa West    | :heavy_check_mark:    |
-| South Central US     |                       |
-| South India          |                       |
-| Southeast Asia       |                       |
-| Sweden Central       |                       |
+| South Central US     | :heavy_check_mark:                      |
+| South India          | :heavy_check_mark:                      |
+| Southeast Asia       | :heavy_check_mark:                      |
+| Sweden Central       | :heavy_check_mark:                      |
 | Switzerland North    | :heavy_check_mark:    |
 | Switzerland West     | :heavy_check_mark:    |
 | UAE Central          | :heavy_check_mark:    |
 | UAE North            | :heavy_check_mark:    |
 | UK South             |                       |
 | UK West              | :heavy_check_mark:    |
-| West Central US      |                       |
-| West Europe          |                       |
-| West India           |                       |
+| West Central US      | :heavy_check_mark:                      |
+| West Europe          | :heavy_check_mark:                      |
+| West India           | :heavy_check_mark:                      |
 | West US              | :heavy_check_mark:    |
-| West US 2            |                       |
-| West US 3            |                       |
+| West US 2            | :heavy_check_mark:                      |
+| West US 3            | :heavy_check_mark:                      |
