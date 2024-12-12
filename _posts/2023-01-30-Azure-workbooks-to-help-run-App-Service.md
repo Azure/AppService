@@ -40,17 +40,17 @@ You can then access the workbook from the Resource Group you deployed to in the 
 
 You’ll need to select some subscriptions from the Subscription parameter box to get going:
 
-![]({{ site.baseurl }}/media/2023/01/workbook_sub_select.png)
+![Screenshot showing the subscription selection for the Azure workbook]({{site.baseurl}}/media/2023/01/workbook_sub_select.png)
 
 Once you’ve done that the Workbook will load some summary data for all the ASP’s in the subscription:
 
-![]({{ site.baseurl }}/media/2023/01/workbook_asp_summary.png)
+![Screenshot showing sample summary data for App Service plans in the workbook]({{site.baseurl}}/media/2023/01/workbook_asp_summary.png)
 
 This will show you how many instances / how many apps are associated with the ASP, the tiering, and how many Hybrid Connections are available in total for the ASP.
 
 Selecting one of the rows will populate more insights into the ASP:
 
-![]({{ site.baseurl }}/media/2023/01/workbook_asp_details.png)
+![Screenshot showing the additional insights that are available in the workbook]({{site.baseurl}}/media/2023/01/workbook_asp_details.png)
 
 You’ll see the overall CPU / Memory Percentage used across the ASP, along with the total Hybrid Connections active on it.
 
@@ -58,6 +58,6 @@ To the right is a summary of all the Apps in the ASP, and the average CPU / Priv
 
 The final element is a set of charts showing some metrics against each app in the ASP. CPU / Private Bytes. It’s similar data as shown above, but represented visually to allow you to spot anything unusual.
 
-![]({{ site.baseurl }}/media/2023/01/workbook_asp_metrics.png)
+![Screenshot showing additional charts that are provided in the workbook]({{site.baseurl}}/media/2023/01/workbook_asp_metrics.png)
 
 Hopefully these insights allow you to ‘right-size’ your App Service Plans and Environments, making them more efficient, more scalable, and more cost effective to run.
