@@ -7,13 +7,13 @@ toc_sticky: true
 
 ## Introduction
 
-In App Service we are starting to roll out support for Network Security Perimeter (NSP). We are early in the process but wanted to give you a change to evaluate early with a public preview. This blog will give you details of what to expect when you enroll your App Service apps in NSP and understand the limitations and some of the current implications in Azure portal.
+In App Service we are starting to roll out support for Network Security Perimeter (NSP). We are early in the process but wanted to give you a chance to evaluate with a public preview. This blog will give you details of what to expect when you enroll your App Service apps in NSP and understand the limitations and some of the current implications in Azure portal.
 
-Network Security Perimeter is mainly an identity based security enforcement using Managed Identity (MI). When an Azure service is part of a security perimeter and are calling other PaaS services, it will generate a MI token and augment it with the associated NSP profile. The target service will then inspect the incoming token and use the NSP profile to determine (based on the rules configured) if access is allowed.
+Network Security Perimeter is mainly an identity based security enforcement using Managed Identity (MI). When an Azure service is part of a security perimeter and are calling other PaaS services, it will generate a managed identity token and augment it with the associated NSP profile. The target service will then inspect the incoming token and use the NSP profile to determine (based on the rules configured) if access is allowed.
 
-Because App Service is hosting your code, we are not able to ensure that the additional claim is added to every interaction with other PaaS services and this part of NSP (subscription-based inbound rules) is therefore not supported on App Service. We do support IP-based inbound rules since this is good old network isolation. There are some limitations though to what NSP rules support compared to the Resource rules (access restrictions) built in to App Service.
+Because App Service is hosting your code, we are not able to ensure that the additional claim is added to every interaction with other PaaS services and this part of NSP (subscription-based inbound rules) is therefore not supported on App Service. We do support IP-based inbound rules since this is good old network isolation. There are some limitations though to what NSP rules support compared to the Resource rules (App Service native access restrictions).
 
-Again, because App Service is running your code, we cannot enforce all aspects of outbound traffic and cannot guarantee that we can block calls to a specific FQDN address (e.g. `www.contoso.com`). NSP outbound FQDN rules are therefore not in effect when associated with an App Service app. Outbound, your secure network connectivity should still be through private endpoints on the dependent resources.
+Again, because App Service is running your code, we also cannot enforce all aspects of outbound traffic and cannot guarantee that we can block calls to a specific FQDN address (e.g. `www.contoso.com`). NSP outbound FQDN rules are therefore not in effect when associated with an App Service app. Outbound, your secure connectivity should still be through network isolation and private endpoints on the dependent resources.
 
 What we do instead when you associate an App Service app with an NSP profile and enforce the profile is to force all traffic to the virtual network and a virtual network integration is mandatory when using NSP. We will also block incoming traffic and allow only what is allowed through the IP-based inbound rules (or through private endpoints).
 
@@ -34,7 +34,7 @@ Comparing NSP inbound rules and App Service native access restrictions
 
 Our NSP implementation introduces some changes to our ARM API surface (also known as our control plane). Like all other services in Azure, the `PublicNetworkAccess` property will introduce a new value called `SecuredByPerimeter` (in addition to `Enabled` and `Disabled`).
 
-We are also revising our network routing flags. Network routing was previously controlled with individual vnetXxxEnabled properties like `vnetImagePullEnabled` and `vnetBackupRestoreEnabled`. Going forward we will have a property called `outboundVnetRouting` that will contain individual "flag" for the different routing options and we are introducing a new `allTraffic` flag that lets you rest asured that all traffic is being routed through the virtual network. The mappings should be logical, but for completeness, the mappings are added as comments.
+We are also revising our network routing flags. Network routing was previously controlled with individual vnetXxxEnabled properties like `vnetImagePullEnabled` and `vnetBackupRestoreEnabled`. Going forward we will have a property called `outboundVnetRouting` that will contain individual "flags" for the different routing options and we are introducing a new `allTraffic` flag that lets you rest asured that all traffic is being routed through the virtual network. The mappings should be logical, but for completeness, the mappings are added as comments.
 
 The new property schema looks like this:
 
@@ -52,6 +52,8 @@ The new property schema looks like this:
 ```
 
 As mentioned earlier, App Service apps cannot adopt the outbound FQDN rule option in NSP. When an app is secured by perimeter, all traffic will be routed through the virtual network integration and the `allTraffic` routing flag will be forced to true.
+
+## Enabling Network Security Perimeter
 
 The effect of Network Security Perimeter depends on the association access mode and the public network access mode. In VNet only mode outbound, the `allTraffic` flag is forced to true.
 
