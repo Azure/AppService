@@ -53,11 +53,11 @@ The new property schema looks like this:
 
 As mentioned earlier, App Service apps cannot adopt the outbound FQDN rule option in NSP. When an app is secured by perimeter, all traffic will be routed through the virtual network integration and the `allTraffic` routing flag will be forced to true.
 
-The effect of Network Security Perimeter depends on the association access mode and the public network access mode.
+The effect of Network Security Perimeter depends on the association access mode and the public network access mode. In VNet only mode outbound, the `allTraffic` flag is forced to true.
 
 | Association access mode  | Not associated | Learning mode | Enforced mode |
 | ------------------------ | -------------- | ------------- | ------------- |
 | **Public network access**|                |               |               |
-| **Enabled**               | **Inbound**: Native rules <br/> **Outbound**: Allowed | **Inbound**: Native rules and NSP rules <br/> **Outbound**: Allowed | **Inbound**: NSP rules <br/> **Outbound**: VNet only (All traffic) |
-| **Disabled**              | **Inbound**: Denied <br/> **Outbound**: Allowed | **Inbound**: NSP rules <br/> **Outbound**: Allowed | **Inbound**: NSP rules <br/> **Outbound**: VNet only (All traffic) |
-| **SecuredByPerimeter**    | **Inbound**: Denied <br/> **Outbound**: VNet only (allTraffic=true) | **Inbound**: NSP rules <br/> **Outbound**: VNet only (All traffic) | **Inbound**: NSP rules <br/> **Outbound**: VNet only (All traffic) |
+| **Enabled**               | **Inbound**: Native rules <br/> **Outbound**: Allowed | **Inbound**: Native rules and NSP rules <br/> **Outbound**: Allowed | **Inbound**: NSP rules <br/> **Outbound**: VNet only |
+| **Disabled**              | **Inbound**: Denied <br/> **Outbound**: Allowed | **Inbound**: NSP rules <br/> **Outbound**: Allowed | **Inbound**: NSP rules <br/> **Outbound**: VNet only |
+| **SecuredByPerimeter**    | **Inbound**: Denied <br/> **Outbound**: VNet only | **Inbound**: NSP rules <br/> **Outbound**: VNet only | **Inbound**: NSP rules <br/> **Outbound**: VNet only |
