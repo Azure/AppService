@@ -25,11 +25,7 @@ Here's an example of how you can use GitHub Copilot chat to implement App Servic
 
 In order to set some context, I would recommend setting the stage with a statement like:
 
----
-
-Act as a cloud solutions architect and use the sample.bicep template from <https://github.com/Azure-Samples/app-service-web-app-best-practice/blob/main/sample.bicep> as your reference for best practices and Azure App Service product group recommendations for a secure, performant, and reliable web app. I'm going to ask you a series of questions to help transform my current bicep template into a template that follows best practices
-
----
+> Act as a cloud solutions architect and use the sample.bicep template from <https://github.com/Azure-Samples/app-service-web-app-best-practice/blob/main/sample.bicep> as your reference for best practices and Azure App Service product group recommendations for a secure, performant, and reliable web app. I'm going to ask you a series of questions to help transform my current bicep template into a template that follows best practices
 
 In that statement, we asked GitHub Copliot to be a Cloud Solutions Architect (CSA) and use our new sample Bicep template as its reference for best practices and Azure App Service product group recommendations. Telling it to act as a CSA is a way to set the stage for the conversation and let GitHub Copilot know how to shape its responses.
 
@@ -39,22 +35,14 @@ In the screenshot, you can see on the left-hand side that I have a basic Bicep t
 
 Some follow-up questions you can ask GitHub Copilot include:
 
----
-
-1. Can you help me configure the App Service Plan with the recommended settings?
-1. Can you help me configure the App Service with the recommended settings?
-1. What properties should I set on the App Service to make it secure?
-1. What other resources should I include in my template to make the App Service reliable and performant?
-
----
+> 1. Can you help me configure the App Service Plan with the recommended settings?
+> 1. Can you help me configure the App Service with the recommended settings?
+> 1. What properties should I set on the App Service to make it secure?
+> 1. What other resources should I include in my template to make the App Service reliable and performant?
 
 If you ask GitHub Copilot these questions, it will provide you with suggestions as well as code snippets that you can directly implement into your templates. If you're used to Git or are just a visual learner and want to see how exactly your template differs from the sample template, you can ask GitHub Copilot to create an HTML diff. For example, I asked GitHub Copilot the following after making some initial changes to my template based on its suggestions:
 
----
-
-Output a diff between my template and the sample.bicep template. The diff file should be an HTML file, it should be color coded, and it should show the differences between the two files side by side
-
----
+> Output a diff between my template and the sample.bicep template. The diff file should be an HTML file, it should be color coded, and it should show the differences between the two files side by side
 
 It may take some additional prompting and follow-up on your side to get to this same state. But eventually, you should be able to get something as clear as the following:
 
@@ -62,11 +50,7 @@ It may take some additional prompting and follow-up on your side to get to this 
 
 Continuing to build out your template should now be just as easy as working with a real-world CSA or product group expert. You can even ask GitHub Copilot questions about why it's suggesting certain things, or ask it to explain the reasoning behind a certain best practice. This can help you learn more about the best practices and why they are important, so you can apply them to your own templates in the future. For example, you can ask GitHub Copilot:
 
----
-
-1. Why is it important to enable zoneRedundant property? What does it do?
-
----
+> Why is it important to enable zoneRedundant property? What does it do?
 
 If you ask about zone redundancy, it will tell you what it is, why it's important, and how to enable it in your template.
 
