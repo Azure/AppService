@@ -11,6 +11,8 @@ In App Service we are starting to roll out support for [Network Security Perimet
 
 Network Security Perimeter is mainly an identity based security enforcement using Managed Identity (MI). When an Azure service is part of a security perimeter and are calling other PaaS services, it will generate a managed identity token and augment it with the associated NSP profile. The target service will then inspect the incoming token and use the NSP profile to determine, based on the rules configured, if access is allowed.
 
+Network security perimeter will not be supported on Free and Shared App Service SKU and Consumption Functions SKU.
+
 ## Securing inbound traffic
 
 Because App Service is hosting your code, we are not able to ensure that the additional claim is added to every interaction with other PaaS services and NSP inbound rules relying on the MI token (currently subscription-based rules) is therefore not supported on App Service. We do support IP-based inbound rules since this is based on good old network isolation. Because of the limitations there may be some situations where you still want to continue to use the native App Service access restriction rules. In NSP terminology know as Resource rules.
@@ -77,5 +79,7 @@ To apply the inbound rules and forced outbound virtual network routing, either s
 
 ## Limitations
 
-1. Network security perimeter is not supported on Free and Shared App Service SKU and Consumption Functions SKU.
-1. Diagnostics logging is currently not supported.
+There are some current limitations that we are working on fixing before moving to GA.
+
+* Diagnostics logging is currently not supported.
+* Outbound connectivity is not blocked when the app is not connected to a virtual network.
