@@ -20,7 +20,7 @@ It can detect issues such as:
 
 ## Try it out
 
-The new troubleshooter is currently in preview behind a feature flag. You can try it now by opening the [Azure portal using this link](https://portal.azure.com/?websitesextension_ext=asd.NetworkTroubleshooterV2%3Dtrue#home).
+The new troubleshooter is currently in preview behind a feature flag and limited to Windows and Linux web apps only. You can try it now by opening the [Azure portal using this link](https://portal.azure.com/?websitesextension_ext=asd.NetworkTroubleshooterV2%3Dtrue#home).
 
 If you go to the Networking page, you can get to the troubleshooter directly by clicking **Troubleshoot** in the top bar.
 
