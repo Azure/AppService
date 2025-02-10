@@ -33,11 +33,13 @@ All these properties have been introduced as site properties, including a new pr
 }
 ```
 
-Historically, we have also had two of the networking settings in site config properties, namely `vnetRouteAllEnabled` and `publicNetworkAccess`. Again, because of the limitations to control via policy, we have been introducing these properties as site properties. For a while they have been modifiable in both places, but we will start enforcing that you can only modify the setting using the site property and you may see an error message like this: "SiteConfig.PublicNetworkAccess cannot be modified. Please modify the Site.PublicNetworkAccess property". If you see this error you will need to update your scripts or templates to use the site property equivalent.
+Historically, we have also had two of the networking settings in site config properties, namely `vnetRouteAllEnabled` and `publicNetworkAccess`. Again, because of the limitations to control via policy, we have been introducing these properties as site properties. The properties can be modified in both places, but we are working a way to allow only updating through site properties. It will require using new API versions and policies will also need to enforce this. I will come back with updates on the process when we are ready.
 
 ## Simplify configuration
 
-It can be difficult to maintain an overview of the `vnetXxxEnabled` properties or controlling routing and as new features are added to App Service, we will be introducing new properties. To help simplify the configuration, we will also be introducing a new property called `outboundVnetRouting` which will capture all of the above settings and introduce a new "all traffic" setting if you just want both existing and new traffic to travel over the virtual network. When introducing new properties, we will be announcing them and will be giving you a few months to adapt your configurations before enabling it under "all traffic". If all traffic is enabled, individual routing configurations will be ignored. Initially, the schema will look like this:
+Another challenge that we have seen and heard is, that it can be difficult to maintain an overview of the `vnetXxxEnabled` properties and maintain control of routing as new features with outbound traffic are added to App Service.
+
+To help simplify the configuration, we will be introducing a new property called `outboundVnetRouting` which will capture all of the above settings and introduce a new "all traffic" setting if you all current and new traffic routing options to travel over the virtual network. When introducing new properties, we will be announcing them and will be giving you a few months to adapt your configurations before enabling it under "all traffic". If all traffic is enabled, individual routing configurations will be ignored. Initially, the schema will look like this:
 
 ```javascript
 {
@@ -57,7 +59,7 @@ It can be difficult to maintain an overview of the `vnetXxxEnabled` properties o
 
 ## Permissions needed
 
-When modifying certain networking configurations, you need permissions on the linked resource. Examples of this is when joining a virtual network by setting the `virtualNetworkSubnetId` property you need _subnet/join/action_ permission on the subnet you are joining, or adding access restrictions rules with service endpoints enabled you need _subnet/joinViaServiceEndpoint/action_ permission on the subnet in addition to the permission to change the site itself. Whenever these configurations exist, they are currently revalidated on every update of the site, even if you are modifying something different. This is also something we have been working on improving and will slowly be changing the behavior to only validate the permission if the property changes.
+When modifying certain networking configurations, you need permissions on the linked resource. Examples of this is when joining a virtual network by setting the `virtualNetworkSubnetId` property you need _subnet/join/action_ permission on the subnet you are joining, or adding access restrictions rules with service endpoints enabled you need _subnet/joinViaServiceEndpoint/action_ permission on the subnet in addition to the permission to change the site itself. Whenever these configurations exist, they are currently revalidated on every update of the site, even if you are modifying something different. This is also something we are working on improving and will slowly be changing the behavior to only validate the permission if the property changes.
 
 ## Roadmap
 
