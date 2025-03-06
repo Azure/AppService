@@ -1,5 +1,5 @@
 ---
-title: "Deep dive on sidecars for Azure App Service"
+title: "Sidecars in Azure App Service: A Deep Dive"
 author_name: "Tulika Chaudharie"
 ---
 
