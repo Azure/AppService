@@ -73,6 +73,7 @@ The table below outlines the attributes used in the Sidecar specification. These
 
 
 **Attributes for volumeMounts**
+
 | Name  | Type  | Is Required | Default Value | Description  |
 |-------|------|------------|--------------|-------------|
 | `volumeSubPath` | String | Yes | N/A | Path of the directory relative to the volume on the host. |
@@ -81,6 +82,7 @@ The table below outlines the attributes used in the Sidecar specification. These
 
 
 **Attributes for environmentVariables**
+
 | Name  | Type  | Is Required | Default Value | Description  |
 |-------|------|------------|--------------|-------------|
 | `name` | String | Yes | N/A | Name of the variable on the container. |
