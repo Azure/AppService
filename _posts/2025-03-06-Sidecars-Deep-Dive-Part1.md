@@ -3,8 +3,6 @@ title: "Sidecars in Azure App Service: A Deep Dive"
 author_name: "Tulika Chaudharie"
 ---
 
-# Sidecars in Azure App Service: A Deep Dive
-
 In November 2024, we announced the [General Availability (GA) of the Sidecar feature for Azure App Service for Linux](https://techcommunity.microsoft.com/blog/appsonazureblog/announcing-the-general-availability-of-sidecar-extensibility-in-azure-app-servic/4267985). Today, we want to dive deep into this feature to help developers understand its capabilities and configurations. This blog post is the first in a series that will explore various aspects of Sidecars, from specification details to deployment and advanced use cases.
 
 ### What is a Sidecar in Azure App Service?
