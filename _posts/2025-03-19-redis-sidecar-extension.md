@@ -125,7 +125,7 @@ The deployment pipeline will automatically build and deploy your web application
 
     Specify the details of your application image.
 
-    ![Create web app]({{site.baseurl}}/media/2024/07/AddContainer.jpg)
+    ![Create web app]({{site.baseurl}}/media/2025/03/add-container.jpg)
 
     *Note: We strongly recommend enabling [Managed Identity](https://learn.microsoft.com/azure/app-service/overview-managed-identity?tabs=portal%2Chttp) for your Azure resources.*
 
