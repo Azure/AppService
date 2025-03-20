@@ -146,4 +146,4 @@ To learn more about Datadog dashboards, you can refer to the [documentation](htt
 
 ## Try It Out with a Sample Python App
 
-If you want to try the Datadog sidecar extension with a Python application, we have a sample available here: <link>.
+If you want to try the Datadog sidecar extension with a Python application, we have a sample available [here](https://github.com/Azure-Samples/sidecar-samples/tree/main/datadog-python-sample).

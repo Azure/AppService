@@ -159,6 +159,6 @@ The Redis sidecar extension is suitable for caching scenarios and lightweight in
 
 ## Try It Out with a Sample Python App
 
-If you want to try the Redis sidecar extension with a Python application, we have a sample available here: <link>.
+If you want to try the Redis sidecar extension with a Python application, we have a sample available [here](https://github.com/Azure-Samples/sidecar-samples/tree/main/redis-extension-python).
 
 
