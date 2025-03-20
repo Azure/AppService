@@ -116,8 +116,8 @@ Once your application is deployed, follow these steps to enable the Datadog side
 
     - **Datadog Service Name**: The name of the service that would be displayed in your Datadog Service Catalog.
     - **Datadog Environment**: This is used to set the global environment, which allows you to differentiate data coming from various environments like staging or production.
-    - **Datadog Application Logs path**: This is the path where you write your application logs. Typically, this will be `/home/LogFile/*.log`, If you have changed the location for your application logs, you can specify that in this setting.
-    - **Datadog Trace Log Directory**: `/home/Logfiles/dotnet`
+    - **Datadog Application Logs path**: This is the path where you write your application logs. Typically, this will be `/home/LogFiles/*.log`, If you have changed the location for your application logs, you can specify that in this setting.
+    - **Datadog Trace Log Directory**: `/home/LogFiles/dotnet`
     
 
 ### Disclaimer: Datadog Image Usage
