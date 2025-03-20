@@ -85,6 +85,8 @@ To showcase the capabilities of running Phi-3 and Phi-4 as sidecars, we have a s
 
 Before adding the Phi sidecar extension, you need to deploy your application to Azure App Service. There are two ways to deploy applications: **code-based deployment** and **container-based deployment**.
 
+***Note: SLMs run along with your webapps and share the available compute resources of the machine.Hence, it is recommended to choose a SKU with atleast 4 vCPU and 7 GB Memory.***
+
 **Code-Based Deployment**
 
 1. Go to the Azure Portal and create a .NET 8 Linux App Service.
@@ -133,6 +135,8 @@ Once your application is deployed, follow these steps to enable the Redis sideca
 ## Testing the application
 
 After adding the sidecar, wait a few minutes for the application to restart.
+
+*Note: Since we are deploying a language model, please be aware that the application might take a little longer to start up the first time. This delay is due to the initial setup and loading of the Phi model, which ensures that it is ready to handle requests efficiently. Subsequent startups should be faster once the model is properly initialized.*
 
 Once the application is live, navigate to it and try asking questions like `Tell me more about this shirt` or `How do I pair this shirt?`
 
