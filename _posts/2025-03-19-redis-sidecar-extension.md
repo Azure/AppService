@@ -135,6 +135,9 @@ Once your application is deployed, follow these steps to enable the Redis sideca
 
 1. Navigate to the **Azure Portal** and open your **App Service** resource.
 2. Go to **Deployment Center** in the left-hand menu and navigate to the **Containers** tab.
+
+    *Note: You might see a banner which says ***Interested in adding containers to run alongside your app? Click here to give it a try***. Clicking on the banner will enable the new Containers experience for you.*
+    
 3. Add the Redis sidecar extension like this
 
     ![Redis Sidecar]({{site.baseurl}}/media/2025/03/add-redis.jpg)
