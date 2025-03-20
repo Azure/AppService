@@ -38,16 +38,21 @@ popd
 dotnet /home/site/wwwroot/<yourapp>.dll
 ```
 
-Ensure this **`startup.sh`** file is included in your application’s root directory.
+Ensure this **`startup.sh`** file is included in your application’s root directory. If you are using the sample application, we have a startup file available [here](https://github.com/Azure-Samples/sidecar-samples/blob/main/devShopDNC/devShopDNC/startup.sh)
 
 #### 2. Deploy to Azure App Service  
 
 Follow these steps to deploy your application with Datadog:  
 
-1. **Create a .NET 8 Linux App Service** in the Azure Portal.  
+1. **Create a .NET 8 Linux App Service** in the Azure Portal.
+
+    ![Create web app]({{site.baseurl}}/media/2025/03/create-code-based-app.jpg)
+
 2. **Set up CI/CD with GitHub** to automate deployments. You can follow the [GitHub Actions guide for Azure App Service](https://learn.microsoft.com/en-us/azure/app-service/deploy-github-actions?tabs=openid%2Caspnetcore).  
-   > *Note: Sidecars for code-based applications currently support only GitHub Actions. Other deployment methods will be available soon.*  
+   > *Note: Sidecars for code-based applications currently support only GitHub Actions. Other deployment methods will be available soon.* 
+
 3. **Push your application code** to your GitHub repository.  
+
 4. In the **Azure Portal**, go to **Your Web App → Configuration** and set the **Startup Command** to:  
 
    ```bash
