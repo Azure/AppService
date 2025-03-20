@@ -80,6 +80,7 @@ To showcase the capabilities of running Phi-3 and Phi-4 as sidecars, we have a s
         StateHasChanged();
     }
     ```
+
 ## Deploying Your Web Application
 
 Before adding the Phi sidecar extension, you need to deploy your application to Azure App Service. There are two ways to deploy applications: **code-based deployment** and **container-based deployment**.
@@ -137,6 +138,8 @@ Once the application is live, navigate to it and try asking questions like `Tell
 
 ![Phi app]({{site.baseurl}}/media/2025/03/Exercise-4-answer.jpg)
 
+
+## Conclusion
 
 The integration of Phi models as sidecars on Azure App Service for Linux demonstrates the power of Small Language Models (SLMs) in delivering efficient, AI-driven experiences without the overhead of large-scale models. We are actively working on more AI scenarios for Azure App Service and would love to hear what you are building. Your feedback and ideas are invaluable as we continue to explore the possibilities of AI and cloud-based deployments.
 
