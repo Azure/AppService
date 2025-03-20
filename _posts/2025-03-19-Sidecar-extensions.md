@@ -22,8 +22,8 @@ The first set of Sidecar Extensions available today includes:
 Getting started with Sidecar Extensions is simple. You can enable and configure these extensions through the Azure portal, CLI, or ARM templates.  
 
 To learn more and explore these integrations, check out our additional blogs:  
-- [Using Phi-4 & Phi-3](https://azure.github.io/AppService/2025/03/19/phi-sidecar-extension.html)
-- [Add caching with Redis](https://azure.github.io/AppService/2025/03/19/redis-sidecar-extension.html)
-- [Observability with Datadog](https://azure.github.io/AppService/2025/03/19/datadog-sidecar-extension.html)
+- [Using Phi-4 & Phi-3]({{site.baseurl}}/2025/03/19/phi-sidecar-extension.html)
+- [Add caching with Redis]({{site.baseurl}}/2025/03/19/redis-sidecar-extension.html)
+- [Observability with Datadog]({{site.baseurl}}/2025/03/19/datadog-sidecar-extension.html)
 
 We’re excited to see how you use Sidecar Extensions to enhance your applications. Try them out today and share your feedback!  
