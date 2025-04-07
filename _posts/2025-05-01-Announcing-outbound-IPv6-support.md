@@ -38,13 +38,13 @@ curl -6 https://ipv6.azurewebsites.net
 
 > ![]({{site.baseurl}}/media/2024/09/ipv6-outbound-test.png)
 
-Windows and Linux have different default behaviors when dealing with IPv6. Windows will default to IPv4 if the DNS lookup returns both addresses. Linux, however, defaults to IPv6 and sites that were previously working fine might experience issues when IPv6 is enabled outbound. If the DNS of your endpoint resolves to and IPv6 address that does not work, you app will also experience this behavior.
+Windows and Linux have different default behaviors when dealing with IPv6. Windows will default to IPv4 if the DNS lookup returns both address types. Linux, however, defaults to IPv6 and sites that were previously working fine might experience issues when IPv6 is enabled outbound. If the DNS of your endpoint resolves to an IPv6 address that does not work, you app will also experience this behavior.
 
 If you have apps on Linux where you have endpoints with bad IPv6 configurations, we have added the option to remove IPv6 DNS results for specific FQDNs. You can add an app setting called `WEBSITE_DNS_SUPPRESS_IPV6_RESULT_FQDNS`. You can add individual FQDNs comma separated or you can simply add `all` in the value to remove all IPv6 results.
 
 ## Supported regions
 
-This is the current list of supported regions in preview. Within each of the supported regions, there may be a few deployment units that have not yet had IPv6 outbound configuration added. You can verify if your app is on an IPv6 outbound configuration added by running this command. If it returns more than 2 addresses, IPv6 is enabled.
+This is the current list of supported regions in preview. Within each of the supported regions, there may be a few deployment units that have not yet had IPv6 outbound configuration added. You can verify if your app is has IPv6 outbound configuration added by running this command. If the command returns more than 2 addresses, IPv6 is enabled.
 
 ```bash
 az rest --method GET --uri /subscriptions/<sub-id>/resourceGroups/<rg-name>/providers/Microsoft.Web/sites/<app-name>?api-version=2024-04-01 --query properties.outboundIpv6Addresses
