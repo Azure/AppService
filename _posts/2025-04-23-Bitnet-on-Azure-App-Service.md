@@ -5,8 +5,6 @@ toc: true
 toc_sticky: true
 ---
 
-### **Introduction**
-
 In a world where running large language models typically demands GPUs and hefty cloud bills, Microsoft Research is reshaping the narrative with [BitNet](https://www.msn.com/en-in/money/news/microsoft-research-announces-1-bit-a-small-language-model-that-can-run-on-cpu/ar-AA1DiDZd) — a compact, 1-bit quantized transformer that delivers surprising capabilities even when deployed on modest hardware.
 
 BitNet is part of a new wave of *small language models (SLMs)* designed for real-world applications where performance, latency, and cost are critical. Unlike traditional transformer models, BitNet employs 1-bit weight quantization and structured sparsity, making it remarkably lightweight while still retaining strong reasoning abilities.
@@ -34,6 +32,7 @@ Here’s how you can do it through the Azure Portal:
 
 ![Create web app]({{site.baseurl}}/media/2024/07/CreateWebApp.jpg)
 
+
 4. In the **Containers** tab:
    - Set **Image source** to **Other Container registries**.
    - Enter this Image and Tag:  
@@ -44,7 +43,9 @@ Here’s how you can do it through the Azure Portal:
 
 ![Container config tab]({{site.baseurl}}/media/2025/04/container-config-bitnet.jpg)
 
+
 Once deployed, you can simply browse to your app’s URL.  
+
 Because BitNet is based on [llama.cpp](https://github.com/ggerganov/llama.cpp), it automatically serves a **default chat interface** in the browser — no extra code needed!
 
 ![Sample output]({{site.baseurl}}/media/2025/04/output-default.jpg)
