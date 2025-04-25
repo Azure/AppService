@@ -9,12 +9,14 @@ In a world where running large language models typically demands GPUs and hefty 
 
 BitNet is part of a new wave of *small language models (SLMs)* designed for real-world applications where performance, latency, and cost are critical. Unlike traditional transformer models, BitNet employs 1-bit weight quantization and structured sparsity, making it remarkably lightweight while still retaining strong reasoning abilities.
 
-In this blog, we’ll show you how you can run BitNet on **Azure App Service for Linux**, leveraging its Sidecar architecture to serve BitNet models alongside your web app — no GPU required. Whether you're building intelligent chat interfaces, processing reviews, or enabling offline summarization, you’ll see how App Service enables you to add AI to your app stack — with simplicity, scalability, and efficiency.
+In mid-April 2025, Microsoft Research unveiled BitNet b1.58 2B4T on Hugging Face—a transformer-based model with just 1.58-bit weights, trained on a staggering 4 trillion tokens.
+
+In this blog, we’ll show you how you can run [this model](https://huggingface.co/microsoft/bitnet-b1.58-2B-4T-gguf) on **Azure App Service for Linux**, leveraging its Sidecar architecture to serve BitNet models alongside your web app — no GPU required. Whether you're building intelligent chat interfaces, processing reviews, or enabling offline summarization, you’ll see how App Service enables you to add AI to your app stack — with simplicity, scalability, and efficiency.
 
 ## Getting Started with BitNet on Azure App Service
 
 To make it even easier to get hands-on with the BitNet model, we’ve published a ready-to-use Docker image:  
-👉 [**sample-experiment:bitnet-b1.58-2b-4t-gguf**](https://mcr.microsoft.com/appsvc/docs/sidecars/sample-experiment:bitnet-b1.58-2b-4t-gguf)
+👉 `mcr.microsoft.com/appsvc/docs/sidecars/sample-experiment:bitnet-b1.58-2b-4t-gguf`
 
 You can try it in **two simple ways**:
 
@@ -30,18 +32,17 @@ Here’s how you can do it through the Azure Portal:
 2. Under **Publish**, select **Container**.
 3. Choose **Linux** as the Operating System.
 
-![Create web app]({{site.baseurl}}/media/2024/07/CreateWebApp.jpg)
-
+    ![Create web app]({{site.baseurl}}/media/2024/07/CreateWebApp.jpg)
 
 4. In the **Containers** tab:
-   - Set **Image source** to **Other Container registries**.
-   - Enter this Image and Tag:  
-     `mcr.microsoft.com/appsvc/docs/sidecars/sample-experiment:bitnet-b1.58-2b-4t-gguf`
+    - Set **Image source** to **Other Container registries**.
+    - Enter this Image and Tag:  
+        `mcr.microsoft.com/appsvc/docs/sidecars/sample-experiment:bitnet-b1.58-2b-4t-gguf`
 
-     Specify the port as 11434
+        Specify the port as 11434
 5. Review and **Create** the app.
 
-![Container config tab]({{site.baseurl}}/media/2025/04/container-config-bitnet.jpg)
+    ![Container config tab]({{site.baseurl}}/media/2025/04/container-config-bitnet.jpg)
 
 
 Once deployed, you can simply browse to your app’s URL.  
