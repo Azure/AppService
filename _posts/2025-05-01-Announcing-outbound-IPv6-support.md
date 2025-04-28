@@ -14,7 +14,7 @@ We are now ready to invite you to the public preview of IPv6 outbound support in
 1. Backlog: IPv6 vnet outbound support (multi-tenant and App Service Environment v3)
 1. Backlog: IPv6 vnet inbound support (App Service Environment v3 - both internal and external)
 
-Limitations in this public preview:
+Limitations in this public preview for outbound IPv6:
 
 * Only a subset of regions are supported - see the list below.
 
@@ -42,13 +42,11 @@ Windows and Linux have different default behaviors when dealing with IPv6. Windo
 
 If you have apps on Linux where you have endpoints with bad IPv6 configurations, we have added the option to remove IPv6 DNS results for specific FQDNs. You can add an app setting called `WEBSITE_DNS_SUPPRESS_IPV6_RESULT_FQDNS`. You can add individual FQDNs comma separated or you can simply add `all` in the value to remove all IPv6 results.
 
+If you want to completely disable IPv6 outbound on Linux, you can add this app setting `WEBSITE_NETWORK_LINUX_OUTBOUND_DISABLE_IPV6` with the value of `true`.
+
 ## Supported regions
 
-This is the current list of supported regions in preview. Within each of the supported regions, there may be a few deployment units that have not yet had IPv6 outbound configuration added. You can verify if your app is has IPv6 outbound configuration added by running this command. If the command returns more than 2 addresses, IPv6 is enabled.
-
-```bash
-az rest --method GET --uri /subscriptions/<sub-id>/resourceGroups/<rg-name>/providers/Microsoft.Web/sites/<app-name>?api-version=2024-04-01 --query properties.outboundIpv6Addresses
-```
+This is the current list of supported regions in preview.
 
 | Region               | IPv6 inbound          |  IPv6 outbound (Windows) | IPv6 outbound (Linux) |
 | :------------------: | :-------------------: | :----------------------: | :-------------------: |
