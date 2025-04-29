@@ -4,15 +4,26 @@ author_name: "James Mulvey"
 category: diagnostics
 ---
 
+ #### See April 2025 improvements to App Service Maintenance Notifications  [Improvements](https://azure.github.io/AppService/2025/04/29/Azure-App-Service-Notifications-Improvements.html) 
+
+ Updates include:
+
+- Impacted Resources Blade
+- Release Notes
+- Business Hours Pausing
+
+
+-------------------------
+
 Azure App Service is regularly updated to provide new features, new runtime versions, performance improvements, and bug fixes. One of the top feature requests from our customers is the ability to receive notifications before one of the platform updates occurs. We are happy to announce that, starting early March 2022, notifications for scheduled maintenance on Azure App Service will be available for App Service Environments V3 (ASEv3) and multi-tenant applications.
 
-With these notifications, you will be able to receive email or SMS text alerts before a platform upgrade starts, while it is in progress, and when the upgrade completes. For multi-tenant applications, we have also included a more advanced 7-day notification option allowing for more time to prepare for an upgrade. This 7-day notification will alert customers to an upcoming platform upgrade approximately 1 week before the event begins. You can also invoke Azure Functions or Logic Apps based on these notifications. This 7-day addition has been rolled out for multi-tenant environments across our regions with App Service Environments V3 coming soon. This article shows how to set up email and SMS alerts, as well as Function and Logic Apps, to consume these events. For critical security or livesite updates, we may not be able to send notifications as these updates are time sensitive. You may receive just pre-start, in-progress, and completion notifcations but not 7-day notifications if there is not sufficient lead time.
+With these notifications, you will be able to receive email or SMS text alerts before a platform upgrade starts, while it is in progress, and when the upgrade completes. For App Service Plan resources, we have also included a more advanced 7-day notification option allowing for more time to prepare for an upgrade. This 7-day notification will alert customers to an upcoming platform upgrade approximately 1 week before the event begins. For advanced notificaitons and precise upgrade timing for App Service Environments, see [Manual Upgrade Preference](https://learn.microsoft.com/en-us/azure/app-service/environment/how-to-upgrade-preference?pivots=experience-azp#manual-upgrade-preference). You can also invoke Azure Functions or Logic Apps based on these notifications. This article shows how to set up email and SMS alerts, as well as Function and Logic Apps, to consume these events. For critical security or livesite updates, we may not be able to send notifications as these updates are time sensitive. You may receive just pre-start, in-progress, and completion notifcations but not 7-day notifications if there is not sufficient lead time. 
 
 ## Overview
 
 The maintenance notifications for App Service are surfaced as events in Azure Monitor. This means that you can set up your email address and/or SMS phone number when a notification is generated. You can also set up a trigger for your custom Azure Function or Logic App, which allows you to automatically take action to your resources. For example, you can automatically divert all the traffic from your App Service Environment in one region which will be upgraded to an App Service Environment in another region in order to avoid any potential impact. Then, you can automatically change the traffic back to normal when an upgrade completes. Please refer to the [Logic App sample for automatic traffic diversion for Azure App Service](https://github.com/Azure-Samples/azure-logic-app-traffic-update-samples) for more details.
 
-## Viewing upgrade notifications
+## Viewing upgrade notifications 
 
 From the Azure portal, go to **Home** > **Monitor** > **Service Health** > **Planned maintenance**. Here you can see all active (including upcoming or in-progress) notifications for the selected subscriptions. To make it easy to find App Service upgrade events, click the **Service** box, check all App Service types and uncheck everything else. To see past notifications, navigate to **Health history** and filter **Planned maintenance** from the Health Event Type box.
 
@@ -61,10 +72,10 @@ Once the upgrade starts, we send in-progress notifications every 12 hours until 
 The exact timing of the maintenance may vary depending on several factors, but will not be before 7 days. You will still receive a notification shortly before maintenance begins.
 
 **When will 7-day notifications be available for ASE?**  
-While the 7-day notifications will not be applicable for ASEs, ASEv3 Customers will have the option to manually upgrade their resources on-demand via manual deployment preferences starting end of Q1 2023.
+While the 7-day notifications will not be applicable for ASEs, ASEv3 Customers will have the option to manually upgrade their resources on-demand via [Manual Upgrade Preference](https://learn.microsoft.com/en-us/azure/app-service/environment/how-to-upgrade-preference?pivots=experience-azp#manual-upgrade-preference).
 
 **How long do App service Upgrades take?**  
-Our typical time for completing updates worldwide is about 10 business days, which allows us to deploy during each region’s off hours and also avoid deploying to Paired Regions at the same time (for example, East US and West US). Throughout this duration, you may receive multiple in-progress notifications - this is expected.
+Our typical time for completing updates worldwide is about 10 business days, which allows us to deploy during each region’s off hours and also avoid deploying to Paired Regions at the same time (for example, East US and West US).
 
 **Why did I not receive a notification when my App Service was upgraded?**  
 There are two main reasons why customers may not receive notification of an upgrade. The first reason is that customers may not have followed the opt-in steps listed above. The second reason for not receiving upgrade notifications is the maintenance performed was part of a security patch or hotfix that may not have had enough lead time to provide notifications. These events should not cause any impact to current resources.
