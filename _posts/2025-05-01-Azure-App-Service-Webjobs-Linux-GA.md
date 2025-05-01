@@ -3,7 +3,7 @@ title: "General Availability: App Service Webjobs on Linux"
 author_name: "Byron Tardif"
 ---
 
-Last year, we introduce [Webjobs on Linux](https://azure.github.io/AppService/2024/04/04/Public-Preview-Sidecars-Webjobs.html)  as a preview feature.  We are now excited to annouce **General Avilability** for Webjob on App Service Linux for both  code an containers scenarios.
+Last year, we introduced [Webjobs on Linux](https://azure.github.io/AppService/2024/04/04/Public-Preview-Sidecars-Webjobs.html)  as a preview feature.  We are now excited to announce **General Avilability** for Webjobs on App Service Linux for both  code an containers scenarios.
 
 Webjobs enable the execution of background tasks and scheduled processes, which, unlike traditional web applications, are not triggered by an HTTP request.
 
