@@ -13,7 +13,7 @@ pagination:
     after: 2
 ---
 
-AI integration is a powerful feature that allows you to enhance your applications with artificial intelligence capabilities. By leveraging AI models, you can improve user experiences, automate tasks, and gain insights from data.
+Integrate AI tools with the applications you already have on App Service.
 
 ## Helpful resources
 
