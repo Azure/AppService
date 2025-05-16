@@ -30,10 +30,6 @@ Before you get started, make sure you have the following tools installed and rea
 
 Make sure these tools are installed and available in your environment before moving on to the next steps.
 
-Absolutely! Here’s the updated and simplified section:
-
----
-
 ## Preparing Your Environment
 
 > ⚠️ **Note**
