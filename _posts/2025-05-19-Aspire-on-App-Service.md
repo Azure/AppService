@@ -30,49 +30,25 @@ Before you get started, make sure you have the following tools installed and rea
 
 Make sure these tools are installed and available in your environment before moving on to the next steps.
 
+Absolutely! Here’s the updated and simplified section:
+
+---
+
 ## Preparing Your Environment
 
 > ⚠️ **Note**
-> The steps in this section rely on a temporary NuGet feed for daily builds. This will change once the .NET Aspire packages are published to [NuGet.org](https://www.nuget.org/). We’ll update this guidance when that happens.
+> Aspire packages are currently published to a temporary feed until they are available on [NuGet.org](https://www.nuget.org/). Please follow the official guidance on how to configure your environment to use the latest daily builds.
 
-### Create a Local `nuget.config` File
+You can find the most up-to-date instructions here:
+[Using the Latest Daily Builds of .NET Aspire](https://github.com/dotnet/aspire/blob/main/docs/using-latest-daily.md)
 
-We are currently using daily builds of the Aspire packages. To set this up, create a `nuget.config` file in the root of your repository by running:
+This includes steps to:
 
-```bash
-dotnet new nugetconfig
-```
+* Configure a local `nuget.config`
+* Add the Aspire daily feed and package source mappings
+* Install the latest Aspire project templates
 
-### Add the Aspire Feed to NuGet Config
-
-Add the feed containing the latest Aspire packages:
-
-```bash
-dotnet nuget add source --name dotnet9 https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet9/nuget/v3/index.json
-```
-
-Next, add the following **package source mappings** to your `nuget.config` to ensure only relevant packages are resolved from this feed:
-
-```xml
-<packageSourceMapping>
-  <packageSource key="dotnet9">
-    <package pattern="Aspire.*" />
-    <package pattern="Microsoft.Extensions.ServiceDiscovery*" />
-    <package pattern="Microsoft.Extensions.Http.Resilience" />
-  </packageSource>
-</packageSourceMapping>
-```
-
-### Install the Latest Aspire Project Templates
-
-You’ll need the latest Aspire project templates to scaffold your application. Install them by running:
-
-```bash
-dotnet new install Aspire.ProjectTemplates::*-* --force
-```
-
-> \[!NOTE]
-> The `--force` flag ensures that the new templates override any older versions that may already exist on your system.
+Be sure to review and follow those steps before continuing.
 
 ### Create a New Aspire Starter Project
 
