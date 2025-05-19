@@ -5,7 +5,7 @@ toc: true
 toc_sticky: true
 ---
 
-We’re laying the groundwork to bring [.NET Aspire](https://learn.microsoft.com/en-us/dotnet/aspire/get-started/aspire-overview) to Azure App Service. While this is just the beginning, we wanted to give you an early preview of how to set up a basic Aspire application on App Service. 
+We’re laying the groundwork to bring [.NET Aspire](https://learn.microsoft.com/dotnet/aspire/get-started/aspire-overview) to Azure App Service. While this is just the beginning, we wanted to give you an early preview of how to set up a basic Aspire application on App Service. 
 
 In this first walkthrough, we’ll use the Aspire Starter template, which includes a simple frontend application that calls an API backend. Both of these will be deployed as container-based applications on Azure App Service.
 
@@ -16,11 +16,11 @@ This is an early step, and we’ll be adding more capabilities in the coming wee
 Before you begin, make sure you have the required tools and environment set up.
 
 You can find the latest list of prerequisites here:
-[.NET Aspire - Prerequisites](https://learn.microsoft.com/en-us/dotnet/aspire/fundamentals/setup-tooling?tabs=linux&pivots=vscode)
+[.NET Aspire - Prerequisites](https://learn.microsoft.com/dotnet/aspire/fundamentals/setup-tooling?tabs=linux&pivots=vscode)
 
 In addition, you’ll need the **Azure Developer CLI (azd)** to provision and deploy resources to Azure.
 You can install it by following the instructions here:
-[Install Azure Developer CLI](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/install-azd)
+[Install Azure Developer CLI](https://learn.microsoft.com/azure/developer/azure-developer-cli/install-azd)
 
 Make sure all these tools are installed and configured before continuing.
 
