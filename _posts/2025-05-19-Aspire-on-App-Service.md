@@ -5,7 +5,7 @@ toc: true
 toc_sticky: true
 ---
 
-We’re laying the groundwork to bring .NET Aspire to Azure App Service. While this is just the beginning, we wanted to give you an early preview of how to set up a basic Aspire application on App Service. 
+We’re laying the groundwork to bring [.NET Aspire](https://learn.microsoft.com/en-us/dotnet/aspire/get-started/aspire-overview) to Azure App Service. While this is just the beginning, we wanted to give you an early preview of how to set up a basic Aspire application on App Service. 
 
 In this first walkthrough, we’ll use the Aspire Starter template, which includes a simple frontend application that calls an API backend. Both of these will be deployed as container-based applications on Azure App Service.
 
@@ -13,42 +13,22 @@ This is an early step, and we’ll be adding more capabilities in the coming wee
 
 ## Prerequisites
 
-Before you get started, make sure you have the following tools installed and ready to use:
+Before you begin, make sure you have the required tools and environment set up.
 
-* **.NET 9 SDK**
-  .NET Aspire requires .NET 9. You can download the latest .NET 9 SDK from the [.NET Download page](https://dotnet.microsoft.com/download/dotnet/9.0).
+You can find the latest list of prerequisites here:
+[.NET Aspire - Prerequisites](https://learn.microsoft.com/en-us/dotnet/aspire/fundamentals/setup-tooling?tabs=linux&pivots=vscode)
 
-* **Visual Studio 2022**
-  You’ll need the latest version of Visual Studio 2022 with the **ASP.NET and web development** workloads installed. You can get it from the [Visual Studio download page](https://visualstudio.microsoft.com/downloads/).
+In addition, you’ll need the **Azure Developer CLI (azd)** to provision and deploy resources to Azure.
+You can install it by following the instructions here:
+[Install Azure Developer CLI](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/install-azd)
 
-* **Azure Developer CLI (azd)**
-  The Azure Developer CLI makes it easy to provision and deploy Azure resources. Follow the official instructions to install it for your platform:
-  [Install Azure Developer CLI](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/install-azd?tabs=winget-windows%2Cbrew-mac%2Cscript-linux&pivots=os-windows)
-
-* **Docker Desktop**
-  .NET Aspire uses Docker containers to run supporting services. Make sure Docker Desktop is installed and running on your machine. You can download it from the [Docker Desktop download page](https://www.docker.com/products/docker-desktop/).
-
-Make sure these tools are installed and available in your environment before moving on to the next steps.
+Make sure all these tools are installed and configured before continuing.
 
 ## Preparing Your Environment
 
-> ⚠️ **Note**
-> Aspire packages are currently published to a temporary feed until they are available on [NuGet.org](https://www.nuget.org/). Please follow the official guidance on how to configure your environment to use the latest daily builds.
-
-You can find the most up-to-date instructions here:
-[Using the Latest Daily Builds of .NET Aspire](https://github.com/dotnet/aspire/blob/main/docs/using-latest-daily.md)
-
-This includes steps to:
-
-* Configure a local `nuget.config`
-* Add the Aspire daily feed and package source mappings
-* Install the latest Aspire project templates
-
-Be sure to review and follow those steps before continuing.
-
 ### Create a New Aspire Starter Project
 
-You can now scaffold a starter Aspire application using the following command:
+You can scaffold a starter Aspire application using the following command:
 
 ```bash
 dotnet new aspire-starter
@@ -58,20 +38,23 @@ This creates a `.slnx` solution file and at least two project folders.
 
 ### Build and Run the Application
 
-Make sure the NuGet feed you added is accessible—either globally or through the `nuget.config` in this folder—then build and run the project:
+Once your project is ready, you can build and run it locally to verify everything works as expected.
+
+First, restore dependencies and build the solution:
 
 ```bash
 dotnet restore
 dotnet build
 ```
 
-Ensure that **Docker Desktop** is running, then start the application:
+Then, start the application by running the AppHost project:
 
 ```bash
-dotnet run --project "<directoryname>.AppHost"
+dotnet run --project "<YourProjectName>.AppHost"
 ```
 
-You should now have a basic Aspire application running locally and ready for the next steps in deployment.
+Make sure you have **Docker Desktop**, **Podman**, or another compatible **container runtime** running on your machine.
+This will start both the frontend and API services locally. You now have your Aspire application up and running, ready for deployment to Azure in the next steps.
 
 ## Add Azure App Service Support to Your Project
 
@@ -79,7 +62,7 @@ Now that you have the basic Aspire project running locally, let’s add support 
 
 ### Add Required NuGet Packages
 
-Open the solution in **Visual Studio** and locate the **AppHost** project. You’ll need to add the following NuGet packages to enable Azure resource integration:
+Open the solution in **Visual Studio** or your preferred IDE and locate the **AppHost** project. You’ll need to add the following NuGet packages to enable Azure resource integration:
 
 1. Open the **Package Manager Console** in Visual Studio.
 
@@ -92,8 +75,6 @@ Open the solution in **Visual Studio** and locate the **AppHost** project. You�
 3. Add the required packages:
 
    ```bash
-   dotnet add package Azure.Core
-   dotnet add package Azure.ResourceManager.KeyVault
    dotnet add package --prerelease Aspire.Hosting.Azure.AppService
    ```
 
