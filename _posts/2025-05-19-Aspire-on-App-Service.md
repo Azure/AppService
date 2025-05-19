@@ -177,6 +177,20 @@ This should return a list of dates with the weather forecast.
 ![Aspire page]({{site.baseurl}}/media/2025/05/aspire-page.jpg)
 
 
+## Current Limitations (Preview)
+
+As this is an early preview, there are some important limitations to be aware of:
+
+* Supports **.NET projects only** (added via `AddProject(...)`).
+* Each project must **expose a single public HTTP endpoint**.
+* Projects are **packaged as containers** and published to **Azure Container Registry**.
+* **Containers defined within the AppHost** are **not supported** for deployment.
+* **Deployments to existing App Service Plans** are **not supported**; a new plan is provisioned by `azd up`.
+* The **Aspire Dashboard** is **not yet supported** on Azure App Service.
+
+We’re actively working to expand these capabilities and will share updates as they become available.
+
+
 ## What’s Next
 
 This is just the beginning of our journey to enable .NET Aspire on Azure App Service. In this post, we walked through the early steps to deploy a basic Aspire application with a frontend and API backend running as container-based apps on App Service.
