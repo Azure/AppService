@@ -1,5 +1,5 @@
 ---
-title: "Getting Started with .NET Aspire on Azure App Service"
+title: "Getting Started with .NET Aspire (Preview) on Azure App Service"
 author_name: "Tulika Chaudharie"
 toc: true
 toc_sticky: true
