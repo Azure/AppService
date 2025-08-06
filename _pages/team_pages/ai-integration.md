@@ -22,3 +22,4 @@ Integrate AI tools with the applications you already have on App Service.
 - [Local RAG using Phi-3 ONNX Runtime](https://azure.github.io/AppService/2024/09/03/Phi3-vector.html)
 - [Running SLMs as Sidecar extensions](https://azure.github.io/AppService/2025/03/19/phi-sidecar-extension.html)
 - [BitNet on Azure App Service](https://azure.github.io/AppService/2025/04/23/Bitnet-on-Azure-App-Service.html)
+- [Deploying LangChain application on Azure App Service](https://azure.github.io/AppService/2025/08/06/langchain-on-app-service.html)
