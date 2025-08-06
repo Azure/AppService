@@ -211,4 +211,4 @@ Ready to build your own AI chat app? Clone the repo and run `azd up` to get star
 
 ---
 
-*For more Azure App Service AI samples and best practices, check out the [Azure App Service AI integration documentation](https://learn.microsoft.com/en-us/azure/app-service/overview-ai-integration).*
+*For more Azure App Service AI samples and best practices, check out the [Azure App Service AI integration documentation](https://learn.microsoft.com/azure/app-service/overview-ai-integration).*
