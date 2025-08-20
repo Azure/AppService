@@ -14,6 +14,7 @@ We’re excited to announce that Azure App Service now supports **Bring Your Own
 BYOL allows customers with existing **Red Hat subscriptions** to apply those licenses directly to their JBoss EAP deployments on Azure App Service. This model complements the existing **Pay-As-You-Go (PAYG)** option, giving customers more control over licensing costs and compliance.
 
 With BYOL, customers:
+
 - Avoid paying the built-in license fee in PAYG plans.
 - Leverage their Red Hat Cloud Access entitlements.
 - Maintain consistency with on-prem licensing strategies.
