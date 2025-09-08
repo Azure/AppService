@@ -51,7 +51,7 @@ Open **Advanced Tools (Kudu)** ➜ **Bash** and check:
 ```bash
 ls -l /etc/ssl/certs
 # (optional) find the installed cert by name or subject
-grep -l "<certificate-name>" /etc/ssl/certs/*.crt 2>/dev/null || true
+grep -l "<certificate-name>" /etc/ssl/certs/*.crt 
 
 # compare thumbprint
 openssl x509 -in /etc/ssl/certs/<your-cert>.crt -noout -fingerprint -sha1
