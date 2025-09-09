@@ -1,5 +1,5 @@
 ---
-title: "App Service builds behind proxies: fixing trust with a public certificate on Azure App Service for Linux"
+title: "App Service builds behind proxies: fixing trust with a public certificate"
 author_name: "Tulika Chaudharie"
 toc: true
 toc_sticky: true
