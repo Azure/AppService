@@ -1,22 +1,22 @@
 ---
-title: "Oryx builds behind proxies: fixing trust with a public certificate on Azure App Service for Linux"
+title: "App Service builds behind proxies: fixing trust with a public certificate on Azure App Service for Linux"
 author_name: "Tulika Chaudharie"
 toc: true
 toc_sticky: true
 ---
 
-**TL;DR**: If your organization uses a TLS-inspecting proxy (e.g., Zscaler), Oryx build requests from Kudu to the Oryx CDN may be re-signed by the proxy. Kudu doesn’t trust that proxy cert by default, so the build fails.
-Set the app setting **`WEBSITE_INSTALL_PUBLIC_CERTS_IN_KUDU=true`** and upload the proxy’s public certificate (.cer). App Service will install the cert in the Kudu/Oryx trust store and your builds will succeed.
+**TL;DR**: If your organization uses a TLS-inspecting proxy (e.g., Zscaler), some of the traffic originating from App Service build infrastructure may be re-signed by the proxy. App Service doesn’t trust that proxy cert by default, so the build fails.
+Set the app setting **`WEBSITE_INSTALL_PUBLIC_CERTS_IN_KUDU=true`** and upload the proxy’s public certificate (.cer). App Service will install the certificate and your builds will succeed.
 
 ---
 
 ## Why this happens
 
-During build, Kudu/Oryx downloads build assets from the Oryx CDN over HTTPS. When a corporate proxy intercepts and re-signs TLS, Kudu sees a certificate chain it doesn’t recognize and refuses the connection, causing the build to fail.
+During build, App Service downloads build assets from the App Service build CDN over HTTPS. When a corporate proxy intercepts and re-signs TLS, App Service sees a certificate chain it doesn’t recognize and refuses the connection, causing the build to fail.
 
 ## What’s new
 
-A new app setting, **`WEBSITE_INSTALL_PUBLIC_CERTS_IN_KUDU`**, tells App Service to install any **public key certificates (.cer)** you upload into the Linux container’s trust store used by Kudu/Oryx.
+A new app setting, **`WEBSITE_INSTALL_PUBLIC_CERTS_IN_KUDU`**, tells App Service to install any **public key certificates (.cer)** you upload into its trust store used for the build.
 
 ---
 
@@ -29,7 +29,7 @@ Upload the organization’s TLS inspection CA (root or intermediate) **public** 
 
 ![Add Certificate]({{site.baseurl}}/media/2025/09/add-cert.jpg)
 
-> Tip: This is a public cert only—no private key and no password.
+> Tip: This is a public certificate only—no private key and no password.
 
 ### 2) Turn on the app setting
 
@@ -44,7 +44,7 @@ az webapp config appsettings set \
   --settings WEBSITE_INSTALL_PUBLIC_CERTS_IN_KUDU=true
 ```
 
-### 3) Verify the certificate is installed in Kudu
+### 3) Verify the certificate is installed
 
 Open **Advanced Tools (Kudu)** ➜ **Bash** and check:
 
@@ -62,7 +62,7 @@ Compare the fingerprint with the thumbprint shown for your uploaded cert in the 
 ### 4) Trigger a build
 
 Deploy again (Deployment Center, GitHub Actions, az webapp deployment, etc.).
-When the proxy presents its certificate, Kudu now trusts it and the Oryx build completes.
+When the proxy presents its certificate, App Service now trusts it and the application build completes.
 
 ---
 
@@ -75,10 +75,10 @@ When the proxy presents its certificate, Kudu now trusts it and the Oryx build c
   If your environment uses a chain, upload all relevant public CA certs.
 
 * **Scope**
-  This affects Oryx/Kudu outbound trust for the app. It does not grant trust to private keys or change TLS for your site’s inbound traffic.
+  This affects App Service build infrastructure outbound trust for the app. It does not grant trust to private keys or change TLS for your site’s inbound traffic.
 
 ---
 
 ## Summary
 
-By uploading your organization’s proxy CA **public** certificate and enabling **`WEBSITE_INSTALL_PUBLIC_CERTS_IN_KUDU`**, App Service for Linux installs the cert into Kudu’s trust store. Oryx can then fetch dependencies through Zscaler (or similar proxies) and your builds proceed normally—no more failed builds due to untrusted certificates.
+By uploading your organization’s proxy CA **public** certificate and enabling **`WEBSITE_INSTALL_PUBLIC_CERTS_IN_KUDU`**, App Service for Linux installs the certificate into its trust store. App Service can then fetch dependencies through Zscaler (or similar proxies) and your builds proceed normally—no more failed builds due to untrusted certificates.
