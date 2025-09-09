@@ -12,7 +12,7 @@ Set the app setting **`WEBSITE_INSTALL_PUBLIC_CERTS_IN_KUDU=true`** and upload t
 
 ## Why this happens
 
-During build, App Service downloads build assets from the App Service build CDN over HTTPS. When a corporate proxy intercepts and re-signs TLS, App Service sees a certificate chain it doesn’t recognize and refuses the connection, causing the build to fail.
+During build, App Service downloads build assets from the its build CDN over HTTPS. When a corporate proxy intercepts and re-signs TLS, App Service sees a certificate chain it doesn’t recognize and refuses the connection, causing the build to fail.
 
 ## What’s new
 
@@ -75,7 +75,7 @@ When the proxy presents its certificate, App Service now trusts it and the appli
   If your environment uses a chain, upload all relevant public CA certs.
 
 * **Scope**
-  This affects App Service build infrastructure outbound trust for the app. It does not grant trust to private keys or change TLS for your site’s inbound traffic.
+  This affects App Service build infrastructure's outbound trust for the app. It does not grant trust to private keys or change TLS for your site’s inbound traffic.
 
 ---
 
