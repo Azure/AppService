@@ -1,11 +1,11 @@
 ---
-title: "Ubuntu-Powered Runtimes on Azure App Service for Linux: Smaller, Faster, Stronger"
+title: "Ubuntu-Powered Runtimes on Azure App Service for Linux: Leaner, Faster, Stronger"
 author_name: "Tulika Chaudharie"
 toc: true
 toc_sticky: true
 ---
 
-We’re updating the OS foundation for **new code-based stacks** on Azure App Service for Linux. Every new major version of our supported stacks will target Ubuntu going forward, this includes the new versions for **.NET 10, Python 3.14, Node 24, PHP 8.5** and **Java 25** all expected to rollout in the next couple months. Existing stacks remain on Debian and **nothing changes for your current apps** unless you choose to move.
+We’re updating the OS foundation for **new code-based stacks** on Azure App Service for Linux. Every new major version of our supported stacks will target Ubuntu going forward - this includes the new versions for **.NET 10, Python 3.14, Node 24, PHP 8.5** and **Java 25** - all expected to rollout in the next couple of months. Existing stacks remain on Debian and **nothing changes for your current apps** unless you choose to move.
 
 ## Why Ubuntu?
 
