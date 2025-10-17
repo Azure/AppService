@@ -12,4 +12,5 @@ We are currently deploying a patch to our Front End infrastructure to mitigate [
 ## What is impacted
 
 - Apps hosted on Windows instances targeting .NET 8 and .NET 9 will be delayed in receiving runtime updates through the platform. We will resume regular updates once we have resolved the blocking issue.
+- Apps hosted on Windows instances targeting .NET 10 will continue to receive updates on our regular cadence.
 - Linux instances are not impacted and will continue to receive updates on our regular cadence.
