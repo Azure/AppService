@@ -41,6 +41,17 @@ This pattern ensures:
 - ✅ **Progress tracking**—users see real-time updates (10%, 45%, 100%)
 - ✅ **Better scalability**—background workers process independently
 
+## Rapid Innovation Support
+
+The AI landscape is changing at an unprecedented pace. New models, frameworks, and capabilities are released constantly. Azure App Service's managed platform ensures your applications can adapt quickly without infrastructure rewrites:
+
+- **Framework Updates**: Deploy new Agent Framework SDK versions like any application update
+- **Model Upgrades**: Switch between GPT-4, GPT-4o, or future models with configuration changes
+- **Scaling Patterns**: Start with combined API+worker, split into separate apps as needs grow
+- **New Capabilities**: Integrate emerging AI services without changing hosting infrastructure
+
+App Service handles the platform complexity so you can focus on building great AI experiences.
+
 ## Sample Application: AI Travel Planner
 
 To demonstrate this pattern, we've built a Travel Planner application that uses Agent Framework to generate detailed, multi-day travel itineraries. The agent performs complex reasoning including:
@@ -77,19 +88,6 @@ The entire application runs on a single P0v4 App Service with both the API and b
 - Hosts persistent agents with conversation threads
 - Structured execution with Agent Framework runtime
 - GPT-4o model for intelligent travel planning
-
-## Rapid Innovation Support
-
-The AI landscape is changing at an unprecedented pace. New models, frameworks, and capabilities are released constantly. Azure App Service's managed platform ensures your applications can adapt quickly without infrastructure rewrites:
-
-- **Framework Updates**: Deploy new Agent Framework SDK versions like any application update
-- **Model Upgrades**: Switch between GPT-4, GPT-4o, or future models with configuration changes
-- **Scaling Patterns**: Start with combined API+worker, split into separate apps as needs grow
-- **New Capabilities**: Integrate emerging AI services without changing hosting infrastructure
-
-App Service handles the platform complexity so you can focus on building great AI experiences.
-
-## Visibility into Agent Framework Execution
 
 One of the powerful features of using Azure AI Foundry with Agent Framework is the ability to inspect agents and conversation threads directly in the Azure portal. This provides valuable visibility into what's happening during execution.
 
@@ -145,13 +143,6 @@ azd up
 
 Whether you're building travel planners, document processors, research assistants, or other AI-powered applications, Azure App Service gives you the flexibility and reliability you need—without the complexity of container orchestration or function programming models.
 
-## Learn More
-
-- [Microsoft Agent Framework Documentation](https://learn.microsoft.com/en-us/agent-framework/overview/agent-framework-overview)
-- [Azure App Service Documentation](https://learn.microsoft.com/azure/app-service/)
-- [Async Request-Reply Pattern](https://learn.microsoft.com/azure/architecture/patterns/async-request-reply)
-- [Sample Application GitHub Repo](https://github.com/Azure-Samples/app-service-agent-framework-travel-agent-dotnet)
-
 ## What's Next? Build on This Foundation
 
 This Travel Planner is just the starting point—a foundation to help you understand the patterns and architecture. Agent Framework is designed to grow with your needs, making it easy to add sophisticated capabilities with minimal effort:
@@ -176,3 +167,10 @@ Add retrieval-augmented generation to give your agent deep knowledge of destinat
 - Multi-language support for global users
 
 The beauty of Agent Framework is that these advanced features integrate seamlessly into the pattern we've built. Start with this sample, explore the [Agent Framework documentation](https://learn.microsoft.com/en-us/agent-framework/overview/agent-framework-overview), and unlock powerful AI capabilities for your applications!
+
+## Learn More
+
+- [Microsoft Agent Framework Documentation](https://learn.microsoft.com/en-us/agent-framework/overview/agent-framework-overview)
+- [Azure App Service Documentation](https://learn.microsoft.com/azure/app-service/)
+- [Async Request-Reply Pattern](https://learn.microsoft.com/azure/architecture/patterns/async-request-reply)
+- [Sample Application GitHub Repo](https://github.com/Azure-Samples/app-service-agent-framework-travel-agent-dotnet)
