@@ -14,7 +14,7 @@ toc_sticky: true
 
 The App Service team is working closely with the .NET team to address a set of issues that has impacted our ability to deliver updates to the .NET runtime versions provided by the platform on Windows.
 
-We have deployed a patch to our HTTP load balancer infrastructure (aka Front Ends) to mitigate [CVE-2025-55315](https://github.com/dotnet/aspnetcore/issues/64033). This patch protects **Web and Function** apps on both Windows and Linux instances from the impact of this CVE, even if the underlying .NET runtime remains on an affected version.
+We have deployed a patch to our HTTP load balancer infrastructure (aka Front Ends) to mitigate [CVE-2025-55315](https://github.com/dotnet/aspnetcore/issues/64033). This patch protects **Web apps, Function apps and Logic Apps (standard)** on both Windows and Linux instances from the impact of this CVE, even if the underlying .NET runtime remains on an affected version.
 
 ## What is the mitigation?
 
