@@ -1,0 +1,864 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en_US"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://azure.github.io/AppService/feed.xml" rel="self" type="application/atom+xml" /><link href="https://azure.github.io/AppService/" rel="alternate" type="text/html" hreflang="en_US" /><updated>2025-10-25T01:36:00+00:00</updated><id>https://azure.github.io/AppService/feed.xml</id><title type="html">Azure App Service</title><subtitle>Announcements, updates, and release notes from the Azure App Service product team.</subtitle><author><name>Azure App Service</name></author><entry><title type="html">Build Long-Running AI Agents on Azure App Service with Microsoft Agent Framework</title><link href="https://azure.github.io/AppService/2025/10/21/app-service-agent-framework.html" rel="alternate" type="text/html" title="Build Long-Running AI Agents on Azure App Service with Microsoft Agent Framework" /><published>2025-10-21T00:00:00+00:00</published><updated>2025-10-21T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2025/10/21/app-service-agent-framework</id><content type="html" xml:base="https://azure.github.io/AppService/2025/10/21/app-service-agent-framework.html"><![CDATA[<p>The AI landscape is evolving rapidly, and with the introduction of <a href="https://learn.microsoft.com/en-us/agent-framework/overview/agent-framework-overview">Microsoft Agent Framework</a>, developers now have a powerful platform for building sophisticated AI agents that go far beyond simple chat completions. These agents can execute complex, multi-step workflows with persistent state, conversation threads, and structured execution—capabilities that are essential for production AI applications.</p>
+
+<p>Today, we’re excited to share how Azure App Service provides an excellent platform for running Agent Framework workloads, especially those involving long-running operations. Let’s explore why App Service is a great choice and walk through a practical example.</p>
+
+<h2 id="the-challenge-long-running-agent-framework-flows">The Challenge: Long-Running Agent Framework Flows</h2>
+
+<p>Agent Framework enables AI agents to perform complex tasks that can take significant time to complete:</p>
+
+<ul>
+  <li><strong>Multi-turn reasoning</strong>: Iterative calls to large language models (LLMs) where each response informs the next prompt</li>
+  <li><strong>Tool integration</strong>: Function calling and external API interactions for real-time data</li>
+  <li><strong>Complex processing</strong>: Budget calculations, content optimization, multi-phase generation</li>
+  <li><strong>Persistent context</strong>: Maintaining conversation state across multiple interactions</li>
+</ul>
+
+<p>These workflows often take 30 seconds to several minutes to complete—far too long for synchronous HTTP request handling. Traditional web applications run into several constraints:</p>
+
+<ul>
+  <li>⏱️ <strong>Timeout Limitations</strong>: HTTP requests have timeout constraints (typically 30-230 seconds)</li>
+  <li>⚠️ <strong>Connection Issues</strong>: Clients may disconnect due to network interruptions or browser navigation</li>
+  <li>📈 <strong>Scalability Concerns</strong>: Long-running requests block worker threads and don’t survive app restarts</li>
+  <li>🎯 <strong>Poor User Experience</strong>: Users see endless loading spinners with no progress feedback</li>
+</ul>
+
+<h2 id="the-solution-async-pattern-with-app-service">The Solution: Async Pattern with App Service</h2>
+
+<p>Azure App Service provides a robust solution through the asynchronous request-reply pattern combined with background processing:</p>
+
+<ol>
+  <li>API immediately returns (202 Accepted) with a task ID</li>
+  <li>Background worker processes the Agent Framework workflow</li>
+  <li>Client polls for status with real-time progress updates</li>
+  <li>Durable state storage (Cosmos DB) maintains task status and results</li>
+</ol>
+
+<p>This pattern ensures:</p>
+
+<ul>
+  <li>✅ <strong>No HTTP timeouts</strong>—API responds in milliseconds</li>
+  <li>✅ <strong>Resilient to restarts</strong>—state survives deployments and scale events</li>
+  <li>✅ <strong>Progress tracking</strong>—users see real-time updates (10%, 45%, 100%)</li>
+  <li>✅ <strong>Better scalability</strong>—background workers process independently</li>
+</ul>
+
+<h2 id="rapid-innovation-support">Rapid Innovation Support</h2>
+
+<p>The AI landscape is changing at an unprecedented pace. New models, frameworks, and capabilities are released constantly. Azure App Service’s managed platform ensures your applications can adapt quickly without infrastructure rewrites:</p>
+
+<ul>
+  <li><strong>Framework Updates</strong>: Deploy new Agent Framework SDK versions like any application update</li>
+  <li><strong>Model Upgrades</strong>: Switch between GPT-4, GPT-4o, or future models with configuration changes</li>
+  <li><strong>Scaling Patterns</strong>: Start with combined API+worker, split into separate apps as needs grow</li>
+  <li><strong>New Capabilities</strong>: Integrate emerging AI services without changing hosting infrastructure</li>
+</ul>
+
+<p>App Service handles the platform complexity so you can focus on building great AI experiences.</p>
+
+<h2 id="sample-application-ai-travel-planner">Sample Application: AI Travel Planner</h2>
+
+<p>To demonstrate this pattern, we’ve built a Travel Planner application that uses Agent Framework to generate detailed, multi-day travel itineraries. The agent performs complex reasoning including:</p>
+
+<ul>
+  <li>Researching destination attractions and activities</li>
+  <li>Optimizing daily schedules based on location proximity</li>
+  <li>Calculating detailed budget breakdowns</li>
+  <li>Generating personalized travel tips and recommendations</li>
+</ul>
+
+<p>The entire application runs on a single P0v4 App Service with both the API and background worker combined—showcasing App Service’s flexibility for hosting diverse workload patterns in one deployment.</p>
+
+<h3 id="key-architecture-components">Key Architecture Components</h3>
+
+<p><strong>Azure App Service (P0v4 Premium)</strong></p>
+
+<ul>
+  <li>Hosts both REST API and background worker in a single app</li>
+  <li>“Always On” feature keeps background worker running continuously</li>
+  <li>Managed identity for secure, credential-less authentication</li>
+</ul>
+
+<p><strong>Azure Service Bus</strong></p>
+
+<ul>
+  <li>Decouples API from long-running Agent Framework processing</li>
+  <li>Reliable message delivery with automatic retries</li>
+  <li>Dead letter queue for error handling</li>
+</ul>
+
+<p><strong>Azure Cosmos DB</strong></p>
+
+<ul>
+  <li>Stores task status with real-time progress updates</li>
+  <li>Automatic 24-hour TTL for cleanup</li>
+  <li>Rich query capabilities for complex itinerary data</li>
+</ul>
+
+<p><strong>Azure AI Foundry</strong></p>
+
+<ul>
+  <li>Hosts persistent agents with conversation threads</li>
+  <li>Structured execution with Agent Framework runtime</li>
+  <li>GPT-4o model for intelligent travel planning</li>
+</ul>
+
+<p>One of the powerful features of using Azure AI Foundry with Agent Framework is the ability to inspect agents and conversation threads directly in the Azure portal. This provides valuable visibility into what’s happening during execution.</p>
+
+<h3 id="viewing-agents-and-threads-in-azure-ai-foundry">Viewing Agents and Threads in Azure AI Foundry</h3>
+
+<p>When you submit a travel plan request, the application creates an agent in Azure AI Foundry. You can navigate to your AI Foundry project in the Azure portal to see:</p>
+
+<p><strong>Agents</strong></p>
+
+<ul>
+  <li>The application creates an agent for each request</li>
+  <li><strong>Important</strong>: Agents are <strong>automatically deleted</strong> after the itinerary is generated to keep your project clean</li>
+  <li><strong>Tip</strong>: You’ll need to be quick! Navigate to Azure AI Foundry right after submitting a request to see the agent in action</li>
+  <li>Once processing completes, the agent is removed as part of the cleanup process</li>
+</ul>
+
+<p><strong>Conversation Threads</strong></p>
+
+<ul>
+  <li>Unlike agents, threads persist even after the agent completes</li>
+  <li>You can view the complete conversation history at any time</li>
+  <li>See the exact prompts sent to the model and the responses generated</li>
+  <li>Useful for debugging, understanding agent behavior, and improving prompts</li>
+</ul>
+
+<p>The ephemeral nature of agents (created per request, deleted after completion) keeps your Azure AI Foundry project clean while the persistent threads give you full traceability of every interaction.</p>
+
+<h2 id="get-started-today">Get Started Today</h2>
+
+<p>The complete Travel Planner application is available as a reference implementation so you can quickly get started building your own apps with Agent Framework on App Service.</p>
+
+<p>🔗 <strong>GitHub Repository</strong>: <a href="https://github.com/Azure-Samples/app-service-agent-framework-travel-agent-dotnet">https://github.com/Azure-Samples/app-service-agent-framework-travel-agent-dotnet</a></p>
+
+<p>The repo includes:</p>
+
+<ul>
+  <li>Complete .NET 9 source code with Agent Framework integration</li>
+  <li>Infrastructure as Code (Bicep) for automated deployment</li>
+  <li>Web UI with real-time progress tracking</li>
+  <li>Comprehensive README with deployment instructions</li>
+</ul>
+
+<p>Deploy in minutes:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/Azure-Samples/app-service-agent-framework-travel-agent-dotnet.git
+<span class="nb">cd </span>app-service-agent-framework-travel-agent-dotnet
+azd auth login
+azd up
+</code></pre></div></div>
+
+<h2 id="key-takeaways">Key Takeaways</h2>
+
+<ul>
+  <li>✅ Agent Framework enables sophisticated AI agents beyond simple chat completions</li>
+  <li>✅ Long-running workflows (30s-minutes) require async patterns to avoid timeouts</li>
+  <li>✅ App Service provides a simple, cost-effective platform for these workloads</li>
+  <li>✅ Async request-reply pattern with Service Bus + Cosmos DB ensures reliability</li>
+  <li>✅ Rapid innovation in AI is supported by App Service’s adaptable platform</li>
+</ul>
+
+<p>Whether you’re building travel planners, document processors, research assistants, or other AI-powered applications, Azure App Service gives you the flexibility and reliability you need—without the complexity of container orchestration or function programming models.</p>
+
+<h2 id="whats-next-build-on-this-foundation">What’s Next? Build on This Foundation</h2>
+
+<p>This Travel Planner is just the starting point—a foundation to help you understand the patterns and architecture. Agent Framework is designed to grow with your needs, making it easy to add sophisticated capabilities with minimal effort:</p>
+
+<p>🛠️ <strong>Add Tool Calling</strong></p>
+
+<p>Connect your agent to real-time APIs for weather, flight prices, hotel availability, and actual booking systems. Agent Framework’s built-in tool calling makes this straightforward.</p>
+
+<p>🤝 <strong>Implement Multi-Agent Systems</strong></p>
+
+<p>Create specialized agents (flight expert, hotel specialist, activity planner) that collaborate to build comprehensive travel plans. Agent Framework handles the orchestration.</p>
+
+<p>🧠 <strong>Enhance with RAG</strong></p>
+
+<p>Add retrieval-augmented generation to give your agent deep knowledge of destinations, local customs, and insider tips from your own content library.</p>
+
+<p>📊 <strong>Expand Functionality</strong></p>
+
+<ul>
+  <li>Real-time pricing and availability</li>
+  <li>Interactive refinement based on user feedback</li>
+  <li>Personalized recommendations from past trips</li>
+  <li>Multi-language support for global users</li>
+</ul>
+
+<p>The beauty of Agent Framework is that these advanced features integrate seamlessly into the pattern we’ve built. Start with this sample, explore the <a href="https://learn.microsoft.com/en-us/agent-framework/overview/agent-framework-overview">Agent Framework documentation</a>, and unlock powerful AI capabilities for your applications!</p>
+
+<h2 id="learn-more">Learn More</h2>
+
+<ul>
+  <li><a href="https://learn.microsoft.com/en-us/agent-framework/overview/agent-framework-overview">Microsoft Agent Framework Documentation</a></li>
+  <li><a href="https://learn.microsoft.com/azure/app-service/">Azure App Service Documentation</a></li>
+  <li><a href="https://learn.microsoft.com/azure/architecture/patterns/async-request-reply">Async Request-Reply Pattern</a></li>
+  <li><a href="https://github.com/Azure-Samples/app-service-agent-framework-travel-agent-dotnet">Sample Application GitHub Repo</a></li>
+</ul>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[The AI landscape is evolving rapidly, and with the introduction of Microsoft Agent Framework, developers now have a powerful platform for building sophisticated AI agents that go far beyond simple chat completions. These agents can execute complex, multi-step workflows with persistent state, conversation threads, and structured execution—capabilities that are essential for production AI applications.]]></summary></entry><entry><title type="html">Platform updates for .NET on App Service Windows</title><link href="https://azure.github.io/AppService/2025/10/20/dotnet-on-windows.html" rel="alternate" type="text/html" title="Platform updates for .NET on App Service Windows" /><published>2025-10-20T00:00:00+00:00</published><updated>2025-10-20T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2025/10/20/dotnet-on-windows</id><content type="html" xml:base="https://azure.github.io/AppService/2025/10/20/dotnet-on-windows.html"><![CDATA[<blockquote>
+  <p><strong>UPDATE:</strong></p>
+
+  <ul>
+    <li><strong>Patch deployment has completed on all instances of our HTTP load balancer infrastructure (aka Front Ends)</strong>.</li>
+    <li>Clarified impact to Function Apps.</li>
+    <li>Clarified mechanism for mitigation.</li>
+  </ul>
+
+</blockquote>
+
+<p>The App Service team is working closely with the .NET team to address a set of issues that has impacted our ability to deliver updates to the .NET runtime versions provided by the platform on Windows.</p>
+
+<p>We have deployed a patch to our HTTP load balancer infrastructure (aka Front Ends) to mitigate <a href="https://github.com/dotnet/aspnetcore/issues/64033">CVE-2025-55315</a>. This patch protects <strong>Web apps, Function apps and Logic apps (standard)</strong> on both Windows and Linux instances from the impact of this CVE, even if the underlying .NET runtime remains on an affected version.</p>
+
+<h2 id="what-is-the-mitigation">What is the mitigation?</h2>
+
+<p>App Service Front Ends are built using <a href="https://devblogs.microsoft.com/dotnet/bringing-kestrel-and-yarp-to-azure-app-services/">Kestrel and YARP</a>. The patch we rolled out moves the infrastructure to the <a href="https://github.com/dotnet/core/blob/main/release-notes/8.0/8.0.21/8.0.21.md">latest available version</a> of the framework. Since every HTTP request must first be routed through this layer of the service, any malicious content is effectively filtered out and will not reach the individual instances where customers’ apps are hosted.</p>
+
+<h2 id="when-will-my-app-be-updated">When will my app be updated?</h2>
+
+<ul>
+  <li><strong>Apps hosted on Windows instances targeting .NET 8 and .NET 9</strong> will be delayed in receiving runtime updates through the platform. We will resume regular updates once we have resolved the blocking issue.</li>
+  <li><strong>Apps hosted on Windows instances targeting .NET 10</strong> will continue to receive updates on our regular cadence.</li>
+  <li><strong>Linux instances</strong> are not impacted and will continue to receive updates on our regular cadence.</li>
+</ul>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[UPDATE: Patch deployment has completed on all instances of our HTTP load balancer infrastructure (aka Front Ends). Clarified impact to Function Apps. Clarified mechanism for mitigation.]]></summary></entry><entry><title type="html">Ubuntu-Powered Runtimes on Azure App Service for Linux: Leaner, Faster, Stronger</title><link href="https://azure.github.io/AppService/2025/10/14/Ubuntu-images.html" rel="alternate" type="text/html" title="Ubuntu-Powered Runtimes on Azure App Service for Linux: Leaner, Faster, Stronger" /><published>2025-10-14T00:00:00+00:00</published><updated>2025-10-14T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2025/10/14/Ubuntu-images</id><content type="html" xml:base="https://azure.github.io/AppService/2025/10/14/Ubuntu-images.html"><![CDATA[<p>We’re updating the OS foundation for <strong>new code-based stacks</strong> on Azure App Service for Linux. Every new major version of our supported stacks will target Ubuntu going forward - this includes the new versions for <strong>.NET 10, Python 3.14, Node 24, PHP 8.5</strong> and <strong>Java 25</strong> - all expected to rollout in the next couple of months. Existing stacks remain on Debian and <strong>nothing changes for your current apps</strong> unless you choose to move.</p>
+
+<h2 id="why-ubuntu">Why Ubuntu?</h2>
+
+<p>Because we manage the OS for you, this change is about platform gains that quietly benefit your apps without adding work for your teams.</p>
+
+<ul>
+  <li><strong>Builds on Debian’s ecosystem:</strong> Ubuntu inherits Debian’s rich package universe while moving faster upstream. This lets the platform adopt newer toolchains and libraries more predictably, improving compatibility and unblocking modern dependencies.</li>
+  <li><strong>LTS stability with long runway:</strong> Ubuntu LTS follows a 5 year support lifecycle giving us a stable, well-maintained base to operate at scale.</li>
+</ul>
+
+<h2 id="whats-changing-and-what-isnt">What’s changing (and what isn’t)</h2>
+
+<ul>
+  <li><strong>Changing:</strong> New <strong>.NET 10, Python 3.14, Node 24, PHP 8.5</strong> and <strong>Java 25</strong> code-based stacks will run on <strong>Ubuntu</strong> images.</li>
+  <li><strong>Not changing:</strong> Your <strong>existing apps stay on Debian</strong>. No forced migrations.</li>
+  <li><strong>Operational parity:</strong> Deployment flows (Oryx, GitHub Actions, Azure CLI), scaling, diagnostics, and networking continue to work as before.</li>
+</ul>
+
+<h2 id="what-this-means-for-you">What this means for you</h2>
+
+<ul>
+  <li><strong>No action required</strong> for existing apps.</li>
+  <li>When creating a <strong>new</strong> app or upgrading to <strong>.NET 10, Python 3.14, Node 24, PHP 8.5</strong> and <strong>Java 25</strong>, you’ll get the Ubuntu-based stack by default.</li>
+  <li>When upgrading, verify any native packages your app installs at build/start, since Ubuntu often provides equal or newer versions and names may differ.</li>
+</ul>
+
+<h2 id="quick-faq">Quick FAQ</h2>
+
+<p><strong>Do I need to move now?</strong>
+No. Existing apps stay on Debian. Migrate only if you want the newer runtimes and platform improvements.</p>
+
+<p><strong>Will my build behavior change?</strong>
+Expected to be neutral-to-positive. Leaner images and fresher toolchains can reduce build and cold-start times.</p>
+
+<p><strong>Any breaking differences?</strong>
+None anticipated for supported frameworks. If you pin specific distro package versions, confirm availability on Ubuntu during upgrade.</p>
+
+<hr />
+
+<p>By standardizing new stacks on <strong>Ubuntu LTS</strong>, we preserve Debian’s strengths while unlocking a faster cadence, long-term security coverage, and leaner images that translate to better reliability and performance—delivered transparently by the platform.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[We’re updating the OS foundation for new code-based stacks on Azure App Service for Linux. Every new major version of our supported stacks will target Ubuntu going forward - this includes the new versions for .NET 10, Python 3.14, Node 24, PHP 8.5 and Java 25 - all expected to rollout in the next couple of months. Existing stacks remain on Debian and nothing changes for your current apps unless you choose to move.]]></summary></entry><entry><title type="html">GitHub Actions samples: add sidecars to Azure App Service for Linux</title><link href="https://azure.github.io/AppService/2025/09/08/GHA-templates-sidecars.html" rel="alternate" type="text/html" title="GitHub Actions samples: add sidecars to Azure App Service for Linux" /><published>2025-09-08T00:00:00+00:00</published><updated>2025-09-08T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2025/09/08/GHA-templates-sidecars</id><content type="html" xml:base="https://azure.github.io/AppService/2025/09/08/GHA-templates-sidecars.html"><![CDATA[<p>Sidecars on Azure App Service let you bolt on capabilities like monitoring, caching, or AI—without changing your main app. The Azure team has added two <strong>GitHub Actions</strong> sample workflows that make it easy to roll this out on <strong>App Service for Linux</strong>. (<a href="https://learn.microsoft.com/azure/app-service/overview-sidecar">Sidecars on Azure App Service</a>)</p>
+
+<h2 id="whats-in-the-repo">What’s in the repo</h2>
+
+<ul>
+  <li><strong>For code-based apps</strong> (bring-your-own-code):
+<a href="https://github.com/Azure/actions-workflow-samples/blob/master/AppService/blessed-sitecontainers-webapp-on-azure.yml"><code class="language-plaintext highlighter-rouge">blessed-sitecontainers-webapp-on-azure.yml</code></a> — attaches one or more  sidecar containers to a code-based web app. Use this when your main app runs on a built-in Linux stack (Python/Node/.NET/Java/PHP, etc.).</li>
+  <li><strong>For container-based apps</strong> (Web App for Containers):
+<a href="https://github.com/Azure/actions-workflow-samples/blob/master/AppService/sitecontainers-webapp-on-azure.yml"><code class="language-plaintext highlighter-rouge">sitecontainers-webapp-on-azure.yml</code></a> — deploys your primary container <strong>plus</strong> sidecars in the same app. Use this when your main app is already packaged as a container image.</li>
+</ul>
+
+<blockquote>
+  <p>Both samples target <strong>App Service for Linux</strong> and use the App Service sidecar model.</p>
+</blockquote>
+
+<h2 id="how-the-workflows-work-at-a-glance">How the workflows work (at a glance)</h2>
+
+<ol>
+  <li><strong>Authenticate to Azure</strong> using <code class="language-plaintext highlighter-rouge">azure/login</code> (OpenID Connect recommended), so you don’t store long-lived secrets. (<a href="https://learn.microsoft.com/azure/app-service/deploy-github-actions" title="Deploy to Azure App Service by using GitHub Actions">Microsoft Learn</a>)</li>
+  <li><strong>Build (if needed)</strong> and <strong>deploy</strong> your app with App Service actions/CLI steps. For containerized flows, you’ll typically push/pull from ACR or another registry. (<a href="https://learn.microsoft.com/azure/app-service/deploy-container-github-action" title="Custom Container CI/CD from GitHub Actions - Azure App ...">Microsoft Learn</a>)</li>
+  <li><strong>Attach sidecars</strong> by applying the App Service <em>sitecontainers</em> configuration alongside your main app/container. (Sidecars scale and lifecycle with your app.) (<a href="https://learn.microsoft.com/azure/app-service/overview-sidecar" title="Sidecars overview - Azure App Service">Microsoft Learn</a>)</li>
+</ol>
+
+<h2 id="quick-start">Quick start</h2>
+
+<ol>
+  <li><strong>Copy</strong> the relevant YAML into <code class="language-plaintext highlighter-rouge">.github/workflows/</code> in your repo. (<a href="https://github.com/Azure/actions-workflow-samples/blob/master/AppService/blessed-sitecontainers-webapp-on-azure.yml" title="actions-workflow-samples/AppService/blessed-sitecontainers-webapp-on-azure.yml at master · Azure/actions-workflow-samples · GitHub">GitHub</a>)</li>
+  <li><strong>Set auth</strong>: use OIDC with <code class="language-plaintext highlighter-rouge">azure/login</code> (or a service principal/publish profile if you must). (<a href="https://learn.microsoft.com/azure/app-service/deploy-github-actions" title="Deploy to Azure App Service by using GitHub Actions">Microsoft Learn</a>)</li>
+  <li><strong>Fill in inputs</strong>: app name, resource group, and sidecar details (image or extension parameters, env vars/ports).</li>
+  <li><strong>Commit &amp; run</strong>: trigger on <code class="language-plaintext highlighter-rouge">push</code> or via <strong>Run workflow</strong>.</li>
+  <li><strong>Verify</strong>: in the Portal, you’ll see your main app plus the sidecar(s); you can also follow the Linux sidecar tutorial if you’re new to the concept. (<a href="https://learn.microsoft.com/azure/app-service/tutorial-sidecar" title="Tutorial: Configure a sidecar container - Azure App Service">Microsoft Learn</a>)</li>
+</ol>
+
+<h2 id="when-to-use-which-sample">When to use which sample?</h2>
+
+<ul>
+  <li>Choose <strong><code class="language-plaintext highlighter-rouge">blessed-sitecontainers-…</code></strong> if your app runs on a built-in Linux runtime and you want to <em>add</em> sidecars (e.g., telemetry collectors, caches, or AI helpers). (<a href="https://github.com/Azure/actions-workflow-samples/blob/master/AppService/blessed-sitecontainers-webapp-on-azure.yml" title="actions-workflow-samples/AppService/blessed-sitecontainers-webapp-on-azure.yml at master · Azure/actions-workflow-samples · GitHub">GitHub</a>, <a href="https://learn.microsoft.com/azure/app-service/overview-sidecar" title="Sidecars overview - Azure App Service">Microsoft Learn</a>)</li>
+  <li>Choose <strong><code class="language-plaintext highlighter-rouge">sitecontainers-…</code></strong> if your main app is a <strong>custom container</strong> and you want sidecars next to it (same plan, shared lifecycle). (<a href="https://github.com/Azure/actions-workflow-samples/blob/master/AppService/sitecontainers-webapp-on-azure.yml" title="actions-workflow-samples/AppService/sitecontainers-webapp-on-azure.yml at master · Azure/actions-workflow-samples · GitHub">GitHub</a>, <a href="https://learn.microsoft.com/azure/app-service/tutorial-custom-container-sidecar" title="Tutorial: Configure a sidecar for a custom container app">Microsoft Learn</a>)</li>
+</ul>
+
+<h2 id="customize-to-fit">Customize to fit</h2>
+
+<p>These samples are designed to be adapted: tweak triggers, add build/test jobs, point at your container registry, configure environment variables/secrets, or target deployment slots. The underlying docs on App Service + GitHub Actions and custom containers cover advanced options. (<a href="https://learn.microsoft.com/azure/app-service/deploy-github-actions" title="Deploy to Azure App Service by using GitHub Actions">Microsoft Learn</a>)</p>
+
+<h2 id="learn-more">Learn more</h2>
+
+<ul>
+  <li><strong>Sidecars overview (why &amp; how):</strong> benefits, patterns, and limits. (<a href="https://learn.microsoft.com/azure/app-service/overview-sidecar" title="Sidecars overview - Azure App Service">Microsoft Learn</a>)</li>
+  <li><strong>Tutorials:</strong> add a sidecar to a Linux app (code-based) or to a custom-container app. (<a href="https://learn.microsoft.com/azure/app-service/tutorial-sidecar" title="Tutorial: Configure a sidecar container - Azure App Service">Microsoft Learn</a>)</li>
+</ul>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[Sidecars on Azure App Service let you bolt on capabilities like monitoring, caching, or AI—without changing your main app. The Azure team has added two GitHub Actions sample workflows that make it easy to roll this out on App Service for Linux. (Sidecars on Azure App Service)]]></summary></entry><entry><title type="html">App Service builds behind proxies: fixing trust with a public certificate</title><link href="https://azure.github.io/AppService/2025/09/08/Oryx-build-certificate.html" rel="alternate" type="text/html" title="App Service builds behind proxies: fixing trust with a public certificate" /><published>2025-09-08T00:00:00+00:00</published><updated>2025-09-08T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2025/09/08/Oryx-build-certificate</id><content type="html" xml:base="https://azure.github.io/AppService/2025/09/08/Oryx-build-certificate.html"><![CDATA[<p><strong>TL;DR</strong>: If your organization uses a TLS-inspecting proxy (e.g., Zscaler), some of the traffic originating from App Service build infrastructure may be re-signed by the proxy. App Service doesn’t trust that proxy cert by default, so the build fails.
+Set the app setting <strong><code class="language-plaintext highlighter-rouge">WEBSITE_INSTALL_PUBLIC_CERTS_IN_KUDU=true</code></strong> and upload the proxy’s public certificate (.cer). App Service will install the certificate and your builds will succeed.</p>
+
+<hr />
+
+<h2 id="why-this-happens">Why this happens</h2>
+
+<p>During build, App Service downloads build assets from the its build CDN over HTTPS. When a corporate proxy intercepts and re-signs TLS, App Service sees a certificate chain it doesn’t recognize and refuses the connection, causing the build to fail.</p>
+
+<h2 id="whats-new">What’s new</h2>
+
+<p>A new app setting, <strong><code class="language-plaintext highlighter-rouge">WEBSITE_INSTALL_PUBLIC_CERTS_IN_KUDU</code></strong>, tells App Service to install any <strong>public key certificates (.cer)</strong> you upload into its trust store used for the build.</p>
+
+<hr />
+
+<h2 id="step-by-step">Step-by-step</h2>
+
+<h3 id="1-upload-the-proxys-public-certificate">1) Upload the proxy’s public certificate</h3>
+
+<p>In the portal, navigate to your Web App ➜ <strong>Certificates</strong> ➜ <strong>Public key certificates (.cer)</strong> ➜ <strong>Add certificate</strong>.
+Upload the organization’s TLS inspection CA (root or intermediate) <strong>public</strong> certificate.</p>
+
+<p><img src="/AppService/media/2025/09/add-cert.jpg" alt="Add Certificate" /></p>
+
+<blockquote>
+  <p>Tip: This is a public certificate only—no private key and no password.</p>
+</blockquote>
+
+<h3 id="2-turn-on-the-app-setting">2) Turn on the app setting</h3>
+
+<p>Portal: <strong>Configuration</strong> ➜ <strong>Application settings</strong> ➜ add (Or <strong>Settings</strong> ➜ <strong>Environment Variables</strong> ➜ <strong>App Settings</strong> ➜ Add)
+<code class="language-plaintext highlighter-rouge">WEBSITE_INSTALL_PUBLIC_CERTS_IN_KUDU = true</code> ➜ <strong>Save</strong>. This will automatically restart the app.</p>
+
+<p>CLI (equivalent):</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp config appsettings <span class="nb">set</span> <span class="se">\</span>
+  <span class="nt">-g</span> &lt;resource-group&gt; <span class="nt">-n</span> &lt;app-name&gt; <span class="se">\</span>
+  <span class="nt">--settings</span> <span class="nv">WEBSITE_INSTALL_PUBLIC_CERTS_IN_KUDU</span><span class="o">=</span><span class="nb">true</span>
+</code></pre></div></div>
+
+<h3 id="3-verify-the-certificate-is-installed">3) Verify the certificate is installed</h3>
+
+<p>Open <strong>Advanced Tools (Kudu)</strong> ➜ <strong>Bash</strong> and check:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">ls</span> <span class="nt">-l</span> /etc/ssl/certs
+<span class="c"># (optional) find the installed cert by name or subject</span>
+<span class="nb">grep</span> <span class="nt">-l</span> <span class="s2">"&lt;certificate-name&gt;"</span> /etc/ssl/certs/<span class="k">*</span>.crt 
+
+<span class="c"># compare thumbprint</span>
+openssl x509 <span class="nt">-in</span> /etc/ssl/certs/&lt;your-cert&gt;.crt <span class="nt">-noout</span> <span class="nt">-fingerprint</span> <span class="nt">-sha1</span>
+</code></pre></div></div>
+
+<p>Compare the fingerprint with the thumbprint shown for your uploaded cert in the <strong>Certificates</strong> blade.</p>
+
+<h3 id="4-trigger-a-build">4) Trigger a build</h3>
+
+<p>Deploy again (Deployment Center, GitHub Actions, az webapp deployment, etc.).
+When the proxy presents its certificate, App Service now trusts it and the application build completes.</p>
+
+<hr />
+
+<h2 id="troubleshooting">Troubleshooting</h2>
+
+<ul>
+  <li>
+    <p><strong>Still seeing x509/certificate unknown errors?</strong>
+Ensure you uploaded the exact CA that signs your proxy’s certs (often an org-specific intermediate), in <strong>.cer</strong> (DER/BASE64) form.</p>
+  </li>
+  <li>
+    <p><strong>Multiple proxies / chains</strong>
+If your environment uses a chain, upload all relevant public CA certs.</p>
+  </li>
+  <li>
+    <p><strong>Scope</strong>
+This affects App Service build infrastructure’s outbound trust for the app. It does not grant trust to private keys or change TLS for your site’s inbound traffic.</p>
+  </li>
+</ul>
+
+<hr />
+
+<h2 id="summary">Summary</h2>
+
+<p>By uploading your organization’s proxy CA <strong>public</strong> certificate and enabling <strong><code class="language-plaintext highlighter-rouge">WEBSITE_INSTALL_PUBLIC_CERTS_IN_KUDU</code></strong>, App Service for Linux installs the certificate into its trust store. App Service can then fetch dependencies through Zscaler (or similar proxies) and your builds proceed normally—no more failed builds due to untrusted certificates.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[TL;DR: If your organization uses a TLS-inspecting proxy (e.g., Zscaler), some of the traffic originating from App Service build infrastructure may be re-signed by the proxy. App Service doesn’t trust that proxy cert by default, so the build fails. Set the app setting WEBSITE_INSTALL_PUBLIC_CERTS_IN_KUDU=true and upload the proxy’s public certificate (.cer). App Service will install the certificate and your builds will succeed.]]></summary></entry><entry><title type="html">🧑🏻‍💻 .NET 10 Preview Now Available on Azure App Service!</title><link href="https://azure.github.io/AppService/2025/08/26/dotnet-10-preview-on-App-Service.html" rel="alternate" type="text/html" title="🧑🏻‍💻 .NET 10 Preview Now Available on Azure App Service!" /><published>2025-08-26T00:00:00+00:00</published><updated>2025-08-26T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2025/08/26/dotnet-10-preview-on-App-Service</id><content type="html" xml:base="https://azure.github.io/AppService/2025/08/26/dotnet-10-preview-on-App-Service.html"><![CDATA[<p>We’re thrilled to announce that <strong>.NET 10 Preview</strong> is now available on <strong>Azure App Service</strong> for both <strong>Windows and Linux</strong>! Whether you’re building modern web apps with <strong>ASP.NET</strong>, experimenting with <strong>Blazor</strong>, or exploring the simplicity of <strong>Minimal APIs</strong>, you can now take advantage of the latest .NET 10 features directly in App Service.</p>
+
+<p>Like with previous preview versions, any app targeting the .NET 10 preview will be automatically updated to the latest .NET 10 Preview releases as they become available on the platform all the way up to RC and GA.</p>
+
+<h2 id="-why-you-should-try-it-now">📣 Why You Should Try It Now</h2>
+
+<ul>
+  <li>Ensure your apps are ready for the next <strong>LTS release</strong></li>
+  <li>Be among the first to explore <strong>C# 14</strong> features</li>
+  <li>Test your apps against the <strong>latest runtime optimizations</strong></li>
+</ul>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[We’re thrilled to announce that .NET 10 Preview is now available on Azure App Service for both Windows and Linux! Whether you’re building modern web apps with ASP.NET, experimenting with Blazor, or exploring the simplicity of Minimal APIs, you can now take advantage of the latest .NET 10 features directly in App Service.]]></summary></entry><entry><title type="html">🚀 Bring Your Own License (BYOL) Support for JBoss EAP on Azure App Service</title><link href="https://azure.github.io/AppService/2025/08/25/BYOL-Support-for-JBoss.html" rel="alternate" type="text/html" title="🚀 Bring Your Own License (BYOL) Support for JBoss EAP on Azure App Service" /><published>2025-08-25T00:00:00+00:00</published><updated>2025-08-25T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2025/08/25/BYOL-Support-for-JBoss</id><content type="html" xml:base="https://azure.github.io/AppService/2025/08/25/BYOL-Support-for-JBoss.html"><![CDATA[<p>We’re excited to announce that Azure App Service now supports <strong>Bring Your Own License (BYOL)</strong> for <strong>JBoss Enterprise Application Platform (EAP)</strong>, enabling enterprise customers to deploy Java workloads with greater flexibility and cost efficiency.</p>
+
+<p>If you’ve evaluated Azure App Service in the past, now is the perfect time to take another look. With BYOL support, you can leverage your existing Red Hat subscriptions to optimize costs and align with your enterprise licensing strategy.</p>
+
+<h2 id="-what-is-byol-for-jboss-eap">🧩 What Is BYOL for JBoss EAP?</h2>
+
+<p>BYOL allows customers with existing <strong>Red Hat subscriptions</strong> to apply those licenses directly to their JBoss EAP deployments on Azure App Service. This model complements the existing <strong>Pay-As-You-Go (PAYG)</strong> option, giving customers more control over licensing costs and compliance.</p>
+
+<p>With BYOL, customers:</p>
+
+<ul>
+  <li>Avoid paying the built-in license fee in PAYG plans.</li>
+  <li>Leverage their Red Hat Cloud Access entitlements.</li>
+  <li>Maintain consistency with on-prem licensing strategies.</li>
+</ul>
+
+<p>This capability is part of a broader effort to make Azure the best cloud for enterprise Java workloads.</p>
+
+<h2 id="-why-byol-matters">💡 Why BYOL Matters</h2>
+
+<p>JBoss EAP powers mission-critical applications across industries. Until now, customers migrating to Azure App Service had to rely on PAYG licensing, which could be cost-prohibitive for large-scale deployments. BYOL changes that by:</p>
+
+<ul>
+  <li>Reducing total cost of ownership.</li>
+  <li>Supporting license portability via Red Hat Cloud Access.</li>
+  <li>Aligning cloud deployments with existing enterprise agreements.</li>
+</ul>
+
+<p>This feature was developed jointly by Microsoft and Red Hat and is supported across multiple hosting options including Azure VMs, Azure Red Hat OpenShift, and now App Service.</p>
+
+<h2 id="-resources-and-documentation">📚 Resources and Documentation</h2>
+
+<ul>
+  <li><a href="https://learn.microsoft.com/en-us/azure/developer/java/ee/jboss-on-azure">JBoss EAP on Azure Overview</a></li>
+  <li><a href="https://www.redhat.com/en/technologies/cloud-computing/cloud-access">Red Hat Cloud Access Program</a></li>
+  <li><a href="https://learn.microsoft.com/en-us/azure/app-service/quickstart-java?pivots=java-jboss">Quickstart: Create a Java app on Azure App Service</a></li>
+</ul>
+
+<h2 id="️-final-thoughts">✍️ Final Thoughts</h2>
+
+<p>BYOL support for JBoss EAP on Azure App Service is a game-changer for enterprise Java customers. It empowers organizations to modernize their applications on Azure while preserving existing licensing investments. Whether you’re migrating from on-prem or scaling new workloads, BYOL offers the flexibility and savings you need.</p>
+
+<p>If you’re ready to get started, check out the <a href="https://learn.microsoft.com/en-us/azure/app-service/tutorial-java-jboss-mysql-app">deployment guide</a> or reach out to your Microsoft or Red Hat account team for assistance.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[We’re excited to announce that Azure App Service now supports Bring Your Own License (BYOL) for JBoss Enterprise Application Platform (EAP), enabling enterprise customers to deploy Java workloads with greater flexibility and cost efficiency. If you’ve evaluated Azure App Service in the past, now is the perfect time to take another look. With BYOL support, you can leverage your existing Red Hat subscriptions to optimize costs and align with your enterprise licensing strategy. 🧩 What Is BYOL for JBoss EAP? BYOL allows customers with existing Red Hat subscriptions to apply those licenses directly to their JBoss EAP deployments on Azure App Service. This model complements the existing Pay-As-You-Go (PAYG) option, giving customers more control over licensing costs and compliance. With BYOL, customers: Avoid paying the built-in license fee in PAYG plans. Leverage their Red Hat Cloud Access entitlements. Maintain consistency with on-prem licensing strategies. This capability is part of a broader effort to make Azure the best cloud for enterprise Java workloads. 💡 Why BYOL Matters JBoss EAP powers mission-critical applications across industries. Until now, customers migrating to Azure App Service had to rely on PAYG licensing, which could be cost-prohibitive for large-scale deployments. BYOL changes that by: Reducing total cost of ownership. Supporting license portability via Red Hat Cloud Access. Aligning cloud deployments with existing enterprise agreements. This feature was developed jointly by Microsoft and Red Hat and is supported across multiple hosting options including Azure VMs, Azure Red Hat OpenShift, and now App Service. 📚 Resources and Documentation JBoss EAP on Azure Overview Red Hat Cloud Access Program Quickstart: Create a Java app on Azure App Service ✍️ Final Thoughts BYOL support for JBoss EAP on Azure App Service is a game-changer for enterprise Java customers. It empowers organizations to modernize their applications on Azure while preserving existing licensing investments. Whether you’re migrating from on-prem or scaling new workloads, BYOL offers the flexibility and savings you need. If you’re ready to get started, check out the deployment guide or reach out to your Microsoft or Red Hat account team for assistance.]]></summary></entry><entry><title type="html">Deploy LangChain applications to Azure App Service</title><link href="https://azure.github.io/AppService/2025/08/06/langchain-on-app-service.html" rel="alternate" type="text/html" title="Deploy LangChain applications to Azure App Service" /><published>2025-08-06T00:00:00+00:00</published><updated>2025-08-06T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2025/08/06/langchain-on-app-service</id><content type="html" xml:base="https://azure.github.io/AppService/2025/08/06/langchain-on-app-service.html"><![CDATA[<p><a href="https://python.langchain.com/">LangChain</a> is a powerful framework that simplifies the development of applications powered by large language models (LLMs). It provides essential building blocks like chains, agents, and memory components that enable developers to create sophisticated AI workflows beyond simple prompt-response interactions. LangChain’s importance lies in its ability to orchestrate complex AI operations, integrate multiple data sources, and maintain conversation context—making it the go-to choice for production-ready AI applications.</p>
+
+<p>In this blog post, we’ll explore a <a href="https://github.com/Azure-Samples/appservice-ai-samples/tree/main/langchain-fastapi-chat">sample application</a> that demonstrates how you can easily deploy a LangChain application integrated with Azure OpenAI Foundry models to Azure App Service. We’ll walk through this complete example that showcases a conversational AI chat interface with streaming responses and intelligent summarization—all deployed seamlessly using modern cloud-native practices.</p>
+
+<h2 id="what-were-building">What We’re Building</h2>
+
+<p>Our sample application is a FastAPI web service that provides:</p>
+<ul>
+  <li><strong>Real-time streaming responses</strong> from Azure OpenAI’s GPT-4o model</li>
+  <li><strong>Automatic summarization</strong> of long responses using LangChain’s summarize chain</li>
+  <li><strong>Secure authentication</strong> via Azure Managed Identity</li>
+  <li><strong>Modern chat UI</strong> with a responsive design</li>
+  <li><strong>Easy deployment</strong> using Azure Developer CLI (azd)</li>
+</ul>
+
+<h2 id="key-technical-highlights">Key Technical Highlights</h2>
+
+<h3 id="1-secure-connection-to-azure-openai-with-managed-identity">1. Secure Connection to Azure OpenAI with Managed Identity</h3>
+
+<p>This sample uses <strong>Azure Managed Identity</strong> for authentication. This eliminates the need to store API keys in your code or configuration files:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">azure.identity</span> <span class="kn">import</span> <span class="n">DefaultAzureCredential</span>
+
+<span class="c1"># Use Managed Identity to get a token for Azure OpenAI
+</span><span class="n">credential</span> <span class="o">=</span> <span class="nc">DefaultAzureCredential</span><span class="p">()</span>
+<span class="n">token</span> <span class="o">=</span> <span class="n">credential</span><span class="p">.</span><span class="nf">get_token</span><span class="p">(</span><span class="sh">"</span><span class="s">https://cognitiveservices.azure.com/.default</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># Configure LangChain with the token
+</span><span class="n">llm_long</span> <span class="o">=</span> <span class="nc">AzureChatOpenAI</span><span class="p">(</span>
+    <span class="n">azure_endpoint</span><span class="o">=</span><span class="n">endpoint</span><span class="p">,</span>
+    <span class="n">openai_api_version</span><span class="o">=</span><span class="sh">"</span><span class="s">2025-01-01-preview</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">deployment_name</span><span class="o">=</span><span class="n">deployment</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">streaming</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+    <span class="n">max_tokens</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+    <span class="n">azure_ad_token</span><span class="o">=</span><span class="n">token</span><span class="p">.</span><span class="n">token</span>  <span class="c1"># Secure token-based auth
+</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>This approach provides several benefits:</p>
+<ul>
+  <li><strong>Enhanced security</strong>: No API keys to manage or accidentally expose</li>
+  <li><strong>Simplified operations</strong>: Azure handles token refresh automatically</li>
+  <li><strong>Enterprise-ready</strong>: Integrates with Azure RBAC and compliance policies</li>
+</ul>
+
+<h3 id="2-intelligent-response-chaining-with-langchain">2. Intelligent Response Chaining with LangChain</h3>
+
+<p>The application showcases LangChain’s powerful chaining capabilities by creating two distinct AI workflows:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># LLM for detailed responses
+</span><span class="n">llm_long</span> <span class="o">=</span> <span class="nc">AzureChatOpenAI</span><span class="p">(</span>
+    <span class="c1"># ... configuration for detailed answers
+</span>    <span class="n">streaming</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+    <span class="n">max_tokens</span><span class="o">=</span><span class="mi">600</span>
+<span class="p">)</span>
+
+<span class="c1"># LLM for concise summaries
+</span><span class="n">llm_summary</span> <span class="o">=</span> <span class="nc">AzureChatOpenAI</span><span class="p">(</span>
+    <span class="c1"># ... configuration optimized for summaries
+</span>    <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>  <span class="c1"># More deterministic for summaries
+</span>    <span class="n">max_tokens</span><span class="o">=</span><span class="mi">200</span>
+<span class="p">)</span>
+
+<span class="c1"># Create a summarization chain
+</span><span class="n">summarize_chain</span> <span class="o">=</span> <span class="nf">load_summarize_chain</span><span class="p">(</span><span class="n">llm_summary</span><span class="p">,</span> <span class="n">chain_type</span><span class="o">=</span><span class="sh">"</span><span class="s">stuff</span><span class="sh">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>This dual-model approach allows users to receive both comprehensive answers and digestible summaries, enhancing the user experience significantly.</p>
+
+<h3 id="3-real-time-streaming-responses">3. Real-Time Streaming Responses</h3>
+
+<p>The application implements streaming responses to provide immediate feedback to users:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">async</span> <span class="k">def</span> <span class="nf">streamer</span><span class="p">():</span>
+    <span class="c1"># 1. Stream the long answer token by token
+</span>    <span class="n">long_answer</span> <span class="o">=</span> <span class="sh">""</span>
+    <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">llm_long</span><span class="p">.</span><span class="nf">stream</span><span class="p">(</span><span class="n">messages</span><span class="p">):</span>
+        <span class="n">long_answer</span> <span class="o">+=</span> <span class="n">chunk</span><span class="p">.</span><span class="n">content</span>
+        <span class="k">yield</span> <span class="n">chunk</span><span class="p">.</span><span class="n">content</span>  <span class="c1"># Stream to frontend immediately
+</span>        <span class="k">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="nf">sleep</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># Yield control to event loop
+</span>
+    <span class="c1"># 2. Generate and stream summary after completion
+</span>    <span class="n">docs</span> <span class="o">=</span> <span class="p">[</span><span class="nc">Document</span><span class="p">(</span><span class="n">page_content</span><span class="o">=</span><span class="n">long_answer</span><span class="p">)]</span>
+    <span class="n">summary</span> <span class="o">=</span> <span class="k">await</span> <span class="n">loop</span><span class="p">.</span><span class="nf">run_in_executor</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="n">summarize_chain</span><span class="p">.</span><span class="n">run</span><span class="p">,</span> <span class="n">docs</span><span class="p">)</span>
+    <span class="k">yield</span> <span class="sh">"</span><span class="s">__SUMMARY__</span><span class="sh">"</span> <span class="o">+</span> <span class="n">summary</span>
+
+<span class="k">return</span> <span class="nc">StreamingResponse</span><span class="p">(</span><span class="nf">streamer</span><span class="p">(),</span> <span class="n">media_type</span><span class="o">=</span><span class="sh">"</span><span class="s">text/plain</span><span class="sh">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>This streaming approach creates a responsive user experience where text appears as it’s generated, similar to ChatGPT’s interface.</p>
+
+<h3 id="4-token-management-and-response-tuning-for-ai-applications">4. Token Management and Response Tuning for AI Applications</h3>
+
+<p>AI applications require careful consideration of token usage to avoid throttling and optimize performance. The code includes some defaults for both token limits and response behavior:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Restrict max_tokens to avoid hitting rate limits
+</span><span class="n">llm_long</span> <span class="o">=</span> <span class="nc">AzureChatOpenAI</span><span class="p">(</span>
+    <span class="n">max_tokens</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>  <span class="c1"># Balanced for detailed responses
+</span>    <span class="n">temperature</span><span class="o">=</span><span class="mf">0.5</span>  <span class="c1"># Moderate creativity for conversational responses
+</span><span class="p">)</span>
+
+<span class="n">llm_summary</span> <span class="o">=</span> <span class="nc">AzureChatOpenAI</span><span class="p">(</span>
+    <span class="n">max_tokens</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>  <span class="c1"># Shorter for summaries
+</span>    <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span>    <span class="c1"># Lower temperature for more focused, deterministic summaries
+</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Key considerations for AI applications:</p>
+<ul>
+  <li><strong>Token limits</strong>: Prevent hitting Azure OpenAI rate limits and manage costs</li>
+  <li><strong>Temperature settings</strong>: Lower values (0-0.3) produce more focused, consistent responses, while higher values (0.7-1.0) increase creativity</li>
+  <li><strong>Response optimization</strong>: Different configurations for different use cases (detailed vs. summary responses)</li>
+</ul>
+
+<p>These parameters can be adjusted based on your Azure OpenAI quota and specific use case requirements.</p>
+
+<h2 id="deploying-your-own-instance">Deploying Your Own Instance</h2>
+
+<p>Getting this sample running in your Azure environment is straightforward with Azure Developer CLI:</p>
+
+<h3 id="prerequisites">Prerequisites</h3>
+<ul>
+  <li><a href="https://aka.ms/azd">Azure Developer CLI (azd)</a></li>
+  <li>An Azure subscription with Azure OpenAI access</li>
+  <li>Python 3.10+</li>
+</ul>
+
+<h3 id="deployment-steps">Deployment Steps</h3>
+
+<ol>
+  <li><strong>Clone and navigate to the project:</strong>
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone &lt;repository-url&gt;
+<span class="nb">cd </span>langchain-fastapi-chat
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Initialize azd:</strong>
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>azd init
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Deploy everything:</strong>
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>azd up
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>That’s it! The <code class="language-plaintext highlighter-rouge">azd up</code> command will:</p>
+<ul>
+  <li>Provision Azure AI Foundry and deploy the GPT-4o model</li>
+  <li>Create an App Service with managed identity</li>
+  <li>Configure role assignments for secure access</li>
+  <li>Deploy your FastAPI application</li>
+  <li>Set up all necessary environment variables</li>
+</ul>
+
+<h2 id="see-it-in-action">See It In Action</h2>
+
+<p>Once deployed, your chat interface will look like this when users interact with it:</p>
+
+<p><img src="/AppService/media/2025/08/chat-output.jpg" alt="Chat Interface Example" /></p>
+
+<p><em>The interface shows both the detailed streaming response and the automatically generated summary, demonstrating LangChain’s chaining capabilities in action.</em></p>
+
+<h2 id="customization-options">Customization Options</h2>
+
+<h3 id="switch-models">Switch Models</h3>
+<p>To use a different AI model, update the <code class="language-plaintext highlighter-rouge">aiFoundryModelName</code> parameter in <code class="language-plaintext highlighter-rouge">infra/main.bicep</code>:</p>
+
+<div class="language-bicep highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@description</span><span class="p">(</span><span class="s1">'AI Foundry Model deployment name'</span><span class="p">)</span>
+<span class="k">param</span> <span class="n">aiFoundryModelName</span> <span class="kt">string</span> <span class="p">=</span> <span class="s1">'gpt-3.5-turbo'</span>  <span class="c1">// or your preferred model</span>
+</code></pre></div></div>
+
+<h3 id="adjust-token-limits">Adjust Token Limits</h3>
+<p>Modify the <code class="language-plaintext highlighter-rouge">max_tokens</code> values in <code class="language-plaintext highlighter-rouge">app.py</code> based on your quota:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">llm_long</span> <span class="o">=</span> <span class="nc">AzureChatOpenAI</span><span class="p">(</span>
+    <span class="n">max_tokens</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>  <span class="o">//</span> <span class="n">Increase</span> <span class="k">for</span> <span class="n">longer</span> <span class="n">responses</span>
+    <span class="c1"># ...
+</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="use-api-keys-instead-of-managed-identity">Use API Keys Instead of Managed Identity</h3>
+<p>If you prefer API key authentication, you can modify the LangChain configuration:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">llm_long</span> <span class="o">=</span> <span class="nc">AzureChatOpenAI</span><span class="p">(</span>
+    <span class="n">azure_endpoint</span><span class="o">=</span><span class="n">endpoint</span><span class="p">,</span>
+    <span class="n">openai_api_key</span><span class="o">=</span><span class="n">your_api_key</span><span class="p">,</span>  <span class="o">//</span> <span class="n">Instead</span> <span class="n">of</span> <span class="n">azure_ad_token</span>
+    <span class="c1"># ...
+</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="next-steps">Next Steps</h2>
+
+<p>This sample provides a foundation for building more sophisticated AI applications. Consider extending it with:</p>
+
+<ul>
+  <li><strong>Conversation memory</strong> using LangChain’s memory components</li>
+  <li><strong>Document upload and analysis</strong> capabilities</li>
+  <li><strong>Multiple AI model support</strong> for different use cases</li>
+  <li><strong>User authentication and personalization</strong></li>
+  <li><strong>Advanced prompt engineering</strong> for domain-specific responses</li>
+</ul>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>The complete sample code and deployment templates are available in the <a href="https://github.com/Azure-Samples/appservice-ai-samples">appservice-ai-samples repository</a>, making it easy to get started with your own AI-powered web applications.</p>
+
+<p>Ready to build your own AI chat app? Clone the repo and run <code class="language-plaintext highlighter-rouge">azd up</code> to get started in minutes!</p>
+
+<hr />
+
+<p><em>For more Azure App Service AI samples and best practices, check out the <a href="https://learn.microsoft.com/azure/app-service/overview-ai-integration">Azure App Service AI integration documentation</a>.</em></p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[LangChain is a powerful framework that simplifies the development of applications powered by large language models (LLMs). It provides essential building blocks like chains, agents, and memory components that enable developers to create sophisticated AI workflows beyond simple prompt-response interactions. LangChain’s importance lies in its ability to orchestrate complex AI operations, integrate multiple data sources, and maintain conversation context—making it the go-to choice for production-ready AI applications.]]></summary></entry><entry><title type="html">Improved Node.js Deployment Performance on Azure App Service</title><link href="https://azure.github.io/AppService/2025/07/09/node-optimization.html" rel="alternate" type="text/html" title="Improved Node.js Deployment Performance on Azure App Service" /><published>2025-07-09T00:00:00+00:00</published><updated>2025-07-09T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2025/07/09/node-optimization</id><content type="html" xml:base="https://azure.github.io/AppService/2025/07/09/node-optimization.html"><![CDATA[<p>We’ve made significant improvements to how Node.js applications are deployed on Azure App Service — with deployment times now up to <strong>8× faster</strong> in some cases.</p>
+
+<p>Traditionally, the <code class="language-plaintext highlighter-rouge">node_modules</code> directory was extracted and synced in full during deployment. This process could be slow and resource-intensive, especially for apps with large dependency trees. To address this, we’ve optimized the way <code class="language-plaintext highlighter-rouge">node_modules</code> is handled.</p>
+
+<h3 id="whats-changed">What’s Changed?</h3>
+
+<p>During the deployment phase, instead of copying the entire <code class="language-plaintext highlighter-rouge">node_modules</code> folder to the site, we now <strong>compress it into a <code class="language-plaintext highlighter-rouge">node_modules.tar.gz</code> archive</strong>. This archive is placed under <code class="language-plaintext highlighter-rouge">/home/site/wwwroot</code> and is accompanied by a manifest file (<code class="language-plaintext highlighter-rouge">oryx-manifest.toml</code>) that provides instructions for what needs to happen during app startup.</p>
+
+<p>When the application starts, the archive is <strong>extracted into <code class="language-plaintext highlighter-rouge">/node_modules</code></strong> inside the runtime container. We then <strong>create a symbolic link</strong> from <code class="language-plaintext highlighter-rouge">/home/site/wwwroot/node_modules</code> to the extracted directory (<code class="language-plaintext highlighter-rouge">/node_modules</code>) so that the Node.js runtime can seamlessly locate the modules.</p>
+
+<p>To ensure full compatibility, the <code class="language-plaintext highlighter-rouge">/node_modules</code> path is also <strong>appended to the environment’s PATH variable</strong>, allowing Node.js apps to access their dependencies without any changes to code or configuration.</p>
+
+<h3 id="why-this-matters">Why This Matters</h3>
+
+<p>This approach significantly reduces the amount of data that needs to be synced during deployment, speeding up the process and improving reliability.</p>
+
+<p>This change is part of our ongoing efforts to make Node.js apps faster and easier to run on Azure App Service. More improvements coming soon — stay tuned!</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[We’ve made significant improvements to how Node.js applications are deployed on Azure App Service — with deployment times now up to 8× faster in some cases.]]></summary></entry><entry><title type="html">Getting Started with .NET Aspire (Preview) on Azure App Service</title><link href="https://azure.github.io/AppService/2025/05/19/Aspire-on-App-Service.html" rel="alternate" type="text/html" title="Getting Started with .NET Aspire (Preview) on Azure App Service" /><published>2025-05-19T00:00:00+00:00</published><updated>2025-05-19T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2025/05/19/Aspire-on-App-Service</id><content type="html" xml:base="https://azure.github.io/AppService/2025/05/19/Aspire-on-App-Service.html"><![CDATA[<p>We’re laying the groundwork to bring <a href="https://learn.microsoft.com/dotnet/aspire/get-started/aspire-overview">.NET Aspire</a> to Azure App Service. While this is just the beginning, we wanted to give you an early preview of how to set up a basic Aspire application on App Service.</p>
+
+<p>In this first walkthrough, we’ll use the Aspire Starter template, which includes a simple frontend application that calls an API backend. Both of these will be deployed as container-based applications on Azure App Service.</p>
+
+<p>This is an early step, and we’ll be adding more capabilities in the coming weeks—including support for integrating additional services and enabling the Aspire Dashboard experience on Azure. Stay tuned for further updates.</p>
+
+<h2 id="prerequisites">Prerequisites</h2>
+
+<p>Before you begin, make sure you have the required tools and environment set up.</p>
+
+<p>You can find the latest list of prerequisites here:
+<a href="https://learn.microsoft.com/dotnet/aspire/fundamentals/setup-tooling?tabs=linux&amp;pivots=vscode">.NET Aspire - Prerequisites</a></p>
+
+<p>In addition, you’ll need the <strong>Azure Developer CLI (azd)</strong> to provision and deploy resources to Azure.
+You can install it by following the instructions here:
+<a href="https://learn.microsoft.com/azure/developer/azure-developer-cli/install-azd">Install Azure Developer CLI</a></p>
+
+<p>Make sure all these tools are installed and configured before continuing.</p>
+
+<h2 id="preparing-your-environment">Preparing Your Environment</h2>
+
+<h3 id="create-a-new-aspire-starter-project">Create a New Aspire Starter Project</h3>
+
+<p>You can scaffold a starter Aspire application using the following command:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dotnet new aspire-starter
+</code></pre></div></div>
+
+<p>This creates a <code class="language-plaintext highlighter-rouge">.slnx</code> solution file and at least two project folders.</p>
+
+<h3 id="build-and-run-the-application">Build and Run the Application</h3>
+
+<p>Once your project is ready, you can build and run it locally to verify everything works as expected.</p>
+
+<p>First, restore dependencies and build the solution:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dotnet restore
+dotnet build
+</code></pre></div></div>
+
+<p>Then, start the application by running the AppHost project:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dotnet run <span class="nt">--project</span> <span class="s2">"&lt;YourProjectName&gt;.AppHost"</span>
+</code></pre></div></div>
+
+<p>Make sure you have <strong>Docker Desktop</strong>, <strong>Podman</strong>, or another compatible <strong>container runtime</strong> running on your machine.
+This will start both the frontend and API services locally. You now have your Aspire application up and running, ready for deployment to Azure in the next steps.</p>
+
+<h2 id="add-azure-app-service-support-to-your-project">Add Azure App Service Support to Your Project</h2>
+
+<p>Now that you have the basic Aspire project running locally, let’s add support to target Azure App Service.</p>
+
+<h3 id="add-required-nuget-packages">Add Required NuGet Packages</h3>
+
+<p>Open the solution in <strong>Visual Studio</strong> or your preferred IDE and locate the <strong>AppHost</strong> project. You’ll need to add the following NuGet packages to enable Azure resource integration:</p>
+
+<ol>
+  <li>
+    <p>Open the <strong>Package Manager Console</strong> in Visual Studio.</p>
+  </li>
+  <li>
+    <p>Navigate to the AppHost project directory by running:</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> &lt;YourProjectName&gt;.AppHost
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Add the required packages:</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dotnet add package <span class="nt">--prerelease</span> Aspire.Hosting.Azure.AppService
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h3 id="configure-the-apphost-for-azure-app-service">Configure the AppHost for Azure App Service</h3>
+
+<p>Open <code class="language-plaintext highlighter-rouge">AppHost.cs</code> and locate the following line:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">var</span> <span class="n">builder</span> <span class="p">=</span> <span class="n">DistributedApplication</span><span class="p">.</span><span class="nf">CreateBuilder</span><span class="p">(</span><span class="n">args</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Right after that, add:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">builder</span><span class="p">.</span><span class="nf">AddAzureAppServiceEnvironment</span><span class="p">(</span><span class="s">"appsvc"</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Next, locate the API service registration, which looks like this:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">var</span> <span class="n">apiService</span> <span class="p">=</span> <span class="n">builder</span><span class="p">.</span><span class="n">AddProject</span><span class="p">&lt;</span><span class="n">Projects</span><span class="p">.&lt;</span><span class="n">YourApiProject</span><span class="p">&gt;&gt;(</span><span class="s">"apiservice"</span><span class="p">)</span>
+    <span class="p">.</span><span class="nf">WithHttpHealthCheck</span><span class="p">(</span><span class="s">"/health"</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Update it to include external HTTP endpoints:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">var</span> <span class="n">apiService</span> <span class="p">=</span> <span class="n">builder</span><span class="p">.</span><span class="n">AddProject</span><span class="p">&lt;</span><span class="n">Projects</span><span class="p">.&lt;</span><span class="n">YourApiProject</span><span class="p">&gt;&gt;(</span><span class="s">"apiservice"</span><span class="p">)</span>
+    <span class="p">.</span><span class="nf">WithHttpHealthCheck</span><span class="p">(</span><span class="s">"/health"</span><span class="p">)</span>
+    <span class="p">.</span><span class="nf">WithExternalHttpEndpoints</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>You can now <strong>build</strong> the project to ensure everything compiles correctly.</p>
+
+<h3 id="initialize-azure-deployment-with-azd">Initialize Azure Deployment with azd</h3>
+
+<p>Open a terminal or command prompt, navigate to the <strong>AppHost</strong> project directory, and run:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>azd init
+</code></pre></div></div>
+
+<p>This will prompt you for a <strong>unique environment name</strong>, which will be used to create an Azure resource group for your deployment.</p>
+
+<p>Once initialization is complete, authenticate with your Azure account:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>azd auth login
+</code></pre></div></div>
+
+<p>Follow the prompts to select your <strong>Azure subscription</strong> and <strong>resource location</strong>.</p>
+
+<h3 id="provision-and-deploy-with-azd-up">Provision and Deploy with azd up</h3>
+
+<p>Finally, deploy your application and provision Azure resources by running:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>azd up
+</code></pre></div></div>
+
+<p>This command will:</p>
+
+<ul>
+  <li>Create the required <strong>Azure Resource Group</strong>.</li>
+  <li>Provision an <strong>App Service Plan</strong> to host your API and frontend apps.</li>
+  <li>Create an <strong>Azure Container Registry</strong>.</li>
+  <li>Deploy both the <strong>frontend</strong> and <strong>API</strong> services to Azure App Service.</li>
+</ul>
+
+<p>Once completed, you’ll have your .NET Aspire application running in Azure.</p>
+
+<h2 id="explore-your-deployed-application">Explore Your Deployed Application</h2>
+
+<p>Once the deployment completes, you can explore the resources created in your Azure subscription:</p>
+
+<ol>
+  <li>Go to the <a href="https://portal.azure.com">Azure Portal</a>.</li>
+  <li>Search for and open the <strong>Resource Group</strong> that matches the <strong>environment name</strong> you provided during <code class="language-plaintext highlighter-rouge">azd init</code>.</li>
+</ol>
+
+<p>You will see multiple Azure resources in this group, including:</p>
+
+<ul>
+  <li>App Service Plan</li>
+  <li>Two App Service apps (frontend and API backend)</li>
+  <li>Container Registry</li>
+  <li>Supporting resources like Managed Identity</li>
+</ul>
+
+<h3 id="view-the-frontend-application">View the Frontend Application</h3>
+
+<p>Locate the <strong>App Service</strong> resource that starts with <code class="language-plaintext highlighter-rouge">webfrontend-</code>. Open it and navigate to the <strong>Browse</strong> option in the App Service blade.</p>
+
+<p>You should see the default <strong>Aspire Starter app</strong> running in Azure App Service.</p>
+
+<h3 id="test-the-api-endpoint">Test the API Endpoint</h3>
+
+<p>You can also directly call the API backend by navigating to:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://&lt;webfrontend-app-name&gt;.azurewebsites.net/weather
+</code></pre></div></div>
+
+<p>This should return a list of dates with the weather forecast.</p>
+
+<p><img src="/AppService/media/2025/05/aspire-page.jpg" alt="Aspire page" /></p>
+
+<h2 id="current-limitations-preview">Current Limitations (Preview)</h2>
+
+<p>As this is an early preview, there are some important limitations to be aware of:</p>
+
+<ul>
+  <li>Supports <strong>.NET projects only</strong> (added via <code class="language-plaintext highlighter-rouge">AddProject(...)</code>).</li>
+  <li>Each project must <strong>expose a single public HTTP endpoint</strong>.</li>
+  <li>Projects are <strong>packaged as containers</strong> and published to <strong>Azure Container Registry</strong>.</li>
+  <li><strong>Containers defined within the AppHost</strong> are <strong>not supported</strong> for deployment.</li>
+  <li><strong>Deployments to existing App Service Plans</strong> are <strong>not supported</strong>; a new plan is provisioned by <code class="language-plaintext highlighter-rouge">azd up</code>.</li>
+  <li>The <strong>Aspire Dashboard</strong> is <strong>not yet supported</strong> on Azure App Service.</li>
+</ul>
+
+<p>We’re actively working to expand these capabilities and will share updates as they become available.</p>
+
+<h2 id="whats-next">What’s Next</h2>
+
+<p>This is just the beginning of our journey to enable .NET Aspire on Azure App Service. In this post, we walked through the early steps to deploy a basic Aspire application with a frontend and API backend running as container-based apps on App Service.</p>
+
+<p>We’re actively working on adding more features, including deeper service integrations, improved deployment experiences, and support for the Aspire Dashboard. Stay tuned—there’s a lot more coming soon.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[We’re laying the groundwork to bring .NET Aspire to Azure App Service. While this is just the beginning, we wanted to give you an early preview of how to set up a basic Aspire application on App Service.]]></summary></entry></feed>
