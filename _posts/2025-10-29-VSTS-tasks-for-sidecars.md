@@ -27,17 +27,13 @@ Both samples assume Azure App Service for Linux and the sidecar model, where con
 
 ## How the pipelines work
 
-1. **Build**
-   * `vsts-blessed-sitecontainers.yml`: sets up your language/runtime, installs dependencies, and produces a ZIP artifact of your app.
-   * `vsts-only-sitecontainers.yml`: uses Docker tasks to build and tag multiple container images.
+1. **Build and Publish**
+   * `vsts-blessed-sitecontainers.yml`: sets up your language/runtime, installs dependencies, and produces a ZIP artifact of your app. It also uses Docker tasks to build and publish the sidecar container.
+   * `vsts-only-sitecontainers.yml`: uses Docker tasks to build and push multiple container images.
 
-2. **Publish artifacts / push images**
-   * Code-based flow: publishes the ZIP as a pipeline artifact.
-   * Container flow: pushes tagged images to Azure Container Registry.
-
-3. **Deploy to App Service for Linux**
-   * Code-based flow: `AzureWebApp@1` deploys the ZIP and also applies a `sitecontainersConfig` block that defines your sidecar containers.
-   * Container flow: `AzureWebAppContainer@1` deploys your main container plus any sidecars in one shot, using `sitecontainersConfig`.
+2. **Deploy to App Service for Linux**
+   * Code-based flow: `AzureWebApp@1` deploys the ZIP and sidecar containers defined in `sitecontainersConfig`.
+   * Container flow: `AzureWebAppContainer@1` deploys your main container and sidecars, defined in `sitecontainersConfig`.
 
 That’s it: one pipeline run builds, packages, and deploys your main app plus its helper containers.
 
