@@ -31,7 +31,7 @@ A Flask web app that accepts an image upload, runs a fast enhancement pipeline (
 
 ---
 
-## Deploy in minutes with `azd`
+## Deploy with `azd`
 
 ```bash
 git clone https://github.com/Azure-Samples/appservice-ai-samples.git
