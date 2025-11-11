@@ -5,7 +5,7 @@ toc: true
 toc_sticky: true
 ---
 
-Node.js 24 is live on Azure App Service for Linux. Faster runtime, tighter tooling, same App Service simplicity. 
+Node.js 24 LTS is live on Azure App Service for Linux. You can create a new Node 24 app through the Azure portal, automate it with the Azure CLI, or roll it out using your favorite ARM/Bicep templates - faster runtime, tighter tooling, same App Service simplicity. 
 
 A quick look at what the new runtime gives you:
 
@@ -18,19 +18,5 @@ The built-in `node:test` runner in Node.js 24 now automatically waits on nested 
 
 For full release details, see the official Node.js 24 release notes:
 [https://nodejs.org/blog/release/v24.0.0](https://nodejs.org/blog/release/v24.0.0) 
-
-### Deploying Node.js 24 on App Service today
-
-Right now, you can already create and deploy Node.js 24 apps on **Azure App Service for Linux** using:
-
-* Azure CLI
-* ARM/Bicep templates
-
-You can start from the standard App Service Node.js quickstart and point your app at the Node.js 24 runtime on Linux App Service plans:
-[https://learn.microsoft.com/azure/app-service/quickstart-nodejs?tabs=linux&pivots=development-environment-vscode](https://learn.microsoft.com/azure/app-service/quickstart-nodejs?tabs=linux&pivots=development-environment-vscode)
-
-### Portal support is rolling out
-
-Portal create + configure support for Node.js 24 in App Service for Linux is rolling out now and will light up in the next couple of weeks — you’ll be able to pick Node.js 24 directly in the Azure portal with no extra setup. We will update this blog once the portal rollout is complete.
 
 Bring your Node.js 24 app to App Service for Linux, scale it, monitor it, and take advantage of the latest runtime improvements.
