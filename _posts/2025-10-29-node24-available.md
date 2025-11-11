@@ -1,5 +1,5 @@
 ---
-title: "Node.js 24 on Azure App Service for Linux"
+title: "Node.js 24 is now available on Azure App Service for Linux"
 author_name: "Tulika Chaudharie"
 toc: true
 toc_sticky: true
