@@ -1,0 +1,1112 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Build Long-Running AI Agents on Azure App Service with Microsoft Agent Framework - Azure App Service</title>
+<meta name="description" content="The AI landscape is evolving rapidly, and with the introduction of Microsoft Agent Framework, developers now have a powerful platform for building sophisticated AI agents that go far beyond simple chat completions. These agents can execute complex, multi-step workflows with persistent state, conversation threads, and structured execution—capabilities that are essential for production AI applications.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Build Long-Running AI Agents on Azure App Service with Microsoft Agent Framework">
+<meta property="og:url" content="https://azure.github.io/AppService/2025/10/21/app-service-agent-framework.html">
+
+
+  <meta property="og:description" content="The AI landscape is evolving rapidly, and with the introduction of Microsoft Agent Framework, developers now have a powerful platform for building sophisticated AI agents that go far beyond simple chat completions. These agents can execute complex, multi-step workflows with persistent state, conversation threads, and structured execution—capabilities that are essential for production AI applications.">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2025-10-21T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2025/10/21/app-service-agent-framework.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/sidecars/" class="">Sidecars</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/ai-integration/" class="">AI Integration</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Build Long-Running AI Agents on Azure App Service with Microsoft Agent Framework">
+    <meta itemprop="description" content="The AI landscape is evolving rapidly, and with the introduction of Microsoft Agent Framework, developers now have a powerful platform for building sophisticated AI agents that go far beyond simple chat completions. These agents can execute complex, multi-step workflows with persistent state, conversation threads, and structured execution—capabilities that are essential for production AI applications.">
+    <meta itemprop="datePublished" content="October 21, 2025">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Build Long-Running AI Agents on Azure App Service with Microsoft Agent Framework
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+            
+            
+              • By Jordan Selig
+            
+            • October 21, 2025
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#the-challenge-long-running-agent-framework-flows">The Challenge: Long-Running Agent Framework Flows</a></li>
+  <li><a href="#the-solution-async-pattern-with-app-service">The Solution: Async Pattern with App Service</a></li>
+  <li><a href="#rapid-innovation-support">Rapid Innovation Support</a></li>
+  <li><a href="#sample-application-ai-travel-planner">Sample Application: AI Travel Planner</a>
+    <ul>
+      <li><a href="#key-architecture-components">Key Architecture Components</a></li>
+      <li><a href="#viewing-agents-and-threads-in-azure-ai-foundry">Viewing Agents and Threads in Azure AI Foundry</a></li>
+    </ul>
+  </li>
+  <li><a href="#get-started-today">Get Started Today</a></li>
+  <li><a href="#key-takeaways">Key Takeaways</a></li>
+  <li><a href="#whats-next-build-on-this-foundation">What’s Next? Build on This Foundation</a></li>
+  <li><a href="#learn-more">Learn More</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <p>The AI landscape is evolving rapidly, and with the introduction of <a href="https://learn.microsoft.com/en-us/agent-framework/overview/agent-framework-overview">Microsoft Agent Framework</a>, developers now have a powerful platform for building sophisticated AI agents that go far beyond simple chat completions. These agents can execute complex, multi-step workflows with persistent state, conversation threads, and structured execution—capabilities that are essential for production AI applications.</p>
+
+<p>Today, we’re excited to share how Azure App Service provides an excellent platform for running Agent Framework workloads, especially those involving long-running operations. Let’s explore why App Service is a great choice and walk through a practical example.</p>
+
+<h2 id="the-challenge-long-running-agent-framework-flows">The Challenge: Long-Running Agent Framework Flows</h2>
+
+<p>Agent Framework enables AI agents to perform complex tasks that can take significant time to complete:</p>
+
+<ul>
+  <li><strong>Multi-turn reasoning</strong>: Iterative calls to large language models (LLMs) where each response informs the next prompt</li>
+  <li><strong>Tool integration</strong>: Function calling and external API interactions for real-time data</li>
+  <li><strong>Complex processing</strong>: Budget calculations, content optimization, multi-phase generation</li>
+  <li><strong>Persistent context</strong>: Maintaining conversation state across multiple interactions</li>
+</ul>
+
+<p>These workflows often take 30 seconds to several minutes to complete—far too long for synchronous HTTP request handling. Traditional web applications run into several constraints:</p>
+
+<ul>
+  <li>⏱️ <strong>Timeout Limitations</strong>: HTTP requests have timeout constraints (typically 30-230 seconds)</li>
+  <li>⚠️ <strong>Connection Issues</strong>: Clients may disconnect due to network interruptions or browser navigation</li>
+  <li>📈 <strong>Scalability Concerns</strong>: Long-running requests block worker threads and don’t survive app restarts</li>
+  <li>🎯 <strong>Poor User Experience</strong>: Users see endless loading spinners with no progress feedback</li>
+</ul>
+
+<h2 id="the-solution-async-pattern-with-app-service">The Solution: Async Pattern with App Service</h2>
+
+<p>Azure App Service provides a robust solution through the asynchronous request-reply pattern combined with background processing:</p>
+
+<ol>
+  <li>API immediately returns (202 Accepted) with a task ID</li>
+  <li>Background worker processes the Agent Framework workflow</li>
+  <li>Client polls for status with real-time progress updates</li>
+  <li>Durable state storage (Cosmos DB) maintains task status and results</li>
+</ol>
+
+<p>This pattern ensures:</p>
+
+<ul>
+  <li>✅ <strong>No HTTP timeouts</strong>—API responds in milliseconds</li>
+  <li>✅ <strong>Resilient to restarts</strong>—state survives deployments and scale events</li>
+  <li>✅ <strong>Progress tracking</strong>—users see real-time updates (10%, 45%, 100%)</li>
+  <li>✅ <strong>Better scalability</strong>—background workers process independently</li>
+</ul>
+
+<h2 id="rapid-innovation-support">Rapid Innovation Support</h2>
+
+<p>The AI landscape is changing at an unprecedented pace. New models, frameworks, and capabilities are released constantly. Azure App Service’s managed platform ensures your applications can adapt quickly without infrastructure rewrites:</p>
+
+<ul>
+  <li><strong>Framework Updates</strong>: Deploy new Agent Framework SDK versions like any application update</li>
+  <li><strong>Model Upgrades</strong>: Switch between GPT-4, GPT-4o, or future models with configuration changes</li>
+  <li><strong>Scaling Patterns</strong>: Start with combined API+worker, split into separate apps as needs grow</li>
+  <li><strong>New Capabilities</strong>: Integrate emerging AI services without changing hosting infrastructure</li>
+</ul>
+
+<p>App Service handles the platform complexity so you can focus on building great AI experiences.</p>
+
+<h2 id="sample-application-ai-travel-planner">Sample Application: AI Travel Planner</h2>
+
+<p>To demonstrate this pattern, we’ve built a Travel Planner application that uses Agent Framework to generate detailed, multi-day travel itineraries. The agent performs complex reasoning including:</p>
+
+<ul>
+  <li>Researching destination attractions and activities</li>
+  <li>Optimizing daily schedules based on location proximity</li>
+  <li>Calculating detailed budget breakdowns</li>
+  <li>Generating personalized travel tips and recommendations</li>
+</ul>
+
+<p>The entire application runs on a single P0v4 App Service with both the API and background worker combined—showcasing App Service’s flexibility for hosting diverse workload patterns in one deployment.</p>
+
+<h3 id="key-architecture-components">Key Architecture Components</h3>
+
+<p><strong>Azure App Service (P0v4 Premium)</strong></p>
+
+<ul>
+  <li>Hosts both REST API and background worker in a single app</li>
+  <li>“Always On” feature keeps background worker running continuously</li>
+  <li>Managed identity for secure, credential-less authentication</li>
+</ul>
+
+<p><strong>Azure Service Bus</strong></p>
+
+<ul>
+  <li>Decouples API from long-running Agent Framework processing</li>
+  <li>Reliable message delivery with automatic retries</li>
+  <li>Dead letter queue for error handling</li>
+</ul>
+
+<p><strong>Azure Cosmos DB</strong></p>
+
+<ul>
+  <li>Stores task status with real-time progress updates</li>
+  <li>Automatic 24-hour TTL for cleanup</li>
+  <li>Rich query capabilities for complex itinerary data</li>
+</ul>
+
+<p><strong>Azure AI Foundry</strong></p>
+
+<ul>
+  <li>Hosts persistent agents with conversation threads</li>
+  <li>Structured execution with Agent Framework runtime</li>
+  <li>GPT-4o model for intelligent travel planning</li>
+</ul>
+
+<p>One of the powerful features of using Azure AI Foundry with Agent Framework is the ability to inspect agents and conversation threads directly in the Azure portal. This provides valuable visibility into what’s happening during execution.</p>
+
+<h3 id="viewing-agents-and-threads-in-azure-ai-foundry">Viewing Agents and Threads in Azure AI Foundry</h3>
+
+<p>When you submit a travel plan request, the application creates an agent in Azure AI Foundry. You can navigate to your AI Foundry project in the Azure portal to see:</p>
+
+<p><strong>Agents</strong></p>
+
+<ul>
+  <li>The application creates an agent for each request</li>
+  <li><strong>Important</strong>: Agents are <strong>automatically deleted</strong> after the itinerary is generated to keep your project clean</li>
+  <li><strong>Tip</strong>: You’ll need to be quick! Navigate to Azure AI Foundry right after submitting a request to see the agent in action</li>
+  <li>Once processing completes, the agent is removed as part of the cleanup process</li>
+</ul>
+
+<p><strong>Conversation Threads</strong></p>
+
+<ul>
+  <li>Unlike agents, threads persist even after the agent completes</li>
+  <li>You can view the complete conversation history at any time</li>
+  <li>See the exact prompts sent to the model and the responses generated</li>
+  <li>Useful for debugging, understanding agent behavior, and improving prompts</li>
+</ul>
+
+<p>The ephemeral nature of agents (created per request, deleted after completion) keeps your Azure AI Foundry project clean while the persistent threads give you full traceability of every interaction.</p>
+
+<h2 id="get-started-today">Get Started Today</h2>
+
+<p>The complete Travel Planner application is available as a reference implementation so you can quickly get started building your own apps with Agent Framework on App Service.</p>
+
+<p>🔗 <strong>GitHub Repository</strong>: <a href="https://github.com/Azure-Samples/app-service-agent-framework-travel-agent-dotnet">https://github.com/Azure-Samples/app-service-agent-framework-travel-agent-dotnet</a></p>
+
+<p>The repo includes:</p>
+
+<ul>
+  <li>Complete .NET 9 source code with Agent Framework integration</li>
+  <li>Infrastructure as Code (Bicep) for automated deployment</li>
+  <li>Web UI with real-time progress tracking</li>
+  <li>Comprehensive README with deployment instructions</li>
+</ul>
+
+<p>Deploy in minutes:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/Azure-Samples/app-service-agent-framework-travel-agent-dotnet.git
+<span class="nb">cd </span>app-service-agent-framework-travel-agent-dotnet
+azd auth login
+azd up
+</code></pre></div></div>
+
+<h2 id="key-takeaways">Key Takeaways</h2>
+
+<ul>
+  <li>✅ Agent Framework enables sophisticated AI agents beyond simple chat completions</li>
+  <li>✅ Long-running workflows (30s-minutes) require async patterns to avoid timeouts</li>
+  <li>✅ App Service provides a simple, cost-effective platform for these workloads</li>
+  <li>✅ Async request-reply pattern with Service Bus + Cosmos DB ensures reliability</li>
+  <li>✅ Rapid innovation in AI is supported by App Service’s adaptable platform</li>
+</ul>
+
+<p>Whether you’re building travel planners, document processors, research assistants, or other AI-powered applications, Azure App Service gives you the flexibility and reliability you need—without the complexity of container orchestration or function programming models.</p>
+
+<h2 id="whats-next-build-on-this-foundation">What’s Next? Build on This Foundation</h2>
+
+<p>This Travel Planner is just the starting point—a foundation to help you understand the patterns and architecture. Agent Framework is designed to grow with your needs, making it easy to add sophisticated capabilities with minimal effort:</p>
+
+<p>🛠️ <strong>Add Tool Calling</strong></p>
+
+<p>Connect your agent to real-time APIs for weather, flight prices, hotel availability, and actual booking systems. Agent Framework’s built-in tool calling makes this straightforward.</p>
+
+<p>🤝 <strong>Implement Multi-Agent Systems</strong></p>
+
+<p>Create specialized agents (flight expert, hotel specialist, activity planner) that collaborate to build comprehensive travel plans. Agent Framework handles the orchestration.</p>
+
+<p>🧠 <strong>Enhance with RAG</strong></p>
+
+<p>Add retrieval-augmented generation to give your agent deep knowledge of destinations, local customs, and insider tips from your own content library.</p>
+
+<p>📊 <strong>Expand Functionality</strong></p>
+
+<ul>
+  <li>Real-time pricing and availability</li>
+  <li>Interactive refinement based on user feedback</li>
+  <li>Personalized recommendations from past trips</li>
+  <li>Multi-language support for global users</li>
+</ul>
+
+<p>The beauty of Agent Framework is that these advanced features integrate seamlessly into the pattern we’ve built. Start with this sample, explore the <a href="https://learn.microsoft.com/en-us/agent-framework/overview/agent-framework-overview">Agent Framework documentation</a>, and unlock powerful AI capabilities for your applications!</p>
+
+<h2 id="learn-more">Learn More</h2>
+
+<ul>
+  <li><a href="https://learn.microsoft.com/en-us/agent-framework/overview/agent-framework-overview">Microsoft Agent Framework Documentation</a></li>
+  <li><a href="https://learn.microsoft.com/azure/app-service/">Azure App Service Documentation</a></li>
+  <li><a href="https://learn.microsoft.com/azure/architecture/patterns/async-request-reply">Async Request-Reply Pattern</a></li>
+  <li><a href="https://github.com/Azure-Samples/app-service-agent-framework-travel-agent-dotnet">Sample Application GitHub Repo</a></li>
+</ul>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2025-10-21T00:00:00+00:00">October 21, 2025</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Build+Long-Running+AI+Agents+on+Azure+App+Service+with+Microsoft+Agent+Framework%20https%3A%2F%2Fazure.github.io%2FAppService%2F2025%2F10%2F21%2Fapp-service-agent-framework.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2025%2F10%2F21%2Fapp-service-agent-framework.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2025%2F10%2F21%2Fapp-service-agent-framework.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2025/10/20/dotnet-on-windows.html" class="pagination--pager" title="Platform updates for .NET on App Service Windows
+">Previous</a>
+    
+    
+      <a href="/AppService/2025/10/28/python314-available.html" class="pagination--pager" title="Python 3.14 is now available on Azure App Service for Linux
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/11/04/app-service-agent-framework-part-3.html" rel="permalink">Part 3: Client-Side Multi-Agent Orchestration on Azure App Service with Microsoft Agent Framework
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  12 minute read
+
+        
+        
+          • By Jordan Selig
+        
+        • November 4, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">In Part 2 of this series, I showed you how to build sophisticated multi-agent systems on Azure App Service using Azure AI Foundry Agents—server-side managed ...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/10/31/app-service-agent-framework-part-2.html" rel="permalink">Part 2: Build Long-Running AI Agents on Azure App Service with Microsoft Agent Framework
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  9 minute read
+
+        
+        
+          • By Jordan Selig
+        
+        • October 31, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Last week, I shared how to build long-running AI agents on Azure App Service with Microsoft Agent Framework. If you haven’t seen that post yet, I would recom...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/10/29/node24-available.html" rel="permalink">Node.js 24 is now available on Azure App Service for Linux
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • October 29, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Node.js 24 LTS is live on Azure App Service for Linux. You can create a new Node 24 app through the Azure portal, automate it with the Azure CLI, or roll it ...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/10/29/VSTS-tasks-for-sidecars.html" rel="permalink">Azure Pipeline samples: add sidecars to Azure App Service for Linux
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • October 29, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Sidecars on Azure App Service let you attach extra containers — logging, telemetry, lightweight APIs, caches, AI inference helpers — alongside your main app,...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2025 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
