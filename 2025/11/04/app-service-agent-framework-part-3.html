@@ -1,0 +1,1515 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Part 3: Client-Side Multi-Agent Orchestration on Azure App Service with Microsoft Agent Framework - Azure App Service</title>
+<meta name="description" content="In Part 2 of this series, I showed you how to build sophisticated multi-agent systems on Azure App Service using Azure AI Foundry Agents—server-side managed agents that run as Azure resources. Now I want to show you another alternative that gives you full control over agent orchestration, chat history management, and provider flexibility: client-side agents using ChatClientAgent. But this alternative raises an important question:">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Part 3: Client-Side Multi-Agent Orchestration on Azure App Service with Microsoft Agent Framework">
+<meta property="og:url" content="https://azure.github.io/AppService/2025/11/04/app-service-agent-framework-part-3.html">
+
+
+  <meta property="og:description" content="In Part 2 of this series, I showed you how to build sophisticated multi-agent systems on Azure App Service using Azure AI Foundry Agents—server-side managed agents that run as Azure resources. Now I want to show you another alternative that gives you full control over agent orchestration, chat history management, and provider flexibility: client-side agents using ChatClientAgent. But this alternative raises an important question:">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2025-11-04T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2025/11/04/app-service-agent-framework-part-3.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/sidecars/" class="">Sidecars</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/ai-integration/" class="">AI Integration</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Part 3: Client-Side Multi-Agent Orchestration on Azure App Service with Microsoft Agent Framework">
+    <meta itemprop="description" content="In Part 2 of this series, I showed you how to build sophisticated multi-agent systems on Azure App Service using Azure AI Foundry Agents—server-side managed agents that run as Azure resources. Now I want to show you another alternative that gives you full control over agent orchestration, chat history management, and provider flexibility: client-side agents using ChatClientAgent. But this alternative raises an important question:">
+    <meta itemprop="datePublished" content="November 04, 2025">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Part 3: Client-Side Multi-Agent Orchestration on Azure App Service with Microsoft Agent Framework
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  11 minute read
+
+            
+            
+              • By Jordan Selig
+            
+            • November 4, 2025
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#the-key-question-whos-in-charge">The Key Question: Who’s in Charge?</a></li>
+  <li><a href="#whats-different-chatclientagent-architecture">What’s Different: ChatClientAgent Architecture</a>
+    <ul>
+      <li><a href="#the-same-multi-agent-workflow">The Same Multi-Agent Workflow</a></li>
+      <li><a href="#how-chatclientagent-works">How ChatClientAgent Works</a></li>
+      <li><a href="#implementation-baseagent-pattern">Implementation: BaseAgent Pattern</a></li>
+      <li><a href="#client-side-chat-history-management">Client-Side Chat History Management</a></li>
+      <li><a href="#tool-integration-with-aifunctionfactory">Tool Integration with AIFunctionFactory</a></li>
+    </ul>
+  </li>
+  <li><a href="#why-choose-client-side-agents-chatclientagent">Why Choose Client-Side Agents (ChatClientAgent)?</a>
+    <ul>
+      <li><a href="#-full-orchestration-control">✅ Full Orchestration Control</a></li>
+      <li><a href="#-cost-effective">✅ Cost-Effective</a></li>
+      <li><a href="#-devops-friendly">✅ DevOps-Friendly</a></li>
+      <li><a href="#-flexible-chat-history">✅ Flexible Chat History</a></li>
+      <li><a href="#-provider-flexibility">✅ Provider Flexibility</a></li>
+      <li><a href="#-multi-agent-coordination-patterns">✅ Multi-Agent Coordination Patterns</a></li>
+    </ul>
+  </li>
+  <li><a href="#why-choose-server-side-agents-azure-ai-foundry">Why Choose Server-Side Agents (Azure AI Foundry)?</a>
+    <ul>
+      <li><a href="#-managed-lifecycle">✅ Managed Lifecycle</a></li>
+      <li><a href="#-built-in-features">✅ Built-In Features</a></li>
+      <li><a href="#-portal-ui">✅ Portal UI</a></li>
+      <li><a href="#-less-code">✅ Less Code</a></li>
+    </ul>
+  </li>
+  <li><a href="#when-to-choose-which-approach">When to Choose Which Approach</a></li>
+  <li><a href="#azure-app-service-perfect-for-both">Azure App Service: Perfect for Both</a>
+    <ul>
+      <li><a href="#the-same-architecture">The Same Architecture</a></li>
+    </ul>
+  </li>
+  <li><a href="#get-started-today">Get Started Today</a>
+    <ul>
+      <li><a href="#deploy-in-minutes">Deploy in Minutes</a></li>
+      <li><a href="#compare-with-part-2">Compare with Part 2</a></li>
+    </ul>
+  </li>
+  <li><a href="#key-takeaways">Key Takeaways</a></li>
+  <li><a href="#whats-next">What’s Next?</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <p>In <a href="https://techcommunity.microsoft.com/blog/appsonazureblog/part-2-build-long-running-ai-agents-on-azure-app-service-with-microsoft-agent-fr/4465825">Part 2 of this series</a>, I showed you how to build sophisticated multi-agent systems on Azure App Service using Azure AI Foundry Agents—server-side managed agents that run as Azure resources. Now I want to show you another alternative that gives you full control over agent orchestration, chat history management, and provider flexibility: client-side agents using ChatClientAgent. But this alternative raises an important question:</p>
+
+<p><strong>How do you choose between client-side and server-side agents?</strong></p>
+
+<p>This is an important question that points to a fundamental choice in Agent Framework: client-side agents vs. server-side agents. I’m not going to go into extreme detail here; my goal for this post is to show you how to build client-side multi-agent systems with ChatClientAgent and Azure App Service, but I will highlight the key differences and trade-offs that are going through my mind when considering this to help you make an informed decision.</p>
+
+<p>In Part 2, I mentioned:</p>
+
+<blockquote>
+  <p>“In my next blog post, I’ll demonstrate an alternative approach using a different agent type—likely the Azure OpenAI ChatCompletion agent type—which doesn’t create server-side Foundry resources. Instead, you orchestrate the agent behavior yourself while still benefiting from the Agent Framework’s unified programming model.”</p>
+</blockquote>
+
+<p>Today, I’m delivering on that promise! We’re going to rebuild the same travel planner sample using ChatClientAgent—a client-side agent type that gives you complete control over orchestration, chat history, and agent lifecycle.</p>
+
+<p>In this post, we’ll explore:</p>
+
+<ul>
+  <li>✅ Client-side agent orchestration with full workflow control</li>
+  <li>✅ ChatClientAgent architecture and implementation patterns</li>
+  <li>✅ When to choose client-side vs. server-side agents</li>
+  <li>✅ How Azure App Service supports both approaches equally well</li>
+  <li>✅ Managing chat history your way (Cosmos DB, Redis, or any storage you choose)</li>
+</ul>
+
+<p>🔗 <strong>Full Sample Code</strong>: <a href="https://github.com/Azure-Samples/app-service-maf-openai-travel-agent-dotnet">https://github.com/Azure-Samples/app-service-maf-openai-travel-agent-dotnet</a></p>
+
+<h2 id="the-key-question-whos-in-charge">The Key Question: Who’s in Charge?</h2>
+
+<p>When building multi-agent systems with Agent Framework, you face a fundamental architectural decision. Microsoft Agent Framework supports <a href="https://learn.microsoft.com/agent-framework/user-guide/agents/agent-types/?pivots=programming-language-csharp">multiple agent types</a>, but the choice typically comes down to:</p>
+
+<p><strong>Server-Side (Foundry Agents - Part 2)</strong></p>
+
+<ul>
+  <li>Azure AI Foundry manages agent lifecycle, threads, and execution</li>
+  <li>Agents exist as Azure resources in your AI Project</li>
+  <li>Conversation history stored in Foundry threads</li>
+  <li>Built-in orchestration patterns and features</li>
+</ul>
+
+<p><strong>Client-Side (ChatClientAgent - This Post)</strong></p>
+
+<ul>
+  <li>Your application code manages agent lifecycle and orchestration</li>
+  <li>Agents are C# objects created on-demand</li>
+  <li>Conversation history stored wherever you choose (Cosmos DB, Redis, etc.)</li>
+  <li>You write the orchestration logic yourself</li>
+</ul>
+
+<p>Both approaches run well on Azure App Service—the platform doesn’t care which agent type you use. What matters is which approach fits your requirements better.</p>
+
+<h2 id="whats-different-chatclientagent-architecture">What’s Different: ChatClientAgent Architecture</h2>
+
+<p>Let’s see what changes when you switch from Foundry agents to ChatClientAgent.</p>
+
+<h3 id="the-same-multi-agent-workflow">The Same Multi-Agent Workflow</h3>
+
+<p>Both samples implement the exact same travel planner with 6 specialized agents:</p>
+
+<ol>
+  <li><strong>Currency Converter Agent</strong> - Real-time exchange rates</li>
+  <li><strong>Weather Advisor Agent</strong> - Forecasts and packing tips</li>
+  <li><strong>Local Knowledge Agent</strong> - Cultural insights</li>
+  <li><strong>Itinerary Planner Agent</strong> - Day-by-day schedules</li>
+  <li><strong>Budget Optimizer Agent</strong> - Cost allocation</li>
+  <li><strong>Coordinator Agent</strong> - Final assembly</li>
+</ol>
+
+<p>The agents collaborate through the same 4-phase workflow:</p>
+
+<ul>
+  <li><strong>Phase 1</strong>: Parallel information gathering (Currency + Weather + Local)</li>
+  <li><strong>Phase 2</strong>: Itinerary planning</li>
+  <li><strong>Phase 3</strong>: Budget optimization</li>
+  <li><strong>Phase 4</strong>: Final assembly</li>
+</ul>
+
+<p>Same workflow, different execution model.</p>
+
+<h3 id="how-chatclientagent-works">How ChatClientAgent Works</h3>
+
+<p>Here’s the architecture stack for the client-side approach:</p>
+
+<p><img src="/AppService/media/2025/11/architecture-2.png" alt="ChatClientAgent architecture diagram" /></p>
+
+<p>The architecture shows:</p>
+
+<ul>
+  <li><strong>Your Application Code</strong>: TravelPlanningWorkflow orchestrating 6 ChatClientAgents with client-side chat history</li>
+  <li><strong>Microsoft.Agents.AI</strong>: ChatClientAgent wrapper adding instructions and tools</li>
+  <li><strong>Microsoft.Extensions.AI</strong>: IChatClient abstraction with Azure OpenAI implementation</li>
+  <li><strong>Azure Services</strong>: Azure OpenAI, Cosmos DB for chat history, and external APIs</li>
+</ul>
+
+<p>Key components:</p>
+
+<ol>
+  <li><strong>TravelPlanningWorkflow</strong> - Your orchestration code that coordinates agent execution</li>
+  <li><strong>ChatClientAgent</strong> - Agent Framework wrapper that adds instructions and tools to IChatClient</li>
+  <li><strong>IChatClient</strong> - Standard abstraction from Microsoft.Extensions.AI</li>
+  <li><strong>Client-Side Chat History</strong> - Dictionary storing conversation per agent (you manage this!)</li>
+  <li><strong>Azure OpenAI</strong> - Direct chat completion API calls (no AI Project endpoint needed)</li>
+  <li><strong>Cosmos DB</strong> - Your choice for chat history persistence</li>
+</ol>
+
+<h3 id="implementation-baseagent-pattern">Implementation: BaseAgent Pattern</h3>
+
+<p>Here’s how you create a ChatClientAgent in code:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">BaseAgent</span> <span class="p">:</span> <span class="n">IAgent</span>
+<span class="p">{</span>
+    <span class="k">protected</span> <span class="k">readonly</span> <span class="n">ChatClientAgent</span> <span class="n">Agent</span><span class="p">;</span>
+    
+    <span class="k">protected</span> <span class="k">abstract</span> <span class="kt">string</span> <span class="n">AgentName</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="p">}</span>
+    <span class="k">protected</span> <span class="k">abstract</span> <span class="kt">string</span> <span class="n">Instructions</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="p">}</span>
+    
+    <span class="c1">// Constructor for simple agents without tools</span>
+    <span class="k">protected</span> <span class="nf">BaseAgent</span><span class="p">(</span>
+        <span class="n">ILogger</span> <span class="n">logger</span><span class="p">,</span>
+        <span class="n">IOptions</span><span class="p">&lt;</span><span class="n">AgentOptions</span><span class="p">&gt;</span> <span class="n">options</span><span class="p">,</span>
+        <span class="n">IChatClient</span> <span class="n">chatClient</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">Agent</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">ChatClientAgent</span><span class="p">(</span><span class="n">chatClient</span><span class="p">,</span> <span class="k">new</span> <span class="n">ChatClientAgentOptions</span>
+        <span class="p">{</span>
+            <span class="n">Name</span> <span class="p">=</span> <span class="n">AgentName</span><span class="p">,</span>
+            <span class="n">Instructions</span> <span class="p">=</span> <span class="n">Instructions</span>
+        <span class="p">});</span>
+    <span class="p">}</span>
+    
+    <span class="c1">// Constructor for agents with tools (weather, currency APIs)</span>
+    <span class="k">protected</span> <span class="nf">BaseAgent</span><span class="p">(</span>
+        <span class="n">ILogger</span> <span class="n">logger</span><span class="p">,</span>
+        <span class="n">IOptions</span><span class="p">&lt;</span><span class="n">AgentOptions</span><span class="p">&gt;</span> <span class="n">options</span><span class="p">,</span>
+        <span class="n">IChatClient</span> <span class="n">chatClient</span><span class="p">,</span>
+        <span class="n">ChatOptions</span> <span class="n">chatOptions</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">Agent</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">ChatClientAgent</span><span class="p">(</span><span class="n">chatClient</span><span class="p">,</span> <span class="k">new</span> <span class="n">ChatClientAgentOptions</span>
+        <span class="p">{</span>
+            <span class="n">Name</span> <span class="p">=</span> <span class="n">AgentName</span><span class="p">,</span>
+            <span class="n">Instructions</span> <span class="p">=</span> <span class="n">Instructions</span><span class="p">,</span>
+            <span class="n">ChatOptions</span> <span class="p">=</span> <span class="n">chatOptions</span> <span class="c1">// Tools via AIFunctionFactory</span>
+        <span class="p">});</span>
+    <span class="p">}</span>
+    
+    <span class="k">public</span> <span class="k">async</span> <span class="n">Task</span><span class="p">&lt;</span><span class="n">ChatMessage</span><span class="p">&gt;</span> <span class="nf">InvokeAsync</span><span class="p">(</span>
+        <span class="n">IList</span><span class="p">&lt;</span><span class="n">ChatMessage</span><span class="p">&gt;</span> <span class="n">chatHistory</span><span class="p">,</span> 
+        <span class="n">CancellationToken</span> <span class="n">cancellationToken</span> <span class="p">=</span> <span class="k">default</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">var</span> <span class="n">response</span> <span class="p">=</span> <span class="k">await</span> <span class="n">Agent</span><span class="p">.</span><span class="nf">RunAsync</span><span class="p">(</span>
+            <span class="n">chatHistory</span><span class="p">,</span> 
+            <span class="n">thread</span><span class="p">:</span> <span class="k">null</span><span class="p">,</span> 
+            <span class="n">options</span><span class="p">:</span> <span class="k">null</span><span class="p">,</span> 
+            <span class="n">cancellationToken</span><span class="p">);</span>
+            
+        <span class="k">return</span> <span class="n">response</span><span class="p">.</span><span class="n">Messages</span><span class="p">.</span><span class="nf">LastOrDefault</span><span class="p">()</span> 
+            <span class="p">??</span> <span class="k">new</span> <span class="nf">ChatMessage</span><span class="p">(</span><span class="n">ChatRole</span><span class="p">.</span><span class="n">Assistant</span><span class="p">,</span> <span class="s">"No response generated."</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>What’s happening here?</p>
+
+<ul>
+  <li>You create a <code class="language-plaintext highlighter-rouge">ChatClientAgent</code> by wrapping an <code class="language-plaintext highlighter-rouge">IChatClient</code></li>
+  <li>You provide instructions (the agent’s system prompt)</li>
+  <li>Optionally, you provide tools via <code class="language-plaintext highlighter-rouge">ChatOptions</code> (using <code class="language-plaintext highlighter-rouge">AIFunctionFactory</code>)</li>
+  <li>When you call <code class="language-plaintext highlighter-rouge">RunAsync</code>, you pass the chat history yourself</li>
+  <li>The agent returns a response, and you decide what to do with the chat history</li>
+</ul>
+
+<p>Compare this to Foundry agents where you create the agent once in Azure AI Foundry, and the platform manages threads and execution for you.</p>
+
+<h3 id="client-side-chat-history-management">Client-Side Chat History Management</h3>
+
+<p>One of the biggest differences is you control the chat history:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">WorkflowState</span>
+<span class="p">{</span>
+    <span class="c1">// Each agent gets its own conversation history</span>
+    <span class="k">public</span> <span class="n">Dictionary</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">,</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">ChatMessage</span><span class="p">&gt;&gt;</span> <span class="n">AgentChatHistories</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span> <span class="p">=</span> <span class="k">new</span><span class="p">();</span>
+    
+    <span class="k">public</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">ChatMessage</span><span class="p">&gt;</span> <span class="nf">GetChatHistory</span><span class="p">(</span><span class="kt">string</span> <span class="n">agentType</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(!</span><span class="n">AgentChatHistories</span><span class="p">.</span><span class="nf">ContainsKey</span><span class="p">(</span><span class="n">agentType</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="n">AgentChatHistories</span><span class="p">[</span><span class="n">agentType</span><span class="p">]</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">ChatMessage</span><span class="p">&gt;();</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AgentChatHistories</span><span class="p">[</span><span class="n">agentType</span><span class="p">];</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Workflow orchestration:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Phase 1: Currency Converter Agent</span>
+<span class="kt">var</span> <span class="n">currencyChatHistory</span> <span class="p">=</span> <span class="n">state</span><span class="p">.</span><span class="nf">GetChatHistory</span><span class="p">(</span><span class="s">"CurrencyConverter"</span><span class="p">);</span>
+<span class="n">currencyChatHistory</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="k">new</span> <span class="nf">ChatMessage</span><span class="p">(</span><span class="n">ChatRole</span><span class="p">.</span><span class="n">User</span><span class="p">,</span> 
+    <span class="s">$"Convert </span><span class="p">{</span><span class="n">request</span><span class="p">.</span><span class="n">Budget</span><span class="p">}</span><span class="s"> </span><span class="p">{</span><span class="n">request</span><span class="p">.</span><span class="n">Currency</span><span class="p">}</span><span class="s"> to local currency for </span><span class="p">{</span><span class="n">request</span><span class="p">.</span><span class="n">Destination</span><span class="p">}</span><span class="s">"</span><span class="p">));</span>
+
+<span class="kt">var</span> <span class="n">currencyResponse</span> <span class="p">=</span> <span class="k">await</span> <span class="n">_currencyAgent</span><span class="p">.</span><span class="nf">InvokeAsync</span><span class="p">(</span><span class="n">currencyChatHistory</span><span class="p">,</span> <span class="n">cancellationToken</span><span class="p">);</span>
+<span class="n">currencyChatHistory</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="n">currencyResponse</span><span class="p">);</span> <span class="c1">// You manage the history!</span>
+
+<span class="c1">// Store in workflow state for downstream agents</span>
+<span class="n">state</span><span class="p">.</span><span class="nf">AddToContext</span><span class="p">(</span><span class="s">"CurrencyInfo"</span><span class="p">,</span> <span class="n">currencyResponse</span><span class="p">.</span><span class="n">Text</span> <span class="p">??</span> <span class="s">""</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Benefits:</p>
+
+<ul>
+  <li>Store chat history in Cosmos DB, Redis, SQL, or any data store</li>
+  <li>Query conversation history with your own logic</li>
+  <li>Implement custom retention policies</li>
+  <li>Export chat logs for analytics or compliance</li>
+</ul>
+
+<p>With Foundry agents, chat history lives in Foundry threads—you don’t directly control where or how it’s stored. This may be fine for many scenarios, but if you need custom storage or compliance, client-side management is powerful.</p>
+
+<h3 id="tool-integration-with-aifunctionfactory">Tool Integration with AIFunctionFactory</h3>
+
+<p>External API tools (weather, currency) are registered as C# methods:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Weather Service</span>
+<span class="k">public</span> <span class="k">class</span> <span class="nc">NWSWeatherService</span> <span class="p">:</span> <span class="n">IWeatherService</span>
+<span class="p">{</span>
+    <span class="p">[</span><span class="nf">Description</span><span class="p">(</span><span class="s">"Get weather forecast for a US city"</span><span class="p">)]</span>
+    <span class="k">public</span> <span class="k">async</span> <span class="n">Task</span><span class="p">&lt;</span><span class="n">WeatherForecast</span><span class="p">&gt;</span> <span class="nf">GetWeatherAsync</span><span class="p">(</span>
+        <span class="p">[</span><span class="nf">Description</span><span class="p">(</span><span class="s">"City name (e.g., 'San Francisco')"</span><span class="p">)]</span> <span class="kt">string</span> <span class="n">city</span><span class="p">,</span>
+        <span class="p">[</span><span class="nf">Description</span><span class="p">(</span><span class="s">"State code (e.g., 'CA')"</span><span class="p">)]</span> <span class="kt">string</span> <span class="n">state</span><span class="p">,</span>
+        <span class="n">CancellationToken</span> <span class="n">cancellationToken</span> <span class="p">=</span> <span class="k">default</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Implementation calls NWS API</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// Register as tools with ChatClientAgent</span>
+<span class="kt">var</span> <span class="n">weatherTools</span> <span class="p">=</span> <span class="n">AIFunctionFactory</span><span class="p">.</span><span class="nf">Create</span><span class="p">(</span><span class="n">weatherService</span><span class="p">);</span>
+<span class="kt">var</span> <span class="n">chatOptions</span> <span class="p">=</span> <span class="k">new</span> <span class="n">ChatOptions</span> <span class="p">{</span> <span class="n">Tools</span> <span class="p">=</span> <span class="n">weatherTools</span> <span class="p">};</span>
+
+<span class="kt">var</span> <span class="n">agent</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">ChatClientAgent</span><span class="p">(</span><span class="n">chatClient</span><span class="p">,</span> <span class="k">new</span> <span class="n">ChatClientAgentOptions</span>
+<span class="p">{</span>
+    <span class="n">Name</span> <span class="p">=</span> <span class="s">"WeatherAdvisor"</span><span class="p">,</span>
+    <span class="n">Instructions</span> <span class="p">=</span> <span class="s">"Provide weather forecasts and packing recommendations..."</span><span class="p">,</span>
+    <span class="n">ChatOptions</span> <span class="p">=</span> <span class="n">chatOptions</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>The agent can now call <code class="language-plaintext highlighter-rouge">GetWeatherAsync</code> via function calling—same capability as Foundry agents, but configured in code instead of the portal.</p>
+
+<h2 id="why-choose-client-side-agents-chatclientagent">Why Choose Client-Side Agents (ChatClientAgent)?</h2>
+
+<p>Here’s when ChatClientAgent shines:</p>
+
+<h3 id="-full-orchestration-control">✅ Full Orchestration Control</h3>
+
+<p>You write the workflow logic:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Phase 1: Run 3 agents in parallel (your code!)</span>
+<span class="kt">var</span> <span class="n">currencyTask</span> <span class="p">=</span> <span class="nf">GatherCurrencyInfoAsync</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">progress</span><span class="p">,</span> <span class="n">cancellationToken</span><span class="p">);</span>
+<span class="kt">var</span> <span class="n">weatherTask</span> <span class="p">=</span> <span class="nf">GatherWeatherInfoAsync</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">progress</span><span class="p">,</span> <span class="n">cancellationToken</span><span class="p">);</span>
+<span class="kt">var</span> <span class="n">localTask</span> <span class="p">=</span> <span class="nf">GatherLocalKnowledgeAsync</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">progress</span><span class="p">,</span> <span class="n">cancellationToken</span><span class="p">);</span>
+
+<span class="k">await</span> <span class="n">Task</span><span class="p">.</span><span class="nf">WhenAll</span><span class="p">(</span><span class="n">currencyTask</span><span class="p">,</span> <span class="n">weatherTask</span><span class="p">,</span> <span class="n">localTask</span><span class="p">);</span>
+
+<span class="c1">// Phase 2: Sequential itinerary planning (your code!)</span>
+<span class="k">await</span> <span class="nf">PlanItineraryAsync</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">progress</span><span class="p">,</span> <span class="n">cancellationToken</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>With Foundry agents, orchestration patterns are limited to what the platform provides.</p>
+
+<h3 id="-cost-effective">✅ Cost-Effective</h3>
+
+<p>No separate agent infrastructure:</p>
+
+<ul>
+  <li><strong>ChatClientAgent</strong>: Pay only for Azure OpenAI API calls</li>
+  <li><strong>Foundry Agents</strong>: Pay for Azure OpenAI + AI Project resources + agent storage</li>
+</ul>
+
+<p>For high-volume scenarios, this can add up to significant savings.</p>
+
+<h3 id="-devops-friendly">✅ DevOps-Friendly</h3>
+
+<p>Everything in code:</p>
+
+<ul>
+  <li>Agent definitions tracked in Git</li>
+  <li>Testable with unit tests</li>
+  <li>CI/CD pipelines deploy everything together</li>
+  <li>No manual portal configuration steps</li>
+  <li>Infrastructure as Code (Bicep) covers all resources</li>
+</ul>
+
+<h3 id="-flexible-chat-history">✅ Flexible Chat History</h3>
+
+<p>Store conversations your way:</p>
+
+<ul>
+  <li>Cosmos DB for global distribution and rich queries</li>
+  <li>Redis for ultra-low latency caching</li>
+  <li>SQL Database for complex relational queries</li>
+  <li>Blob Storage for long-term archival</li>
+  <li>Custom encryption and retention policies</li>
+</ul>
+
+<h3 id="-provider-flexibility">✅ Provider Flexibility</h3>
+
+<p>Works with any IChatClient:</p>
+
+<ul>
+  <li>Azure OpenAI (this sample)</li>
+  <li>OpenAI directly</li>
+  <li>Local models via Ollama</li>
+  <li>Azure AI Foundry model catalog</li>
+  <li>Custom chat implementations</li>
+</ul>
+
+<p>Switching providers is just a configuration change—no agent re-creation needed.</p>
+
+<h3 id="-multi-agent-coordination-patterns">✅ Multi-Agent Coordination Patterns</h3>
+
+<p>Implement complex workflows:</p>
+
+<ul>
+  <li>Parallel execution (Phase 1 in our sample)</li>
+  <li>Sequential dependencies (Phase 2-4)</li>
+  <li>Conditional branching based on agent responses</li>
+  <li>Agent-to-agent negotiation</li>
+  <li>Hierarchical supervisor patterns</li>
+  <li>Custom retry logic per agent</li>
+</ul>
+
+<p>You have complete freedom to orchestrate however your scenario requires.</p>
+
+<h2 id="why-choose-server-side-agents-azure-ai-foundry">Why Choose Server-Side Agents (Azure AI Foundry)?</h2>
+
+<p>To be fair, Foundry agents from Part 2 have their own advantages and this post isn’t about dismissing them. They are a powerful option for many scenarios. Here are some reasons to choose Foundry agents:</p>
+
+<h3 id="-managed-lifecycle">✅ Managed Lifecycle</h3>
+
+<p>Platform handles the heavy lifting:</p>
+
+<ul>
+  <li>Agents persist as Azure resources</li>
+  <li>Threads automatically manage conversation state</li>
+  <li>Runs track execution progress server-side</li>
+  <li>No orchestration code to write or maintain</li>
+</ul>
+
+<h3 id="-built-in-features">✅ Built-In Features</h3>
+
+<p>Rich capabilities out of the box:</p>
+
+<ul>
+  <li>File search for RAG scenarios</li>
+  <li>Code interpreter for data analysis</li>
+  <li>Automatic conversation threading</li>
+  <li>Built-in retry and error handling</li>
+</ul>
+
+<h3 id="-portal-ui">✅ Portal UI</h3>
+
+<p>Configure without code:</p>
+
+<ul>
+  <li>Create agents in Azure AI Foundry portal</li>
+  <li>Test agents interactively</li>
+  <li>View conversation threads and runs</li>
+  <li>Adjust instructions without redeployment</li>
+</ul>
+
+<h3 id="-less-code">✅ Less Code</h3>
+
+<p>Simpler for basic scenarios:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Foundry Agent (Part 2 sample)</span>
+<span class="kt">var</span> <span class="n">agent</span> <span class="p">=</span> <span class="k">await</span> <span class="n">agentsClient</span><span class="p">.</span><span class="nf">CreateAgentAsync</span><span class="p">(</span>
+    <span class="s">"gpt-4o"</span><span class="p">,</span>
+    <span class="n">instructions</span><span class="p">:</span> <span class="s">"You are a travel planning expert..."</span><span class="p">,</span>
+    <span class="n">tools</span><span class="p">:</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">ToolDefinition</span><span class="p">&gt;</span> <span class="p">{</span> <span class="k">new</span> <span class="nf">FunctionTool</span><span class="p">(...)</span> <span class="p">});</span>
+
+<span class="kt">var</span> <span class="n">thread</span> <span class="p">=</span> <span class="k">await</span> <span class="n">agentsClient</span><span class="p">.</span><span class="nf">CreateThreadAsync</span><span class="p">();</span>
+<span class="kt">var</span> <span class="n">run</span> <span class="p">=</span> <span class="k">await</span> <span class="n">agentsClient</span><span class="p">.</span><span class="nf">CreateRunAsync</span><span class="p">(</span><span class="n">thread</span><span class="p">.</span><span class="n">Id</span><span class="p">,</span> <span class="n">agent</span><span class="p">.</span><span class="n">Id</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>No need to manage chat history, orchestration logic, or tool registration in code.</p>
+
+<h2 id="when-to-choose-which-approach">When to Choose Which Approach</h2>
+
+<p>Here’s my take on a decision guide. This isn’t exhaustive, but it covers key considerations. Others may disagree based on their priorities, but this is how I think about it:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>Scenario</strong></th>
+      <th><strong>ChatClientAgent</strong></th>
+      <th><strong>Foundry Agents</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Complex multi-agent workflows</td>
+      <td>✅ Full control</td>
+      <td>⚠️ Limited patterns</td>
+    </tr>
+    <tr>
+      <td>Custom chat history storage</td>
+      <td>✅ Any data store</td>
+      <td>❌ Foundry threads only</td>
+    </tr>
+    <tr>
+      <td>Cost optimization</td>
+      <td>✅ LLM calls only</td>
+      <td>⚠️ + Infrastructure</td>
+    </tr>
+    <tr>
+      <td>Code-first DevOps</td>
+      <td>✅ Everything in Git</td>
+      <td>⚠️ Portal config needed</td>
+    </tr>
+    <tr>
+      <td>Provider flexibility</td>
+      <td>✅ Any IChatClient</td>
+      <td>⚠️ Azure only</td>
+    </tr>
+    <tr>
+      <td>Built-in RAG (file search)</td>
+      <td>❌ DIY</td>
+      <td>✅ Built-in</td>
+    </tr>
+    <tr>
+      <td>Portal UI for testing</td>
+      <td>❌ Code only</td>
+      <td>✅ Full UI</td>
+    </tr>
+    <tr>
+      <td>Quick prototypes</td>
+      <td>⚠️ More code</td>
+      <td>✅ Fast setup</td>
+    </tr>
+    <tr>
+      <td>Learning curve</td>
+      <td>⚠️ More concepts</td>
+      <td>✅ Guided setup</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Use ChatClientAgent when:</strong></p>
+
+<ul>
+  <li>You need complex multi-agent coordination</li>
+  <li>Cost optimization is important</li>
+  <li>You want full control over orchestration</li>
+  <li>Code-first DevOps is a priority</li>
+  <li>You need custom chat history management</li>
+</ul>
+
+<p><strong>Use Foundry Agents when:</strong></p>
+
+<ul>
+  <li>Simple single-agent or basic multi-agent scenarios</li>
+  <li>You want built-in RAG and file search</li>
+  <li>Portal-based configuration is preferred</li>
+  <li>Quick prototyping and experimentation</li>
+  <li>Managed infrastructure over custom code</li>
+</ul>
+
+<h2 id="azure-app-service-perfect-for-both">Azure App Service: Perfect for Both</h2>
+
+<p>Here’s the great part: Azure App Service supports both approaches equally well.</p>
+
+<h3 id="the-same-architecture">The Same Architecture</h3>
+
+<p>Both samples use identical infrastructure.</p>
+
+<p><strong>What’s the same:</strong></p>
+
+<ul>
+  <li>✅ Async request-reply pattern (202 Accepted → poll status)</li>
+  <li>✅ Service Bus for reliable message delivery</li>
+  <li>✅ Cosmos DB for task state with 24-hour TTL</li>
+  <li>✅ WebJob for background processing</li>
+  <li>✅ Managed Identity for authentication</li>
+  <li>✅ Premium App Service tier for Always On</li>
+</ul>
+
+<p><strong>What’s different:</strong></p>
+
+<ul>
+  <li><strong>ChatClientAgent</strong>: Azure OpenAI endpoint directly (<code class="language-plaintext highlighter-rouge">https://ai-xyz.openai.azure.com/</code>)</li>
+  <li><strong>Foundry Agents</strong>: AI Project endpoint (<code class="language-plaintext highlighter-rouge">https://ai-xyz.services.ai.azure.com/api/projects/proj-xyz</code>)</li>
+  <li><strong>ChatClientAgent</strong>: Chat history in Cosmos DB (your control)</li>
+  <li><strong>Foundry Agents</strong>: Chat history in Foundry threads (platform managed)</li>
+</ul>
+
+<p>Azure App Service doesn’t care which you choose. It just runs your .NET code, processes messages from Service Bus, and stores state in Cosmos DB. The agent execution model is an implementation detail. You can easily switch between approaches without changing your hosting platform, and even use a hybrid approach if desired.</p>
+
+<h2 id="get-started-today">Get Started Today</h2>
+
+<p>Ready to try client-side multi-agent orchestration on Azure App Service?</p>
+
+<p>🔗 <strong>GitHub Repository</strong>: <a href="https://github.com/Azure-Samples/app-service-maf-openai-travel-agent-dotnet">https://github.com/Azure-Samples/app-service-maf-openai-travel-agent-dotnet</a></p>
+
+<p>The repository includes:</p>
+
+<ul>
+  <li>✅ Complete .NET 9 source code with 6 specialized ChatClientAgents</li>
+  <li>✅ Infrastructure as Code (Bicep) for one-command deployment</li>
+  <li>✅ Web UI with real-time progress tracking</li>
+  <li>✅ Comprehensive README and architecture documentation</li>
+  <li>✅ External API integrations (weather, currency)</li>
+  <li>✅ Client-side chat history management with Cosmos DB</li>
+</ul>
+
+<h3 id="deploy-in-minutes">Deploy in Minutes</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Clone the repository</span>
+git clone https://github.com/Azure-Samples/app-service-maf-openai-travel-agent-dotnet.git
+<span class="nb">cd </span>app-service-maf-openai-travel-agent-dotnet
+
+<span class="c"># Login to Azure</span>
+azd auth login
+
+<span class="c"># Provision infrastructure and deploy the API</span>
+azd up
+</code></pre></div></div>
+
+<p>This provisions:</p>
+
+<ul>
+  <li>Azure App Service (P0v4 Premium Windows)</li>
+  <li>Azure Service Bus (message queue)</li>
+  <li>Azure Cosmos DB (state + chat history storage)</li>
+  <li>Azure AI Services (AI Services resource)</li>
+  <li>GPT-4o model deployment (GlobalStandard 50K TPM)</li>
+</ul>
+
+<p>Then manually deploy the WebJob following the <a href="https://github.com/Azure-Samples/app-service-maf-openai-travel-agent-dotnet#deploy-the-webjob">README instructions</a>.</p>
+
+<h3 id="compare-with-part-2">Compare with Part 2</h3>
+
+<p>Want to see the differences firsthand? Deploy both samples:</p>
+
+<p><strong>Part 2 - Server-Side Foundry Agents:</strong><br />
+🔗 <a href="https://github.com/Azure-Samples/app-service-maf-workflow-travel-agent-dotnet">https://github.com/Azure-Samples/app-service-maf-workflow-travel-agent-dotnet</a></p>
+
+<p><strong>Part 3 - Client-Side ChatClientAgent (this post):</strong><br />
+🔗 <a href="https://github.com/Azure-Samples/app-service-maf-openai-travel-agent-dotnet">https://github.com/Azure-Samples/app-service-maf-openai-travel-agent-dotnet</a></p>
+
+<p>Same travel planner, same workflow, same results—different execution model. Try both and see which fits your needs!</p>
+
+<h2 id="key-takeaways">Key Takeaways</h2>
+
+<ul>
+  <li>✅ <strong>Microsoft Agent Framework offers choice</strong>: Client-side (ChatClientAgent) vs. Server-side (Foundry Agents)</li>
+  <li>✅ <strong>ChatClientAgent gives you full control</strong>: Orchestration, chat history, agent lifecycle—you manage it all in code</li>
+  <li>✅ <strong>Foundry Agents give you convenience</strong>: Managed infrastructure, built-in features, portal UI—let the platform handle the details</li>
+  <li>✅ <strong>Azure App Service supports both equally</strong>: Same async request-reply pattern, same WebJob architecture, same infrastructure</li>
+  <li>✅ <strong>Pick the right tool for your needs</strong>: Complex coordination and cost control → ChatClientAgent. Simple scenarios and managed infrastructure → Foundry Agents.</li>
+</ul>
+
+<p>Whether you choose client-side or server-side agents, Azure App Service provides the perfect platform for long-running AI workloads—reliable, scalable, and fully managed.</p>
+
+<h2 id="whats-next">What’s Next?</h2>
+
+<p>This completes our three-part series on building AI agents with Microsoft Agent Framework on Azure App Service:</p>
+
+<ul>
+  <li><a href="https://techcommunity.microsoft.com/blog/appsonazureblog/build-long-running-ai-agents-on-azure-app-service-with-microsoft-agent-framework/4463159">Part 1</a>: Introduction to Agent Framework and async request-reply pattern</li>
+  <li><a href="https://techcommunity.microsoft.com/blog/appsonazureblog/part-2-build-long-running-ai-agents-on-azure-app-service-with-microsoft-agent-fr/4465825">Part 2</a>: Multi-agent systems with server-side Foundry Agents</li>
+  <li><strong>Part 3 (this post)</strong>: Client-side multi-agent orchestration with ChatClientAgent</li>
+</ul>
+
+<p>What would you like to see next? More advanced orchestration patterns? Integration with other Azure services?</p>
+
+<p>Let me know in the comments what you’d like to learn about next and I’ll do my best to deliver!</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2025-11-04T00:00:00+00:00">November 04, 2025</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Part+3%3A+Client-Side+Multi-Agent+Orchestration+on+Azure+App+Service+with+Microsoft+Agent+Framework%20https%3A%2F%2Fazure.github.io%2FAppService%2F2025%2F11%2F04%2Fapp-service-agent-framework-part-3.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2025%2F11%2F04%2Fapp-service-agent-framework-part-3.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2025%2F11%2F04%2Fapp-service-agent-framework-part-3.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2025/10/31/app-service-agent-framework-part-2.html" class="pagination--pager" title="Part 2: Build Long-Running AI Agents on Azure App Service with Microsoft Agent Framework
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/10/31/app-service-agent-framework-part-2.html" rel="permalink">Part 2: Build Long-Running AI Agents on Azure App Service with Microsoft Agent Framework
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  8 minute read
+
+        
+        
+          • By Jordan Selig
+        
+        • October 31, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Last week, I shared how to build long-running AI agents on Azure App Service with Microsoft Agent Framework. If you haven’t seen that post yet, I would recom...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/10/29/node24-available.html" rel="permalink">Node.js 24 is now available on Azure App Service for Linux
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • October 29, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Node.js 24 LTS is live on Azure App Service for Linux. You can create a new Node 24 app through the Azure portal, automate it with the Azure CLI, or roll it ...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/10/29/VSTS-tasks-for-sidecars.html" rel="permalink">Azure Pipeline samples: add sidecars to Azure App Service for Linux
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • October 29, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Sidecars on Azure App Service let you attach extra containers — logging, telemetry, lightweight APIs, caches, AI inference helpers — alongside your main app,...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/10/28/python314-available.html" rel="permalink">Python 3.14 is now available on Azure App Service for Linux
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • October 28, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">If you’ve been waiting to run Python 3.14 in on Azure App Service - it’s here. Azure App Service for Linux now offers Python 3.14 as a first-class runtime. Y...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2025 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

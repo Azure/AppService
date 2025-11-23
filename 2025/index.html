@@ -1,0 +1,1263 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Azure App Service</title>
+<meta name="description" content="Announcements, updates, and release notes from the Azure App Service product team.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Azure App Service">
+<meta property="og:url" content="https://azure.github.io/AppService/2025/">
+
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2025-01-01T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2025/">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--archive-year">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+
+  <div class="archive">
+    
+      
+        <h1 id="page-title" class="page__title"></h1>
+      
+    
+    
+
+<h1>Posts from 2025</h1>
+<section id="year" class="taxonomy__section">
+    <div class="entries-list">
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/11/04/app-service-agent-framework-part-3.html" rel="permalink">Part 3: Client-Side Multi-Agent Orchestration on Azure App Service with Microsoft Agent Framework
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  11 minute read
+
+        
+        
+          • By Jordan Selig
+        
+        • November 4, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">In Part 2 of this series, I showed you how to build sophisticated multi-agent systems on Azure App Service using Azure AI Foundry Agents—server-side managed ...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/10/31/app-service-agent-framework-part-2.html" rel="permalink">Part 2: Build Long-Running AI Agents on Azure App Service with Microsoft Agent Framework
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  8 minute read
+
+        
+        
+          • By Jordan Selig
+        
+        • October 31, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Last week, I shared how to build long-running AI agents on Azure App Service with Microsoft Agent Framework. If you haven’t seen that post yet, I would recom...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/10/29/node24-available.html" rel="permalink">Node.js 24 is now available on Azure App Service for Linux
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • October 29, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Node.js 24 LTS is live on Azure App Service for Linux. You can create a new Node 24 app through the Azure portal, automate it with the Azure CLI, or roll it ...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/10/29/VSTS-tasks-for-sidecars.html" rel="permalink">Azure Pipeline samples: add sidecars to Azure App Service for Linux
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • October 29, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Sidecars on Azure App Service let you attach extra containers — logging, telemetry, lightweight APIs, caches, AI inference helpers — alongside your main app,...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/10/28/python314-available.html" rel="permalink">Python 3.14 is now available on Azure App Service for Linux
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • October 28, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">If you’ve been waiting to run Python 3.14 in on Azure App Service - it’s here. Azure App Service for Linux now offers Python 3.14 as a first-class runtime. Y...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/10/21/app-service-agent-framework.html" rel="permalink">Build Long-Running AI Agents on Azure App Service with Microsoft Agent Framework
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Jordan Selig
+        
+        • October 21, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The AI landscape is evolving rapidly, and with the introduction of Microsoft Agent Framework, developers now have a powerful platform for building sophistica...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/10/20/dotnet-on-windows.html" rel="permalink">Platform updates for .NET on App Service Windows
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Byron Tardif
+        
+        • October 20, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+  UPDATE:
+
+  
+    Patch deployment has completed on all instances of our HTTP load balancer infrastructure (aka Front Ends).
+    Clarified impact to Functio...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/10/14/Ubuntu-images.html" rel="permalink">Ubuntu-Powered Runtimes on Azure App Service for Linux: Leaner, Faster, Stronger
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • October 14, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We’re updating the OS foundation for new code-based stacks on Azure App Service for Linux. Every new major version of our supported stacks will target Ubuntu...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/09/08/Oryx-build-certificate.html" rel="permalink">App Service builds behind proxies: fixing trust with a public certificate
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • September 8, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">TL;DR: If your organization uses a TLS-inspecting proxy (e.g., Zscaler), some of the traffic originating from App Service build infrastructure may be re-sign...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/09/08/GHA-templates-sidecars.html" rel="permalink">GitHub Actions samples: add sidecars to Azure App Service for Linux
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • September 8, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Sidecars on Azure App Service let you bolt on capabilities like monitoring, caching, or AI—without changing your main app. The Azure team has added two GitHu...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/08/26/dotnet-10-preview-on-App-Service.html" rel="permalink">🧑🏻‍💻 .NET 10 Preview Now Available on Azure App Service!
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+          • By Byron Tardif
+        
+        • August 26, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We’re thrilled to announce that .NET 10 Preview is now available on Azure App Service for both Windows and Linux! Whether you’re building modern web apps wit...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/08/25/BYOL-Support-for-JBoss.html" rel="permalink">🚀 Bring Your Own License (BYOL) Support for JBoss EAP on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Byron Tardif
+        
+        • August 25, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We’re excited to announce that Azure App Service now supports Bring Your Own License (BYOL) for JBoss Enterprise Application Platform (EAP), enabling enterpr...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/08/06/langchain-on-app-service.html" rel="permalink">Deploy LangChain applications to Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • August 6, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">LangChain is a powerful framework that simplifies the development of applications powered by large language models (LLMs). It provides essential building blo...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/07/09/node-optimization.html" rel="permalink">Improved Node.js Deployment Performance on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • July 9, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We’ve made significant improvements to how Node.js applications are deployed on Azure App Service — with deployment times now up to 8× faster in some cases.
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/05/19/Aspire-on-App-Service.html" rel="permalink">Getting Started with .NET Aspire (Preview) on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • May 19, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We’re laying the groundwork to bring .NET Aspire to Azure App Service. While this is just the beginning, we wanted to give you an early preview of how to set...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/05/01/Azure-App-Service-Webjobs-Linux-GA.html" rel="permalink">General Availability: App Service Webjobs on Linux
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+          • By Byron Tardif
+        
+        • May 1, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Last year, we introduced Webjobs on Linux  as a preview feature.  We are now excited to announce General Avilability for Webjobs on App Service Linux for bot...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/04/29/Azure-App-Service-Notifications-Improvements.html" rel="permalink">Routine Planned Maintenance Notifications Improvements for App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By James Mulvey
+        
+        • April 29, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">As of April 2025, we are happy to announce major improvements to App Service routine maintenance notifications.
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/04/23/Bitnet-on-Azure-App-Service.html" rel="permalink">1-Bit Brilliance: BitNet on Azure App Service with Just a CPU
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • April 23, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">In a world where running large language models typically demands GPUs and hefty cloud bills, Microsoft Research is reshaping the narrative with BitNet — a co...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/04/01/Docker-compose-migration.html" rel="permalink">Migrating your Docker Compose applications to the Sidecar feature
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  8 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • April 1, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">As we continue to enhance the developer experience on Azure App Service, we’re announcing the retirement of the Docker Compose feature on March 31, 2027. If ...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/03/19/redis-sidecar-extension.html" rel="permalink">Using the Redis Sidecar Extension with Azure App Service for Linux
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • March 19, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Azure App Service now supports running Redis as a sidecar extension, allowing you to easily add Redis caching to your applications. This blog will walk you t...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/03/19/phi-sidecar-extension.html" rel="permalink">Running SLMs as Sidecar extensions on App Service for Linux
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • March 19, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Introduction:
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/03/19/datadog-sidecar-extension.html" rel="permalink">Using Datadog as a Sidecar Extension for Azure App Service on Linux
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • March 19, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Monitoring your applications is crucial for performance and reliability. With Datadog as a sidecar extension, you can seamlessly collect logs, metrics, and t...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/03/19/Sidecar-extensions.html" rel="permalink">Introducing Sidecar Extensions for Azure App Service on Linux
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • March 19, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">In November 2024, we announced the General Availability (GA) of the Sidecar feature for Azure App Service for Linux, enabling developers to run sidecar conta...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/03/06/Sidecars-Deep-Dive-Part1.html" rel="permalink">Sidecars in Azure App Service: A Deep Dive
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • March 6, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">In November 2024, we announced the General Availability (GA) of the Sidecar feature for Azure App Service for Linux. Today, we want to dive deep into this fe...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/02/18/Node-22.html" rel="permalink">Node 22 now available on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • February 18, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We are happy to announce that App Service now supports apps targeting Node 22 across all public regions on Linux App Service Plans.
+</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/02/04/Announcing-New-Networking-Troubleshooter.html" rel="permalink">Announcing new Networking Troubleshooter preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+          • By Mads Damgård
+        
+        • February 4, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Networking in general and networking in App Service can be complex. There are many ways to configure the networking components and features to create a secur...</p>
+  </article>
+</div>
+
+        
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/01/24/Best-Practices-with-GitHub-Copilot.html" rel="permalink">Implement App Service Best Practices into your Azure ARM/Bicep Templates with GitHub Copilot
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  6 minute read
+
+        
+        
+          • By Jordan Selig
+        
+        • January 24, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Before we get started, I want to give a shout-out to GitHub Copilot. If you’re using VS code and you’re not using GitHub Copilot yet, you should definitely c...</p>
+  </article>
+</div>
+
+        
+    </div>
+    <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+</section>
+  </div>
+</div>
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2025 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
