@@ -1,0 +1,1413 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en_US"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://azure.github.io/AppService/feed.xml" rel="self" type="application/atom+xml" /><link href="https://azure.github.io/AppService/" rel="alternate" type="text/html" hreflang="en_US" /><updated>2025-11-30T00:15:10+00:00</updated><id>https://azure.github.io/AppService/feed.xml</id><title type="html">Azure App Service</title><subtitle>Announcements, updates, and release notes from the Azure App Service product team.</subtitle><author><name>Azure App Service</name></author><entry><title type="html">Part 3: Client-Side Multi-Agent Orchestration on Azure App Service with Microsoft Agent Framework</title><link href="https://azure.github.io/AppService/2025/11/04/app-service-agent-framework-part-3.html" rel="alternate" type="text/html" title="Part 3: Client-Side Multi-Agent Orchestration on Azure App Service with Microsoft Agent Framework" /><published>2025-11-04T00:00:00+00:00</published><updated>2025-11-04T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2025/11/04/app-service-agent-framework-part-3</id><content type="html" xml:base="https://azure.github.io/AppService/2025/11/04/app-service-agent-framework-part-3.html"><![CDATA[<p>In <a href="https://techcommunity.microsoft.com/blog/appsonazureblog/part-2-build-long-running-ai-agents-on-azure-app-service-with-microsoft-agent-fr/4465825">Part 2 of this series</a>, I showed you how to build sophisticated multi-agent systems on Azure App Service using Azure AI Foundry Agents—server-side managed agents that run as Azure resources. Now I want to show you another alternative that gives you full control over agent orchestration, chat history management, and provider flexibility: client-side agents using ChatClientAgent. But this alternative raises an important question:</p>
+
+<p><strong>How do you choose between client-side and server-side agents?</strong></p>
+
+<p>This is an important question that points to a fundamental choice in Agent Framework: client-side agents vs. server-side agents. I’m not going to go into extreme detail here; my goal for this post is to show you how to build client-side multi-agent systems with ChatClientAgent and Azure App Service, but I will highlight the key differences and trade-offs that are going through my mind when considering this to help you make an informed decision.</p>
+
+<p>In Part 2, I mentioned:</p>
+
+<blockquote>
+  <p>“In my next blog post, I’ll demonstrate an alternative approach using a different agent type—likely the Azure OpenAI ChatCompletion agent type—which doesn’t create server-side Foundry resources. Instead, you orchestrate the agent behavior yourself while still benefiting from the Agent Framework’s unified programming model.”</p>
+</blockquote>
+
+<p>Today, I’m delivering on that promise! We’re going to rebuild the same travel planner sample using ChatClientAgent—a client-side agent type that gives you complete control over orchestration, chat history, and agent lifecycle.</p>
+
+<p>In this post, we’ll explore:</p>
+
+<ul>
+  <li>✅ Client-side agent orchestration with full workflow control</li>
+  <li>✅ ChatClientAgent architecture and implementation patterns</li>
+  <li>✅ When to choose client-side vs. server-side agents</li>
+  <li>✅ How Azure App Service supports both approaches equally well</li>
+  <li>✅ Managing chat history your way (Cosmos DB, Redis, or any storage you choose)</li>
+</ul>
+
+<p>🔗 <strong>Full Sample Code</strong>: <a href="https://github.com/Azure-Samples/app-service-maf-openai-travel-agent-dotnet">https://github.com/Azure-Samples/app-service-maf-openai-travel-agent-dotnet</a></p>
+
+<h2 id="the-key-question-whos-in-charge">The Key Question: Who’s in Charge?</h2>
+
+<p>When building multi-agent systems with Agent Framework, you face a fundamental architectural decision. Microsoft Agent Framework supports <a href="https://learn.microsoft.com/agent-framework/user-guide/agents/agent-types/?pivots=programming-language-csharp">multiple agent types</a>, but the choice typically comes down to:</p>
+
+<p><strong>Server-Side (Foundry Agents - Part 2)</strong></p>
+
+<ul>
+  <li>Azure AI Foundry manages agent lifecycle, threads, and execution</li>
+  <li>Agents exist as Azure resources in your AI Project</li>
+  <li>Conversation history stored in Foundry threads</li>
+  <li>Built-in orchestration patterns and features</li>
+</ul>
+
+<p><strong>Client-Side (ChatClientAgent - This Post)</strong></p>
+
+<ul>
+  <li>Your application code manages agent lifecycle and orchestration</li>
+  <li>Agents are C# objects created on-demand</li>
+  <li>Conversation history stored wherever you choose (Cosmos DB, Redis, etc.)</li>
+  <li>You write the orchestration logic yourself</li>
+</ul>
+
+<p>Both approaches run well on Azure App Service—the platform doesn’t care which agent type you use. What matters is which approach fits your requirements better.</p>
+
+<h2 id="whats-different-chatclientagent-architecture">What’s Different: ChatClientAgent Architecture</h2>
+
+<p>Let’s see what changes when you switch from Foundry agents to ChatClientAgent.</p>
+
+<h3 id="the-same-multi-agent-workflow">The Same Multi-Agent Workflow</h3>
+
+<p>Both samples implement the exact same travel planner with 6 specialized agents:</p>
+
+<ol>
+  <li><strong>Currency Converter Agent</strong> - Real-time exchange rates</li>
+  <li><strong>Weather Advisor Agent</strong> - Forecasts and packing tips</li>
+  <li><strong>Local Knowledge Agent</strong> - Cultural insights</li>
+  <li><strong>Itinerary Planner Agent</strong> - Day-by-day schedules</li>
+  <li><strong>Budget Optimizer Agent</strong> - Cost allocation</li>
+  <li><strong>Coordinator Agent</strong> - Final assembly</li>
+</ol>
+
+<p>The agents collaborate through the same 4-phase workflow:</p>
+
+<ul>
+  <li><strong>Phase 1</strong>: Parallel information gathering (Currency + Weather + Local)</li>
+  <li><strong>Phase 2</strong>: Itinerary planning</li>
+  <li><strong>Phase 3</strong>: Budget optimization</li>
+  <li><strong>Phase 4</strong>: Final assembly</li>
+</ul>
+
+<p>Same workflow, different execution model.</p>
+
+<h3 id="how-chatclientagent-works">How ChatClientAgent Works</h3>
+
+<p>Here’s the architecture stack for the client-side approach:</p>
+
+<p><img src="/AppService/media/2025/11/architecture-2.png" alt="ChatClientAgent architecture diagram" /></p>
+
+<p>The architecture shows:</p>
+
+<ul>
+  <li><strong>Your Application Code</strong>: TravelPlanningWorkflow orchestrating 6 ChatClientAgents with client-side chat history</li>
+  <li><strong>Microsoft.Agents.AI</strong>: ChatClientAgent wrapper adding instructions and tools</li>
+  <li><strong>Microsoft.Extensions.AI</strong>: IChatClient abstraction with Azure OpenAI implementation</li>
+  <li><strong>Azure Services</strong>: Azure OpenAI, Cosmos DB for chat history, and external APIs</li>
+</ul>
+
+<p>Key components:</p>
+
+<ol>
+  <li><strong>TravelPlanningWorkflow</strong> - Your orchestration code that coordinates agent execution</li>
+  <li><strong>ChatClientAgent</strong> - Agent Framework wrapper that adds instructions and tools to IChatClient</li>
+  <li><strong>IChatClient</strong> - Standard abstraction from Microsoft.Extensions.AI</li>
+  <li><strong>Client-Side Chat History</strong> - Dictionary storing conversation per agent (you manage this!)</li>
+  <li><strong>Azure OpenAI</strong> - Direct chat completion API calls (no AI Project endpoint needed)</li>
+  <li><strong>Cosmos DB</strong> - Your choice for chat history persistence</li>
+</ol>
+
+<h3 id="implementation-baseagent-pattern">Implementation: BaseAgent Pattern</h3>
+
+<p>Here’s how you create a ChatClientAgent in code:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">BaseAgent</span> <span class="p">:</span> <span class="n">IAgent</span>
+<span class="p">{</span>
+    <span class="k">protected</span> <span class="k">readonly</span> <span class="n">ChatClientAgent</span> <span class="n">Agent</span><span class="p">;</span>
+    
+    <span class="k">protected</span> <span class="k">abstract</span> <span class="kt">string</span> <span class="n">AgentName</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="p">}</span>
+    <span class="k">protected</span> <span class="k">abstract</span> <span class="kt">string</span> <span class="n">Instructions</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="p">}</span>
+    
+    <span class="c1">// Constructor for simple agents without tools</span>
+    <span class="k">protected</span> <span class="nf">BaseAgent</span><span class="p">(</span>
+        <span class="n">ILogger</span> <span class="n">logger</span><span class="p">,</span>
+        <span class="n">IOptions</span><span class="p">&lt;</span><span class="n">AgentOptions</span><span class="p">&gt;</span> <span class="n">options</span><span class="p">,</span>
+        <span class="n">IChatClient</span> <span class="n">chatClient</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">Agent</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">ChatClientAgent</span><span class="p">(</span><span class="n">chatClient</span><span class="p">,</span> <span class="k">new</span> <span class="n">ChatClientAgentOptions</span>
+        <span class="p">{</span>
+            <span class="n">Name</span> <span class="p">=</span> <span class="n">AgentName</span><span class="p">,</span>
+            <span class="n">Instructions</span> <span class="p">=</span> <span class="n">Instructions</span>
+        <span class="p">});</span>
+    <span class="p">}</span>
+    
+    <span class="c1">// Constructor for agents with tools (weather, currency APIs)</span>
+    <span class="k">protected</span> <span class="nf">BaseAgent</span><span class="p">(</span>
+        <span class="n">ILogger</span> <span class="n">logger</span><span class="p">,</span>
+        <span class="n">IOptions</span><span class="p">&lt;</span><span class="n">AgentOptions</span><span class="p">&gt;</span> <span class="n">options</span><span class="p">,</span>
+        <span class="n">IChatClient</span> <span class="n">chatClient</span><span class="p">,</span>
+        <span class="n">ChatOptions</span> <span class="n">chatOptions</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">Agent</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">ChatClientAgent</span><span class="p">(</span><span class="n">chatClient</span><span class="p">,</span> <span class="k">new</span> <span class="n">ChatClientAgentOptions</span>
+        <span class="p">{</span>
+            <span class="n">Name</span> <span class="p">=</span> <span class="n">AgentName</span><span class="p">,</span>
+            <span class="n">Instructions</span> <span class="p">=</span> <span class="n">Instructions</span><span class="p">,</span>
+            <span class="n">ChatOptions</span> <span class="p">=</span> <span class="n">chatOptions</span> <span class="c1">// Tools via AIFunctionFactory</span>
+        <span class="p">});</span>
+    <span class="p">}</span>
+    
+    <span class="k">public</span> <span class="k">async</span> <span class="n">Task</span><span class="p">&lt;</span><span class="n">ChatMessage</span><span class="p">&gt;</span> <span class="nf">InvokeAsync</span><span class="p">(</span>
+        <span class="n">IList</span><span class="p">&lt;</span><span class="n">ChatMessage</span><span class="p">&gt;</span> <span class="n">chatHistory</span><span class="p">,</span> 
+        <span class="n">CancellationToken</span> <span class="n">cancellationToken</span> <span class="p">=</span> <span class="k">default</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">var</span> <span class="n">response</span> <span class="p">=</span> <span class="k">await</span> <span class="n">Agent</span><span class="p">.</span><span class="nf">RunAsync</span><span class="p">(</span>
+            <span class="n">chatHistory</span><span class="p">,</span> 
+            <span class="n">thread</span><span class="p">:</span> <span class="k">null</span><span class="p">,</span> 
+            <span class="n">options</span><span class="p">:</span> <span class="k">null</span><span class="p">,</span> 
+            <span class="n">cancellationToken</span><span class="p">);</span>
+            
+        <span class="k">return</span> <span class="n">response</span><span class="p">.</span><span class="n">Messages</span><span class="p">.</span><span class="nf">LastOrDefault</span><span class="p">()</span> 
+            <span class="p">??</span> <span class="k">new</span> <span class="nf">ChatMessage</span><span class="p">(</span><span class="n">ChatRole</span><span class="p">.</span><span class="n">Assistant</span><span class="p">,</span> <span class="s">"No response generated."</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>What’s happening here?</p>
+
+<ul>
+  <li>You create a <code class="language-plaintext highlighter-rouge">ChatClientAgent</code> by wrapping an <code class="language-plaintext highlighter-rouge">IChatClient</code></li>
+  <li>You provide instructions (the agent’s system prompt)</li>
+  <li>Optionally, you provide tools via <code class="language-plaintext highlighter-rouge">ChatOptions</code> (using <code class="language-plaintext highlighter-rouge">AIFunctionFactory</code>)</li>
+  <li>When you call <code class="language-plaintext highlighter-rouge">RunAsync</code>, you pass the chat history yourself</li>
+  <li>The agent returns a response, and you decide what to do with the chat history</li>
+</ul>
+
+<p>Compare this to Foundry agents where you create the agent once in Azure AI Foundry, and the platform manages threads and execution for you.</p>
+
+<h3 id="client-side-chat-history-management">Client-Side Chat History Management</h3>
+
+<p>One of the biggest differences is you control the chat history:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">WorkflowState</span>
+<span class="p">{</span>
+    <span class="c1">// Each agent gets its own conversation history</span>
+    <span class="k">public</span> <span class="n">Dictionary</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">,</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">ChatMessage</span><span class="p">&gt;&gt;</span> <span class="n">AgentChatHistories</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span> <span class="p">=</span> <span class="k">new</span><span class="p">();</span>
+    
+    <span class="k">public</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">ChatMessage</span><span class="p">&gt;</span> <span class="nf">GetChatHistory</span><span class="p">(</span><span class="kt">string</span> <span class="n">agentType</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(!</span><span class="n">AgentChatHistories</span><span class="p">.</span><span class="nf">ContainsKey</span><span class="p">(</span><span class="n">agentType</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="n">AgentChatHistories</span><span class="p">[</span><span class="n">agentType</span><span class="p">]</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">ChatMessage</span><span class="p">&gt;();</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">AgentChatHistories</span><span class="p">[</span><span class="n">agentType</span><span class="p">];</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Workflow orchestration:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Phase 1: Currency Converter Agent</span>
+<span class="kt">var</span> <span class="n">currencyChatHistory</span> <span class="p">=</span> <span class="n">state</span><span class="p">.</span><span class="nf">GetChatHistory</span><span class="p">(</span><span class="s">"CurrencyConverter"</span><span class="p">);</span>
+<span class="n">currencyChatHistory</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="k">new</span> <span class="nf">ChatMessage</span><span class="p">(</span><span class="n">ChatRole</span><span class="p">.</span><span class="n">User</span><span class="p">,</span> 
+    <span class="s">$"Convert </span><span class="p">{</span><span class="n">request</span><span class="p">.</span><span class="n">Budget</span><span class="p">}</span><span class="s"> </span><span class="p">{</span><span class="n">request</span><span class="p">.</span><span class="n">Currency</span><span class="p">}</span><span class="s"> to local currency for </span><span class="p">{</span><span class="n">request</span><span class="p">.</span><span class="n">Destination</span><span class="p">}</span><span class="s">"</span><span class="p">));</span>
+
+<span class="kt">var</span> <span class="n">currencyResponse</span> <span class="p">=</span> <span class="k">await</span> <span class="n">_currencyAgent</span><span class="p">.</span><span class="nf">InvokeAsync</span><span class="p">(</span><span class="n">currencyChatHistory</span><span class="p">,</span> <span class="n">cancellationToken</span><span class="p">);</span>
+<span class="n">currencyChatHistory</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="n">currencyResponse</span><span class="p">);</span> <span class="c1">// You manage the history!</span>
+
+<span class="c1">// Store in workflow state for downstream agents</span>
+<span class="n">state</span><span class="p">.</span><span class="nf">AddToContext</span><span class="p">(</span><span class="s">"CurrencyInfo"</span><span class="p">,</span> <span class="n">currencyResponse</span><span class="p">.</span><span class="n">Text</span> <span class="p">??</span> <span class="s">""</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Benefits:</p>
+
+<ul>
+  <li>Store chat history in Cosmos DB, Redis, SQL, or any data store</li>
+  <li>Query conversation history with your own logic</li>
+  <li>Implement custom retention policies</li>
+  <li>Export chat logs for analytics or compliance</li>
+</ul>
+
+<p>With Foundry agents, chat history lives in Foundry threads—you don’t directly control where or how it’s stored. This may be fine for many scenarios, but if you need custom storage or compliance, client-side management is powerful.</p>
+
+<h3 id="tool-integration-with-aifunctionfactory">Tool Integration with AIFunctionFactory</h3>
+
+<p>External API tools (weather, currency) are registered as C# methods:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Weather Service</span>
+<span class="k">public</span> <span class="k">class</span> <span class="nc">NWSWeatherService</span> <span class="p">:</span> <span class="n">IWeatherService</span>
+<span class="p">{</span>
+    <span class="p">[</span><span class="nf">Description</span><span class="p">(</span><span class="s">"Get weather forecast for a US city"</span><span class="p">)]</span>
+    <span class="k">public</span> <span class="k">async</span> <span class="n">Task</span><span class="p">&lt;</span><span class="n">WeatherForecast</span><span class="p">&gt;</span> <span class="nf">GetWeatherAsync</span><span class="p">(</span>
+        <span class="p">[</span><span class="nf">Description</span><span class="p">(</span><span class="s">"City name (e.g., 'San Francisco')"</span><span class="p">)]</span> <span class="kt">string</span> <span class="n">city</span><span class="p">,</span>
+        <span class="p">[</span><span class="nf">Description</span><span class="p">(</span><span class="s">"State code (e.g., 'CA')"</span><span class="p">)]</span> <span class="kt">string</span> <span class="n">state</span><span class="p">,</span>
+        <span class="n">CancellationToken</span> <span class="n">cancellationToken</span> <span class="p">=</span> <span class="k">default</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Implementation calls NWS API</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// Register as tools with ChatClientAgent</span>
+<span class="kt">var</span> <span class="n">weatherTools</span> <span class="p">=</span> <span class="n">AIFunctionFactory</span><span class="p">.</span><span class="nf">Create</span><span class="p">(</span><span class="n">weatherService</span><span class="p">);</span>
+<span class="kt">var</span> <span class="n">chatOptions</span> <span class="p">=</span> <span class="k">new</span> <span class="n">ChatOptions</span> <span class="p">{</span> <span class="n">Tools</span> <span class="p">=</span> <span class="n">weatherTools</span> <span class="p">};</span>
+
+<span class="kt">var</span> <span class="n">agent</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">ChatClientAgent</span><span class="p">(</span><span class="n">chatClient</span><span class="p">,</span> <span class="k">new</span> <span class="n">ChatClientAgentOptions</span>
+<span class="p">{</span>
+    <span class="n">Name</span> <span class="p">=</span> <span class="s">"WeatherAdvisor"</span><span class="p">,</span>
+    <span class="n">Instructions</span> <span class="p">=</span> <span class="s">"Provide weather forecasts and packing recommendations..."</span><span class="p">,</span>
+    <span class="n">ChatOptions</span> <span class="p">=</span> <span class="n">chatOptions</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>The agent can now call <code class="language-plaintext highlighter-rouge">GetWeatherAsync</code> via function calling—same capability as Foundry agents, but configured in code instead of the portal.</p>
+
+<h2 id="why-choose-client-side-agents-chatclientagent">Why Choose Client-Side Agents (ChatClientAgent)?</h2>
+
+<p>Here’s when ChatClientAgent shines:</p>
+
+<h3 id="-full-orchestration-control">✅ Full Orchestration Control</h3>
+
+<p>You write the workflow logic:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Phase 1: Run 3 agents in parallel (your code!)</span>
+<span class="kt">var</span> <span class="n">currencyTask</span> <span class="p">=</span> <span class="nf">GatherCurrencyInfoAsync</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">progress</span><span class="p">,</span> <span class="n">cancellationToken</span><span class="p">);</span>
+<span class="kt">var</span> <span class="n">weatherTask</span> <span class="p">=</span> <span class="nf">GatherWeatherInfoAsync</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">progress</span><span class="p">,</span> <span class="n">cancellationToken</span><span class="p">);</span>
+<span class="kt">var</span> <span class="n">localTask</span> <span class="p">=</span> <span class="nf">GatherLocalKnowledgeAsync</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">progress</span><span class="p">,</span> <span class="n">cancellationToken</span><span class="p">);</span>
+
+<span class="k">await</span> <span class="n">Task</span><span class="p">.</span><span class="nf">WhenAll</span><span class="p">(</span><span class="n">currencyTask</span><span class="p">,</span> <span class="n">weatherTask</span><span class="p">,</span> <span class="n">localTask</span><span class="p">);</span>
+
+<span class="c1">// Phase 2: Sequential itinerary planning (your code!)</span>
+<span class="k">await</span> <span class="nf">PlanItineraryAsync</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">progress</span><span class="p">,</span> <span class="n">cancellationToken</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>With Foundry agents, orchestration patterns are limited to what the platform provides.</p>
+
+<h3 id="-cost-effective">✅ Cost-Effective</h3>
+
+<p>No separate agent infrastructure:</p>
+
+<ul>
+  <li><strong>ChatClientAgent</strong>: Pay only for Azure OpenAI API calls</li>
+  <li><strong>Foundry Agents</strong>: Pay for Azure OpenAI + AI Project resources + agent storage</li>
+</ul>
+
+<p>For high-volume scenarios, this can add up to significant savings.</p>
+
+<h3 id="-devops-friendly">✅ DevOps-Friendly</h3>
+
+<p>Everything in code:</p>
+
+<ul>
+  <li>Agent definitions tracked in Git</li>
+  <li>Testable with unit tests</li>
+  <li>CI/CD pipelines deploy everything together</li>
+  <li>No manual portal configuration steps</li>
+  <li>Infrastructure as Code (Bicep) covers all resources</li>
+</ul>
+
+<h3 id="-flexible-chat-history">✅ Flexible Chat History</h3>
+
+<p>Store conversations your way:</p>
+
+<ul>
+  <li>Cosmos DB for global distribution and rich queries</li>
+  <li>Redis for ultra-low latency caching</li>
+  <li>SQL Database for complex relational queries</li>
+  <li>Blob Storage for long-term archival</li>
+  <li>Custom encryption and retention policies</li>
+</ul>
+
+<h3 id="-provider-flexibility">✅ Provider Flexibility</h3>
+
+<p>Works with any IChatClient:</p>
+
+<ul>
+  <li>Azure OpenAI (this sample)</li>
+  <li>OpenAI directly</li>
+  <li>Local models via Ollama</li>
+  <li>Azure AI Foundry model catalog</li>
+  <li>Custom chat implementations</li>
+</ul>
+
+<p>Switching providers is just a configuration change—no agent re-creation needed.</p>
+
+<h3 id="-multi-agent-coordination-patterns">✅ Multi-Agent Coordination Patterns</h3>
+
+<p>Implement complex workflows:</p>
+
+<ul>
+  <li>Parallel execution (Phase 1 in our sample)</li>
+  <li>Sequential dependencies (Phase 2-4)</li>
+  <li>Conditional branching based on agent responses</li>
+  <li>Agent-to-agent negotiation</li>
+  <li>Hierarchical supervisor patterns</li>
+  <li>Custom retry logic per agent</li>
+</ul>
+
+<p>You have complete freedom to orchestrate however your scenario requires.</p>
+
+<h2 id="why-choose-server-side-agents-azure-ai-foundry">Why Choose Server-Side Agents (Azure AI Foundry)?</h2>
+
+<p>To be fair, Foundry agents from Part 2 have their own advantages and this post isn’t about dismissing them. They are a powerful option for many scenarios. Here are some reasons to choose Foundry agents:</p>
+
+<h3 id="-managed-lifecycle">✅ Managed Lifecycle</h3>
+
+<p>Platform handles the heavy lifting:</p>
+
+<ul>
+  <li>Agents persist as Azure resources</li>
+  <li>Threads automatically manage conversation state</li>
+  <li>Runs track execution progress server-side</li>
+  <li>No orchestration code to write or maintain</li>
+</ul>
+
+<h3 id="-built-in-features">✅ Built-In Features</h3>
+
+<p>Rich capabilities out of the box:</p>
+
+<ul>
+  <li>File search for RAG scenarios</li>
+  <li>Code interpreter for data analysis</li>
+  <li>Automatic conversation threading</li>
+  <li>Built-in retry and error handling</li>
+</ul>
+
+<h3 id="-portal-ui">✅ Portal UI</h3>
+
+<p>Configure without code:</p>
+
+<ul>
+  <li>Create agents in Azure AI Foundry portal</li>
+  <li>Test agents interactively</li>
+  <li>View conversation threads and runs</li>
+  <li>Adjust instructions without redeployment</li>
+</ul>
+
+<h3 id="-less-code">✅ Less Code</h3>
+
+<p>Simpler for basic scenarios:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Foundry Agent (Part 2 sample)</span>
+<span class="kt">var</span> <span class="n">agent</span> <span class="p">=</span> <span class="k">await</span> <span class="n">agentsClient</span><span class="p">.</span><span class="nf">CreateAgentAsync</span><span class="p">(</span>
+    <span class="s">"gpt-4o"</span><span class="p">,</span>
+    <span class="n">instructions</span><span class="p">:</span> <span class="s">"You are a travel planning expert..."</span><span class="p">,</span>
+    <span class="n">tools</span><span class="p">:</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">ToolDefinition</span><span class="p">&gt;</span> <span class="p">{</span> <span class="k">new</span> <span class="nf">FunctionTool</span><span class="p">(...)</span> <span class="p">});</span>
+
+<span class="kt">var</span> <span class="n">thread</span> <span class="p">=</span> <span class="k">await</span> <span class="n">agentsClient</span><span class="p">.</span><span class="nf">CreateThreadAsync</span><span class="p">();</span>
+<span class="kt">var</span> <span class="n">run</span> <span class="p">=</span> <span class="k">await</span> <span class="n">agentsClient</span><span class="p">.</span><span class="nf">CreateRunAsync</span><span class="p">(</span><span class="n">thread</span><span class="p">.</span><span class="n">Id</span><span class="p">,</span> <span class="n">agent</span><span class="p">.</span><span class="n">Id</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>No need to manage chat history, orchestration logic, or tool registration in code.</p>
+
+<h2 id="when-to-choose-which-approach">When to Choose Which Approach</h2>
+
+<p>Here’s my take on a decision guide. This isn’t exhaustive, but it covers key considerations. Others may disagree based on their priorities, but this is how I think about it:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>Scenario</strong></th>
+      <th><strong>ChatClientAgent</strong></th>
+      <th><strong>Foundry Agents</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Complex multi-agent workflows</td>
+      <td>✅ Full control</td>
+      <td>⚠️ Limited patterns</td>
+    </tr>
+    <tr>
+      <td>Custom chat history storage</td>
+      <td>✅ Any data store</td>
+      <td>❌ Foundry threads only</td>
+    </tr>
+    <tr>
+      <td>Cost optimization</td>
+      <td>✅ LLM calls only</td>
+      <td>⚠️ + Infrastructure</td>
+    </tr>
+    <tr>
+      <td>Code-first DevOps</td>
+      <td>✅ Everything in Git</td>
+      <td>⚠️ Portal config needed</td>
+    </tr>
+    <tr>
+      <td>Provider flexibility</td>
+      <td>✅ Any IChatClient</td>
+      <td>⚠️ Azure only</td>
+    </tr>
+    <tr>
+      <td>Built-in RAG (file search)</td>
+      <td>❌ DIY</td>
+      <td>✅ Built-in</td>
+    </tr>
+    <tr>
+      <td>Portal UI for testing</td>
+      <td>❌ Code only</td>
+      <td>✅ Full UI</td>
+    </tr>
+    <tr>
+      <td>Quick prototypes</td>
+      <td>⚠️ More code</td>
+      <td>✅ Fast setup</td>
+    </tr>
+    <tr>
+      <td>Learning curve</td>
+      <td>⚠️ More concepts</td>
+      <td>✅ Guided setup</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Use ChatClientAgent when:</strong></p>
+
+<ul>
+  <li>You need complex multi-agent coordination</li>
+  <li>Cost optimization is important</li>
+  <li>You want full control over orchestration</li>
+  <li>Code-first DevOps is a priority</li>
+  <li>You need custom chat history management</li>
+</ul>
+
+<p><strong>Use Foundry Agents when:</strong></p>
+
+<ul>
+  <li>Simple single-agent or basic multi-agent scenarios</li>
+  <li>You want built-in RAG and file search</li>
+  <li>Portal-based configuration is preferred</li>
+  <li>Quick prototyping and experimentation</li>
+  <li>Managed infrastructure over custom code</li>
+</ul>
+
+<h2 id="azure-app-service-perfect-for-both">Azure App Service: Perfect for Both</h2>
+
+<p>Here’s the great part: Azure App Service supports both approaches equally well.</p>
+
+<h3 id="the-same-architecture">The Same Architecture</h3>
+
+<p>Both samples use identical infrastructure.</p>
+
+<p><strong>What’s the same:</strong></p>
+
+<ul>
+  <li>✅ Async request-reply pattern (202 Accepted → poll status)</li>
+  <li>✅ Service Bus for reliable message delivery</li>
+  <li>✅ Cosmos DB for task state with 24-hour TTL</li>
+  <li>✅ WebJob for background processing</li>
+  <li>✅ Managed Identity for authentication</li>
+  <li>✅ Premium App Service tier for Always On</li>
+</ul>
+
+<p><strong>What’s different:</strong></p>
+
+<ul>
+  <li><strong>ChatClientAgent</strong>: Azure OpenAI endpoint directly (<code class="language-plaintext highlighter-rouge">https://ai-xyz.openai.azure.com/</code>)</li>
+  <li><strong>Foundry Agents</strong>: AI Project endpoint (<code class="language-plaintext highlighter-rouge">https://ai-xyz.services.ai.azure.com/api/projects/proj-xyz</code>)</li>
+  <li><strong>ChatClientAgent</strong>: Chat history in Cosmos DB (your control)</li>
+  <li><strong>Foundry Agents</strong>: Chat history in Foundry threads (platform managed)</li>
+</ul>
+
+<p>Azure App Service doesn’t care which you choose. It just runs your .NET code, processes messages from Service Bus, and stores state in Cosmos DB. The agent execution model is an implementation detail. You can easily switch between approaches without changing your hosting platform, and even use a hybrid approach if desired.</p>
+
+<h2 id="get-started-today">Get Started Today</h2>
+
+<p>Ready to try client-side multi-agent orchestration on Azure App Service?</p>
+
+<p>🔗 <strong>GitHub Repository</strong>: <a href="https://github.com/Azure-Samples/app-service-maf-openai-travel-agent-dotnet">https://github.com/Azure-Samples/app-service-maf-openai-travel-agent-dotnet</a></p>
+
+<p>The repository includes:</p>
+
+<ul>
+  <li>✅ Complete .NET 9 source code with 6 specialized ChatClientAgents</li>
+  <li>✅ Infrastructure as Code (Bicep) for one-command deployment</li>
+  <li>✅ Web UI with real-time progress tracking</li>
+  <li>✅ Comprehensive README and architecture documentation</li>
+  <li>✅ External API integrations (weather, currency)</li>
+  <li>✅ Client-side chat history management with Cosmos DB</li>
+</ul>
+
+<h3 id="deploy-in-minutes">Deploy in Minutes</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Clone the repository</span>
+git clone https://github.com/Azure-Samples/app-service-maf-openai-travel-agent-dotnet.git
+<span class="nb">cd </span>app-service-maf-openai-travel-agent-dotnet
+
+<span class="c"># Login to Azure</span>
+azd auth login
+
+<span class="c"># Provision infrastructure and deploy the API</span>
+azd up
+</code></pre></div></div>
+
+<p>This provisions:</p>
+
+<ul>
+  <li>Azure App Service (P0v4 Premium Windows)</li>
+  <li>Azure Service Bus (message queue)</li>
+  <li>Azure Cosmos DB (state + chat history storage)</li>
+  <li>Azure AI Services (AI Services resource)</li>
+  <li>GPT-4o model deployment (GlobalStandard 50K TPM)</li>
+</ul>
+
+<p>Then manually deploy the WebJob following the <a href="https://github.com/Azure-Samples/app-service-maf-openai-travel-agent-dotnet#deploy-the-webjob">README instructions</a>.</p>
+
+<h3 id="compare-with-part-2">Compare with Part 2</h3>
+
+<p>Want to see the differences firsthand? Deploy both samples:</p>
+
+<p><strong>Part 2 - Server-Side Foundry Agents:</strong><br />
+🔗 <a href="https://github.com/Azure-Samples/app-service-maf-workflow-travel-agent-dotnet">https://github.com/Azure-Samples/app-service-maf-workflow-travel-agent-dotnet</a></p>
+
+<p><strong>Part 3 - Client-Side ChatClientAgent (this post):</strong><br />
+🔗 <a href="https://github.com/Azure-Samples/app-service-maf-openai-travel-agent-dotnet">https://github.com/Azure-Samples/app-service-maf-openai-travel-agent-dotnet</a></p>
+
+<p>Same travel planner, same workflow, same results—different execution model. Try both and see which fits your needs!</p>
+
+<h2 id="key-takeaways">Key Takeaways</h2>
+
+<ul>
+  <li>✅ <strong>Microsoft Agent Framework offers choice</strong>: Client-side (ChatClientAgent) vs. Server-side (Foundry Agents)</li>
+  <li>✅ <strong>ChatClientAgent gives you full control</strong>: Orchestration, chat history, agent lifecycle—you manage it all in code</li>
+  <li>✅ <strong>Foundry Agents give you convenience</strong>: Managed infrastructure, built-in features, portal UI—let the platform handle the details</li>
+  <li>✅ <strong>Azure App Service supports both equally</strong>: Same async request-reply pattern, same WebJob architecture, same infrastructure</li>
+  <li>✅ <strong>Pick the right tool for your needs</strong>: Complex coordination and cost control → ChatClientAgent. Simple scenarios and managed infrastructure → Foundry Agents.</li>
+</ul>
+
+<p>Whether you choose client-side or server-side agents, Azure App Service provides the perfect platform for long-running AI workloads—reliable, scalable, and fully managed.</p>
+
+<h2 id="whats-next">What’s Next?</h2>
+
+<p>This completes our three-part series on building AI agents with Microsoft Agent Framework on Azure App Service:</p>
+
+<ul>
+  <li><a href="https://techcommunity.microsoft.com/blog/appsonazureblog/build-long-running-ai-agents-on-azure-app-service-with-microsoft-agent-framework/4463159">Part 1</a>: Introduction to Agent Framework and async request-reply pattern</li>
+  <li><a href="https://techcommunity.microsoft.com/blog/appsonazureblog/part-2-build-long-running-ai-agents-on-azure-app-service-with-microsoft-agent-fr/4465825">Part 2</a>: Multi-agent systems with server-side Foundry Agents</li>
+  <li><strong>Part 3 (this post)</strong>: Client-side multi-agent orchestration with ChatClientAgent</li>
+</ul>
+
+<p>What would you like to see next? More advanced orchestration patterns? Integration with other Azure services?</p>
+
+<p>Let me know in the comments what you’d like to learn about next and I’ll do my best to deliver!</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[In Part 2 of this series, I showed you how to build sophisticated multi-agent systems on Azure App Service using Azure AI Foundry Agents—server-side managed agents that run as Azure resources. Now I want to show you another alternative that gives you full control over agent orchestration, chat history management, and provider flexibility: client-side agents using ChatClientAgent. But this alternative raises an important question:]]></summary></entry><entry><title type="html">Part 2: Build Long-Running AI Agents on Azure App Service with Microsoft Agent Framework</title><link href="https://azure.github.io/AppService/2025/10/31/app-service-agent-framework-part-2.html" rel="alternate" type="text/html" title="Part 2: Build Long-Running AI Agents on Azure App Service with Microsoft Agent Framework" /><published>2025-10-31T00:00:00+00:00</published><updated>2025-10-31T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2025/10/31/app-service-agent-framework-part-2</id><content type="html" xml:base="https://azure.github.io/AppService/2025/10/31/app-service-agent-framework-part-2.html"><![CDATA[<p>Last week, I shared how to <a href="https://techcommunity.microsoft.com/blog/appsonazureblog/build-long-running-ai-agents-on-azure-app-service-with-microsoft-agent-framework/4463159">build long-running AI agents on Azure App Service with Microsoft Agent Framework</a>. If you haven’t seen that post yet, I would recommend starting there as this post builds on the foundations introduced there including getting started with <a href="https://learn.microsoft.com/agent-framework/overview/agent-framework-overview">Microsoft Agent Framework</a>. The response so far was great, and one comment in particular stood out:</p>
+
+<blockquote>
+  <p>“Thanks for the example. Nice job! Just curious (I still have to investigate the ins and outs of MAF) but why didn’t you use the workflow pattern/classes of MAF? I thought that was meant to be the way to connect agents and let them cooperate (even in long running job situations).”</p>
+
+  <p>— <a href="https://techcommunity.microsoft.com/users/michel_schep/340533">Michel_Schep</a></p>
+</blockquote>
+
+<p>Great question! You’re absolutely right in questioning this—the initial sample I created was designed to demonstrate the async request-reply architecture for handling long-running operations on App Service with a single agent. Today, we’re taking the next step: a multi-agent workflow sample that addresses exactly what you asked about and is the next leap in building agentic apps in the cloud.</p>
+
+<p>In this post, we’ll explore:</p>
+
+<ul>
+  <li>✅ Building multi-agent systems with specialized, collaborating AI agents</li>
+  <li>✅ When to create agents in code vs. using Azure AI Foundry portal</li>
+  <li>✅ Orchestrating complex workflows with parallel and sequential execution</li>
+  <li>✅ Real-world patterns for production multi-agent applications</li>
+</ul>
+
+<p>🔗 <strong>Full Sample Code</strong>: <a href="https://github.com/Azure-Samples/app-service-maf-workflow-travel-agent-dotnet">https://github.com/Azure-Samples/app-service-maf-workflow-travel-agent-dotnet</a></p>
+
+<h2 id="why-multi-agent-systems">Why Multi-Agent Systems?</h2>
+
+<p>The single-agent pattern I showed last week works great for straightforward tasks. But real-world AI applications often need specialized expertise across different domains. That’s where multi-agent systems shine.</p>
+
+<h3 id="the-travel-planning-challenge">The Travel Planning Challenge</h3>
+
+<p>Imagine planning a trip to Tokyo. You need:</p>
+
+<ul>
+  <li>Currency expertise for budget conversion and exchange rates</li>
+  <li>Weather knowledge for packing recommendations and seasonal planning</li>
+  <li>Local insights about customs, culture, and etiquette</li>
+  <li>Itinerary skills to create day-by-day schedules</li>
+  <li>Budget optimization to allocate funds across categories</li>
+  <li>Coordination to assemble everything into a cohesive plan</li>
+</ul>
+
+<p>With a single agent handling all of this, you get a “jack of all trades, master of none” situation. The prompts become complex, the agent loses focus, and results can be inconsistent.</p>
+
+<h3 id="enter-multi-agent-workflows">Enter Multi-Agent Workflows</h3>
+
+<p>Instead of one generalist agent, we can create 6 or more specialized agents, each with a focused responsibility:</p>
+
+<ol>
+  <li><strong>Currency Converter Agent</strong> - Real-time exchange rates (Frankfurter API integration)</li>
+  <li><strong>Weather Advisor Agent</strong> - Forecasts and packing tips (National Weather Service API)</li>
+  <li><strong>Local Knowledge Agent</strong> - Cultural insights and customs</li>
+  <li><strong>Itinerary Planner Agent</strong> - Day-by-day activity scheduling</li>
+  <li><strong>Budget Optimizer Agent</strong> - Cost allocation and optimization</li>
+  <li><strong>Coordinator Agent</strong> - Final assembly and formatting</li>
+</ol>
+
+<p>Each agent has:</p>
+
+<ul>
+  <li>🎯 <strong>Clear, focused instructions</strong> specific to its domain</li>
+  <li>🛠️ <strong>Specialized tools</strong> (weather API, currency API)</li>
+  <li>📊 <strong>Defined inputs and outputs</strong> for predictable collaboration</li>
+  <li>✅ <strong>Testable behavior</strong> that’s easy to validate</li>
+</ul>
+
+<p>Additionally, if you wanted to extend this even further, you could create even more agents and give some of your specialist agents even more knowledge by connecting additional tools and MCP servers. The possibilities are endless, and I hope this post inspires you to start thinking about what you can build and achieve.</p>
+
+<h2 id="what-makes-this-possible-microsoft-agent-framework">What Makes This Possible? Microsoft Agent Framework</h2>
+
+<p>All of this is powered by <a href="https://learn.microsoft.com/agent-framework/overview/agent-framework-overview">Microsoft Agent Framework</a>—a comprehensive platform for building, deploying, and managing AI agents that goes far beyond simple chat completions.</p>
+
+<h3 id="understanding-agent-framework-vs-other-approaches">Understanding Agent Framework vs. Other Approaches</h3>
+
+<p>Before diving into the details, it’s important to understand what Agent Framework is. Unlike frameworks like Semantic Kernel where you orchestrate AI behavior entirely in your application code with direct API calls, Agent Framework provides a unified abstraction for working with AI agents across multiple backend types.</p>
+
+<p>Agent Framework supports several agent types (<a href="https://learn.microsoft.com/agent-framework/user-guide/agents/agent-types/?pivots=programming-language-csharp">see documentation</a>):</p>
+
+<ol>
+  <li><strong>Simple agents based on inference services</strong> - Agents built on any IChatClient implementation, including:
+    <ul>
+      <li>Azure OpenAI ChatCompletion</li>
+      <li>Azure AI Foundry Models ChatCompletion</li>
+      <li>OpenAI ChatCompletion and Responses</li>
+      <li>Any other Microsoft.Extensions.AI.IChatClient implementation</li>
+    </ul>
+  </li>
+  <li><strong>Server-side managed agents</strong> - Agents that live as Azure resources:
+    <ul>
+      <li>Azure AI Foundry Agent (used in this sample)</li>
+      <li>OpenAI Assistants</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Custom agents</strong> - Fully custom implementations of the AIAgent base class</p>
+  </li>
+  <li><strong>Proxy agents</strong> - Connections to remote agents via protocols like A2A</li>
+</ol>
+
+<p>In this sample, we use <strong>Azure AI Foundry Agents</strong>—the server-side managed agent type. When you use these Foundry agents:</p>
+
+<ul>
+  <li><strong>Agents are Azure resources</strong> - They exist on the server-side in Azure AI Foundry, not just as code patterns</li>
+  <li><strong>Execution happens on Foundry</strong> - Agent runs execute on Azure’s infrastructure with built-in state management</li>
+  <li><strong>You get structured primitives</strong> - Agents, Threads, and Runs are first-class concepts with their own lifecycles</li>
+  <li><strong>Server-side persistence</strong> - Conversation history and context are managed by the platform</li>
+</ul>
+
+<p>This server-side approach is convenient because the platform manages state and execution for you. However, other agent types (like ChatCompletion-based agents) give you more control over orchestration while still benefiting from the unified Agent Framework programming model.</p>
+
+<p>In my next blog post, I’ll demonstrate an alternative approach using a different agent type—likely the Azure OpenAI ChatCompletion agent type—which doesn’t create server-side Foundry resources. Instead, you orchestrate the agent behavior yourself while still benefiting from the Agent Framework’s unified programming model.</p>
+
+<p>If you’re new to Agent Framework, here’s what makes it special:</p>
+
+<ul>
+  <li>🔄 <strong>Persistent Agents</strong>: Server-side agents that maintain context across multiple interactions, not just one-off API calls</li>
+  <li>💬 <strong>Conversation Threads</strong>: Organized conversation history and state management that persists across agent runs</li>
+  <li>🎯 <strong>Agent Runs</strong>: Structured execution with progress tracking and lifecycle management—you can monitor exactly what your agents are doing</li>
+  <li>🔁 <strong>Multi-Turn Interactions</strong>: Complex workflows with iterative AI processing, where agents can refine and improve their outputs</li>
+  <li>🛠️ <strong>Tool Integration</strong>: Extensible function calling and integration capabilities—agents can call external APIs, execute code, and interact with real-world systems</li>
+</ul>
+
+<p>In our sample, Agent Framework handles:</p>
+
+<ul>
+  <li>Creating and managing 6 specialized agents programmatically</li>
+  <li>Maintaining conversation context as agents collaborate</li>
+  <li>Tracking execution progress across workflow phases</li>
+  <li>Managing agent lifecycle (creation, execution, cleanup)</li>
+  <li>Integrating external APIs (weather, currency) seamlessly</li>
+</ul>
+
+<p>The beauty of Agent Framework is that it makes complex multi-agent orchestration feel natural. You focus on defining what your agents should do, and the framework handles the infrastructure, state management, and execution—all running on Azure AI Foundry with enterprise-grade reliability.</p>
+
+<h2 id="the-multi-agent-workflow">The Multi-Agent Workflow</h2>
+
+<p>Here’s how these agents collaborate to create a comprehensive travel plan in the sample I put together:</p>
+
+<p><img src="/AppService/media/2025/11/workflow.png" alt="Multi-agent workflow diagram" /></p>
+
+<h3 id="execution-phases">Execution Phases</h3>
+
+<p><strong>Phase 1: Parallel Information Gathering (10-40%)</strong></p>
+
+<ul>
+  <li>Currency, Weather, and Local Knowledge agents execute simultaneously</li>
+  <li>No dependencies = maximum performance</li>
+  <li>Results stored in workflow state for downstream agents</li>
+</ul>
+
+<p><strong>Phase 2: Itinerary Planning (40-70%)</strong></p>
+
+<ul>
+  <li>Itinerary Planner uses context from all Phase 1 agents</li>
+  <li>Weather data influences activity recommendations</li>
+  <li>Local knowledge shapes cultural experiences</li>
+  <li>Currency conversion informs budget-conscious choices</li>
+</ul>
+
+<p><strong>Phase 3: Budget Optimization (70-90%)</strong></p>
+
+<ul>
+  <li>Budget Optimizer analyzes the proposed itinerary</li>
+  <li>Allocates funds across categories (lodging, food, activities, transport)</li>
+  <li>Provides cost-saving tips without compromising the experience</li>
+</ul>
+
+<p><strong>Phase 4: Final Assembly (90-100%)</strong></p>
+
+<ul>
+  <li>Coordinator compiles all agent outputs</li>
+  <li>Formats comprehensive travel plan with tips</li>
+  <li>Returns structured, user-friendly itinerary</li>
+</ul>
+
+<h3 id="benefits-of-this-architecture">Benefits of This Architecture</h3>
+
+<ul>
+  <li>✅ <strong>Faster Execution</strong>: Parallel agents complete in ~30% less time</li>
+  <li>✅ <strong>Better Quality</strong>: Specialized agents produce more focused, accurate results</li>
+  <li>✅ <strong>Easy Debugging</strong>: Each agent’s contribution is isolated and traceable</li>
+  <li>✅ <strong>Maintainable</strong>: Update one agent without affecting others</li>
+  <li>✅ <strong>Scalable</strong>: Add new agents (flight booking, hotel search) without refactoring</li>
+  <li>✅ <strong>Testable</strong>: Validate each agent independently with unit tests</li>
+</ul>
+
+<h2 id="the-complete-architecture">The Complete Architecture</h2>
+
+<p>Here’s how everything fits together on Azure App Service:</p>
+
+<p><img src="/AppService/media/2025/11/architecture.png" alt="Complete architecture diagram" /></p>
+
+<p>This architecture builds on the async request-reply pattern from our previous post, adding:</p>
+
+<ul>
+  <li>✅ Multi-agent orchestration in the background worker</li>
+  <li>✅ Parallel execution of independent agents for performance</li>
+  <li>✅ Code-generated agents for production-ready DevOps</li>
+  <li>✅ External API integration (weather, currency) for real-world data</li>
+  <li>✅ Progress tracking across workflow phases (10% → 40% → 70% → 100%)</li>
+</ul>
+
+<h2 id="get-started-today">Get Started Today</h2>
+
+<p>Ready to build your own multi-agent workflows on Azure App Service? Try out the sample today!</p>
+
+<p>🔗 <strong>GitHub Repository</strong>: <a href="https://github.com/Azure-Samples/app-service-maf-workflow-travel-agent-dotnet">https://github.com/Azure-Samples/app-service-maf-workflow-travel-agent-dotnet</a></p>
+
+<p>The repository includes:</p>
+
+<ul>
+  <li>✅ Complete .NET 9 source code with 6 specialized agents</li>
+  <li>✅ Infrastructure as Code (Bicep) for one-command deployment</li>
+  <li>✅ Complete web UI with real-time progress tracking</li>
+  <li>✅ Comprehensive README with architecture documentation</li>
+  <li>✅ External API integrations (weather, currency)</li>
+</ul>
+
+<h3 id="deploy-in-minutes">Deploy in Minutes</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/Azure-Samples/app-service-maf-workflow-travel-agent-dotnet.git
+<span class="nb">cd </span>app-service-maf-workflow-travel-agent-dotnet
+azd auth login
+azd up
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">azd up</code> command provisions:</p>
+
+<ul>
+  <li>Azure App Service (P0v4 Premium)</li>
+  <li>Azure Service Bus (message queue for async processing)</li>
+  <li>Azure Cosmos DB (state storage with 24-hour TTL)</li>
+  <li>Azure AI Foundry (AI Services + Project for Agent Framework)</li>
+  <li>GPT-4o model deployment (GlobalStandard 50K TPM)</li>
+</ul>
+
+<p>Then manually deploy the WebJob following the <a href="https://github.com/Azure-Samples/app-service-maf-workflow-travel-agent-dotnet#deploy-the-webjob">README instructions</a>.</p>
+
+<h2 id="whats-next-extend-this-pattern">What’s Next? Extend This Pattern</h2>
+
+<p>This sample demonstrates production-ready patterns you can extend:</p>
+
+<h3 id="️-add-more-specialized-agents">🛠️ Add More Specialized Agents</h3>
+
+<ul>
+  <li><strong>Flight Expert Agent</strong> - Search and compare flight prices</li>
+  <li><strong>Hotel Specialist Agent</strong> - Find accommodations based on preferences</li>
+  <li><strong>Activity Planner Agent</strong> - Book tours, restaurants, events</li>
+  <li><strong>Transportation Agent</strong> - Plan routes, transit passes, car rentals</li>
+</ul>
+
+<h3 id="-implement-agent-to-agent-communication">🤝 Implement Agent-to-Agent Communication</h3>
+
+<ul>
+  <li>Agents negotiate conflicting recommendations</li>
+  <li>Hierarchical structures with supervisor agents</li>
+  <li>Voting mechanisms for decision-making</li>
+</ul>
+
+<h3 id="-add-advanced-capabilities">🧠 Add Advanced Capabilities</h3>
+
+<ul>
+  <li><strong>RAG (Retrieval Augmented Generation)</strong> for destination-specific knowledge bases</li>
+  <li><strong>Memory</strong> to remember user preferences across trips</li>
+  <li><strong>Vision models</strong> to analyze travel photos and recommend similar destinations</li>
+  <li><strong>Multi-language support</strong> for international travelers</li>
+</ul>
+
+<h3 id="-production-enhancements">📊 Production Enhancements</h3>
+
+<ul>
+  <li><strong>Authentication</strong> - Microsoft Entra AD for user identity</li>
+  <li><strong>Application Insights</strong> - Distributed tracing and custom metrics</li>
+  <li><strong>VNet Integration</strong> - Private endpoints for security</li>
+  <li><strong>Auto-Scaling</strong> - Scale workers based on queue depth</li>
+  <li><strong>Webhooks</strong> - Notify users when their travel plan is ready</li>
+</ul>
+
+<h2 id="key-takeaways">Key Takeaways</h2>
+
+<ul>
+  <li>✅ Multi-agent systems provide specialized expertise and better results than single generalist agents</li>
+  <li>✅ Azure App Service provides a simple, reliable platform for long-running multi-agent workflows</li>
+  <li>✅ Async request-reply pattern with Service Bus + Cosmos DB ensures scalability and resilience</li>
+  <li>✅ External API integration makes agents more useful with real-world data</li>
+  <li>✅ Parallel execution of independent agents dramatically improves performance</li>
+</ul>
+
+<p>Whether you’re building travel planners, document processors, research assistants, or other AI-powered applications, multi-agent workflows on Azure App Service give you the flexibility and sophistication you need.</p>
+
+<h2 id="learn-more">Learn More</h2>
+
+<ul>
+  <li><a href="https://learn.microsoft.com/en-us/agent-framework/overview/agent-framework-overview">Microsoft Agent Framework Documentation</a> - Complete guide to Agent Framework</li>
+  <li><a href="https://techcommunity.microsoft.com/blog/appsonazureblog/build-long-running-ai-agents-on-azure-app-service-with-microsoft-agent-framework/4463159">Original Blog Post</a> - Single-agent async patterns on App Service</li>
+  <li><a href="https://learn.microsoft.com/azure/app-service/app-service-best-practices">Azure App Service Best Practices</a> - Production deployment patterns</li>
+  <li><a href="https://learn.microsoft.com/azure/architecture/patterns/async-request-reply">Async Request-Reply Pattern</a> - Architecture guidance</li>
+  <li><a href="https://learn.microsoft.com/azure/app-service/overview-webjobs">Azure App Service WebJobs</a> - Background processing documentation</li>
+</ul>
+
+<h2 id="we-want-to-hear-from-you">We Want to Hear From You!</h2>
+
+<p>Thanks again to <a href="https://techcommunity.microsoft.com/users/michel_schep/340533">Michel_Schep</a> for the great question that inspired this follow-up sample!</p>
+
+<p>Have you built multi-agent systems with Agent Framework? Are you using Azure App Service to host your AI and intelligent apps? We’d love to hear about your experience in the comments below.</p>
+
+<p>Questions about multi-agent workflows on App Service? Drop a comment and our team will help you get started.</p>
+
+<p>Happy building! 🚀</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[Last week, I shared how to build long-running AI agents on Azure App Service with Microsoft Agent Framework. If you haven’t seen that post yet, I would recommend starting there as this post builds on the foundations introduced there including getting started with Microsoft Agent Framework. The response so far was great, and one comment in particular stood out:]]></summary></entry><entry><title type="html">Azure Pipeline samples: add sidecars to Azure App Service for Linux</title><link href="https://azure.github.io/AppService/2025/10/29/VSTS-tasks-for-sidecars.html" rel="alternate" type="text/html" title="Azure Pipeline samples: add sidecars to Azure App Service for Linux" /><published>2025-10-29T00:00:00+00:00</published><updated>2025-10-29T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2025/10/29/VSTS-tasks-for-sidecars</id><content type="html" xml:base="https://azure.github.io/AppService/2025/10/29/VSTS-tasks-for-sidecars.html"><![CDATA[<p>Sidecars on Azure App Service let you attach extra containers — logging, telemetry, lightweight APIs, caches, AI inference helpers — alongside your main app, in the same App Service. They start and run with your app, but you don’t have to bake that logic into your main code.</p>
+
+<p>We’re publishing two Azure Pipelines (Azure DevOps / VSTS) YAML samples to make this easy.</p>
+
+<h2 id="vsts-samples">VSTS samples</h2>
+
+<ul>
+  <li><strong><a href="https://github.com/Azure/actions-workflow-samples/blob/master/AppService/vsts-blessed-sitecontainers.yml"><code class="language-plaintext highlighter-rouge">vsts-blessed-sitecontainers.yml</code></a></strong> 
+For built-in runtimes on App Service for Linux (for example, Python or Node on the built-in stack).
+    <ul>
+      <li>Builds your app, zips it, and deploys it using <code class="language-plaintext highlighter-rouge">AzureWebApp@1</code>.</li>
+      <li>In the same deploy step, it sends a <code class="language-plaintext highlighter-rouge">sitecontainersConfig</code> payload that defines one or more sidecar containers by image, port, and config.</li>
+      <li>Your app keeps running on the App Service runtime; the sidecars run next to it.</li>
+    </ul>
+  </li>
+  <li><strong><a href="https://github.com/Azure/actions-workflow-samples/blob/master/AppService/vsts-only-sitecontainers.yml"><code class="language-plaintext highlighter-rouge">vsts-only-sitecontainers.yml</code></a></strong> 
+For containerized apps (Web App for Containers style).
+    <ul>
+      <li>Builds and pushes multiple images (main app container + sidecars) to your container registry.</li>
+      <li>Uses <code class="language-plaintext highlighter-rouge">AzureWebAppContainer@1</code> to deploy them all together to App Service for Linux.</li>
+      <li>One container is marked <code class="language-plaintext highlighter-rouge">"isMain": true</code>; the rest are <code class="language-plaintext highlighter-rouge">"isMain": false</code>.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Both samples assume Azure App Service for Linux and the sidecar model, where containers in the same app can talk to each other over localhost.</p>
+
+<h2 id="how-the-pipelines-work">How the pipelines work</h2>
+
+<ol>
+  <li><strong>Build and Publish</strong>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">vsts-blessed-sitecontainers.yml</code>: sets up your language/runtime, installs dependencies, and produces a ZIP artifact of your app. It also uses Docker tasks to build and publish the sidecar container.</li>
+      <li><code class="language-plaintext highlighter-rouge">vsts-only-sitecontainers.yml</code>: uses Docker tasks to build and push multiple container images.</li>
+    </ul>
+  </li>
+  <li><strong>Deploy to App Service for Linux</strong>
+    <ul>
+      <li>Code-based flow: <code class="language-plaintext highlighter-rouge">AzureWebApp@1</code> deploys the ZIP and sidecar containers defined in <code class="language-plaintext highlighter-rouge">sitecontainersConfig</code>.</li>
+      <li>Container flow: <code class="language-plaintext highlighter-rouge">AzureWebAppContainer@1</code> deploys your main container and sidecars, defined in <code class="language-plaintext highlighter-rouge">sitecontainersConfig</code>.</li>
+    </ul>
+  </li>
+</ol>
+
+<p>That’s it: one pipeline run builds, packages, and deploys your main app plus its helper containers.</p>
+
+<h2 id="quick-start">Quick start</h2>
+
+<ol>
+  <li><strong>Pick a template</strong>
+    <ul>
+      <li>Built-in runtime on App Service for Linux? Use <code class="language-plaintext highlighter-rouge">vsts-blessed-sitecontainers.yml</code>.</li>
+      <li>Already running containers? Use <code class="language-plaintext highlighter-rouge">vsts-only-sitecontainers.yml</code>.</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Add it to your repo</strong>
+Save the YAML as <code class="language-plaintext highlighter-rouge">azure-pipelines.yml</code> (or add it as a new pipeline in Azure DevOps).</p>
+  </li>
+  <li><strong>Fill in the placeholders</strong>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">azureServiceConnectionId</code> / <code class="language-plaintext highlighter-rouge">azureSubscription</code>: your Azure RM service connection.</li>
+      <li><code class="language-plaintext highlighter-rouge">webAppName</code> / <code class="language-plaintext highlighter-rouge">appName</code>: the target App Service for Linux app.</li>
+      <li><code class="language-plaintext highlighter-rouge">resourceGroup</code>: where that app lives.</li>
+      <li><code class="language-plaintext highlighter-rouge">containerRegistry</code>, image names, and ports for each container in the multi-container case.</li>
+      <li>Each container in <code class="language-plaintext highlighter-rouge">sitecontainersConfig</code> declares its port and whether it’s the main app or a sidecar.</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Run it in Azure DevOps</strong>
+Create a new pipeline from YAML, authorize the service connections, and run.</p>
+  </li>
+  <li><strong>Check your app</strong>
+In the Azure portal, go to Deployment Center-&gt;Containers and your App Service will now show your primary app plus the sidecar containers defined in the pipeline.</li>
+</ol>
+
+<h2 id="customize-to-fit">Customize to fit</h2>
+
+<p>These YAMLs are starting points. You can:</p>
+<ul>
+  <li>Add test/lint stages before deployment so you only ship good builds.</li>
+  <li>Swap the agent pool (<code class="language-plaintext highlighter-rouge">ubuntu-latest</code> vs your own self-hosted pool).</li>
+  <li>Deploy to a staging slot first, then swap to production.</li>
+  <li>Tune each sidecar in <code class="language-plaintext highlighter-rouge">sitecontainersConfig</code>: env vars, ports, credentials, etc.</li>
+</ul>
+
+<p>You don’t have to redesign CI/CD every time you want to add observability, a cache container, or a small inference helper next to your app — you just describe the containers and ship.</p>
+
+<h2 id="learn-more">Learn more</h2>
+
+<ul>
+  <li>
+    <p><strong>Deploy to Azure App Service using Azure Pipelines</strong>
+Full walkthrough for setting up <a href="https://learn.microsoft.com/en-us/azure/app-service/deploy-azure-pipelines?tabs=yaml">Azure Pipelines with App Service</a>, including service connections and the <code class="language-plaintext highlighter-rouge">AzureWebApp@1</code> / <code class="language-plaintext highlighter-rouge">AzureWebAppContainer@1</code> tasks.</p>
+  </li>
+  <li>
+    <p><strong>Sidecars on App Service for Linux</strong>
+<a href="https://learn.microsoft.com/en-us/azure/app-service/overview-sidecar">How sidecars work</a>, how <code class="language-plaintext highlighter-rouge">isMain</code> is used, networking rules (localhost between containers), and common patterns like telemetry/OTEL agents, API helpers, and lightweight caches.</p>
+  </li>
+</ul>
+
+<p>Drop these templates into your pipeline, point them at your app, and you’ve got repeatable CI/CD for multi-containers in App Service.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[Sidecars on Azure App Service let you attach extra containers — logging, telemetry, lightweight APIs, caches, AI inference helpers — alongside your main app, in the same App Service. They start and run with your app, but you don’t have to bake that logic into your main code.]]></summary></entry><entry><title type="html">Node.js 24 is now available on Azure App Service for Linux</title><link href="https://azure.github.io/AppService/2025/10/29/node24-available.html" rel="alternate" type="text/html" title="Node.js 24 is now available on Azure App Service for Linux" /><published>2025-10-29T00:00:00+00:00</published><updated>2025-10-29T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2025/10/29/node24-available</id><content type="html" xml:base="https://azure.github.io/AppService/2025/10/29/node24-available.html"><![CDATA[<p>Node.js 24 LTS is live on Azure App Service for Linux. You can create a new Node 24 app through the Azure portal, automate it with the Azure CLI, or roll it out using your favorite ARM/Bicep templates - faster runtime, tighter tooling, same App Service simplicity.</p>
+
+<p>A quick look at what the new runtime gives you:</p>
+
+<p><strong>1. Faster, more modern JavaScript</strong>
+Node.js 24 ships with the V8 13.6 engine and npm 11. You get newer JavaScript capabilities like <code class="language-plaintext highlighter-rouge">RegExp.escape</code>, <code class="language-plaintext highlighter-rouge">Float16Array</code> for tighter numeric data, improved async context handling, global <code class="language-plaintext highlighter-rouge">URLPattern</code>, and better WebAssembly memory support. All of this means cleaner code and better performance without extra polyfills or libraries. 
+This release line is an even-numbered release and has moved into Long Term Support (LTS) in October 2025, which makes it a safe target for production apps.</p>
+
+<p><strong>2. Cleaner built-in testing workflows</strong>
+The built-in <code class="language-plaintext highlighter-rouge">node:test</code> runner in Node.js 24 now automatically waits on nested subtests, so you get reliable, predictable test execution without wiring up manual <code class="language-plaintext highlighter-rouge">await</code> logic or pulling in a third-party test framework. That means fewer flaky “test didn’t finish” errors in CI.</p>
+
+<p>For full release details, see the official Node.js 24 release notes:
+<a href="https://nodejs.org/blog/release/v24.0.0">https://nodejs.org/blog/release/v24.0.0</a></p>
+
+<p>Bring your Node.js 24 app to App Service for Linux, scale it, monitor it, and take advantage of the latest runtime improvements.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[Node.js 24 LTS is live on Azure App Service for Linux. You can create a new Node 24 app through the Azure portal, automate it with the Azure CLI, or roll it out using your favorite ARM/Bicep templates - faster runtime, tighter tooling, same App Service simplicity.]]></summary></entry><entry><title type="html">Python 3.14 is now available on Azure App Service for Linux</title><link href="https://azure.github.io/AppService/2025/10/28/python314-available.html" rel="alternate" type="text/html" title="Python 3.14 is now available on Azure App Service for Linux" /><published>2025-10-28T00:00:00+00:00</published><updated>2025-10-28T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2025/10/28/python314-available</id><content type="html" xml:base="https://azure.github.io/AppService/2025/10/28/python314-available.html"><![CDATA[<p>If you’ve been waiting to run Python 3.14 in on Azure App Service - it’s here. Azure App Service for Linux now offers Python 3.14 as a first-class runtime. You can create a new 3.14 app through the Azure portal, automate it with the Azure CLI, or roll it out using your favorite ARM/Bicep templates — and App Service continues to handle the OS, runtime updates, and patching for you so you can stay focused on code.</p>
+
+<h3 id="why-python-314-matters">Why Python 3.14 matters</h3>
+
+<p><a href="https://docs.python.org/3/whatsnew/3.14.html">Python 3.14</a> (released October 7, 2025) lands with real performance and runtime improvements.</p>
+
+<ul>
+  <li><strong>Faster under load.</strong> Internal interpreter work reduces overhead in common call paths and improves memory behavior, which can translate to lower latency and less CPU churn in web apps and APIs.</li>
+  <li><strong>Smarter concurrency.</strong> Python 3.14 continues the rollout of subinterpreters and a free-threaded build (no GIL), making it easier to take advantage of multi-core parallelism for CPU-bound or high-throughput workloads. In 3.14, that free-threaded mode is more mature and shows significantly better multi-threaded performance than earlier releases.</li>
+  <li><strong>Developer quality-of-life.</strong> You get a more helpful interactive REPL (better highlighting and error hints), cleaner typing through deferred annotations, and new template string syntax (“t-strings”) for safe, structured interpolation.</li>
+</ul>
+
+<p>All of that is now available to you on App Service for Linux.</p>
+
+<h3 id="what-you-should-do-next">What you should do next</h3>
+
+<p>If you’re currently running an older Python version on App Service for Linux, this is a good moment to validate on 3.14:</p>
+
+<ol>
+  <li>Stand up a staging app or deployment slot on Python 3.14.</li>
+  <li>Run your normal tests and watch request latency, CPU, and memory.</li>
+  <li>Confirm that any native wheels or pinned dependencies you rely on install and import cleanly.</li>
+</ol>
+
+<p>Most apps will only need minor adjustments — and you’ll walk away with a faster, more capable runtime on a platform that keeps the underlying infrastructure patched and production-ready for you.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[If you’ve been waiting to run Python 3.14 in on Azure App Service - it’s here. Azure App Service for Linux now offers Python 3.14 as a first-class runtime. You can create a new 3.14 app through the Azure portal, automate it with the Azure CLI, or roll it out using your favorite ARM/Bicep templates — and App Service continues to handle the OS, runtime updates, and patching for you so you can stay focused on code.]]></summary></entry><entry><title type="html">Build Long-Running AI Agents on Azure App Service with Microsoft Agent Framework</title><link href="https://azure.github.io/AppService/2025/10/21/app-service-agent-framework.html" rel="alternate" type="text/html" title="Build Long-Running AI Agents on Azure App Service with Microsoft Agent Framework" /><published>2025-10-21T00:00:00+00:00</published><updated>2025-10-21T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2025/10/21/app-service-agent-framework</id><content type="html" xml:base="https://azure.github.io/AppService/2025/10/21/app-service-agent-framework.html"><![CDATA[<p>The AI landscape is evolving rapidly, and with the introduction of <a href="https://learn.microsoft.com/en-us/agent-framework/overview/agent-framework-overview">Microsoft Agent Framework</a>, developers now have a powerful platform for building sophisticated AI agents that go far beyond simple chat completions. These agents can execute complex, multi-step workflows with persistent state, conversation threads, and structured execution—capabilities that are essential for production AI applications.</p>
+
+<p>Today, we’re excited to share how Azure App Service provides an excellent platform for running Agent Framework workloads, especially those involving long-running operations. Let’s explore why App Service is a great choice and walk through a practical example.</p>
+
+<h2 id="the-challenge-long-running-agent-framework-flows">The Challenge: Long-Running Agent Framework Flows</h2>
+
+<p>Agent Framework enables AI agents to perform complex tasks that can take significant time to complete:</p>
+
+<ul>
+  <li><strong>Multi-turn reasoning</strong>: Iterative calls to large language models (LLMs) where each response informs the next prompt</li>
+  <li><strong>Tool integration</strong>: Function calling and external API interactions for real-time data</li>
+  <li><strong>Complex processing</strong>: Budget calculations, content optimization, multi-phase generation</li>
+  <li><strong>Persistent context</strong>: Maintaining conversation state across multiple interactions</li>
+</ul>
+
+<p>These workflows often take 30 seconds to several minutes to complete—far too long for synchronous HTTP request handling. Traditional web applications run into several constraints:</p>
+
+<ul>
+  <li>⏱️ <strong>Timeout Limitations</strong>: HTTP requests have timeout constraints (typically 30-230 seconds)</li>
+  <li>⚠️ <strong>Connection Issues</strong>: Clients may disconnect due to network interruptions or browser navigation</li>
+  <li>📈 <strong>Scalability Concerns</strong>: Long-running requests block worker threads and don’t survive app restarts</li>
+  <li>🎯 <strong>Poor User Experience</strong>: Users see endless loading spinners with no progress feedback</li>
+</ul>
+
+<h2 id="the-solution-async-pattern-with-app-service">The Solution: Async Pattern with App Service</h2>
+
+<p>Azure App Service provides a robust solution through the asynchronous request-reply pattern combined with background processing:</p>
+
+<ol>
+  <li>API immediately returns (202 Accepted) with a task ID</li>
+  <li>Background worker processes the Agent Framework workflow</li>
+  <li>Client polls for status with real-time progress updates</li>
+  <li>Durable state storage (Cosmos DB) maintains task status and results</li>
+</ol>
+
+<p>This pattern ensures:</p>
+
+<ul>
+  <li>✅ <strong>No HTTP timeouts</strong>—API responds in milliseconds</li>
+  <li>✅ <strong>Resilient to restarts</strong>—state survives deployments and scale events</li>
+  <li>✅ <strong>Progress tracking</strong>—users see real-time updates (10%, 45%, 100%)</li>
+  <li>✅ <strong>Better scalability</strong>—background workers process independently</li>
+</ul>
+
+<h2 id="rapid-innovation-support">Rapid Innovation Support</h2>
+
+<p>The AI landscape is changing at an unprecedented pace. New models, frameworks, and capabilities are released constantly. Azure App Service’s managed platform ensures your applications can adapt quickly without infrastructure rewrites:</p>
+
+<ul>
+  <li><strong>Framework Updates</strong>: Deploy new Agent Framework SDK versions like any application update</li>
+  <li><strong>Model Upgrades</strong>: Switch between GPT-4, GPT-4o, or future models with configuration changes</li>
+  <li><strong>Scaling Patterns</strong>: Start with combined API+worker, split into separate apps as needs grow</li>
+  <li><strong>New Capabilities</strong>: Integrate emerging AI services without changing hosting infrastructure</li>
+</ul>
+
+<p>App Service handles the platform complexity so you can focus on building great AI experiences.</p>
+
+<h2 id="sample-application-ai-travel-planner">Sample Application: AI Travel Planner</h2>
+
+<p>To demonstrate this pattern, we’ve built a Travel Planner application that uses Agent Framework to generate detailed, multi-day travel itineraries. The agent performs complex reasoning including:</p>
+
+<ul>
+  <li>Researching destination attractions and activities</li>
+  <li>Optimizing daily schedules based on location proximity</li>
+  <li>Calculating detailed budget breakdowns</li>
+  <li>Generating personalized travel tips and recommendations</li>
+</ul>
+
+<p>The entire application runs on a single P0v4 App Service with both the API and background worker combined—showcasing App Service’s flexibility for hosting diverse workload patterns in one deployment.</p>
+
+<h3 id="key-architecture-components">Key Architecture Components</h3>
+
+<p><strong>Azure App Service (P0v4 Premium)</strong></p>
+
+<ul>
+  <li>Hosts both REST API and background worker in a single app</li>
+  <li>“Always On” feature keeps background worker running continuously</li>
+  <li>Managed identity for secure, credential-less authentication</li>
+</ul>
+
+<p><strong>Azure Service Bus</strong></p>
+
+<ul>
+  <li>Decouples API from long-running Agent Framework processing</li>
+  <li>Reliable message delivery with automatic retries</li>
+  <li>Dead letter queue for error handling</li>
+</ul>
+
+<p><strong>Azure Cosmos DB</strong></p>
+
+<ul>
+  <li>Stores task status with real-time progress updates</li>
+  <li>Automatic 24-hour TTL for cleanup</li>
+  <li>Rich query capabilities for complex itinerary data</li>
+</ul>
+
+<p><strong>Azure AI Foundry</strong></p>
+
+<ul>
+  <li>Hosts persistent agents with conversation threads</li>
+  <li>Structured execution with Agent Framework runtime</li>
+  <li>GPT-4o model for intelligent travel planning</li>
+</ul>
+
+<p>One of the powerful features of using Azure AI Foundry with Agent Framework is the ability to inspect agents and conversation threads directly in the Azure portal. This provides valuable visibility into what’s happening during execution.</p>
+
+<h3 id="viewing-agents-and-threads-in-azure-ai-foundry">Viewing Agents and Threads in Azure AI Foundry</h3>
+
+<p>When you submit a travel plan request, the application creates an agent in Azure AI Foundry. You can navigate to your AI Foundry project in the Azure portal to see:</p>
+
+<p><strong>Agents</strong></p>
+
+<ul>
+  <li>The application creates an agent for each request</li>
+  <li><strong>Important</strong>: Agents are <strong>automatically deleted</strong> after the itinerary is generated to keep your project clean</li>
+  <li><strong>Tip</strong>: You’ll need to be quick! Navigate to Azure AI Foundry right after submitting a request to see the agent in action</li>
+  <li>Once processing completes, the agent is removed as part of the cleanup process</li>
+</ul>
+
+<p><strong>Conversation Threads</strong></p>
+
+<ul>
+  <li>Unlike agents, threads persist even after the agent completes</li>
+  <li>You can view the complete conversation history at any time</li>
+  <li>See the exact prompts sent to the model and the responses generated</li>
+  <li>Useful for debugging, understanding agent behavior, and improving prompts</li>
+</ul>
+
+<p>The ephemeral nature of agents (created per request, deleted after completion) keeps your Azure AI Foundry project clean while the persistent threads give you full traceability of every interaction.</p>
+
+<h2 id="get-started-today">Get Started Today</h2>
+
+<p>The complete Travel Planner application is available as a reference implementation so you can quickly get started building your own apps with Agent Framework on App Service.</p>
+
+<p>🔗 <strong>GitHub Repository</strong>: <a href="https://github.com/Azure-Samples/app-service-agent-framework-travel-agent-dotnet">https://github.com/Azure-Samples/app-service-agent-framework-travel-agent-dotnet</a></p>
+
+<p>The repo includes:</p>
+
+<ul>
+  <li>Complete .NET 9 source code with Agent Framework integration</li>
+  <li>Infrastructure as Code (Bicep) for automated deployment</li>
+  <li>Web UI with real-time progress tracking</li>
+  <li>Comprehensive README with deployment instructions</li>
+</ul>
+
+<p>Deploy in minutes:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/Azure-Samples/app-service-agent-framework-travel-agent-dotnet.git
+<span class="nb">cd </span>app-service-agent-framework-travel-agent-dotnet
+azd auth login
+azd up
+</code></pre></div></div>
+
+<h2 id="key-takeaways">Key Takeaways</h2>
+
+<ul>
+  <li>✅ Agent Framework enables sophisticated AI agents beyond simple chat completions</li>
+  <li>✅ Long-running workflows (30s-minutes) require async patterns to avoid timeouts</li>
+  <li>✅ App Service provides a simple, cost-effective platform for these workloads</li>
+  <li>✅ Async request-reply pattern with Service Bus + Cosmos DB ensures reliability</li>
+  <li>✅ Rapid innovation in AI is supported by App Service’s adaptable platform</li>
+</ul>
+
+<p>Whether you’re building travel planners, document processors, research assistants, or other AI-powered applications, Azure App Service gives you the flexibility and reliability you need—without the complexity of container orchestration or function programming models.</p>
+
+<h2 id="whats-next-build-on-this-foundation">What’s Next? Build on This Foundation</h2>
+
+<p>This Travel Planner is just the starting point—a foundation to help you understand the patterns and architecture. Agent Framework is designed to grow with your needs, making it easy to add sophisticated capabilities with minimal effort:</p>
+
+<p>🛠️ <strong>Add Tool Calling</strong></p>
+
+<p>Connect your agent to real-time APIs for weather, flight prices, hotel availability, and actual booking systems. Agent Framework’s built-in tool calling makes this straightforward.</p>
+
+<p>🤝 <strong>Implement Multi-Agent Systems</strong></p>
+
+<p>Create specialized agents (flight expert, hotel specialist, activity planner) that collaborate to build comprehensive travel plans. Agent Framework handles the orchestration.</p>
+
+<p>🧠 <strong>Enhance with RAG</strong></p>
+
+<p>Add retrieval-augmented generation to give your agent deep knowledge of destinations, local customs, and insider tips from your own content library.</p>
+
+<p>📊 <strong>Expand Functionality</strong></p>
+
+<ul>
+  <li>Real-time pricing and availability</li>
+  <li>Interactive refinement based on user feedback</li>
+  <li>Personalized recommendations from past trips</li>
+  <li>Multi-language support for global users</li>
+</ul>
+
+<p>The beauty of Agent Framework is that these advanced features integrate seamlessly into the pattern we’ve built. Start with this sample, explore the <a href="https://learn.microsoft.com/en-us/agent-framework/overview/agent-framework-overview">Agent Framework documentation</a>, and unlock powerful AI capabilities for your applications!</p>
+
+<h2 id="learn-more">Learn More</h2>
+
+<ul>
+  <li><a href="https://learn.microsoft.com/en-us/agent-framework/overview/agent-framework-overview">Microsoft Agent Framework Documentation</a></li>
+  <li><a href="https://learn.microsoft.com/azure/app-service/">Azure App Service Documentation</a></li>
+  <li><a href="https://learn.microsoft.com/azure/architecture/patterns/async-request-reply">Async Request-Reply Pattern</a></li>
+  <li><a href="https://github.com/Azure-Samples/app-service-agent-framework-travel-agent-dotnet">Sample Application GitHub Repo</a></li>
+</ul>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[The AI landscape is evolving rapidly, and with the introduction of Microsoft Agent Framework, developers now have a powerful platform for building sophisticated AI agents that go far beyond simple chat completions. These agents can execute complex, multi-step workflows with persistent state, conversation threads, and structured execution—capabilities that are essential for production AI applications.]]></summary></entry><entry><title type="html">Platform updates for .NET on App Service Windows</title><link href="https://azure.github.io/AppService/2025/10/20/dotnet-on-windows.html" rel="alternate" type="text/html" title="Platform updates for .NET on App Service Windows" /><published>2025-10-20T00:00:00+00:00</published><updated>2025-10-20T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2025/10/20/dotnet-on-windows</id><content type="html" xml:base="https://azure.github.io/AppService/2025/10/20/dotnet-on-windows.html"><![CDATA[<blockquote>
+  <p><strong>UPDATE:</strong></p>
+
+  <ul>
+    <li><strong>Patch deployment has completed on all instances of our HTTP load balancer infrastructure (aka Front Ends)</strong>.</li>
+    <li>Clarified impact to Function Apps.</li>
+    <li>Clarified mechanism for mitigation.</li>
+  </ul>
+
+</blockquote>
+
+<p>The App Service team is working closely with the .NET team to address a set of issues that has impacted our ability to deliver updates to the .NET runtime versions provided by the platform on Windows.</p>
+
+<p>We have deployed a patch to our HTTP load balancer infrastructure (aka Front Ends) to mitigate <a href="https://github.com/dotnet/aspnetcore/issues/64033">CVE-2025-55315</a>. This patch protects <strong>Web apps, Function apps and Logic apps (standard)</strong> on both Windows and Linux instances from the impact of this CVE, even if the underlying .NET runtime remains on an affected version.</p>
+
+<h2 id="what-is-the-mitigation">What is the mitigation?</h2>
+
+<p>App Service Front Ends are built using <a href="https://devblogs.microsoft.com/dotnet/bringing-kestrel-and-yarp-to-azure-app-services/">Kestrel and YARP</a>. The patch we rolled out moves the infrastructure to the <a href="https://github.com/dotnet/core/blob/main/release-notes/8.0/8.0.21/8.0.21.md">latest available version</a> of the framework. Since every HTTP request must first be routed through this layer of the service, any malicious content is effectively filtered out and will not reach the individual instances where customers’ apps are hosted.</p>
+
+<h2 id="when-will-my-app-be-updated">When will my app be updated?</h2>
+
+<ul>
+  <li><strong>Apps hosted on Windows instances targeting .NET 8 and .NET 9</strong> will be delayed in receiving runtime updates through the platform. We will resume regular updates once we have resolved the blocking issue.</li>
+  <li><strong>Apps hosted on Windows instances targeting .NET 10</strong> will continue to receive updates on our regular cadence.</li>
+  <li><strong>Linux instances</strong> are not impacted and will continue to receive updates on our regular cadence.</li>
+</ul>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[UPDATE: Patch deployment has completed on all instances of our HTTP load balancer infrastructure (aka Front Ends). Clarified impact to Function Apps. Clarified mechanism for mitigation.]]></summary></entry><entry><title type="html">Ubuntu-Powered Runtimes on Azure App Service for Linux: Leaner, Faster, Stronger</title><link href="https://azure.github.io/AppService/2025/10/14/Ubuntu-images.html" rel="alternate" type="text/html" title="Ubuntu-Powered Runtimes on Azure App Service for Linux: Leaner, Faster, Stronger" /><published>2025-10-14T00:00:00+00:00</published><updated>2025-10-14T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2025/10/14/Ubuntu-images</id><content type="html" xml:base="https://azure.github.io/AppService/2025/10/14/Ubuntu-images.html"><![CDATA[<p>We’re updating the OS foundation for <strong>new code-based stacks</strong> on Azure App Service for Linux. Every new major version of our supported stacks will target Ubuntu going forward - this includes the new versions for <strong>.NET 10, Python 3.14, Node 24, PHP 8.5</strong> and <strong>Java 25</strong> - all expected to rollout in the next couple of months. Existing stacks remain on Debian and <strong>nothing changes for your current apps</strong> unless you choose to move.</p>
+
+<h2 id="why-ubuntu">Why Ubuntu?</h2>
+
+<p>Because we manage the OS for you, this change is about platform gains that quietly benefit your apps without adding work for your teams.</p>
+
+<ul>
+  <li><strong>Builds on Debian’s ecosystem:</strong> Ubuntu inherits Debian’s rich package universe while moving faster upstream. This lets the platform adopt newer toolchains and libraries more predictably, improving compatibility and unblocking modern dependencies.</li>
+  <li><strong>LTS stability with long runway:</strong> Ubuntu LTS follows a 5 year support lifecycle giving us a stable, well-maintained base to operate at scale.</li>
+</ul>
+
+<h2 id="whats-changing-and-what-isnt">What’s changing (and what isn’t)</h2>
+
+<ul>
+  <li><strong>Changing:</strong> New <strong>.NET 10, Python 3.14, Node 24, PHP 8.5</strong> and <strong>Java 25</strong> code-based stacks will run on <strong>Ubuntu</strong> images.</li>
+  <li><strong>Not changing:</strong> Your <strong>existing apps stay on Debian</strong>. No forced migrations.</li>
+  <li><strong>Operational parity:</strong> Deployment flows (Oryx, GitHub Actions, Azure CLI), scaling, diagnostics, and networking continue to work as before.</li>
+</ul>
+
+<h2 id="what-this-means-for-you">What this means for you</h2>
+
+<ul>
+  <li><strong>No action required</strong> for existing apps.</li>
+  <li>When creating a <strong>new</strong> app or upgrading to <strong>.NET 10, Python 3.14, Node 24, PHP 8.5</strong> and <strong>Java 25</strong>, you’ll get the Ubuntu-based stack by default.</li>
+  <li>When upgrading, verify any native packages your app installs at build/start, since Ubuntu often provides equal or newer versions and names may differ.</li>
+</ul>
+
+<h2 id="quick-faq">Quick FAQ</h2>
+
+<p><strong>Do I need to move now?</strong>
+No. Existing apps stay on Debian. Migrate only if you want the newer runtimes and platform improvements.</p>
+
+<p><strong>Will my build behavior change?</strong>
+Expected to be neutral-to-positive. Leaner images and fresher toolchains can reduce build and cold-start times.</p>
+
+<p><strong>Any breaking differences?</strong>
+None anticipated for supported frameworks. If you pin specific distro package versions, confirm availability on Ubuntu during upgrade.</p>
+
+<hr />
+
+<p>By standardizing new stacks on <strong>Ubuntu LTS</strong>, we preserve Debian’s strengths while unlocking a faster cadence, long-term security coverage, and leaner images that translate to better reliability and performance—delivered transparently by the platform.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[We’re updating the OS foundation for new code-based stacks on Azure App Service for Linux. Every new major version of our supported stacks will target Ubuntu going forward - this includes the new versions for .NET 10, Python 3.14, Node 24, PHP 8.5 and Java 25 - all expected to rollout in the next couple of months. Existing stacks remain on Debian and nothing changes for your current apps unless you choose to move.]]></summary></entry><entry><title type="html">GitHub Actions samples: add sidecars to Azure App Service for Linux</title><link href="https://azure.github.io/AppService/2025/09/08/GHA-templates-sidecars.html" rel="alternate" type="text/html" title="GitHub Actions samples: add sidecars to Azure App Service for Linux" /><published>2025-09-08T00:00:00+00:00</published><updated>2025-09-08T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2025/09/08/GHA-templates-sidecars</id><content type="html" xml:base="https://azure.github.io/AppService/2025/09/08/GHA-templates-sidecars.html"><![CDATA[<p>Sidecars on Azure App Service let you bolt on capabilities like monitoring, caching, or AI—without changing your main app. The Azure team has added two <strong>GitHub Actions</strong> sample workflows that make it easy to roll this out on <strong>App Service for Linux</strong>. (<a href="https://learn.microsoft.com/azure/app-service/overview-sidecar">Sidecars on Azure App Service</a>)</p>
+
+<h2 id="whats-in-the-repo">What’s in the repo</h2>
+
+<ul>
+  <li><strong>For code-based apps</strong> (bring-your-own-code):
+<a href="https://github.com/Azure/actions-workflow-samples/blob/master/AppService/blessed-sitecontainers-webapp-on-azure.yml"><code class="language-plaintext highlighter-rouge">blessed-sitecontainers-webapp-on-azure.yml</code></a> — attaches one or more  sidecar containers to a code-based web app. Use this when your main app runs on a built-in Linux stack (Python/Node/.NET/Java/PHP, etc.).</li>
+  <li><strong>For container-based apps</strong> (Web App for Containers):
+<a href="https://github.com/Azure/actions-workflow-samples/blob/master/AppService/sitecontainers-webapp-on-azure.yml"><code class="language-plaintext highlighter-rouge">sitecontainers-webapp-on-azure.yml</code></a> — deploys your primary container <strong>plus</strong> sidecars in the same app. Use this when your main app is already packaged as a container image.</li>
+</ul>
+
+<blockquote>
+  <p>Both samples target <strong>App Service for Linux</strong> and use the App Service sidecar model.</p>
+</blockquote>
+
+<h2 id="how-the-workflows-work-at-a-glance">How the workflows work (at a glance)</h2>
+
+<ol>
+  <li><strong>Authenticate to Azure</strong> using <code class="language-plaintext highlighter-rouge">azure/login</code> (OpenID Connect recommended), so you don’t store long-lived secrets. (<a href="https://learn.microsoft.com/azure/app-service/deploy-github-actions" title="Deploy to Azure App Service by using GitHub Actions">Microsoft Learn</a>)</li>
+  <li><strong>Build (if needed)</strong> and <strong>deploy</strong> your app with App Service actions/CLI steps. For containerized flows, you’ll typically push/pull from ACR or another registry. (<a href="https://learn.microsoft.com/azure/app-service/deploy-container-github-action" title="Custom Container CI/CD from GitHub Actions - Azure App ...">Microsoft Learn</a>)</li>
+  <li><strong>Attach sidecars</strong> by applying the App Service <em>sitecontainers</em> configuration alongside your main app/container. (Sidecars scale and lifecycle with your app.) (<a href="https://learn.microsoft.com/azure/app-service/overview-sidecar" title="Sidecars overview - Azure App Service">Microsoft Learn</a>)</li>
+</ol>
+
+<h2 id="quick-start">Quick start</h2>
+
+<ol>
+  <li><strong>Copy</strong> the relevant YAML into <code class="language-plaintext highlighter-rouge">.github/workflows/</code> in your repo. (<a href="https://github.com/Azure/actions-workflow-samples/blob/master/AppService/blessed-sitecontainers-webapp-on-azure.yml" title="actions-workflow-samples/AppService/blessed-sitecontainers-webapp-on-azure.yml at master · Azure/actions-workflow-samples · GitHub">GitHub</a>)</li>
+  <li><strong>Set auth</strong>: use OIDC with <code class="language-plaintext highlighter-rouge">azure/login</code> (or a service principal/publish profile if you must). (<a href="https://learn.microsoft.com/azure/app-service/deploy-github-actions" title="Deploy to Azure App Service by using GitHub Actions">Microsoft Learn</a>)</li>
+  <li><strong>Fill in inputs</strong>: app name, resource group, and sidecar details (image or extension parameters, env vars/ports).</li>
+  <li><strong>Commit &amp; run</strong>: trigger on <code class="language-plaintext highlighter-rouge">push</code> or via <strong>Run workflow</strong>.</li>
+  <li><strong>Verify</strong>: in the Portal, you’ll see your main app plus the sidecar(s); you can also follow the Linux sidecar tutorial if you’re new to the concept. (<a href="https://learn.microsoft.com/azure/app-service/tutorial-sidecar" title="Tutorial: Configure a sidecar container - Azure App Service">Microsoft Learn</a>)</li>
+</ol>
+
+<h2 id="when-to-use-which-sample">When to use which sample?</h2>
+
+<ul>
+  <li>Choose <strong><code class="language-plaintext highlighter-rouge">blessed-sitecontainers-…</code></strong> if your app runs on a built-in Linux runtime and you want to <em>add</em> sidecars (e.g., telemetry collectors, caches, or AI helpers). (<a href="https://github.com/Azure/actions-workflow-samples/blob/master/AppService/blessed-sitecontainers-webapp-on-azure.yml" title="actions-workflow-samples/AppService/blessed-sitecontainers-webapp-on-azure.yml at master · Azure/actions-workflow-samples · GitHub">GitHub</a>, <a href="https://learn.microsoft.com/azure/app-service/overview-sidecar" title="Sidecars overview - Azure App Service">Microsoft Learn</a>)</li>
+  <li>Choose <strong><code class="language-plaintext highlighter-rouge">sitecontainers-…</code></strong> if your main app is a <strong>custom container</strong> and you want sidecars next to it (same plan, shared lifecycle). (<a href="https://github.com/Azure/actions-workflow-samples/blob/master/AppService/sitecontainers-webapp-on-azure.yml" title="actions-workflow-samples/AppService/sitecontainers-webapp-on-azure.yml at master · Azure/actions-workflow-samples · GitHub">GitHub</a>, <a href="https://learn.microsoft.com/azure/app-service/tutorial-custom-container-sidecar" title="Tutorial: Configure a sidecar for a custom container app">Microsoft Learn</a>)</li>
+</ul>
+
+<h2 id="customize-to-fit">Customize to fit</h2>
+
+<p>These samples are designed to be adapted: tweak triggers, add build/test jobs, point at your container registry, configure environment variables/secrets, or target deployment slots. The underlying docs on App Service + GitHub Actions and custom containers cover advanced options. (<a href="https://learn.microsoft.com/azure/app-service/deploy-github-actions" title="Deploy to Azure App Service by using GitHub Actions">Microsoft Learn</a>)</p>
+
+<h2 id="learn-more">Learn more</h2>
+
+<ul>
+  <li><strong>Sidecars overview (why &amp; how):</strong> benefits, patterns, and limits. (<a href="https://learn.microsoft.com/azure/app-service/overview-sidecar" title="Sidecars overview - Azure App Service">Microsoft Learn</a>)</li>
+  <li><strong>Tutorials:</strong> add a sidecar to a Linux app (code-based) or to a custom-container app. (<a href="https://learn.microsoft.com/azure/app-service/tutorial-sidecar" title="Tutorial: Configure a sidecar container - Azure App Service">Microsoft Learn</a>)</li>
+</ul>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[Sidecars on Azure App Service let you bolt on capabilities like monitoring, caching, or AI—without changing your main app. The Azure team has added two GitHub Actions sample workflows that make it easy to roll this out on App Service for Linux. (Sidecars on Azure App Service)]]></summary></entry><entry><title type="html">App Service builds behind proxies: fixing trust with a public certificate</title><link href="https://azure.github.io/AppService/2025/09/08/Oryx-build-certificate.html" rel="alternate" type="text/html" title="App Service builds behind proxies: fixing trust with a public certificate" /><published>2025-09-08T00:00:00+00:00</published><updated>2025-09-08T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2025/09/08/Oryx-build-certificate</id><content type="html" xml:base="https://azure.github.io/AppService/2025/09/08/Oryx-build-certificate.html"><![CDATA[<p><strong>TL;DR</strong>: If your organization uses a TLS-inspecting proxy (e.g., Zscaler), some of the traffic originating from App Service build infrastructure may be re-signed by the proxy. App Service doesn’t trust that proxy cert by default, so the build fails.
+Set the app setting <strong><code class="language-plaintext highlighter-rouge">WEBSITE_INSTALL_PUBLIC_CERTS_IN_KUDU=true</code></strong> and upload the proxy’s public certificate (.cer). App Service will install the certificate and your builds will succeed.</p>
+
+<hr />
+
+<h2 id="why-this-happens">Why this happens</h2>
+
+<p>During build, App Service downloads build assets from the its build CDN over HTTPS. When a corporate proxy intercepts and re-signs TLS, App Service sees a certificate chain it doesn’t recognize and refuses the connection, causing the build to fail.</p>
+
+<h2 id="whats-new">What’s new</h2>
+
+<p>A new app setting, <strong><code class="language-plaintext highlighter-rouge">WEBSITE_INSTALL_PUBLIC_CERTS_IN_KUDU</code></strong>, tells App Service to install any <strong>public key certificates (.cer)</strong> you upload into its trust store used for the build.</p>
+
+<hr />
+
+<h2 id="step-by-step">Step-by-step</h2>
+
+<h3 id="1-upload-the-proxys-public-certificate">1) Upload the proxy’s public certificate</h3>
+
+<p>In the portal, navigate to your Web App ➜ <strong>Certificates</strong> ➜ <strong>Public key certificates (.cer)</strong> ➜ <strong>Add certificate</strong>.
+Upload the organization’s TLS inspection CA (root or intermediate) <strong>public</strong> certificate.</p>
+
+<p><img src="/AppService/media/2025/09/add-cert.jpg" alt="Add Certificate" /></p>
+
+<blockquote>
+  <p>Tip: This is a public certificate only—no private key and no password.</p>
+</blockquote>
+
+<h3 id="2-turn-on-the-app-setting">2) Turn on the app setting</h3>
+
+<p>Portal: <strong>Configuration</strong> ➜ <strong>Application settings</strong> ➜ add (Or <strong>Settings</strong> ➜ <strong>Environment Variables</strong> ➜ <strong>App Settings</strong> ➜ Add)
+<code class="language-plaintext highlighter-rouge">WEBSITE_INSTALL_PUBLIC_CERTS_IN_KUDU = true</code> ➜ <strong>Save</strong>. This will automatically restart the app.</p>
+
+<p>CLI (equivalent):</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp config appsettings <span class="nb">set</span> <span class="se">\</span>
+  <span class="nt">-g</span> &lt;resource-group&gt; <span class="nt">-n</span> &lt;app-name&gt; <span class="se">\</span>
+  <span class="nt">--settings</span> <span class="nv">WEBSITE_INSTALL_PUBLIC_CERTS_IN_KUDU</span><span class="o">=</span><span class="nb">true</span>
+</code></pre></div></div>
+
+<h3 id="3-verify-the-certificate-is-installed">3) Verify the certificate is installed</h3>
+
+<p>Open <strong>Advanced Tools (Kudu)</strong> ➜ <strong>Bash</strong> and check:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">ls</span> <span class="nt">-l</span> /etc/ssl/certs
+<span class="c"># (optional) find the installed cert by name or subject</span>
+<span class="nb">grep</span> <span class="nt">-l</span> <span class="s2">"&lt;certificate-name&gt;"</span> /etc/ssl/certs/<span class="k">*</span>.crt 
+
+<span class="c"># compare thumbprint</span>
+openssl x509 <span class="nt">-in</span> /etc/ssl/certs/&lt;your-cert&gt;.crt <span class="nt">-noout</span> <span class="nt">-fingerprint</span> <span class="nt">-sha1</span>
+</code></pre></div></div>
+
+<p>Compare the fingerprint with the thumbprint shown for your uploaded cert in the <strong>Certificates</strong> blade.</p>
+
+<h3 id="4-trigger-a-build">4) Trigger a build</h3>
+
+<p>Deploy again (Deployment Center, GitHub Actions, az webapp deployment, etc.).
+When the proxy presents its certificate, App Service now trusts it and the application build completes.</p>
+
+<hr />
+
+<h2 id="troubleshooting">Troubleshooting</h2>
+
+<ul>
+  <li>
+    <p><strong>Still seeing x509/certificate unknown errors?</strong>
+Ensure you uploaded the exact CA that signs your proxy’s certs (often an org-specific intermediate), in <strong>.cer</strong> (DER/BASE64) form.</p>
+  </li>
+  <li>
+    <p><strong>Multiple proxies / chains</strong>
+If your environment uses a chain, upload all relevant public CA certs.</p>
+  </li>
+  <li>
+    <p><strong>Scope</strong>
+This affects App Service build infrastructure’s outbound trust for the app. It does not grant trust to private keys or change TLS for your site’s inbound traffic.</p>
+  </li>
+</ul>
+
+<hr />
+
+<h2 id="summary">Summary</h2>
+
+<p>By uploading your organization’s proxy CA <strong>public</strong> certificate and enabling <strong><code class="language-plaintext highlighter-rouge">WEBSITE_INSTALL_PUBLIC_CERTS_IN_KUDU</code></strong>, App Service for Linux installs the certificate into its trust store. App Service can then fetch dependencies through Zscaler (or similar proxies) and your builds proceed normally—no more failed builds due to untrusted certificates.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[TL;DR: If your organization uses a TLS-inspecting proxy (e.g., Zscaler), some of the traffic originating from App Service build infrastructure may be re-signed by the proxy. App Service doesn’t trust that proxy cert by default, so the build fails. Set the app setting WEBSITE_INSTALL_PUBLIC_CERTS_IN_KUDU=true and upload the proxy’s public certificate (.cer). App Service will install the certificate and your builds will succeed.]]></summary></entry></feed>

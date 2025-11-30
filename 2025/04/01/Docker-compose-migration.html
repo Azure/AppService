@@ -1,0 +1,1415 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Migrating your Docker Compose applications to the Sidecar feature - Azure App Service</title>
+<meta name="description" content="As we continue to enhance the developer experience on Azure App Service, we’re announcing the retirement of the Docker Compose feature on March 31, 2027. If you’re currently using Docker Compose to deploy and manage multi-container applications on App Service, now is the time to start planning your transition to the new Sidecar feature.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Migrating your Docker Compose applications to the Sidecar feature">
+<meta property="og:url" content="https://azure.github.io/AppService/2025/04/01/Docker-compose-migration.html">
+
+
+  <meta property="og:description" content="As we continue to enhance the developer experience on Azure App Service, we’re announcing the retirement of the Docker Compose feature on March 31, 2027. If you’re currently using Docker Compose to deploy and manage multi-container applications on App Service, now is the time to start planning your transition to the new Sidecar feature.">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2025-04-01T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2025/04/01/Docker-compose-migration.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/sidecars/" class="">Sidecars</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/ai-integration/" class="">AI Integration</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Migrating your Docker Compose applications to the Sidecar feature">
+    <meta itemprop="description" content="As we continue to enhance the developer experience on Azure App Service, we’re announcing the retirement of the Docker Compose feature on March 31, 2027. If you’re currently using Docker Compose to deploy and manage multi-container applications on App Service, now is the time to start planning your transition to the new Sidecar feature.">
+    <meta itemprop="datePublished" content="April 01, 2025">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Migrating your Docker Compose applications to the Sidecar feature
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  8 minute read
+
+            
+            
+              • By Tulika Chaudharie
+            
+            • April 1, 2025
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#migration-process-moving-from-docker-compose-to-sidecar">Migration Process: Moving from Docker Compose to Sidecar</a></li>
+  <li><a href="#1-script-based-migration-recommended-for-simple-setups">1. Script-Based Migration (Recommended for Simple Setups)</a>
+    <ul>
+      <li><a href="#-get-the-migration-script">🔗 Get the Migration Script</a></li>
+      <li><a href="#️-running-the-script">▶️ Running the Script</a></li>
+      <li><a href="#-parameters-explained">🧩 Parameters Explained</a></li>
+    </ul>
+  </li>
+  <li><a href="#2-manual-migration">2. Manual Migration</a>
+    <ul>
+      <li><a href="#a-prerequisites">a. Prerequisites</a></li>
+      <li><a href="#b-sign-in-to-azure-and-set-your-subscription">b. Sign In to Azure and Set Your Subscription</a></li>
+      <li><a href="#c-gather-required-details">c. Gather Required Details</a></li>
+      <li><a href="#d-create-a-deployment-slot">d. Create a Deployment Slot</a></li>
+      <li><a href="#e-decode-the-existing-docker-compose-configuration">e. Decode the Existing Docker Compose Configuration</a></li>
+      <li><a href="#f-define-your-sidecar-containers">f. Define Your Sidecar Containers</a>
+        <ul>
+          <li><a href="#-example-single-service">✅ Example: Single service</a></li>
+          <li><a href="#-example-multiple-services">✅ Example: Multiple services</a></li>
+        </ul>
+      </li>
+      <li><a href="#g-switch-to-sidecar-mode">g. Switch to Sidecar Mode</a></li>
+      <li><a href="#h-restart-the-deployment-slot">h. Restart the Deployment Slot</a></li>
+      <li><a href="#i-validate-and-swap-to-production">i. Validate and Swap to Production</a></li>
+    </ul>
+  </li>
+  <li><a href="#mapping-docker-compose-attributes-to-sidecar-configuration">Mapping Docker Compose Attributes to Sidecar Configuration</a>
+    <ul>
+      <li><a href="#-supported-attribute-mapping">✅ Supported Attribute Mapping</a></li>
+      <li><a href="#-unsupported-or-ignored-fields">🚫 Unsupported or Ignored Fields</a></li>
+    </ul>
+  </li>
+  <li><a href="#migration-limitations-and-considerations">Migration Limitations and Considerations</a>
+    <ul>
+      <li><a href="#-feature-comparison">🔄 Feature Comparison</a></li>
+      <li><a href="#️-migration-limitations">⚠️ Migration Limitations</a></li>
+    </ul>
+  </li>
+  <li><a href="#frequently-asked-questions">Frequently Asked Questions</a></li>
+  <li><a href="#conclusion">Conclusion</a>
+    <ul>
+      <li><a href="#-learn-more">📚 Learn More</a></li>
+    </ul>
+  </li>
+  <li><a href="#getting-help">Getting Help</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <p>As we continue to enhance the developer experience on Azure App Service, we’re announcing the retirement of the <strong>Docker Compose</strong> feature on <strong>March 31, 2027</strong>. If you’re currently using Docker Compose to deploy and manage multi-container applications on App Service, now is the time to start planning your transition to the <strong>new Sidecar feature</strong>.</p>
+
+<p>Sidecar is now <strong>generally available</strong> (<a href="https://techcommunity.microsoft.com/blog/appsonazureblog/announcing-the-general-availability-of-sidecar-extensibility-in-azure-app-servic/4267985">read the announcement</a>) and offers a more modern, intuitive way to build and manage multi-container apps on Azure App Service. With Sidecar, you get a simplified configuration model, deeper integration with the Azure ecosystem, and enhanced observability and control through the Azure portal.</p>
+
+<p>Compared to Docker Compose, Sidecar provides several key benefits:</p>
+
+<ul>
+  <li><strong>Simplified configuration</strong> for deploying and managing multi-container applications.</li>
+  <li><strong>Full Azure portal integration</strong>, allowing you to monitor, manage, and view logs for each container individually.</li>
+  <li><strong>Native integration</strong> with Azure App Service features such as <strong>VNet</strong> and <strong>Managed Identity</strong>, enabling more secure and flexible architectures.</li>
+</ul>
+
+<p>In this guide, we’ll walk you through everything you need to know to successfully migrate from Docker Compose to Sidecar—ensuring your applications remain reliable, secure, and supported well into the future.</p>
+
+<h2 id="migration-process-moving-from-docker-compose-to-sidecar">Migration Process: Moving from Docker Compose to Sidecar</h2>
+
+<blockquote>
+  <p>🛠 <strong>Recommendation:</strong> We strongly encourage you to use <strong><a href="https://learn.microsoft.com/en-us/azure/app-service/deploy-staging-slots">deployment slots</a></strong> during migration. This allows you to test your Sidecar configuration safely in a staging environment before swapping it into production. If you’re on a pricing tier below Standard, you can temporarily upgrade to Standard, perform the migration using slots, and then downgrade after you’re done.</p>
+</blockquote>
+
+<p><img src="/AppService/media/2025/04/migration.png" alt="migration" /></p>
+
+<hr />
+
+<h2 id="1-script-based-migration-recommended-for-simple-setups">1. Script-Based Migration (Recommended for Simple Setups)</h2>
+
+<p>If your Docker Compose file follows standard configurations and doesn’t include any unsupported fields, you can automate the migration using our provided script.</p>
+
+<blockquote>
+  <p>⚠️ <strong>Important:</strong> Before running the script, ensure you <strong>take a backup of your site</strong> from the <a href="https://portal.azure.com">Azure portal</a>. This ensures you can safely roll back if anything goes wrong.</p>
+</blockquote>
+
+<h3 id="-get-the-migration-script">🔗 Get the Migration Script</h3>
+
+<p>You can find the PowerShell script in our GitHub repository:<br />
+👉 <strong><a href="https://github.com/Azure-Samples/sidecar-samples/blob/main/migration-script/update_sidecars.ps1">Download the script from GitHub</a></strong></p>
+
+<hr />
+
+<h3 id="️-running-the-script">▶️ Running the Script</h3>
+
+<ol>
+  <li>
+    <p><strong>Save the script</strong> as <code class="language-plaintext highlighter-rouge">update-webapp.ps1</code> on your machine.</p>
+  </li>
+  <li>
+    <p><strong>Run it from PowerShell</strong>, passing the required parameters:</p>
+  </li>
+</ol>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">.</span><span class="n">/update-webapp.ps1</span><span class="w"> </span><span class="se">`
+</span><span class="w">  </span><span class="nt">-subscriptionId</span><span class="w"> </span><span class="s2">"&lt;subscriptionId&gt;"</span><span class="w"> </span><span class="se">`
+</span><span class="w">  </span><span class="nt">-webAppName</span><span class="w"> </span><span class="s2">"&lt;webAppName&gt;"</span><span class="w"> </span><span class="se">`
+</span><span class="w">  </span><span class="nt">-resourceGroup</span><span class="w"> </span><span class="s2">"&lt;resourceGroup&gt;"</span><span class="w"> </span><span class="se">`
+</span><span class="w">  </span><span class="nt">-registryUrl</span><span class="w"> </span><span class="s2">"&lt;registryUrl&gt;"</span><span class="w"> </span><span class="se">`
+</span><span class="w">  </span><span class="nt">-base64DockerCompose</span><span class="w"> </span><span class="s2">"&lt;base64DockerCompose&gt;"</span><span class="w"> </span><span class="se">`
+</span><span class="w">  </span><span class="nt">-mainServiceName</span><span class="w"> </span><span class="s2">"&lt;mainServiceName&gt;"</span><span class="w"> </span><span class="se">`
+</span><span class="w">  </span><span class="nt">-targetPort</span><span class="w"> </span><span class="s2">"&lt;targetPort&gt;"</span><span class="w">
+</span></code></pre></div></div>
+
+<blockquote>
+  <p>💡 If your container registry requires authentication, also set:</p>
+  <ul>
+    <li><code class="language-plaintext highlighter-rouge">dockerRegistryServerUsername</code></li>
+    <li><code class="language-plaintext highlighter-rouge">dockerRegistryServerPassword</code><br />
+(If not set, the script will prompt you to enter them interactively.)</li>
+  </ul>
+</blockquote>
+
+<hr />
+
+<h3 id="-parameters-explained">🧩 Parameters Explained</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">subscriptionId</code></td>
+      <td>Azure Subscription ID</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">webAppName</code></td>
+      <td>Name of your App Service app</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">resourceGroup</code></td>
+      <td>Resource group containing your app</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">registryUrl</code></td>
+      <td>URL of your container registry (e.g., <code class="language-plaintext highlighter-rouge">myregistry.azurecr.io</code>)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">base64DockerCompose</code></td>
+      <td>The base64-encoded version of your <code class="language-plaintext highlighter-rouge">docker-compose.yml</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">mainServiceName</code></td>
+      <td>Name of the primary service to run the app</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">targetPort</code></td>
+      <td>Port on which the main service listens</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="2-manual-migration">2. Manual Migration</h2>
+
+<h3 id="a-prerequisites">a. Prerequisites</h3>
+
+<p>Make sure the following tools are installed and ready:</p>
+
+<ul>
+  <li><strong><a href="https://learn.microsoft.com/en-us/cli/azure/install-azure-cli">Azure CLI</a></strong></li>
+  <li><strong><a href="https://docs.docker.com/get-docker/">Docker</a></strong> – installed and running</li>
+  <li><strong><a href="https://code.visualstudio.com/">Visual Studio Code</a></strong> or any text editor for editing config files</li>
+</ul>
+
+<hr />
+
+<h3 id="b-sign-in-to-azure-and-set-your-subscription">b. Sign In to Azure and Set Your Subscription</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az login
+az account <span class="nb">set</span> <span class="nt">--subscription</span> &lt;your-subscription-id&gt;
+</code></pre></div></div>
+
+<hr />
+
+<h3 id="c-gather-required-details">c. Gather Required Details</h3>
+
+<p>Run the following commands to get key info:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az account show <span class="nt">--query</span> <span class="nb">id</span> <span class="nt">--output</span> tsv
+az webapp list <span class="nt">--query</span> <span class="s2">"[].{name:name}"</span> <span class="nt">--output</span> tsv
+az group list <span class="nt">--query</span> <span class="s2">"[].{name:name}"</span> <span class="nt">--output</span> tsv
+az acr list <span class="nt">--query</span> <span class="s2">"[].{name:name}"</span> <span class="nt">--output</span> tsv
+</code></pre></div></div>
+
+<p>These will help you identify your subscription ID, app name, resource group, and Azure Container Registry (ACR).</p>
+
+<hr />
+
+<h3 id="d-create-a-deployment-slot">d. Create a Deployment Slot</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp deployment slot create <span class="nt">--name</span> &lt;webapp-name&gt; <span class="nt">--resource-group</span> &lt;resource-group&gt; <span class="nt">--slot</span> &lt;slot-name&gt;
+</code></pre></div></div>
+
+<blockquote>
+  <p>This slot is where you’ll configure and validate the Sidecar-based setup before going live.</p>
+</blockquote>
+
+<hr />
+
+<h3 id="e-decode-the-existing-docker-compose-configuration">e. Decode the Existing Docker Compose Configuration</h3>
+
+<p>Retrieve the encoded Docker Compose value:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp config show <span class="nt">--name</span> &lt;webapp-name&gt; <span class="nt">--resource-group</span> &lt;resource-group&gt; <span class="nt">--query</span> linuxFxVersion
+</code></pre></div></div>
+
+<p>You’ll see a value like:<br />
+<code class="language-plaintext highlighter-rouge">"COMPOSE|&lt;base64value&gt;"</code></p>
+
+<p>Copy the base64 part and decode it in PowerShell:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="n">System.Text.Encoding</span><span class="p">]::</span><span class="n">UTF8.GetString</span><span class="p">([</span><span class="n">System.Convert</span><span class="p">]::</span><span class="n">FromBase64String</span><span class="p">(</span><span class="s2">"&lt;base64value&gt;"</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<p>This will reveal your original <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> content, including service names, images, ports, and environment variables.</p>
+
+<hr />
+
+<h3 id="f-define-your-sidecar-containers">f. Define Your Sidecar Containers</h3>
+
+<p>Use the following pattern to create each container defined in your Compose file:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az rest <span class="nt">--method</span> PUT <span class="se">\</span>
+  <span class="nt">--url</span> https://management.azure.com/subscriptions/&lt;subscription-id&gt;/resourceGroups/&lt;resource-group&gt;/providers/Microsoft.Web/sites/&lt;webapp-name&gt;/sitecontainers/&lt;container-name&gt;?api-version<span class="o">=</span>2023-12-01 <span class="se">\</span>
+  <span class="nt">--body</span> <span class="s2">"{</span><span class="se">\"</span><span class="s2">name</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">&lt;container-name&gt;</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">properties</span><span class="se">\"</span><span class="s2">:{</span><span class="se">\"</span><span class="s2">image</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">&lt;image-name&gt;</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">isMain</span><span class="se">\"</span><span class="s2">: &lt;true/false&gt;, </span><span class="se">\"</span><span class="s2">targetPort</span><span class="se">\"</span><span class="s2">: &lt;port&gt;}}"</span>
+</code></pre></div></div>
+
+<h4 id="-example-single-service">✅ Example: Single service</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">services</span><span class="pi">:</span>
+  <span class="na">my-service</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">myregistry.azurecr.io/my-service:latest</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az rest <span class="nt">--method</span> PUT <span class="nt">--url</span> https://management.azure.com/.../sitecontainers/my-service?... <span class="nt">--body</span> <span class="s2">"{</span><span class="se">\"</span><span class="s2">name</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">my-service</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">properties</span><span class="se">\"</span><span class="s2">:{</span><span class="se">\"</span><span class="s2">image</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">myregistry.azurecr.io/my-service:latest</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">isMain</span><span class="se">\"</span><span class="s2">: true, </span><span class="se">\"</span><span class="s2">targetPort</span><span class="se">\"</span><span class="s2">: 80}}"</span>
+</code></pre></div></div>
+
+<h4 id="-example-multiple-services">✅ Example: Multiple services</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">services</span><span class="pi">:</span>
+  <span class="na">backend</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">myregistry.azurecr.io/myapp/backend:latest</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">3000:3000"</span>
+  <span class="na">frontend</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">myregistry.azurecr.io/myapp/frontend:latest</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">3001:3001"</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Backend</span>
+az rest <span class="nt">--method</span> PUT <span class="nt">--url</span> .../sitecontainers/backend?... <span class="nt">--body</span> <span class="s2">"{</span><span class="se">\"</span><span class="s2">name</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">backend</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">properties</span><span class="se">\"</span><span class="s2">:{</span><span class="se">\"</span><span class="s2">image</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">myregistry.azurecr.io/myapp/backend:latest</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">isMain</span><span class="se">\"</span><span class="s2">: true, </span><span class="se">\"</span><span class="s2">targetPort</span><span class="se">\"</span><span class="s2">: 3000}}"</span>
+
+<span class="c"># Frontend</span>
+az rest <span class="nt">--method</span> PUT <span class="nt">--url</span> .../sitecontainers/frontend?... <span class="nt">--body</span> <span class="s2">"{</span><span class="se">\"</span><span class="s2">name</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">frontend</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">properties</span><span class="se">\"</span><span class="s2">:{</span><span class="se">\"</span><span class="s2">image</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">myregistry.azurecr.io/myapp/frontend:latest</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">isMain</span><span class="se">\"</span><span class="s2">: false, </span><span class="se">\"</span><span class="s2">targetPort</span><span class="se">\"</span><span class="s2">: 3001}}"</span>
+</code></pre></div></div>
+
+<p>Repeat for all containers defined in your Compose file.</p>
+
+<hr />
+
+<h3 id="g-switch-to-sidecar-mode">g. Switch to Sidecar Mode</h3>
+
+<p>Now update your web app to use the Sidecar configuration:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp config <span class="nb">set</span> <span class="nt">--name</span> &lt;webapp-name&gt; <span class="nt">--resource-group</span> &lt;resource-group&gt; <span class="nt">--linux-fx-version</span> <span class="s2">"sitecontainers"</span>
+</code></pre></div></div>
+
+<hr />
+
+<h3 id="h-restart-the-deployment-slot">h. Restart the Deployment Slot</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp restart <span class="nt">--name</span> &lt;webapp-name&gt; <span class="nt">--resource-group</span> &lt;resource-group&gt; <span class="nt">--slot</span> &lt;slot-name&gt;
+</code></pre></div></div>
+
+<p>This restarts the app to apply your new configuration.</p>
+
+<hr />
+
+<h3 id="i-validate-and-swap-to-production">i. Validate and Swap to Production</h3>
+
+<p>Once you’ve verified that the slot is running correctly and the Sidecar setup works as expected:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp deployment slot swap <span class="nt">--name</span> &lt;webapp-name&gt; <span class="nt">--resource-group</span> &lt;resource-group&gt; <span class="nt">--slot</span> &lt;slot-name&gt; <span class="nt">--target-slot</span> production
+</code></pre></div></div>
+
+<p>This brings your new configuration live without downtime.</p>
+
+<hr />
+
+<h2 id="mapping-docker-compose-attributes-to-sidecar-configuration">Mapping Docker Compose Attributes to Sidecar Configuration</h2>
+
+<p>When migrating from Docker Compose to Sidecar, it’s important to understand how your existing Compose file maps to the Sidecar configuration model in Azure App Service. Below is a reference table showing how commonly used fields are translated.</p>
+
+<h3 id="-supported-attribute-mapping">✅ Supported Attribute Mapping</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Docker Compose Field</th>
+      <th>Sidecar Configuration Field</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">command</code>, <code class="language-plaintext highlighter-rouge">entrypoint</code></td>
+      <td><code class="language-plaintext highlighter-rouge">startUpCommand</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">environment</code></td>
+      <td><code class="language-plaintext highlighter-rouge">environmentVariables</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">image</code></td>
+      <td><code class="language-plaintext highlighter-rouge">image</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ports</code></td>
+      <td><code class="language-plaintext highlighter-rouge">targetPort</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">volumes</code></td>
+      <td><code class="language-plaintext highlighter-rouge">volumeMounts</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>These fields are directly supported and should work seamlessly when configuring your containers with Sidecar.</p>
+
+<hr />
+
+<h3 id="-unsupported-or-ignored-fields">🚫 Unsupported or Ignored Fields</h3>
+
+<p>Some Docker Compose fields are either <strong>not supported</strong> or were previously <strong>ignored</strong> even in the Docker Compose experience on App Service. These should be removed or reworked in your Sidecar configuration:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Docker Compose Field</th>
+      <th>Status</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">build</code></td>
+      <td>❌ Not allowed</td>
+      <td>You must pre-build and push images to a container registry.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">depends_on</code></td>
+      <td>⚠️ Ignored</td>
+      <td>No container startup ordering is guaranteed.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">networks</code></td>
+      <td>⚠️ Ignored</td>
+      <td>Network mode is handled internally by App Service.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">secrets</code></td>
+      <td>⚠️ Ignored</td>
+      <td>Use <a href="https://learn.microsoft.com/en-us/azure/app-service/configure-common#configure-app-settings">App Settings</a> or Key Vault integration instead.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ports</code> other than 80/8080</td>
+      <td>⚠️ Ignored</td>
+      <td>App Service only supports ports 80 and 8080 for container traffic.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">volumes</code> using <code class="language-plaintext highlighter-rouge">{WEBAPP_STORAGE_HOME}</code> or <code class="language-plaintext highlighter-rouge">{WEBSITES_ENABLE_APP_SERVICE_STORAGE}</code></td>
+      <td>❌ Not supported</td>
+      <td>Sidecar currently does not support mounting persistent Azure storage via these environment variables.</td>
+    </tr>
+  </tbody>
+</table>
+
+<blockquote>
+  <p>ℹ️ If your Compose file includes these unsupported options, you’ll need to revise or remove them before transitioning to Sidecar.</p>
+</blockquote>
+
+<hr />
+
+<p>Here’s your <strong>Migration Limitations and Considerations</strong> section, rewritten for clarity and formatted into a clean comparison table. I’ve included a summary introduction as well:</p>
+
+<hr />
+
+<h2 id="migration-limitations-and-considerations">Migration Limitations and Considerations</h2>
+
+<p>Before migrating from Docker Compose to the Sidecar feature, it’s important to understand a few key behavioral differences and current limitations. While Sidecar enables a more native and integrated experience on Azure App Service, there are some considerations around <strong>storage</strong>, <strong>networking</strong>, <strong>logging</strong>, and <strong>feature availability</strong>.</p>
+
+<h3 id="-feature-comparison">🔄 Feature Comparison</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>Aspect</strong></th>
+      <th><strong>Docker Compose</strong></th>
+      <th><strong>Sidecar Containers</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Storage</strong></td>
+      <td>Volumes are defined in the <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> file and shared between containers.</td>
+      <td>Storage configuration is container-specific. Persistent storage options are more limited; shared volumes must be handled differently or avoided.</td>
+    </tr>
+    <tr>
+      <td><strong>Networking</strong></td>
+      <td>Uses a default virtual network. Containers communicate using service names as hostnames.</td>
+      <td>All containers run in the <strong>same network namespace</strong> and communicate over <code class="language-plaintext highlighter-rouge">localhost</code>. <strong>⚠️ Warning:</strong> Containers exposing the same port will cause conflicts.</td>
+    </tr>
+    <tr>
+      <td><strong>Logging &amp; Monitoring</strong></td>
+      <td>Custom logging drivers and external tools (e.g., ELK, Prometheus, Grafana) are typically used.</td>
+      <td>Integrated with <strong>Azure Monitor</strong> and <strong>Azure Log Analytics</strong>. You may need to adjust container output or monitoring strategy for compatibility.</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h3 id="️-migration-limitations">⚠️ Migration Limitations</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>Scenario</strong></th>
+      <th><strong>Docker Compose</strong></th>
+      <th><strong>Sidecar</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>ASE (App Service Environment)</strong></td>
+      <td>Supported</td>
+      <td>❌ <strong>Not yet supported</strong> – support coming soon</td>
+    </tr>
+    <tr>
+      <td><strong>National Clouds (e.g., Azure Government, China)</strong></td>
+      <td>Supported</td>
+      <td>❌ <strong>Not yet supported</strong> – support planned</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<blockquote>
+  <p>💡 We recommend evaluating each of these areas during your planning phase to ensure a smooth transition.</p>
+</blockquote>
+
+<p>Here’s your <strong>Frequently Asked Questions (FAQ)</strong> section, rewritten for clarity and polish while keeping it informative and approachable:</p>
+
+<hr />
+
+<h2 id="frequently-asked-questions">Frequently Asked Questions</h2>
+
+<p><strong>🧩 How does scaling work with Sidecar containers?</strong><br />
+Sidecar containers are tightly coupled with the main application container—they run as part of the same container unit. This means they <strong>start, stop, and scale together</strong> with the main container. When your app scales out or in, all associated sidecar containers follow the same lifecycle automatically.</p>
+
+<hr />
+
+<p><strong>🔐 Can I use private container registries?</strong><br />
+Yes, you can. Azure App Service supports private container registries such as Azure Container Registry (ACR) and Docker Hub. Just configure the appropriate authentication credentials using the Azure Portal or Azure CLI.</p>
+
+<hr />
+
+<p><strong>🛠 How do I debug Sidecar container issues?</strong><br />
+You can use <strong>Azure Monitor</strong> and <strong>Azure Log Analytics</strong> to collect and analyze logs. Additionally, the <strong>Diagnose &amp; Solve</strong> blade in the Azure Portal provides access to container logs, metrics, and troubleshooting tools to help you quickly identify and resolve issues.</p>
+
+<hr />
+
+<p><strong>🌐 How does networking between the main app and Sidecar containers work?</strong><br />
+All containers in a Sidecar configuration share the <strong>same network namespace</strong>, so they can communicate with each other over <code class="language-plaintext highlighter-rouge">localhost</code>. For example, if your main app is running on <code class="language-plaintext highlighter-rouge">localhost:3000</code>, a sidecar can reach it at that address. Just ensure that each container listens on a unique port to avoid conflicts.</p>
+
+<hr />
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Migrating from Docker Compose to the Sidecar feature in Azure App Service is a strategic step toward a more modern, integrated, and manageable deployment experience. By transitioning early, you can take full advantage of Sidecar’s seamless integration with Azure services, enhanced observability, and simplified configuration—ensuring your applications remain secure, scalable, and future-ready well ahead of the Docker Compose retirement on <strong>March 31, 2027</strong>.</p>
+
+<h3 id="-learn-more">📚 Learn More</h3>
+
+<ul>
+  <li><a href="https://learn.microsoft.com/en-us/azure/app-service/tutorial-custom-container-sidecar">Tutorial: Deploy multi-container apps using Sidecar (with custom containers)</a></li>
+  <li><a href="https://learn.microsoft.com/en-us/azure/app-service/tutorial-sidecar?tabs=portal">Tutorial: Add sidecars to App Service (Portal experience)</a></li>
+  <li><a href="https://azure.github.io/AppService/2025/03/19/Sidecar-extensions.html">Deep dive: Sidecar extensibility and real-world use cases</a></li>
+</ul>
+
+<hr />
+
+<h2 id="getting-help">Getting Help</h2>
+
+<p>Need assistance with your migration or have questions about the Sidecar feature?</p>
+
+<ul>
+  <li>
+    <p>💬 <strong>Ask the Community</strong><br />
+Connect with Azure App Service experts and other developers on <strong><a href="https://learn.microsoft.com/en-us/answers/tags/436/azure-app-service">Microsoft Q&amp;A</a></strong>. Browse existing answers or post your own questions.</p>
+  </li>
+  <li>
+    <p>🛠 <strong>Get Technical Support</strong><br />
+If you have an Azure support plan and require more in-depth help, you can <a href="https://portal.azure.com/#blade/Microsoft_Azure_Support/HelpAndSupportBlade/newsupportrequest">create a support request through the Azure Portal</a>.</p>
+  </li>
+</ul>
+
+<p>We’re here to help ensure your migration is smooth and successful!</p>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2025-04-01T00:00:00+00:00">April 01, 2025</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Migrating+your+Docker+Compose+applications+to+the+Sidecar+feature%20https%3A%2F%2Fazure.github.io%2FAppService%2F2025%2F04%2F01%2FDocker-compose-migration.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2025%2F04%2F01%2FDocker-compose-migration.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2025%2F04%2F01%2FDocker-compose-migration.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2025/03/19/redis-sidecar-extension.html" class="pagination--pager" title="Using the Redis Sidecar Extension with Azure App Service for Linux
+">Previous</a>
+    
+    
+      <a href="/AppService/2025/04/23/Bitnet-on-Azure-App-Service.html" class="pagination--pager" title="1-Bit Brilliance: BitNet on Azure App Service with Just a CPU
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/11/04/app-service-agent-framework-part-3.html" rel="permalink">Part 3: Client-Side Multi-Agent Orchestration on Azure App Service with Microsoft Agent Framework
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  12 minute read
+
+        
+        
+          • By Jordan Selig
+        
+        • November 4, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">In Part 2 of this series, I showed you how to build sophisticated multi-agent systems on Azure App Service using Azure AI Foundry Agents—server-side managed ...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/10/31/app-service-agent-framework-part-2.html" rel="permalink">Part 2: Build Long-Running AI Agents on Azure App Service with Microsoft Agent Framework
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  9 minute read
+
+        
+        
+          • By Jordan Selig
+        
+        • October 31, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Last week, I shared how to build long-running AI agents on Azure App Service with Microsoft Agent Framework. If you haven’t seen that post yet, I would recom...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/10/29/node24-available.html" rel="permalink">Node.js 24 is now available on Azure App Service for Linux
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • October 29, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Node.js 24 LTS is live on Azure App Service for Linux. You can create a new Node 24 app through the Azure portal, automate it with the Azure CLI, or roll it ...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/10/29/VSTS-tasks-for-sidecars.html" rel="permalink">Azure Pipeline samples: add sidecars to Azure App Service for Linux
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • October 29, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Sidecars on Azure App Service let you attach extra containers — logging, telemetry, lightweight APIs, caches, AI inference helpers — alongside your main app,...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2025 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

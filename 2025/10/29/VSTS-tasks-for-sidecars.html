@@ -1,0 +1,1006 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Azure Pipeline samples: add sidecars to Azure App Service for Linux - Azure App Service</title>
+<meta name="description" content="Sidecars on Azure App Service let you attach extra containers — logging, telemetry, lightweight APIs, caches, AI inference helpers — alongside your main app, in the same App Service. They start and run with your app, but you don’t have to bake that logic into your main code.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Azure Pipeline samples: add sidecars to Azure App Service for Linux">
+<meta property="og:url" content="https://azure.github.io/AppService/2025/10/29/VSTS-tasks-for-sidecars.html">
+
+
+  <meta property="og:description" content="Sidecars on Azure App Service let you attach extra containers — logging, telemetry, lightweight APIs, caches, AI inference helpers — alongside your main app, in the same App Service. They start and run with your app, but you don’t have to bake that logic into your main code.">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2025-10-29T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2025/10/29/VSTS-tasks-for-sidecars.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/sidecars/" class="">Sidecars</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/ai-integration/" class="">AI Integration</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Azure Pipeline samples: add sidecars to Azure App Service for Linux">
+    <meta itemprop="description" content="Sidecars on Azure App Service let you attach extra containers — logging, telemetry, lightweight APIs, caches, AI inference helpers — alongside your main app, in the same App Service. They start and run with your app, but you don’t have to bake that logic into your main code.">
+    <meta itemprop="datePublished" content="October 29, 2025">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Azure Pipeline samples: add sidecars to Azure App Service for Linux
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+            
+            
+              • By Tulika Chaudharie
+            
+            • October 29, 2025
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#vsts-samples">VSTS samples</a></li>
+  <li><a href="#how-the-pipelines-work">How the pipelines work</a></li>
+  <li><a href="#quick-start">Quick start</a></li>
+  <li><a href="#customize-to-fit">Customize to fit</a></li>
+  <li><a href="#learn-more">Learn more</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <p>Sidecars on Azure App Service let you attach extra containers — logging, telemetry, lightweight APIs, caches, AI inference helpers — alongside your main app, in the same App Service. They start and run with your app, but you don’t have to bake that logic into your main code.</p>
+
+<p>We’re publishing two Azure Pipelines (Azure DevOps / VSTS) YAML samples to make this easy.</p>
+
+<h2 id="vsts-samples">VSTS samples</h2>
+
+<ul>
+  <li><strong><a href="https://github.com/Azure/actions-workflow-samples/blob/master/AppService/vsts-blessed-sitecontainers.yml"><code class="language-plaintext highlighter-rouge">vsts-blessed-sitecontainers.yml</code></a></strong> 
+For built-in runtimes on App Service for Linux (for example, Python or Node on the built-in stack).
+    <ul>
+      <li>Builds your app, zips it, and deploys it using <code class="language-plaintext highlighter-rouge">AzureWebApp@1</code>.</li>
+      <li>In the same deploy step, it sends a <code class="language-plaintext highlighter-rouge">sitecontainersConfig</code> payload that defines one or more sidecar containers by image, port, and config.</li>
+      <li>Your app keeps running on the App Service runtime; the sidecars run next to it.</li>
+    </ul>
+  </li>
+  <li><strong><a href="https://github.com/Azure/actions-workflow-samples/blob/master/AppService/vsts-only-sitecontainers.yml"><code class="language-plaintext highlighter-rouge">vsts-only-sitecontainers.yml</code></a></strong> 
+For containerized apps (Web App for Containers style).
+    <ul>
+      <li>Builds and pushes multiple images (main app container + sidecars) to your container registry.</li>
+      <li>Uses <code class="language-plaintext highlighter-rouge">AzureWebAppContainer@1</code> to deploy them all together to App Service for Linux.</li>
+      <li>One container is marked <code class="language-plaintext highlighter-rouge">"isMain": true</code>; the rest are <code class="language-plaintext highlighter-rouge">"isMain": false</code>.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Both samples assume Azure App Service for Linux and the sidecar model, where containers in the same app can talk to each other over localhost.</p>
+
+<h2 id="how-the-pipelines-work">How the pipelines work</h2>
+
+<ol>
+  <li><strong>Build and Publish</strong>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">vsts-blessed-sitecontainers.yml</code>: sets up your language/runtime, installs dependencies, and produces a ZIP artifact of your app. It also uses Docker tasks to build and publish the sidecar container.</li>
+      <li><code class="language-plaintext highlighter-rouge">vsts-only-sitecontainers.yml</code>: uses Docker tasks to build and push multiple container images.</li>
+    </ul>
+  </li>
+  <li><strong>Deploy to App Service for Linux</strong>
+    <ul>
+      <li>Code-based flow: <code class="language-plaintext highlighter-rouge">AzureWebApp@1</code> deploys the ZIP and sidecar containers defined in <code class="language-plaintext highlighter-rouge">sitecontainersConfig</code>.</li>
+      <li>Container flow: <code class="language-plaintext highlighter-rouge">AzureWebAppContainer@1</code> deploys your main container and sidecars, defined in <code class="language-plaintext highlighter-rouge">sitecontainersConfig</code>.</li>
+    </ul>
+  </li>
+</ol>
+
+<p>That’s it: one pipeline run builds, packages, and deploys your main app plus its helper containers.</p>
+
+<h2 id="quick-start">Quick start</h2>
+
+<ol>
+  <li><strong>Pick a template</strong>
+    <ul>
+      <li>Built-in runtime on App Service for Linux? Use <code class="language-plaintext highlighter-rouge">vsts-blessed-sitecontainers.yml</code>.</li>
+      <li>Already running containers? Use <code class="language-plaintext highlighter-rouge">vsts-only-sitecontainers.yml</code>.</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Add it to your repo</strong>
+Save the YAML as <code class="language-plaintext highlighter-rouge">azure-pipelines.yml</code> (or add it as a new pipeline in Azure DevOps).</p>
+  </li>
+  <li><strong>Fill in the placeholders</strong>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">azureServiceConnectionId</code> / <code class="language-plaintext highlighter-rouge">azureSubscription</code>: your Azure RM service connection.</li>
+      <li><code class="language-plaintext highlighter-rouge">webAppName</code> / <code class="language-plaintext highlighter-rouge">appName</code>: the target App Service for Linux app.</li>
+      <li><code class="language-plaintext highlighter-rouge">resourceGroup</code>: where that app lives.</li>
+      <li><code class="language-plaintext highlighter-rouge">containerRegistry</code>, image names, and ports for each container in the multi-container case.</li>
+      <li>Each container in <code class="language-plaintext highlighter-rouge">sitecontainersConfig</code> declares its port and whether it’s the main app or a sidecar.</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Run it in Azure DevOps</strong>
+Create a new pipeline from YAML, authorize the service connections, and run.</p>
+  </li>
+  <li><strong>Check your app</strong>
+In the Azure portal, go to Deployment Center-&gt;Containers and your App Service will now show your primary app plus the sidecar containers defined in the pipeline.</li>
+</ol>
+
+<h2 id="customize-to-fit">Customize to fit</h2>
+
+<p>These YAMLs are starting points. You can:</p>
+<ul>
+  <li>Add test/lint stages before deployment so you only ship good builds.</li>
+  <li>Swap the agent pool (<code class="language-plaintext highlighter-rouge">ubuntu-latest</code> vs your own self-hosted pool).</li>
+  <li>Deploy to a staging slot first, then swap to production.</li>
+  <li>Tune each sidecar in <code class="language-plaintext highlighter-rouge">sitecontainersConfig</code>: env vars, ports, credentials, etc.</li>
+</ul>
+
+<p>You don’t have to redesign CI/CD every time you want to add observability, a cache container, or a small inference helper next to your app — you just describe the containers and ship.</p>
+
+<h2 id="learn-more">Learn more</h2>
+
+<ul>
+  <li>
+    <p><strong>Deploy to Azure App Service using Azure Pipelines</strong>
+Full walkthrough for setting up <a href="https://learn.microsoft.com/en-us/azure/app-service/deploy-azure-pipelines?tabs=yaml">Azure Pipelines with App Service</a>, including service connections and the <code class="language-plaintext highlighter-rouge">AzureWebApp@1</code> / <code class="language-plaintext highlighter-rouge">AzureWebAppContainer@1</code> tasks.</p>
+  </li>
+  <li>
+    <p><strong>Sidecars on App Service for Linux</strong>
+<a href="https://learn.microsoft.com/en-us/azure/app-service/overview-sidecar">How sidecars work</a>, how <code class="language-plaintext highlighter-rouge">isMain</code> is used, networking rules (localhost between containers), and common patterns like telemetry/OTEL agents, API helpers, and lightweight caches.</p>
+  </li>
+</ul>
+
+<p>Drop these templates into your pipeline, point them at your app, and you’ve got repeatable CI/CD for multi-containers in App Service.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2025-10-29T00:00:00+00:00">October 29, 2025</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Azure+Pipeline+samples%3A+add+sidecars+to+Azure+App+Service+for+Linux%20https%3A%2F%2Fazure.github.io%2FAppService%2F2025%2F10%2F29%2FVSTS-tasks-for-sidecars.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2025%2F10%2F29%2FVSTS-tasks-for-sidecars.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2025%2F10%2F29%2FVSTS-tasks-for-sidecars.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2025/10/28/python314-available.html" class="pagination--pager" title="Python 3.14 is now available on Azure App Service for Linux
+">Previous</a>
+    
+    
+      <a href="/AppService/2025/10/29/node24-available.html" class="pagination--pager" title="Node.js 24 is now available on Azure App Service for Linux
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/11/04/app-service-agent-framework-part-3.html" rel="permalink">Part 3: Client-Side Multi-Agent Orchestration on Azure App Service with Microsoft Agent Framework
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  12 minute read
+
+        
+        
+          • By Jordan Selig
+        
+        • November 4, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">In Part 2 of this series, I showed you how to build sophisticated multi-agent systems on Azure App Service using Azure AI Foundry Agents—server-side managed ...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/10/31/app-service-agent-framework-part-2.html" rel="permalink">Part 2: Build Long-Running AI Agents on Azure App Service with Microsoft Agent Framework
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  9 minute read
+
+        
+        
+          • By Jordan Selig
+        
+        • October 31, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Last week, I shared how to build long-running AI agents on Azure App Service with Microsoft Agent Framework. If you haven’t seen that post yet, I would recom...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/10/29/node24-available.html" rel="permalink">Node.js 24 is now available on Azure App Service for Linux
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • October 29, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Node.js 24 LTS is live on Azure App Service for Linux. You can create a new Node 24 app through the Azure portal, automate it with the Azure CLI, or roll it ...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2025/10/28/python314-available.html" rel="permalink">Python 3.14 is now available on Azure App Service for Linux
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • October 28, 2025
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">If you’ve been waiting to run Python 3.14 in on Azure App Service - it’s here. Azure App Service for Linux now offers Python 3.14 as a first-class runtime. Y...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2025 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
