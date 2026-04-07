@@ -27,11 +27,11 @@ From there, the deployment starts right away, and you can follow each phase of t
 
 ![Deployment steps]({{site.baseurl}}/media/2026/04/quickdeploy-3.jpg)
 
-After the deployment finishes, you can also view **runtime logs**, which makes it easier to confirm that your app has started successfully and spot any startup issues early.
+After the deployment succeeds, you can also view **runtime logs**, which makes it easier to confirm that your app has started successfully.
 
 ![Runtime logs]({{site.baseurl}}/media/2026/04/quickdeploy-4.jpg)
 
-This experience is designed to make getting started with Azure App Service for Linux faster and more straightforward, whether you’re deploying a simple app for the first time or iterating on an existing project.
+This experience is designed for developers who are new to App Service and want a straightforward way to get your code running. For production workloads and teams with established release processes, you’ll typically continue using an automated CI/CD pipeline (for example, GitHub Actions or Azure DevOps) for repeatable deployments.
 
 We’re continuing to improve the developer experience on App Service for Linux. Give it a try and let us know what you think.
 
