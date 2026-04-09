@@ -1,4 +1,9 @@
-# Agentic IIS Migration to Managed Instance on Azure App Service
+---
+title: "Agentic IIS Migration to Managed Instance on Azure App Service"
+author_name: "Gaurav Seth"
+toc: true
+toc_sticky: true
+---
 
 *Migrating legacy ASP.NET Framework applications from IIS to Azure App Service — guided by AI agents, powered by the Model Context Protocol.*
 
