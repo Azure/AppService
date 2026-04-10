@@ -14,5 +14,5 @@ For the full list of features, deprecations, and migration notes, see the offici
 
 ### Getting started
 
-1. [Create a PHP web app in Azure App Service](https://learn.microsoft.com/en-us/azure/app-service/quickstart-php?tabs=cli&pivots=platform-linux)
-2. [Configure a PHP app for Azure App Service](https://learn.microsoft.com/en-us/azure/app-service/configure-language-php?pivots=platform-linux)
+1. [Create a PHP web app in Azure App Service](https://learn.microsoft.com/azure/app-service/quickstart-php?tabs=cli&pivots=platform-linux)
+2. [Configure a PHP app for Azure App Service](https://learn.microsoft.com/azure/app-service/configure-language-php?pivots=platform-linux)
