@@ -25,9 +25,9 @@ The setting supports three values:
 
 | Channel      | Behavior                                                                   | Recommended for                                                                   |
 | ------------ | -------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| **Latest**   | Uses the latest patch versions rolled out on App Service                   | Apps where staying current with security and platform updates is the top priority |
-| **Standard** | Default setting. Runs one App Service patch rollout behind Latest          | Most production apps that want a balance of stability and currency                |
-| **Extended** | Runs further behind Latest, giving more time before adopting newer patches | Apps that need additional validation time before moving to newer patches          |
+| **Latest**   | Updates are delivered as soon as they are available                   | Not intended for production workloads |
+| **Standard** | Default setting. Recieves updates at our standard release cadence          | Recommended for most production apps                |
+| **Extended** | Typically stays one release behind standard | Apps that need extra time before adopting newer patches          |
 
 By default, apps are set to **Standard**. This gives you additional time to test the latest patch before your app moves to it.
 
@@ -35,9 +35,7 @@ Choose **Latest** when security and immediate access to the newest runtime patch
 
 ## How channels move forward
 
-The release channels move forward with each runtime patch rollout.
-
-When a new patch is rolled out to **Latest**, the **Standard** channel moves to the patch version that was previously on **Latest**. **Extended** stays further behind to provide more validation time.
+When a new runtime patch is available, App Service first rolls it out through the **Latest** channel using a faster release cadence. The same patch then continues through the normal rollout process and becomes available in the **Standard** channel after it has progressed further through validation and rollout. **Extended** remains further behind Standard to provide additional validation time for apps that need it.
 
 For example, with the current .NET 10 rollout, the channels look like this:
 
@@ -45,9 +43,10 @@ For example, with the current .NET 10 rollout, the channels look like this:
 | ---------- | --------------: | -----: | -------: | -------: |
 | DOTNETCORE |              10 | 10.0.7 |   10.0.4 |   10.0.2 |
 
-When the next .NET 10 patch rollout happens, **Standard** will move to **10.0.7**, while **Latest** will move to the newly rolled-out patch version.
 
-For some stacks, you may currently see the same patch version for both **Standard** and **Extended**. We are working through another rollout for these stacks, and the channel versions will be updated as that rollout progresses.
+As the .NET 10 rollout progresses, the **10.0.7** patch will first be available through the **Latest** channel, then move to **Standard** through the normal rollout cadence. 
+
+For some stacks, **Standard** and **Extended** may currently show the same patch version. This is expected while the release channels are still moving through their rollout cadence. As additional rollout waves progress, the channel versions will separate and reflect the intended behavior for each channel.
 
 ## Configure Platform Release Channel
 
