@@ -7,7 +7,7 @@ toc_sticky: true
 
 Azure App Service for Linux now includes **Deferred Kudu Recycle**, a platform improvement designed to make deployments more resilient when app settings or connection strings are updated during an active deployment.
 
-Previously, changing app settings or connection strings could trigger an immediate recycle of the Kudu, or SCM, site. If an asynchronous deployment was already running, this could interrupt the deployment and lead to failures or retries.
+Previously, changing app settings or connection strings could trigger an immediate recycle of Kudu or SCM site. If an asynchronous deployment was already running, this could interrupt the deployment and lead to failures or retries.
 
 With Deferred Kudu Recycle, App Service now reduces unnecessary interruptions while still ensuring deployment-critical changes take effect when they are needed.
 
