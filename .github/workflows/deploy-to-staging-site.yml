@@ -52,6 +52,7 @@ jobs:
   set-up-test-env:
     name: Create test env
     runs-on: ubuntu-latest
+    if: github.actor != 'dependabot[bot]'
     permissions:
      id-token: write
      contents: read
@@ -81,6 +82,7 @@ jobs:
   deploy-to-slot:
     name: Deploy to test env
     runs-on: ubuntu-latest
+    if: github.actor != 'dependabot[bot]'
     needs: [build, set-up-test-env]
     environment:
       name: "production"
