@@ -51,5 +51,5 @@ This removes an extra setup step and makes it easier to get your FastAPI app run
 
 This improvement is currently enabled for Python 3.14 and later. Support for additional Python versions will be enabled in an upcoming rollout.
 
-For more details on deploying Python apps to App Service, see the Azure App Service [Python quickstart documentation](ttps://learn.microsoft.com/azure/app-service/quickstart-python).
+For more details on deploying Python apps to App Service, see the Azure App Service [Python quickstart documentation](https://learn.microsoft.com/azure/app-service/quickstart-python).
 
