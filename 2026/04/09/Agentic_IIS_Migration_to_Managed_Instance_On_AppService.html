@@ -1,0 +1,1839 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Agentic IIS Migration to Managed Instance on Azure App Service - Azure App Service</title>
+<meta name="description" content="Migrating legacy ASP.NET Framework applications from IIS to Azure App Service — guided by AI agents, powered by the Model Context Protocol.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Agentic IIS Migration to Managed Instance on Azure App Service">
+<meta property="og:url" content="https://azure.github.io/AppService/2026/04/09/Agentic_IIS_Migration_to_Managed_Instance_On_AppService.html">
+
+
+  <meta property="og:description" content="Migrating legacy ASP.NET Framework applications from IIS to Azure App Service — guided by AI agents, powered by the Model Context Protocol.">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2026-04-09T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2026/04/09/Agentic_IIS_Migration_to_Managed_Instance_On_AppService.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/sidecars/" class="">Sidecars</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/ai-integration/" class="">AI Integration</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Agentic IIS Migration to Managed Instance on Azure App Service">
+    <meta itemprop="description" content="Migrating legacy ASP.NET Framework applications from IIS to Azure App Service — guided by AI agents, powered by the Model Context Protocol.">
+    <meta itemprop="datePublished" content="April 09, 2026">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Agentic IIS Migration to Managed Instance on Azure App Service
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  18 minute read
+
+            
+            
+              • By Gaurav Seth
+            
+            • April 9, 2026
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#introduction">Introduction</a></li>
+  <li><a href="#what-is-managed-instance-on-azure-app-service">What Is Managed Instance on Azure App Service?</a>
+    <ul>
+      <li><a href="#why-managed-instance-matters-for-legacy-apps">Why Managed Instance Matters for Legacy Apps</a></li>
+      <li><a href="#microsoft-learn-resources">Microsoft Learn Resources</a></li>
+    </ul>
+  </li>
+  <li><a href="#why-agentic-migration-the-case-for-ai-guided-iis-migration">Why Agentic Migration? The Case for AI-Guided IIS Migration</a>
+    <ul>
+      <li><a href="#the-problem-with-traditional-migration">The Problem with Traditional Migration</a></li>
+      <li><a href="#what-agentic-migration-changes">What Agentic Migration Changes</a></li>
+      <li><a href="#human-in-the-loop-safety">Human-in-the-Loop Safety</a></li>
+    </ul>
+  </li>
+  <li><a href="#architecture-how-the-mcp-server-works">Architecture: How the MCP Server Works</a></li>
+  <li><a href="#the-13-mcp-tools-complete-reference">The 13 MCP Tools: Complete Reference</a>
+    <ul>
+      <li><a href="#phase-0--setup">Phase 0 — Setup</a>
+        <ul>
+          <li><a href="#configure_scripts_path">configure_scripts_path</a></li>
+        </ul>
+      </li>
+      <li><a href="#phase-1--discovery">Phase 1 — Discovery</a>
+        <ul>
+          <li><a href="#1-discover_iis_sites">1. discover_iis_sites</a></li>
+          <li><a href="#2-choose_assessment_mode">2. choose_assessment_mode</a></li>
+        </ul>
+      </li>
+      <li><a href="#phase-2--assessment">Phase 2 — Assessment</a>
+        <ul>
+          <li><a href="#3-assess_site_readiness">3. assess_site_readiness</a></li>
+          <li><a href="#4-assess_source_code">4. assess_source_code</a></li>
+        </ul>
+      </li>
+      <li><a href="#phase-3--recommendation--provisioning">Phase 3 — Recommendation &amp; Provisioning</a>
+        <ul>
+          <li><a href="#5-suggest_migration_approach">5. suggest_migration_approach</a></li>
+          <li><a href="#6-recommend_target">6. recommend_target</a></li>
+          <li><a href="#7-generate_install_script">7. generate_install_script</a></li>
+          <li><a href="#8-generate_adapter_arm_template">8. generate_adapter_arm_template</a></li>
+        </ul>
+      </li>
+      <li><a href="#phase-4--deployment-planning--packaging">Phase 4 — Deployment Planning &amp; Packaging</a>
+        <ul>
+          <li><a href="#9-plan_deployment">9. plan_deployment</a></li>
+          <li><a href="#10-package_site">10. package_site</a></li>
+          <li><a href="#11-generate_migration_settings">11. generate_migration_settings</a></li>
+        </ul>
+      </li>
+      <li><a href="#phase-5--execution">Phase 5 — Execution</a>
+        <ul>
+          <li><a href="#12-confirm_migration">12. confirm_migration</a></li>
+          <li><a href="#13-migrate_sites">13. migrate_sites</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="#the-6-copilot-agents">The 6 Copilot Agents</a>
+    <ul>
+      <li><a href="#iis-migrate--the-orchestrator">@iis-migrate — The Orchestrator</a></li>
+      <li><a href="#iis-discover--discovery-specialist">iis-discover — Discovery Specialist</a></li>
+      <li><a href="#iis-assess--assessment-specialist">iis-assess — Assessment Specialist</a></li>
+      <li><a href="#iis-recommend--recommendation-specialist">iis-recommend — Recommendation Specialist</a></li>
+      <li><a href="#iis-deploy-plan--deployment-planning-specialist">iis-deploy-plan — Deployment Planning Specialist</a></li>
+      <li><a href="#iis-execute--execution-specialist">iis-execute — Execution Specialist</a></li>
+    </ul>
+  </li>
+  <li><a href="#the-managed-instance-provisioning-split-a-critical-concept">The Managed Instance Provisioning Split: A Critical Concept</a></li>
+  <li><a href="#end-to-end-walkthrough-from-discovery-to-running-on-managed-instance">End-to-End Walkthrough: From Discovery to Running on Managed Instance</a></li>
+  <li><a href="#prerequisites--setup">Prerequisites &amp; Setup</a>
+    <ul>
+      <li><a href="#quick-start">Quick Start</a></li>
+    </ul>
+  </li>
+  <li><a href="#data-flow--artifacts">Data Flow &amp; Artifacts</a></li>
+  <li><a href="#error-handling">Error Handling</a></li>
+  <li><a href="#conclusion">Conclusion</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <p><em>Migrating legacy ASP.NET Framework applications from IIS to Azure App Service — guided by AI agents, powered by the Model Context Protocol.</em></p>
+
+<hr />
+
+<h2 id="introduction">Introduction</h2>
+
+<p>Enterprises running ASP.NET Framework workloads on Windows Server with IIS face a familiar dilemma: modernize or stay put. The applications work, the infrastructure is stable, and nobody wants to be the person who breaks production during a cloud migration. But the cost of maintaining aging on-premises servers, patching Windows, and managing IIS keeps climbing.</p>
+
+<p>Azure App Service has long been the lift-and-shift destination for these workloads. But what about applications that depend on <strong>Windows registry keys</strong>, <strong>COM components</strong>, <strong>SMTP relay</strong>, <strong>MSMQ queues</strong>, <strong>local file system access</strong>, or <strong>custom fonts</strong>? These OS-level dependencies have historically been migration blockers — forcing teams into expensive re-architecture or keeping them anchored to VMs.</p>
+
+<p><strong>Managed Instance on Azure App Service</strong> changes this equation entirely. And the <strong>IIS Migration MCP Server</strong> makes migration guided, intelligent, and safe — with AI agents that know what to ask, what to check, and what to generate at every step.</p>
+
+<hr />
+
+<h2 id="what-is-managed-instance-on-azure-app-service">What Is Managed Instance on Azure App Service?</h2>
+
+<p>Managed Instance on App Service is Azure’s answer to applications that need <strong>OS-level customization</strong> beyond what standard App Service provides. It runs on the <strong>PremiumV4 (PV4)</strong> SKU with <code class="language-plaintext highlighter-rouge">IsCustomMode=true</code>, giving your app access to:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Capability</th>
+      <th>What It Enables</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Registry Adapters</strong></td>
+      <td>Redirect Windows Registry reads to Azure Key Vault secrets — no code changes</td>
+    </tr>
+    <tr>
+      <td><strong>Storage Adapters</strong></td>
+      <td>Mount Azure Files, local SSD, or private VNET storage as drive letters (e.g., <code class="language-plaintext highlighter-rouge">D:\</code>, <code class="language-plaintext highlighter-rouge">E:\</code>)</td>
+    </tr>
+    <tr>
+      <td><strong>install.ps1 Startup Script</strong></td>
+      <td>Run PowerShell at instance startup to install Windows features (SMTP, MSMQ), register COM components, install MSI packages, deploy custom fonts</td>
+    </tr>
+    <tr>
+      <td><strong>Custom Mode</strong></td>
+      <td>Full access to the Windows instance for configuration beyond standard PaaS guardrails</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>The key constraint</strong>: Managed Instance on App Service <strong>requires PV4 SKU</strong> with <strong>IsCustomMode=true</strong>. No other SKU combination supports it.</p>
+
+<h3 id="why-managed-instance-matters-for-legacy-apps">Why Managed Instance Matters for Legacy Apps</h3>
+
+<p>Consider a classic enterprise ASP.NET application that:</p>
+<ul>
+  <li>Reads license keys from <code class="language-plaintext highlighter-rouge">HKLM\SOFTWARE\MyApp</code> in the Windows Registry</li>
+  <li>Uses a COM component for PDF generation registered via <code class="language-plaintext highlighter-rouge">regsvr32</code></li>
+  <li>Sends email through a local SMTP relay</li>
+  <li>Writes reports to <code class="language-plaintext highlighter-rouge">D:\Reports\</code> on a local drive</li>
+  <li>Uses a custom corporate font for PDF rendering</li>
+</ul>
+
+<p>With standard App Service, you’d need to rewrite every one of these dependencies. With Managed Instance on App Service, you can:</p>
+<ul>
+  <li>Map registry reads to Key Vault secrets via <strong>Registry Adapters</strong></li>
+  <li>Mount Azure Files as <code class="language-plaintext highlighter-rouge">D:\</code> via <strong>Storage Adapters</strong></li>
+  <li>Enable SMTP Server via <strong>install.ps1</strong></li>
+  <li>Register the COM DLL via <strong>install.ps1</strong> (<code class="language-plaintext highlighter-rouge">regsvr32</code>)</li>
+  <li>Install the custom font via <strong>install.ps1</strong></li>
+</ul>
+
+<p><strong>Zero application code changes required.</strong></p>
+
+<blockquote>
+  <p><strong>Note</strong>: When migrating your web applications to Managed Instance on Azure App Service, in the majority of use cases zero application code changes may be required — but depending on your specific web app, some code changes may be necessary.</p>
+</blockquote>
+
+<h3 id="microsoft-learn-resources">Microsoft Learn Resources</h3>
+
+<ul>
+  <li><a href="https://learn.microsoft.com/en-us/azure/app-service/overview-managed-instance">Managed Instance on App Service Overview</a></li>
+  <li><a href="https://learn.microsoft.com/en-us/azure/app-service/">Azure App Service Documentation</a></li>
+  <li><a href="https://learn.microsoft.com/en-us/azure/app-service/app-service-migration-assistant">App Service Migration Assistant Tool</a></li>
+  <li><a href="https://learn.microsoft.com/en-us/azure/app-service/manage-move-across-regions">Migrate to Azure App Service</a></li>
+  <li><a href="https://learn.microsoft.com/en-us/azure/app-service/overview-hosting-plans">Azure App Service Plans Overview</a></li>
+  <li><a href="https://learn.microsoft.com/en-us/azure/app-service/app-service-configure-premium-tier">PremiumV4 Pricing Tier</a></li>
+  <li><a href="https://learn.microsoft.com/en-us/azure/key-vault/general/overview">Azure Key Vault</a></li>
+  <li><a href="https://learn.microsoft.com/en-us/azure/storage/files/storage-files-introduction">Azure Files</a></li>
+  <li><a href="https://learn.microsoft.com/en-us/azure/migrate/appcat/dotnet">Azure Migrate application and code assessment for .NET</a></li>
+  <li><a href="https://learn.microsoft.com/en-us/dotnet/azure/migration/appcat/install">Install Azure Migrate application and code assessment for .NET</a></li>
+  <li><a href="https://learn.microsoft.com/en-us/dotnet/azure/migration/appcat/interpret-results">Interpret the analysis results</a></li>
+</ul>
+
+<hr />
+
+<h2 id="why-agentic-migration-the-case-for-ai-guided-iis-migration">Why Agentic Migration? The Case for AI-Guided IIS Migration</h2>
+
+<h3 id="the-problem-with-traditional-migration">The Problem with Traditional Migration</h3>
+
+<p>Microsoft provides excellent PowerShell scripts for IIS migration — <code class="language-plaintext highlighter-rouge">Get-SiteReadiness.ps1</code>, <code class="language-plaintext highlighter-rouge">Get-SitePackage.ps1</code>, <code class="language-plaintext highlighter-rouge">Generate-MigrationSettings.ps1</code>, and <code class="language-plaintext highlighter-rouge">Invoke-SiteMigration.ps1</code>. They’re free, well-tested, and reliable. So why wrap them in an AI-powered system?</p>
+
+<p>Because <strong>the scripts are powerful but not intelligent.</strong> They execute what you tell them to. They don’t tell you <em>what</em> to do.</p>
+
+<p>Here’s what a traditional migration looks like:</p>
+
+<ol>
+  <li>Run readiness checks — get a wall of JSON with cryptic check IDs like <code class="language-plaintext highlighter-rouge">ContentSizeCheck</code>, <code class="language-plaintext highlighter-rouge">ConfigErrorCheck</code>, <code class="language-plaintext highlighter-rouge">GACCheck</code></li>
+  <li>Manually interpret 15+ readiness checks per site across dozens of sites</li>
+  <li>Decide whether each site needs Managed Instance or standard App Service (how?)</li>
+  <li>Figure out which dependencies need registry adapters vs. storage adapters vs. install.ps1 (the “Managed Instance provisioning split”)</li>
+  <li>Write the install.ps1 script by hand for each combination of OS features</li>
+  <li>Author ARM templates for adapter configurations (Key Vault references, storage mount specs, RBAC assignments)</li>
+  <li>Wire together <code class="language-plaintext highlighter-rouge">PackageResults.json</code> → <code class="language-plaintext highlighter-rouge">MigrationSettings.json</code> with correct Managed Instance fields (<code class="language-plaintext highlighter-rouge">Tier=PremiumV4</code>, <code class="language-plaintext highlighter-rouge">IsCustomMode=true</code>)</li>
+  <li>Hope you didn’t misconfigure anything before deploying to Azure</li>
+</ol>
+
+<p>Even experienced Azure engineers find this time-consuming, error-prone, and tedious — especially across a fleet of 20, 50, or 100+ IIS sites.</p>
+
+<h3 id="what-agentic-migration-changes">What Agentic Migration Changes</h3>
+
+<p>The IIS Migration MCP Server introduces an <strong>AI orchestration layer</strong> that transforms this manual grind into a guided conversation:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Traditional Approach</th>
+      <th>Agentic Approach</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Read raw JSON output from scripts</td>
+      <td>AI summarizes readiness as tables with plain-English descriptions</td>
+    </tr>
+    <tr>
+      <td>Memorize 15 check types and their severity</td>
+      <td>AI enriches each check with title, description, recommendation, and documentation links</td>
+    </tr>
+    <tr>
+      <td>Manually decide Managed Instance vs App Service</td>
+      <td><code class="language-plaintext highlighter-rouge">recommend_target</code> analyzes all signals and recommends with confidence + reasoning</td>
+    </tr>
+    <tr>
+      <td>Write install.ps1 from scratch</td>
+      <td><code class="language-plaintext highlighter-rouge">generate_install_script</code> builds it from detected features</td>
+    </tr>
+    <tr>
+      <td>Author ARM templates manually</td>
+      <td><code class="language-plaintext highlighter-rouge">generate_adapter_arm_template</code> generates full templates with RBAC guidance</td>
+    </tr>
+    <tr>
+      <td>Wire JSON artifacts between phases by hand</td>
+      <td>Agents pass <code class="language-plaintext highlighter-rouge">readiness_results_path</code> → <code class="language-plaintext highlighter-rouge">package_results_path</code> → <code class="language-plaintext highlighter-rouge">migration_settings_path</code> automatically</td>
+    </tr>
+    <tr>
+      <td>Pray you set PV4 + IsCustomMode correctly</td>
+      <td><strong>Enforced automatically</strong> — every tool validates Managed Instance constraints</td>
+    </tr>
+    <tr>
+      <td>Deploy and find out what broke</td>
+      <td><code class="language-plaintext highlighter-rouge">confirm_migration</code> presents a full cost/resource summary before touching Azure</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>The core value proposition: the AI knows the Managed Instance provisioning split.</strong> It knows that registry access needs an ARM template with Key Vault-backed adapters, while SMTP needs an <code class="language-plaintext highlighter-rouge">install.ps1</code> section enabling the Windows SMTP Server feature. You don’t need to know this. The system detects it from your IIS configuration and source code analysis, then generates exactly the right artifacts.</p>
+
+<h3 id="human-in-the-loop-safety">Human-in-the-Loop Safety</h3>
+
+<p>Agentic doesn’t mean autonomous. The system has explicit gates:</p>
+
+<ul>
+  <li><strong>Phase 1 → Phase 2</strong>: “Do you want to assess these sites, or skip to packaging?”</li>
+  <li><strong>Phase 3</strong>: “Here’s my recommendation — Managed Instance for Site A (COM + Registry), standard for Site B. Agree?”</li>
+  <li><strong>Phase 4</strong>: “Review MigrationSettings.json before proceeding”</li>
+  <li><strong>Phase 5</strong>: “This will create billable Azure resources. Type ‘yes’ to confirm”</li>
+</ul>
+
+<p>The AI accelerates the workflow; the human retains control over every decision.</p>
+
+<hr />
+
+<h2 id="architecture-how-the-mcp-server-works">Architecture: How the MCP Server Works</h2>
+
+<p>The system is built on the <strong>Model Context Protocol (MCP)</strong>, an open protocol that lets AI assistants like GitHub Copilot, Claude, or Cursor call external tools through a standardized interface.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──────────────────────────────────────────────────────────────────┐
+│  VS Code + Copilot Chat                                          │
+│    @iis-migrate orchestrator agent                               │
+│      ├── iis-discover   (Phase 1)                                │
+│      ├── iis-assess     (Phase 2)                                │
+│      ├── iis-recommend  (Phase 3)                                │
+│      ├── iis-deploy-plan (Phase 4)                               │
+│      └── iis-execute    (Phase 5)                                │
+└─────────────┬────────────────────────────────────────────────────┘
+              │  stdio JSON-RPC (MCP Transport)
+              ▼
+┌──────────────────────────────────────────────────────────────────┐
+│  FastMCP Server (server.py)                                      │
+│    13 Python Tool Modules (tools/*.py)                           │
+│      └── ps_runner.py (Python → PowerShell bridge)               │
+│            └── Downloaded PowerShell Scripts (user-configured)    │
+│                  ├── Local IIS (discovery, packaging)            │
+│                  └── Azure ARM API (deployment)                  │
+└──────────────────────────────────────────────────────────────────┘
+</code></pre></div></div>
+
+<p>The server exposes <strong>13 MCP tools</strong> organized across <strong>5 phases</strong>, orchestrated by <strong>6 Copilot agents</strong> (1 orchestrator + 5 specialist subagents).</p>
+
+<blockquote>
+  <p><strong>Important:</strong> The PowerShell migration scripts are <strong>not included</strong> in this repository.
+Users must download them from <a href="https://appmigration.microsoft.com/api/download/psscripts/AppServiceMigrationScripts.zip">GitHub</a>
+and configure the path using the <code class="language-plaintext highlighter-rouge">configure_scripts_path</code> tool. This ensures you always
+use the latest version of Microsoft’s scripts, avoiding version mismatch issues.</p>
+</blockquote>
+
+<hr />
+
+<h2 id="the-13-mcp-tools-complete-reference">The 13 MCP Tools: Complete Reference</h2>
+
+<h3 id="phase-0--setup">Phase 0 — Setup</h3>
+
+<h4 id="configure_scripts_path"><code class="language-plaintext highlighter-rouge">configure_scripts_path</code></h4>
+<p><strong>Purpose</strong>: Point the server to Microsoft’s downloaded migration PowerShell scripts.</p>
+
+<p>Before any migration work, you need to download the scripts from <a href="https://appmigration.microsoft.com/api/download/psscripts/AppServiceMigrationScripts.zip">GitHub</a>, unzip them, and tell the server where they are.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"Configure scripts path to C:\MigrationScripts"
+</code></pre></div></div>
+
+<hr />
+
+<h3 id="phase-1--discovery">Phase 1 — Discovery</h3>
+
+<h4 id="1-discover_iis_sites">1. <code class="language-plaintext highlighter-rouge">discover_iis_sites</code></h4>
+<p><strong>Purpose</strong>: Scan the local IIS server and run readiness checks on every web site.</p>
+
+<p>This is the entry point for every migration. It calls <code class="language-plaintext highlighter-rouge">Get-SiteReadiness.ps1</code> under the hood, which:</p>
+<ul>
+  <li>Enumerates all IIS web sites, application pools, bindings, and virtual directories</li>
+  <li>Runs <strong>15 readiness checks</strong> per site (config errors, HTTPS bindings, non-HTTP protocols, TCP ports, location tags, app pool settings, app pool identity, virtual directories, content size, global modules, ISAPI filters, authentication, framework version, connection strings, and more)</li>
+  <li>Detects source code artifacts (<code class="language-plaintext highlighter-rouge">.sln</code>, <code class="language-plaintext highlighter-rouge">.csproj</code>, <code class="language-plaintext highlighter-rouge">.cs</code>, <code class="language-plaintext highlighter-rouge">.vb</code>) near site physical paths</li>
+</ul>
+
+<p><strong>Output</strong>: <code class="language-plaintext highlighter-rouge">ReadinessResults.json</code> with per-site status:
+| Status | Meaning |
+|——–|———|
+| <code class="language-plaintext highlighter-rouge">READY</code> | No issues detected — clear for migration |
+| <code class="language-plaintext highlighter-rouge">READY_WITH_WARNINGS</code> | Minor issues that won’t block migration |
+| <code class="language-plaintext highlighter-rouge">READY_WITH_ISSUES</code> | Non-fatal issues that need attention |
+| <code class="language-plaintext highlighter-rouge">BLOCKED</code> | Fatal issues (e.g., content &gt; 2GB) — cannot migrate as-is |</p>
+
+<p><strong>Requires</strong>: Administrator privileges, IIS installed.</p>
+
+<h4 id="2-choose_assessment_mode">2. <code class="language-plaintext highlighter-rouge">choose_assessment_mode</code></h4>
+<p><strong>Purpose</strong>: Route each discovered site into the appropriate next step.</p>
+
+<p>After discovery, you decide the path for each site:</p>
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">assess_all</code></strong>: Run detailed assessment on all non-blocked sites</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">package_and_migrate</code></strong>: Skip assessment, proceed directly to packaging (for sites you already know well)</li>
+</ul>
+
+<p>The tool classifies each site into one of five actions:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">assess_config_only</code> — IIS/web.config analysis</li>
+  <li><code class="language-plaintext highlighter-rouge">assess_config_and_source</code> — Config + source code analysis (when source is detected)</li>
+  <li><code class="language-plaintext highlighter-rouge">package</code> — Skip to packaging</li>
+  <li><code class="language-plaintext highlighter-rouge">blocked</code> — Fatal errors, cannot proceed</li>
+  <li><code class="language-plaintext highlighter-rouge">skip</code> — User chose to exclude</li>
+</ul>
+
+<hr />
+
+<h3 id="phase-2--assessment">Phase 2 — Assessment</h3>
+
+<h4 id="3-assess_site_readiness">3. <code class="language-plaintext highlighter-rouge">assess_site_readiness</code></h4>
+<p><strong>Purpose</strong>: Get a detailed, human-readable readiness assessment for a specific site.</p>
+
+<p>Takes the raw readiness data from Phase 1 and enriches each check with:</p>
+<ul>
+  <li><strong>Title</strong>: Plain-English name (e.g., “Global Assembly Cache (GAC) Dependencies”)</li>
+  <li><strong>Description</strong>: What the check found and why it matters</li>
+  <li><strong>Recommendation</strong>: Specific guidance on how to resolve the issue</li>
+  <li><strong>Category</strong>: Grouping (Configuration, Security, Compatibility)</li>
+  <li><strong>Documentation Link</strong>: Microsoft Learn URL for further reading</li>
+</ul>
+
+<p>This enrichment comes from <code class="language-plaintext highlighter-rouge">WebAppCheckResources.resx</code>, an XML resource file that maps check IDs to detailed metadata. Without this tool, you’d see <code class="language-plaintext highlighter-rouge">GACCheck: FAIL</code> — with it, you see the full context.</p>
+
+<p><strong>Output</strong>: Overall status, enriched failed/warning checks, framework version, pipeline mode, binding details.</p>
+
+<h4 id="4-assess_source_code">4. <code class="language-plaintext highlighter-rouge">assess_source_code</code></h4>
+<p><strong>Purpose</strong>: Analyze an <a href="https://learn.microsoft.com/en-us/azure/migrate/appcat/dotnet">Azure Migrate application and code assessment for .NET</a> JSON report to identify Managed Instance-relevant source code dependencies.</p>
+
+<p>If your application has source code and you’ve run the assessment tool against it, this tool parses the results and maps findings to migration actions:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Dependency Detected</th>
+      <th>Migration Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Windows Registry access</td>
+      <td>Registry Adapter (ARM template)</td>
+    </tr>
+    <tr>
+      <td>Local file system I/O / hardcoded paths</td>
+      <td>Storage Adapter (ARM template)</td>
+    </tr>
+    <tr>
+      <td>SMTP usage</td>
+      <td>install.ps1 (SMTP Server feature)</td>
+    </tr>
+    <tr>
+      <td>COM Interop</td>
+      <td>install.ps1 (regsvr32/RegAsm)</td>
+    </tr>
+    <tr>
+      <td>Global Assembly Cache (GAC)</td>
+      <td>install.ps1 (GAC install)</td>
+    </tr>
+    <tr>
+      <td>Message Queuing (MSMQ)</td>
+      <td>install.ps1 (MSMQ feature)</td>
+    </tr>
+    <tr>
+      <td>Certificate access</td>
+      <td>Key Vault integration</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The tool matches rules from the assessment output against known Managed Instance-relevant patterns. For a complete list of rules and categories, see <a href="https://learn.microsoft.com/en-us/dotnet/azure/migration/appcat/interpret-results">Interpret the analysis results</a>.</p>
+
+<p><strong>Output</strong>: Issues categorized as mandatory/optional/potential, plus <code class="language-plaintext highlighter-rouge">install_script_features</code> and <code class="language-plaintext highlighter-rouge">adapter_features</code> lists that feed directly into Phase 3 tools.</p>
+
+<hr />
+
+<h3 id="phase-3--recommendation--provisioning">Phase 3 — Recommendation &amp; Provisioning</h3>
+
+<h4 id="5-suggest_migration_approach">5. <code class="language-plaintext highlighter-rouge">suggest_migration_approach</code></h4>
+<p><strong>Purpose</strong>: Recommend the right migration tool/approach for the scenario.</p>
+
+<p>This is a routing tool that considers:</p>
+<ul>
+  <li><strong>Source code available?</strong> → Recommend the App Modernization MCP server for code-level changes</li>
+  <li><strong>No source code?</strong> → Recommend this IIS Migration MCP (lift-and-shift)</li>
+  <li><strong>OS customization needed?</strong> → Highlight Managed Instance on App Service as the target</li>
+</ul>
+
+<h4 id="6-recommend_target">6. <code class="language-plaintext highlighter-rouge">recommend_target</code></h4>
+<p><strong>Purpose</strong>: Recommend the Azure deployment target for each site based on all assessment data.</p>
+
+<p>This is the intelligence center of the system. It analyzes config assessments and source code findings to recommend:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Target</th>
+      <th>When Recommended</th>
+      <th>SKU</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>MI_AppService</strong></td>
+      <td>Registry, COM, MSMQ, SMTP, local file I/O, GAC, or Windows Service dependencies detected</td>
+      <td>PremiumV4 (PV4)</td>
+    </tr>
+    <tr>
+      <td><strong>AppService</strong></td>
+      <td>Standard web app, no OS-level dependencies</td>
+      <td>PremiumV2 (PV2)</td>
+    </tr>
+    <tr>
+      <td><strong>ContainerApps</strong></td>
+      <td>Microservices architecture or container-first preference</td>
+      <td>N/A</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Each recommendation comes with:</p>
+<ul>
+  <li><strong>Confidence</strong>: <code class="language-plaintext highlighter-rouge">high</code> or <code class="language-plaintext highlighter-rouge">medium</code></li>
+  <li><strong>Reasoning</strong>: Full explanation of why this target was chosen</li>
+  <li><strong>Managed Instance reasons</strong>: Specific dependencies that require Managed Instance</li>
+  <li><strong>Blockers</strong>: Issues that prevent migration entirely</li>
+  <li><strong>install_script_features</strong>: What the install.ps1 needs to enable</li>
+  <li><strong>adapter_features</strong>: What the ARM template needs to configure</li>
+  <li><strong>Provisioning guidance</strong>: Step-by-step instructions for what to do next</li>
+</ul>
+
+<h4 id="7-generate_install_script">7. <code class="language-plaintext highlighter-rouge">generate_install_script</code></h4>
+<p><strong>Purpose</strong>: Generate an <code class="language-plaintext highlighter-rouge">install.ps1</code> PowerShell script for OS-level feature enablement on Managed Instance.</p>
+
+<p>This handles the <strong>OS-level</strong> side of the Managed Instance provisioning split. It generates a startup script that includes sections for:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>What the Script Does</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>SMTP</strong></td>
+      <td><code class="language-plaintext highlighter-rouge">Install-WindowsFeature SMTP-Server</code>, configure smart host relay</td>
+    </tr>
+    <tr>
+      <td><strong>MSMQ</strong></td>
+      <td>Install MSMQ, create application queues</td>
+    </tr>
+    <tr>
+      <td><strong>COM/MSI</strong></td>
+      <td>Run <code class="language-plaintext highlighter-rouge">msiexec</code> for MSI installers, <code class="language-plaintext highlighter-rouge">regsvr32</code>/<code class="language-plaintext highlighter-rouge">RegAsm</code> for COM registration</td>
+    </tr>
+    <tr>
+      <td><strong>Crystal Reports</strong></td>
+      <td>Install SAP Crystal Reports runtime MSI</td>
+    </tr>
+    <tr>
+      <td><strong>Custom Fonts</strong></td>
+      <td>Copy <code class="language-plaintext highlighter-rouge">.ttf</code>/<code class="language-plaintext highlighter-rouge">.otf</code> to <code class="language-plaintext highlighter-rouge">C:\Windows\Fonts</code>, register in registry</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The script can auto-detect needed features from config and source assessments, or you can specify them manually.</p>
+
+<h4 id="8-generate_adapter_arm_template">8. <code class="language-plaintext highlighter-rouge">generate_adapter_arm_template</code></h4>
+<p><strong>Purpose</strong>: Generate an ARM template for Managed Instance registry and storage adapters.</p>
+
+<p>This handles the <strong>platform-level</strong> side of the Managed Instance provisioning split. It generates a deployable ARM template that configures:</p>
+
+<p><strong>Registry Adapters</strong> (Key Vault-backed):</p>
+<ul>
+  <li>Map Windows Registry paths (e.g., <code class="language-plaintext highlighter-rouge">HKLM\SOFTWARE\MyApp\LicenseKey</code>) to Key Vault secrets</li>
+  <li>Your application reads the registry as before; Managed Instance redirects the read to Key Vault transparently</li>
+</ul>
+
+<p><strong>Storage Adapters</strong> (three types):
+| Type | Description | Credentials |
+|——|————-|————-|
+| <strong>AzureFiles</strong> | Mount Azure Files SMB share as a drive letter | Storage account key in Key Vault |
+| <strong>Custom</strong> | Mount storage over private endpoint via VNET | Requires VNET integration |
+| <strong>LocalStorage</strong> | Allocate local SSD on the Managed Instance as a drive letter | None needed |</p>
+
+<p>The template also includes:</p>
+<ul>
+  <li>Managed Identity configuration</li>
+  <li>RBAC role assignments guidance (Key Vault Secrets User, Storage File Data SMB Share Contributor, etc.)</li>
+  <li>Deployment CLI commands ready to copy-paste</li>
+</ul>
+
+<hr />
+
+<h3 id="phase-4--deployment-planning--packaging">Phase 4 — Deployment Planning &amp; Packaging</h3>
+
+<h4 id="9-plan_deployment">9. <code class="language-plaintext highlighter-rouge">plan_deployment</code></h4>
+<p><strong>Purpose</strong>: Plan the Azure App Service deployment — plans, SKUs, site assignments.</p>
+
+<p>Collects your Azure details (subscription, resource group, region) and creates a validated deployment plan:</p>
+<ul>
+  <li>Assigns sites to App Service Plans</li>
+  <li><strong>Enforces PV4 + IsCustomMode=true for Managed Instance</strong> — won’t let you accidentally use the wrong SKU</li>
+  <li>Supports <code class="language-plaintext highlighter-rouge">single_plan</code> (all sites on one plan) or <code class="language-plaintext highlighter-rouge">multi_plan</code> (separate plans)</li>
+  <li>Optionally queries Azure for existing Managed Instance plans you can reuse</li>
+</ul>
+
+<h4 id="10-package_site">10. <code class="language-plaintext highlighter-rouge">package_site</code></h4>
+<p><strong>Purpose</strong>: Package IIS site content into ZIP files for deployment.</p>
+
+<p>Calls <code class="language-plaintext highlighter-rouge">Get-SitePackage.ps1</code> to:</p>
+<ul>
+  <li>Compress site binaries + <code class="language-plaintext highlighter-rouge">web.config</code> into deployment-ready ZIPs</li>
+  <li>Optionally inject <code class="language-plaintext highlighter-rouge">install.ps1</code> into the package (so it deploys alongside the app)</li>
+  <li>Handle sites with non-fatal issues (configurable)</li>
+</ul>
+
+<p><strong>Size limit</strong>: 2 GB per site (enforced by System.IO.Compression).</p>
+
+<h4 id="11-generate_migration_settings">11. <code class="language-plaintext highlighter-rouge">generate_migration_settings</code></h4>
+<p><strong>Purpose</strong>: Create the <code class="language-plaintext highlighter-rouge">MigrationSettings.json</code> deployment configuration.</p>
+
+<p>This is the final configuration artifact. It calls <code class="language-plaintext highlighter-rouge">Generate-MigrationSettings.ps1</code> and then post-processes the output to inject Managed Instance-specific fields:</p>
+
+<blockquote>
+  <p><strong>Important</strong>: The Managed Instance on App Service Plan is <strong>not automatically created</strong> by the migration tools. You must <strong>pre-create the App Service Plan</strong> (PV4 SKU with <code class="language-plaintext highlighter-rouge">IsCustomMode=true</code>) in the Azure portal or via CLI before generating migration settings. When running <code class="language-plaintext highlighter-rouge">generate_migration_settings</code>, provide the <strong>name of your existing Managed Instance plan</strong> so the settings file references it correctly.</p>
+</blockquote>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"AppServicePlan"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mi-plan-eastus"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"Tier"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PremiumV4"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"IsCustomMode"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"InstallScriptPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"install.ps1"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"Region"</span><span class="p">:</span><span class="w"> </span><span class="s2">"eastus"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"Sites"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"IISSiteName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MyLegacyApp"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"AzureSiteName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mylegacyapp-azure"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"SitePackagePath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"packagedsites/MyLegacyApp_Content.zip"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<hr />
+
+<h3 id="phase-5--execution">Phase 5 — Execution</h3>
+
+<h4 id="12-confirm_migration">12. <code class="language-plaintext highlighter-rouge">confirm_migration</code></h4>
+<p><strong>Purpose</strong>: Present a full migration summary and require explicit human confirmation.</p>
+
+<p>Before touching Azure, this tool displays:</p>
+<ul>
+  <li>Total plans and sites to be created</li>
+  <li>SKU and pricing tier per plan</li>
+  <li>Whether Managed Instance is configured</li>
+  <li>Cost warning for PV4 pricing</li>
+  <li>Resource group, region, and subscription details</li>
+</ul>
+
+<p><strong>Nothing proceeds until the user explicitly confirms.</strong></p>
+
+<h4 id="13-migrate_sites">13. <code class="language-plaintext highlighter-rouge">migrate_sites</code></h4>
+<p><strong>Purpose</strong>: Deploy everything to Azure App Service. <strong>This creates billable resources.</strong></p>
+
+<p>Calls <code class="language-plaintext highlighter-rouge">Invoke-SiteMigration.ps1</code>, which:</p>
+<ol>
+  <li>Sets Azure subscription context</li>
+  <li>Creates/validates resource groups</li>
+  <li>Creates App Service Plans (PV4 with IsCustomMode for Managed Instance)</li>
+  <li>Creates Web Apps</li>
+  <li>Configures .NET version, 32-bit mode, pipeline mode from the original IIS settings</li>
+  <li>Sets up virtual directories and applications</li>
+  <li>Disables basic authentication (FTP + SCM) for security</li>
+  <li>Deploys ZIP packages via Azure REST API</li>
+</ol>
+
+<p><strong>Output</strong>: <code class="language-plaintext highlighter-rouge">MigrationResults.json</code> with per-site Azure URLs, Resource IDs, and deployment status.</p>
+
+<hr />
+
+<h2 id="the-6-copilot-agents">The 6 Copilot Agents</h2>
+
+<p>The MCP tools are orchestrated by a team of specialized Copilot agents — each responsible for a specific phase of the migration lifecycle.</p>
+
+<h3 id="iis-migrate--the-orchestrator"><code class="language-plaintext highlighter-rouge">@iis-migrate</code> — The Orchestrator</h3>
+
+<p>The root agent that guides the entire migration. It:</p>
+<ul>
+  <li>Tracks progress across all 5 phases using a todo list</li>
+  <li>Delegates work to specialist subagents</li>
+  <li>Gates between phases — asks before transitioning</li>
+  <li>Enforces the Managed Instance constraint (PV4 + IsCustomMode) at every decision point</li>
+  <li>Never skips the Phase 5 confirmation gate</li>
+</ul>
+
+<p><strong>Usage</strong>: Open Copilot Chat and type <code class="language-plaintext highlighter-rouge">@iis-migrate I want to migrate my IIS applications to Azure</code></p>
+
+<h3 id="iis-discover--discovery-specialist"><code class="language-plaintext highlighter-rouge">iis-discover</code> — Discovery Specialist</h3>
+
+<p>Handles Phase 1. Runs <code class="language-plaintext highlighter-rouge">discover_iis_sites</code>, presents a summary table of all sites with their readiness status, and asks whether to assess or skip to packaging. Returns <code class="language-plaintext highlighter-rouge">readiness_results_path</code> and per-site routing plans.</p>
+
+<h3 id="iis-assess--assessment-specialist"><code class="language-plaintext highlighter-rouge">iis-assess</code> — Assessment Specialist</h3>
+
+<p>Handles Phase 2. Runs <code class="language-plaintext highlighter-rouge">assess_site_readiness</code> for every site, and <code class="language-plaintext highlighter-rouge">assess_source_code</code> when source code assessment results are available. Merges findings, highlights Managed Instance-relevant issues, and produces the adapter/install features lists that drive Phase 3.</p>
+
+<h3 id="iis-recommend--recommendation-specialist"><code class="language-plaintext highlighter-rouge">iis-recommend</code> — Recommendation Specialist</h3>
+
+<p>Handles Phase 3. Runs <code class="language-plaintext highlighter-rouge">recommend_target</code> for each site, then conditionally generates <code class="language-plaintext highlighter-rouge">install.ps1</code> and ARM adapter templates. Presents all recommendations with confidence levels and reasoning, and allows you to edit generated artifacts.</p>
+
+<h3 id="iis-deploy-plan--deployment-planning-specialist"><code class="language-plaintext highlighter-rouge">iis-deploy-plan</code> — Deployment Planning Specialist</h3>
+
+<p>Handles Phase 4. Collects Azure details, runs <code class="language-plaintext highlighter-rouge">plan_deployment</code>, <code class="language-plaintext highlighter-rouge">package_site</code>, and <code class="language-plaintext highlighter-rouge">generate_migration_settings</code>. Validates Managed Instance configuration, allows review and editing of MigrationSettings.json. <strong>Does not execute migration.</strong></p>
+
+<h3 id="iis-execute--execution-specialist"><code class="language-plaintext highlighter-rouge">iis-execute</code> — Execution Specialist</h3>
+
+<p>Handles Phase 5 only. Runs <code class="language-plaintext highlighter-rouge">confirm_migration</code> to present the final summary, then <strong>only proceeds with <code class="language-plaintext highlighter-rouge">migrate_sites</code> after receiving explicit “yes” confirmation.</strong> Reports results with Azure URLs and deployment status.</p>
+
+<hr />
+
+<h2 id="the-managed-instance-provisioning-split-a-critical-concept">The Managed Instance Provisioning Split: A Critical Concept</h2>
+
+<p>One of the most important ideas Managed Instance introduces is the <strong>provisioning split</strong> — the division of OS dependencies into two categories that are configured through different mechanisms:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──────────────────────────────────────────────────────────────┐
+│            MANAGED INSTANCE PROVISIONING SPLIT                │
+├─────────────────────────────┬────────────────────────────────┤
+│  ARM Template               │  install.ps1                   │
+│  (Platform-Level)           │  (OS-Level)                    │
+├─────────────────────────────┼────────────────────────────────┤
+│  Registry Adapters          │  COM/MSI Registration          │
+│    → Key Vault secrets      │    → regsvr32, RegAsm, msiexec │
+│                             │                                │
+│  Storage Mounts             │  SMTP Server Feature           │
+│    → Azure Files            │    → Install-WindowsFeature    │
+│    → Local SSD              │                                │
+│    → VNET private storage   │  MSMQ                          │
+│                             │    → Message queue setup        │
+│                             │                                │
+│                             │  Crystal Reports Runtime       │
+│                             │    → SAP MSI installer          │
+│                             │                                │
+│                             │  Custom Fonts                  │
+│                             │    → Copy to C:\Windows\Fonts  │
+└─────────────────────────────┴────────────────────────────────┘
+</code></pre></div></div>
+
+<p>The MCP server handles this split automatically:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">assess_source_code</code> detects which dependencies fall into which category</li>
+  <li><code class="language-plaintext highlighter-rouge">recommend_target</code> reports both <code class="language-plaintext highlighter-rouge">adapter_features</code> and <code class="language-plaintext highlighter-rouge">install_script_features</code></li>
+  <li><code class="language-plaintext highlighter-rouge">generate_adapter_arm_template</code> builds the ARM template for platform features</li>
+  <li><code class="language-plaintext highlighter-rouge">generate_install_script</code> builds the PowerShell startup script for OS features</li>
+</ul>
+
+<p>You don’t need to remember which goes where — the system decides and generates the right artifacts.</p>
+
+<hr />
+
+<h2 id="end-to-end-walkthrough-from-discovery-to-running-on-managed-instance">End-to-End Walkthrough: From Discovery to Running on Managed Instance</h2>
+
+<p>Here’s what a complete migration conversation looks like:</p>
+
+<p><strong>You</strong>: <em>“@iis-migrate I want to migrate my IIS applications to Azure”</em></p>
+
+<p><strong>Phase 1 — Discovery</strong>:</p>
+<blockquote>
+  <p>Agent runs <code class="language-plaintext highlighter-rouge">discover_iis_sites</code>, presents a table:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Site</th>
+        <th>Status</th>
+        <th>Framework</th>
+        <th>Source Code?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>HRPortal</td>
+        <td>READY_WITH_ISSUES</td>
+        <td>v4.8</td>
+        <td>Yes (.sln found)</td>
+      </tr>
+      <tr>
+        <td>PayrollAPI</td>
+        <td>READY</td>
+        <td>v4.8</td>
+        <td>No</td>
+      </tr>
+      <tr>
+        <td>IntranetCMS</td>
+        <td>BLOCKED (&gt;2GB)</td>
+        <td>v4.7.2</td>
+        <td>No</td>
+      </tr>
+    </tbody>
+  </table>
+</blockquote>
+
+<p><strong>Phase 2 — Assessment</strong>:</p>
+<blockquote>
+  <p>Agent runs <code class="language-plaintext highlighter-rouge">assess_site_readiness</code> for HRPortal — finds GACCheck and RegistryCheck failures.
+Runs <code class="language-plaintext highlighter-rouge">assess_source_code</code> using source code assessment report — confirms COM interop, registry access, and SMTP usage.</p>
+</blockquote>
+
+<p><strong>Phase 3 — Recommendation</strong>:</p>
+<blockquote>
+  <p>Agent runs <code class="language-plaintext highlighter-rouge">recommend_target</code>:</p>
+  <ul>
+    <li><strong>HRPortal → MI_AppService</strong> (high confidence) — COM, registry, SMTP dependencies</li>
+    <li><strong>PayrollAPI → AppService</strong> (high confidence) — no OS dependencies</li>
+  </ul>
+
+  <p>Generates <code class="language-plaintext highlighter-rouge">install.ps1</code> for HRPortal (SMTP + COM sections).
+Generates ARM template with registry adapter (Key Vault-backed) for HRPortal.</p>
+</blockquote>
+
+<p><strong>Phase 4 — Deployment Planning</strong>:</p>
+<blockquote>
+  <p>Agent collects subscription/RG/region, validates PV4 availability.
+Packages both sites. Generates MigrationSettings.json with two plans:</p>
+  <ul>
+    <li><code class="language-plaintext highlighter-rouge">mi-plan-hrportal</code> (PremiumV4, IsCustomMode=true) — HRPortal</li>
+    <li><code class="language-plaintext highlighter-rouge">std-plan-payrollapi</code> (PremiumV2) — PayrollAPI</li>
+  </ul>
+</blockquote>
+
+<p><strong>Phase 5 — Execution</strong>:</p>
+<blockquote>
+  <p>Agent shows full summary with cost projection. You type “yes”.
+Sites deploy. You get Azure URLs within minutes.</p>
+</blockquote>
+
+<hr />
+
+<h2 id="prerequisites--setup">Prerequisites &amp; Setup</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Requirement</th>
+      <th>Purpose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Windows Server with IIS</strong></td>
+      <td>Source server for discovery and packaging</td>
+    </tr>
+    <tr>
+      <td><strong>PowerShell 5.1</strong></td>
+      <td>Runs migration scripts (ships with Windows)</td>
+    </tr>
+    <tr>
+      <td><strong>Python 3.10+</strong></td>
+      <td>MCP server runtime</td>
+    </tr>
+    <tr>
+      <td><strong>Administrator privileges</strong></td>
+      <td>Required for IIS discovery, packaging, and migration</td>
+    </tr>
+    <tr>
+      <td><strong>Azure subscription</strong></td>
+      <td>Target for deployment (execution phase only)</td>
+    </tr>
+    <tr>
+      <td><strong>Azure PowerShell (<code class="language-plaintext highlighter-rouge">Az</code> module)</strong></td>
+      <td>Deploy to Azure (execution phase only)</td>
+    </tr>
+    <tr>
+      <td><strong><a href="https://appmigration.microsoft.com/api/download/psscripts/AppServiceMigrationScripts.zip">Migration Scripts ZIP</a></strong></td>
+      <td>Microsoft’s PowerShell migration scripts</td>
+    </tr>
+    <tr>
+      <td><strong><a href="https://learn.microsoft.com/en-us/dotnet/azure/migration/appcat/install">Azure Migrate application and code assessment for .NET</a></strong></td>
+      <td>Source code analysis (optional)</td>
+    </tr>
+    <tr>
+      <td><strong><a href="https://pypi.org/project/mcp/">FastMCP</a></strong> (<code class="language-plaintext highlighter-rouge">mcp[cli]&gt;=1.0.0</code>)</td>
+      <td>MCP server framework</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="quick-start">Quick Start</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Clone and set up the MCP server</span>
+git clone https://github.com/&lt;your-org&gt;/iis-migration-mcp.git
+<span class="nb">cd </span>iis-migration-mcp
+python <span class="nt">-m</span> venv .venv
+.venv<span class="se">\S</span>cripts<span class="se">\a</span>ctivate
+pip <span class="nb">install</span> <span class="nt">-r</span> requirements.txt
+
+<span class="c"># Download Microsoft's migration scripts (NOT included in this repo)</span>
+<span class="c"># From: https://appmigration.microsoft.com/api/download/psscripts/AppServiceMigrationScripts.zip</span>
+<span class="c"># Unzip to C:\MigrationScripts (or your preferred path)</span>
+
+<span class="c"># Start using in VS Code with Copilot</span>
+<span class="c"># 1. Copy .vscode/mcp.json.example → .vscode/mcp.json</span>
+<span class="c"># 2. Open folder in VS Code</span>
+<span class="c"># 3. In Copilot Chat: "Configure scripts path to C:\MigrationScripts"</span>
+<span class="c"># 4. Then: @iis-migrate "Discover my IIS sites"</span>
+</code></pre></div></div>
+
+<p>The server also works with <strong>any MCP-compatible client</strong> — Claude Desktop, Cursor, Copilot CLI, or custom integrations — via stdio transport.</p>
+
+<hr />
+
+<h2 id="data-flow--artifacts">Data Flow &amp; Artifacts</h2>
+
+<p>Every phase produces JSON artifacts that chain into the next phase:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Phase 1: discover_iis_sites ──→ ReadinessResults.json
+                                      │
+Phase 2: assess_site_readiness ◄──────┘
+         assess_source_code ───→ Assessment JSONs
+                                      │
+Phase 3: recommend_target ◄───────────┘
+         generate_install_script ──→ install.ps1
+         generate_adapter_arm ─────→ mi-adapters-template.json
+                                      │
+Phase 4: package_site ────────────→ PackageResults.json + site ZIPs
+         generate_migration_settings → MigrationSettings.json
+                                      │
+Phase 5: confirm_migration ◄──────────┘
+         migrate_sites ───────────→ MigrationResults.json
+                                      │
+                                      ▼
+                              Apps live on Azure
+                              *.azurewebsites.net
+</code></pre></div></div>
+
+<p>Each artifact is inspectable, editable, and auditable — providing a complete record of what was assessed, recommended, and deployed.</p>
+
+<hr />
+
+<h2 id="error-handling">Error Handling</h2>
+
+<p>The MCP server classifies errors into actionable categories:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Error</th>
+      <th>Cause</th>
+      <th>Resolution</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ELEVATION_REQUIRED</code></td>
+      <td>Not running as Administrator</td>
+      <td>Restart VS Code / terminal as Admin</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">IIS_NOT_FOUND</code></td>
+      <td>IIS or WebAdministration module missing</td>
+      <td>Install IIS role + WebAdministration</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">AZURE_NOT_AUTHENTICATED</code></td>
+      <td>Not logged into Azure PowerShell</td>
+      <td>Run <code class="language-plaintext highlighter-rouge">Connect-AzAccount</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SCRIPT_NOT_FOUND</code></td>
+      <td>Migration scripts path not configured</td>
+      <td>Run <code class="language-plaintext highlighter-rouge">configure_scripts_path</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SCRIPT_TIMEOUT</code></td>
+      <td>PowerShell script exceeded time limit</td>
+      <td>Check IIS server responsiveness</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">OUTPUT_NOT_FOUND</code></td>
+      <td>Expected JSON output wasn’t created</td>
+      <td>Verify script execution succeeded</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>The IIS Migration MCP Server turns what used to be a multi-week, expert-driven project into a guided conversation. It combines Microsoft’s battle-tested migration PowerShell scripts with AI orchestration that understands the nuances of Managed Instance on App Service — the provisioning split, the PV4 constraint, the adapter configurations, and the OS-level customizations.</p>
+
+<p>Whether you’re migrating 1 site or 10, agentic migration reduces risk, eliminates guesswork, and produces auditable artifacts at every step. The human stays in control; the AI handles the complexity.</p>
+
+<p><strong>Get started</strong>: Download the <a href="https://appmigration.microsoft.com/api/download/psscripts/AppServiceMigrationScripts.zip">migration scripts</a>, set up the MCP server, and ask <code class="language-plaintext highlighter-rouge">@iis-migrate</code> to discover your IIS sites. The agents will take it from there.</p>
+
+<hr />
+
+<p><em>This project is compatible with any MCP-enabled client: VS Code GitHub Copilot, Claude Desktop, Cursor, and more. The intelligence travels with the server, not the client.</em></p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2026-04-09T00:00:00+00:00">April 09, 2026</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Agentic+IIS+Migration+to+Managed+Instance+on+Azure+App+Service%20https%3A%2F%2Fazure.github.io%2FAppService%2F2026%2F04%2F09%2FAgentic_IIS_Migration_to_Managed_Instance_On_AppService.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2026%2F04%2F09%2FAgentic_IIS_Migration_to_Managed_Instance_On_AppService.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2026%2F04%2F09%2FAgentic_IIS_Migration_to_Managed_Instance_On_AppService.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2026/04/06/quickdeploy.html" class="pagination--pager" title="A simpler way to deploy your code to Azure App Service for Linux
+">Previous</a>
+    
+    
+      <a href="/AppService/2026/04/10/php85-available.html" class="pagination--pager" title="PHP 8.5 is now available on Azure App Service for Linux
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2026/05/18/platform-improvements-for-python-ai-apps-on-azure-app-service.html" rel="permalink">Platform Improvements for Python AI Apps on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  8 minute read
+
+        
+        
+          • By Surender Singh Malik
+        
+        • May 18, 2026
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Originally published on Microsoft Tech Community.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2026/05/14/fastapi-improvements.html" rel="permalink">Simplifying FastAPI Deployments on Azure App Service for Linux
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • May 14, 2026
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Deploying FastAPI apps to Azure App Service for Linux is now simpler.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2026/05/07/kudu-deferred-recycle.html" rel="permalink">Improving Deployment Resiliency on Azure App Service for Linux with Deferred Kudu Recycle
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • May 7, 2026
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Azure App Service for Linux now includes Deferred Kudu Recycle, a platform improvement designed to make deployments more resilient when app settings or conne...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2026/05/06/platform-release-channel.html" rel="permalink">Control runtime patch updates with Platform Release Channel on Azure App Service for Linux
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • May 6, 2026
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Azure App Service for Linux is introducing Platform Release Channel, a new setting that gives you more control over when runtime patch updates are applied to...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2026 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
