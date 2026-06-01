@@ -51,6 +51,12 @@ Suggested Fixes:
 
 This makes it easier to understand whether the failure is caused by an artifact/runtime mismatch, an invalid deployment path, missing required parameters, or a configuration conflict such as `WEBSITE_RUN_FROM_PACKAGE`.
 
+The screenshots below show a couple of more examples of enriched deployment failures.
+
+![enriched-errors-ex1]({{site.baseurl}}/media/2026/06/cli-enriched-errors-1.png)
+
+![enriched-errors-ex2]({{site.baseurl}}/media/2026/06/cli-enriched-errors-2.png)
+
 ## Use with GitHub Copilot
 
 The enriched output also includes a prompt that you can paste into GitHub Copilot along with the full error details:
