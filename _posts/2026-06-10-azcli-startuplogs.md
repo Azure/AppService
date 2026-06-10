@@ -21,7 +21,7 @@ az webapp log startup list \
 
 The output shows whether the startup attempt succeeded or failed, along with the instance name and log file size. This helps you quickly identify the right log file, especially when there are multiple startup attempts across different instances.
 
-![startuplog]({{site.baseurl}}/media/2026/06/log-list.jpg)
+![startuplog]({{site.baseurl}}/media/2026/06/log-list.png)
 
 ## Show startup log content
 
@@ -46,7 +46,7 @@ The log content includes startup events from the platform and the application. F
 
 In a successful startup, the log shows that the site startup probe succeeded and the site started successfully.
 
-![startuplog]({{site.baseurl}}/media/2026/06/startup-succeeded.jpg)
+![startuplog]({{site.baseurl}}/media/2026/06/startup-succeeded.png)
 
 ## Failure logs are prioritized by default
 
@@ -56,7 +56,7 @@ This helps reduce the time spent looking for the right log when debugging startu
 
 For example, if the app fails because the worker process does not start within the allotted time, the log shows the timeout details and the platform actions taken during startup cancellation.
 
-![startuplog]({{site.baseurl}}/media/2026/06/log-failure.jpg)
+![startuplog]({{site.baseurl}}/media/2026/06/log-failure.png)
 
 ## Better hints for common startup failures
 
