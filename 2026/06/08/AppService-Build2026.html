@@ -1,0 +1,1023 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>App Service Build 2026 Updates - Azure App Service</title>
+<meta name="description" content="Build 2026 is here, and Azure App Service is showing up with a packed lineup of updates. This post is your one-stop rollup of what’s new: a brand-new Easy AI experience that turns your web apps into agent-ready endpoints, the general availability of Isolated v4 on ASEv3, continued progress on App Service Managed Instance, and a wave of platform and CLI improvements built for the agent era.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="App Service Build 2026 Updates">
+<meta property="og:url" content="https://azure.github.io/AppService/2026/06/08/AppService-Build2026.html">
+
+
+  <meta property="og:description" content="Build 2026 is here, and Azure App Service is showing up with a packed lineup of updates. This post is your one-stop rollup of what’s new: a brand-new Easy AI experience that turns your web apps into agent-ready endpoints, the general availability of Isolated v4 on ASEv3, continued progress on App Service Managed Instance, and a wave of platform and CLI improvements built for the agent era.">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2026-06-08T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2026/06/08/AppService-Build2026.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/sidecars/" class="">Sidecars</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/ai-integration/" class="">AI Integration</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="App Service Build 2026 Updates">
+    <meta itemprop="description" content="Build 2026 is here, and Azure App Service is showing up with a packed lineup of updates. This post is your one-stop rollup of what’s new: a brand-new Easy AI experience that turns your web apps into agent-ready endpoints, the general availability of Isolated v4 on ASEv3, continued progress on App Service Managed Instance, and a wave of platform and CLI improvements built for the agent era.">
+    <meta itemprop="datePublished" content="June 08, 2026">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">App Service Build 2026 Updates
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  10 minute read
+
+            
+            
+              • By Byron Tardif
+            
+            • June 8, 2026
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#app-service-easy-ai">App Service Easy AI</a></li>
+  <li><a href="#isolated-v4">Isolated V4</a></li>
+  <li><a href="#managed-instance-on-azure-app-service">Managed Instance on Azure App Service</a></li>
+  <li><a href="#platform-release-channel">Platform Release Channel</a></li>
+  <li><a href="#improvements-to-az-cli-investing-in-the-azure-cli-for-the-agent-era">Improvements to AZ CLI: Investing in the Azure CLI for the agent era</a></li>
+  <li><a href="#platform-improvements">Platform Improvements</a>
+    <ul>
+      <li><a href="#more-details">More details</a></li>
+    </ul>
+  </li>
+  <li><a href="#wrapping-up">Wrapping up</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <p>Build 2026 is here, and Azure App Service is showing up with a packed lineup of updates. This post is your one-stop rollup of what’s new: a brand-new <a href="#app-service-easy-ai">Easy AI experience</a> that turns your web apps into agent-ready endpoints, the general availability of <a href="#isolated-v4">Isolated v4 on ASEv3</a>, continued progress on <a href="#managed-instance-on-azure-app-service">App Service Managed Instance</a>, and a wave of <a href="#platform-improvements">platform</a> and <a href="#improvements-to-az-cli-investing-in-the-azure-cli-for-the-agent-era">CLI improvements</a> built for the agent era.</p>
+
+<p>It’s a clear signal of <a href="https://azure.github.io/AppService/2026/03/31/continued-investment.html">our continued investment</a> in App Service: the same managed platform you rely on, evolving to meet you where modern apps (and the agents that build and consume them) are headed. Read on for the highlights, with links to deeper dives on each announcement.</p>
+
+<h2 id="app-service-easy-ai">App Service Easy AI</h2>
+
+<p>We’re introducing Easy AI, a new umbrella of capabilities that make it simple to turn your existing App Service web apps into AI-ready, agent-native applications, with no rearchitecting required. The centerpiece of this first release is a brand-new AI (preview) blade in the Azure Portal, giving you a single place to enable AI capabilities directly on your web app.</p>
+
+<p>The first feature available under Easy AI is <a href="https://aka.ms/Build26/AppService-BuiltInMCP">Built-in MCP on App Service</a>. With Built-in MCP, you can turn your web app into a Model Context Protocol server with no code changes. Just provide an OpenAPI specification, and App Service automatically generates the tools and a ready-to-use endpoint that AI agents can call. From the MCP servers tab in the AI (preview) blade, you can create and manage your MCP server in a few clicks, and optionally register it in your <a href="https://learn.microsoft.com/azure/api-center/register-discover-mcp-server">Azure API Center</a> to catalog and govern it alongside the rest of your APIs and MCP servers. It’s the fastest way to give agents secure, structured access to the functionality your app already exposes.</p>
+
+<p>The AI (preview) blade also includes a new <a href="https://aka.ms/Build26/AppService-Agents">Agents tab</a>, giving you visibility into the AI agents hosted in your App Service. It surfaces key metrics (total agents, calls, tokens consumed, and error rate) drawn from your app’s telemetry in Application Insights, instrumented using OpenTelemetry with Generative AI semantic conventions. From here you can drill into the data in Application Insights to monitor agent behavior, performance, and cost over time.</p>
+
+<p>This is just the beginning. Built-in MCP and the Agents experience are the first in a series of Easy AI features we’re rolling out to make adding AI to your App Service web apps simple and easy, so you can spend less time on plumbing and more time building intelligent, agent-ready applications. To get started, open the AI (preview) blade on your App Service web app today. Stay tuned, there’s much more to come.</p>
+
+<h2 id="isolated-v4">Isolated V4</h2>
+
+<p>We’re also excited to announce the general availability of <a href="https://aka.ms/AppService/Iv4docs">Isolated v4 (Iv4) on App Service Environment v3 (ASEv3)</a>. Iv4 brings the latest v4 hardware generation (the same next-generation compute that powers <a href="https://learn.microsoft.com/azure/app-service/app-service-configure-premium-v4-tier">Premium v4</a>) to customers running dedicated, single-tenant workloads on ASEv3, delivering significantly better performance than Isolated v2 without compromising the isolation, compliance, and data residency guarantees that mission-critical apps depend on. Iv4 is now generally available across a limited set of Azure regions, with additional regions rolling out over time based on customer demand and capacity. See the docs for the <a href="https://aka.ms/AppService/Iv4regions">full list</a>. To get started, create a new ASEv3 with an Iv4 plan or scale an existing one; see the <a href="https://azure.microsoft.com/pricing/details/app-service/windows/">App Service pricing page</a> for full SKU and pricing details. Due to significant demand, available capacity may be limited even in supported regions at this time. If you encounter issues, please open a support ticket.</p>
+
+<p>Additionally, Iv4 on ASEv3 also lays the foundation for <a href="#managed-instance-on-azure-app-service">App Service Managed Instance</a> on dedicated infrastructure, unlocking advanced isolation scenarios for compliance and data-residency-sensitive workloads.</p>
+
+<h2 id="managed-instance-on-azure-app-service">Managed Instance on Azure App Service</h2>
+
+<p>Managed Instance on App Service (Preview) continues to evolve with key improvements, including faster restarts (~30s), no restarts for registry and storage adapter changes, and integrated diagnostics tooling. The service is expanding to new regions (e.g., Central and South India) with broader rollout underway, alongside deeper integration with the GitHub Copilot App Mod tool, driving continued customer and partner engagement as we drive towards general availability.</p>
+
+<p><a href="https://learn.microsoft.com/en-us/azure/app-service/overview-managed-instance">Managed Instance on Azure App Service</a> will soon be extended to App Service Environments (ASE) using the new Iv4 SKU, providing a more modern, scalable, and optimized foundation. This enables customers to simplify and accelerate deployment of Windows workloads, especially web applications requiring custom dependencies or deeper OS-level control, while benefiting from ASE’s single-tenant isolation, enhanced security and compliance boundaries, fine-grained network control, and predictable performance at scale. Overall, this offers a seamless path to modernize existing applications with minimal changes while aligning with Azure App Service capabilities and best practices.</p>
+
+<p>Recent updates to the <a href="https://github.com/Azure/App-Service-Migration-Assistant/wiki/PowerShell-Scripts">Azure App Service migration PowerShell</a> scripts extend support for Managed Instance on App Service, enabling a more seamless lift &amp; improve experience for applications with OS-level dependencies. By adding the <code class="language-plaintext highlighter-rouge">-UseManagedInstance</code> switch during invocation, customers can now automatically generate migration settings tailored for Managed Instance, including configuration for the App Service plan, adapters, and install scripts. This simplifies onboarding by capturing all required parameters in the result settings file, reducing manual setup for complex workloads that rely on registry, COM components, or custom dependencies.</p>
+
+<p>Check out this <a href="https://techcommunity.microsoft.com/blog/AppsonAzureBlog/agentic-iis-migration-to-managed-instance-on-azure-app-service/4508969">Agentic IIS Migration to Managed Instance on Azure App Service</a>, which showcases an AI-guided approach to migrating legacy IIS applications using a multi-agent workflow powered by MCP. It simplifies discovery, assessment, and deployment for complex Windows workloads with OS-level dependencies. This is an early pilot, and customers should adapt and extend the approach based on their specific application requirements and environments.</p>
+
+<h2 id="platform-release-channel">Platform Release Channel</h2>
+
+<p>Keeping runtimes evergreen is one of the core promises of a managed platform, but it cuts both ways: the same patch that fixes a CVE can occasionally surface a behavior change in a framework, an incompatibility with a third-party module, or break an assumption hardcoded somewhere in your app. Until now, the answer was “trust the rollout,” and for the apps that couldn’t, the fallback was to move to containers and take on managing the base image yourself.</p>
+
+<p><a href="https://azure.github.io/AppService/2026/05/06/platform-release-channel.html">Platform Release Channel</a> for App Service on Linux changes that. It introduces a simple per-app setting that lets you choose how quickly a new runtime patch reaches your workload. Point your dev and test apps at <strong>Latest</strong> to pick up new patches as soon as they ship and validate early; leave production on the default <strong>Standard</strong> channel for the balance most apps want; or move sensitive workloads to <strong>Extended</strong> to stay one release behind and buy extra validation time. Same managed runtimes, same automatic patching, now with a control plane that fits how real teams ship.</p>
+
+<h2 id="improvements-to-az-cli-investing-in-the-azure-cli-for-the-agent-era">Improvements to AZ CLI: Investing in the Azure CLI for the agent era</h2>
+
+<p>AI agents are increasingly using the Azure CLI as a primary entry point for managing Azure resources and orchestrating cloud workflows. To make sure agents (and the developers building them) get what they need, we’ve been investing heavily in the App Service CLI experience across both <code class="language-plaintext highlighter-rouge">az webapp</code> and <code class="language-plaintext highlighter-rouge">az appservice</code>. The goal: clearer signals, richer data, and more actionable output so both humans and agents can succeed on the first try.</p>
+
+<p>The first few waves of those improvements has already shipped. <a href="https://azure.github.io/AppService/2026/06/01/azcli-enrichederrors.html">Enriched deployment errors</a> are a new opt-in switch (<code class="language-plaintext highlighter-rouge">--enriched-errors true</code>) on <code class="language-plaintext highlighter-rouge">az webapp deploy</code> for App Service on Linux that turn opaque deployment failures into structured, actionable diagnostics (including an error code, deployment context, the raw error, suggested fixes, and even a ready-to-paste GitHub Copilot prompt) directly in your CLI output. We’ve also revamped <code class="language-plaintext highlighter-rouge">az webapp list-runtimes</code>, replacing the old flat list with a structured table that includes OS, runtime, version, support lifecycle status, and end-of-life dates, plus new <code class="language-plaintext highlighter-rouge">--runtime</code> and <code class="language-plaintext highlighter-rouge">--support</code> filters so you (or your agent) can quickly answer questions like “which of my runtimes are nearing EOL?” or “what supported Python versions can I deploy on Linux today?”</p>
+
+<p>Alongside these features, we’ve also burned through a significant chunk of our CLI backlog over the past few releases, so there are plenty of fixes and quality-of-life improvements waiting for you in the latest version. Make sure you, your scripts, and CI pipelines are on the latest CLI version to see all of these updates. This is just the start; more agent-focused CLI investments are on the way.</p>
+
+<h2 id="platform-improvements">Platform Improvements</h2>
+
+<p>The same “make the platform easier to live with” thread runs through this other set of recently shipped features. None of them are headline features on their own, but together they take real friction out of the everyday App Service experience:</p>
+
+<p><strong>A faster Python deployment pipeline.</strong> We profiled the remote build path end-to-end and rebuilt the slow parts: Zstandard now replaces gzip for build artifacts (compression ~6x faster, decompression ~2.6x faster, which also speeds up cold starts), <a href="https://github.com/astral-sh/uv">uv</a> replaces <code class="language-plaintext highlighter-rouge">pip</code> as the primary installer when compatible (with automatic fallback to <code class="language-plaintext highlighter-rouge">pip</code>), and a redundant staging copy was removed entirely. Net result: roughly <strong>30% faster Python deployments</strong> on App Service for Linux, with the biggest wins on AI/ML apps that pull in large dependency trees. See <a href="https://azure.github.io/AppService/2026/05/18/platform-improvements-for-python-ai-apps-on-azure-app-service.html">Platform Improvements for Python AI Apps on Azure App Service</a> for the full breakdown.</p>
+
+<p><strong>FastAPI just works.</strong> Deploying a FastAPI app no longer requires a custom startup command. App Service now scans common entry-point files (<code class="language-plaintext highlighter-rouge">main.py</code>, <code class="language-plaintext highlighter-rouge">app.py</code>, <code class="language-plaintext highlighter-rouge">api.py</code>, etc.), detects the FastAPI import, and starts the app with the right Gunicorn/Uvicorn worker automatically. Enabled today for Python 3.14+, with more versions on the way. Details in <a href="https://azure.github.io/AppService/2026/05/14/fastapi-improvements.html">Simplifying FastAPI Deployments on Azure App Service for Linux</a>.</p>
+
+<p><strong>Deployments that survive a config change.</strong> With <a href="https://azure.github.io/AppService/2026/05/07/kudu-deferred-recycle.html">Deferred Kudu Recycle</a>, updating a non-critical app setting or connection string while an async deployment is in flight no longer interrupts it. Kudu defers the recycle for up to 40 minutes so the in-progress deployment can finish, while deployment-critical settings (Kudu/Oryx/SCM prefixes, <code class="language-plaintext highlighter-rouge">WEBSITE_RUN_FROM_PACKAGE</code>, and friends) still recycle immediately. You can also mark your own settings as deployment-critical with <code class="language-plaintext highlighter-rouge">WEBSITE_DEPLOYMENT_CRITICAL_APPSETTINGS</code>.</p>
+
+<p><strong>Better SSH ergonomics for Python apps.</strong> A set of <a href="https://techcommunity.microsoft.com/blog/appsonazureblog/new-ssh-helper-aliases-for-python-apps-on-azure-app-service-for-linux/4520111">new SSH helper aliases for Python apps on Linux</a> makes the in-container experience friendlier for diagnostics: shortcuts for activating the virtual environment, jumping to common app paths, and inspecting the running process, so you spend less time remembering paths and more time debugging.</p>
+
+<p><strong>Site Status: know what your app is actually doing.</strong> When a site won’t start or is behaving oddly, the new <a href="https://techcommunity.microsoft.com/blog/appsonazureblog/understand-what%E2%80%99s-happening-with-your-app-service-for-linux-website-using-site-s/4524676">Site Status</a> experience in the portal surfaces the platform-level lifecycle state (Starting / Started / Stopping / Stopped / Updating / Blocked) along with the last known error and per-instance detail. From the same view you can take repair actions like restarting the site or replacing the underlying instance, without leaving the blade.</p>
+
+<h3 id="more-details">More details</h3>
+
+<p>For deeper dives on each of the above, see:</p>
+
+<ul>
+  <li>Performance and reliability improvements for Python deployment pipeline
+    <ul>
+      <li><a href="https://azure.github.io/AppService/2026/05/18/platform-improvements-for-python-ai-apps-on-azure-app-service.html">Platform Improvements for Python AI Apps on Azure App Service - Azure App Service</a></li>
+    </ul>
+  </li>
+  <li>Simplifying FastAPI Deployments on Azure App Service for Linux
+    <ul>
+      <li><a href="https://azure.github.io/AppService/2026/05/14/fastapi-improvements.html">Simplifying FastAPI Deployments on Azure App Service for Linux - Azure App Service</a></li>
+    </ul>
+  </li>
+  <li>Deferred Kudu Recycle
+    <ul>
+      <li><a href="https://azure.github.io/AppService/2026/05/07/kudu-deferred-recycle.html">Improving Deployment Resiliency on Azure App Service for Linux with Deferred Kudu Recycle - Azure App Service</a></li>
+    </ul>
+  </li>
+  <li>New SSH Helper aliases
+    <ul>
+      <li>
+        <table>
+          <tbody>
+            <tr>
+              <td>[New SSH helper aliases for Python apps on Azure App Service for Linux</td>
+              <td>Microsoft Community Hub](https://techcommunity.microsoft.com/blog/appsonazureblog/new-ssh-helper-aliases-for-python-apps-on-azure-app-service-for-linux/4520111)</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li>Site Status Indicator
+    <ul>
+      <li>
+        <table>
+          <tbody>
+            <tr>
+              <td>[Understand What’s Happening with Your App Service for Linux Website Using Site Status</td>
+              <td>Microsoft Community Hub](https://techcommunity.microsoft.com/blog/appsonazureblog/understand-what%E2%80%99s-happening-with-your-app-service-for-linux-website-using-site-s/4524676)</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="wrapping-up">Wrapping up</h2>
+
+<p>Build 2026 is a big moment for App Service, but the through-line is the same one we’ve been pulling on all year: take a managed platform you already trust, and keep making it faster, more flexible, and easier to live with as the way you build apps changes. Easy AI brings agents into the picture without forcing a rewrite, Isolated v4 and Managed Instance push the boundaries of what fully-managed isolation can look like, and the platform and CLI work make the everyday parts of running an app on App Service a little less painful.</p>
+
+<p>As always, we want to hear from you. Try out the new features, give us feedback, and let us know what you want to see next. We’re committed to making Azure App Service the best place to run your web apps in the agent era and beyond, and your input is critical to making that happen. Thanks for being part of the journey!</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2026-06-08T00:00:00+00:00">June 08, 2026</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=App+Service+Build+2026+Updates%20https%3A%2F%2Fazure.github.io%2FAppService%2F2026%2F06%2F08%2FAppService-Build2026.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2026%2F06%2F08%2FAppService-Build2026.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2026%2F06%2F08%2FAppService-Build2026.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2026/06/01/sitestatus.html" class="pagination--pager" title="Understand What’s Happening with Your App Service for Linux Website Using Site Status
+">Previous</a>
+    
+    
+      <a href="/AppService/2026/06/10/azcli-startuplogs.html" class="pagination--pager" title="Debug App Startup Faster on Azure App Service for Linux with Startup Logs
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2026/06/12/kudu-logs.html" rel="permalink">A Better Way to View Logs in Kudu for Azure App Service on Linux
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • June 12, 2026
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Logs are often the fastest way to understand what is happening inside your application. Whether you are investigating startup behavior, runtime errors, faile...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2026/06/10/azcli-startuplogs.html" rel="permalink">Debug App Startup Faster on Azure App Service for Linux with Startup Logs
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • June 10, 2026
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">When an app fails to start on Azure App Service for Linux, one of the first things you need is visibility into what happened during startup. This can include...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2026/06/01/sitestatus.html" rel="permalink">Understand What’s Happening with Your App Service for Linux Website Using Site Status
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • June 1, 2026
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">When your website is not starting or behaving unexpectedly, it can be difficult to quickly understand what state the application is in and what might be caus...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2026/06/01/azcli-enrichederrors.html" rel="permalink">Better Deployment Errors in az webapp deploy
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • June 1, 2026
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Deployment failures can be difficult to interpret, especially when the error returned by the deployment API does not clearly explain what went wrong or what ...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2026 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,977 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en_US"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://azure.github.io/AppService/feed.xml" rel="self" type="application/atom+xml" /><link href="https://azure.github.io/AppService/" rel="alternate" type="text/html" hreflang="en_US" /><updated>2026-07-02T00:39:20+00:00</updated><id>https://azure.github.io/AppService/feed.xml</id><title type="html">Azure App Service</title><subtitle>Announcements, updates, and release notes from the Azure App Service product team.</subtitle><author><name>Azure App Service</name></author><entry><title type="html">A Better Way to View Logs in Kudu for Azure App Service on Linux</title><link href="https://azure.github.io/AppService/2026/06/12/kudu-logs.html" rel="alternate" type="text/html" title="A Better Way to View Logs in Kudu for Azure App Service on Linux" /><published>2026-06-12T00:00:00+00:00</published><updated>2026-06-12T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2026/06/12/kudu-logs</id><content type="html" xml:base="https://azure.github.io/AppService/2026/06/12/kudu-logs.html"><![CDATA[<p>Logs are often the fastest way to understand what is happening inside your application. Whether you are investigating startup behavior, runtime errors, failed requests, dependency issues, or unexpected application behavior, having the right log view can make troubleshooting much easier.</p>
+
+<p>To make this easier, we have added a new <strong>Log stream</strong> page in Kudu for Azure App Service on Linux, available under the <strong>Logs</strong> dropdown. This experience gives you a single place to stream, browse, search, and filter logs so you can understand what is happening in your app faster.</p>
+
+<hr />
+
+<h3 id="opening-the-logs-page">Opening the Logs page</h3>
+
+<p>You can open Kudu from the Azure portal:</p>
+
+<ol>
+  <li>Go to your <strong>App Service</strong>.</li>
+  <li>Select <strong>Advanced Tools</strong>.</li>
+  <li>Click <strong>Go</strong>.</li>
+</ol>
+
+<p>You can also open Kudu directly by going to:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://&lt;app-name&gt;.scm.azurewebsites.net
+</code></pre></div></div>
+
+<p>From there, open the <strong>Logs</strong> page.</p>
+
+<hr />
+
+<h3 id="view-live-logs-across-your-app-and-platform">View live logs across your app and platform</h3>
+
+<p>The Logs page lets you view logs as they are being written, with filters for <strong>timeframe</strong>, <strong>instance</strong>, <strong>container</strong>, <strong>log type</strong>, and <strong>level</strong>.</p>
+
+<p>This helps when you want to focus on a specific instance, look only at errors, or separate application logs from platform events.</p>
+
+<p><img src="/AppService/media/2026/06/platform-logs.png" alt="kudulogs" /></p>
+
+<p>For example, you can use platform logs to understand container lifecycle events, restarts, startup behavior, warmup probe activity, and other platform-side events related to your app.</p>
+
+<hr />
+
+<h3 id="quickly-find-the-log-entries-that-matter">Quickly find the log entries that matter</h3>
+
+<p>You can use keyword search to narrow down the log stream or historical logs. This is useful when you are looking for a specific error message, request path, exception, dependency failure, timeout, or any application-specific keyword.</p>
+
+<p><img src="/AppService/media/2026/06/keyword-search.png" alt="kudulogs" /></p>
+
+<p>Instead of scanning through hundreds of entries, you can search for the terms that are relevant to the issue you are investigating.</p>
+
+<hr />
+
+<h3 id="investigate-issues-within-a-specific-timeframe">Investigate issues within a specific timeframe</h3>
+
+<p>The Log stream page also supports viewing logs for a selected time range. This is useful when you know when an issue occurred and want to inspect both application and platform activity around that time.</p>
+
+<p>For example, you can filter to a specific timeframe, switch to <strong>Application</strong> logs, and check what your app was doing when the issue happened.</p>
+
+<p><img src="/AppService/media/2026/06/timestamp-search.png" alt="kudulogs" /></p>
+
+<p>This can help you troubleshoot scenarios such as failed requests, application exceptions, slow startup, container restarts, dependency issues, or configuration problems.</p>
+
+<hr />
+
+<h3 id="summary">Summary</h3>
+
+<p>The new Log stream page in Kudu makes it easier to work with logs for Azure App Service on Linux. With live streaming, keyword search, historical views, and filters for application and platform logs, you can quickly narrow down the information you need and troubleshoot issues more efficiently.</p>
+
+<p>We are continuing to improve the App Service Linux experience to make diagnostics simpler and more useful for day-to-day development and operations.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[Logs are often the fastest way to understand what is happening inside your application. Whether you are investigating startup behavior, runtime errors, failed requests, dependency issues, or unexpected application behavior, having the right log view can make troubleshooting much easier.]]></summary></entry><entry><title type="html">Debug App Startup Faster on Azure App Service for Linux with Startup Logs</title><link href="https://azure.github.io/AppService/2026/06/10/azcli-startuplogs.html" rel="alternate" type="text/html" title="Debug App Startup Faster on Azure App Service for Linux with Startup Logs" /><published>2026-06-10T00:00:00+00:00</published><updated>2026-06-10T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2026/06/10/azcli-startuplogs</id><content type="html" xml:base="https://azure.github.io/AppService/2026/06/10/azcli-startuplogs.html"><![CDATA[<p>When an app fails to start on Azure App Service for Linux, one of the first things you need is visibility into what happened during startup. This can include container initialization, runtime setup, startup command execution, application output, and warmup probe results.</p>
+
+<p>To make this easier, we have added new Azure CLI commands that let you list and view App Service startup logs directly from the command line.</p>
+
+<h2 id="list-available-startup-logs">List available startup logs</h2>
+
+<p>You can list startup logs for an app using:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp log startup list <span class="se">\</span>
+  <span class="nt">--name</span> &lt;app-name&gt; <span class="se">\</span>
+  <span class="nt">--resource-group</span> &lt;resource-group&gt;
+</code></pre></div></div>
+
+<p>The output shows whether the startup attempt succeeded or failed, along with the instance name and log file size. This helps you quickly identify the right log file, especially when there are multiple startup attempts across different instances.</p>
+
+<p><img src="/AppService/media/2026/06/log-list.png" alt="startuplog" /></p>
+
+<h2 id="show-startup-log-content">Show startup log content</h2>
+
+<p>To view the latest startup log, run:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp log startup show <span class="se">\</span>
+  <span class="nt">--name</span> &lt;app-name&gt; <span class="se">\</span>
+  <span class="nt">--resource-group</span> &lt;resource-group&gt;
+</code></pre></div></div>
+
+<p>You can also view a specific log file by name:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp log startup show <span class="se">\</span>
+  <span class="nt">--name</span> &lt;app-name&gt; <span class="se">\</span>
+  <span class="nt">--resource-group</span> &lt;resource-group&gt; <span class="se">\</span>
+  <span class="nt">--log-file-name</span> &lt;log-file-name&gt;
+</code></pre></div></div>
+
+<p>The log content includes startup events from the platform and the application. For example, you can see the container image being pulled, the startup script being generated, the app command being run, and the warmup probe result.</p>
+
+<p>In a successful startup, the log shows that the site startup probe succeeded and the site started successfully.</p>
+
+<p><img src="/AppService/media/2026/06/startup-succeeded.png" alt="startuplog" /></p>
+
+<h2 id="failure-logs-are-prioritized-by-default">Failure logs are prioritized by default</h2>
+
+<p>When you run <code class="language-plaintext highlighter-rouge">az webapp log startup show</code> without specifying a log file name, the command automatically prefers failure logs from the most recent date.</p>
+
+<p>This helps reduce the time spent looking for the right log when debugging startup failures. Instead of manually searching through multiple files, you can run one command and immediately see the most relevant failure details.</p>
+
+<p>For example, if the app fails because the worker process does not start within the allotted time, the log shows the timeout details and the platform actions taken during startup cancellation.</p>
+
+<p><img src="/AppService/media/2026/06/log-failure.png" alt="startuplog" /></p>
+
+<h2 id="better-hints-for-common-startup-failures">Better hints for common startup failures</h2>
+
+<p>The command also includes improved handling for common failure scenarios, including runtime startup failures and container startup timeouts.</p>
+
+<p>For example, if the app starts but does not respond on the expected port, the startup log may show application output such as:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>listening on 3000 (wrong port)
+</code></pre></div></div>
+
+<p>while the platform is expecting the app to respond on a different port. This makes it much easier to understand why the warmup probe failed.</p>
+
+<h2 id="slot-support">Slot support</h2>
+
+<p>The startup log commands also support deployment slots.</p>
+
+<p>To list startup logs for a slot:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp log startup list <span class="se">\</span>
+  <span class="nt">--name</span> &lt;app-name&gt; <span class="se">\</span>
+  <span class="nt">--resource-group</span> &lt;resource-group&gt; <span class="se">\</span>
+  <span class="nt">--slot</span> &lt;slot-name&gt;
+</code></pre></div></div>
+
+<p>To show startup logs for a slot:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp log startup show <span class="se">\</span>
+  <span class="nt">--name</span> &lt;app-name&gt; <span class="se">\</span>
+  <span class="nt">--resource-group</span> &lt;resource-group&gt; <span class="se">\</span>
+  <span class="nt">--slot</span> &lt;slot-name&gt;
+</code></pre></div></div>
+
+<p>This is useful when debugging slot-specific startup issues before swapping traffic to production.</p>
+
+<h2 id="summary">Summary</h2>
+
+<p>The new <code class="language-plaintext highlighter-rouge">az webapp log startup</code> commands make it easier to inspect startup behavior for Azure App Service for Linux apps directly from Azure CLI.</p>
+
+<p>These commands are currently in preview. Try them out the next time you need to understand why your App Service Linux app did or did not start successfully.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[When an app fails to start on Azure App Service for Linux, one of the first things you need is visibility into what happened during startup. This can include container initialization, runtime setup, startup command execution, application output, and warmup probe results.]]></summary></entry><entry><title type="html">App Service Build 2026 Updates</title><link href="https://azure.github.io/AppService/2026/06/08/AppService-Build2026.html" rel="alternate" type="text/html" title="App Service Build 2026 Updates" /><published>2026-06-08T00:00:00+00:00</published><updated>2026-06-08T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2026/06/08/AppService-Build2026</id><content type="html" xml:base="https://azure.github.io/AppService/2026/06/08/AppService-Build2026.html"><![CDATA[<p>Build 2026 is here, and Azure App Service is showing up with a packed lineup of updates. This post is your one-stop rollup of what’s new: a brand-new <a href="#app-service-easy-ai">Easy AI experience</a> that turns your web apps into agent-ready endpoints, the general availability of <a href="#isolated-v4">Isolated v4 on ASEv3</a>, continued progress on <a href="#managed-instance-on-azure-app-service">App Service Managed Instance</a>, and a wave of <a href="#platform-improvements">platform</a> and <a href="#improvements-to-az-cli-investing-in-the-azure-cli-for-the-agent-era">CLI improvements</a> built for the agent era.</p>
+
+<p>It’s a clear signal of <a href="https://azure.github.io/AppService/2026/03/31/continued-investment.html">our continued investment</a> in App Service: the same managed platform you rely on, evolving to meet you where modern apps (and the agents that build and consume them) are headed. Read on for the highlights, with links to deeper dives on each announcement.</p>
+
+<h2 id="app-service-easy-ai">App Service Easy AI</h2>
+
+<p>We’re introducing Easy AI, a new umbrella of capabilities that make it simple to turn your existing App Service web apps into AI-ready, agent-native applications, with no rearchitecting required. The centerpiece of this first release is a brand-new AI (preview) blade in the Azure Portal, giving you a single place to enable AI capabilities directly on your web app.</p>
+
+<p>The first feature available under Easy AI is <a href="https://aka.ms/Build26/AppService-BuiltInMCP">Built-in MCP on App Service</a>. With Built-in MCP, you can turn your web app into a Model Context Protocol server with no code changes. Just provide an OpenAPI specification, and App Service automatically generates the tools and a ready-to-use endpoint that AI agents can call. From the MCP servers tab in the AI (preview) blade, you can create and manage your MCP server in a few clicks, and optionally register it in your <a href="https://learn.microsoft.com/azure/api-center/register-discover-mcp-server">Azure API Center</a> to catalog and govern it alongside the rest of your APIs and MCP servers. It’s the fastest way to give agents secure, structured access to the functionality your app already exposes.</p>
+
+<p>The AI (preview) blade also includes a new <a href="https://aka.ms/Build26/AppService-Agents">Agents tab</a>, giving you visibility into the AI agents hosted in your App Service. It surfaces key metrics (total agents, calls, tokens consumed, and error rate) drawn from your app’s telemetry in Application Insights, instrumented using OpenTelemetry with Generative AI semantic conventions. From here you can drill into the data in Application Insights to monitor agent behavior, performance, and cost over time.</p>
+
+<p>This is just the beginning. Built-in MCP and the Agents experience are the first in a series of Easy AI features we’re rolling out to make adding AI to your App Service web apps simple and easy, so you can spend less time on plumbing and more time building intelligent, agent-ready applications. To get started, open the AI (preview) blade on your App Service web app today. Stay tuned, there’s much more to come.</p>
+
+<h2 id="isolated-v4">Isolated V4</h2>
+
+<p>We’re also excited to announce the general availability of <a href="https://aka.ms/AppService/Iv4docs">Isolated v4 (Iv4) on App Service Environment v3 (ASEv3)</a>. Iv4 brings the latest v4 hardware generation (the same next-generation compute that powers <a href="https://learn.microsoft.com/azure/app-service/app-service-configure-premium-v4-tier">Premium v4</a>) to customers running dedicated, single-tenant workloads on ASEv3, delivering significantly better performance than Isolated v2 without compromising the isolation, compliance, and data residency guarantees that mission-critical apps depend on. Iv4 is now generally available across a limited set of Azure regions, with additional regions rolling out over time based on customer demand and capacity. See the docs for the <a href="https://aka.ms/AppService/Iv4regions">full list</a>. To get started, create a new ASEv3 with an Iv4 plan or scale an existing one; see the <a href="https://azure.microsoft.com/pricing/details/app-service/windows/">App Service pricing page</a> for full SKU and pricing details. Due to significant demand, available capacity may be limited even in supported regions at this time. If you encounter issues, please open a support ticket.</p>
+
+<p>Additionally, Iv4 on ASEv3 also lays the foundation for <a href="#managed-instance-on-azure-app-service">App Service Managed Instance</a> on dedicated infrastructure, unlocking advanced isolation scenarios for compliance and data-residency-sensitive workloads.</p>
+
+<h2 id="managed-instance-on-azure-app-service">Managed Instance on Azure App Service</h2>
+
+<p>Managed Instance on App Service (Preview) continues to evolve with key improvements, including faster restarts (~30s), no restarts for registry and storage adapter changes, and integrated diagnostics tooling. The service is expanding to new regions (e.g., Central and South India) with broader rollout underway, alongside deeper integration with the GitHub Copilot App Mod tool, driving continued customer and partner engagement as we drive towards general availability.</p>
+
+<p><a href="https://learn.microsoft.com/en-us/azure/app-service/overview-managed-instance">Managed Instance on Azure App Service</a> will soon be extended to App Service Environments (ASE) using the new Iv4 SKU, providing a more modern, scalable, and optimized foundation. This enables customers to simplify and accelerate deployment of Windows workloads, especially web applications requiring custom dependencies or deeper OS-level control, while benefiting from ASE’s single-tenant isolation, enhanced security and compliance boundaries, fine-grained network control, and predictable performance at scale. Overall, this offers a seamless path to modernize existing applications with minimal changes while aligning with Azure App Service capabilities and best practices.</p>
+
+<p>Recent updates to the <a href="https://github.com/Azure/App-Service-Migration-Assistant/wiki/PowerShell-Scripts">Azure App Service migration PowerShell</a> scripts extend support for Managed Instance on App Service, enabling a more seamless lift &amp; improve experience for applications with OS-level dependencies. By adding the <code class="language-plaintext highlighter-rouge">-UseManagedInstance</code> switch during invocation, customers can now automatically generate migration settings tailored for Managed Instance, including configuration for the App Service plan, adapters, and install scripts. This simplifies onboarding by capturing all required parameters in the result settings file, reducing manual setup for complex workloads that rely on registry, COM components, or custom dependencies.</p>
+
+<p>Check out this <a href="https://techcommunity.microsoft.com/blog/AppsonAzureBlog/agentic-iis-migration-to-managed-instance-on-azure-app-service/4508969">Agentic IIS Migration to Managed Instance on Azure App Service</a>, which showcases an AI-guided approach to migrating legacy IIS applications using a multi-agent workflow powered by MCP. It simplifies discovery, assessment, and deployment for complex Windows workloads with OS-level dependencies. This is an early pilot, and customers should adapt and extend the approach based on their specific application requirements and environments.</p>
+
+<h2 id="platform-release-channel">Platform Release Channel</h2>
+
+<p>Keeping runtimes evergreen is one of the core promises of a managed platform, but it cuts both ways: the same patch that fixes a CVE can occasionally surface a behavior change in a framework, an incompatibility with a third-party module, or break an assumption hardcoded somewhere in your app. Until now, the answer was “trust the rollout,” and for the apps that couldn’t, the fallback was to move to containers and take on managing the base image yourself.</p>
+
+<p><a href="https://azure.github.io/AppService/2026/05/06/platform-release-channel.html">Platform Release Channel</a> for App Service on Linux changes that. It introduces a simple per-app setting that lets you choose how quickly a new runtime patch reaches your workload. Point your dev and test apps at <strong>Latest</strong> to pick up new patches as soon as they ship and validate early; leave production on the default <strong>Standard</strong> channel for the balance most apps want; or move sensitive workloads to <strong>Extended</strong> to stay one release behind and buy extra validation time. Same managed runtimes, same automatic patching, now with a control plane that fits how real teams ship.</p>
+
+<h2 id="improvements-to-az-cli-investing-in-the-azure-cli-for-the-agent-era">Improvements to AZ CLI: Investing in the Azure CLI for the agent era</h2>
+
+<p>AI agents are increasingly using the Azure CLI as a primary entry point for managing Azure resources and orchestrating cloud workflows. To make sure agents (and the developers building them) get what they need, we’ve been investing heavily in the App Service CLI experience across both <code class="language-plaintext highlighter-rouge">az webapp</code> and <code class="language-plaintext highlighter-rouge">az appservice</code>. The goal: clearer signals, richer data, and more actionable output so both humans and agents can succeed on the first try.</p>
+
+<p>The first few waves of those improvements has already shipped. <a href="https://azure.github.io/AppService/2026/06/01/azcli-enrichederrors.html">Enriched deployment errors</a> are a new opt-in switch (<code class="language-plaintext highlighter-rouge">--enriched-errors true</code>) on <code class="language-plaintext highlighter-rouge">az webapp deploy</code> for App Service on Linux that turn opaque deployment failures into structured, actionable diagnostics (including an error code, deployment context, the raw error, suggested fixes, and even a ready-to-paste GitHub Copilot prompt) directly in your CLI output. We’ve also revamped <code class="language-plaintext highlighter-rouge">az webapp list-runtimes</code>, replacing the old flat list with a structured table that includes OS, runtime, version, support lifecycle status, and end-of-life dates, plus new <code class="language-plaintext highlighter-rouge">--runtime</code> and <code class="language-plaintext highlighter-rouge">--support</code> filters so you (or your agent) can quickly answer questions like “which of my runtimes are nearing EOL?” or “what supported Python versions can I deploy on Linux today?”</p>
+
+<p>Alongside these features, we’ve also burned through a significant chunk of our CLI backlog over the past few releases, so there are plenty of fixes and quality-of-life improvements waiting for you in the latest version. Make sure you, your scripts, and CI pipelines are on the latest CLI version to see all of these updates. This is just the start; more agent-focused CLI investments are on the way.</p>
+
+<h2 id="platform-improvements">Platform Improvements</h2>
+
+<p>The same “make the platform easier to live with” thread runs through this other set of recently shipped features. None of them are headline features on their own, but together they take real friction out of the everyday App Service experience:</p>
+
+<p><strong>A faster Python deployment pipeline.</strong> We profiled the remote build path end-to-end and rebuilt the slow parts: Zstandard now replaces gzip for build artifacts (compression ~6x faster, decompression ~2.6x faster, which also speeds up cold starts), <a href="https://github.com/astral-sh/uv">uv</a> replaces <code class="language-plaintext highlighter-rouge">pip</code> as the primary installer when compatible (with automatic fallback to <code class="language-plaintext highlighter-rouge">pip</code>), and a redundant staging copy was removed entirely. Net result: roughly <strong>30% faster Python deployments</strong> on App Service for Linux, with the biggest wins on AI/ML apps that pull in large dependency trees. See <a href="https://azure.github.io/AppService/2026/05/18/platform-improvements-for-python-ai-apps-on-azure-app-service.html">Platform Improvements for Python AI Apps on Azure App Service</a> for the full breakdown.</p>
+
+<p><strong>FastAPI just works.</strong> Deploying a FastAPI app no longer requires a custom startup command. App Service now scans common entry-point files (<code class="language-plaintext highlighter-rouge">main.py</code>, <code class="language-plaintext highlighter-rouge">app.py</code>, <code class="language-plaintext highlighter-rouge">api.py</code>, etc.), detects the FastAPI import, and starts the app with the right Gunicorn/Uvicorn worker automatically. Enabled today for Python 3.14+, with more versions on the way. Details in <a href="https://azure.github.io/AppService/2026/05/14/fastapi-improvements.html">Simplifying FastAPI Deployments on Azure App Service for Linux</a>.</p>
+
+<p><strong>Deployments that survive a config change.</strong> With <a href="https://azure.github.io/AppService/2026/05/07/kudu-deferred-recycle.html">Deferred Kudu Recycle</a>, updating a non-critical app setting or connection string while an async deployment is in flight no longer interrupts it. Kudu defers the recycle for up to 40 minutes so the in-progress deployment can finish, while deployment-critical settings (Kudu/Oryx/SCM prefixes, <code class="language-plaintext highlighter-rouge">WEBSITE_RUN_FROM_PACKAGE</code>, and friends) still recycle immediately. You can also mark your own settings as deployment-critical with <code class="language-plaintext highlighter-rouge">WEBSITE_DEPLOYMENT_CRITICAL_APPSETTINGS</code>.</p>
+
+<p><strong>Better SSH ergonomics for Python apps.</strong> A set of <a href="https://techcommunity.microsoft.com/blog/appsonazureblog/new-ssh-helper-aliases-for-python-apps-on-azure-app-service-for-linux/4520111">new SSH helper aliases for Python apps on Linux</a> makes the in-container experience friendlier for diagnostics: shortcuts for activating the virtual environment, jumping to common app paths, and inspecting the running process, so you spend less time remembering paths and more time debugging.</p>
+
+<p><strong>Site Status: know what your app is actually doing.</strong> When a site won’t start or is behaving oddly, the new <a href="https://techcommunity.microsoft.com/blog/appsonazureblog/understand-what%E2%80%99s-happening-with-your-app-service-for-linux-website-using-site-s/4524676">Site Status</a> experience in the portal surfaces the platform-level lifecycle state (Starting / Started / Stopping / Stopped / Updating / Blocked) along with the last known error and per-instance detail. From the same view you can take repair actions like restarting the site or replacing the underlying instance, without leaving the blade.</p>
+
+<h3 id="more-details">More details</h3>
+
+<p>For deeper dives on each of the above, see:</p>
+
+<ul>
+  <li>Performance and reliability improvements for Python deployment pipeline
+    <ul>
+      <li><a href="https://azure.github.io/AppService/2026/05/18/platform-improvements-for-python-ai-apps-on-azure-app-service.html">Platform Improvements for Python AI Apps on Azure App Service - Azure App Service</a></li>
+    </ul>
+  </li>
+  <li>Simplifying FastAPI Deployments on Azure App Service for Linux
+    <ul>
+      <li><a href="https://azure.github.io/AppService/2026/05/14/fastapi-improvements.html">Simplifying FastAPI Deployments on Azure App Service for Linux - Azure App Service</a></li>
+    </ul>
+  </li>
+  <li>Deferred Kudu Recycle
+    <ul>
+      <li><a href="https://azure.github.io/AppService/2026/05/07/kudu-deferred-recycle.html">Improving Deployment Resiliency on Azure App Service for Linux with Deferred Kudu Recycle - Azure App Service</a></li>
+    </ul>
+  </li>
+  <li>New SSH Helper aliases
+    <ul>
+      <li>
+        <table>
+          <tbody>
+            <tr>
+              <td>[New SSH helper aliases for Python apps on Azure App Service for Linux</td>
+              <td>Microsoft Community Hub](https://techcommunity.microsoft.com/blog/appsonazureblog/new-ssh-helper-aliases-for-python-apps-on-azure-app-service-for-linux/4520111)</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li>Site Status Indicator
+    <ul>
+      <li>
+        <table>
+          <tbody>
+            <tr>
+              <td>[Understand What’s Happening with Your App Service for Linux Website Using Site Status</td>
+              <td>Microsoft Community Hub](https://techcommunity.microsoft.com/blog/appsonazureblog/understand-what%E2%80%99s-happening-with-your-app-service-for-linux-website-using-site-s/4524676)</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="wrapping-up">Wrapping up</h2>
+
+<p>Build 2026 is a big moment for App Service, but the through-line is the same one we’ve been pulling on all year: take a managed platform you already trust, and keep making it faster, more flexible, and easier to live with as the way you build apps changes. Easy AI brings agents into the picture without forcing a rewrite, Isolated v4 and Managed Instance push the boundaries of what fully-managed isolation can look like, and the platform and CLI work make the everyday parts of running an app on App Service a little less painful.</p>
+
+<p>As always, we want to hear from you. Try out the new features, give us feedback, and let us know what you want to see next. We’re committed to making Azure App Service the best place to run your web apps in the agent era and beyond, and your input is critical to making that happen. Thanks for being part of the journey!</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[Build 2026 is here, and Azure App Service is showing up with a packed lineup of updates. This post is your one-stop rollup of what’s new: a brand-new Easy AI experience that turns your web apps into agent-ready endpoints, the general availability of Isolated v4 on ASEv3, continued progress on App Service Managed Instance, and a wave of platform and CLI improvements built for the agent era.]]></summary></entry><entry><title type="html">Better Deployment Errors in az webapp deploy</title><link href="https://azure.github.io/AppService/2026/06/01/azcli-enrichederrors.html" rel="alternate" type="text/html" title="Better Deployment Errors in az webapp deploy" /><published>2026-06-01T00:00:00+00:00</published><updated>2026-06-01T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2026/06/01/azcli-enrichederrors</id><content type="html" xml:base="https://azure.github.io/AppService/2026/06/01/azcli-enrichederrors.html"><![CDATA[<p>Deployment failures can be difficult to interpret, especially when the error returned by the deployment API does not clearly explain what went wrong or what to do next.</p>
+
+<p>To make this easier, we have added a new switch to <code class="language-plaintext highlighter-rouge">az webapp deploy</code> for App Service for Linux:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">--enriched-errors</span> <span class="nb">true</span>
+</code></pre></div></div>
+
+<p>When enabled, deployment failures show context-enriched diagnostics directly in the CLI output. This includes an error code, deployment context, the raw error, suggested fixes, and a Copilot-ready prompt that you can use for additional guidance.</p>
+
+<p>By default, this option is disabled.</p>
+
+<h2 id="how-to-use-it">How to use it</h2>
+
+<p>Add <code class="language-plaintext highlighter-rouge">--enriched-errors true</code> to your deployment command:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp deploy <span class="se">\</span>
+  <span class="nt">--resource-group</span> &lt;resource-group-name&gt; <span class="se">\</span>
+  <span class="nt">--name</span> &lt;app-name&gt; <span class="se">\</span>
+  <span class="nt">--src-path</span> &lt;path-to-package&gt; <span class="se">\</span>
+  <span class="nt">--enriched-errors</span> <span class="nb">true</span>
+</code></pre></div></div>
+
+<h2 id="what-you-get">What you get</h2>
+
+<p>With enriched errors enabled, failed deployments can include details such as:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error Code  : ArtifactStackMismatch
+Stage       : Deployment
+Runtime     : DOTNETCORE|9.0
+Deploy Type : WarDeploy
+Kudu Status : 400
+
+Raw Error:
+Artifact type = 'War' cannot be deployed to stack = 'DOTNETCORE'.
+
+Suggested Fixes:
+- Ensure the artifact type matches the app's runtime stack
+- Check the current linuxFxVersion
+- Update the runtime stack if needed
+</code></pre></div></div>
+
+<p>This makes it easier to understand whether the failure is caused by an artifact/runtime mismatch, an invalid deployment path, missing required parameters, or a configuration conflict such as <code class="language-plaintext highlighter-rouge">WEBSITE_RUN_FROM_PACKAGE</code>.</p>
+
+<p>The screenshots below show a couple of more examples of enriched deployment failures.</p>
+
+<p><img src="/AppService/media/2026/06/cli-enriched-errors-1.png" alt="enriched-errors-ex1" /></p>
+
+<p><img src="/AppService/media/2026/06/cli-enriched-errors-2.png" alt="enriched-errors-ex2" /></p>
+
+<h2 id="use-with-github-copilot">Use with GitHub Copilot</h2>
+
+<p>The enriched output also includes a prompt that you can paste into GitHub Copilot along with the full error details:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Why did my Linux App Service deployment fail and how do I fix it?
+</code></pre></div></div>
+
+<p>This can help you get more specific guidance based on your deployment configuration and the failure details.</p>
+
+<h2 id="summary">Summary</h2>
+
+<p>The new <code class="language-plaintext highlighter-rouge">--enriched-errors</code> switch gives you clearer and more actionable deployment failure information directly in the Azure CLI.</p>
+
+<p>Try it out the next time you are deploying to Azure App Service for Linux.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[Deployment failures can be difficult to interpret, especially when the error returned by the deployment API does not clearly explain what went wrong or what to do next.]]></summary></entry><entry><title type="html">Understand What’s Happening with Your App Service for Linux Website Using Site Status</title><link href="https://azure.github.io/AppService/2026/06/01/sitestatus.html" rel="alternate" type="text/html" title="Understand What’s Happening with Your App Service for Linux Website Using Site Status" /><published>2026-06-01T00:00:00+00:00</published><updated>2026-06-01T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2026/06/01/sitestatus</id><content type="html" xml:base="https://azure.github.io/AppService/2026/06/01/sitestatus.html"><![CDATA[<p>When your website is not starting or behaving unexpectedly, it can be difficult to quickly understand what state the application is in and what might be causing the issue.</p>
+
+<p>To make this easier, Azure App Service for Linux now includes <strong>Site Status</strong>. Site Status provides runtime information for your website, including the current state of the app and detailed error information when issues are detected.</p>
+
+<h2 id="what-site-status-shows">What Site Status shows</h2>
+
+<p>Site Status gives you a view into the current runtime state of your App Service for Linux website.</p>
+
+<p>You can see the site runtime status from the web app’s <strong>Properties</strong> experience. If the platform detects an issue with the site, the runtime status will show <strong>Issues Detected</strong>.</p>
+
+<p><img src="/AppService/media/2026/06/sitestatus-1.jpg" alt="SiteStatus" /></p>
+
+<p>Selecting <strong>Issues Detected</strong> opens a detailed view where you can see the current status of the site, the last known error, and additional troubleshooting details. If your app is scaled out across multiple instances, Site Status shows this information for each instance hosting your app.</p>
+
+<p>This makes it easier to answer questions such as:</p>
+
+<ul>
+  <li>Is my website still starting?</li>
+  <li>Did my website start successfully?</li>
+  <li>Is the site stopped or blocked?</li>
+  <li>Is the app recycling to apply changes?</li>
+  <li>What was the last known runtime error?</li>
+  <li>Is this likely a transient issue, or does the error point to a configuration problem?</li>
+</ul>
+
+<h2 id="site-status-values">Site Status values</h2>
+
+<p>Site Status reports one of the following platform-defined runtime states for your website:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Status</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Starting</strong></td>
+      <td>The site is initializing the container and all necessary components.</td>
+    </tr>
+    <tr>
+      <td><strong>Started</strong></td>
+      <td>The site successfully initialized all necessary components and is running.</td>
+    </tr>
+    <tr>
+      <td><strong>Stopping</strong></td>
+      <td>The container and site components are being torn down.</td>
+    </tr>
+    <tr>
+      <td><strong>Stopped</strong></td>
+      <td>The site is no longer running and will not receive requests.</td>
+    </tr>
+    <tr>
+      <td><strong>Updating</strong></td>
+      <td>The site is recycling, either overlapped or non-overlapped, to apply the provided changes.</td>
+    </tr>
+    <tr>
+      <td><strong>Blocked</strong></td>
+      <td>The site attempted to start multiple times and is temporarily blocked from another attempt to reduce instance load.</td>
+    </tr>
+    <tr>
+      <td><strong>Unknown</strong></td>
+      <td>A platform-side issue is preventing status assessment.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>These statuses provide a quick summary of the current or last known runtime state of your website.</p>
+
+<h2 id="view-detailed-issue-information">View detailed issue information</h2>
+
+<p>When Site Status detects an issue, you can select <strong>Issues Detected</strong> to view more detailed runtime information.</p>
+
+<p>The details page shows information such as:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>What it tells you</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Status</strong></td>
+      <td>The current runtime state of the website.</td>
+    </tr>
+    <tr>
+      <td><strong>Last error</strong></td>
+      <td>A short error category or failure type.</td>
+    </tr>
+    <tr>
+      <td><strong>Last error info</strong></td>
+      <td>Additional troubleshooting details about the issue.</td>
+    </tr>
+    <tr>
+      <td><strong>Last error occurrence</strong></td>
+      <td>When the error was last observed.</td>
+    </tr>
+    <tr>
+      <td><strong>Actions</strong></td>
+      <td>Available repair actions.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><img src="/AppService/media/2026/06/sitestatus-2.jpg" alt="SiteStatus" /></p>
+
+<p>For example, the screenshot above show a site that failed because the configured storage could not be mounted. The message points you toward the likely root cause. In this case, the issue is probably not with the site process itself. Restarting the app or replacing the instance may not resolve the problem. You would likely need to review the storage account, file share, firewall, networking, private endpoint, or authentication configuration.</p>
+
+<h2 id="repair-actions">Repair actions</h2>
+
+<p>From the issue details view, you can select <strong>Repair</strong> to take an action for the affected instance.</p>
+
+<p>Available repair actions include:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Action</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Restart</strong></td>
+      <td>Restarts the site on the selected instance.</td>
+    </tr>
+    <tr>
+      <td><strong>Replace instance</strong></td>
+      <td>Moves the site away from the current instance and replaces it with another instance.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>These actions can be useful when your website has run into a transient runtime issue, or when the underlying instance is in a bad state.</p>
+
+<p>However, repair actions are not a substitute for fixing configuration issues. For example, if the site cannot access a configured storage account because of network or authentication settings, restarting or replacing the instance is unlikely to fix the issue. The underlying configuration must be corrected first.</p>
+
+<h2 id="site-status-vs-health-check">Site Status vs. Health Check</h2>
+
+<p>Site Status and Health Check are both useful for understanding and improving the reliability of App Service for Linux websites, but they serve different purposes.</p>
+
+<p><strong>Site Status</strong> helps you understand the current runtime state of your website. It provides platform-defined status values and detailed error information to help you troubleshoot startup, runtime, and configuration-related issues.</p>
+
+<p><strong>Health Check</strong> helps determine whether an instance should continue receiving traffic. It pings a customer-configured endpoint and uses the HTTP response to identify unhealthy instances, redirect traffic, and replace instances when needed.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Health Check</th>
+      <th>Site Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Pings a customer-configured endpoint.</td>
+      <td>Uses platform-side runtime checks.</td>
+    </tr>
+    <tr>
+      <td>Reports the HTTP status returned by your configured endpoint.</td>
+      <td>Reports a platform-defined runtime status for the site.</td>
+    </tr>
+    <tr>
+      <td>Helps determine whether an instance should receive traffic.</td>
+      <td>Helps explain what is happening with the website at runtime.</td>
+    </tr>
+    <tr>
+      <td>Requires a health check path to be configured.</td>
+      <td>Does not require a customer-configured health endpoint.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="summary">Summary</h2>
+
+<p>Site Status gives you a clearer view into the runtime state of your App Service for Linux website. By surfacing platform-defined site status values and detailed runtime information, it helps you understand what is happening with your application as it starts, runs, updates, or stops.</p>
+
+<p>We are continuously improving App Service for Linux to provide better visibility, more actionable information, and a smoother experience for running your applications in Azure.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[When your website is not starting or behaving unexpectedly, it can be difficult to quickly understand what state the application is in and what might be causing the issue.]]></summary></entry><entry><title type="html">Platform Improvements for Python AI Apps on Azure App Service</title><link href="https://azure.github.io/AppService/2026/05/18/platform-improvements-for-python-ai-apps-on-azure-app-service.html" rel="alternate" type="text/html" title="Platform Improvements for Python AI Apps on Azure App Service" /><published>2026-05-18T00:00:00+00:00</published><updated>2026-05-18T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2026/05/18/platform-improvements-for-python-ai-apps-on-azure-app-service</id><content type="html" xml:base="https://azure.github.io/AppService/2026/05/18/platform-improvements-for-python-ai-apps-on-azure-app-service.html"><![CDATA[<p>Originally published on <a href="https://techcommunity.microsoft.com/blog/AppsonAzureBlog/platform-improvements-for-python-ai-apps-on-azure-app-service/4519620">Microsoft Tech Community</a>.</p>
+
+<p>Azure App Service on Linux is a fully managed platform for web and API applications across Python, Node.js, .NET, PHP, Java, and other stacks. Developers can deploy source code or a pre-built artifact, and App Service handles dependency installation, containerization, and running the application at cloud scale.</p>
+
+<p>As more customers build intelligent applications with Azure AI Foundry and other AI services, Python has become one of the most important languages for these workloads. The performance and reliability of the Python deployment pipeline directly affect the developer experience on App Service, so we looked across the deployment path for opportunities to reduce latency and improve reliability.</p>
+
+<p>The first set of changes has reduced Python deployment latency on Azure App Service on Linux by approximately 30%. This is the first step in a broader effort to make the platform better suited for AI application development, and the same improvements benefit many other Python apps on the platform.</p>
+
+<h2 id="where-deployment-time-was-going">Where deployment time was going</h2>
+
+<p>Python web application deployments on Azure App Service on Linux rely on <a href="https://github.com/microsoft/Oryx">Oryx</a>, the platform’s open-source build system, to produce runnable artifacts during remote builds. Platform telemetry showed that about 70% of Python app deployments use remote builds, and most of those deployments resolve dependencies from <code class="language-plaintext highlighter-rouge">requirements.txt</code> by using <code class="language-plaintext highlighter-rouge">pip install</code>.</p>
+
+<p>To understand where time was going, we profiled a stress workload: a 7.5 GB PyTorch application. Most production builds are smaller, but stress testing a dependency-heavy application made the pipeline bottlenecks clear.</p>
+
+<p>When a Python app is deployed through remote build, the Kudu build container runs Oryx to:</p>
+
+<ol>
+  <li>Extract the uploaded source code.</li>
+  <li>Create a Python virtual environment.</li>
+  <li>Install dependencies with <code class="language-plaintext highlighter-rouge">pip install</code>; 4.35 minutes, or about 34% of build time.</li>
+  <li>Copy files to a staging directory; 0.98 minutes, or about 8% of build time.</li>
+  <li>Compress the output with <code class="language-plaintext highlighter-rouge">tar</code> and <code class="language-plaintext highlighter-rouge">gzip</code> into an archive; 7.53 minutes, or about 58% of build time.</li>
+  <li>Write the archive to <code class="language-plaintext highlighter-rouge">/home</code>, which is backed by an Azure Storage SMB mount.</li>
+</ol>
+
+<p>The app container then extracts this archive to local disk on every cold start.</p>
+
+<h2 id="why-the-archive-based-approach">Why the archive-based approach?</h2>
+
+<p>The <code class="language-plaintext highlighter-rouge">/home</code> directory is backed by an Azure Storage SMB mount, where small-file I/O is comparatively expensive. Python dependencies are file-heavy. Virtual environments commonly contain tens of thousands of files, and dependency-heavy machine learning applications can exceed 200,000 files.</p>
+
+<p>Writing those files individually over SMB would be prohibitively slow. Instead, the pipeline builds on the container’s local filesystem, writes a single compressed archive over SMB, and lets the app container extract it locally on startup for efficient module loading.</p>
+
+<p>The key insight from profiling was that compression was the single largest phase at 58% of build time, taking longer than installing the packages themselves.</p>
+
+<h2 id="what-changed">What changed</h2>
+
+<h3 id="zstandard-compression-replacing-gzip">Zstandard compression replacing gzip</h3>
+
+<p>Standard <code class="language-plaintext highlighter-rouge">gzip</code> compression is single-threaded. In our benchmark, compression accounted for 58% of total build time, making it the dominant bottleneck. Because the archive is also decompressed during container startup, decompression time affects runtime startup latency as well.</p>
+
+<p>We evaluated three compression algorithms: <code class="language-plaintext highlighter-rouge">gzip</code>, LZ4, and Zstandard (<code class="language-plaintext highlighter-rouge">zstd</code>). These results are averaged across multiple deployments of a 7.5 GB Python application with PyTorch and additional machine learning packages.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th style="text-align: right">gzip</th>
+      <th style="text-align: right">LZ4</th>
+      <th style="text-align: right">zstd</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Compression time</td>
+      <td style="text-align: right">7.53 min</td>
+      <td style="text-align: right">1.20 min</td>
+      <td style="text-align: right">1.18 min</td>
+    </tr>
+    <tr>
+      <td>Decompression time</td>
+      <td style="text-align: right">2.80 min</td>
+      <td style="text-align: right">1.18 min</td>
+      <td style="text-align: right">1.07 min</td>
+    </tr>
+    <tr>
+      <td>Archive size</td>
+      <td style="text-align: right">4.0 GB</td>
+      <td style="text-align: right">5.0 GB</td>
+      <td style="text-align: right">4.8 GB</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Both <code class="language-plaintext highlighter-rouge">zstd</code> and LZ4 were more than 6x faster than <code class="language-plaintext highlighter-rouge">gzip</code> for compression and more than 2x faster for decompression. We selected <code class="language-plaintext highlighter-rouge">zstd</code> because it provides speed comparable to LZ4 with a smaller archive size, is based on <a href="https://datatracker.ietf.org/doc/html/rfc8878">RFC 8878</a>, ships with many common Linux distributions, and works natively with <code class="language-plaintext highlighter-rouge">tar -I zstd</code> without extra packages.</p>
+
+<p>Result: compression time dropped from 7.53 minutes to 1.18 minutes, a 6.4x improvement. Decompression improved from 2.80 minutes to 1.07 minutes, a 2.6x improvement that directly reduces cold-start latency.</p>
+
+<h3 id="faster-package-installation-with-uv">Faster package installation with uv</h3>
+
+<p><code class="language-plaintext highlighter-rouge">pip</code> is implemented in Python and has historically optimized compatibility over maximum parallelism. In dependency-heavy workloads, package download, resolution, and installation can become a major part of deployment time. In the 7.5 GB PyTorch benchmark, package installation accounted for about 34% of total build time: 4.35 minutes out of 12.86 minutes.</p>
+
+<p>We introduced <a href="https://github.com/astral-sh/uv">uv</a>, a Python package manager written in Rust, as the primary installer for compatible <code class="language-plaintext highlighter-rouge">requirements.txt</code> deployments. Its <code class="language-plaintext highlighter-rouge">uv pip install</code> interface works with standard <code class="language-plaintext highlighter-rouge">pip</code> workflows.</p>
+
+<p>Compatibility remains the priority. When <code class="language-plaintext highlighter-rouge">uv</code> cannot handle a deployment, the platform retries with <code class="language-plaintext highlighter-rouge">pip</code>, preserving the behavior customers already depend on.</p>
+
+<p>Package caches remain local to the build container. When the same app is deployed again before the Kudu build container is recycled, both <code class="language-plaintext highlighter-rouge">pip</code> and <code class="language-plaintext highlighter-rouge">uv</code> can reuse cached packages and avoid repeated downloads.</p>
+
+<p>Result: package installation time dropped from 4.35 minutes to 1.50 minutes, a 3x improvement.</p>
+
+<h3 id="reducing-file-copy-overhead">Reducing file copy overhead</h3>
+
+<p>File copy overhead appeared in two places. First, before compression, the build process copied the entire build directory, including application code and Python packages, to a staging location. This existed historically as a safety measure to create a clean snapshot before <code class="language-plaintext highlighter-rouge">tar</code> reads the file tree, but the cost was high for the large number of files common in Python dependencies.</p>
+
+<p>The fix was straightforward: create the <code class="language-plaintext highlighter-rouge">tar</code> archive directly from the build directory and skip the intermediate copy.</p>
+
+<p>Second, for pre-built deployment scenarios, we replaced the legacy Kudu sync path with Linux-native <code class="language-plaintext highlighter-rouge">rsync</code>. This gives us a better optimized tool for large Linux file trees and reduces the overhead of moving files into the final deployment location. Because this path is used beyond Python, the improvement benefits pre-built apps across the broader App Service on Linux ecosystem.</p>
+
+<p>Result: the 0.98-minute staging copy, or 8% of build time, was eliminated. This also reduced temporary disk usage and improved the remaining file sync path.</p>
+
+<h3 id="pre-built-python-wheels-cache">Pre-built Python wheels cache</h3>
+
+<p>We added a complementary optimization: a read-only cache of pre-built wheels for commonly used Python packages, selected using platform telemetry. The cache is mounted into the Kudu build container at runtime for Python workloads, allowing the installer to use local wheel artifacts before downloading packages externally.</p>
+
+<p>When a matching wheel is available, the installer uses it directly and avoids a network fetch for that package. Cache misses fall back to the upstream registry, such as PyPI, as usual.</p>
+
+<p>The cache is managed by the platform and kept up to date, so supported Python builds can use it without any app changes.</p>
+
+<h2 id="combined-results">Combined results</h2>
+
+<p><img src="/media/2026/05/python-ai-app-service-improvements.png" alt="Deployment time comparison and deployment performance metrics over time" /></p>
+
+<h3 id="controlled-benchmark-pytorch-75-gb-on-p1mv3">Controlled benchmark: PyTorch 7.5 GB on P1mv3</h3>
+
+<p>The following benchmark was measured on the P1mv3 App Service tier. Values in the “After” column reflect the optimized pipeline with <code class="language-plaintext highlighter-rouge">zstd</code> compression, <code class="language-plaintext highlighter-rouge">uv</code> package installation, direct tar creation, and the pre-built wheels cache enabled together.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Phase</th>
+      <th style="text-align: right">Before</th>
+      <th style="text-align: right">After</th>
+      <th style="text-align: right">Improvement</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Package installation</td>
+      <td style="text-align: right">4.35 min</td>
+      <td style="text-align: right">1.50 min</td>
+      <td style="text-align: right">~3x faster</td>
+    </tr>
+    <tr>
+      <td>File copy</td>
+      <td style="text-align: right">0.98 min</td>
+      <td style="text-align: right">0 min</td>
+      <td style="text-align: right">Eliminated</td>
+    </tr>
+    <tr>
+      <td>Compression</td>
+      <td style="text-align: right">7.53 min</td>
+      <td style="text-align: right">1.18 min</td>
+      <td style="text-align: right">~6x faster</td>
+    </tr>
+    <tr>
+      <td>Total build time</td>
+      <td style="text-align: right">12.86 min</td>
+      <td style="text-align: right">~2.68 min</td>
+      <td style="text-align: right">~79% reduction</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="production-fleet-all-python-linux-web-apps">Production fleet: all Python Linux web apps</h3>
+
+<p>Production telemetry across Python deployments shows the impact of these changes: deployment latency decreased by approximately 30% after rollout.</p>
+
+<p>The controlled benchmark shows a larger improvement, about 79%, because it exercises a dependency-heavy workload where package installation, file copy, and compression dominate total build time. Typical production apps are smaller and spend less time proportionally in those phases.</p>
+
+<h2 id="beyond-faster-builds-reliability-and-runtime-performance">Beyond faster builds: reliability and runtime performance</h2>
+
+<p>Faster builds only help when deployment requests reliably reach a worker that is ready to build. We updated the primary deployment clients, including Azure CLI, GitHub Actions, and Azure DevOps Pipelines, to warm up Kudu before initiating deployments. Clients now issue a lightweight health-check request to the Kudu endpoint, helping ensure the deployment container is running and ready before the deployment begins.</p>
+
+<p>Clients also preserve affinity to the warmed-up worker by using the ARR affinity cookie returned by the first request. This increases the chance that the deployment uses a worker where Kudu is already running and local package caches are already available from recent deployments.</p>
+
+<p>Together, these client-side changes reduced deployment failures from transient infrastructure issues and helped the pipeline optimizations reach the build phase reliably.</p>
+
+<p>Result: deployment failures caused by cold-start errors such as 502, 503, and 499 dropped by approximately 30%.</p>
+
+<p>We also improved the default runtime configuration for Python apps using the platform-provided Gunicorn startup path. Previously, the platform defaulted to a single worker, leaving most CPU cores idle. Now, it follows Gunicorn’s recommended worker formula, fully using available cores on multi-core SKUs and delivering higher request throughput out of the box.</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>workers = (2 * NUM_CORES) + 1
+</code></pre></div></div>
+
+<h2 id="key-takeaways">Key takeaways</h2>
+
+<ul>
+  <li>Measure before optimizing. Platform telemetry showed that remote builds and <code class="language-plaintext highlighter-rouge">requirements.txt</code>-based installs were the dominant Python deployment paths, helping us focus on changes that benefit the most customers.</li>
+  <li>Compression was the biggest bottleneck. In the dependency-heavy benchmark, archive compression took longer than package installation. Replacing <code class="language-plaintext highlighter-rouge">gzip</code> with <code class="language-plaintext highlighter-rouge">zstd</code> reduced build time and cold-start extraction time.</li>
+  <li>File count matters. Python virtual environments can contain tens of thousands of files, and AI workloads can contain many more. Reducing unnecessary file copies and using Linux-native file sync helped lower overhead.</li>
+  <li>Compatibility needs a fallback path. Introducing <code class="language-plaintext highlighter-rouge">uv</code> improved the common path, while falling back to <code class="language-plaintext highlighter-rouge">pip</code> preserved compatibility for apps that depend on existing Python packaging behavior.</li>
+  <li>Deployment reliability is part of performance. Faster builds only help if deployment requests consistently reach a ready worker. Warm-up and worker affinity made the optimized path more reliable for customers.</li>
+  <li>Runtime defaults matter too. Settings such as Gunicorn worker configuration affect how production apps perform after deployment is complete.</li>
+</ul>
+
+<p>Together, these changes make Python deployments faster and more reliable while preserving compatibility through safe fallbacks. We will continue improving the platform to make Azure App Service faster, more reliable, and better suited for AI application development.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[Originally published on Microsoft Tech Community.]]></summary></entry><entry><title type="html">Simplifying FastAPI Deployments on Azure App Service for Linux</title><link href="https://azure.github.io/AppService/2026/05/14/fastapi-improvements.html" rel="alternate" type="text/html" title="Simplifying FastAPI Deployments on Azure App Service for Linux" /><published>2026-05-14T00:00:00+00:00</published><updated>2026-05-14T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2026/05/14/fastapi-improvements</id><content type="html" xml:base="https://azure.github.io/AppService/2026/05/14/fastapi-improvements.html"><![CDATA[<p>Deploying FastAPI apps to Azure App Service for Linux is now simpler.</p>
+
+<p>Previously, when you deployed a FastAPI application, you needed to configure a custom startup command so the app could run correctly with an ASGI server. This added an extra step to the deployment flow and could create friction, especially when getting started with FastAPI on App Service.</p>
+
+<p>We have now added built-in detection logic that identifies FastAPI applications automatically and configures the appropriate startup behavior for you.</p>
+
+<h2 id="what-changed">What changed</h2>
+
+<p>When you deploy a Python app, App Service now scans common entry point files such as:</p>
+
+<p><code class="language-plaintext highlighter-rouge">main.py</code>, <code class="language-plaintext highlighter-rouge">app.py</code>, <code class="language-plaintext highlighter-rouge">application.py</code>, <code class="language-plaintext highlighter-rouge">server.py</code>, <code class="language-plaintext highlighter-rouge">asgi.py</code>, <code class="language-plaintext highlighter-rouge">api.py</code>, <code class="language-plaintext highlighter-rouge">index.py</code>, and <code class="language-plaintext highlighter-rouge">run.py</code></p>
+
+<p>If one of these files imports FastAPI using <code class="language-plaintext highlighter-rouge">from fastapi</code> or <code class="language-plaintext highlighter-rouge">import fastapi</code>, App Service detects the app as a FastAPI application.</p>
+
+<p>To avoid false positives, files that also import Flask are skipped during FastAPI detection.</p>
+
+<h2 id="how-your-app-is-started">How your app is started</h2>
+
+<p>When a FastAPI app is detected, App Service automatically starts the application using Gunicorn with the Uvicorn worker class:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gunicorn <span class="nt">-k</span> uvicorn_worker.UvicornWorker
+</code></pre></div></div>
+
+<p>This provides the ASGI support required by FastAPI applications.</p>
+
+<h2 id="framework-detection-priority">Framework detection priority</h2>
+
+<p>If multiple framework indicators are present, App Service uses the following priority order:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Django &gt; FastAPI &gt; Flask
+</code></pre></div></div>
+
+<p>Django continues to take precedence when a <code class="language-plaintext highlighter-rouge">wsgi.py</code> file is found in a subdirectory.</p>
+
+<h2 id="what-this-means-for-you">What this means for you</h2>
+
+<p>When you deploy a FastAPI app to Azure App Service for Linux, you no longer need to configure a custom startup command in the supported runtime flow. Oryx detects the FastAPI app and configures the startup behavior automatically.</p>
+
+<p>This removes an extra setup step and makes it easier to get your FastAPI app running on App Service.</p>
+
+<h2 id="availability">Availability</h2>
+
+<p>This improvement is currently enabled for Python 3.14 and later. Support for additional Python versions will be enabled in an upcoming rollout.</p>
+
+<p>For more details on deploying Python apps to App Service, see the Azure App Service <a href="https://learn.microsoft.com/azure/app-service/quickstart-python">Python quickstart documentation</a>.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[Deploying FastAPI apps to Azure App Service for Linux is now simpler.]]></summary></entry><entry><title type="html">Improving Deployment Resiliency on Azure App Service for Linux with Deferred Kudu Recycle</title><link href="https://azure.github.io/AppService/2026/05/07/kudu-deferred-recycle.html" rel="alternate" type="text/html" title="Improving Deployment Resiliency on Azure App Service for Linux with Deferred Kudu Recycle" /><published>2026-05-07T00:00:00+00:00</published><updated>2026-05-07T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2026/05/07/kudu-deferred-recycle</id><content type="html" xml:base="https://azure.github.io/AppService/2026/05/07/kudu-deferred-recycle.html"><![CDATA[<p>Azure App Service for Linux now includes <strong>Deferred Kudu Recycle</strong>, a platform improvement designed to make deployments more resilient when app settings or connection strings are updated during an active deployment.</p>
+
+<p>Previously, changing app settings or connection strings could trigger an immediate recycle of Kudu or SCM site. If an asynchronous deployment was already running, this could interrupt the deployment and lead to failures or retries.</p>
+
+<p>With Deferred Kudu Recycle, App Service now reduces unnecessary interruptions while still ensuring deployment-critical changes take effect when they are needed.</p>
+
+<h2 id="how-it-works">How it works</h2>
+
+<p>On Linux App Service, Kudu powers deployment workflows such as ZIP deploy, Git-based deployments, and Oryx-based builds. When app settings or connection strings change, Kudu needs to recycle so the updated environment is available.</p>
+
+<p>With Deferred Kudu Recycle:</p>
+
+<ul>
+  <li>If the setting change is <strong>not deployment-critical</strong>, the Kudu recycle is deferred until the in-progress asynchronous deployment completes.</li>
+  <li>If the setting change <strong>is deployment-critical</strong>, Kudu recycles immediately so the deployment pipeline uses the correct configuration.</li>
+  <li>New deployments started after the setting change always use the updated environment.</li>
+  <li>Synchronous deployments are not affected by this behavior.</li>
+</ul>
+
+<p>The deferral window is up to <strong>40 minutes</strong>. If the deployment does not complete within that window, the recycle proceeds and the deployment may be interrupted.</p>
+
+<h2 id="what-counts-as-deployment-critical">What counts as deployment-critical?</h2>
+
+<p>Some settings directly affect how App Service builds or deploys your application. Changes to these settings continue to trigger an immediate Kudu recycle.</p>
+
+<p>Examples include settings and prefixes such as:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Setting or prefix</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">KUDU_*</code></td>
+      <td><code class="language-plaintext highlighter-rouge">KUDU_SYNC_CMD</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ORYX_*</code></td>
+      <td><code class="language-plaintext highlighter-rouge">ORYX_BUILD_FLAGS</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ENABLE_ORYX_BUILD</code></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">PRE_BUILD_*</code></td>
+      <td><code class="language-plaintext highlighter-rouge">PRE_BUILD_COMMAND</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">POST_BUILD_*</code></td>
+      <td><code class="language-plaintext highlighter-rouge">POST_BUILD_COMMAND</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SCM_*</code></td>
+      <td><code class="language-plaintext highlighter-rouge">SCM_DO_BUILD_DURING_DEPLOYMENT</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">WEBSITE_SCM_*</code></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">WEBSITE_RUN_FROM_PACKAGE</code></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">WEBSITE_SWAP_SLOTNAME</code></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">WEBSITE_ELASTIC_SCALING_ENABLED</code></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">MSBUILD_CONFIGURATION</code></td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>For these settings, an immediate recycle helps ensure the deployment pipeline runs with the correct configuration.</p>
+
+<h2 id="custom-deployment-critical-settings">Custom deployment-critical settings</h2>
+
+<p>Most customers do not need to configure anything. The default list covers common Kudu and Oryx deployment settings.</p>
+
+<p>However, if your build or deployment process depends on custom app settings, you can mark them as deployment-critical by using the following app setting:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>WEBSITE_DEPLOYMENT_CRITICAL_APPSETTINGS
+</code></pre></div></div>
+
+<p>The value should be a semicolon-separated list of setting names or prefixes.</p>
+
+<p>Example:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>WEBSITE_DEPLOYMENT_CRITICAL_APPSETTINGS=NODE_VERSION;MY_BUILD_FLAG
+</code></pre></div></div>
+
+<p>After this is configured, changes to <code class="language-plaintext highlighter-rouge">NODE_VERSION</code> or <code class="language-plaintext highlighter-rouge">MY_BUILD_FLAG</code> will trigger an immediate Kudu recycle instead of being deferred.</p>
+
+<p>Only add settings that your build or deployment process genuinely depends on. Adding unnecessary entries can increase the chance of interrupting an in-progress asynchronous deployment.</p>
+
+<h2 id="what-this-means-for-you">What this means for you</h2>
+
+<p>Deferred Kudu Recycle improves deployment resiliency by reducing interruptions caused by unrelated configuration changes.</p>
+
+<p>For example, changing a non-critical setting such as an Application Insights instrumentation key or a custom runtime setting that does not affect the build process will no longer interrupt an asynchronous deployment that is already in progress.</p>
+
+<p>At the same time, App Service continues to recycle Kudu immediately when deployment-critical settings change, ensuring build and deployment workflows use the right configuration.</p>
+
+<h2 id="no-action-required-for-most-apps">No action required for most apps</h2>
+
+<p>This improvement is enabled by the platform. For most applications, no changes are required.</p>
+
+<p>Only use <code class="language-plaintext highlighter-rouge">WEBSITE_DEPLOYMENT_CRITICAL_APPSETTINGS</code> if you have custom app settings that directly influence your build or deployment process. Otherwise, the default behavior should provide improved deployment resiliency without any additional configuration.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[Azure App Service for Linux now includes Deferred Kudu Recycle, a platform improvement designed to make deployments more resilient when app settings or connection strings are updated during an active deployment.]]></summary></entry><entry><title type="html">Control runtime patch updates with Platform Release Channel on Azure App Service for Linux</title><link href="https://azure.github.io/AppService/2026/05/06/platform-release-channel.html" rel="alternate" type="text/html" title="Control runtime patch updates with Platform Release Channel on Azure App Service for Linux" /><published>2026-05-06T00:00:00+00:00</published><updated>2026-05-06T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2026/05/06/platform-release-channel</id><content type="html" xml:base="https://azure.github.io/AppService/2026/05/06/platform-release-channel.html"><![CDATA[<p>Azure App Service for Linux is introducing <strong>Platform Release Channel</strong>, a new setting that gives you more control over when runtime patch updates are applied to your app.</p>
+
+<p>With this feature, you can choose how quickly your app moves to newly rolled-out runtime patches. This helps teams balance two common needs: staying current with the latest security and platform updates, while also having enough time to validate changes before adopting them.</p>
+
+<h2 id="why-this-matters">Why this matters</h2>
+
+<p>Runtime patch updates are important because they include fixes, security updates, and platform improvements. However, some production applications need time to validate these updates before moving to the newest available patch.</p>
+
+<p>Platform Release Channel gives you that flexibility.</p>
+
+<p>You can choose to stay close to the latest patch updates, use the default balanced option, or stay on an extended channel that gives you more time before adopting newer patches.</p>
+
+<h2 id="how-it-works">How it works</h2>
+
+<p>You can configure the <strong>Platform release setting</strong> from the <strong>Stack settings</strong> section in the Azure portal.</p>
+
+<p>The setting supports three values:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Channel</th>
+      <th>Behavior</th>
+      <th>Recommended for</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Latest</strong></td>
+      <td>Updates are delivered as soon as they are available</td>
+      <td>Not intended for production workloads</td>
+    </tr>
+    <tr>
+      <td><strong>Standard</strong></td>
+      <td>Default setting. Recieves updates at our standard release cadence</td>
+      <td>Recommended for most production apps</td>
+    </tr>
+    <tr>
+      <td><strong>Extended</strong></td>
+      <td>Typically stays one release behind standard</td>
+      <td>Apps that need extra time before adopting newer patches</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>By default, apps are set to <strong>Standard</strong>. This gives you additional time to test the latest patch before your app moves to it.</p>
+
+<p>Choose <strong>Latest</strong> when security and immediate access to the newest runtime patches are your priority. Choose <strong>Extended</strong> when your application needs more validation time before adopting newer patch versions.</p>
+
+<h2 id="how-channels-move-forward">How channels move forward</h2>
+
+<p>When a new runtime patch is available, App Service first rolls it out through the <strong>Latest</strong> channel using a faster release cadence. The same patch then continues through the normal rollout process and becomes available in the <strong>Standard</strong> channel after it has progressed further through validation and rollout. <strong>Extended</strong> remains further behind Standard to provide additional validation time for apps that need it.</p>
+
+<p>For example, with the current .NET 10 rollout, the channels look like this:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Stack</th>
+      <th style="text-align: right">Runtime version</th>
+      <th style="text-align: right">Latest</th>
+      <th style="text-align: right">Standard</th>
+      <th style="text-align: right">Extended</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>DOTNETCORE</td>
+      <td style="text-align: right">10</td>
+      <td style="text-align: right">10.0.7</td>
+      <td style="text-align: right">10.0.4</td>
+      <td style="text-align: right">10.0.2</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>As the .NET 10 rollout progresses, the <strong>10.0.7</strong> patch will first be available through the <strong>Latest</strong> channel, then move to <strong>Standard</strong> through the normal rollout cadence.</p>
+
+<p>For some stacks, <strong>Standard</strong> and <strong>Extended</strong> may currently show the same patch version. This is expected while the release channels are still moving through their rollout cadence. As additional rollout waves progress, the channel versions will separate and reflect the intended behavior for each channel.</p>
+
+<h2 id="configure-platform-release-channel">Configure Platform Release Channel</h2>
+
+<p>You can configure it on the Azure portal</p>
+
+<p><img src="/AppService/media/2026/05/prc.jpg" alt="PRC" /></p>
+
+<p>You can also configure the release channel using Azure CLI.</p>
+
+<p>To move to the latest available patch channel:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp update <span class="se">\</span>
+  <span class="nt">--resource-group</span> &lt;resource-group&gt; <span class="se">\</span>
+  <span class="nt">--name</span> &lt;site-name&gt; <span class="se">\</span>
+  <span class="nt">--platform-release-channel</span> Latest
+</code></pre></div></div>
+
+<p>To use the default channel:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp update <span class="se">\</span>
+  <span class="nt">--resource-group</span> &lt;resource-group&gt; <span class="se">\</span>
+  <span class="nt">--name</span> &lt;site-name&gt; <span class="se">\</span>
+  <span class="nt">--platform-release-channel</span> Standard
+</code></pre></div></div>
+
+<p>To give your app more time before adopting newer patches:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp update <span class="se">\</span>
+  <span class="nt">--resource-group</span> &lt;resource-group&gt; <span class="se">\</span>
+  <span class="nt">--name</span> &lt;site-name&gt; <span class="se">\</span>
+  <span class="nt">--platform-release-channel</span> Extended
+</code></pre></div></div>
+
+<h2 id="summary">Summary</h2>
+
+<p>Platform Release Channel gives you a simple way to control the pace at which runtime patch updates are applied to your Linux apps on Azure App Service.</p>
+
+<p>Use <strong>Latest</strong> when you want the newest available patches as soon as they are rolled out. Use <strong>Standard</strong> for the default balance between currency and stability. Use <strong>Extended</strong> when your app needs more validation time before moving to newer runtime patches.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[Azure App Service for Linux is introducing Platform Release Channel, a new setting that gives you more control over when runtime patch updates are applied to your app.]]></summary></entry><entry><title type="html">PHP 8.5 is now available on Azure App Service for Linux</title><link href="https://azure.github.io/AppService/2026/04/10/php85-available.html" rel="alternate" type="text/html" title="PHP 8.5 is now available on Azure App Service for Linux" /><published>2026-04-10T00:00:00+00:00</published><updated>2026-04-10T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2026/04/10/php85-available</id><content type="html" xml:base="https://azure.github.io/AppService/2026/04/10/php85-available.html"><![CDATA[<p>PHP 8.5 is now available on Azure App Service for Linux across all public regions. You can create a new PHP 8.5 app through the Azure portal, automate it with the Azure CLI, or deploy using ARM/Bicep templates.</p>
+
+<p>PHP 8.5 brings several useful runtime improvements. It includes <strong>better diagnostics</strong>, with fatal errors now providing a backtrace, which can make troubleshooting easier. It also adds the <strong>pipe operator (<code class="language-plaintext highlighter-rouge">|&gt;</code>)</strong> for cleaner, more readable code, along with broader improvements in syntax, performance, and type safety. You can take advantage of these improvements while continuing to use the deployment and management experience you already know in App Service.</p>
+
+<p>For the full list of features, deprecations, and migration notes, see the official PHP 8.5 release page:
+<a href="https://www.php.net/releases/8.5/en.php">https://www.php.net/releases/8.5/en.php</a></p>
+
+<h3 id="getting-started">Getting started</h3>
+
+<ol>
+  <li><a href="https://learn.microsoft.com/azure/app-service/quickstart-php?tabs=cli&amp;pivots=platform-linux">Create a PHP web app in Azure App Service</a></li>
+  <li><a href="https://learn.microsoft.com/azure/app-service/configure-language-php?pivots=platform-linux">Configure a PHP app for Azure App Service</a></li>
+</ol>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[PHP 8.5 is now available on Azure App Service for Linux across all public regions. You can create a new PHP 8.5 app through the Azure portal, automate it with the Azure CLI, or deploy using ARM/Bicep templates.]]></summary></entry></feed>
