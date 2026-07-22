@@ -1,0 +1,61 @@
+# Converted from .github/workflows/deploy-to-gh-pages.yml
+# Build the Jekyll site and deploy it to the gh-pages branch.
+#
+# GitHub Actions -> Azure Pipelines mapping notes:
+#   on.push.branches:[master]  -> trigger.branches
+#   on.schedule.cron           -> schedules.cron (built daily for future-dated articles)
+#   ruby/setup-ruby            -> UseRubyVersion@0
+#   secrets.GITHUB_TOKEN       -> a pipeline secret variable named GITHUB_TOKEN
+#                                 (add it in Pipeline > Edit > Variables, mark as secret).
+
+name: Build site and deploy to gh-pages branch
+
+trigger:
+  branches:
+    include:
+    - master
+
+# Azure Pipelines does not build PRs unless configured; keep PR builds off for this pipeline.
+pr: none
+
+schedules:
+# Run build every day at 00:00 UTC for future-dated articles.
+- cron: "0 0 * * *"
+  displayName: Daily midnight UTC build
+  branches:
+    include:
+    - master
+  always: true
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  JEKYLL_ENV: production
+
+steps:
+- checkout: self
+  persistCredentials: true
+
+- task: UseRubyVersion@0
+  displayName: Set up Ruby 3.0
+  inputs:
+    versionSpec: '3.0'
+
+- script: |
+    gem install bundler
+    bundle install --jobs 4 --retry 3
+  displayName: Install Ruby dependencies
+
+- script: |
+    chmod 750 deployment-script.sh
+    ./deployment-script.sh
+  displayName: Build and deploy to gh-pages branch
+  env:
+    GITHUB_TOKEN: $(GITHUB_TOKEN)
+    JEKYLL_ENV: $(JEKYLL_ENV)
+    # deployment-script.sh relies on these GitHub Actions context values.
+    # Provide equivalents so the script can push to gh-pages.
+    GITHUB_REPOSITORY: $(Build.Repository.Name)
+    GITHUB_ACTOR: $(Build.RequestedFor)
+    GITHUB_SHA: $(Build.SourceVersion)
