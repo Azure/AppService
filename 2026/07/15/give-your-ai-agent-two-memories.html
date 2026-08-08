@@ -1,0 +1,1094 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Give your AI agent two memories with Azure App Service - Azure App Service</title>
+<meta name="description" content="Agents feel continuous only when they can operate across two very different time horizons. Theyneed the recent turns that make the current conversation coherent, and they need a smaller set ofdurable facts that can follow an authenticated user into a new conversation.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Give your AI agent two memories with Azure App Service">
+<meta property="og:url" content="https://azure.github.io/AppService/2026/07/15/give-your-ai-agent-two-memories.html">
+
+
+  <meta property="og:description" content="Agents feel continuous only when they can operate across two very different time horizons. Theyneed the recent turns that make the current conversation coherent, and they need a smaller set ofdurable facts that can follow an authenticated user into a new conversation.">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2026-07-15T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2026/07/15/give-your-ai-agent-two-memories.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/sidecars/" class="">Sidecars</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/ai-integration/" class="">AI Integration</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Give your AI agent two memories with Azure App Service">
+    <meta itemprop="description" content="Agents feel continuous only when they can operate across two very different time horizons. Theyneed the recent turns that make the current conversation coherent, and they need a smaller set ofdurable facts that can follow an authenticated user into a new conversation.">
+    <meta itemprop="datePublished" content="July 15, 2026">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Give your AI agent two memories with Azure App Service
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+            
+            
+              • By Jordan Selig
+            
+            • July 15, 2026
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#why-one-memory-store-is-not-enough">Why one memory store is not enough</a></li>
+  <li><a href="#the-azure-architecture">The Azure architecture</a></li>
+  <li><a href="#short-term-history-with-a-custom-historyprovider">Short-term history with a custom HistoryProvider</a></li>
+  <li><a href="#durable-recall-with-a-custom-contextprovider">Durable recall with a custom ContextProvider</a></li>
+  <li><a href="#passwordless-by-default">Passwordless by default</a></li>
+  <li><a href="#try-it-locally-without-azure">Try it locally without Azure</a></li>
+  <li><a href="#deploy-with-azure-developer-cli">Deploy with Azure Developer CLI</a></li>
+  <li><a href="#what-the-demo-deliberately-does-not-hide">What the demo deliberately does not hide</a></li>
+  <li><a href="#learn-more">Learn more</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <p>Agents feel continuous only when they can operate across two very different time horizons. They
+need the recent turns that make the current conversation coherent, and they need a smaller set of
+durable facts that can follow an authenticated user into a new conversation.</p>
+
+<p>This sample implements both horizons on Azure App Service with Microsoft Agent Framework, Azure
+Managed Redis, Azure Cosmos DB for NoSQL vector search, and Azure OpenAI. It is deployed and
+available as a complete reference implementation with a browser UI, deterministic local mode,
+tests, Bicep, and Azure Developer CLI support.</p>
+
+<p><strong>Sample:</strong> <a href="https://github.com/seligj95/app-service-agent-memory">https://github.com/seligj95/app-service-agent-memory</a></p>
+
+<h2 id="why-one-memory-store-is-not-enough">Why one memory store is not enough</h2>
+
+<p>Conversation history and durable memory have different jobs.</p>
+
+<p><strong>Conversation history</strong> is ordered, session-specific, frequently updated, and naturally
+short-lived. The agent needs it to resolve statements such as “use the second option” or “what did
+I just say?”</p>
+
+<p><strong>Durable memory</strong> is selective, user-scoped, and useful across sessions. It holds facts such as a
+preferred deployment region, product name, accessibility need, or writing preference. Retrieval is
+semantic rather than chronological.</p>
+
+<p>Putting both into one unbounded prompt makes cost, latency, privacy, and deletion harder to reason
+about. The sample instead gives each horizon a purpose-built store and joins them through the Agent
+Framework context pipeline.</p>
+
+<h2 id="the-azure-architecture">The Azure architecture</h2>
+
+<p><img src="/AppService/media/2026/07/agent-memory-architecture.png" alt="Persistent agent memory architecture" /></p>
+
+<p>The public FastAPI application runs on one always-on App Service Premium v4 instance with Python
+3.13. The browser creates demo user and conversation IDs in local storage. That keeps the sample
+easy to explore, but it is not production authentication.</p>
+
+<p>For every chat turn, the application:</p>
+
+<ol>
+  <li>Validates the user ID, session ID, message, and retrieval limit.</li>
+  <li>Loads bounded conversation history from Azure Managed Redis.</li>
+  <li>Creates an embedding for the new input.</li>
+  <li>Runs a partition-scoped vector query in Cosmos DB for the same user.</li>
+  <li>Adds relevant durable memories to the Agent Framework context.</li>
+  <li>Runs <code class="language-plaintext highlighter-rouge">gpt-5-mini</code>.</li>
+  <li>Stores the new conversation messages in Redis and refreshes their TTL.</li>
+  <li>Extracts conservative durable facts, embeds them, deduplicates them, and upserts them to Cosmos
+DB.</li>
+</ol>
+
+<p>The chat response also returns memory attribution so the UI can show that a memory influenced the
+turn.</p>
+
+<h2 id="short-term-history-with-a-custom-historyprovider">Short-term history with a custom HistoryProvider</h2>
+
+<p>Agent Framework’s current Python API makes history a context provider. The custom provider only
+implements the storage boundary; the framework handles when to load and persist messages.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">RedisHistoryProvider</span><span class="p">(</span><span class="n">HistoryProvider</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">store</span><span class="p">,</span> <span class="n">ttl_seconds</span><span class="p">,</span> <span class="n">max_messages</span><span class="o">=</span><span class="mi">40</span><span class="p">):</span>
+        <span class="nf">super</span><span class="p">().</span><span class="nf">__init__</span><span class="p">(</span><span class="sh">"</span><span class="s">redis-history</span><span class="sh">"</span><span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">_store</span> <span class="o">=</span> <span class="n">store</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">_ttl_seconds</span> <span class="o">=</span> <span class="n">ttl_seconds</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">_max_messages</span> <span class="o">=</span> <span class="n">max_messages</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_messages</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">session_id</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">user_id</span> <span class="o">=</span> <span class="nf">_required_state_value</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="sh">"</span><span class="s">user_id</span><span class="sh">"</span><span class="p">)</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="k">await</span> <span class="n">self</span><span class="p">.</span><span class="n">_store</span><span class="p">.</span><span class="nf">load</span><span class="p">(</span><span class="n">user_id</span><span class="p">,</span> <span class="n">session_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">Message</span><span class="p">.</span><span class="nf">from_dict</span><span class="p">(</span><span class="n">json</span><span class="p">.</span><span class="nf">loads</span><span class="p">(</span><span class="n">value</span><span class="p">))</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="p">[</span><span class="o">-</span><span class="n">self</span><span class="p">.</span><span class="n">_max_messages</span><span class="p">:]]</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">save_messages</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">session_id</span><span class="p">,</span> <span class="n">messages</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">user_id</span> <span class="o">=</span> <span class="nf">_required_state_value</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="sh">"</span><span class="s">user_id</span><span class="sh">"</span><span class="p">)</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">json</span><span class="p">.</span><span class="nf">dumps</span><span class="p">(</span><span class="n">message</span><span class="p">.</span><span class="nf">to_dict</span><span class="p">())</span> <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">]</span>
+        <span class="k">await</span> <span class="n">self</span><span class="p">.</span><span class="n">_store</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span>
+            <span class="n">user_id</span><span class="p">,</span> <span class="n">session_id</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">_ttl_seconds</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">_max_messages</span>
+        <span class="p">)</span>
+</code></pre></div></div>
+
+<p>The Redis key is <code class="language-plaintext highlighter-rouge">session:{user_id}:{session_id}</code>. Each append also trims the list and refreshes the
+seven-day TTL. Serializing the complete Agent Framework <code class="language-plaintext highlighter-rouge">Message</code> preserves tool and attribution
+metadata instead of reducing history to plain strings.</p>
+
+<h2 id="durable-recall-with-a-custom-contextprovider">Durable recall with a custom ContextProvider</h2>
+
+<p>The durable provider participates before and after the model call.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">CosmosContextProvider</span><span class="p">(</span><span class="n">ContextProvider</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">before_run</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">agent</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="n">user_id</span> <span class="o">=</span> <span class="nf">_required_state_value</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="sh">"</span><span class="s">user_id</span><span class="sh">"</span><span class="p">)</span>
+        <span class="n">embedding</span> <span class="o">=</span> <span class="k">await</span> <span class="n">self</span><span class="p">.</span><span class="n">_embeddings</span><span class="p">.</span><span class="nf">embed</span><span class="p">(</span><span class="nf">_latest_input_text</span><span class="p">(</span><span class="n">context</span><span class="p">))</span>
+        <span class="n">recalled</span> <span class="o">=</span> <span class="k">await</span> <span class="n">self</span><span class="p">.</span><span class="n">_store</span><span class="p">.</span><span class="nf">recall</span><span class="p">(</span><span class="n">user_id</span><span class="p">,</span> <span class="n">embedding</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">_recall_limit</span><span class="p">)</span>
+        <span class="n">state</span><span class="p">[</span><span class="sh">"</span><span class="s">recalled_memories</span><span class="sh">"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">.</span><span class="nf">model_dump</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="sh">"</span><span class="s">json</span><span class="sh">"</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">recalled</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">recalled</span><span class="p">:</span>
+            <span class="n">facts</span> <span class="o">=</span> <span class="sh">"</span><span class="se">\n</span><span class="sh">"</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">- </span><span class="si">{</span><span class="n">item</span><span class="p">.</span><span class="n">text</span><span class="si">}</span><span class="sh">"</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">recalled</span><span class="p">)</span>
+            <span class="n">context</span><span class="p">.</span><span class="nf">extend_instructions</span><span class="p">(</span>
+                <span class="n">self</span><span class="p">.</span><span class="n">source_id</span><span class="p">,</span>
+                <span class="sh">"</span><span class="s">Use these durable memories only when relevant:</span><span class="se">\n</span><span class="sh">"</span> <span class="o">+</span> <span class="n">facts</span><span class="p">,</span>
+            <span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">after_run</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">agent</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">fact</span><span class="p">,</span> <span class="n">category</span> <span class="ow">in</span> <span class="nf">extract_durable_facts</span><span class="p">(</span><span class="nf">_latest_input_text</span><span class="p">(</span><span class="n">context</span><span class="p">)):</span>
+            <span class="n">embedding</span> <span class="o">=</span> <span class="k">await</span> <span class="n">self</span><span class="p">.</span><span class="n">_embeddings</span><span class="p">.</span><span class="nf">embed</span><span class="p">(</span><span class="n">fact</span><span class="p">)</span>
+            <span class="k">await</span> <span class="n">self</span><span class="p">.</span><span class="n">_store</span><span class="p">.</span><span class="nf">remember</span><span class="p">(</span>
+                <span class="n">state</span><span class="p">[</span><span class="sh">"</span><span class="s">user_id</span><span class="sh">"</span><span class="p">],</span> <span class="n">fact</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">state</span><span class="p">[</span><span class="sh">"</span><span class="s">source_turn</span><span class="sh">"</span><span class="p">],</span> <span class="n">embedding</span>
+            <span class="p">)</span>
+</code></pre></div></div>
+
+<p>The Cosmos container uses <code class="language-plaintext highlighter-rouge">/user_id</code> as its partition key and a 1,536-dimension cosine
+<code class="language-plaintext highlighter-rouge">quantizedFlat</code> vector index. Recall is always routed to one user’s partition and is bounded to a
+small TOP N result set. A stable ID derived from the user scope and normalized content hash makes
+writes idempotent.</p>
+
+<h2 id="passwordless-by-default">Passwordless by default</h2>
+
+<p>App Service uses its system-assigned managed identity for every data service.</p>
+
+<ul>
+  <li><strong>Azure OpenAI:</strong> <code class="language-plaintext highlighter-rouge">Cognitive Services OpenAI User</code></li>
+  <li><strong>Cosmos DB:</strong> native built-in data contributor</li>
+  <li><strong>Key Vault:</strong> <code class="language-plaintext highlighter-rouge">Key Vault Secrets User</code></li>
+  <li><strong>Azure Managed Redis:</strong> database-scoped Entra access-policy assignment</li>
+</ul>
+
+<p>Azure OpenAI and Cosmos DB local authentication are disabled. Redis requires TLS and Entra
+authentication, and its access keys are disabled. The application explicitly selects
+<code class="language-plaintext highlighter-rouge">ManagedIdentityCredential</code> in Azure and <code class="language-plaintext highlighter-rouge">AzureCliCredential</code> for local real-service development.
+It does not use a broad production credential chain.</p>
+
+<p>Key Vault remains the secrets boundary for future extensions, although this passwordless sample
+does not need a runtime secret.</p>
+
+<h2 id="try-it-locally-without-azure">Try it locally without Azure</h2>
+
+<p>The deterministic fake mode exercises the real provider pipeline and complete UI without an Azure
+subscription:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>uv <span class="nb">sync</span> <span class="nt">--python</span> 3.13 <span class="nt">--all-groups</span>
+uv run uvicorn app.main:app <span class="nt">--reload</span>
+</code></pre></div></div>
+
+<p>Open <code class="language-plaintext highlighter-rouge">http://127.0.0.1:8000</code>, tell the agent “My favorite launch color is teal,” start a new
+conversation, and ask for the color. You can inspect attribution, list the stored memory, and
+forget it.</p>
+
+<h2 id="deploy-with-azure-developer-cli">Deploy with Azure Developer CLI</h2>
+
+<p>After creating an azd environment and setting its subscription and supported region, deployment is
+one command:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>azd up <span class="nt">--no-prompt</span>
+</code></pre></div></div>
+
+<p>The Bicep creates App Service, Managed Redis, Cosmos DB, Azure OpenAI model deployments, Key Vault,
+Application Insights, and Log Analytics. A smoke test then checks health, same-session history,
+explicit remember, new-session recall, list, forget, and absence after forget.</p>
+
+<p>Azure Managed Redis availability is subscription- and region-dependent. The deployed reference
+uses East US 2 after the service preflight rejected East US for this subscription.</p>
+
+<h2 id="what-the-demo-deliberately-does-not-hide">What the demo deliberately does not hide</h2>
+
+<p>The browser identity is anonymous and user-controlled. That is useful for understanding the data
+flow, but a production application must replace it with authenticated claims and authorization on
+every memory operation.</p>
+
+<p>The sample also keeps one App Service instance. Before scaling out, replace the in-process
+conversation lock with a distributed lock so concurrent requests cannot reorder one session’s
+history.</p>
+
+<p>Other production work includes private endpoints and VNet integration, consent and retention
+policy, user export and deletion, content safety, prompt-injection defenses, abuse throttling,
+per-user quotas, and evaluation of retrieval thresholds.</p>
+
+<h2 id="learn-more">Learn more</h2>
+
+<ul>
+  <li><a href="https://learn.microsoft.com/agent-framework/get-started/memory">Microsoft Agent Framework memory</a></li>
+  <li><a href="https://learn.microsoft.com/agent-framework/agents/conversations/context-providers">Agent Framework context providers</a></li>
+  <li><a href="https://learn.microsoft.com/azure/app-service/configure-language-python">Configure Python on Azure App Service</a></li>
+  <li><a href="https://learn.microsoft.com/azure/redis/entra-for-authentication">Use Microsoft Entra ID with Azure Managed Redis</a></li>
+  <li><a href="https://learn.microsoft.com/azure/cosmos-db/how-to-python-vector-index-query">Vector search in Azure Cosmos DB for NoSQL</a></li>
+  <li><a href="https://learn.microsoft.com/azure/developer/ai/keyless-connections">Use Azure OpenAI without keys</a></li>
+</ul>
+
+<p>Two memory horizons make the agent easier to operate and easier to trust: session history remains
+temporary, durable memory remains selective and user-scoped, and both have explicit lifecycle
+controls.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2026-07-15T00:00:00+00:00">July 15, 2026</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Give+your+AI+agent+two+memories+with+Azure+App+Service%20https%3A%2F%2Fazure.github.io%2FAppService%2F2026%2F07%2F15%2Fgive-your-ai-agent-two-memories.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2026%2F07%2F15%2Fgive-your-ai-agent-two-memories.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2026%2F07%2F15%2Fgive-your-ai-agent-two-memories.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2026/06/12/kudu-logs.html" class="pagination--pager" title="A Better Way to View Logs in Kudu for Azure App Service on Linux
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2026/06/12/kudu-logs.html" rel="permalink">A Better Way to View Logs in Kudu for Azure App Service on Linux
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • June 12, 2026
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Logs are often the fastest way to understand what is happening inside your application. Whether you are investigating startup behavior, runtime errors, faile...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2026/06/10/azcli-startuplogs.html" rel="permalink">Debug App Startup Faster on Azure App Service for Linux with Startup Logs
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • June 10, 2026
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">When an app fails to start on Azure App Service for Linux, one of the first things you need is visibility into what happened during startup. This can include...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2026/06/08/AppService-Build2026.html" rel="permalink">App Service Build 2026 Updates
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  10 minute read
+
+        
+        
+          • By Byron Tardif
+        
+        • June 8, 2026
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Build 2026 is here, and Azure App Service is showing up with a packed lineup of updates. This post is your one-stop rollup of what’s new: a brand-new Easy AI...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2026/06/01/sitestatus.html" rel="permalink">Understand What’s Happening with Your App Service for Linux Website Using Site Status
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • June 1, 2026
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">When your website is not starting or behaving unexpectedly, it can be difficult to quickly understand what state the application is in and what might be caus...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2026 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
