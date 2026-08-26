@@ -23,7 +23,7 @@ az webapp exec \
 
 Shell mode uses the local terminal on Windows, macOS, and Linux. By default, it connects to one app instance using `/bin/bash`. Use `--instance` to select a specific instance or `--shell` to use another shell, such as `/bin/sh`.
 
-You can also connect to SCM(aka Kudu):
+You can also connect to SCM (aka Kudu):
 
 ```bash
 az webapp exec \
