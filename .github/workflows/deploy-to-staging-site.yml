@@ -22,10 +22,10 @@ jobs:
 
     steps:
     - name: Check out repo
-      uses: actions/checkout@v1
+      uses: actions/checkout@50fbc622fc4ef5163becd7fab6573eac35f8462e # v1.2.0
 
     - name: Set up Ruby 3.0
-      uses: ruby/setup-ruby@v1
+      uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1.321.0
       with:
         ruby-version: '3.0'
         bundler-cache: true
@@ -44,7 +44,7 @@ jobs:
       run: cd _site && zip -r ../blog.zip .
     
     - name: Upload artifact for deployment job
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
       with:
         name: jekyll-app
         path: blog.zip
@@ -59,14 +59,14 @@ jobs:
 
     steps:
     - name: Run Azure Login with OIDC
-      uses: azure/login@v2
+      uses: azure/login@7184910d9eb2b1c5e48f7073824a90609bb9b6d6 # v2.3.1
       with:
         client-id: ${{ secrets.AZURE_CLIENT_ID }}
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
     
     - name: Azure CLI script
-      uses: azure/CLI@v2
+      uses: azure/CLI@9f7ce6f37c31b777ec6c6b6d1dfe7db79f497956 # v2.2.0
       with:
         azcliversion: latest
         inlineScript: |
@@ -94,33 +94,33 @@ jobs:
 
     steps:
     - name: Run Azure Login with OIDC
-      uses: azure/login@v2
+      uses: azure/login@7184910d9eb2b1c5e48f7073824a90609bb9b6d6 # v2.3.1
       with:
         client-id: ${{ secrets.AZURE_CLIENT_ID }}
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
     
     - name: Azure CLI script
-      uses: azure/CLI@v2
+      uses: azure/CLI@9f7ce6f37c31b777ec6c6b6d1dfe7db79f497956 # v2.2.0
       with:
         azcliversion: latest
         inlineScript: |
           az account show
 
     - name: Download artifact from build job
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
       with:
         name: jekyll-app
 
     - name: Deploy to slot on staging site
-      uses: Azure/webapps-deploy@v3.0.0
+      uses: Azure/webapps-deploy@145a0687697df1d8a28909569f6e5d86213041f9 # v3.0.0
       with:
         app-name: ${{ env.WEBAPP_NAME }}
         slot-name: ${{ env.SLOT_NAME }}
         package: blog.zip
     
     - name: Comment on PR with the preview link
-      uses: mshick/add-pr-comment@v1
+      uses: mshick/add-pr-comment@a96c578acba98b60f16c6866d5f20478dc4ef68b # v1
       with:
         message: |
           ## Preview link: https://antares-blog-staging-pr-${{ github.event.number }}.azurewebsites.net
