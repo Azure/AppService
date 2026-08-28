@@ -19,11 +19,13 @@ For the target and previous monthly release:
 
 Useful commands:
 
-```text
+~~~text
 gh release view azure-cli-X.Y.Z --repo Azure/azure-cli --json name,tagName,publishedAt,url
+# Tag refs may be annotated; if the ref object's type is "tag", dereference it via /git/tags/{sha} to get the commit SHA.
 gh api repos/Azure/azure-cli/git/ref/tags/azure-cli-X.Y.Z
+gh api repos/Azure/azure-cli/git/tags/<tag-object-sha>
 gh api repos/Azure/azure-cli/compare/azure-cli-PREV...azure-cli-TARGET
-```
+~~~
 
 Release tags can diverge because of servicing commits. When they do:
 
