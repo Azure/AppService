@@ -1,0 +1,51 @@
+# Converted from .github/workflows/delete-slot.yml
+# When a PR is closed/merged: delete the per-PR deployment slot on the staging
+# App Service and clean up the deployment.
+#
+# IMPORTANT — trigger difference:
+#   GitHub Actions fires this on 'pull_request: types:[closed]'. Azure Pipelines
+#   PR triggers only fire on PR *creation/update*, NOT on close/merge. There is
+#   no native "PR closed" YAML trigger. Run this pipeline via one of:
+#     * An Azure DevOps Service Hook ("Pull request merged"/"updated" -> status
+#       'completed'/'abandoned') that queues this pipeline, OR
+#     * A manual/parameterized run supplying the PR number.
+#   The PR number is therefore taken from a runtime parameter (with a fallback to
+#   the System.PullRequest.PullRequestNumber variable when available).
+
+trigger: none
+pr: none
+
+parameters:
+- name: prNumber
+  displayName: PR number to tear down (leave empty to use System.PullRequest.PullRequestNumber)
+  type: string
+  default: ''
+
+variables:
+  WEBAPP_NAME: antares-blog-staging
+  RESOURCE_GROUP: appserviceblogsite
+  ${{ if ne(parameters.prNumber, '') }}:
+    SLOT_NAME: pr-${{ parameters.prNumber }}
+  ${{ else }}:
+    SLOT_NAME: pr-$(System.PullRequest.PullRequestNumber)
+  azureServiceConnection: azure-oidc-connection
+
+pool:
+  vmImage: ubuntu-latest
+
+jobs:
+- job: delete_slot
+  displayName: Delete slot on staging site
+  steps:
+  - checkout: none
+  - task: AzureCLI@2
+    displayName: Delete slot on staging site
+    inputs:
+      azureSubscription: $(azureServiceConnection)
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        az webapp deployment slot delete \
+          --resource-group $(RESOURCE_GROUP) \
+          --name $(WEBAPP_NAME) \
+          --slot $(SLOT_NAME)
