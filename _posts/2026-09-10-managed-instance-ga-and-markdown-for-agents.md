@@ -77,7 +77,7 @@ This approach lets teams modernize infrastructure and add AI-ready experiences w
 
 ## Also highlighted: Azure CLI 2.90.0
 
-The team also called out the Azure CLI 2.90.0 release. The new `az webapp exec` command provides a consistent way to open an interactive shell or start a detached command in a running Linux web app container. A related platform improvement, rolling out separately, uses Kudu as an authenticated proxy to attach to the container so custom containers no longer need to run their own SSH server.
+The team also called out the Azure CLI 2.90.0 release. The new `az webapp exec` command provides a consistent way to open an interactive shell or start a detached command in a running Linux web app. A related platform improvement, rolling out separately, allows for BYO container scenarios to no longer require their own SSH server.
 
 ## Resources
 
