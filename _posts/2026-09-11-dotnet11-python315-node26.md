@@ -1,3 +1,10 @@
+---
+title: ".NET 11, Python 3.15, and Node.js 26 on Azure App Service for Linux"
+author_name: "Tulika Chaudharie"
+toc: true
+toc_sticky: true
+---
+
 # .NET 11, Python 3.15, and Node.js 26 on Azure App Service for Linux
 
 The next generation of application runtimes is arriving on Azure App Service.
