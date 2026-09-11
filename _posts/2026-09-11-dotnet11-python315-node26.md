@@ -23,7 +23,7 @@ Experiment with new capabilities such as union types and closed hierarchies, whi
 **Test the latest web and runtime improvements**
 Try your ASP.NET Core applications with the latest runtime and framework improvements, and identify package or framework compatibility issues ahead of upgrading production applications.
 
-[Explore what's new in .NET 11](https://learn.microsoft.com/en-us/dotnet/core/whats-new/dotnet-11/overview)
+[Explore what's new in .NET 11](https://learn.microsoft.com/dotnet/core/whats-new/dotnet-11/overview)
 
 ## Python 3.15
 
