@@ -1,0 +1,141 @@
+# Converted from .github/workflows/deploy-to-staging-site.yml
+# On a PR against master: build the Jekyll site, create a per-PR deployment
+# slot on the staging App Service, deploy the site there, and comment the
+# preview link on the PR.
+#
+# GitHub Actions -> Azure Pipelines mapping notes:
+#   on.pull_request.branches:[master]      -> pr.branches
+#   concurrency: ci-<pr-number>            -> batch: true (Azure serializes PR runs per ref)
+#   azure/login@v2 (OIDC)                  -> AzureCLI@2 / AzureWebApp@1 with a Workload
+#                                             Identity Federation service connection.
+#   secrets.AZURE_* (client/tenant/sub)    -> encapsulated in the service connection
+#                                             referenced by 'azureServiceConnection' below.
+#   actions/upload|download-artifact       -> PublishPipelineArtifact / DownloadPipelineArtifact
+#   Azure/webapps-deploy@v3                -> AzureWebApp@1
+#   mshick/add-pr-comment                  -> REST call to Azure DevOps PR threads API
+#
+# Prerequisites in Azure DevOps:
+#   * Create a service connection (Azure Resource Manager, Workload Identity
+#     Federation) and set its name in the 'azureServiceConnection' variable.
+#   * Allow the build service to contribute to PRs so the comment step can post
+#     (Project Settings > Repositories > Security > "Contribute to pull requests").
+
+pr:
+  branches:
+    include:
+    - master
+
+trigger: none
+
+variables:
+  WEBAPP_NAME: antares-blog-staging
+  RESOURCE_GROUP: appserviceblogsite
+  SLOT_NAME: pr-$(System.PullRequest.PullRequestNumber)
+  azureServiceConnection: azure-oidc-connection
+
+pool:
+  vmImage: ubuntu-latest
+
+jobs:
+- job: build
+  displayName: Build site
+  steps:
+  - checkout: self
+
+  - task: UseRubyVersion@0
+    displayName: Set up Ruby 3.0
+    inputs:
+      versionSpec: '3.0'
+
+  - script: |
+      gem install bundler
+      bundle install --jobs 4 --retry 3
+    displayName: Install Ruby dependencies
+
+  - script: bundle exec jekyll build --future --baseurl=''
+    displayName: Build site
+    env:
+      JEKYLL_ENV: production
+
+  - script: cd _site && zip -r ../blog.zip .
+    displayName: Zip up site
+
+  - task: PublishPipelineArtifact@1
+    displayName: Upload artifact for deployment job
+    inputs:
+      targetPath: blog.zip
+      artifact: jekyll-app
+
+- job: set_up_test_env
+  displayName: Create test env
+  # GitHub 'if: github.actor != dependabot[bot]'. Azure exposes the PR author as
+  # Build.RequestedFor; adjust the value if your Dependabot identity differs.
+  condition: ne(variables['Build.RequestedFor'], 'dependabot[bot]')
+  steps:
+  - task: AzureCLI@2
+    displayName: Create slot on staging site
+    inputs:
+      azureSubscription: $(azureServiceConnection)
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        az account show
+        az webapp deployment slot create \
+          --resource-group $(RESOURCE_GROUP) \
+          --name $(WEBAPP_NAME) \
+          --slot $(SLOT_NAME)
+
+- job: deploy_to_slot
+  displayName: Deploy to test env
+  dependsOn:
+  - build
+  - set_up_test_env
+  condition: and(succeeded(), ne(variables['Build.RequestedFor'], 'dependabot[bot]'))
+  steps:
+  - checkout: none
+
+  - task: DownloadPipelineArtifact@2
+    displayName: Download artifact from build job
+    inputs:
+      artifact: jekyll-app
+      path: $(Pipeline.Workspace)
+
+  - task: AzureWebApp@1
+    displayName: Deploy to slot on staging site
+    inputs:
+      azureSubscription: $(azureServiceConnection)
+      appType: webAppLinux
+      appName: $(WEBAPP_NAME)
+      deployToSlotOrASE: true
+      resourceGroupName: $(RESOURCE_GROUP)
+      slotName: $(SLOT_NAME)
+      package: $(Pipeline.Workspace)/blog.zip
+
+  - task: Bash@3
+    displayName: Comment on PR with the preview link
+    inputs:
+      targetType: inline
+      script: |
+        set -euo pipefail
+        PR_ID="$(System.PullRequest.PullRequestId)"
+        PREVIEW_URL="https://antares-blog-staging-pr-$(System.PullRequest.PullRequestNumber).azurewebsites.net"
+        read -r -d '' COMMENT <<EOF || true
+        ## Preview link: ${PREVIEW_URL}
+
+        - Your changes have been deployed to the preview site. The preview site will update as you add more commits to this branch.
+        - The preview site shows any future-dated articles. If you are publishing a future-dated article, it will not show on the production site until the file's specified date.
+        - The preview link is shareable, but will be deleted when this pull request is merged or closed.
+
+        > *This is an automated message.*
+        EOF
+        BODY=$(jq -n --arg c "$COMMENT" '{comments:[{parentCommentId:0,content:$c,commentType:1}],status:1}')
+        ORG_URL="$(System.CollectionUri)"
+        PROJECT="$(System.TeamProject)"
+        REPO_ID="$(Build.Repository.ID)"
+        curl -sf -X POST \
+          -H "Authorization: Bearer $(System.AccessToken)" \
+          -H "Content-Type: application/json" \
+          -d "$BODY" \
+          "${ORG_URL}${PROJECT}/_apis/git/repositories/${REPO_ID}/pullRequests/${PR_ID}/threads?api-version=7.1-preview.1"
+    env:
+      SYSTEM_ACCESSTOKEN: $(System.AccessToken)

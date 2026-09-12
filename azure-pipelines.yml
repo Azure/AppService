@@ -1,0 +1,12 @@
+trigger:
+- main
+
+pr:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- script: echo "Hello from Azure Pipelines"
+  displayName: Hello world
