@@ -45,7 +45,7 @@ jobs:
   - task: UseRubyVersion@0
     displayName: Set up Ruby 3.0
     inputs:
-      versionSpec: '3.0'
+      versionSpec: '>=3.0'
 
   - script: |
       gem install bundler
