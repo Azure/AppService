@@ -17,9 +17,9 @@ schedules:
 
 parameters:
 - name: prNumber
-  displayName: PR number to tear down (leave empty to reconcile all preview slots)
+  displayName: PR number to tear down (use "all" to reconcile all preview slots)
   type: string
-  default: ''
+  default: all
 
 variables:
   WEBAPP_NAME: antares-blog-staging
@@ -60,9 +60,9 @@ jobs:
             --output tsv
         )"
 
-        if [[ -n "$PR_NUMBER" ]]; then
+        if [[ "$PR_NUMBER" != "all" ]]; then
           if [[ ! "$PR_NUMBER" =~ ^[1-9][0-9]*$ ]]; then
-            echo "PR number must be a positive integer; received '${PR_NUMBER}'." >&2
+            echo "PR number must be a positive integer or 'all'; received '${PR_NUMBER}'." >&2
             exit 2
           fi
 
