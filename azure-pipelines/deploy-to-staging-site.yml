@@ -31,7 +31,7 @@ variables:
   WEBAPP_NAME: antares-blog-staging
   RESOURCE_GROUP: appserviceblogsite
   SLOT_NAME: pr-$(System.PullRequest.PullRequestNumber)
-  azureServiceConnection: azure-oidc-connection
+  azureServiceConnection: azure-appserviceblog-oidc-connection
 
 pool:
   vmImage: ubuntu-latest
