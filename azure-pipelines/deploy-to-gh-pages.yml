@@ -35,7 +35,7 @@ variables:
 
 steps:
 - checkout: self
-  persistCredentials: true
+  persistCredentials: false
 
 - task: UseRubyVersion@0
   displayName: Set up Ruby 3.0
