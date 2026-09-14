@@ -28,7 +28,7 @@ variables:
     SLOT_NAME: pr-${{ parameters.prNumber }}
   ${{ else }}:
     SLOT_NAME: pr-$(System.PullRequest.PullRequestNumber)
-  azureServiceConnection: azure-oidc-connection
+  azureServiceConnection: azure-appserviceblog-oidc-connection
 
 pool:
   vmImage: ubuntu-latest
