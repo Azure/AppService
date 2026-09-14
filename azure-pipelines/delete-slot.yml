@@ -1,33 +1,29 @@
 # Converted from .github/workflows/delete-slot.yml
-# When a PR is closed/merged: delete the per-PR deployment slot on the staging
-# App Service and clean up the deployment.
-#
-# IMPORTANT — trigger difference:
-#   GitHub Actions fires this on 'pull_request: types:[closed]'. Azure Pipelines
-#   PR triggers only fire on PR *creation/update*, NOT on close/merge. There is
-#   no native "PR closed" YAML trigger. Run this pipeline via one of:
-#     * An Azure DevOps Service Hook ("Pull request merged"/"updated" -> status
-#       'completed'/'abandoned') that queues this pipeline, OR
-#     * A manual/parameterized run supplying the PR number.
-#   The PR number is therefore taken from a runtime parameter (with a fallback to
-#   the System.PullRequest.PullRequestNumber variable when available).
+# Delete per-PR deployment slots whose GitHub pull requests are no longer open.
+# The scheduled run reconciles all pr-* slots daily. A PR number can also be
+# supplied when manually queuing the pipeline to delete one specific slot.
 
 trigger: none
 pr: none
 
+schedules:
+- cron: "0 1 * * *"
+  displayName: Daily preview slot cleanup
+  branches:
+    include:
+    - master
+  always: true
+  batch: true
+
 parameters:
 - name: prNumber
-  displayName: PR number to tear down (leave empty to use System.PullRequest.PullRequestNumber)
+  displayName: PR number to tear down (leave empty to reconcile all preview slots)
   type: string
   default: ''
 
 variables:
   WEBAPP_NAME: antares-blog-staging
   RESOURCE_GROUP: appserviceblogsite
-  ${{ if ne(parameters.prNumber, '') }}:
-    SLOT_NAME: pr-${{ parameters.prNumber }}
-  ${{ else }}:
-    SLOT_NAME: pr-$(System.PullRequest.PullRequestNumber)
   azureServiceConnection: azure-appserviceblog-oidc-connection
 
 pool:
@@ -35,17 +31,99 @@ pool:
 
 jobs:
 - job: delete_slot
-  displayName: Delete slot on staging site
+  displayName: Reconcile preview slots
   steps:
   - checkout: none
   - task: AzureCLI@2
-    displayName: Delete slot on staging site
+    displayName: Delete stale preview slots
     inputs:
       azureSubscription: $(azureServiceConnection)
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
-        az webapp deployment slot delete \
-          --resource-group $(RESOURCE_GROUP) \
-          --name $(WEBAPP_NAME) \
-          --slot $(SLOT_NAME)
+        set -euo pipefail
+
+        delete_slot() {
+          local slot_name="$1"
+          echo "Deleting deployment slot '${slot_name}'."
+          az webapp deployment slot delete \
+            --resource-group "$RESOURCE_GROUP" \
+            --name "$WEBAPP_NAME" \
+            --slot "$slot_name"
+        }
+
+        slots_output="$(
+          az webapp deployment slot list \
+            --resource-group "$RESOURCE_GROUP" \
+            --name "$WEBAPP_NAME" \
+            --query "[].name" \
+            --output tsv
+        )"
+
+        if [[ -n "$PR_NUMBER" ]]; then
+          if [[ ! "$PR_NUMBER" =~ ^[1-9][0-9]*$ ]]; then
+            echo "PR number must be a positive integer; received '${PR_NUMBER}'." >&2
+            exit 2
+          fi
+
+          slot_name="pr-${PR_NUMBER}"
+          slot_exists=false
+          while IFS= read -r slot_resource_name; do
+            if [[ "${slot_resource_name##*/}" == "$slot_name" ]]; then
+              slot_exists=true
+              break
+            fi
+          done <<< "$slots_output"
+
+          if [[ "$slot_exists" == true ]]; then
+            delete_slot "$slot_name"
+          else
+            echo "Deployment slot '${slot_name}' does not exist; no cleanup is required."
+          fi
+          exit 0
+        fi
+
+        response_file="$(mktemp)"
+        trap 'rm -f "$response_file"' EXIT
+        declare -A open_prs=()
+        page=1
+
+        while true; do
+          curl --fail-with-body --silent --show-error \
+            --header "Accept: application/vnd.github+json" \
+            --header "X-GitHub-Api-Version: 2022-11-28" \
+            --header "User-Agent: Azure-AppService-slot-cleanup" \
+            --output "$response_file" \
+            "https://api.github.com/repos/Azure/AppService/pulls?state=open&per_page=100&page=${page}"
+
+          response_count="$(jq 'length' "$response_file")"
+          while IFS= read -r pr_number; do
+            open_prs["$pr_number"]=1
+          done < <(jq -r '.[].number' "$response_file")
+
+          if (( response_count < 100 )); then
+            break
+          fi
+          page=$((page + 1))
+        done
+
+        while IFS= read -r slot_resource_name; do
+          [[ -z "$slot_resource_name" ]] && continue
+          slot_name="${slot_resource_name##*/}"
+
+          if [[ ! "$slot_name" =~ ^pr-([1-9][0-9]*)$ ]]; then
+            echo "Skipping unexpected preview slot name '${slot_name}'." >&2
+            continue
+          fi
+
+          pr_number="${BASH_REMATCH[1]}"
+          if [[ -n "${open_prs[$pr_number]+present}" ]]; then
+            echo "Keeping deployment slot '${slot_name}' for open PR #${pr_number}."
+          else
+            delete_slot "$slot_name"
+          fi
+        done <<< "$slots_output"
+    env:
+      RESOURCE_GROUP: $(RESOURCE_GROUP)
+      WEBAPP_NAME: $(WEBAPP_NAME)
+      PR_NUMBER: '${{ parameters.prNumber }}'
