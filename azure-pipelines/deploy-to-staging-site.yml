@@ -111,31 +111,17 @@ jobs:
       slotName: $(SLOT_NAME)
       package: $(Pipeline.Workspace)/blog.zip
 
-  - task: Bash@3
+  - task: GitHubComment@0
     displayName: Comment on PR with the preview link
     inputs:
-      targetType: inline
-      script: |
-        set -euo pipefail
-        PR_ID="$(System.PullRequest.PullRequestId)"
-        PREVIEW_URL="https://antares-blog-staging-pr-$(System.PullRequest.PullRequestNumber).azurewebsites.net"
-        read -r -d '' COMMENT <<EOF || true
-        ## Preview link: ${PREVIEW_URL}
+      gitHubConnection: github-appserviceblog-comments
+      repositoryName: $(Build.Repository.Name)
+      id: $(System.PullRequest.PullRequestNumber)
+      comment: |
+        ## Preview link: https://antares-blog-staging-pr-$(System.PullRequest.PullRequestNumber).azurewebsites.net
 
         - Your changes have been deployed to the preview site. The preview site will update as you add more commits to this branch.
         - The preview site shows any future-dated articles. If you are publishing a future-dated article, it will not show on the production site until the file's specified date.
         - The preview link is shareable, but will be deleted when this pull request is merged or closed.
 
         > *This is an automated message.*
-        EOF
-        BODY=$(jq -n --arg c "$COMMENT" '{comments:[{parentCommentId:0,content:$c,commentType:1}],status:1}')
-        ORG_URL="$(System.CollectionUri)"
-        PROJECT="$(System.TeamProject)"
-        REPO_ID="$(Build.Repository.ID)"
-        curl -sf -X POST \
-          -H "Authorization: Bearer $(System.AccessToken)" \
-          -H "Content-Type: application/json" \
-          -d "$BODY" \
-          "${ORG_URL}${PROJECT}/_apis/git/repositories/${REPO_ID}/pullRequests/${PR_ID}/threads?api-version=7.1-preview.1"
-    env:
-      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
