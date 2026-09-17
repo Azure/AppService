@@ -11,6 +11,8 @@ We’re making that workflow much easier with a new **Network Capture experience
 
 You can collect network traces directly from **Kudu or the Azure CLI**. And instead of stopping at packet capture, you can optionally have the trace automatically analyzed to generate a report that highlights potential problems and summarizes what happened during the capture.
 
+> **Note:** Before starting a network capture, make sure the app container is up and running.
+
 ## Capture a network trace from Kudu
 
 In Kudu, go to **Diagnostic Tools > Network Capture**.
