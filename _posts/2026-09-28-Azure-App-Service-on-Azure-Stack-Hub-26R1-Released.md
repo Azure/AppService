@@ -57,10 +57,10 @@ Azure App Service on Azure Stack Hub 26R1 is now available for customers to down
 All other fixes and updates are detailed in the App Service on [Azure Stack Hub 26R1 Release Notes](https://learn.microsoft.com/azure-stack/operator/app-service-release-notes-2026r1)
 The App Service on Azure Stack Hub 26R1 build number is **102.20.2.2** and requires **Azure Stack Hub** to be updated with **2311** or later prior to deployment/upgrade.
 
-You can download the new installer and helper scripts:
+You can download the new installer and offline package:
 
 - [Installer](https://aka.ms/appsvcupdate26R1installer)
-- [Helper Scripts](https://aka.ms/appsvconmashelpers)
+- [Offline package](https://aka.ms/appsvcupdate26R1offline)
 
 Please read the updated documentation prior to getting started with deployment:
 
