@@ -13,7 +13,7 @@ The Grafana dashboard experience for Azure App Service brings platform metrics a
 
 ## Start with the application you already manage
 
-Open your App Service web app in the Azure portal and select **Monitoring > Dashboards with Grafana (Preview)** from the navigation menu. In the gallery, open **Azure | Insights | Web Apps - Platform Metrics**.
+Open your App Service web app in the Azure portal and select **Monitoring > Dashboards with Grafana (Preview)** from the navigation menu. In the gallery, open **Azure \| Insights \| Web Apps - Platform Metrics**.
 
 ![App Service navigation with Dashboards with Grafana (Preview) selected and the Web Apps platform metrics dashboard in the gallery]({{site.baseurl}}/media/2026/10/app-service-grafana-navigation.png)
 
