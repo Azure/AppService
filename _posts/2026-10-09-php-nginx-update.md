@@ -26,7 +26,9 @@ The updated PHP images are already available on the **Latest channel**, so you c
 
 We recommend using an [App Service deployment slot](https://learn.microsoft.com/en-us/azure/app-service/deploy-staging-slots) to validate your app without affecting production. Configure the staging slot to use the Latest channel, test your application and Nginx customizations, and keep your production slot on Standard.
 
-We're beginning the rollout to the **Standard (default) channel**. If you encounter any issues, you can temporarily switch to the **Extended channel** to return to an earlier image while you investigate and update your configuration.
+We plan to begin a gradual rollout of the updated images to the **Standard (default) channel starting October 14, 2026 (UTC)**, with rollout across all Azure regions expected to take several days.
+
+If you encounter any issues, you can temporarily switch to the **Extended channel** to return to an earlier image while you investigate and update your configuration.
 
 Once your app is compatible, we recommend using Standard (or Latest, if appropriate) to continue receiving platform and security updates.
 
