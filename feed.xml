@@ -1,0 +1,971 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en_US"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://azure.github.io/AppService/feed.xml" rel="self" type="application/atom+xml" /><link href="https://azure.github.io/AppService/" rel="alternate" type="text/html" hreflang="en_US" /><updated>2026-10-10T00:02:50+00:00</updated><id>https://azure.github.io/AppService/feed.xml</id><title type="html">Azure App Service</title><subtitle>Announcements, updates, and release notes from the Azure App Service product team.</subtitle><author><name>Azure App Service</name></author><entry><title type="html">Nginx package update for PHP apps on Azure App Service</title><link href="https://azure.github.io/AppService/2026/10/09/php-nginx-update.html" rel="alternate" type="text/html" title="Nginx package update for PHP apps on Azure App Service" /><published>2026-10-09T00:00:00+00:00</published><updated>2026-10-09T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2026/10/09/php-nginx-update</id><content type="html" xml:base="https://azure.github.io/AppService/2026/10/09/php-nginx-update.html"><![CDATA[<p>We’re updating the Nginx packages used in Azure App Service PHP images, moving from the deprecated <code class="language-plaintext highlighter-rouge">deb.sury.org</code> repository to the official <code class="language-plaintext highlighter-rouge">nginx.org</code> repository. This follows the <a href="https://codeberg.org/oerdnj/deb.sury.org/issues/67">upstream repository changes</a>.</p>
+
+<p><strong>We expect most PHP apps to continue working without any changes, particularly those using the default Nginx configuration.</strong> However, if you’ve customized your Nginx configuration or startup command, we recommend validating your app against the updated images.</p>
+
+<h2 id="what-should-you-check">What should you check?</h2>
+
+<p>If your app uses a custom Nginx configuration, review the following potentially affected customizations:</p>
+
+<ul>
+  <li>Loading optional Nginx modules using <code class="language-plaintext highlighter-rouge">load_module</code></li>
+  <li>Using module directives such as <code class="language-plaintext highlighter-rouge">echo</code>, <code class="language-plaintext highlighter-rouge">geoip2</code>, <code class="language-plaintext highlighter-rouge">image_filter</code>, or XSLT</li>
+  <li>Hardcoded Nginx paths, such as <code class="language-plaintext highlighter-rouge">/var/lib/nginx/</code></li>
+  <li>Custom startup commands that replace or start Nginx</li>
+</ul>
+
+<p>These are examples, not an exhaustive list. <strong>Having a customized configuration does not necessarily mean your app will be affected.</strong></p>
+
+<h2 id="how-to-prepare">How to prepare</h2>
+
+<p>The updated PHP images are already available on the <strong>Latest channel</strong>, so you can test compatibility ahead of the rollout to Standard.</p>
+
+<p>We recommend using an <a href="https://learn.microsoft.com/en-us/azure/app-service/deploy-staging-slots">App Service deployment slot</a> to validate your app without affecting production. Configure the staging slot to use the Latest channel, test your application and Nginx customizations, and keep your production slot on Standard.</p>
+
+<p>We plan to begin a gradual rollout of the updated images to the <strong>Standard (default) channel starting October 14, 2026 (UTC)</strong>, with rollout across all Azure regions expected to take several days.</p>
+
+<p>If you encounter any issues, you can temporarily switch to the <strong>Extended channel</strong> to return to an earlier image while you investigate and update your configuration.</p>
+
+<p>Once your app is compatible, we recommend using Standard (or Latest, if appropriate) to continue receiving platform and security updates.</p>
+
+<p>For instructions on viewing or changing your channel, see <a href="https://learn.microsoft.com/en-us/azure/app-service/overview-patch-os-runtime#control-runtime-patch-update-timing-with-platform-release-channel">Control runtime patch updates with Platform Release Channel</a>.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[We’re updating the Nginx packages used in Azure App Service PHP images, moving from the deprecated deb.sury.org repository to the official nginx.org repository. This follows the upstream repository changes.]]></summary></entry><entry><title type="html">Azure App Service Community Standup: Platform Release Channels &amp;amp; WebSSH</title><link href="https://azure.github.io/AppService/2026/10/08/platform-release-channels-and-webssh-for-custom-containers.html" rel="alternate" type="text/html" title="Azure App Service Community Standup: Platform Release Channels &amp;amp; WebSSH" /><published>2026-10-08T00:00:00+00:00</published><updated>2026-10-08T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2026/10/08/platform-release-channels-and-webssh-for-custom-containers</id><content type="html" xml:base="https://azure.github.io/AppService/2026/10/08/platform-release-channels-and-webssh-for-custom-containers.html"><![CDATA[<p>Keeping an application current should not mean giving up control over testing, deployment, or troubleshooting. In the October 8 <strong><a href="https://www.youtube.com/watch?v=tGJeW7MKL9I">Azure App Service Community Standup: Platform Release Channels &amp; WebSSH for Custom Containers</a></strong>, the team demonstrated how App Service for Linux is making those operational tasks easier, from validating runtime patches to investigating a failing backend connection.</p>
+
+<p>The session covered:</p>
+
+<ul>
+  <li>Choosing when to adopt runtime patches with <strong>Platform Release Channel</strong>.</li>
+  <li>Simplifying deployment with <strong>Quick Deploy</strong>, plus previews of <strong>code rollback</strong> and <strong>Secure Builds</strong>.</li>
+  <li>Connecting to custom containers <strong>without an SSH server</strong> and collecting <strong>Node.js CPU, memory, and network diagnostics</strong>.</li>
+</ul>
+
+<h2 id="watch-the-session">Watch the Session</h2>
+
+<p><a href="https://www.youtube.com/watch?v=tGJeW7MKL9I"><img src="https://img.youtube.com/vi/tGJeW7MKL9I/maxresdefault.jpg" alt="Watch Azure App Service Community Standup: Platform Release Channels &amp; WebSSH for Custom Containers" /></a></p>
+
+<p><a href="https://www.youtube.com/watch?v=tGJeW7MKL9I">Watch on YouTube</a></p>
+
+<h2 id="validate-runtime-patches-before-production-adopts-them">Validate runtime patches before production adopts them</h2>
+
+<p>Runtime patches bring security fixes and platform improvements, but applications may need validation before moving to a newer patch. <strong>Platform Release Channel</strong> gives Linux apps a choice of update cadence:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Channel</th>
+      <th>Purpose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Latest</strong></td>
+      <td>Receives new patches first; intended for early validation, not production workloads.</td>
+    </tr>
+    <tr>
+      <td><strong>Standard</strong></td>
+      <td>The default channel, following the normal App Service rollout cadence and recommended for most production apps.</td>
+    </tr>
+    <tr>
+      <td><strong>Extended</strong></td>
+      <td>Stays further behind to provide additional validation time, typically one release behind Standard.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Tulika demonstrated three copies of a .NET application, one on each channel. Inspecting their runtime versions in <strong>SCM (Kudu)</strong> showed different patch levels, making the progression from Latest to Standard to Extended concrete. Those versions were a snapshot of the rollout, not permanently pinned versions or a fixed update schedule.</p>
+
+<p>The team highlighted a practical testing pattern: keep production on Standard and configure a deployment slot on Latest to test upcoming patches. Channel selection can differ by slot. During the demonstration, Tulika also explained that changing the channel recycles the app to use the corresponding runtime image.</p>
+
+<p>You can configure the channel in the Azure portal’s <strong>Stack settings</strong> or through Azure CLI. For example, explicitly select the default channel:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp update <span class="se">\</span>
+  <span class="nt">--resource-group</span> &lt;resource-group&gt; <span class="se">\</span>
+  <span class="nt">--name</span> &lt;web-app&gt; <span class="se">\</span>
+  <span class="nt">--platform-release-channel</span> Standard
+</code></pre></div></div>
+
+<p>Channels control when patches arrive; they are not a way to avoid runtime updates indefinitely. Plan validation around the rollout rather than assuming a particular patch will remain on a channel.</p>
+
+<h2 id="deploy-with-more-confidence">Deploy with more confidence</h2>
+
+<h3 id="test-changes-and-roll-back-quickly">Test changes and roll back quickly</h3>
+
+<p><strong>Quick Deploy</strong> brings ZIP upload directly into the Azure portal’s <strong>Deployment Center</strong>. You can inspect the package and choose whether to run a server-side build before deploying. It is useful for getting started and testing; repeatable production deployments should still use a CI/CD pipeline.</p>
+
+<p>In the session, Tulika uploaded a ZIP package that replaced a working page with a broken version. She then opened the preview <strong>Rollbacks</strong> experience in <strong>SCM (Kudu)</strong>, selected a retained previous deployment, and restored the working page without uploading the old package again.</p>
+
+<p>The demo showed the current deployment and two previous versions. The presenters explained that retention depends on available filesystem space. Treat this as a preview of the demonstrated recovery workflow, not a guarantee that every deployment or app has a recoverable version. Keep versioned release artifacts and use deployment slots as part of your production release process.</p>
+
+<h3 id="spot-vulnerable-components-with-secure-builds">Spot vulnerable components with Secure Builds</h3>
+
+<p>The team previewed <strong>Secure Builds</strong>, showing a deployment-specific report that matched components against GitHub security advisories. Opening a finding led to the corresponding advisory, giving the developer a starting point for remediation. In the demonstrated experience, findings were reported without blocking the deployment.</p>
+
+<p>Rollback and Secure Builds were described as previews during the recording. Their current regional, plan, runtime, and deployment-method coverage has not been independently confirmed in published documentation, so this recap describes what was shown rather than announcing broad availability.</p>
+
+<h2 id="troubleshoot-linux-apps-without-rebuilding-the-container">Troubleshoot Linux apps without rebuilding the container</h2>
+
+<h3 id="open-a-terminal-without-adding-an-ssh-server">Open a terminal without adding an SSH server</h3>
+
+<p>Custom Linux containers traditionally needed their own SSH server configuration for the legacy WebSSH experience. Tulika demonstrated a container without that setup: the old connection failed, but <strong><code class="language-plaintext highlighter-rouge">az webapp exec</code></strong> successfully opened a shell in the running app container.</p>
+
+<p>The command, available in preview starting with <a href="https://azure.github.io/AppService/2026/09/01/azure-cli-2-90-app-service-updates.html">Azure CLI 2.90.0</a>, uses the local terminal consistently on Windows, macOS, and Linux. Use an up-to-date Azure CLI and select a shell that exists in your image:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp <span class="nb">exec</span> <span class="se">\</span>
+  <span class="nt">--resource-group</span> &lt;resource-group&gt; <span class="se">\</span>
+  <span class="nt">--name</span> &lt;web-app&gt; <span class="se">\</span>
+  <span class="nt">--shell</span> /bin/sh
+</code></pre></div></div>
+
+<p>The session also showed <strong>Try the new terminal</strong> in <strong>SCM (Kudu)</strong> connecting to the same container. This platform path removes the need to install an SSH daemon or embed an SSH credential in the image. Availability can vary while the platform rollout completes.</p>
+
+<p>Beyond interactive shells, <code class="language-plaintext highlighter-rouge">az webapp exec</code> supports detached execution. The presenters discussed running a one-off database migration from an app instance that already has the required network access. An <code class="language-plaintext highlighter-rouge">accepted</code> response confirms only that the request was accepted, not that the command completed successfully; detached execution does not return the command’s output or exit code.</p>
+
+<p>Shell access is a privileged operational capability. Apps that do not need it can disable access through the <code class="language-plaintext highlighter-rouge">sshEnabled</code> configuration property.</p>
+
+<h3 id="move-from-cpu-and-memory-symptoms-to-useful-evidence">Move from CPU and memory symptoms to useful evidence</h3>
+
+<p>For <strong>Node.js apps on Linux</strong>, the team demonstrated CPU and memory diagnostics in <strong>SCM (Kudu) &gt; Diagnostic Tools</strong>. You can collect an artifact for local analysis or choose <strong>Collect &amp; analyze</strong> to generate a built-in report.</p>
+
+<p>The memory report highlighted large strings, closures, and arrays that could help narrow down a suspected leak. The CPU demonstration contrasted a capture taken while the app was idle with one that identified elevated CPU activity and event loop blocking. These reports provide investigation leads, not an automatic fix.</p>
+
+<p>A memory dump captures a point in time; a CPU profile observes activity over a selected interval. Collect evidence while the problem is occurring. Dumps consume storage, and collection and analysis can affect the instance serving your app. The presenters recommended short captures and, where appropriate, reproducing the issue on a deployment slot with a controlled portion of traffic.</p>
+
+<p>During the recording, this diagnostic experience was described as a preview rolling out with Node.js support first. Do not assume the same CPU and memory tooling is available for every Linux runtime.</p>
+
+<h3 id="separate-backend-connectivity-failures-from-application-errors">Separate backend connectivity failures from application errors</h3>
+
+<p>The <strong>Network Capture</strong> demonstration investigated an app returning errors while trying to reach a backend. The generated report showed failed TCP handshakes and retransmissions, directing attention toward the connection path rather than only the frontend web server.</p>
+
+<p>Network Capture is in preview for App Service for Linux and supports collection with optional built-in analysis in <strong>SCM (Kudu)</strong>. Published documentation also describes Azure CLI support through <code class="language-plaintext highlighter-rouge">az webapp troubleshoot collect network-capture</code> for Linux web apps on dedicated App Service plans, even though the session discussed additional CLI diagnostics as upcoming.</p>
+
+<p>Captures target a selected app instance, stop at <strong>100 MB</strong>, and have a maximum duration of <strong>300 seconds</strong>. HTTPS traffic remains encrypted. Packet captures can contain sensitive application data, so handle them accordingly. Choose <strong>Collect only</strong> and download the <code class="language-plaintext highlighter-rouge">.pcap</code> for local investigation when you want to avoid running the analysis on the app instance.</p>
+
+<h2 id="resources">Resources</h2>
+
+<ul>
+  <li><a href="https://azure.github.io/AppService/2026/05/06/platform-release-channel.html">Control runtime patch updates with Platform Release Channel</a></li>
+  <li><a href="https://azure.github.io/AppService/2026/07/30/quick-deploy-portal.html">Deploy ZIP packages from the Azure portal</a></li>
+  <li><a href="https://azure.github.io/AppService/2026/09/01/azure-cli-2-90-app-service-updates.html">Azure CLI 2.90.0: container access and Linux troubleshooting</a></li>
+  <li><a href="https://azure.github.io/AppService/2026/09/17/cpu-memory-profiling.html">Diagnose CPU and memory issues in Node.js apps on Linux</a></li>
+  <li><a href="https://azure.github.io/AppService/2026/09/17/network-capture.html">Capture and analyze network traces on Linux</a></li>
+  <li><a href="https://learn.microsoft.com/cli/azure/webapp/troubleshoot/collect?view=azure-cli-latest">Azure CLI network capture reference</a></li>
+</ul>]]></content><author><name>Azure App Service</name></author><category term="linux" /><category term="deployment" /><category term="diagnostics" /><summary type="html"><![CDATA[Keeping an application current should not mean giving up control over testing, deployment, or troubleshooting. In the October 8 Azure App Service Community Standup: Platform Release Channels &amp; WebSSH for Custom Containers, the team demonstrated how App Service for Linux is making those operational tasks easier, from validating runtime patches to investigating a failing backend connection.]]></summary></entry><entry><title type="html">What’s new for Azure App Service in Azure CLI 2.91.0</title><link href="https://azure.github.io/AppService/2026/10/06/azure-cli-2-91-app-service-updates.html" rel="alternate" type="text/html" title="What’s new for Azure App Service in Azure CLI 2.91.0" /><published>2026-10-06T00:00:00+00:00</published><updated>2026-10-06T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2026/10/06/azure-cli-2-91-app-service-updates</id><content type="html" xml:base="https://azure.github.io/AppService/2026/10/06/azure-cli-2-91-app-service-updates.html"><![CDATA[<p><a href="https://learn.microsoft.com/cli/azure/release-notes-azure-cli#october-06-2026">Azure CLI 2.91.0</a> adds a preview command for diagnosing Linux web app configuration and runtime errors from the terminal. This release also makes access-restriction updates safer by preserving unrelated site configuration.</p>
+
+<h2 id="diagnose-linux-app-configuration-from-the-terminal">Diagnose Linux app configuration from the terminal</h2>
+
+<p>The new <code class="language-plaintext highlighter-rouge">az webapp troubleshoot config</code> command, currently in preview, evaluates common Linux App Service settings and pairs the results with a recent runtime error when one is available:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp troubleshoot config <span class="se">\</span>
+  <span class="nt">--resource-group</span> &lt;resource-group&gt; <span class="se">\</span>
+  <span class="nt">--name</span> &lt;web-app&gt;
+</code></pre></div></div>
+
+<p>The command checks settings such as the runtime stack, port binding, startup command, Always On, and health check path. It combines configuration checks from SCM (Kudu) with App Service runtime status, returning structured output by default so you can use standard Azure CLI output formats.</p>
+
+<p>For a human-readable, color-coded view, add <code class="language-plaintext highlighter-rouge">--report</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp troubleshoot config <span class="se">\</span>
+  <span class="nt">--resource-group</span> &lt;resource-group&gt; <span class="se">\</span>
+  <span class="nt">--name</span> &lt;web-app&gt; <span class="se">\</span>
+  <span class="nt">--report</span>
+</code></pre></div></div>
+
+<p>Runtime errors are included only when they occurred within the last 15 minutes, which avoids presenting stale failures as current problems. For a 24-hour view of runtime status and startup attempts, continue to use <code class="language-plaintext highlighter-rouge">az webapp troubleshoot status</code>.</p>
+
+<p>Use <code class="language-plaintext highlighter-rouge">--instance &lt;worker-machine-name&gt;</code> to run the checks for a specific worker. The command matches the runtime error to that worker and does not fall back to an error from another instance. Add <code class="language-plaintext highlighter-rouge">--slot &lt;slot-name&gt;</code> to diagnose a deployment slot.</p>
+
+<p>This preview supports Linux web apps. If the configuration-check endpoint is unavailable, the command reports that condition and can still return a recent runtime error when App Service provides one.</p>
+
+<h2 id="update-access-restrictions-without-changing-unrelated-settings">Update access restrictions without changing unrelated settings</h2>
+
+<p>Commands under <code class="language-plaintext highlighter-rouge">az webapp config access-restriction</code> now send only the access-restriction properties being changed instead of resubmitting the complete site configuration. This prevents add, remove, and set operations from unintentionally dropping unrelated settings while updating rules for the app or its SCM (Kudu) site.</p>
+
+<p>For example, you can add an allow rule without risking changes to other site configuration:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp config access-restriction add <span class="se">\</span>
+  <span class="nt">--resource-group</span> &lt;resource-group&gt; <span class="se">\</span>
+  <span class="nt">--name</span> &lt;web-app&gt; <span class="se">\</span>
+  <span class="nt">--rule-name</span> &lt;rule-name&gt; <span class="se">\</span>
+  <span class="nt">--action</span> Allow <span class="se">\</span>
+  <span class="nt">--ip-address</span> &lt;ip-address-or-cidr&gt; <span class="se">\</span>
+  <span class="nt">--priority</span> &lt;priority&gt;
+</code></pre></div></div>
+
+<p>Existing command syntax and access-restriction behavior remain unchanged. For more examples, see <a href="https://learn.microsoft.com/azure/app-service/app-service-ip-restrictions">Set up Azure App Service access restrictions</a>.</p>
+
+<h2 id="get-the-release">Get the release</h2>
+
+<p>Run <code class="language-plaintext highlighter-rouge">az upgrade</code> to install the latest available Azure CLI release, then verify the installed version:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az upgrade
+az version
+</code></pre></div></div>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[Azure CLI 2.91.0 adds a preview command for diagnosing Linux web app configuration and runtime errors from the terminal. This release also makes access-restriction updates safer by preserving unrelated site configuration.]]></summary></entry><entry><title type="html">Azure App Service on Azure Stack Hub 26R1 Released</title><link href="https://azure.github.io/AppService/2026/09/28/Azure-App-Service-on-Azure-Stack-Hub-26R1-Released.html" rel="alternate" type="text/html" title="Azure App Service on Azure Stack Hub 26R1 Released" /><published>2026-09-28T00:00:00+00:00</published><updated>2026-09-28T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2026/09/28/Azure-App-Service-on-Azure-Stack-Hub-26R1-Released</id><content type="html" xml:base="https://azure.github.io/AppService/2026/09/28/Azure-App-Service-on-Azure-Stack-Hub-26R1-Released.html"><![CDATA[<p>Azure App Service on Azure Stack Hub 26R1 is now available for customers to download and update their Azure Stack Hub deployments.  This release contains updates to application runtimes, including .NET and Java; and updates the the resource provider itself.</p>
+
+<h2 id="whats-new">What’s New?</h2>
+
+<ul>
+  <li>
+    <p>Updates to core service to improve reliability and error messaging enabling easier diagnosis of common issues.</p>
+  </li>
+  <li>
+    <p>Stalled controller start up due to slow role discovery has been resolved.</p>
+  </li>
+  <li>
+    <p>Database performance improved with reductions of locking and unnecessary saves.</p>
+  </li>
+  <li>
+    <p>Updates to the following application frameworks and tools:</p>
+  </li>
+  <li>.NET Framework 3.5 and 4.8.1</li>
+  <li>ASP.NET Core
+    <ul>
+      <li>10.0.11</li>
+      <li>10.0.8</li>
+      <li>8.0.30</li>
+      <li>8.0.303</li>
+      <li>8.0.424</li>
+    </ul>
+  </li>
+  <li>Microsoft OpenJDK 11
+    <ul>
+      <li>11.0.30.7.</li>
+    </ul>
+  </li>
+  <li>Microsoft OpenJDK 17
+    <ul>
+      <li>17.0.18</li>
+    </ul>
+  </li>
+  <li>Microsoft OpenJDK 21
+    <ul>
+      <li>21.0.10</li>
+    </ul>
+  </li>
+  <li>Microsoft OpenJDK 25
+    <ul>
+      <li>25.0.2</li>
+    </ul>
+  </li>
+  <li>Node.js
+    <ul>
+      <li>22.23.1</li>
+    </ul>
+  </li>
+  <li>Npm
+    <ul>
+      <li>8.1.0</li>
+      <li>10.9.8</li>
+      <li>11.16.0</li>
+    </ul>
+  </li>
+  <li>Tomcat
+    <ul>
+      <li>9.0.109</li>
+      <li>9.0.113</li>
+      <li>9.0.115</li>
+      <li>9.0.116</li>
+      <li>10.1.146</li>
+      <li>10.1.50</li>
+      <li>10.1.53</li>
+      <li>11.0.11</li>
+      <li>11.0.15</li>
+      <li>11.0.20</li>
+    </ul>
+  </li>
+  <li>
+    <p>Updated Kudu to 2026.08.1.2</p>
+  </li>
+  <li>Continual accessibility and usability updates</li>
+</ul>
+
+<p>All other fixes and updates are detailed in the App Service on <a href="https://learn.microsoft.com/azure-stack/operator/app-service-release-notes-2026r1">Azure Stack Hub 26R1 Release Notes</a>
+The App Service on Azure Stack Hub 26R1 build number is <strong>102.20.2.2</strong> and requires <strong>Azure Stack Hub</strong> to be updated with <strong>2311</strong> or later prior to deployment/upgrade.</p>
+
+<p>You can download the new installer and offline package:</p>
+
+<ul>
+  <li><a href="https://aka.ms/appsvcupdate26R1installer">Installer</a></li>
+  <li><a href="https://aka.ms/appsvcupdate26R1offline">Offline package</a></li>
+</ul>
+
+<p>Please read the updated documentation prior to getting started with deployment:</p>
+
+<ul>
+  <li><a href="https://learn.microsoft.com/azure-stack/operator/azure-stack-app-service-update">Update the App Service Resource Provider</a> for updating existing deployments</li>
+</ul>]]></content><author><name>Azure App Service</name></author><category term="Azure Stack" /><summary type="html"><![CDATA[Azure App Service on Azure Stack Hub 26R1 is now available for customers to download and update their Azure Stack Hub deployments. This release contains updates to application runtimes, including .NET and Java; and updates the the resource provider itself. What’s New? Updates to core service to improve reliability and error messaging enabling easier diagnosis of common issues. Stalled controller start up due to slow role discovery has been resolved. Database performance improved with reductions of locking and unnecessary saves. Updates to the following application frameworks and tools: .NET Framework 3.5 and 4.8.1 ASP.NET Core 10.0.11 10.0.8 8.0.30 8.0.303 8.0.424 Microsoft OpenJDK 11 11.0.30.7. Microsoft OpenJDK 17 17.0.18 Microsoft OpenJDK 21 21.0.10 Microsoft OpenJDK 25 25.0.2 Node.js 22.23.1 Npm 8.1.0 10.9.8 11.16.0 Tomcat 9.0.109 9.0.113 9.0.115 9.0.116 10.1.146 10.1.50 10.1.53 11.0.11 11.0.15 11.0.20 Updated Kudu to 2026.08.1.2 Continual accessibility and usability updates All other fixes and updates are detailed in the App Service on Azure Stack Hub 26R1 Release Notes The App Service on Azure Stack Hub 26R1 build number is 102.20.2.2 and requires Azure Stack Hub to be updated with 2311 or later prior to deployment/upgrade. You can download the new installer and offline package: Installer Offline package Please read the updated documentation prior to getting started with deployment: Update the App Service Resource Provider for updating existing deployments]]></summary></entry><entry><title type="html">Diagnose CPU and memory issues in Node.js apps on Azure App Service for Linux</title><link href="https://azure.github.io/AppService/2026/09/17/cpu-memory-profiling.html" rel="alternate" type="text/html" title="Diagnose CPU and memory issues in Node.js apps on Azure App Service for Linux" /><published>2026-09-17T00:00:00+00:00</published><updated>2026-09-17T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2026/09/17/cpu-memory-profiling</id><content type="html" xml:base="https://azure.github.io/AppService/2026/09/17/cpu-memory-profiling.html"><![CDATA[<p>When a Node.js application starts slowing down, consuming more memory over time, or using more CPU than expected, the difficult part is often figuring out what the application is actually doing when the problem occurs.</p>
+
+<p>You can now collect and analyze <strong>memory dumps and CPU profiles for Node.js applications running on Azure App Service for Linux</strong>.</p>
+
+<p>The experience is available in Kudu for App Service on Linux and supports both collection and built-in analysis, so you can investigate CPU and memory issues without having to download the dump or profile and analyze it separately.</p>
+
+<h2 id="memory-profiling-understand-what-is-using-your-heap">Memory profiling: understand what is using your heap</h2>
+
+<p>A memory dump gives you a point-in-time snapshot of the Node.js process memory.</p>
+
+<p>Select the App Service instance and Node.js process you want to investigate, then choose <strong>Collect &amp; analyze</strong> to capture the dump and generate an analysis report.</p>
+
+<p><img src="/AppService/media/2026/09/memory-profiling.jpg" alt="memory-profiling" /></p>
+
+<p>A few things to keep in mind:</p>
+
+<ul>
+  <li>The memory dump is collected from the selected App Service instance.</li>
+  <li>A memory dump captures the full process memory for point-in-time analysis.</li>
+  <li>Dump size is proportional to process memory. Larger processes take longer to capture and consume more storage.</li>
+  <li>Your app is not restarted, but collection can briefly affect responsiveness.</li>
+  <li>A memory dump represents a specific moment in time rather than memory behavior over a period.</li>
+</ul>
+
+<p>If you are investigating a suspected memory leak, it is best to capture the dump while memory usage is elevated. Comparing captures taken before and after memory growth can also help identify objects that are accumulating.</p>
+
+<h2 id="built-in-memory-analysis">Built-in memory analysis</h2>
+
+<p>Once the capture is complete, App Service can analyze the dump and generate a report with a high-level view of the heap and the areas that may need further investigation.</p>
+
+<p>The report includes information such as:</p>
+
+<ul>
+  <li>total heap usage and object count</li>
+  <li>memory used by application objects versus the V8 engine</li>
+  <li>heap composition by object type</li>
+  <li>large strings and other unusually large objects</li>
+  <li>high closure counts</li>
+  <li>object types with unusually high instance counts</li>
+  <li>potential memory leak patterns</li>
+  <li>application objects consuming the most memory</li>
+</ul>
+
+<p><img src="/AppService/media/2026/09/memory-report-1.jpg" alt="memory-report-1" /></p>
+
+<p>The report also surfaces key findings and recommendations to help narrow down the problem.</p>
+
+<p>For example, unusually large strings may point to large JSON payloads, logging buffers, cached responses, or string accumulation. A high number of closures may indicate event listeners or callbacks that are not being cleaned up.</p>
+
+<p>The analysis can also identify object types with unusually high instance counts, which may help highlight potential unbounded growth.</p>
+
+<p><img src="/AppService/media/2026/09/memory-report-2.jpg" alt="memory-report-2" /></p>
+
+<p>Instead of starting with thousands of objects in a raw heap dump, you can start with the areas that are most likely to need attention.</p>
+
+<h2 id="cpu-profiling-find-the-code-consuming-cpu">CPU profiling: find the code consuming CPU</h2>
+
+<p>CPU profiling works differently because CPU behavior needs to be observed over a period of time.</p>
+
+<p>The profiler samples the application’s call stack at regular intervals to identify hot paths and determine where the application is spending its CPU time.</p>
+
+<p>Select the Node.js process and profile duration, then start profiling. You can choose a predefined duration such as 15, 30, or 60 seconds, or specify a custom duration.</p>
+
+<p><img src="/AppService/media/2026/09/cpu-profiling.jpg" alt="cpu-profiling" /></p>
+
+<p>A few things to keep in mind:</p>
+
+<ul>
+  <li>The CPU profile is collected from the selected App Service instance.</li>
+  <li>CPU profiling samples the call stack at regular intervals to identify hot paths.</li>
+  <li>The profile runs for the specified duration.</li>
+  <li>Longer profiles generally capture more representative data.</li>
+  <li>Profiling has minimal performance impact on the application.</li>
+</ul>
+
+<p>For best results, capture the profile while the slowdown or high CPU usage is actually occurring.</p>
+
+<h2 id="from-cpu-usage-to-the-function-responsible">From CPU usage to the function responsible</h2>
+
+<p>After profiling completes, the analysis report shows where CPU time was spent during the profiling period.</p>
+
+<p>For Node.js applications, the report can surface:</p>
+
+<ul>
+  <li>active CPU during the profile</li>
+  <li>CPU time spent in application code</li>
+  <li>Node.js runtime overhead</li>
+  <li>garbage collection overhead</li>
+  <li>hot functions consuming the most CPU</li>
+  <li>source locations for identified functions</li>
+  <li>event loop health</li>
+  <li>long-running synchronous operations</li>
+  <li>potential event loop blocking</li>
+  <li>recommendations based on the findings</li>
+</ul>
+
+<p><img src="/AppService/media/2026/09/cpu-report-1.jpg" alt="cpu-report-1" /></p>
+
+<p>This can help move the investigation from a general symptom such as high CPU to the specific function or execution path responsible.</p>
+
+<p>For example, if one application function accounts for most of the sampled CPU time, the report can identify the function and its source location so you can investigate it directly.</p>
+
+<p>The profiler can also highlight Node.js-specific issues such as event loop blocking. Long-running synchronous operations can prevent the event loop from processing other requests, resulting in slow response times even when the underlying cause is not obvious from CPU metrics alone.</p>
+
+<p><img src="/AppService/media/2026/09/cpu-report-2.jpg" alt="cpu-report-2" /></p>
+
+<h2 id="collect-and-analyze---or-just-collect">Collect and analyze - or just collect</h2>
+
+<p>Both CPU and memory profiling support two modes.</p>
+
+<p><strong>Collect &amp; analyze</strong> captures the memory dump or CPU profile and generates an App Service analysis report.</p>
+
+<p><strong>Collect only</strong> captures the diagnostic artifact without running the built-in analysis, allowing you to download it and use your preferred profiling or debugging tools if needed.</p>
+
+<p>This gives you a quick way to investigate common issues while still keeping access to the underlying diagnostic data for deeper analysis.</p>
+
+<h2 id="getting-started">Getting started</h2>
+
+<p>To try CPU or memory profiling:</p>
+
+<ol>
+  <li>Open <strong>Kudu</strong> for your App Service Linux app.</li>
+  <li>Under <strong>Diagnostic Tools</strong>, select <strong>Memory</strong> or <strong>CPU</strong>.</li>
+  <li>Select the App Service instance you want to investigate.</li>
+  <li>Select the Node.js process.</li>
+  <li>For memory, capture the dump while memory usage is elevated.</li>
+  <li>For CPU, select a profiling duration and capture while the CPU issue or slowdown is occurring.</li>
+  <li>Select <strong>Collect &amp; analyze</strong> to generate the built-in analysis report.</li>
+</ol>
+
+<p>CPU and memory problems can have many causes, but the first step is usually getting visibility into what the application was doing when the problem occurred.</p>
+
+<p>With CPU and memory profiling for Node.js applications in Kudu, App Service for Linux can now help you move from a high-level performance symptom to the code, objects, or runtime behavior that may be causing it.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[When a Node.js application starts slowing down, consuming more memory over time, or using more CPU than expected, the difficult part is often figuring out what the application is actually doing when the problem occurs.]]></summary></entry><entry><title type="html">Capture and analyze network traces in Azure App Service for Linux</title><link href="https://azure.github.io/AppService/2026/09/17/network-capture.html" rel="alternate" type="text/html" title="Capture and analyze network traces in Azure App Service for Linux" /><published>2026-09-17T00:00:00+00:00</published><updated>2026-09-17T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2026/09/17/network-capture</id><content type="html" xml:base="https://azure.github.io/AppService/2026/09/17/network-capture.html"><![CDATA[<p>Troubleshooting network issues in Azure App Service for Linux has traditionally required several manual steps. You would typically SSH into your app, run a packet capture from the container, download the resulting trace, and then open it in a tool such as Wireshark to investigate what happened.</p>
+
+<p>We’re making that workflow much easier with a new <strong>Network Capture experience, now available in preview</strong>.</p>
+
+<p>You can collect network traces directly from <strong>Kudu or the Azure CLI</strong>. And instead of stopping at packet capture, you can optionally have the trace automatically analyzed to generate a report that highlights potential problems and summarizes what happened during the capture.</p>
+
+<h2 id="capture-a-network-trace-from-kudu">Capture a network trace from Kudu</h2>
+
+<p>In Kudu, go to <strong>Diagnostic Tools &gt; Network Capture</strong>.</p>
+
+<p>Select the App Service instance where you want to collect the trace, and configure the capture. You can select the network interface and capture duration, with preset options for 30, 60, and 120 seconds or a custom duration.</p>
+
+<blockquote>
+  <p><strong>Note:</strong> Before starting a network capture, make sure the app container is up and running.</p>
+</blockquote>
+
+<p>For more targeted troubleshooting, advanced settings let you configure options such as:</p>
+
+<ul>
+  <li><strong>Snap length</strong></li>
+  <li><strong>Capture IP address</strong></li>
+  <li><strong>BPF filter</strong>, for example <code class="language-plaintext highlighter-rouge">tcp port 443</code></li>
+</ul>
+
+<p>You can then choose between two modes:</p>
+
+<p><strong>Collect &amp; analyze</strong> captures the network trace and automatically generates an analysis report.</p>
+
+<p><strong>Collect only</strong> captures the trace without running the built-in analysis, so you can download the <code class="language-plaintext highlighter-rouge">.pcap</code> file and inspect it using a tool such as Wireshark.</p>
+
+<p>You can also use <strong>Analyze existing .pcap</strong> if you already have a packet capture that you want to inspect using the built-in analyzer.</p>
+
+<p><img src="/AppService/media/2026/09/network-capture-tab.jpg" alt="network-capture-tab" /></p>
+
+<p>A few things to keep in mind when collecting a trace:</p>
+
+<ul>
+  <li>Network traces are collected on the <strong>selected App Service instance</strong> serving your app.</li>
+  <li>If your app communicates with remote endpoints over <strong>TLS or SSL, including HTTPS, the traffic in the trace will be encrypted</strong>.</li>
+  <li>A network trace can capture up to <strong>100 MB of data</strong>. The capture stops automatically when this limit is reached.</li>
+  <li>Only the <strong>five most recent captures</strong> are retained.</li>
+</ul>
+
+<p>After collection, your captures appear in <strong>Capture history</strong>, where you can view the generated report, download the <code class="language-plaintext highlighter-rouge">.pcap</code> file, or delete the capture.</p>
+
+<h2 id="capture-network-traces-from-the-azure-cli">Capture network traces from the Azure CLI</h2>
+
+<p>You can also collect network traces without opening Kudu by using the <strong>Azure CLI</strong>.</p>
+
+<p>For example, to collect a packet capture without running automatic analysis:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp troubleshoot collect network-capture <span class="se">\</span>
+    <span class="nt">-g</span> &lt;resource-group&gt; <span class="se">\</span>
+    <span class="nt">-n</span> &lt;capture-name&gt; <span class="se">\</span>
+    <span class="nt">--instance</span> <span class="nv">$instance</span> <span class="se">\</span>
+    <span class="nt">--duration</span> 10 <span class="se">\</span>
+    <span class="nt">--collect-only</span>
+</code></pre></div></div>
+
+<p>To collect the trace and run the built-in analysis:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp troubleshoot collect network-capture <span class="se">\</span>
+    <span class="nt">-g</span> &lt;resource-group&gt; <span class="se">\</span>
+    <span class="nt">-n</span> &lt;capture-name&gt; <span class="se">\</span>
+    <span class="nt">--duration</span> 10
+</code></pre></div></div>
+
+<p>This makes it easier to use network capture as part of your normal command-line troubleshooting workflow, without first connecting to the container over SSH.</p>
+
+<p>Make sure you’re using the latest version of the Azure CLI.</p>
+
+<p><a href="https://learn.microsoft.com/cli/azure/install-azure-cli">Install the latest Azure CLI</a></p>
+
+<h2 id="go-from-packet-capture-to-useful-insights">Go from packet capture to useful insights</h2>
+
+<p>Capturing the packets is often only the first part of troubleshooting. The harder part is figuring out which packets matter and what they tell you about the problem.</p>
+
+<p>When you choose to collect and analyze a trace, Network Capture does some of that work for you. It processes the trace and generates a report that summarizes the traffic and highlights findings that may warrant further investigation.</p>
+
+<p>For example, the report can identify:</p>
+
+<ul>
+  <li>HTTP 5xx responses</li>
+  <li>Connections that did not complete the TCP handshake</li>
+  <li>TCP resets</li>
+  <li>Retransmissions</li>
+  <li>HTTP 4xx and 5xx request rates</li>
+  <li>Slow HTTP requests</li>
+</ul>
+
+<p>The report also provides context for some findings. For example, connections that remain in <code class="language-plaintext highlighter-rouge">SynSent</code> and never receive a SYN-ACK can point to connectivity, firewall, or SNAT-related problems.</p>
+
+<p>Instead of starting with hundreds or thousands of individual packets, you get a quick view of where to begin your investigation.</p>
+
+<p><img src="/AppService/media/2026/09/network-capture-summary.jpg" alt="network-capture-summary" /></p>
+
+<h2 id="understand-what-happened-during-the-capture">Understand what happened during the capture</h2>
+
+<p>The report also provides visualizations that help you understand network behavior across the capture window.</p>
+
+<h3 id="requests-over-time">Requests over time</h3>
+
+<p>See HTTP requests over time, grouped by response status class.</p>
+
+<p>This makes it easier to identify periods where 4xx or 5xx responses occurred and correlate them with other network activity.</p>
+
+<h3 id="response-latency">Response latency</h3>
+
+<p>View average and 95th-percentile request-to-response latency over time.</p>
+
+<p>This can help highlight latency spikes and narrow down the part of the capture that needs further investigation.</p>
+
+<h3 id="throughput">Throughput</h3>
+
+<p>See inbound and outbound traffic during the capture window.</p>
+
+<p>This provides a quick view of traffic patterns and periods of higher or lower network activity.</p>
+
+<h3 id="errors-over-time">Errors over time</h3>
+
+<p>TCP resets, retransmissions, and HTTP 5xx responses are shown on the same timeline, making it easier to see when different network symptoms occur together.</p>
+
+<p><img src="/AppService/media/2026/09/network-capture-requests.jpg" alt="network-capture-requests" /></p>
+
+<h2 id="capture-limits">Capture limits</h2>
+
+<p>Network captures are intentionally bounded so they can be collected safely from a running app.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Setting</th>
+      <th>Limit</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Maximum capture duration</td>
+      <td><strong>300 seconds</strong></td>
+    </tr>
+    <tr>
+      <td>Maximum capture size</td>
+      <td><strong>100 MB</strong></td>
+    </tr>
+    <tr>
+      <td>Snap length</td>
+      <td><strong>0, or 64–65535 bytes</strong></td>
+    </tr>
+    <tr>
+      <td>Capture history</td>
+      <td><strong>5 most recent captures</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>A <strong>snap length of 0</strong> captures the entire packet, which is needed when you want the analyzer to fully decode unencrypted HTTP traffic. Positive snap-length values are constrained to the supported range.</p>
+
+<p>The requested capture duration is capped at <strong>300 seconds</strong>, and collection also stops automatically if the trace reaches the <strong>100 MB</strong> size limit first.</p>
+
+<h2 id="try-network-capture">Try Network Capture</h2>
+
+<p>The <strong>Network Capture experience is currently in preview</strong> for Azure App Service for Linux.</p>
+
+<p>If you’re troubleshooting connectivity failures, HTTP errors, latency, retransmissions, or other network-related issues, you can now collect the trace directly from <strong>Kudu or the Azure CLI</strong>.</p>
+
+<p>And when you want a quicker starting point than examining the raw <code class="language-plaintext highlighter-rouge">.pcap</code>, use the built-in analysis to surface potential problems, latency patterns, throughput, errors, and other useful signals from the trace.</p>
+
+<p>Give it a try and let us know what you think. We’d especially like feedback on the automated analysis: which findings are useful today, and what other network problems would you like the report to help identify?</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[Troubleshooting network issues in Azure App Service for Linux has traditionally required several manual steps. You would typically SSH into your app, run a packet capture from the container, download the resulting trace, and then open it in a tool such as Wireshark to investigate what happened.]]></summary></entry><entry><title type="html">.NET 11, Python 3.15, and Node.js 26 on Azure App Service for Linux</title><link href="https://azure.github.io/AppService/2026/09/11/dotnet11-python315-node26.html" rel="alternate" type="text/html" title=".NET 11, Python 3.15, and Node.js 26 on Azure App Service for Linux" /><published>2026-09-11T00:00:00+00:00</published><updated>2026-09-11T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2026/09/11/dotnet11-python315-node26</id><content type="html" xml:base="https://azure.github.io/AppService/2026/09/11/dotnet11-python315-node26.html"><![CDATA[<h1 id="net-11-python-315-and-nodejs-26-on-azure-app-service-for-linux">.NET 11, Python 3.15, and Node.js 26 on Azure App Service for Linux</h1>
+
+<p>The next generation of application runtimes is arriving on Azure App Service.</p>
+
+<p><strong>.NET 11, Python 3.15, and Node.js 26 are now available in preview on App Service on Linux</strong>, giving you an early opportunity to test application compatibility and experiment with new runtime and language capabilities.</p>
+
+<p>Here are a few things you can try.</p>
+
+<h2 id="a-new-ubuntu-2604-foundation">A new Ubuntu 26.04 foundation</h2>
+
+<p>All three runtime images are based on <strong><a href="https://documentation.ubuntu.com/release-notes/26.04/summary-for-lts-users/">Ubuntu 26.04 (Resolute Raccoon)</a></strong>. They also use a leaner package baseline to reduce image size, package maintenance, and security exposure.</p>
+
+<p>If your application or startup scripts depend on operating-system tools or packages supplied by an earlier runtime image, test those dependencies before upgrading. Install application-specific dependencies as part of your deployment, or use a custom container when additional system packages are required.</p>
+
+<p>Ubuntu 26.04 also uses the Rust-based uutils implementation for common commands such as <code class="language-plaintext highlighter-rouge">ls</code>, <code class="language-plaintext highlighter-rouge">cp</code>, and <code class="language-plaintext highlighter-rouge">cat</code>. These commands are largely GNU-compatible, but scripts that rely on GNU-specific options or output should be tested.</p>
+
+<h2 id="net-11">.NET 11</h2>
+
+<p>.NET 11 brings updates across the runtime, ASP.NET Core, libraries, and C# 15.</p>
+
+<p><strong>Try C# 15 language features</strong>
+Experiment with new capabilities such as union types and closed hierarchies, which can make it easier to model API results, application states, and other scenarios with a defined set of possible outcomes.</p>
+
+<p><strong>Test the latest web and runtime improvements</strong>
+Try your ASP.NET Core applications with the latest runtime and framework improvements, and identify package or framework compatibility issues ahead of upgrading production applications.</p>
+
+<p><strong>A leaner runtime image</strong>
+The .NET 11 image removes runtime-unnecessary operating-system packages, including development headers and disk, volume, and kernel-management libraries. Common App Service troubleshooting tools such as <code class="language-plaintext highlighter-rouge">curl</code>, <code class="language-plaintext highlighter-rouge">wget</code>, <code class="language-plaintext highlighter-rouge">tcpdump</code>, <code class="language-plaintext highlighter-rouge">tcpping</code>, <code class="language-plaintext highlighter-rouge">dig</code>, and <code class="language-plaintext highlighter-rouge">nslookup</code> remain available.</p>
+
+<p><a href="https://learn.microsoft.com/dotnet/core/whats-new/dotnet-11/overview">Explore what’s new in .NET 11</a></p>
+
+<h2 id="python-315">Python 3.15</h2>
+
+<p>Python 3.15 introduces new capabilities around startup performance, profiling, and developer productivity.</p>
+
+<p><strong>Experiment with lazy imports</strong>
+Python 3.15 adds explicit lazy imports, allowing modules to be loaded only when they’re needed. Applications with larger dependency trees can experiment with this to reduce work during startup.</p>
+
+<p><strong>Explore new profiling capabilities</strong>
+Try the new profiling tools in Python 3.15, including Tachyon, to investigate CPU usage and application performance with real web workloads.</p>
+
+<p><strong>Review system and development dependencies</strong>
+The Python 3.15 image no longer includes the C/C++ compiler toolchain, SWIG, SQL Server ODBC driver and command-line tools, or preinstalled profiling packages such as VizTracer. Applications with source-only Python packages should use prebuilt wheels or a custom container. Applications connecting to Azure SQL or SQL Server through <code class="language-plaintext highlighter-rouge">pyodbc</code> must install the Microsoft ODBC driver as part of their deployment.</p>
+
+<p>The image continues to include common application servers and frameworks such as Gunicorn, Uvicorn, and Flask.</p>
+
+<p><a href="https://docs.python.org/3.15/whatsnew/3.15.html">Explore what’s new in Python 3.15</a></p>
+
+<h2 id="nodejs-26">Node.js 26</h2>
+
+<p>Node.js 26 brings the latest V8 runtime and JavaScript platform capabilities to App Service.</p>
+
+<p><strong>Try the Temporal API</strong>
+Temporal provides a modern approach to working with dates, times, time zones, and durations—and is enabled by default in Node.js 26.</p>
+
+<p><strong>Explore the latest JavaScript and HTTP improvements</strong>
+Node.js 26 includes V8 14.6 and Undici 8, along with new JavaScript APIs. Try your existing application to validate package compatibility and explore the latest runtime capabilities.</p>
+
+<p><strong>Review globally available tools</strong>
+The Node.js 26 image no longer includes a system Python interpreter, Corepack, or the globally installed Application Insights npm package. Applications that require Corepack—for example, to use pnpm or Yarn Berry—should install it explicitly. Applications using the Application Insights SDK should declare it in their own <code class="language-plaintext highlighter-rouge">package.json</code>. Yarn Classic remains available.</p>
+
+<p><a href="https://nodejs.org/en/blog/release/v26.0.0">Explore what’s new in Node.js 26</a></p>
+
+<h2 id="get-started">Get started</h2>
+
+<p>You can create an App Service app using these runtime versions through the Azure portal, Azure CLI, or an ARM/Bicep template.</p>
+
+<h3 id="nodejs-26-linuxfxversion-standardization">Node.js 26 LinuxFxVersion standardization</h3>
+
+<p>Starting with Node.js 26, App Service uses the standardized <code class="language-plaintext highlighter-rouge">LinuxFxVersion</code> value <strong><code class="language-plaintext highlighter-rouge">NODE|26</code></strong>.</p>
+
+<p>When you create or configure an app through the Azure portal, the portal automatically selects this standardized value. When using Azure CLI, specify Node.js 26 as the runtime:</p>
+
+<pre><code class="language-azurecli">az webapp create \
+  --resource-group &lt;resource-group-name&gt; \
+  --plan &lt;app-service-plan-name&gt; \
+  --name &lt;app-name&gt; \
+  --runtime "NODE:26"
+</code></pre>
+
+<p>For Bicep-based deployments, set <code class="language-plaintext highlighter-rouge">linuxFxVersion</code> explicitly to <code class="language-plaintext highlighter-rouge">NODE|26</code>:</p>
+
+<div class="language-bicep highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">resource</span> <span class="n">webApp</span> <span class="s1">'Microsoft.Web/sites@2024-11-01'</span> <span class="p">=</span> <span class="pi">{</span>
+  <span class="py">name</span><span class="p">:</span> <span class="n">appName</span>
+  <span class="py">location</span><span class="p">:</span> <span class="n">location</span>
+  <span class="py">properties</span><span class="p">:</span> <span class="pi">{</span>
+    <span class="py">serverFarmId</span><span class="p">:</span> <span class="n">appServicePlan</span><span class="p">.</span><span class="n">id</span>
+    <span class="py">siteConfig</span><span class="p">:</span> <span class="pi">{</span>
+      <span class="py">linuxFxVersion</span><span class="p">:</span> <span class="s1">'NODE|26'</span>
+    <span class="pi">}</span>
+  <span class="pi">}</span>
+<span class="pi">}</span>
+</code></pre></div></div>
+
+<h3 id="net-11-and-python-315">.NET 11 and Python 3.15</h3>
+
+<p>There is no change to the runtime naming or deployment experience for .NET 11 and Python 3.15. You can create apps using these stacks through the Azure portal, Azure CLI, or ARM/Bicep templates as usual.</p>
+
+<p>Because support is currently in <strong>preview</strong>, we recommend using these versions for development, experimentation, and compatibility testing.</p>
+
+<p>Give them a try and let us know what you think.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[.NET 11, Python 3.15, and Node.js 26 on Azure App Service for Linux]]></summary></entry><entry><title type="html">Azure App Service Community Standup: Managed Instance GA and Markdown for Agents</title><link href="https://azure.github.io/AppService/2026/09/10/managed-instance-ga-and-markdown-for-agents.html" rel="alternate" type="text/html" title="Azure App Service Community Standup: Managed Instance GA and Markdown for Agents" /><published>2026-09-10T00:00:00+00:00</published><updated>2026-09-10T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2026/09/10/managed-instance-ga-and-markdown-for-agents</id><content type="html" xml:base="https://azure.github.io/AppService/2026/09/10/managed-instance-ga-and-markdown-for-agents.html"><![CDATA[<p>Moving a legacy Windows application to the cloud and making an existing website easier for AI agents to use might sound like separate challenges. In the latest <strong><a href="https://www.youtube.com/watch?v=CLgc7dPJwoY">Azure App Service Community Standup</a></strong>, the team showed how App Service platform capabilities can help with both, often with few or no application code changes.</p>
+
+<p>The session covered:</p>
+
+<ul>
+  <li>The general availability of <strong>Managed Instance on Azure App Service</strong>, a hosting option for Windows applications with operating system and infrastructure dependencies.</li>
+  <li>The public preview of <strong>Markdown for Agents</strong>, which can convert an app’s HTML responses into cleaner, more token-efficient Markdown when a client requests it.</li>
+  <li>New Azure CLI 2.90.0 capabilities, including <code class="language-plaintext highlighter-rouge">az webapp exec</code> for interactive shell access and detached command execution on Linux web apps.</li>
+</ul>
+
+<h2 id="watch-the-session">Watch the Session</h2>
+
+<p><a href="https://www.youtube.com/watch?v=CLgc7dPJwoY"><img src="https://img.youtube.com/vi/CLgc7dPJwoY/maxresdefault.jpg" alt="Watch Azure App Service Community Standup: Managed Instance GA and Markdown for Agents" /></a></p>
+
+<p><a href="https://www.youtube.com/watch?v=CLgc7dPJwoY">Watch on YouTube</a></p>
+
+<h2 id="move-legacy-windows-applications-directly-to-paas">Move legacy Windows applications directly to PaaS</h2>
+
+<p>Managed Instance on Azure App Service is designed for applications that cannot easily move to the standard App Service sandbox. These applications may depend on registry access, COM components, GAC assemblies, Windows services, MSI installers, custom fonts, mapped drives, network shares, or specific Windows features and runtimes.</p>
+
+<p>Instead of moving these workloads to virtual machines or delaying migration for a complete rewrite, Managed Instance supports a <strong>lift-and-improve</strong> approach. You can preserve required dependencies while gaining App Service capabilities such as managed patching, scaling, deployment slots, authentication, managed identity, custom domains, and CI/CD.</p>
+
+<p>During the demonstration, Andrew compared the same ASP.NET Web Forms application on standard App Service and Managed Instance. The application depended on:</p>
+
+<ul>
+  <li>A database connection value stored in the Windows registry.</li>
+  <li>GDI-based chart generation.</li>
+  <li>A third-party component for PDF export.</li>
+</ul>
+
+<p>The standard App Service sandbox blocked those operations. On Managed Instance, the application could run the existing functionality while also using managed identity to connect to Azure SQL.</p>
+
+<p>Managed Instance provides plan-level configuration for these scenarios:</p>
+
+<ul>
+  <li><strong>Configuration scripts</strong> install Windows features, services, components, fonts, custom runtimes, and other dependencies when an instance starts.</li>
+  <li><strong>Registry adapters</strong> securely provide registry values backed by Azure Key Vault.</li>
+  <li><strong>Storage mounts</strong> support Azure Files, custom UNC paths, drive-letter mappings, and temporary local storage.</li>
+  <li><strong>Azure Bastion access</strong> provides just-in-time RDP for diagnostics when the plan is integrated with a virtual network.</li>
+</ul>
+
+<p>Changes made interactively through RDP apply only to the current instance. Any configuration that must survive restarts, scaling, or platform maintenance should be captured in the installation script so App Service can reapply it consistently.</p>
+
+<p>Managed Instance is generally available for Windows web apps in select regions on Premium v4 and Premium Memory-Optimized v4 plans.</p>
+
+<h2 id="make-existing-websites-easier-for-agents-to-consume">Make existing websites easier for agents to consume</h2>
+
+<p>Web pages contain scripts, styles, navigation, and other HTML that browsers need but AI agents often do not. Sending all of that markup to a model increases response size and token usage before the agent can reach the useful content.</p>
+
+<p><strong>Markdown for Agents</strong>, now in public preview, lets App Service convert supported HTML responses into Markdown at the platform layer. After the feature is enabled, an agent requests Markdown through standard HTTP content negotiation:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-i</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"Accept: text/markdown"</span> <span class="se">\</span>
+  <span class="s2">"https://&lt;APP_NAME&gt;.azurewebsites.net/"</span>
+</code></pre></div></div>
+
+<p>A converted response uses <code class="language-plaintext highlighter-rouge">Content-Type: text/markdown; charset=utf-8</code> and includes the <code class="language-plaintext highlighter-rouge">x-markdown-source: easy-markdown</code> response header. Normal browser requests continue to receive the application’s original response, and the app’s existing authentication, authorization, and network access controls still apply.</p>
+
+<p>The standup demo used a Contoso Outdoors site and reduced the response size by 81 percent without changing the application. Broader internal testing across more than 637,000 pages produced Markdown responses that were 97 percent smaller at the median, with a median conversion time of 2 milliseconds. Results vary by page and content.</p>
+
+<p>During the public preview, Markdown for Agents is available for Windows apps in all Azure public regions on Basic or higher App Service plans. It can be enabled through <code class="language-plaintext highlighter-rouge">az rest</code>, ARM, or Bicep. The team also previewed an upcoming Azure portal experience that brings Markdown for Agents and built-in MCP together under a new AI configuration area. Linux support, dedicated Azure CLI commands, and the portal experience are planned for future updates.</p>
+
+<h2 id="modernize-in-practical-steps">Modernize in practical steps</h2>
+
+<p>Together, Managed Instance and Markdown for Agents demonstrate an incremental path for existing applications:</p>
+
+<ol>
+  <li>Move a Windows application and its dependencies to a managed App Service environment.</li>
+  <li>Adopt platform capabilities such as managed identity, Key Vault, deployment slots, and autoscale.</li>
+  <li>Make existing web content easier for agents to retrieve by enabling Markdown responses.</li>
+  <li>Expose existing APIs as agent tools with App Service built-in MCP when the application has an OpenAPI specification.</li>
+</ol>
+
+<p>This approach lets teams modernize infrastructure and add AI-ready experiences without waiting for a full application rewrite.</p>
+
+<h2 id="also-highlighted-azure-cli-2900">Also highlighted: Azure CLI 2.90.0</h2>
+
+<p>The team also called out the Azure CLI 2.90.0 release. The new <code class="language-plaintext highlighter-rouge">az webapp exec</code> command provides a consistent way to open an interactive shell or start a detached command in a running Linux web app. A related platform improvement, rolling out separately, allows for BYO container scenarios to no longer require their own SSH server.</p>
+
+<h2 id="resources">Resources</h2>
+
+<ul>
+  <li><a href="https://techcommunity.microsoft.com/blog/appsonazureblog/announcing-general-availability-of-managed-instance-on-azure-app-service/4541283">Announcing General Availability of Managed Instance on Azure App Service</a></li>
+  <li><a href="https://learn.microsoft.com/azure/app-service/overview-managed-instance">Managed Instance on App Service overview</a></li>
+  <li><a href="https://learn.microsoft.com/azure/app-service/quickstart-managed-instance">Deploy Managed Instance on Azure App Service</a></li>
+  <li><a href="https://learn.microsoft.com/azure/app-service/configure-managed-instance">Configure Managed Instance on Azure App Service</a></li>
+  <li><a href="https://github.com/Azure/Managed-Instance-on-Azure-App-Service">Managed Instance on Azure App Service GitHub repository</a></li>
+  <li><a href="https://techcommunity.microsoft.com/blog/appsonazureblog/announcing-public-preview-markdown-for-agents-in-azure-app-service/4537023">Announcing public preview: Markdown for Agents in Azure App Service</a></li>
+  <li><a href="https://learn.microsoft.com/azure/app-service/configure-mcp-built-in">Configure App Service built-in MCP</a></li>
+  <li><a href="https://azure.github.io/AppService/2026/09/01/azure-cli-2-90-app-service-updates.html">What’s new for Azure App Service in Azure CLI 2.90.0</a></li>
+  <li><a href="https://azure.github.io/AppService/2026/08/31/practical-path-to-ai-ready-applications.html">A Practical Path to Building AI-Ready Applications on Azure App Service</a></li>
+</ul>]]></content><author><name>Azure App Service</name></author><category term="managed-instance" /><category term="ai-integration" /><category term="markdown" /><summary type="html"><![CDATA[Moving a legacy Windows application to the cloud and making an existing website easier for AI agents to use might sound like separate challenges. In the latest Azure App Service Community Standup, the team showed how App Service platform capabilities can help with both, often with few or no application code changes.]]></summary></entry><entry><title type="html">What’s new for Azure App Service in Azure CLI 2.90.0</title><link href="https://azure.github.io/AppService/2026/09/01/azure-cli-2-90-app-service-updates.html" rel="alternate" type="text/html" title="What’s new for Azure App Service in Azure CLI 2.90.0" /><published>2026-09-01T00:00:00+00:00</published><updated>2026-09-01T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2026/09/01/azure-cli-2-90-app-service-updates</id><content type="html" xml:base="https://azure.github.io/AppService/2026/09/01/azure-cli-2-90-app-service-updates.html"><![CDATA[<p>Azure CLI 2.90.0 is now available and includes new capabilities and reliability improvements for Azure App Service. This release makes it easier to troubleshoot Linux web apps, work directly with running containers, identify deployments, and create App Service plans using the latest Isolated tier.</p>
+
+<h2 id="connect-directly-to-linux-web-app-containers">Connect directly to Linux web app containers</h2>
+
+<p>The existing <code class="language-plaintext highlighter-rouge">az webapp ssh</code> experience was designed primarily for interactive, human-operated sessions and could behave differently across client operating systems. On Windows, for example, it could open a browser-based WebSSH session instead of using the local terminal. This made cross-platform documentation, automation, and operational tooling difficult to standardize.</p>
+
+<p>The new <code class="language-plaintext highlighter-rouge">az webapp exec</code> command, currently in preview, provides a consistent CLI surface for interactive shell access and detached command execution against running Linux web apps.</p>
+
+<p>Open an interactive shell in the main app:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp <span class="nb">exec</span> <span class="se">\</span>
+  <span class="nt">--resource-group</span> &lt;resource-group&gt; <span class="se">\</span>
+  <span class="nt">--name</span> &lt;web-app&gt;
+</code></pre></div></div>
+
+<p>Shell mode uses the local terminal on Windows, macOS, and Linux. By default, it connects to one app instance using <code class="language-plaintext highlighter-rouge">/bin/bash</code>. Use <code class="language-plaintext highlighter-rouge">--instance</code> to select a specific instance or <code class="language-plaintext highlighter-rouge">--shell</code> to use another shell, such as <code class="language-plaintext highlighter-rouge">/bin/sh</code>.</p>
+
+<p>You can also connect to SCM (aka Kudu):</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp <span class="nb">exec</span> <span class="se">\</span>
+  <span class="nt">--resource-group</span> &lt;resource-group&gt; <span class="se">\</span>
+  <span class="nt">--name</span> &lt;web-app&gt; <span class="se">\</span>
+  <span class="nt">--target</span> kudu
+</code></pre></div></div>
+
+<p>Execute mode starts a command without opening an interactive session. This is useful for triggering setup tasks, migrations, diagnostics, and long-running work from automation or agent-driven workflows. You can target one instance, a comma-separated list of instances, or every instance. Requests for multiple instances run in parallel.</p>
+
+<p>For example, run a shell command on every instance and redirect its output to a file:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp <span class="nb">exec</span> <span class="se">\</span>
+  <span class="nt">--resource-group</span> &lt;resource-group&gt; <span class="se">\</span>
+  <span class="nt">--name</span> &lt;web-app&gt; <span class="se">\</span>
+  <span class="nt">--mode</span> execute <span class="se">\</span>
+  <span class="nt">--instance</span> all <span class="se">\</span>
+  <span class="nt">--shell-command</span> <span class="s2">"echo hello &gt; /home/LogFiles/output.txt 2&gt;&amp;1"</span>
+</code></pre></div></div>
+
+<p>Execute mode is fire-and-forget. An <code class="language-plaintext highlighter-rouge">accepted</code> result confirms that the platform accepted the request, not that the command completed successfully. The command runs detached, and the CLI does not return its standard output, standard error, or exit code. Use <code class="language-plaintext highlighter-rouge">--command</code> to invoke a program directly, <code class="language-plaintext highlighter-rouge">--shell-command</code> when you need shell operators such as <code class="language-plaintext highlighter-rouge">|</code>, <code class="language-plaintext highlighter-rouge">&amp;&amp;</code>, or <code class="language-plaintext highlighter-rouge">&gt;</code>, and <code class="language-plaintext highlighter-rouge">--working-directory</code> to choose an absolute working directory.</p>
+
+<p>The command also supports deployment slots. This first preview focuses on interactive shell access and detached command execution; file transfer and port forwarding are not included.</p>
+
+<h3 id="a-safer-path-for-custom-linux-containers">A safer path for custom Linux containers</h3>
+
+<p>The legacy WebSSH model for custom Linux containers can require adding an OpenSSH server to the container image, embedding a root password, and listening on port 2222. Security-conscious teams may be unable to use that model because it conflicts with policies that prohibit plaintext secrets, SSH daemons, or multiple processes in production images. Reusing the same image outside App Service can also expose those image changes in environments that do not have App Service protections in front of the SSH port.</p>
+
+<p>A related App Service platform improvement, planned to roll out separately later in September, uses Kudu as an authenticated proxy to attach directly to the running container. Once available for an app, this path removes the need to modify the image, embed an SSH credential, or run an SSH daemon. Availability may vary by App Service region while the platform rollout completes.</p>
+
+<h3 id="control-ssh-access">Control SSH access</h3>
+
+<p>Treat container shell access as a privileged operations capability and disable it on apps that do not need it. The <code class="language-plaintext highlighter-rouge">sshEnabled</code> property controls access at the app level. For example, disable SSH with:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp config <span class="nb">set</span> <span class="se">\</span>
+  <span class="nt">--resource-group</span> &lt;resource-group&gt; <span class="se">\</span>
+  <span class="nt">--name</span> &lt;web-app&gt; <span class="se">\</span>
+  <span class="nt">--generic-configurations</span> <span class="s1">'{"sshEnabled": false}'</span>
+</code></pre></div></div>
+
+<p>Set <code class="language-plaintext highlighter-rouge">sshEnabled</code> to <code class="language-plaintext highlighter-rouge">true</code> to enable access again. Add <code class="language-plaintext highlighter-rouge">--slot &lt;slot-name&gt;</code> to configure a deployment slot.</p>
+
+<p>For governance across many apps, assign the built-in <strong>App Service apps should disable SSH</strong> and <strong>App Service app slots should disable SSH</strong> policies at the subscription or management-group scope. Assigning them at the tenant root management group applies the control across the tenant. Both policies default to <code class="language-plaintext highlighter-rouge">Audit</code> and can use <code class="language-plaintext highlighter-rouge">Deny</code> to prevent noncompliant app configurations. For policy IDs and assignment links, see the <a href="https://learn.microsoft.com/azure/app-service/policy-reference">Azure App Service built-in policy reference</a>.</p>
+
+<h2 id="collect-network-captures-from-linux-web-apps">Collect network captures from Linux web apps</h2>
+
+<p>A new preview troubleshooting command can collect a bounded packet capture from a Linux App Service worker:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp troubleshoot collect network-capture <span class="se">\</span>
+  <span class="nt">--resource-group</span> &lt;resource-group&gt; <span class="se">\</span>
+  <span class="nt">--name</span> &lt;web-app&gt; <span class="se">\</span>
+  <span class="nt">--duration</span> 30
+</code></pre></div></div>
+
+<p>The command uses Kudu to finalize and analyze the capture, then returns authenticated links to the packet capture and analysis report. Use <code class="language-plaintext highlighter-rouge">--collect-only</code> when you only need the raw capture.</p>
+
+<h2 id="give-deployments-a-friendly-name">Give deployments a friendly name</h2>
+
+<p><code class="language-plaintext highlighter-rouge">az webapp deploy</code> now supports <code class="language-plaintext highlighter-rouge">--tag</code>, allowing Linux web app deployments to carry a recognizable name:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp deploy <span class="se">\</span>
+  <span class="nt">--resource-group</span> &lt;resource-group&gt; <span class="se">\</span>
+  <span class="nt">--name</span> &lt;web-app&gt; <span class="se">\</span>
+  <span class="nt">--src-path</span> app.zip <span class="se">\</span>
+  <span class="nt">--tag</span> september-production-release
+</code></pre></div></div>
+
+<p>This makes individual deployments easier to identify in deployment history and operational workflows.</p>
+
+<h2 id="get-more-useful-web-app-creation-errors">Get more useful web app creation errors</h2>
+
+<p>For Linux web apps, <code class="language-plaintext highlighter-rouge">az webapp create</code> adds the opt-in <code class="language-plaintext highlighter-rouge">--enriched-errors</code> parameter. When enabled, the CLI returns more detailed diagnostic information when creation fails:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp create <span class="se">\</span>
+  <span class="nt">--resource-group</span> &lt;resource-group&gt; <span class="se">\</span>
+  <span class="nt">--plan</span> &lt;app-service-plan&gt; <span class="se">\</span>
+  <span class="nt">--name</span> &lt;web-app&gt; <span class="se">\</span>
+  <span class="nt">--runtime</span> <span class="s2">"PYTHON:3.13"</span> <span class="se">\</span>
+  <span class="nt">--enriched-errors</span> <span class="nb">true</span>
+</code></pre></div></div>
+
+<p>This can help identify invalid runtime, container, and site configuration values without requiring additional troubleshooting steps.</p>
+
+<h2 id="create-isolated-v4-app-service-plans">Create Isolated v4 App Service plans</h2>
+
+<p>Azure CLI now recognizes the Isolated v4 SKUs for App Service Environment plans:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">I1V4</code> through <code class="language-plaintext highlighter-rouge">I6V4</code></li>
+  <li><code class="language-plaintext highlighter-rouge">I1MV4</code> through <code class="language-plaintext highlighter-rouge">I5MV4</code></li>
+</ul>
+
+<p>For example:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az appservice plan create <span class="se">\</span>
+  <span class="nt">--resource-group</span> &lt;resource-group&gt; <span class="se">\</span>
+  <span class="nt">--name</span> &lt;app-service-plan&gt; <span class="se">\</span>
+  <span class="nt">--app-service-environment</span> &lt;ase-resource-id&gt; <span class="se">\</span>
+  <span class="nt">--sku</span> I1V4
+</code></pre></div></div>
+
+<p>These SKUs are mapped to the <code class="language-plaintext highlighter-rouge">IsolatedV4</code> ARM tier. An App Service Environment is required, and zone-redundant plans are supported.</p>
+
+<h2 id="app-service-configuration-and-plan-fixes">App Service configuration and plan fixes</h2>
+
+<p>This release also addresses two important usability issues:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">az webapp config set --generic-configurations</code> now preserves camelCase properties such as <code class="language-plaintext highlighter-rouge">webJobsEnabled</code>, whether supplied as <code class="language-plaintext highlighter-rouge">key=value</code> input or JSON.</li>
+  <li>Windows examples for <code class="language-plaintext highlighter-rouge">az appservice plan create</code> now include <code class="language-plaintext highlighter-rouge">--is-linux false</code>. Because the command defaults to Linux when the option is omitted, this avoids accidentally creating a Linux plan when following a Windows example.</li>
+</ul>
+
+<h2 id="get-the-release">Get the release</h2>
+
+<p>Upgrade to Azure CLI 2.90.0 or later, then verify the installed version:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az version
+</code></pre></div></div>
+
+<h2 id="summary">Summary</h2>
+
+<p>Azure CLI 2.90.0 gives App Service users better container access, stronger troubleshooting tools, support for the latest isolated compute tier, and more predictable configuration behavior.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[Azure CLI 2.90.0 is now available and includes new capabilities and reliability improvements for Azure App Service. This release makes it easier to troubleshoot Linux web apps, work directly with running containers, identify deployments, and create App Service plans using the latest Isolated tier.]]></summary></entry><entry><title type="html">A Practical Path to Building AI-Ready Applications on Azure App Service</title><link href="https://azure.github.io/AppService/2026/08/31/practical-path-to-ai-ready-applications.html" rel="alternate" type="text/html" title="A Practical Path to Building AI-Ready Applications on Azure App Service" /><published>2026-08-31T00:00:00+00:00</published><updated>2026-08-31T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2026/08/31/practical-path-to-ai-ready-applications</id><content type="html" xml:base="https://azure.github.io/AppService/2026/08/31/practical-path-to-ai-ready-applications.html"><![CDATA[<p>Migrating an existing Windows application to the cloud can be challenging when it depends on server roles, local storage, registry access, or third-party libraries. If technologies such as <code class="language-plaintext highlighter-rouge">System.Drawing</code>, Crystal Reports, MSMQ, Windows services, or drive-letter-based storage are blocking your migration, this recorded session is for you.</p>
+
+<p>Perhaps rewriting the application would take months, or you no longer have access to all the original source code. Even after migrating, you may be wondering how to bring AI capabilities to the business logic you already have.</p>
+
+<p>In <strong><a href="https://www.youtube.com/watch?v=TleupQT2ZOM">A Practical Path to Building AI-Ready Applications on Azure App Service</a></strong>, the team demonstrates how three Azure App Service capabilities can create a practical, incremental modernization path:</p>
+
+<ul>
+  <li><strong><a href="https://techcommunity.microsoft.com/blog/AppsonAzureBlog/announcing-general-availability-of-managed-instance-on-azure-app-service/4541283">Managed Instance on Azure App Service</a></strong> helps move Windows applications to a managed platform while preserving important operating system and application dependencies.</li>
+  <li><strong><a href="https://learn.microsoft.com/azure/developer/github-copilot-app-modernization/">GitHub Copilot app modernization</a></strong> can assess applications and accelerate modernization when source code is available.</li>
+  <li><strong><a href="https://learn.microsoft.com/azure/app-service/configure-mcp-built-in">Built-in MCP on Azure App Service</a></strong> can expose existing APIs as Model Context Protocol (MCP) tools, making them available to agents without requiring you to build and host a separate MCP server.</li>
+</ul>
+
+<p>The session also includes an end-to-end demonstration showing how these capabilities work together.</p>
+
+<p>Instead of starting with a large, risky rewrite, you can <strong>lift, extend, and modernize</strong>: move the application first, take advantage of the managed Azure App Service platform, and then add modern and AI-powered experiences incrementally.</p>
+
+<p>If you are facing a migration project that could take 6, 12, or even 18 months, watch the recording to see how this approach can help shorten and simplify the journey.</p>
+
+<h2 id="watch-the-session">Watch the Session</h2>
+
+<p><a href="https://www.youtube.com/watch?v=TleupQT2ZOM"><img src="https://img.youtube.com/vi/TleupQT2ZOM/maxresdefault.jpg" alt="Watch A Practical Path to Building AI-Ready Applications on Azure App Service" /></a></p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><a href="https://developer.microsoft.com/en-us/reactor/events/27396/">Watch on Microsoft Reactor</a></td>
+      <td><a href="https://www.youtube.com/watch?v=TleupQT2ZOM">Watch on YouTube</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="resources">Resources</h2>
+
+<ul>
+  <li><a href="https://techcommunity.microsoft.com/blog/AppsonAzureBlog/announcing-general-availability-of-managed-instance-on-azure-app-service/4541283">Announcing General Availability of Managed Instance on Azure App Service</a></li>
+  <li><a href="https://learn.microsoft.com/azure/app-service/overview-managed-instance">Managed Instance on App Service overview</a></li>
+  <li><a href="https://learn.microsoft.com/azure/app-service/quickstart-managed-instance">Deploy Managed Instance on Azure App Service</a></li>
+  <li><a href="https://learn.microsoft.com/azure/app-service/configure-managed-instance">Configure Managed Instance on Azure App Service</a></li>
+  <li><a href="https://github.com/Azure/Managed-Instance-on-Azure-App-Service">Managed Instance on Azure App Service GitHub repository</a></li>
+  <li><a href="https://github.com/Azure-Samples/managed-instance-azure-app-service-quickstart">Managed Instance quickstart repository</a></li>
+  <li><a href="https://github.com/gsethdev/devShop/tree/devshopASMIwithSQL">DevShop sample on GitHub</a></li>
+  <li><a href="https://learn.microsoft.com/azure/app-service/configure-mcp-built-in">Configure App Service built-in MCP</a></li>
+  <li><a href="https://learn.microsoft.com/azure/app-service/configure-authentication-mcp">Configure MCP server authorization</a></li>
+  <li><a href="https://learn.microsoft.com/azure/developer/github-copilot-app-modernization/">GitHub Copilot App Modernization documentation</a></li>
+  <li><a href="https://learn.microsoft.com/training/modules/intro-github-copilot-app-modernization/">Introduction to GitHub Copilot App Modernization</a></li>
+  <li><a href="https://azure.github.io/AppService/2026/04/09/Agentic_IIS_Migration_to_Managed_Instance_On_AppService.html">Agentic IIS Migration to Managed Instance on Azure App Service</a></li>
+  <li><a href="https://github.com/gsethdev/agenticmigration">IIS Migration MCP Server repository</a></li>
+  <li><a href="https://learn.microsoft.com/cli/azure/appservice/plan/managed-instance/storage-mount?view=azure-cli-latest">Managed Instance storage-mount CLI reference</a></li>
+  <li><a href="https://learn.microsoft.com/cli/azure/appservice/plan/managed-instance/install-script?view=azure-cli-latest">Managed Instance install-script CLI reference</a></li>
+  <li><a href="https://learn.microsoft.com/cli/azure/appservice/plan/managed-instance/instance?view=azure-cli-latest">Managed Instance instance CLI reference</a></li>
+</ul>]]></content><author><name>Azure App Service</name></author><category term="ai-integration" /><category term="managed-instance" /><category term="mcp" /><summary type="html"><![CDATA[Migrating an existing Windows application to the cloud can be challenging when it depends on server roles, local storage, registry access, or third-party libraries. If technologies such as System.Drawing, Crystal Reports, MSMQ, Windows services, or drive-letter-based storage are blocking your migration, this recorded session is for you.]]></summary></entry></feed>

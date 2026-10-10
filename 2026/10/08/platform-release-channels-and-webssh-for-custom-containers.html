@@ -1,0 +1,1012 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Azure App Service Community Standup: Platform Release Channels &amp; WebSSH - Azure App Service</title>
+<meta name="description" content="Keeping an application current should not mean giving up control over testing, deployment, or troubleshooting. In the October 8 Azure App Service Community Standup: Platform Release Channels &amp; WebSSH for Custom Containers, the team demonstrated how App Service for Linux is making those operational tasks easier, from validating runtime patches to investigating a failing backend connection.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Azure App Service Community Standup: Platform Release Channels &amp; WebSSH">
+<meta property="og:url" content="https://azure.github.io/AppService/2026/10/08/platform-release-channels-and-webssh-for-custom-containers.html">
+
+
+  <meta property="og:description" content="Keeping an application current should not mean giving up control over testing, deployment, or troubleshooting. In the October 8 Azure App Service Community Standup: Platform Release Channels &amp; WebSSH for Custom Containers, the team demonstrated how App Service for Linux is making those operational tasks easier, from validating runtime patches to investigating a failing backend connection.">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2026-10-08T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2026/10/08/platform-release-channels-and-webssh-for-custom-containers.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/sidecars/" class="">Sidecars</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/ai-integration/" class="">AI Integration</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Azure App Service Community Standup: Platform Release Channels &amp; WebSSH">
+    <meta itemprop="description" content="Keeping an application current should not mean giving up control over testing, deployment, or troubleshooting. In the October 8 Azure App Service Community Standup: Platform Release Channels &amp; WebSSH for Custom Containers, the team demonstrated how App Service for Linux is making those operational tasks easier, from validating runtime patches to investigating a failing backend connection.">
+    <meta itemprop="datePublished" content="October 08, 2026">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Azure App Service Community Standup: Platform Release Channels &amp; WebSSH
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+            
+            
+              • By Byron Tardif, Tulika Chaudharie, and Andrew Westgarth
+            
+            • October 8, 2026
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p>Keeping an application current should not mean giving up control over testing, deployment, or troubleshooting. In the October 8 <strong><a href="https://www.youtube.com/watch?v=tGJeW7MKL9I">Azure App Service Community Standup: Platform Release Channels &amp; WebSSH for Custom Containers</a></strong>, the team demonstrated how App Service for Linux is making those operational tasks easier, from validating runtime patches to investigating a failing backend connection.</p>
+
+<p>The session covered:</p>
+
+<ul>
+  <li>Choosing when to adopt runtime patches with <strong>Platform Release Channel</strong>.</li>
+  <li>Simplifying deployment with <strong>Quick Deploy</strong>, plus previews of <strong>code rollback</strong> and <strong>Secure Builds</strong>.</li>
+  <li>Connecting to custom containers <strong>without an SSH server</strong> and collecting <strong>Node.js CPU, memory, and network diagnostics</strong>.</li>
+</ul>
+
+<h2 id="watch-the-session">Watch the Session</h2>
+
+<p><a href="https://www.youtube.com/watch?v=tGJeW7MKL9I"><img src="https://img.youtube.com/vi/tGJeW7MKL9I/maxresdefault.jpg" alt="Watch Azure App Service Community Standup: Platform Release Channels &amp; WebSSH for Custom Containers" /></a></p>
+
+<p><a href="https://www.youtube.com/watch?v=tGJeW7MKL9I">Watch on YouTube</a></p>
+
+<h2 id="validate-runtime-patches-before-production-adopts-them">Validate runtime patches before production adopts them</h2>
+
+<p>Runtime patches bring security fixes and platform improvements, but applications may need validation before moving to a newer patch. <strong>Platform Release Channel</strong> gives Linux apps a choice of update cadence:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Channel</th>
+      <th>Purpose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Latest</strong></td>
+      <td>Receives new patches first; intended for early validation, not production workloads.</td>
+    </tr>
+    <tr>
+      <td><strong>Standard</strong></td>
+      <td>The default channel, following the normal App Service rollout cadence and recommended for most production apps.</td>
+    </tr>
+    <tr>
+      <td><strong>Extended</strong></td>
+      <td>Stays further behind to provide additional validation time, typically one release behind Standard.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Tulika demonstrated three copies of a .NET application, one on each channel. Inspecting their runtime versions in <strong>SCM (Kudu)</strong> showed different patch levels, making the progression from Latest to Standard to Extended concrete. Those versions were a snapshot of the rollout, not permanently pinned versions or a fixed update schedule.</p>
+
+<p>The team highlighted a practical testing pattern: keep production on Standard and configure a deployment slot on Latest to test upcoming patches. Channel selection can differ by slot. During the demonstration, Tulika also explained that changing the channel recycles the app to use the corresponding runtime image.</p>
+
+<p>You can configure the channel in the Azure portal’s <strong>Stack settings</strong> or through Azure CLI. For example, explicitly select the default channel:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp update <span class="se">\</span>
+  <span class="nt">--resource-group</span> &lt;resource-group&gt; <span class="se">\</span>
+  <span class="nt">--name</span> &lt;web-app&gt; <span class="se">\</span>
+  <span class="nt">--platform-release-channel</span> Standard
+</code></pre></div></div>
+
+<p>Channels control when patches arrive; they are not a way to avoid runtime updates indefinitely. Plan validation around the rollout rather than assuming a particular patch will remain on a channel.</p>
+
+<h2 id="deploy-with-more-confidence">Deploy with more confidence</h2>
+
+<h3 id="test-changes-and-roll-back-quickly">Test changes and roll back quickly</h3>
+
+<p><strong>Quick Deploy</strong> brings ZIP upload directly into the Azure portal’s <strong>Deployment Center</strong>. You can inspect the package and choose whether to run a server-side build before deploying. It is useful for getting started and testing; repeatable production deployments should still use a CI/CD pipeline.</p>
+
+<p>In the session, Tulika uploaded a ZIP package that replaced a working page with a broken version. She then opened the preview <strong>Rollbacks</strong> experience in <strong>SCM (Kudu)</strong>, selected a retained previous deployment, and restored the working page without uploading the old package again.</p>
+
+<p>The demo showed the current deployment and two previous versions. The presenters explained that retention depends on available filesystem space. Treat this as a preview of the demonstrated recovery workflow, not a guarantee that every deployment or app has a recoverable version. Keep versioned release artifacts and use deployment slots as part of your production release process.</p>
+
+<h3 id="spot-vulnerable-components-with-secure-builds">Spot vulnerable components with Secure Builds</h3>
+
+<p>The team previewed <strong>Secure Builds</strong>, showing a deployment-specific report that matched components against GitHub security advisories. Opening a finding led to the corresponding advisory, giving the developer a starting point for remediation. In the demonstrated experience, findings were reported without blocking the deployment.</p>
+
+<p>Rollback and Secure Builds were described as previews during the recording. Their current regional, plan, runtime, and deployment-method coverage has not been independently confirmed in published documentation, so this recap describes what was shown rather than announcing broad availability.</p>
+
+<h2 id="troubleshoot-linux-apps-without-rebuilding-the-container">Troubleshoot Linux apps without rebuilding the container</h2>
+
+<h3 id="open-a-terminal-without-adding-an-ssh-server">Open a terminal without adding an SSH server</h3>
+
+<p>Custom Linux containers traditionally needed their own SSH server configuration for the legacy WebSSH experience. Tulika demonstrated a container without that setup: the old connection failed, but <strong><code class="language-plaintext highlighter-rouge">az webapp exec</code></strong> successfully opened a shell in the running app container.</p>
+
+<p>The command, available in preview starting with <a href="https://azure.github.io/AppService/2026/09/01/azure-cli-2-90-app-service-updates.html">Azure CLI 2.90.0</a>, uses the local terminal consistently on Windows, macOS, and Linux. Use an up-to-date Azure CLI and select a shell that exists in your image:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp <span class="nb">exec</span> <span class="se">\</span>
+  <span class="nt">--resource-group</span> &lt;resource-group&gt; <span class="se">\</span>
+  <span class="nt">--name</span> &lt;web-app&gt; <span class="se">\</span>
+  <span class="nt">--shell</span> /bin/sh
+</code></pre></div></div>
+
+<p>The session also showed <strong>Try the new terminal</strong> in <strong>SCM (Kudu)</strong> connecting to the same container. This platform path removes the need to install an SSH daemon or embed an SSH credential in the image. Availability can vary while the platform rollout completes.</p>
+
+<p>Beyond interactive shells, <code class="language-plaintext highlighter-rouge">az webapp exec</code> supports detached execution. The presenters discussed running a one-off database migration from an app instance that already has the required network access. An <code class="language-plaintext highlighter-rouge">accepted</code> response confirms only that the request was accepted, not that the command completed successfully; detached execution does not return the command’s output or exit code.</p>
+
+<p>Shell access is a privileged operational capability. Apps that do not need it can disable access through the <code class="language-plaintext highlighter-rouge">sshEnabled</code> configuration property.</p>
+
+<h3 id="move-from-cpu-and-memory-symptoms-to-useful-evidence">Move from CPU and memory symptoms to useful evidence</h3>
+
+<p>For <strong>Node.js apps on Linux</strong>, the team demonstrated CPU and memory diagnostics in <strong>SCM (Kudu) &gt; Diagnostic Tools</strong>. You can collect an artifact for local analysis or choose <strong>Collect &amp; analyze</strong> to generate a built-in report.</p>
+
+<p>The memory report highlighted large strings, closures, and arrays that could help narrow down a suspected leak. The CPU demonstration contrasted a capture taken while the app was idle with one that identified elevated CPU activity and event loop blocking. These reports provide investigation leads, not an automatic fix.</p>
+
+<p>A memory dump captures a point in time; a CPU profile observes activity over a selected interval. Collect evidence while the problem is occurring. Dumps consume storage, and collection and analysis can affect the instance serving your app. The presenters recommended short captures and, where appropriate, reproducing the issue on a deployment slot with a controlled portion of traffic.</p>
+
+<p>During the recording, this diagnostic experience was described as a preview rolling out with Node.js support first. Do not assume the same CPU and memory tooling is available for every Linux runtime.</p>
+
+<h3 id="separate-backend-connectivity-failures-from-application-errors">Separate backend connectivity failures from application errors</h3>
+
+<p>The <strong>Network Capture</strong> demonstration investigated an app returning errors while trying to reach a backend. The generated report showed failed TCP handshakes and retransmissions, directing attention toward the connection path rather than only the frontend web server.</p>
+
+<p>Network Capture is in preview for App Service for Linux and supports collection with optional built-in analysis in <strong>SCM (Kudu)</strong>. Published documentation also describes Azure CLI support through <code class="language-plaintext highlighter-rouge">az webapp troubleshoot collect network-capture</code> for Linux web apps on dedicated App Service plans, even though the session discussed additional CLI diagnostics as upcoming.</p>
+
+<p>Captures target a selected app instance, stop at <strong>100 MB</strong>, and have a maximum duration of <strong>300 seconds</strong>. HTTPS traffic remains encrypted. Packet captures can contain sensitive application data, so handle them accordingly. Choose <strong>Collect only</strong> and download the <code class="language-plaintext highlighter-rouge">.pcap</code> for local investigation when you want to avoid running the analysis on the app instance.</p>
+
+<h2 id="resources">Resources</h2>
+
+<ul>
+  <li><a href="https://azure.github.io/AppService/2026/05/06/platform-release-channel.html">Control runtime patch updates with Platform Release Channel</a></li>
+  <li><a href="https://azure.github.io/AppService/2026/07/30/quick-deploy-portal.html">Deploy ZIP packages from the Azure portal</a></li>
+  <li><a href="https://azure.github.io/AppService/2026/09/01/azure-cli-2-90-app-service-updates.html">Azure CLI 2.90.0: container access and Linux troubleshooting</a></li>
+  <li><a href="https://azure.github.io/AppService/2026/09/17/cpu-memory-profiling.html">Diagnose CPU and memory issues in Node.js apps on Linux</a></li>
+  <li><a href="https://azure.github.io/AppService/2026/09/17/network-capture.html">Capture and analyze network traces on Linux</a></li>
+  <li><a href="https://learn.microsoft.com/cli/azure/webapp/troubleshoot/collect?view=azure-cli-latest">Azure CLI network capture reference</a></li>
+</ul>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2026-10-08T00:00:00+00:00">October 08, 2026</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Azure+App+Service+Community+Standup%3A+Platform+Release+Channels+%26+WebSSH%20https%3A%2F%2Fazure.github.io%2FAppService%2F2026%2F10%2F08%2Fplatform-release-channels-and-webssh-for-custom-containers.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2026%2F10%2F08%2Fplatform-release-channels-and-webssh-for-custom-containers.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2026%2F10%2F08%2Fplatform-release-channels-and-webssh-for-custom-containers.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2026/10/06/azure-cli-2-91-app-service-updates.html" class="pagination--pager" title="What’s new for Azure App Service in Azure CLI 2.91.0
+">Previous</a>
+    
+    
+      <a href="/AppService/2026/10/09/php-nginx-update.html" class="pagination--pager" title="Nginx package update for PHP apps on Azure App Service
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2026/10/09/php-nginx-update.html" rel="permalink">Nginx package update for PHP apps on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • October 9, 2026
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">We’re updating the Nginx packages used in Azure App Service PHP images, moving from the deprecated deb.sury.org repository to the official nginx.org reposito...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2026/10/06/azure-cli-2-91-app-service-updates.html" rel="permalink">What’s new for Azure App Service in Azure CLI 2.91.0
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Byron Tardif
+        
+        • October 6, 2026
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Azure CLI 2.91.0 adds a preview command for diagnosing Linux web app configuration and runtime errors from the terminal. This release also makes access-restr...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2026/09/28/Azure-App-Service-on-Azure-Stack-Hub-26R1-Released.html" rel="permalink">Azure App Service on Azure Stack Hub 26R1 Released
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Andrew Westgarth
+        
+        • September 28, 2026
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Azure App Service on Azure Stack Hub 26R1 is now available for customers to download and update their Azure Stack Hub deployments.  This release contains upd...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2026/09/17/network-capture.html" rel="permalink">Capture and analyze network traces in Azure App Service for Linux
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+        
+        
+          • By Tulika Chaudharie
+        
+        • September 17, 2026
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Troubleshooting network issues in Azure App Service for Linux has traditionally required several manual steps. You would typically SSH into your app, run a p...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2026 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
