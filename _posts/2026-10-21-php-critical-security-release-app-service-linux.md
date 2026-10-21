@@ -5,6 +5,10 @@ toc: true
 toc_sticky: true
 ---
 
+> **WordPress update (21 October 2026):** WordPress apps deployed using the official [WordPress on App Service offering in Microsoft Marketplace](https://marketplace.microsoft.com/product/WordPress.WordPress?tab=Overview) have been updated to patched PHP versions, except for apps still using the older Alpine-based images. **The older Alpine-based images will not receive these security patches.** If your app uses an Alpine-based image, follow [Transition from Alpine Linux to Debian for WordPress on App Service](https://techcommunity.microsoft.com/blog/appsonazureblog/transition-from-alpine-linux-to-debian-for-wordpress-on-app-service/4264858) to migrate to a Debian-based image.
+
+<hr>
+
 > **Update (21 October 2026):** We have completed the rollout of the updated built-in PHP images with the security fixes to both the **Latest** and **Standard** Platform Release Channels for Azure App Service on Linux.
 >
 > The updated PHP runtime versions are:
@@ -17,6 +21,7 @@ toc_sticky: true
 > | PHP 8.5 | **8.5.12** |
 >
 > **End-of-life (EOL) PHP versions will not receive these security patches.** If your app uses an EOL PHP version, update your app to a [supported PHP version](https://www.php.net/supported-versions.php). Changing your Platform Release Channel does not upgrade an EOL runtime to a supported version.
+>
 
 The PHP security team's announcement covers **two critical vulnerabilities, both rated CVSS v4.0 9.2 (Critical)**.
 
