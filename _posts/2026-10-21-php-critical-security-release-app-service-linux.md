@@ -16,7 +16,7 @@ The PHP security team has given advance notice of an **upcoming security release
 
 The Azure App Service team is **actively working on updating the built-in PHP images for App Service on Linux** and will pick up the fixed PHP versions as soon as they are released.
 
-Updated images will roll out through the [Platform Release Channels](https://learn.microsoft.com/en-us/azure/app-service/overview-patch-os-runtime#control-runtime-patch-update-timing-with-platform-release-channel) as follows:
+Updated images will roll out through the [Platform Release Channels](https://learn.microsoft.com/azure/app-service/overview-patch-os-runtime#control-runtime-patch-update-timing-with-platform-release-channel) as follows:
 
 | Channel | Availability of the fix |
 |---|---|
@@ -40,7 +40,7 @@ We encourage all PHP customers on App Service for Linux to **prepare now** so th
 3. Under **Platform Release Channel**, select **Latest** or **Standard**.
 4. Select **Save**.
 
-For more information, see [OS and runtime patching in Azure App Service](https://learn.microsoft.com/en-us/azure/app-service/overview-patch-os-runtime#control-runtime-patch-update-timing-with-platform-release-channel).
+For more information, see [OS and runtime patching in Azure App Service](https://learn.microsoft.com/azure/app-service/overview-patch-os-runtime#control-runtime-patch-update-timing-with-platform-release-channel).
 
 ## Stay informed
 
