@@ -1,9 +1,22 @@
 ---
 title: "Critical PHP Security Release: What It Means for Azure App Service on Linux"
-author_name: "Tulika Chaudharie"
+author_name: "Tulika Chaudharie, Byron Tardif"
 toc: true
 toc_sticky: true
 ---
+
+> **Update (21 October 2026):** We have completed the rollout of the updated built-in PHP images with the security fixes to both the **Latest** and **Standard** Platform Release Channels for Azure App Service on Linux.
+>
+> The updated PHP runtime versions are:
+>
+> | PHP runtime | Updated version |
+> |---|---|
+> | PHP 8.2 | **8.2.35** |
+> | PHP 8.3 | **8.3.36** |
+> | PHP 8.4 | **8.4.27** |
+> | PHP 8.5 | **8.5.12** |
+>
+> **End-of-life (EOL) PHP versions will not receive these security patches.** If your app uses an EOL PHP version, update your app to a [supported PHP version](https://www.php.net/supported-versions.php). Changing your Platform Release Channel does not upgrade an EOL runtime to a supported version.
 
 The PHP security team's announcement covers **two critical vulnerabilities, both rated CVSS v4.0 9.2 (Critical)**.
 
@@ -32,6 +45,7 @@ We encourage all PHP customers on App Service for Linux to **act now** to pick u
 2. **Choose Latest if you need the fix fastest.** Internet-facing or high-risk PHP apps should consider the Latest channel to get the updated images at priority.
 3. **Update your custom containers yourself.** If you run PHP in a custom container, or bring your own PHP runtime, App Service does not patch it. Rebuild your images with the fixed PHP versions published by the PHP team.
 4. **Verify your PHP version.** Open an SSH session to your app (`https://<appname>.scm.azurewebsites.net/webssh/host`) and run `php --version`.
+5. **Upgrade EOL PHP runtimes.** Apps running an end-of-life PHP version will not receive these security patches. Update and test your app on a [supported PHP version](https://www.php.net/supported-versions.php), then configure your app to use that version.
 
 ### Change your Platform Release Channel
 
