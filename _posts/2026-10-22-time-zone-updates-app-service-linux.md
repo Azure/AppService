@@ -31,6 +31,16 @@ Older data can apply a clock change that no longer occurs, producing incorrect l
 
 Updated built-in Linux images are available on **Latest** for **non-EOL runtimes**, with the [PHP 8.2 and 8.3 exceptions](#php-82-and-83-exceptions) described below. The updates address the time-zone data needed for these rule changes, including OS data and runtime-bundled data where applicable.
 
+The following runtime versions are included in the completed rollout to **Latest**. For Java, the table summarizes Java SE versions rather than listing individual application-server combinations.
+
+| Runtime | Versions included in the image updates |
+|---|---|
+| .NET | 8, 9, 10, 11 |
+| Node.js | 22, 24 |
+| Python | 3.10, 3.11, 3.12, 3.13, 3.14 |
+| PHP | 8.4, 8.5 |
+| Java SE | 8, 11, 17, 21, 25 |
+
 **EOL runtimes do not receive these image updates.** Updating an image does not automatically replace time-zone databases bundled in your app or its dependencies.
 
 ### PHP 8.2 and 8.3 exceptions
