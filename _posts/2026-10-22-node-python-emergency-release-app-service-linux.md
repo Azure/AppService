@@ -110,6 +110,7 @@ Use the interactive shell for these checks rather than detached execute mode, wh
 
 ## Related updates
 
+- [Time zone updates on App Service for Linux]({{ site.baseurl }}{% post_url 2026-10-22-time-zone-updates-app-service-linux %}) covers the updated time-zone rules and checks for OS and application-managed time-zone data.
 - [eMudhra / emSign certificate security updates on App Service for Linux]({{ site.baseurl }}{% post_url 2026-10-22-emudhra-certificate-issue-app-service-linux %}) provides additional guidance on OS trust stores and application-managed CA bundles. Updating the runtime does not replace certificate bundles managed by your app.
 - [Critical PHP security release guidance for App Service]({{ site.baseurl }}{% post_url 2026-10-21-php-critical-security-release-app-service-linux %}) covers the separate PHP security release and actions for PHP workloads.
 

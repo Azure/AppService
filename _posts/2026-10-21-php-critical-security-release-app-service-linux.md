@@ -70,6 +70,7 @@ For more information, see [OS and runtime patching in Azure App Service](https:/
 
 ## Related updates
 
+- [Time zone updates on App Service for Linux]({{ site.baseurl }}{% post_url 2026-10-22-time-zone-updates-app-service-linux %}) covers the updated time-zone rules and the separate PHP 8.2 and 8.3 exclusions for that rollout.
 - [Node.js and Python emergency runtime updates on App Service for Linux]({{ site.baseurl }}{% post_url 2026-10-22-node-python-emergency-release-app-service-linux %}) covers the separate runtime releases and rollout guidance for Node.js and Python apps.
 - [eMudhra / emSign certificate security updates on App Service for Linux]({{ site.baseurl }}{% post_url 2026-10-22-emudhra-certificate-issue-app-service-linux %}) covers certificate trust-store updates and application-managed CA bundles. A runtime security patch alone does not establish that your app's certificate bundles are updated.
 
