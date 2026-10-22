@@ -1,9 +1,16 @@
 ---
-title: "Critical PHP Security Release: What It Means for Azure App Service on Linux"
+title: "Critical PHP Security Release: What It Means for Azure App Service"
 author_name: "Tulika Chaudharie, Byron Tardif"
 toc: true
 toc_sticky: true
 ---
+
+> **PHP on App Service Windows:** The built-in PHP runtimes on App Service for Windows are **end-of-life (EOL)**. No security patch for these runtimes is currently planned.
+>
+> 1. **Move to App Service on Linux if possible.** Update and test your app on a supported PHP version to receive the patched built-in PHP runtime.
+> 2. **If you must remain on Windows, bring your own PHP runtime.** Follow [How to use a Custom PHP runtime for App Service Windows](https://azureossd.github.io/2022/05/18/Custom-PHP-runtime-for-App-Service-Windows/index.html) and use a supported PHP version that includes the security fixes. You are responsible for deploying, configuring, and maintaining that runtime, including applying future security patches.
+
+<hr>
 
 > **WordPress update (21 October 2026):** WordPress apps deployed using the official [WordPress on App Service offering in Microsoft Marketplace](https://marketplace.microsoft.com/product/WordPress.WordPress?tab=Overview) have been updated to patched PHP versions, except for apps still using the older Alpine-based images. **The older Alpine-based images will not receive these security patches.** If your app uses an Alpine-based image, follow [Transition from Alpine Linux to Debian for WordPress on App Service](https://techcommunity.microsoft.com/blog/appsonazureblog/transition-from-alpine-linux-to-debian-for-wordpress-on-app-service/4264858) to migrate to a Debian-based image.
 
