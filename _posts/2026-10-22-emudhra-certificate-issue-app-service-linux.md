@@ -27,6 +27,8 @@ The following runtime versions are listed by `az webapp list-runtimes -o table -
 
 Runtimes approaching EOL are included while they remain supported. **EOL runtimes do not receive these image updates.**
 
+**WordPress on App Service is also updated.** The supported images for apps deployed using the official [WordPress on App Service offering in Microsoft Marketplace](https://marketplace.microsoft.com/product/WordPress.WordPress?tab=Overview) include the certificate security updates.
+
 ### PHP 8.2 exception
 
 **The built-in PHP 8.2 image is not included in this initial patch payload.** Although PHP 8.2 itself has not yet reached EOL, its underlying **Debian 11 (Bullseye)** operating system is beyond Debian's standard/LTS support period and is not providing the patch for this image.
