@@ -15,25 +15,23 @@ The following versions were published by the Node.js and Python projects on **21
 
 ### Node.js
 
-The [official Node.js security announcement](https://nodejs.org/en/blog/vulnerability/october-2026-security-releases) covers the **22.x, 24.x, and 26.x** release lines. The highest severity addressed is **High**, including fixes for a Brotli decoder out-of-bounds write that permits remote code execution, DNS name handling, and TLS certificate hostname validation. The release also includes dependency updates and a CA-certificate update related to the eMudhra intermediate CA compromise.
+For the **22.x and 24.x** release lines covered in this article, the [official Node.js security announcement](https://nodejs.org/en/blog/vulnerability/october-2026-security-releases) lists fixes with a highest severity of **High**, including fixes for a Brotli decoder out-of-bounds write that permits remote code execution, DNS name handling, and TLS certificate hostname validation. The release also includes dependency updates and a CA-certificate update related to the eMudhra intermediate CA compromise.
 
 | Node.js release line | Patched version | Official release notes |
 |---|---|---|
 | 22.x | **22.23.4** | [Node.js 22.23.4](https://nodejs.org/en/blog/release/v22.23.4/) |
 | 24.x | **24.22.1** | [Node.js 24.22.1](https://nodejs.org/en/blog/release/v24.22.1/) |
-| 26.x | **26.12.1** | [Node.js 26.12.1](https://nodejs.org/en/blog/release/v26.12.1/) |
 
 See the official security announcement for the complete vulnerability list and affected release lines. End-of-life Node.js versions do not receive these fixes; move to a supported release line if your app is using an EOL version.
 
 ### Python
 
-The [official Python release announcement](https://blog.python.org/2026/10/python-3151-3149-31317/) describes expedited security releases for **3.15 and 3.14**, and a special security release for **3.13**. All three update bundled **pip to 26.2.2**, including **certifi 2026.10.19**, to address the **eMudhra / emSign CA certificate security incident**.
+The [official Python release announcement](https://blog.python.org/2026/10/python-3151-3149-31317/) describes an expedited security release for **3.14** and a special security release for **3.13**. Both update bundled **pip to 26.2.2**, including **certifi 2026.10.19**, to address the **eMudhra / emSign CA certificate security incident**.
 
 | Python release line | Updated version | Official release notes |
 |---|---|---|
 | 3.13 | **3.13.17** | [Python 3.13.17](https://www.python.org/downloads/release/python-31317/) |
 | 3.14 | **3.14.9** | [Python 3.14.9](https://www.python.org/downloads/release/python-3149/) |
-| 3.15 | **3.15.1** | [Python 3.15.1](https://www.python.org/downloads/release/python-3151/) |
 
 **Updating the platform runtime does not update packages in your app's existing virtual environments.** The Python team also recommends updating pip and uv in existing virtual environments. Review the [official incident guidance](https://discuss.python.org/t/information-for-python-users-regarding-emudhra-emsign-ca-certificate-security-incident/109576), update affected app-managed dependencies through your trusted package source, and rebuild and redeploy your app as needed.
 
