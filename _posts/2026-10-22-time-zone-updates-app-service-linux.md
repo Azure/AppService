@@ -123,6 +123,7 @@ With the updated Manitoba rules, the expected result is:
 
 ## Related updates
 
+- [Critical PHP security release guidance for App Service]({{ site.baseurl }}{% post_url 2026-10-21-php-critical-security-release-app-service-linux %}) covers the separate PHP runtime vulnerabilities and security-patch rollout.
 - [Node.js and Python emergency runtime updates on App Service for Linux]({{ site.baseurl }}{% post_url 2026-10-22-node-python-emergency-release-app-service-linux %}) covers the related runtime releases.
 - [eMudhra / emSign certificate security updates on App Service for Linux]({{ site.baseurl }}{% post_url 2026-10-22-emudhra-certificate-issue-app-service-linux %}) covers the separate certificate trust-store updates. Its PHP exclusions differ from the time-zone update exclusions described here.
 
