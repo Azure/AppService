@@ -115,6 +115,11 @@ The platform update covers the built-in images, not certificate bundles or trust
 
 As the [Ubuntu guidance](https://ubuntu.com/blog/emudhra-ca-compromise-fixes-available) notes, removing affected trust anchors can also cause connections to legitimate endpoints that rely on those anchors to fail. Test outbound TLS connections and work with the endpoint owner to resolve affected certificate chains rather than disabling certificate validation.
 
+## Related updates
+
+- [Critical PHP security release guidance for App Service]({{ site.baseurl }}{% post_url 2026-10-21-php-critical-security-release-app-service-linux %}) covers the separate PHP runtime vulnerabilities and rollout.
+- [Node.js and Python emergency runtime updates on App Service for Linux]({{ site.baseurl }}{% post_url 2026-10-22-node-python-emergency-release-app-service-linux %}) covers the runtime releases and their rollout. Review that guidance alongside the certificate updates here; runtime patches do not replace application-managed CA bundles.
+
 ## Stay informed
 
 We share updates here as the rollout to Standard progresses.
