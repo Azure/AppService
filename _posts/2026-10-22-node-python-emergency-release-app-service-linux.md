@@ -108,6 +108,11 @@ Verify the version in your running app rather than relying only on the selected 
 
 Use the interactive shell for these checks rather than detached execute mode, which does not return command output or an exit code.
 
+## Related updates
+
+- [eMudhra / emSign certificate security updates on App Service for Linux]({{ site.baseurl }}{% post_url 2026-10-22-emudhra-certificate-issue-app-service-linux %}) provides additional guidance on OS trust stores and application-managed CA bundles. Updating the runtime does not replace certificate bundles managed by your app.
+- [Critical PHP security release guidance for App Service]({{ site.baseurl }}{% post_url 2026-10-21-php-critical-security-release-app-service-linux %}) covers the separate PHP security release and actions for PHP workloads.
+
 ## Stay informed
 
 We will share updates here as the rollout to Standard progresses.
