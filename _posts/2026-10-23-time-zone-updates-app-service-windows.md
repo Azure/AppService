@@ -21,8 +21,6 @@ The platform manages this OS update. Customers do not need to install an OS patc
 
 ### Windows and application-managed time-zone data
 
-Windows time-zone data and the IANA database used by Linux are separate data sources. The IANA release numbers and Linux package checks in the [related Linux time-zone post]({{ site.baseurl }}{% post_url 2026-10-22-time-zone-updates-app-service-linux %}) are not Windows OS version checks.
-
 An app can use Windows time-zone rules, runtime-bundled data, or a database supplied by a library. **An OS time-zone update alone is not proof that every date/time API or scheduler in your application uses the updated rules.**
 
 Review the data source used by your runtime and dependencies. Update application-managed time-zone data separately through the relevant maintainers' supported update process, then test and redeploy as needed.
