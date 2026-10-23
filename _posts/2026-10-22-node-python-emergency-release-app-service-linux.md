@@ -5,7 +5,7 @@ toc: true
 toc_sticky: true
 ---
 
-> **Update (22 October 2026):** We have completed the rollout of the updated built-in Node.js and Python images to the **Latest** Platform Release Channel for Azure App Service on Linux. **If you need the fixes now, move your app to Latest.** The **Standard** channel will receive the updates through our **Safe Deployment Practices (SDP)** rollout.
+> **Update (22 October 2026):** Rollout of the updated built-in Node.js and Python images is **complete on both the Latest and Standard Platform Release Channels** for Azure App Service on Linux.
 
 Following the emergency Node.js and Python releases on **21 October 2026**, the Azure App Service team has updated the built-in Linux images with the newly released runtime versions.
 
@@ -41,16 +41,16 @@ The updated images roll out through the [Platform Release Channels](https://lear
 
 | Channel | Availability of the updates |
 |---|---|
-| **Latest** | Rollout **complete**. Move to this channel if you need the fixes now. |
-| **Standard** (default) | Will receive the updates through the **Safe Deployment Practices (SDP)** rollout. |
+| **Latest** | Rollout **complete**. |
+| **Standard** (default) | Rollout **complete** through **Safe Deployment Practices (SDP)**. |
 
-The completed rollout to Latest does **not** mean that the updated images are available on Standard yet.
+The updated images are available on both Latest and Standard for the release lines covered here.
 
 Changing your Platform Release Channel does not change your app's configured Node.js or Python release line. If your app needs a different supported release line, update and test the app and change its runtime configuration separately.
 
 ## What you should do
 
-1. **Move to Latest if you need the fixes now.** For apps using the built-in Node.js or Python runtimes on App Service for Linux, select the **Latest** Platform Release Channel using the instructions below.
+1. **Use Standard or Latest to receive these updates.** Apps already on either channel do not need a channel change. If you use another channel, follow the instructions below to select Standard.
 2. **Verify your runtime version.** After your app picks up the updated image, use `az webapp exec` to open an interactive shell in the app and check its running runtime version.
 3. **Update custom containers and bring-your-own runtimes yourself.** App Service does not patch Node.js or Python runtimes that you supply. Update your runtime or rebuild your container image with the applicable fixed version, test your app, and redeploy.
 
@@ -60,23 +60,23 @@ Changing your Platform Release Channel does not change your app's configured Nod
 
 1. In the Azure portal, go to your App Service app.
 2. In the left menu, select **Stack settings**.
-3. Under **Platform Release Channel**, select **Latest**.
+3. Under **Platform Release Channel**, select **Standard**.
 4. Select **Save**.
 
 **Azure CLI**
 
-Use [az webapp update](https://learn.microsoft.com/cli/azure/webapp#az-webapp-update) to move your app to Latest:
+Use [az webapp update](https://learn.microsoft.com/cli/azure/webapp#az-webapp-update) to move your app to Standard:
 
 ```bash
 az webapp update \
   --resource-group <resource-group> \
   --name <app-name> \
-  --platform-release-channel Latest
+  --platform-release-channel Standard
 ```
 
 Replace the placeholders with your app's resource group and name. For a deployment slot, add `--slot <slot-name>`.
 
-If your app remains on **Standard**, it will receive the updates as the SDP rollout progresses. To pick up the updates already available on Latest, change your app's channel to **Latest**.
+If your app is already on **Standard** or **Latest**, no channel change is needed for these updates.
 
 For more information, see [OS and runtime patching in Azure App Service](https://learn.microsoft.com/azure/app-service/overview-patch-os-runtime#control-runtime-patch-update-timing-with-platform-release-channel).
 
@@ -117,6 +117,6 @@ Use the interactive shell for these checks rather than detached execute mode, wh
 
 ## Stay informed
 
-We will share updates here as the rollout to Standard progresses.
+We will share further updates here as needed.
 
 Thank you for helping us keep your Node.js and Python apps on Azure App Service secure.
