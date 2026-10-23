@@ -1,5 +1,5 @@
 ---
-title: "Time Zone, Node.js, Python, and Certificate Updates for Azure Functions"
+title: "Azure Functions: Time Zone, Node.js, Python, and Certificate Updates"
 author_name: "Byron Tardif"
 toc: true
 toc_sticky: true
