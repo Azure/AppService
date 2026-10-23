@@ -34,8 +34,6 @@ An app can use the Windows certificate store, a runtime-specific trust store, or
 
 Review custom trust-store configuration, bundled certificates, and dependencies that maintain their own CA data. Update affected components through your trusted sources and test the application after redeployment.
 
-A successful HTTPS request shows connectivity, but does not by itself prove that the affected certificate chains are no longer trusted. This post does not provide a Windows KB number or an app-level verification command; we will share additional guidance as it becomes available.
-
 ## Related updates
 
 - [eMudhra / emSign certificate security updates on App Service for Linux]({{ site.baseurl }}{% post_url 2026-10-22-emudhra-certificate-issue-app-service-linux %}) covers the separate Linux image rollout. Its release-channel settings and Ubuntu package checks do not apply to Windows.
