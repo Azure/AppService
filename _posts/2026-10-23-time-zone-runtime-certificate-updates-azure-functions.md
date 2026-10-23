@@ -25,11 +25,9 @@ These statuses describe the rollout process, **not confirmation that a particula
 
 Function apps on these Windows hosting plans receive the applicable platform updates through the **App Service Windows patching process**. Follow the corresponding posts for update details and rollout status:
 
-- **Time-zone updates:** The rollout has started through accelerated Safe Deployment Practices (SDP) and is not yet complete. The [Windows time-zone post is awaiting publication in PR #596](https://github.com/Azure/AppService/pull/596).
+- **Time-zone updates:** The rollout has started through accelerated Safe Deployment Practices (SDP) and is not yet complete. See [Time zone updates on App Service for Windows]({{ site.baseurl }}{% post_url 2026-10-23-time-zone-updates-app-service-windows %}).
 - **Node.js runtime fixes:** See [Emergency Node.js runtime updates on App Service for Windows]({{ site.baseurl }}{% post_url 2026-10-22-node-emergency-release-app-service-windows %}).
 - **Certificate trust updates:** See [eMudhra / emSign certificate security updates on App Service for Windows]({{ site.baseurl }}{% post_url 2026-10-22-emudhra-certificate-issue-app-service-windows %}).
-
-<!-- Before publishing, replace the temporary PR #596 link with a post_url link to 2026-10-23-time-zone-updates-app-service-windows once that post is merged. -->
 
 These are separate OS and runtime updates. Receiving one does not establish that all applicable updates have reached your app.
 
