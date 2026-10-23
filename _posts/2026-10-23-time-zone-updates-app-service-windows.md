@@ -7,7 +7,7 @@ toc_sticky: true
 
 > **Update (23 October 2026):** The rollout of **Windows operating-system time-zone updates** on Azure App Service for Windows **has started through accelerated Safe Deployment Practices (SDP)**. **Rollout is in progress, not complete.** We will update this post when the rollout completes.
 
-Time-zone rules change when governments update local timekeeping policies. Apps need current time-zone data to convert UTC timestamps to local time and calculate schedules correctly. **UTC itself does not change.**
+Time-zone rules change when governments update local timekeeping policies. Apps need current time-zone data to convert UTC timestamps to local time and calculate schedules correctly.
 
 Older time-zone data can apply a clock change that no longer occurs, producing incorrect local-time displays, job schedules, deadlines, and date-based calculations. Apps using different data versions can also disagree about the same timestamp.
 
