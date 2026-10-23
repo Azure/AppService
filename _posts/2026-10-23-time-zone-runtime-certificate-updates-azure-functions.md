@@ -5,18 +5,19 @@ toc: true
 toc_sticky: true
 ---
 
-> **Update (23 October 2026):** Updates for time-zone rules, Node.js and Python runtimes, and the eMudhra / emSign certificate issue are **rolling out** to Azure Functions. Windows apps on Consumption, App Service plans, and Elastic Premium follow the App Service Windows patching process. Linux apps on Consumption, App Service plans, Elastic Premium, and Flex Consumption are being patched separately by the Azure Functions team. **Rollouts are in progress, not complete.**
+> **Update (23 October 2026):** Updates for time-zone rules, Node.js and Python runtimes, and the eMudhra / emSign certificate issue are **rolling out** to Azure Functions. Windows apps on Consumption, App Service plans, and Elastic Premium follow the App Service Windows patching process. Linux apps on Consumption, App Service plans, Elastic Premium, and Flex Consumption are being patched separately by the Azure Functions team. Updates for **Azure Static Web Apps managed functions** are also in progress. **Rollouts are in progress, not complete.**
 
 The patching process depends on your function app's **operating system and hosting plan**.
 
 ## Rollout by hosting plan and operating system
 
-| Hosting plan | Windows | Linux |
+| Hosting plan or offering | Windows | Linux |
 |---|---|---|
 | Consumption | App Service Windows patching process; in progress. | Separate Azure Functions rollout; in progress. |
 | App Service plan (Dedicated) | App Service Windows patching process; in progress. | Separate Azure Functions rollout; in progress. |
 | Elastic Premium | App Service Windows patching process; in progress. | Separate Azure Functions rollout; in progress. |
 | Flex Consumption | Not available on Windows. | Separate Azure Functions rollout; in progress. |
+| Static Web Apps managed functions | Not applicable. | Managed functions update rollout; in progress. |
 
 These statuses describe the rollout process, **not confirmation that a particular app or instance already has every applicable fix**. Python functions run on Linux; the Python runtime updates below do not apply to Windows function apps.
 
@@ -39,6 +40,12 @@ The **Azure Functions team is rolling out these updates separately** for Linux f
 This work covers the applicable time-zone, Node.js, Python, and certificate fixes. Availability can differ while deployment progresses; do not assume that all apps or instances have received every update.
 
 The App Service Linux posts provide background on the [time-zone changes]({{ site.baseurl }}{% post_url 2026-10-22-time-zone-updates-app-service-linux %}), [Node.js and Python releases]({{ site.baseurl }}{% post_url 2026-10-22-node-python-emergency-release-app-service-linux %}), and [certificate issue]({{ site.baseurl }}{% post_url 2026-10-22-emudhra-certificate-issue-app-service-linux %}). **Their App Service completion statuses, runtime-version tables, and Platform Release Channel instructions are not Azure Functions rollout or support guidance**, including for Linux functions hosted on App Service plans.
+
+#### Azure Static Web Apps managed functions
+
+The rollout of the applicable fixes for **Azure Static Web Apps managed functions** is also **in progress, not complete**. These managed API backends are included in this Linux update guidance; do not assume that an App Service rollout completion announcement means that your managed functions have received every applicable update.
+
+This status applies to **managed functions**, not a separately linked Azure Functions app. For a linked function app, use its hosting plan and OS to identify the rollout that applies. We will update this post when the managed functions rollout completes.
 
 ## What the updates address
 
@@ -71,7 +78,7 @@ The certificate updates address trust associated with the eMudhra / emSign CA in
 ## What you should do
 
 1. **Identify your hosting plan and OS.** Use the table above to determine which rollout applies.
-2. **Follow the appropriate rollout status.** Windows apps on the listed plans follow the linked App Service Windows posts. For the separately managed Linux Functions rollout, watch this post for updates.
+2. **Follow the appropriate rollout status.** Windows apps on the listed plans follow the linked App Service Windows posts. For the separately managed Linux Functions rollout and Static Web Apps managed functions, watch this post for updates.
 3. **Use supported runtime versions.** Check Azure Functions support for your language version and hosting plan rather than copying the App Service runtime tables.
 4. **Verify your running workers.** Use existing application logging or diagnostics to check `process.version` for Node.js or `sys.version` for Python inside the function worker. Check across instances as the rollout progresses; avoid exposing diagnostics through an unauthenticated public endpoint.
 5. **Test date/time behavior and outbound TLS.** Verify the code paths your functions actually use, including timers, application-managed time-zone data, and certificate bundles.
