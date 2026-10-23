@@ -5,7 +5,7 @@ toc: true
 toc_sticky: true
 ---
 
-> **Update (22 October 2026):** The rollout of updated built-in Linux images for the time-zone rule changes in **IANA time zone database 2026e** is **complete on the Latest Platform Release Channel** for the supported runtimes covered below. **Move to Latest if you need the updates now.** The **Standard** channel receives the updates through our **Safe Deployment Practices (SDP)** rollout.
+> **Update (22 October 2026):** Rollout of updated built-in Linux images for the time-zone rule changes in **IANA time zone database 2026e** is **complete on both the Latest and Standard Platform Release Channels** for the supported runtimes covered below. The PHP 8.2, PHP 8.3, and EOL exclusions described below remain unchanged.
 
 Time-zone rules change when governments update local timekeeping policies. Apps need current time-zone data to convert UTC timestamps to local time and calculate schedules correctly.
 
@@ -29,9 +29,9 @@ Older data can apply a clock change that no longer occurs, producing incorrect l
 
 ## What we are doing
 
-Updated built-in Linux images are available on **Latest** for **non-EOL runtimes**, with the [PHP 8.2 and 8.3 exceptions](#php-82-and-83-exceptions) described below. The updates address the time-zone data needed for these rule changes, including OS data and runtime-bundled data where applicable.
+Updated built-in Linux images are available on **Latest and Standard** for **non-EOL runtimes**, with the [PHP 8.2 and 8.3 exceptions](#php-82-and-83-exceptions) described below. The updates address the time-zone data needed for these rule changes, including OS data and runtime-bundled data where applicable.
 
-The following runtime versions are included in the completed rollout to **Latest**. For Java, the table summarizes Java SE versions rather than listing individual application-server combinations.
+The following runtime versions are included in the completed rollout to **Latest and Standard**. For Java, the table summarizes Java SE versions rather than listing individual application-server combinations.
 
 | Runtime | Versions included in the image updates |
 |---|---|
@@ -53,14 +53,14 @@ Moving an app on either stack to Latest alone does not address this exception. I
 
 | Channel | Availability of the updates |
 |---|---|
-| **Latest** | Rollout **complete** for the included runtimes. Move to this channel if you need the updates now. |
-| **Standard** (default) | Receives the updates through the **Safe Deployment Practices (SDP)** rollout. |
+| **Latest** | Rollout **complete** for the included runtimes. |
+| **Standard** (default) | Rollout **complete** for the included runtimes through **Safe Deployment Practices (SDP)**. |
 
-Rollout completion on Latest does **not** mean that rollout to Standard is complete. Changing your channel does not upgrade your app to a different runtime version or make an EOL runtime supported.
+Both channels include these updates. Changing your channel does not upgrade your app to a different runtime version or make an EOL runtime supported.
 
 ## What you should do
 
-1. **Move to Latest if you need the updated rules now.** For an eligible built-in Linux runtime, select Latest using the instructions below.
+1. **Use Standard or Latest to receive the updated rules.** Apps using an eligible built-in Linux runtime on either channel do not need a channel change. If you use another channel, follow the instructions below to select Standard.
 2. **Check your app's actual date/time behavior.** Test conversions and schedules for the regions your app uses, including timestamps on both sides of the relevant transition. Do not rely on the selected channel or OS package version alone.
 3. **Review application-managed time-zone data.** Libraries, bundled ICU data, and custom time-zone databases can differ from the OS database. Update affected dependencies and rebuild and redeploy your app as needed.
 4. **Review PHP 8.2, PHP 8.3, and EOL workloads.** The two PHP stacks are excluded from this initial payload, and EOL runtimes do not receive these updates. Move to an included supported stack where possible and test before production deployment.
@@ -72,18 +72,18 @@ Rollout completion on Latest does **not** mean that rollout to Standard is compl
 
 1. In the Azure portal, go to your App Service app.
 2. In the left menu, select **Stack settings**.
-3. Under **Platform Release Channel**, select **Latest**.
+3. Under **Platform Release Channel**, select **Standard**.
 4. Select **Save**.
 
 **Azure CLI**
 
-Use [az webapp update](https://learn.microsoft.com/cli/azure/webapp#az-webapp-update) to move your app to Latest:
+Use [az webapp update](https://learn.microsoft.com/cli/azure/webapp#az-webapp-update) to move your app to Standard:
 
 ```bash
 az webapp update \
   --resource-group <resource-group> \
   --name <app-name> \
-  --platform-release-channel Latest
+  --platform-release-channel Standard
 ```
 
 Replace the placeholders with your app's resource group and name. For a deployment slot, add `--slot <slot-name>`.
@@ -129,6 +129,6 @@ With the updated Manitoba rules, the expected result is:
 
 ## Stay informed
 
-We share updates here as the rollout to Standard progresses and as the PHP 8.2 and 8.3 update plan becomes available.
+We share further updates here as the PHP 8.2 and 8.3 update plan becomes available.
 
 Thank you for keeping your apps' time-zone data current on Azure App Service.
