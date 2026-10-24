@@ -1,0 +1,1097 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>eMudhra / emSign Certificate Security Updates on Azure App Service for Linux - Azure App Service</title>
+<meta name="description" content="  Update (22 October 2026): Rollout of patched built-in Linux images for the eMudhra / emSign CA certificate security incident is complete on Latest for the runtimes listed below. Rollout is also complete on Standard except for Java, whose Standard rollout remains in progress. Java customers on Standard should wait for that rollout to complete; no channel change is needed. The PHP 8.2 and EOL exclusions described below remain unchanged.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="eMudhra / emSign Certificate Security Updates on Azure App Service for Linux">
+<meta property="og:url" content="https://azure.github.io/AppService/2026/10/22/emudhra-certificate-issue-app-service-linux.html">
+
+
+  <meta property="og:description" content="  Update (22 October 2026): Rollout of patched built-in Linux images for the eMudhra / emSign CA certificate security incident is complete on Latest for the runtimes listed below. Rollout is also complete on Standard except for Java, whose Standard rollout remains in progress. Java customers on Standard should wait for that rollout to complete; no channel change is needed. The PHP 8.2 and EOL exclusions described below remain unchanged.">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2026-10-22T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2026/10/22/emudhra-certificate-issue-app-service-linux.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/sidecars/" class="">Sidecars</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/ai-integration/" class="">AI Integration</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="eMudhra / emSign Certificate Security Updates on Azure App Service for Linux">
+    <meta itemprop="description" content="  Update (22 October 2026): Rollout of patched built-in Linux images for the eMudhra / emSign CA certificate security incident is complete on Latest for the runtimes listed below. Rollout is also complete on Standard except for Java, whose Standard rollout remains in progress. Java customers on Standard should wait for that rollout to complete; no channel change is needed. The PHP 8.2 and EOL exclusions described below remain unchanged.">
+    <meta itemprop="datePublished" content="October 22, 2026">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">eMudhra / emSign Certificate Security Updates on Azure App Service for Linux
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+            
+            
+              • By Byron Tardif
+            
+            • October 22, 2026
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#what-we-are-doing">What we are doing</a>
+    <ul>
+      <li><a href="#php-82-exception">PHP 8.2 exception</a></li>
+      <li><a href="#rollout-by-platform-release-channel">Rollout by Platform Release Channel</a></li>
+    </ul>
+  </li>
+  <li><a href="#what-you-should-do">What you should do</a>
+    <ul>
+      <li><a href="#change-your-platform-release-channel">Change your Platform Release Channel</a></li>
+      <li><a href="#verify-the-certificate-package">Verify the certificate package</a></li>
+      <li><a href="#application-managed-trust-stores-and-dependencies">Application-managed trust stores and dependencies</a></li>
+    </ul>
+  </li>
+  <li><a href="#related-updates">Related updates</a></li>
+  <li><a href="#stay-informed">Stay informed</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <blockquote>
+  <p><strong>Update (22 October 2026):</strong> Rollout of patched built-in Linux images for the <strong>eMudhra / emSign CA certificate security incident</strong> is <strong>complete on Latest</strong> for the runtimes listed below. Rollout is also <strong>complete on Standard except for Java</strong>, whose Standard rollout remains in progress. <strong>Java customers on Standard should wait for that rollout to complete; no channel change is needed.</strong> The PHP 8.2 and EOL exclusions described below remain unchanged.</p>
+</blockquote>
+
+<p>The eMudhra / emSign incident affects certificate trust used by TLS clients. The <a href="https://ubuntu.com/blog/emudhra-ca-compromise-fixes-available">Ubuntu Security Team’s incident and patch guidance</a> explains the CA trust-store changes needed to mitigate the risk of man-in-the-middle attacks.</p>
+
+<p>This is not limited to a single language runtime. Applications can use operating-system certificates, runtime-managed trust stores, or certificate bundles supplied by dependencies. <strong>Updating the platform image does not replace certificate bundles managed by your application.</strong></p>
+
+<h2 id="what-we-are-doing">What we are doing</h2>
+
+<p>Patched built-in Linux images are available on <strong>Latest and Standard</strong> for <strong>all non-EOL runtimes</strong>, with the <a href="#php-82-exception">PHP 8.2 exception</a> described below.
+<strong>Java is available on Latest; its Standard rollout is still in progress.</strong></p>
+
+<p>The following runtime versions are listed by <code class="language-plaintext highlighter-rouge">az webapp list-runtimes -o table --os linux</code> as of <strong>22 October 2026</strong> and are included in the completed rollout to <strong>Latest</strong>, and to <strong>Standard except for Java</strong>. For Java, the table summarizes Java SE versions rather than listing individual application-server combinations.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Runtime</th>
+      <th>Versions included in the image updates</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>.NET</td>
+      <td>8, 9, 10, 11</td>
+    </tr>
+    <tr>
+      <td>Node.js</td>
+      <td>22, 24</td>
+    </tr>
+    <tr>
+      <td>Python</td>
+      <td>3.10, 3.11, 3.12, 3.13, 3.14</td>
+    </tr>
+    <tr>
+      <td>PHP</td>
+      <td>8.3, 8.4, 8.5</td>
+    </tr>
+    <tr>
+      <td>Java SE</td>
+      <td>8, 11, 17, 21, 25</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Runtimes approaching EOL are included while they remain supported. <strong>EOL runtimes do not receive these image updates.</strong></p>
+
+<p><strong>WordPress on App Service is also updated.</strong> The supported images for apps deployed using the official <a href="https://marketplace.microsoft.com/product/WordPress.WordPress?tab=Overview">WordPress on App Service offering in Microsoft Marketplace</a> include the certificate security updates.</p>
+
+<h3 id="php-82-exception">PHP 8.2 exception</h3>
+
+<p><strong>The built-in PHP 8.2 image is not included in this initial patch payload.</strong> Although PHP 8.2 itself has not yet reached EOL, its underlying <strong>Debian 11 (Bullseye)</strong> operating system is beyond Debian’s standard/LTS support period and is not providing the patch for this image.</p>
+
+<p><strong>We are investigating options to provide a patch for PHP 8.2.</strong> No availability date is confirmed.</p>
+
+<p>If your app uses PHP 8.2, <strong>update and test your app on PHP 8.3 or a later supported version</strong>, then configure your app to use that runtime. Moving a PHP 8.2 app to Latest alone does not address this exception.</p>
+
+<h3 id="rollout-by-platform-release-channel">Rollout by Platform Release Channel</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Channel</th>
+      <th>Availability of the updates</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Latest</strong></td>
+      <td>Rollout <strong>complete</strong>.</td>
+    </tr>
+    <tr>
+      <td><strong>Standard</strong> (default)</td>
+      <td>Rollout <strong>complete except for Java</strong>. Java rollout continues through <strong>Safe Deployment Practices (SDP)</strong>.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The updated images are available on both Latest and Standard for the included runtimes <strong>except Java, whose Standard rollout is not yet complete</strong>.</p>
+
+<p>Changing your Platform Release Channel does not upgrade your app to a different runtime version or make an EOL runtime supported.</p>
+
+<h2 id="what-you-should-do">What you should do</h2>
+
+<ol>
+  <li><strong>Use Standard or Latest to receive these updates.</strong> For eligible non-Java runtimes, apps on either channel do not need a channel change. <strong>Java customers on Standard should remain on Standard and wait for the rollout to complete.</strong></li>
+  <li><strong>Upgrade PHP 8.2 and EOL runtimes.</strong> PHP 8.2 is excluded from this certificate patch because of its OS base. EOL runtimes are also excluded. Update and test your app on a supported runtime included in the patching scope.</li>
+  <li><strong>Update application-managed certificate bundles and dependencies.</strong> Review the official guidance for your runtime and libraries. An updated platform trust store does not necessarily update a library’s bundled certificates or an existing virtual environment.</li>
+  <li><strong>Update custom containers and bring-your-own runtimes yourself.</strong> App Service does not patch the contents of your custom images or runtimes. Update their OS packages, runtimes, and affected dependencies, then rebuild, test, and redeploy.</li>
+  <li><strong>Test outbound TLS connections.</strong> Check the services your app calls after updating. Do not work around certificate errors by disabling TLS certificate validation.</li>
+  <li><strong>Check the running image’s certificate package.</strong> Use the instructions below to inspect the OS certificate package. This check does not verify application-managed trust stores.</li>
+</ol>
+
+<h3 id="change-your-platform-release-channel">Change your Platform Release Channel</h3>
+
+<p><strong>Azure portal</strong></p>
+
+<ol>
+  <li>In the Azure portal, go to your App Service app.</li>
+  <li>In the left menu, select <strong>Stack settings</strong>.</li>
+  <li>Under <strong>Platform Release Channel</strong>, select <strong>Standard</strong>.</li>
+  <li>Select <strong>Save</strong>.</li>
+</ol>
+
+<p><strong>Azure CLI</strong></p>
+
+<p>Use <a href="https://learn.microsoft.com/cli/azure/webapp#az-webapp-update">az webapp update</a> to move your app to Standard:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp update <span class="se">\</span>
+  <span class="nt">--resource-group</span> &lt;resource-group&gt; <span class="se">\</span>
+  <span class="nt">--name</span> &lt;app-name&gt; <span class="se">\</span>
+  <span class="nt">--platform-release-channel</span> Standard
+</code></pre></div></div>
+
+<p>Replace the placeholders with your app’s resource group and name. For a deployment slot, add <code class="language-plaintext highlighter-rouge">--slot &lt;slot-name&gt;</code>.</p>
+
+<p>Java apps already on <strong>Standard</strong> should remain on that channel and wait for rollout completion. Eligible non-Java apps already on Standard or Latest do not need a channel change.</p>
+
+<h3 id="verify-the-certificate-package">Verify the certificate package</h3>
+
+<p>Use <a href="https://learn.microsoft.com/cli/azure/webapp#az-webapp-exec">az webapp exec</a> (currently in preview) with Azure CLI <strong>2.90.0 or later</strong> to open an interactive shell in your running app:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp <span class="nb">exec</span> <span class="nt">--resource-group</span> &lt;resource-group&gt; <span class="nt">--name</span> &lt;app-name&gt;
+</code></pre></div></div>
+
+<p>Replace the placeholders with your app’s resource group and name. For a deployment slot, add <code class="language-plaintext highlighter-rouge">--slot &lt;slot-name&gt;</code>.</p>
+
+<p>Inside the container, identify the OS and installed certificate-package version:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat</span> /etc/os-release
+dpkg-query <span class="nt">-W</span> <span class="nt">-f</span><span class="o">=</span><span class="s1">'${Package} ${Version}\n'</span> ca-certificates
+</code></pre></div></div>
+
+<p>For Ubuntu-based images, compare the installed version with the fixed version for the <strong>same Ubuntu release</strong> in the <a href="https://ubuntu.com/blog/emudhra-ca-compromise-fixes-available">Ubuntu incident and patch guidance</a>. For example:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Ubuntu release</th>
+      <th>Fixed <code class="language-plaintext highlighter-rouge">ca-certificates</code> version</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>24.04</td>
+      <td><code class="language-plaintext highlighter-rouge">20260816ubuntu0.24.04.1</code></td>
+    </tr>
+    <tr>
+      <td>26.04</td>
+      <td><code class="language-plaintext highlighter-rouge">20260816ubuntu0.26.04.1</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The listed version or a subsequent version containing the fix is the expected result. Do not compare package versions across different OS releases. For Debian-based images, use the corresponding Debian package guidance rather than the Ubuntu versions.</p>
+
+<p>This check inspects the OS certificate package on <strong>one running instance</strong>, not every trust store used by your app. Use <code class="language-plaintext highlighter-rouge">--instance &lt;instance-id&gt;</code> to connect to other instances as needed. Application-managed CA bundles and runtime-specific trust stores require separate checks. A successful HTTPS request alone is not proof that the issue is mitigated.</p>
+
+<h3 id="application-managed-trust-stores-and-dependencies">Application-managed trust stores and dependencies</h3>
+
+<p>The platform update covers the built-in images, not certificate bundles or trust stores that your app supplies. Review your app’s libraries, dependencies, and custom trust-store configuration, and follow their maintainers’ incident guidance. Update affected dependencies through your trusted package source, then rebuild, test, and redeploy as needed.</p>
+
+<p>As the <a href="https://ubuntu.com/blog/emudhra-ca-compromise-fixes-available">Ubuntu guidance</a> notes, removing affected trust anchors can also cause connections to legitimate endpoints that rely on those anchors to fail. Test outbound TLS connections and work with the endpoint owner to resolve affected certificate chains rather than disabling certificate validation.</p>
+
+<h2 id="related-updates">Related updates</h2>
+
+<ul>
+  <li><a href="/AppService/AppService/2026/10/22/emudhra-certificate-issue-app-service-windows.html">eMudhra / emSign certificate security updates on App Service for Windows</a> covers the separate Windows OS certificate rollout. Linux Platform Release Channel settings do not apply to Windows.</li>
+  <li><a href="/AppService/AppService/2026/10/22/time-zone-updates-app-service-linux.html">Time zone updates on App Service for Linux</a> covers the separate time-zone data rollout, whose PHP 8.2 and 8.3 exclusions differ from the certificate update exclusion described here.</li>
+  <li><a href="/AppService/AppService/2026/10/21/php-critical-security-release-app-service-linux.html">Critical PHP security release guidance for App Service</a> covers the separate PHP runtime vulnerabilities and rollout.</li>
+  <li><a href="/AppService/AppService/2026/10/22/node-python-emergency-release-app-service-linux.html">Node.js and Python emergency runtime updates on App Service for Linux</a> covers the runtime releases and their rollout. Review that guidance alongside the certificate updates here; runtime patches do not replace application-managed CA bundles.</li>
+</ul>
+
+<h2 id="stay-informed">Stay informed</h2>
+
+<p>We share further updates here as needed, including any changes to the PHP 8.2 patch plan.</p>
+
+<p>Thank you for helping us keep your apps on Azure App Service secure.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2026-10-22T00:00:00+00:00">October 22, 2026</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=eMudhra+%2F+emSign+Certificate+Security+Updates+on+Azure+App+Service+for+Linux%20https%3A%2F%2Fazure.github.io%2FAppService%2F2026%2F10%2F22%2Femudhra-certificate-issue-app-service-linux.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2026%2F10%2F22%2Femudhra-certificate-issue-app-service-linux.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2026%2F10%2F22%2Femudhra-certificate-issue-app-service-linux.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2026/10/21/php-critical-security-release-app-service-linux.html" class="pagination--pager" title="Critical PHP Security Release: What It Means for Azure App Service
+">Previous</a>
+    
+    
+      <a href="/AppService/2026/10/22/emudhra-certificate-issue-app-service-windows.html" class="pagination--pager" title="eMudhra / emSign Certificate Security Updates on Azure App Service for Windows
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2026/10/23/time-zone-updates-app-service-windows.html" rel="permalink">Time Zone Updates on Azure App Service for Windows
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+          • By Byron Tardif
+        
+        • October 23, 2026
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+  Update (23 October 2026): The rollout of Windows operating-system time-zone updates on Azure App Service for Windows has started through accelerated Safe ...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2026/10/23/time-zone-runtime-certificate-updates-azure-functions.html" rel="permalink">Azure Functions: Time Zone, Node.js, Python, and Certificate Updates
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+        
+        
+          • By Byron Tardif
+        
+        • October 23, 2026
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+  Update (23 October 2026): Updates for time-zone rules, Node.js and Python runtimes, and the eMudhra / emSign certificate issue are rolling out to Azure Fu...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2026/10/22/time-zone-updates-app-service-linux.html" rel="permalink">Time Zone Updates on Azure App Service for Linux
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  6 minute read
+
+        
+        
+          • By Byron Tardif
+        
+        • October 22, 2026
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+  Update (22 October 2026): Rollout of updated built-in Linux images for the time-zone rule changes in IANA time zone database 2026e is complete on Latest f...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2026/10/22/node-python-emergency-release-app-service-linux.html" rel="permalink">Emergency Node.js and Python Runtime Updates on Azure App Service for Linux
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+        
+        
+          • By Byron Tardif
+        
+        • October 22, 2026
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+  Update (22 October 2026): Rollout of the updated built-in Node.js and Python images is complete on both the Latest and Standard Platform Release Channels ...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2026 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

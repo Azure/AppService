@@ -1,0 +1,1037 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en_US"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://azure.github.io/AppService/feed.xml" rel="self" type="application/atom+xml" /><link href="https://azure.github.io/AppService/" rel="alternate" type="text/html" hreflang="en_US" /><updated>2026-10-24T00:03:00+00:00</updated><id>https://azure.github.io/AppService/feed.xml</id><title type="html">Azure App Service</title><subtitle>Announcements, updates, and release notes from the Azure App Service product team.</subtitle><author><name>Azure App Service</name></author><entry><title type="html">Azure Functions: Time Zone, Node.js, Python, and Certificate Updates</title><link href="https://azure.github.io/AppService/2026/10/23/time-zone-runtime-certificate-updates-azure-functions.html" rel="alternate" type="text/html" title="Azure Functions: Time Zone, Node.js, Python, and Certificate Updates" /><published>2026-10-23T00:00:00+00:00</published><updated>2026-10-23T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2026/10/23/time-zone-runtime-certificate-updates-azure-functions</id><content type="html" xml:base="https://azure.github.io/AppService/2026/10/23/time-zone-runtime-certificate-updates-azure-functions.html"><![CDATA[<blockquote>
+  <p><strong>Update (23 October 2026):</strong> Updates for time-zone rules, Node.js and Python runtimes, and the eMudhra / emSign certificate issue are <strong>rolling out</strong> to Azure Functions. Windows apps on Consumption, App Service plans, and Elastic Premium follow the App Service Windows patching process. Linux apps on Consumption, App Service plans, Elastic Premium, and Flex Consumption are being patched separately by the Azure Functions team. Updates for <strong>Azure Static Web Apps managed functions</strong> are also in progress. <strong>Rollouts are in progress, not complete.</strong></p>
+</blockquote>
+
+<p>The patching process depends on your function app’s <strong>operating system and hosting plan</strong>.</p>
+
+<h2 id="rollout-by-hosting-plan-and-operating-system">Rollout by hosting plan and operating system</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Hosting plan or offering</th>
+      <th>Windows</th>
+      <th>Linux</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Consumption</td>
+      <td>App Service Windows patching process; in progress.</td>
+      <td>Separate Azure Functions rollout; in progress.</td>
+    </tr>
+    <tr>
+      <td>App Service plan (Dedicated)</td>
+      <td>App Service Windows patching process; in progress.</td>
+      <td>Separate Azure Functions rollout; in progress.</td>
+    </tr>
+    <tr>
+      <td>Elastic Premium</td>
+      <td>App Service Windows patching process; in progress.</td>
+      <td>Separate Azure Functions rollout; in progress.</td>
+    </tr>
+    <tr>
+      <td>Flex Consumption</td>
+      <td>Not available on Windows.</td>
+      <td>Separate Azure Functions rollout; in progress.</td>
+    </tr>
+    <tr>
+      <td>Static Web Apps managed functions</td>
+      <td>Not applicable.</td>
+      <td>Managed functions update rollout; in progress.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>These statuses describe the rollout process, <strong>not confirmation that a particular app or instance already has every applicable fix</strong>. Python functions run on Linux; the Python runtime updates below do not apply to Windows function apps.</p>
+
+<h3 id="windows-consumption-app-service-plans-and-elastic-premium">Windows: Consumption, App Service plans, and Elastic Premium</h3>
+
+<p>Function apps on these Windows hosting plans receive the applicable platform updates through the <strong>App Service Windows patching process</strong>. Follow the corresponding posts for update details and rollout status:</p>
+
+<ul>
+  <li><strong>Time-zone updates:</strong> The rollout has started through accelerated Safe Deployment Practices (SDP) and is not yet complete. See <a href="/AppService/AppService/2026/10/23/time-zone-updates-app-service-windows.html">Time zone updates on App Service for Windows</a>.</li>
+  <li><strong>Node.js runtime fixes:</strong> See <a href="/AppService/AppService/2026/10/22/node-emergency-release-app-service-windows.html">Emergency Node.js runtime updates on App Service for Windows</a>.</li>
+  <li><strong>Certificate trust updates:</strong> See <a href="/AppService/AppService/2026/10/22/emudhra-certificate-issue-app-service-windows.html">eMudhra / emSign certificate security updates on App Service for Windows</a>.</li>
+</ul>
+
+<p>These are separate OS and runtime updates. Receiving one does not establish that all applicable updates have reached your app.</p>
+
+<h3 id="linux-consumption-app-service-plans-elastic-premium-and-flex-consumption">Linux: Consumption, App Service plans, Elastic Premium, and Flex Consumption</h3>
+
+<p>The <strong>Azure Functions team is rolling out these updates separately</strong> for Linux function apps on all four hosting plans. <strong>This rollout is in progress, not complete.</strong></p>
+
+<p>This work covers the applicable time-zone, Node.js, Python, and certificate fixes. Availability can differ while deployment progresses; do not assume that all apps or instances have received every update.</p>
+
+<p>The App Service Linux posts provide background on the <a href="/AppService/AppService/2026/10/22/time-zone-updates-app-service-linux.html">time-zone changes</a>, <a href="/AppService/AppService/2026/10/22/node-python-emergency-release-app-service-linux.html">Node.js and Python releases</a>, and <a href="/AppService/AppService/2026/10/22/emudhra-certificate-issue-app-service-linux.html">certificate issue</a>. <strong>Their App Service completion statuses, runtime-version tables, and Platform Release Channel instructions are not Azure Functions rollout or support guidance</strong>, including for Linux functions hosted on App Service plans.</p>
+
+<h4 id="azure-static-web-apps-managed-functions">Azure Static Web Apps managed functions</h4>
+
+<p>The rollout of the applicable fixes for <strong>Azure Static Web Apps managed functions</strong> is also <strong>in progress, not complete</strong>. These managed API backends are included in this Linux update guidance; do not assume that an App Service rollout completion announcement means that your managed functions have received every applicable update.</p>
+
+<p>This status applies to <strong>managed functions</strong>, not a separately linked Azure Functions app. For a linked function app, use its hosting plan and OS to identify the rollout that applies. We will update this post when the managed functions rollout completes.</p>
+
+<h2 id="what-the-updates-address">What the updates address</h2>
+
+<h3 id="time-zone-rules">Time-zone rules</h3>
+
+<p>Current time-zone data is needed to convert UTC timestamps to local time and calculate schedules correctly when governments change local timekeeping rules. <strong>UTC itself does not change.</strong></p>
+
+<p>Test the locations your app depends on using timestamps before and after the relevant rule change. Verify both local times and UTC offsets, and check the next execution times of recurring jobs. For timer-triggered functions, review the <a href="https://learn.microsoft.com/azure/azure-functions/functions-bindings-timer#ncrontab-time-zones">Azure Functions timer trigger documentation</a> for the time-zone settings supported by your OS and hosting plan; this patch does not add support for a previously unsupported setting.</p>
+
+<p>An OS update does not replace time-zone databases bundled with your application or libraries. Test through the APIs and scheduling code your function actually uses.</p>
+
+<h3 id="nodejs-runtime-fixes">Node.js runtime fixes</h3>
+
+<p>The updates address the recent Node.js security releases described in the linked App Service posts. Use a <a href="https://learn.microsoft.com/azure/azure-functions/functions-reference-node#supported-versions">Node.js version supported by Azure Functions</a> and verify the actual runtime in your running function worker.</p>
+
+<p>An upstream patched version or its availability in App Service does not, by itself, establish availability for your Functions hosting plan or configured release line.</p>
+
+<h3 id="python-runtime-and-dependency-fixes">Python runtime and dependency fixes</h3>
+
+<p>The Python updates address the recent Python releases and related certificate-bundle changes described in the linked runtime post. Use a <a href="https://learn.microsoft.com/azure/azure-functions/functions-reference-python#python-version">Python version supported by Azure Functions</a>.</p>
+
+<p><strong>A platform runtime update does not update packages already deployed with your app</strong>, including packages in an existing virtual environment. Review application-managed certificate bundles and affected dependencies, update them through your trusted package source, and rebuild and redeploy as needed.</p>
+
+<h3 id="emudhra--emsign-certificate-trust-issue">eMudhra / emSign certificate trust issue</h3>
+
+<p>The certificate updates address trust associated with the eMudhra / emSign CA incident. Applications can use OS certificate stores, runtime-specific trust stores, or CA bundles supplied by dependencies.</p>
+
+<p><strong>An updated platform trust store does not prove that every TLS client in your function app uses updated trust data.</strong> Review custom trust stores and bundled CA data separately. Test outbound TLS connections after updating, and work with endpoint owners to resolve certificate-chain failures rather than disabling certificate validation.</p>
+
+<h2 id="what-you-should-do">What you should do</h2>
+
+<ol>
+  <li><strong>Identify your hosting plan and OS.</strong> Use the table above to determine which rollout applies.</li>
+  <li><strong>Follow the appropriate rollout status.</strong> Windows apps on the listed plans follow the linked App Service Windows posts. For the separately managed Linux Functions rollout and Static Web Apps managed functions, watch this post for updates.</li>
+  <li><strong>Use supported runtime versions.</strong> Check Azure Functions support for your language version and hosting plan rather than copying the App Service runtime tables.</li>
+  <li><strong>Verify your running workers.</strong> Use existing application logging or diagnostics to check <code class="language-plaintext highlighter-rouge">process.version</code> for Node.js or <code class="language-plaintext highlighter-rouge">sys.version</code> for Python inside the function worker. Check across instances as the rollout progresses; avoid exposing diagnostics through an unauthenticated public endpoint.</li>
+  <li><strong>Test date/time behavior and outbound TLS.</strong> Verify the code paths your functions actually use, including timers, application-managed time-zone data, and certificate bundles.</li>
+  <li><strong>Update custom container contents yourself.</strong> For function apps using customer-provided images, update the image’s OS data, runtimes, and dependencies, then rebuild, test, and redeploy. Platform patching does not patch the contents of your custom image.</li>
+</ol>
+
+<h2 id="stay-informed">Stay informed</h2>
+
+<p>We will update this post as the Azure Functions-managed rollout progresses and when it completes. Follow the linked Windows posts for the corresponding App Service-managed rollout status.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[Update (23 October 2026): Updates for time-zone rules, Node.js and Python runtimes, and the eMudhra / emSign certificate issue are rolling out to Azure Functions. Windows apps on Consumption, App Service plans, and Elastic Premium follow the App Service Windows patching process. Linux apps on Consumption, App Service plans, Elastic Premium, and Flex Consumption are being patched separately by the Azure Functions team. Updates for Azure Static Web Apps managed functions are also in progress. Rollouts are in progress, not complete.]]></summary></entry><entry><title type="html">Time Zone Updates on Azure App Service for Windows</title><link href="https://azure.github.io/AppService/2026/10/23/time-zone-updates-app-service-windows.html" rel="alternate" type="text/html" title="Time Zone Updates on Azure App Service for Windows" /><published>2026-10-23T00:00:00+00:00</published><updated>2026-10-23T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2026/10/23/time-zone-updates-app-service-windows</id><content type="html" xml:base="https://azure.github.io/AppService/2026/10/23/time-zone-updates-app-service-windows.html"><![CDATA[<blockquote>
+  <p><strong>Update (23 October 2026):</strong> The rollout of <strong>Windows operating-system time-zone updates</strong> on Azure App Service for Windows <strong>has started through accelerated Safe Deployment Practices (SDP)</strong>. <strong>Rollout is in progress, not complete.</strong> We will update this post when the rollout completes.</p>
+</blockquote>
+
+<p>Time-zone rules change when governments update local timekeeping policies. Apps need current time-zone data to convert UTC timestamps to local time and calculate schedules correctly.</p>
+
+<p>Older time-zone data can apply a clock change that no longer occurs, producing incorrect local-time displays, job schedules, deadlines, and date-based calculations. Apps using different data versions can also disagree about the same timestamp.</p>
+
+<h2 id="what-we-are-doing">What we are doing</h2>
+
+<p>We are rolling out an <strong>OS-level time-zone update</strong> across App Service for Windows through accelerated SDP. This is a platform operating-system update, not a language-specific runtime release.</p>
+
+<p><strong>The rollout has started, but is not yet complete.</strong> Availability varies while deployment progresses; this announcement does not establish that the update has reached every app or instance.</p>
+
+<p>The platform manages this OS update. Customers do not need to install an OS patch manually on App Service workers. For more information, see <a href="https://learn.microsoft.com/azure/app-service/overview-patch-os-runtime">OS and runtime patching in Azure App Service</a>.</p>
+
+<h3 id="windows-and-application-managed-time-zone-data">Windows and application-managed time-zone data</h3>
+
+<p>An app can use Windows time-zone rules, runtime-bundled data, or a database supplied by a library. <strong>An OS time-zone update alone is not proof that every date/time API or scheduler in your application uses the updated rules.</strong></p>
+
+<p>Review the data source used by your runtime and dependencies. Update application-managed time-zone data separately through the relevant maintainers’ supported update process, then test and redeploy as needed.</p>
+
+<h2 id="what-you-should-do">What you should do</h2>
+
+<ol>
+  <li><strong>Watch this post for rollout completion.</strong> Rollout has started through accelerated SDP, but is not complete. Do not assume that every app or instance already has the update.</li>
+  <li><strong>Check your app’s actual date/time behavior.</strong> Test conversions and schedules for the regions your app uses, including timestamps on both sides of the relevant rule change.</li>
+  <li><strong>Review application-managed time-zone data.</strong> Update affected libraries, bundled ICU data, and custom time-zone databases separately. The Windows OS update does not replace data bundled with your app or dependencies.</li>
+  <li><strong>Update customer-provided container images and bring-your-own runtimes yourself.</strong> This platform OS rollout does not patch time-zone data inside your custom image or runtime distribution. Follow the relevant maintainers’ guidance, then rebuild, test, and redeploy.</li>
+</ol>
+
+<h2 id="related-updates">Related updates</h2>
+
+<ul>
+  <li><a href="/AppService/AppService/2026/10/22/time-zone-updates-app-service-linux.html">Time zone updates on App Service for Linux</a> covers the separate Linux image rollout and its runtime-specific exceptions. Its IANA release numbers, package commands, and Platform Release Channel instructions do not apply to the Windows OS rollout.</li>
+  <li><a href="/AppService/AppService/2026/10/22/node-emergency-release-app-service-windows.html">Emergency Node.js runtime updates on App Service for Windows</a> covers the separate Node.js runtime rollout.</li>
+  <li><a href="/AppService/AppService/2026/10/22/emudhra-certificate-issue-app-service-windows.html">eMudhra / emSign certificate security updates on App Service for Windows</a> covers the separate Windows OS certificate trust update.</li>
+</ul>
+
+<h2 id="stay-informed">Stay informed</h2>
+
+<p>We will update this post when the Windows OS time-zone update rollout is complete.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[Update (23 October 2026): The rollout of Windows operating-system time-zone updates on Azure App Service for Windows has started through accelerated Safe Deployment Practices (SDP). Rollout is in progress, not complete. We will update this post when the rollout completes.]]></summary></entry><entry><title type="html">eMudhra / emSign Certificate Security Updates on Azure App Service for Linux</title><link href="https://azure.github.io/AppService/2026/10/22/emudhra-certificate-issue-app-service-linux.html" rel="alternate" type="text/html" title="eMudhra / emSign Certificate Security Updates on Azure App Service for Linux" /><published>2026-10-22T00:00:00+00:00</published><updated>2026-10-22T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2026/10/22/emudhra-certificate-issue-app-service-linux</id><content type="html" xml:base="https://azure.github.io/AppService/2026/10/22/emudhra-certificate-issue-app-service-linux.html"><![CDATA[<blockquote>
+  <p><strong>Update (22 October 2026):</strong> Rollout of patched built-in Linux images for the <strong>eMudhra / emSign CA certificate security incident</strong> is <strong>complete on Latest</strong> for the runtimes listed below. Rollout is also <strong>complete on Standard except for Java</strong>, whose Standard rollout remains in progress. <strong>Java customers on Standard should wait for that rollout to complete; no channel change is needed.</strong> The PHP 8.2 and EOL exclusions described below remain unchanged.</p>
+</blockquote>
+
+<p>The eMudhra / emSign incident affects certificate trust used by TLS clients. The <a href="https://ubuntu.com/blog/emudhra-ca-compromise-fixes-available">Ubuntu Security Team’s incident and patch guidance</a> explains the CA trust-store changes needed to mitigate the risk of man-in-the-middle attacks.</p>
+
+<p>This is not limited to a single language runtime. Applications can use operating-system certificates, runtime-managed trust stores, or certificate bundles supplied by dependencies. <strong>Updating the platform image does not replace certificate bundles managed by your application.</strong></p>
+
+<h2 id="what-we-are-doing">What we are doing</h2>
+
+<p>Patched built-in Linux images are available on <strong>Latest and Standard</strong> for <strong>all non-EOL runtimes</strong>, with the <a href="#php-82-exception">PHP 8.2 exception</a> described below.
+<strong>Java is available on Latest; its Standard rollout is still in progress.</strong></p>
+
+<p>The following runtime versions are listed by <code class="language-plaintext highlighter-rouge">az webapp list-runtimes -o table --os linux</code> as of <strong>22 October 2026</strong> and are included in the completed rollout to <strong>Latest</strong>, and to <strong>Standard except for Java</strong>. For Java, the table summarizes Java SE versions rather than listing individual application-server combinations.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Runtime</th>
+      <th>Versions included in the image updates</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>.NET</td>
+      <td>8, 9, 10, 11</td>
+    </tr>
+    <tr>
+      <td>Node.js</td>
+      <td>22, 24</td>
+    </tr>
+    <tr>
+      <td>Python</td>
+      <td>3.10, 3.11, 3.12, 3.13, 3.14</td>
+    </tr>
+    <tr>
+      <td>PHP</td>
+      <td>8.3, 8.4, 8.5</td>
+    </tr>
+    <tr>
+      <td>Java SE</td>
+      <td>8, 11, 17, 21, 25</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Runtimes approaching EOL are included while they remain supported. <strong>EOL runtimes do not receive these image updates.</strong></p>
+
+<p><strong>WordPress on App Service is also updated.</strong> The supported images for apps deployed using the official <a href="https://marketplace.microsoft.com/product/WordPress.WordPress?tab=Overview">WordPress on App Service offering in Microsoft Marketplace</a> include the certificate security updates.</p>
+
+<h3 id="php-82-exception">PHP 8.2 exception</h3>
+
+<p><strong>The built-in PHP 8.2 image is not included in this initial patch payload.</strong> Although PHP 8.2 itself has not yet reached EOL, its underlying <strong>Debian 11 (Bullseye)</strong> operating system is beyond Debian’s standard/LTS support period and is not providing the patch for this image.</p>
+
+<p><strong>We are investigating options to provide a patch for PHP 8.2.</strong> No availability date is confirmed.</p>
+
+<p>If your app uses PHP 8.2, <strong>update and test your app on PHP 8.3 or a later supported version</strong>, then configure your app to use that runtime. Moving a PHP 8.2 app to Latest alone does not address this exception.</p>
+
+<h3 id="rollout-by-platform-release-channel">Rollout by Platform Release Channel</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Channel</th>
+      <th>Availability of the updates</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Latest</strong></td>
+      <td>Rollout <strong>complete</strong>.</td>
+    </tr>
+    <tr>
+      <td><strong>Standard</strong> (default)</td>
+      <td>Rollout <strong>complete except for Java</strong>. Java rollout continues through <strong>Safe Deployment Practices (SDP)</strong>.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The updated images are available on both Latest and Standard for the included runtimes <strong>except Java, whose Standard rollout is not yet complete</strong>.</p>
+
+<p>Changing your Platform Release Channel does not upgrade your app to a different runtime version or make an EOL runtime supported.</p>
+
+<h2 id="what-you-should-do">What you should do</h2>
+
+<ol>
+  <li><strong>Use Standard or Latest to receive these updates.</strong> For eligible non-Java runtimes, apps on either channel do not need a channel change. <strong>Java customers on Standard should remain on Standard and wait for the rollout to complete.</strong></li>
+  <li><strong>Upgrade PHP 8.2 and EOL runtimes.</strong> PHP 8.2 is excluded from this certificate patch because of its OS base. EOL runtimes are also excluded. Update and test your app on a supported runtime included in the patching scope.</li>
+  <li><strong>Update application-managed certificate bundles and dependencies.</strong> Review the official guidance for your runtime and libraries. An updated platform trust store does not necessarily update a library’s bundled certificates or an existing virtual environment.</li>
+  <li><strong>Update custom containers and bring-your-own runtimes yourself.</strong> App Service does not patch the contents of your custom images or runtimes. Update their OS packages, runtimes, and affected dependencies, then rebuild, test, and redeploy.</li>
+  <li><strong>Test outbound TLS connections.</strong> Check the services your app calls after updating. Do not work around certificate errors by disabling TLS certificate validation.</li>
+  <li><strong>Check the running image’s certificate package.</strong> Use the instructions below to inspect the OS certificate package. This check does not verify application-managed trust stores.</li>
+</ol>
+
+<h3 id="change-your-platform-release-channel">Change your Platform Release Channel</h3>
+
+<p><strong>Azure portal</strong></p>
+
+<ol>
+  <li>In the Azure portal, go to your App Service app.</li>
+  <li>In the left menu, select <strong>Stack settings</strong>.</li>
+  <li>Under <strong>Platform Release Channel</strong>, select <strong>Standard</strong>.</li>
+  <li>Select <strong>Save</strong>.</li>
+</ol>
+
+<p><strong>Azure CLI</strong></p>
+
+<p>Use <a href="https://learn.microsoft.com/cli/azure/webapp#az-webapp-update">az webapp update</a> to move your app to Standard:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp update <span class="se">\</span>
+  <span class="nt">--resource-group</span> &lt;resource-group&gt; <span class="se">\</span>
+  <span class="nt">--name</span> &lt;app-name&gt; <span class="se">\</span>
+  <span class="nt">--platform-release-channel</span> Standard
+</code></pre></div></div>
+
+<p>Replace the placeholders with your app’s resource group and name. For a deployment slot, add <code class="language-plaintext highlighter-rouge">--slot &lt;slot-name&gt;</code>.</p>
+
+<p>Java apps already on <strong>Standard</strong> should remain on that channel and wait for rollout completion. Eligible non-Java apps already on Standard or Latest do not need a channel change.</p>
+
+<h3 id="verify-the-certificate-package">Verify the certificate package</h3>
+
+<p>Use <a href="https://learn.microsoft.com/cli/azure/webapp#az-webapp-exec">az webapp exec</a> (currently in preview) with Azure CLI <strong>2.90.0 or later</strong> to open an interactive shell in your running app:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp <span class="nb">exec</span> <span class="nt">--resource-group</span> &lt;resource-group&gt; <span class="nt">--name</span> &lt;app-name&gt;
+</code></pre></div></div>
+
+<p>Replace the placeholders with your app’s resource group and name. For a deployment slot, add <code class="language-plaintext highlighter-rouge">--slot &lt;slot-name&gt;</code>.</p>
+
+<p>Inside the container, identify the OS and installed certificate-package version:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat</span> /etc/os-release
+dpkg-query <span class="nt">-W</span> <span class="nt">-f</span><span class="o">=</span><span class="s1">'${Package} ${Version}\n'</span> ca-certificates
+</code></pre></div></div>
+
+<p>For Ubuntu-based images, compare the installed version with the fixed version for the <strong>same Ubuntu release</strong> in the <a href="https://ubuntu.com/blog/emudhra-ca-compromise-fixes-available">Ubuntu incident and patch guidance</a>. For example:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Ubuntu release</th>
+      <th>Fixed <code class="language-plaintext highlighter-rouge">ca-certificates</code> version</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>24.04</td>
+      <td><code class="language-plaintext highlighter-rouge">20260816ubuntu0.24.04.1</code></td>
+    </tr>
+    <tr>
+      <td>26.04</td>
+      <td><code class="language-plaintext highlighter-rouge">20260816ubuntu0.26.04.1</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The listed version or a subsequent version containing the fix is the expected result. Do not compare package versions across different OS releases. For Debian-based images, use the corresponding Debian package guidance rather than the Ubuntu versions.</p>
+
+<p>This check inspects the OS certificate package on <strong>one running instance</strong>, not every trust store used by your app. Use <code class="language-plaintext highlighter-rouge">--instance &lt;instance-id&gt;</code> to connect to other instances as needed. Application-managed CA bundles and runtime-specific trust stores require separate checks. A successful HTTPS request alone is not proof that the issue is mitigated.</p>
+
+<h3 id="application-managed-trust-stores-and-dependencies">Application-managed trust stores and dependencies</h3>
+
+<p>The platform update covers the built-in images, not certificate bundles or trust stores that your app supplies. Review your app’s libraries, dependencies, and custom trust-store configuration, and follow their maintainers’ incident guidance. Update affected dependencies through your trusted package source, then rebuild, test, and redeploy as needed.</p>
+
+<p>As the <a href="https://ubuntu.com/blog/emudhra-ca-compromise-fixes-available">Ubuntu guidance</a> notes, removing affected trust anchors can also cause connections to legitimate endpoints that rely on those anchors to fail. Test outbound TLS connections and work with the endpoint owner to resolve affected certificate chains rather than disabling certificate validation.</p>
+
+<h2 id="related-updates">Related updates</h2>
+
+<ul>
+  <li><a href="/AppService/AppService/2026/10/22/emudhra-certificate-issue-app-service-windows.html">eMudhra / emSign certificate security updates on App Service for Windows</a> covers the separate Windows OS certificate rollout. Linux Platform Release Channel settings do not apply to Windows.</li>
+  <li><a href="/AppService/AppService/2026/10/22/time-zone-updates-app-service-linux.html">Time zone updates on App Service for Linux</a> covers the separate time-zone data rollout, whose PHP 8.2 and 8.3 exclusions differ from the certificate update exclusion described here.</li>
+  <li><a href="/AppService/AppService/2026/10/21/php-critical-security-release-app-service-linux.html">Critical PHP security release guidance for App Service</a> covers the separate PHP runtime vulnerabilities and rollout.</li>
+  <li><a href="/AppService/AppService/2026/10/22/node-python-emergency-release-app-service-linux.html">Node.js and Python emergency runtime updates on App Service for Linux</a> covers the runtime releases and their rollout. Review that guidance alongside the certificate updates here; runtime patches do not replace application-managed CA bundles.</li>
+</ul>
+
+<h2 id="stay-informed">Stay informed</h2>
+
+<p>We share further updates here as needed, including any changes to the PHP 8.2 patch plan.</p>
+
+<p>Thank you for helping us keep your apps on Azure App Service secure.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[Update (22 October 2026): Rollout of patched built-in Linux images for the eMudhra / emSign CA certificate security incident is complete on Latest for the runtimes listed below. Rollout is also complete on Standard except for Java, whose Standard rollout remains in progress. Java customers on Standard should wait for that rollout to complete; no channel change is needed. The PHP 8.2 and EOL exclusions described below remain unchanged.]]></summary></entry><entry><title type="html">eMudhra / emSign Certificate Security Updates on Azure App Service for Windows</title><link href="https://azure.github.io/AppService/2026/10/22/emudhra-certificate-issue-app-service-windows.html" rel="alternate" type="text/html" title="eMudhra / emSign Certificate Security Updates on Azure App Service for Windows" /><published>2026-10-22T00:00:00+00:00</published><updated>2026-10-22T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2026/10/22/emudhra-certificate-issue-app-service-windows</id><content type="html" xml:base="https://azure.github.io/AppService/2026/10/22/emudhra-certificate-issue-app-service-windows.html"><![CDATA[<blockquote>
+  <p><strong>Update (22 October 2026):</strong> The rollout of <strong>Windows operating-system certificate updates</strong> for the <strong>eMudhra / emSign CA certificate security incident has started</strong> on Azure App Service for Windows. <strong>Rollout is in progress, not complete.</strong> We will update this post when the rollout completes.</p>
+</blockquote>
+
+<p>The eMudhra / emSign incident affects certificate trust used by TLS clients. Compromised certificate authorities can allow an attacker to impersonate TLS endpoints when a client continues to trust the affected certificate chains.</p>
+
+<p>For background on the incident, see the <a href="https://ubuntu.com/blog/emudhra-ca-compromise-fixes-available">Ubuntu Security Team’s incident explanation</a>. That article describes the cross-platform certificate issue; its Linux package versions and installation commands do <strong>not</strong> apply to Windows.</p>
+
+<h2 id="what-we-are-doing">What we are doing</h2>
+
+<p>We are rolling out an <strong>OS-level certificate trust update</strong> to App Service for Windows. This is a platform operating-system update, not a language-specific runtime release.</p>
+
+<p><strong>The rollout has started</strong>, and availability varies while deployment progresses. We will update this post once rollout is complete.</p>
+
+<p><strong>Platform Release Channels do not apply to App Service for Windows.</strong> There is no Latest or Standard channel to select for this rollout. The Linux channel instructions in our related posts do not apply to Windows apps.</p>
+
+<p>The platform manages this OS update. Customers do not need to install an OS patch manually on App Service workers. For more information, see <a href="https://learn.microsoft.com/azure/app-service/overview-patch-os-runtime">OS and runtime patching in Azure App Service</a>.</p>
+
+<h2 id="what-you-should-do">What you should do</h2>
+
+<ol>
+  <li><strong>Watch this post for rollout completion.</strong> Rollout has started, but this does not establish that the update has reached every app or instance.</li>
+  <li><strong>Review application-managed certificate bundles and trust stores.</strong> The Windows OS patch does not replace certificates bundled with your application, runtime, or dependencies. Follow the relevant maintainers’ guidance and update affected components separately.</li>
+  <li><strong>Test outbound TLS connections.</strong> Check connections to the services your app calls. Removing affected trust can cause connections to endpoints relying on those certificate chains to fail. Work with the endpoint owner to resolve the certificate chain rather than disabling TLS certificate validation.</li>
+  <li><strong>Update customer-provided container images yourself.</strong> This platform OS rollout does not patch certificate stores or dependencies inside your custom container image. Follow your image’s OS and dependency guidance, then rebuild, test, and redeploy.</li>
+</ol>
+
+<h3 id="application-managed-trust-stores-and-dependencies">Application-managed trust stores and dependencies</h3>
+
+<p>An app can use the Windows certificate store, a runtime-specific trust store, or a CA bundle supplied by a library. <strong>An OS certificate update alone is not proof that every TLS client in your application is protected.</strong></p>
+
+<p>Review custom trust-store configuration, bundled certificates, and dependencies that maintain their own CA data. Update affected components through your trusted sources and test the application after redeployment.</p>
+
+<h2 id="related-updates">Related updates</h2>
+
+<ul>
+  <li><a href="/AppService/AppService/2026/10/23/time-zone-updates-app-service-windows.html">Time zone updates on App Service for Windows</a> covers the separate Windows OS time-zone update, whose rollout has started through accelerated SDP and is not yet complete.</li>
+  <li><a href="/AppService/AppService/2026/10/22/node-emergency-release-app-service-windows.html">Emergency Node.js runtime updates on App Service for Windows</a> covers the separate Node.js security releases and runtime rollout. The OS certificate update does not replace runtime security patches.</li>
+  <li><a href="/AppService/AppService/2026/10/22/emudhra-certificate-issue-app-service-linux.html">eMudhra / emSign certificate security updates on App Service for Linux</a> covers the separate Linux image rollout. Its release-channel settings and Ubuntu package checks do not apply to Windows.</li>
+</ul>
+
+<h2 id="stay-informed">Stay informed</h2>
+
+<p>We will update this post when the Windows OS certificate update rollout is complete.</p>
+
+<p>Thank you for helping us keep your apps on Azure App Service secure.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[Update (22 October 2026): The rollout of Windows operating-system certificate updates for the eMudhra / emSign CA certificate security incident has started on Azure App Service for Windows. Rollout is in progress, not complete. We will update this post when the rollout completes.]]></summary></entry><entry><title type="html">Emergency Node.js Runtime Updates on Azure App Service for Windows</title><link href="https://azure.github.io/AppService/2026/10/22/node-emergency-release-app-service-windows.html" rel="alternate" type="text/html" title="Emergency Node.js Runtime Updates on Azure App Service for Windows" /><published>2026-10-22T00:00:00+00:00</published><updated>2026-10-22T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2026/10/22/node-emergency-release-app-service-windows</id><content type="html" xml:base="https://azure.github.io/AppService/2026/10/22/node-emergency-release-app-service-windows.html"><![CDATA[<blockquote>
+  <p><strong>Update (22 October 2026):</strong> The rollout of updated built-in Node.js runtimes on <strong>Azure App Service for Windows has started</strong>. This update is part of a rollout following an accelerated SDP (Safe Deployment Practice). <strong>We will update this post when the rollout is complete.</strong></p>
+</blockquote>
+
+<p>Following the emergency Node.js releases on <strong>21 October 2026</strong>, the Azure App Service team is rolling out updated Node.js runtimes for Windows apps.</p>
+
+<h2 id="patched-versions-and-official-release-notes">Patched versions and official release notes</h2>
+
+<p>For the <strong>22.x and 24.x</strong> release lines covered in this article, the <a href="https://nodejs.org/en/blog/vulnerability/october-2026-security-releases">official Node.js security announcement</a> lists fixes with a highest severity of <strong>High</strong>, including fixes for a Brotli decoder out-of-bounds write that permits remote code execution, DNS name handling, and TLS certificate hostname validation. The release also includes dependency updates and a CA-certificate update related to the eMudhra intermediate CA compromise.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Node.js release line</th>
+      <th>Patched version</th>
+      <th>Official release notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>22.x</td>
+      <td><strong>22.23.4</strong></td>
+      <td><a href="https://nodejs.org/en/blog/release/v22.23.4/">Node.js 22.23.4</a></td>
+    </tr>
+    <tr>
+      <td>24.x</td>
+      <td><strong>24.22.1</strong></td>
+      <td><a href="https://nodejs.org/en/blog/release/v24.22.1/">Node.js 24.22.1</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>These are the upstream patched versions for the release lines covered here, <strong>not confirmation that your app already runs them</strong>. See the official security announcement for the complete vulnerability list and affected release lines.</p>
+
+<h2 id="what-we-are-doing">What we are doing</h2>
+
+<p>We are rolling out the updated built-in Node.js runtimes across App Service for Windows. <strong>Rollout is in progress</strong>, so availability varies while deployment progresses.</p>
+
+<p><strong>Platform Release Channels do not apply to App Service for Windows.</strong> There is no Latest or Standard channel to select for this rollout. The Linux channel instructions in our related posts do not apply to Windows apps.</p>
+
+<p>For more information about platform-managed runtime updates, see <a href="https://learn.microsoft.com/azure/app-service/overview-patch-os-runtime">OS and runtime patching in Azure App Service</a>.</p>
+
+<h2 id="what-you-should-do">What you should do</h2>
+
+<ol>
+  <li><strong>Check your app’s running Node.js version.</strong> Verify the version used by the application process rather than assuming the rollout has reached your app.</li>
+  <li><strong>Use a supported Node.js release line.</strong> End-of-life runtimes do not receive these fixes. Update and test your app on a supported release line if necessary.</li>
+  <li><strong>Review pinned runtime settings.</strong> If your app is pinned to an older patch version, review its runtime configuration so it can use an updated version once available. See <a href="https://learn.microsoft.com/azure/app-service/configure-language-nodejs?pivots=platform-windows#configure-nodejs-version">Configure a Node.js app for Azure App Service</a>.</li>
+  <li><strong>Update bring-your-own runtimes and custom containers yourself.</strong> App Service does not patch Node.js binaries that you supply. Update to the applicable patched version, test, and redeploy.</li>
+  <li><strong>Watch this post for completion status.</strong> The rollout has started, but is not complete. We will update this post once deployment completes.</li>
+</ol>
+
+<h3 id="verify-your-running-nodejs-version">Verify your running Node.js version</h3>
+
+<p>Use your application’s existing startup logging or diagnostics to inspect <strong><code class="language-plaintext highlighter-rouge">process.version</code></strong> in the running Node.js application process. For example, log the version during application startup:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="s2">`Node.js runtime: </span><span class="p">${</span><span class="nx">process</span><span class="p">.</span><span class="nx">version</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Review that output in your application’s logs after deployment or the next application startup. Avoid exposing runtime diagnostics through an unauthenticated public endpoint.</p>
+
+<p>The version selected in configuration or reported by a separate console process does not by itself prove which Node.js binary your application process uses. For scaled-out apps, check the application logs across instances as the rollout progresses.</p>
+
+<h2 id="related-updates">Related updates</h2>
+
+<ul>
+  <li><a href="/AppService/AppService/2026/10/23/time-zone-updates-app-service-windows.html">Time zone updates on App Service for Windows</a> covers the separate Windows OS time-zone update, whose rollout has started through accelerated SDP and is not yet complete.</li>
+  <li><a href="/AppService/AppService/2026/10/22/emudhra-certificate-issue-app-service-windows.html">eMudhra / emSign certificate security updates on App Service for Windows</a> covers the separate Windows OS certificate update. Runtime updates do not replace certificate bundles managed by your app.</li>
+  <li><a href="/AppService/AppService/2026/10/22/node-python-emergency-release-app-service-linux.html">Node.js and Python emergency runtime updates on App Service for Linux</a> covers the separate Linux rollout. Its Platform Release Channel instructions do not apply to Windows.</li>
+  <li><a href="/AppService/AppService/2026/10/21/php-critical-security-release-app-service-linux.html">Critical PHP security release guidance for App Service</a> covers the separate PHP security release and Windows PHP guidance.</li>
+</ul>
+
+<h2 id="stay-informed">Stay informed</h2>
+
+<p>We will update this post when the Node.js runtime rollout on App Service for Windows is complete.</p>
+
+<p>Thank you for helping us keep your Node.js apps on Azure App Service secure.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[Update (22 October 2026): The rollout of updated built-in Node.js runtimes on Azure App Service for Windows has started. This update is part of a rollout following an accelerated SDP (Safe Deployment Practice). We will update this post when the rollout is complete.]]></summary></entry><entry><title type="html">Emergency Node.js and Python Runtime Updates on Azure App Service for Linux</title><link href="https://azure.github.io/AppService/2026/10/22/node-python-emergency-release-app-service-linux.html" rel="alternate" type="text/html" title="Emergency Node.js and Python Runtime Updates on Azure App Service for Linux" /><published>2026-10-22T00:00:00+00:00</published><updated>2026-10-22T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2026/10/22/node-python-emergency-release-app-service-linux</id><content type="html" xml:base="https://azure.github.io/AppService/2026/10/22/node-python-emergency-release-app-service-linux.html"><![CDATA[<blockquote>
+  <p><strong>Update (22 October 2026):</strong> Rollout of the updated built-in Node.js and Python images is <strong>complete on both the Latest and Standard Platform Release Channels</strong> for Azure App Service on Linux.</p>
+</blockquote>
+
+<p>Following the emergency Node.js and Python releases on <strong>21 October 2026</strong>, the Azure App Service team has updated the built-in Linux images with the newly released runtime versions.</p>
+
+<h2 id="patched-versions-and-official-release-notes">Patched versions and official release notes</h2>
+
+<p>The following versions were published by the Node.js and Python projects on <strong>21 October 2026</strong>. These are upstream release versions; verify the runtime version in your running App Service app using the instructions below.</p>
+
+<h3 id="nodejs">Node.js</h3>
+
+<p>For the <strong>22.x and 24.x</strong> release lines covered in this article, the <a href="https://nodejs.org/en/blog/vulnerability/october-2026-security-releases">official Node.js security announcement</a> lists fixes with a highest severity of <strong>High</strong>, including fixes for a Brotli decoder out-of-bounds write that permits remote code execution, DNS name handling, and TLS certificate hostname validation. The release also includes dependency updates and a CA-certificate update related to the eMudhra intermediate CA compromise.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Node.js release line</th>
+      <th>Patched version</th>
+      <th>Official release notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>22.x</td>
+      <td><strong>22.23.4</strong></td>
+      <td><a href="https://nodejs.org/en/blog/release/v22.23.4/">Node.js 22.23.4</a></td>
+    </tr>
+    <tr>
+      <td>24.x</td>
+      <td><strong>24.22.1</strong></td>
+      <td><a href="https://nodejs.org/en/blog/release/v24.22.1/">Node.js 24.22.1</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>See the official security announcement for the complete vulnerability list and affected release lines. End-of-life Node.js versions do not receive these fixes; move to a supported release line if your app is using an EOL version.</p>
+
+<h3 id="python">Python</h3>
+
+<p>The <a href="https://blog.python.org/2026/10/python-3151-3149-31317/">official Python release announcement</a> describes an expedited security release for <strong>3.14</strong> and a special security release for <strong>3.13</strong>. Both update bundled <strong>pip to 26.2.2</strong>, including <strong>certifi 2026.10.19</strong>, to address the <strong>eMudhra / emSign CA certificate security incident</strong>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Python release line</th>
+      <th>Updated version</th>
+      <th>Official release notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>3.13</td>
+      <td><strong>3.13.17</strong></td>
+      <td><a href="https://www.python.org/downloads/release/python-31317/">Python 3.13.17</a></td>
+    </tr>
+    <tr>
+      <td>3.14</td>
+      <td><strong>3.14.9</strong></td>
+      <td><a href="https://www.python.org/downloads/release/python-3149/">Python 3.14.9</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Updating the platform runtime does not update packages in your app’s existing virtual environments.</strong> The Python team also recommends updating pip and uv in existing virtual environments. Review the <a href="https://discuss.python.org/t/information-for-python-users-regarding-emudhra-emsign-ca-certificate-security-incident/109576">official incident guidance</a>, update affected app-managed dependencies through your trusted package source, and rebuild and redeploy your app as needed.</p>
+
+<h2 id="what-we-are-doing">What we are doing</h2>
+
+<p>The updated images roll out through the <a href="https://learn.microsoft.com/azure/app-service/overview-patch-os-runtime#control-runtime-patch-update-timing-with-platform-release-channel">Platform Release Channels</a> as follows:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Channel</th>
+      <th>Availability of the updates</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Latest</strong></td>
+      <td>Rollout <strong>complete</strong>.</td>
+    </tr>
+    <tr>
+      <td><strong>Standard</strong> (default)</td>
+      <td>Rollout <strong>complete</strong> through <strong>Safe Deployment Practices (SDP)</strong>.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The updated images are available on both Latest and Standard for the release lines covered here.</p>
+
+<p>Changing your Platform Release Channel does not change your app’s configured Node.js or Python release line. If your app needs a different supported release line, update and test the app and change its runtime configuration separately.</p>
+
+<h2 id="what-you-should-do">What you should do</h2>
+
+<ol>
+  <li><strong>Use Standard or Latest to receive these updates.</strong> Apps already on either channel do not need a channel change. If you use another channel, follow the instructions below to select Standard.</li>
+  <li><strong>Verify your runtime version.</strong> After your app picks up the updated image, use <code class="language-plaintext highlighter-rouge">az webapp exec</code> to open an interactive shell in the app and check its running runtime version.</li>
+  <li><strong>Update custom containers and bring-your-own runtimes yourself.</strong> App Service does not patch Node.js or Python runtimes that you supply. Update your runtime or rebuild your container image with the applicable fixed version, test your app, and redeploy.</li>
+</ol>
+
+<h3 id="change-your-platform-release-channel">Change your Platform Release Channel</h3>
+
+<p><strong>Azure portal</strong></p>
+
+<ol>
+  <li>In the Azure portal, go to your App Service app.</li>
+  <li>In the left menu, select <strong>Stack settings</strong>.</li>
+  <li>Under <strong>Platform Release Channel</strong>, select <strong>Standard</strong>.</li>
+  <li>Select <strong>Save</strong>.</li>
+</ol>
+
+<p><strong>Azure CLI</strong></p>
+
+<p>Use <a href="https://learn.microsoft.com/cli/azure/webapp#az-webapp-update">az webapp update</a> to move your app to Standard:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp update <span class="se">\</span>
+  <span class="nt">--resource-group</span> &lt;resource-group&gt; <span class="se">\</span>
+  <span class="nt">--name</span> &lt;app-name&gt; <span class="se">\</span>
+  <span class="nt">--platform-release-channel</span> Standard
+</code></pre></div></div>
+
+<p>Replace the placeholders with your app’s resource group and name. For a deployment slot, add <code class="language-plaintext highlighter-rouge">--slot &lt;slot-name&gt;</code>.</p>
+
+<p>If your app is already on <strong>Standard</strong> or <strong>Latest</strong>, no channel change is needed for these updates.</p>
+
+<p>For more information, see <a href="https://learn.microsoft.com/azure/app-service/overview-patch-os-runtime#control-runtime-patch-update-timing-with-platform-release-channel">OS and runtime patching in Azure App Service</a>.</p>
+
+<h3 id="verify-your-runtime-version">Verify your runtime version</h3>
+
+<p>Use <a href="https://learn.microsoft.com/cli/azure/webapp#az-webapp-exec">az webapp exec</a> (currently in preview) with Azure CLI <strong>2.90.0 or later</strong> to open an interactive shell in your running app:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp <span class="nb">exec</span> <span class="nt">--resource-group</span> &lt;resource-group&gt; <span class="nt">--name</span> &lt;app-name&gt;
+</code></pre></div></div>
+
+<p>Replace the placeholders with your app’s resource group and name. For a deployment slot, add <code class="language-plaintext highlighter-rouge">--slot &lt;slot-name&gt;</code>.</p>
+
+<p>In the interactive shell, run the command for your runtime.</p>
+
+<p>For Node.js:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>node <span class="nt">--version</span>
+</code></pre></div></div>
+
+<p>For Python:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python <span class="nt">--version</span>
+</code></pre></div></div>
+
+<p>Verify the version in your running app rather than relying only on the selected Platform Release Channel.</p>
+
+<p>Use the interactive shell for these checks rather than detached execute mode, which does not return command output or an exit code.</p>
+
+<h2 id="related-updates">Related updates</h2>
+
+<ul>
+  <li><a href="/AppService/AppService/2026/10/22/node-emergency-release-app-service-windows.html">Emergency Node.js runtime updates on App Service for Windows</a> covers the separate Windows Node.js rollout. Linux Platform Release Channel settings do not apply to Windows.</li>
+  <li><a href="/AppService/AppService/2026/10/22/time-zone-updates-app-service-linux.html">Time zone updates on App Service for Linux</a> covers the updated time-zone rules and checks for OS and application-managed time-zone data.</li>
+  <li><a href="/AppService/AppService/2026/10/22/emudhra-certificate-issue-app-service-linux.html">eMudhra / emSign certificate security updates on App Service for Linux</a> provides additional guidance on OS trust stores and application-managed CA bundles. Updating the runtime does not replace certificate bundles managed by your app.</li>
+  <li><a href="/AppService/AppService/2026/10/21/php-critical-security-release-app-service-linux.html">Critical PHP security release guidance for App Service</a> covers the separate PHP security release and actions for PHP workloads.</li>
+</ul>
+
+<h2 id="stay-informed">Stay informed</h2>
+
+<p>We will share further updates here as needed.</p>
+
+<p>Thank you for helping us keep your Node.js and Python apps on Azure App Service secure.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[Update (22 October 2026): Rollout of the updated built-in Node.js and Python images is complete on both the Latest and Standard Platform Release Channels for Azure App Service on Linux.]]></summary></entry><entry><title type="html">Time Zone Updates on Azure App Service for Linux</title><link href="https://azure.github.io/AppService/2026/10/22/time-zone-updates-app-service-linux.html" rel="alternate" type="text/html" title="Time Zone Updates on Azure App Service for Linux" /><published>2026-10-22T00:00:00+00:00</published><updated>2026-10-22T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2026/10/22/time-zone-updates-app-service-linux</id><content type="html" xml:base="https://azure.github.io/AppService/2026/10/22/time-zone-updates-app-service-linux.html"><![CDATA[<blockquote>
+  <p><strong>Update (22 October 2026):</strong> Rollout of updated built-in Linux images for the time-zone rule changes in <strong>IANA time zone database 2026e</strong> is <strong>complete on Latest</strong> for the supported runtimes covered below. Rollout is also <strong>complete on Standard except for Java</strong>, whose Standard rollout remains in progress. <strong>Java customers on Standard should wait for that rollout to complete; no channel change is needed.</strong> The PHP 8.2, PHP 8.3, and EOL exclusions described below remain unchanged.</p>
+</blockquote>
+
+<p>Time-zone rules change when governments update local timekeeping policies. Apps need current time-zone data to convert UTC timestamps to local time and calculate schedules correctly.</p>
+
+<p>The <a href="https://github.com/eggert/tz/blob/main/NEWS">upstream time zone database release notes</a> describe changes affecting several Canadian regions around the <strong>1 November 2026</strong> clock transition, as well as an earlier change affecting Morocco and Western Sahara. <strong>UTC itself does not change.</strong></p>
+
+<h2 id="what-changes-in-the-time-zone-data">What changes in the time-zone data</h2>
+
+<p>The updates are cumulative. <strong>2026e</strong> includes the following rule changes from releases 2026b through 2026e:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Region</th>
+      <th>Updated behavior</th>
+      <th>First included</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>British Columbia (including <code class="language-plaintext highlighter-rouge">America/Vancouver</code>)</td>
+      <td>Remains on UTC-07 instead of falling back on 1 November.</td>
+      <td>2026b</td>
+    </tr>
+    <tr>
+      <td>Alberta (including <code class="language-plaintext highlighter-rouge">America/Edmonton</code>)</td>
+      <td>Remains on UTC-06 instead of falling back on 1 November.</td>
+      <td>2026c</td>
+    </tr>
+    <tr>
+      <td>Morocco and Western Sahara</td>
+      <td>Move to permanent UTC+00 on 20 September 2026.</td>
+      <td>2026c</td>
+    </tr>
+    <tr>
+      <td>Northwest Territories</td>
+      <td>Remains on UTC-06 instead of falling back on 1 November.</td>
+      <td>2026d</td>
+    </tr>
+    <tr>
+      <td>Manitoba (including <code class="language-plaintext highlighter-rouge">America/Winnipeg</code>)</td>
+      <td>Remains on UTC-05 instead of falling back on 1 November.</td>
+      <td>2026e</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>See the upstream release notes for exact zone coverage and transition details. These changes do not mean that every location in Canada follows the same rules.</p>
+
+<p>Older data can apply a clock change that no longer occurs, producing incorrect local-time displays, job schedules, deadlines, and date-based calculations. Apps on different data versions can also disagree about the same timestamp.</p>
+
+<h2 id="what-we-are-doing">What we are doing</h2>
+
+<p>Updated built-in Linux images are available on <strong>Latest and Standard</strong> for <strong>non-EOL runtimes</strong>, with the <a href="#php-82-and-83-exceptions">PHP 8.2 and 8.3 exceptions</a> described below. The updates address the time-zone data needed for these rule changes, including OS data and runtime-bundled data where applicable.
+<strong>Java is available on Latest; its Standard rollout is still in progress.</strong></p>
+
+<p>The following runtime versions are included in the completed rollout to <strong>Latest</strong>, and to <strong>Standard except for Java</strong>. For Java, the table summarizes Java SE versions rather than listing individual application-server combinations.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Runtime</th>
+      <th>Versions included in the image updates</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>.NET</td>
+      <td>8, 9, 10, 11</td>
+    </tr>
+    <tr>
+      <td>Node.js</td>
+      <td>22, 24</td>
+    </tr>
+    <tr>
+      <td>Python</td>
+      <td>3.10, 3.11, 3.12, 3.13, 3.14</td>
+    </tr>
+    <tr>
+      <td>PHP</td>
+      <td>8.4, 8.5</td>
+    </tr>
+    <tr>
+      <td>Java SE</td>
+      <td>8, 11, 17, 21, 25</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>EOL runtimes do not receive these image updates.</strong> Updating an image does not automatically replace time-zone databases bundled in your app or its dependencies.</p>
+
+<h3 id="php-82-and-83-exceptions">PHP 8.2 and 8.3 exceptions</h3>
+
+<p><strong>PHP 8.2 and PHP 8.3 are not included in this initial time-zone update payload.</strong> These stacks use a custom PHP time-zone database that is not current. We are investigating an update plan for these two stacks; no availability date is confirmed.</p>
+
+<p>Moving an app on either stack to Latest alone does not address this exception. If your app depends on the changed rules, update and test it on a supported PHP stack included in this rollout, such as <strong>PHP 8.4 or 8.5</strong>, and verify its date/time behavior before switching production traffic.</p>
+
+<h3 id="rollout-by-platform-release-channel">Rollout by Platform Release Channel</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Channel</th>
+      <th>Availability of the updates</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Latest</strong></td>
+      <td>Rollout <strong>complete</strong> for the included runtimes.</td>
+    </tr>
+    <tr>
+      <td><strong>Standard</strong> (default)</td>
+      <td>Rollout <strong>complete except for Java</strong>. Java rollout continues through <strong>Safe Deployment Practices (SDP)</strong>.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Both channels include these updates for the covered runtimes <strong>except Java, whose Standard rollout is not yet complete</strong>. Changing your channel does not upgrade your app to a different runtime version or make an EOL runtime supported.</p>
+
+<h2 id="what-you-should-do">What you should do</h2>
+
+<ol>
+  <li><strong>Use Standard or Latest to receive the updated rules.</strong> For eligible non-Java runtimes, apps on either channel do not need a channel change. <strong>Java customers on Standard should remain on Standard and wait for the rollout to complete.</strong></li>
+  <li><strong>Check your app’s actual date/time behavior.</strong> Test conversions and schedules for the regions your app uses, including timestamps on both sides of the relevant transition. Do not rely on the selected channel or OS package version alone.</li>
+  <li><strong>Review application-managed time-zone data.</strong> Libraries, bundled ICU data, and custom time-zone databases can differ from the OS database. Update affected dependencies and rebuild and redeploy your app as needed.</li>
+  <li><strong>Review PHP 8.2, PHP 8.3, and EOL workloads.</strong> The two PHP stacks are excluded from this initial payload, and EOL runtimes do not receive these updates. Move to an included supported stack where possible and test before production deployment.</li>
+  <li><strong>Update custom containers and bring-your-own runtimes yourself.</strong> App Service does not patch their contents. Pull an updated supported base image, update OS and runtime-specific time-zone data, then rebuild, test, and redeploy. Selecting Latest does not update your custom image.</li>
+</ol>
+
+<h3 id="change-your-platform-release-channel">Change your Platform Release Channel</h3>
+
+<p><strong>Azure portal</strong></p>
+
+<ol>
+  <li>In the Azure portal, go to your App Service app.</li>
+  <li>In the left menu, select <strong>Stack settings</strong>.</li>
+  <li>Under <strong>Platform Release Channel</strong>, select <strong>Standard</strong>.</li>
+  <li>Select <strong>Save</strong>.</li>
+</ol>
+
+<p><strong>Azure CLI</strong></p>
+
+<p>Use <a href="https://learn.microsoft.com/cli/azure/webapp#az-webapp-update">az webapp update</a> to move your app to Standard:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp update <span class="se">\</span>
+  <span class="nt">--resource-group</span> &lt;resource-group&gt; <span class="se">\</span>
+  <span class="nt">--name</span> &lt;app-name&gt; <span class="se">\</span>
+  <span class="nt">--platform-release-channel</span> Standard
+</code></pre></div></div>
+
+<p>Replace the placeholders with your app’s resource group and name. For a deployment slot, add <code class="language-plaintext highlighter-rouge">--slot &lt;slot-name&gt;</code>.</p>
+
+<p>Java apps already on <strong>Standard</strong> should remain on that channel and wait for rollout completion.</p>
+
+<p>For more information, see <a href="https://learn.microsoft.com/azure/app-service/overview-patch-os-runtime#control-runtime-patch-update-timing-with-platform-release-channel">OS and runtime patching in Azure App Service</a>.</p>
+
+<h3 id="verify-time-zone-behavior">Verify time-zone behavior</h3>
+
+<p>Use <a href="https://learn.microsoft.com/cli/azure/webapp#az-webapp-exec">az webapp exec</a> (currently in preview) with Azure CLI <strong>2.90.0 or later</strong> to open an interactive shell in the running app:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp <span class="nb">exec</span> <span class="nt">--resource-group</span> &lt;resource-group&gt; <span class="nt">--name</span> &lt;app-name&gt;
+</code></pre></div></div>
+
+<p>For a deployment slot, add <code class="language-plaintext highlighter-rouge">--slot &lt;slot-name&gt;</code>. Use <code class="language-plaintext highlighter-rouge">--instance &lt;instance-id&gt;</code> to check other instances as needed.</p>
+
+<p>Inside an Ubuntu- or Debian-based container, inspect the OS and installed time-zone package:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat</span> /etc/os-release
+dpkg-query <span class="nt">-W</span> <span class="nt">-f</span><span class="o">=</span><span class="s1">'${Package} ${Version}\n'</span> tzdata
+</code></pre></div></div>
+
+<p>For a quick OS-level behavior check, convert a timestamp after the November transition:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">TZ</span><span class="o">=</span>America/Winnipeg <span class="nb">date</span> <span class="nt">-d</span> <span class="s1">'2026-11-01 12:00:00 UTC'</span> <span class="s1">'+%Y-%m-%d %H:%M:%S %z'</span>
+</code></pre></div></div>
+
+<p>With the updated Manitoba rules, the expected result is:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2026-11-01 07:00:00 -0500
+</code></pre></div></div>
+
+<p><strong>This checks the OS time-zone data on one instance, not the database used by every runtime or library.</strong> Repeat relevant conversions through your app’s own date/time APIs and scheduling libraries. An OS package update alone is not proof that application-bundled ICU or other time-zone data is current.</p>
+
+<h2 id="related-updates">Related updates</h2>
+
+<ul>
+  <li><a href="/AppService/AppService/2026/10/21/php-critical-security-release-app-service-linux.html">Critical PHP security release guidance for App Service</a> covers the separate PHP runtime vulnerabilities and security-patch rollout.</li>
+  <li><a href="/AppService/AppService/2026/10/22/node-python-emergency-release-app-service-linux.html">Node.js and Python emergency runtime updates on App Service for Linux</a> covers the related runtime releases.</li>
+  <li><a href="/AppService/AppService/2026/10/22/emudhra-certificate-issue-app-service-linux.html">eMudhra / emSign certificate security updates on App Service for Linux</a> covers the separate certificate trust-store updates. Its PHP exclusions differ from the time-zone update exclusions described here.</li>
+</ul>
+
+<h2 id="stay-informed">Stay informed</h2>
+
+<p>We share further updates here as the PHP 8.2 and 8.3 update plan becomes available.</p>
+
+<p>Thank you for keeping your apps’ time-zone data current on Azure App Service.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[Update (22 October 2026): Rollout of updated built-in Linux images for the time-zone rule changes in IANA time zone database 2026e is complete on Latest for the supported runtimes covered below. Rollout is also complete on Standard except for Java, whose Standard rollout remains in progress. Java customers on Standard should wait for that rollout to complete; no channel change is needed. The PHP 8.2, PHP 8.3, and EOL exclusions described below remain unchanged.]]></summary></entry><entry><title type="html">Critical PHP Security Release: What It Means for Azure App Service</title><link href="https://azure.github.io/AppService/2026/10/21/php-critical-security-release-app-service-linux.html" rel="alternate" type="text/html" title="Critical PHP Security Release: What It Means for Azure App Service" /><published>2026-10-21T00:00:00+00:00</published><updated>2026-10-21T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2026/10/21/php-critical-security-release-app-service-linux</id><content type="html" xml:base="https://azure.github.io/AppService/2026/10/21/php-critical-security-release-app-service-linux.html"><![CDATA[<blockquote>
+  <p><strong>PHP on App Service Windows:</strong> The built-in PHP runtimes on App Service for Windows are <strong>end-of-life (EOL)</strong>. No security patch for these runtimes is currently planned.</p>
+
+  <ol>
+    <li><strong>Move to App Service on Linux if possible.</strong> Update and test your app on a supported PHP version to receive the patched built-in PHP runtime.</li>
+    <li><strong>If you must remain on Windows, bring your own PHP runtime.</strong> Follow <a href="https://azureossd.github.io/2022/05/18/Custom-PHP-runtime-for-App-Service-Windows/index.html">How to use a Custom PHP runtime for App Service Windows</a> and use a supported PHP version that includes the security fixes. You are responsible for deploying, configuring, and maintaining that runtime, including applying future security patches.</li>
+  </ol>
+
+  <p><strong>Azure Stack Hub: This Windows guidance also applies to PHP apps running on Azure App Service on Azure Stack Hub.</strong></p>
+</blockquote>
+<hr />
+
+<blockquote>
+  <p><strong>PHP on Azure App Service on Azure Stack Hub:</strong> The above guidance re PHP on App Service Windows also applies for App Service on Azure Stack Hub, as the Resource Provider only support Windows Code hosting.</p>
+</blockquote>
+
+<blockquote>
+  <p><strong>WordPress update (21 October 2026):</strong> WordPress apps deployed using the official <a href="https://marketplace.microsoft.com/product/WordPress.WordPress?tab=Overview">WordPress on App Service offering in Microsoft Marketplace</a> have been updated to patched PHP versions, except for apps still using the older Alpine-based images. <strong>The older Alpine-based images will not receive these security patches.</strong> If your app uses an Alpine-based image, follow <a href="https://techcommunity.microsoft.com/blog/appsonazureblog/transition-from-alpine-linux-to-debian-for-wordpress-on-app-service/4264858">Transition from Alpine Linux to Debian for WordPress on App Service</a> to migrate to a Debian-based image.</p>
+</blockquote>
+
+<hr />
+
+<blockquote>
+  <p><strong>Update (21 October 2026):</strong> We have completed the rollout of the updated built-in PHP images with the security fixes to both the <strong>Latest</strong> and <strong>Standard</strong> Platform Release Channels for Azure App Service on Linux.</p>
+
+  <p>The updated PHP runtime versions are:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>PHP runtime</th>
+        <th>Updated version</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>PHP 8.2</td>
+        <td><strong>8.2.35</strong></td>
+      </tr>
+      <tr>
+        <td>PHP 8.3</td>
+        <td><strong>8.3.36</strong></td>
+      </tr>
+      <tr>
+        <td>PHP 8.4</td>
+        <td><strong>8.4.27</strong></td>
+      </tr>
+      <tr>
+        <td>PHP 8.5</td>
+        <td><strong>8.5.12</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p><strong>End-of-life (EOL) PHP versions will not receive these security patches.</strong> If your app uses an EOL PHP version, update your app to a <a href="https://www.php.net/supported-versions.php">supported PHP version</a>. Changing your Platform Release Channel does not upgrade an EOL runtime to a supported version.</p>
+
+</blockquote>
+
+<p>The PHP security team’s announcement covers <strong>two critical vulnerabilities, both rated CVSS v4.0 9.2 (Critical)</strong>.</p>
+
+<p><strong>The release date is Wednesday, 21 October 2026 at 14:00 UTC.</strong> The PHP security team publishes full details, affected versions, and fixed versions with the release.</p>
+
+<ul>
+  <li>Official announcement: <a href="https://www.php.net/archive/2026.php#2026-10-20-1">php.net news, 20 Oct 2026</a></li>
+  <li>Mailing list: <a href="https://news-web.php.net/php.announce/509">php.announce #509: Upcoming Critical PHP Security Release</a></li>
+</ul>
+
+<h2 id="what-we-are-doing">What we are doing</h2>
+
+<p>The Azure App Service team is <strong>actively updating the built-in PHP images for App Service on Linux</strong> with the fixed PHP versions.</p>
+
+<p>Updated images roll out through the <a href="https://learn.microsoft.com/azure/app-service/overview-patch-os-runtime#control-runtime-patch-update-timing-with-platform-release-channel">Platform Release Channels</a> as follows:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Channel</th>
+      <th>Availability of the fix</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Latest</strong></td>
+      <td>Receives the fix <strong>at priority</strong>.</td>
+    </tr>
+    <tr>
+      <td><strong>Standard</strong> (default)</td>
+      <td>Receives the fix through an <strong>accelerated Safe Deployment Practices (SDP)</strong> rollout.</td>
+    </tr>
+    <tr>
+      <td><strong>Extended</strong></td>
+      <td>Follows Standard and receives the fix <strong>last</strong>.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="what-you-should-do">What you should do</h2>
+
+<p>We encourage all PHP customers on App Service for Linux to <strong>act now</strong> to pick up the fix as it becomes available.</p>
+
+<ol>
+  <li><strong>Move away from the Extended channel.</strong> Extended typically stays one release behind Standard, so it receives this fix last. To avoid prolonged exposure, switch to <strong>Standard</strong> or <strong>Latest</strong> now.</li>
+  <li><strong>Choose Latest if you need the fix fastest.</strong> Internet-facing or high-risk PHP apps should consider the Latest channel to get the updated images at priority.</li>
+  <li><strong>Update your custom containers yourself.</strong> If you run PHP in a custom container, or bring your own PHP runtime, App Service does not patch it. Rebuild your images with the fixed PHP versions published by the PHP team.</li>
+  <li><strong>Verify your PHP version.</strong> Open an SSH session to your app (<code class="language-plaintext highlighter-rouge">https://&lt;appname&gt;.scm.azurewebsites.net/webssh/host</code>) and run <code class="language-plaintext highlighter-rouge">php --version</code>.</li>
+  <li><strong>Upgrade EOL PHP runtimes.</strong> Apps running an end-of-life PHP version will not receive these security patches. Update and test your app on a <a href="https://www.php.net/supported-versions.php">supported PHP version</a>, then configure your app to use that version.</li>
+</ol>
+
+<h3 id="change-your-platform-release-channel">Change your Platform Release Channel</h3>
+
+<ol>
+  <li>In the Azure portal, go to your App Service app.</li>
+  <li>In the left menu, select <strong>Stack settings</strong>.</li>
+  <li>Under <strong>Platform Release Channel</strong>, select <strong>Latest</strong> or <strong>Standard</strong>.</li>
+  <li>Select <strong>Save</strong>.</li>
+</ol>
+
+<p>For more information, see <a href="https://learn.microsoft.com/azure/app-service/overview-patch-os-runtime#control-runtime-patch-update-timing-with-platform-release-channel">OS and runtime patching in Azure App Service</a>.</p>
+
+<h2 id="related-updates">Related updates</h2>
+
+<ul>
+  <li><a href="/AppService/AppService/2026/10/22/time-zone-updates-app-service-linux.html">Time zone updates on App Service for Linux</a> covers the updated time-zone rules and the separate PHP 8.2 and 8.3 exclusions for that rollout.</li>
+  <li><a href="/AppService/AppService/2026/10/22/node-python-emergency-release-app-service-linux.html">Node.js and Python emergency runtime updates on App Service for Linux</a> covers the separate runtime releases and rollout guidance for Node.js and Python apps.</li>
+  <li><a href="/AppService/AppService/2026/10/22/emudhra-certificate-issue-app-service-linux.html">eMudhra / emSign certificate security updates on App Service for Linux</a> covers certificate trust-store updates and application-managed CA bundles. A runtime security patch alone does not establish that your app’s certificate bundles are updated.</li>
+</ul>
+
+<h2 id="stay-informed">Stay informed</h2>
+
+<p>We share updates here as the PHP team publishes fixed versions and updated images become available.</p>
+
+<p>Thank you for helping us keep your PHP apps on Azure App Service secure.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[PHP on App Service Windows: The built-in PHP runtimes on App Service for Windows are end-of-life (EOL). No security patch for these runtimes is currently planned. Move to App Service on Linux if possible. Update and test your app on a supported PHP version to receive the patched built-in PHP runtime. If you must remain on Windows, bring your own PHP runtime. Follow How to use a Custom PHP runtime for App Service Windows and use a supported PHP version that includes the security fixes. You are responsible for deploying, configuring, and maintaining that runtime, including applying future security patches. Azure Stack Hub: This Windows guidance also applies to PHP apps running on Azure App Service on Azure Stack Hub.]]></summary></entry><entry><title type="html">From metrics to answers: Grafana dashboards for Azure App Service</title><link href="https://azure.github.io/AppService/2026/10/12/grafana-dashboards-for-azure-app-service.html" rel="alternate" type="text/html" title="From metrics to answers: Grafana dashboards for Azure App Service" /><published>2026-10-12T00:00:00+00:00</published><updated>2026-10-12T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2026/10/12/grafana-dashboards-for-azure-app-service</id><content type="html" xml:base="https://azure.github.io/AppService/2026/10/12/grafana-dashboards-for-azure-app-service.html"><![CDATA[<p>When your web application slows down, a chart is only the beginning. You need to understand what changed, where to investigate, and which diagnostic tools can help.</p>
+
+<p>The Grafana dashboard experience for Azure App Service brings platform metrics and links to App Service diagnostics into a single starting point in the Azure portal. It gives you another way to explore your application’s health and take the next step when something needs attention.</p>
+
+<h2 id="start-with-the-application-you-already-manage">Start with the application you already manage</h2>
+
+<p>Open your App Service web app in the Azure portal and select <strong>Monitoring &gt; Dashboards with Grafana (Preview)</strong> from the navigation menu. In the gallery, open <strong>Azure | Insights | Web Apps - Platform Metrics</strong>.</p>
+
+<p><img src="/AppService/media/2026/10/app-service-grafana-navigation.gif" alt="Animated walkthrough from the App Service overview to the Web Apps platform metrics dashboard through Dashboards with Grafana (Preview)" /></p>
+
+<p>The dashboard brings together platform metrics for your app, helping you review its behavior without first assembling a dashboard from scratch. Whether you’re checking on an application after a deployment or investigating a reported issue, you can start with a shared view of its health.</p>
+
+<p><img src="/AppService/media/2026/10/app-service-grafana-overview.png" alt="Web Apps platform metrics dashboard showing HTTP status codes, server response time, and time-range controls for a Linux demo app" /></p>
+
+<p>In this Linux demo, we generated healthy baseline traffic, followed by controlled slow responses and simulated HTTP 500 errors. The 15-minute view shows HTTP status codes and average and maximum server response times across the test. The empty Health Check panel reflects that App Service Health Check wasn’t configured for this demo; an application health endpoint alone doesn’t enable that feature.</p>
+
+<h2 id="move-from-observation-to-investigation">Move from observation to investigation</h2>
+
+<p>Imagine a customer reports that your application feels slower than usual. Your first task is to understand whether the application’s metrics show a corresponding change.</p>
+
+<p>Start with the dashboard to explore the affected period. When you identify something worth investigating, follow the diagnostic links to explore further using App Service’s diagnostic tools.</p>
+
+<p>The dashboard includes operating-system-specific diagnostic links, helping you find relevant investigation paths for your application’s environment. The goal is straightforward: make it easier to move from “something looks different” to “here’s where I should look next.”</p>
+
+<p>In our Linux example, the link beside <strong>Server Response Time (sec)</strong> is labeled <strong>Deep dive: app slowness detector</strong>. It opens <strong>Availability and Performance &gt; Web App Slow</strong>, where you can explore the diagnostic results.</p>
+
+<p><img src="/AppService/media/2026/10/app-service-grafana-walkthrough.gif" alt="Animated walkthrough from the server response-time panel to the Linux Web App Slow diagnostic experience" /></p>
+
+<p>Check the time range again in the diagnostic view so it covers the period you’re investigating.</p>
+
+<p>The dashboard is a starting point, not a replacement for application logs, tracing, or deeper troubleshooting. Use it alongside your existing monitoring tools to build a fuller picture. For more about the investigation tools, see the <a href="https://learn.microsoft.com/azure/app-service/overview-diagnostics">App Service diagnostics overview</a>.</p>
+
+<h2 id="work-within-your-existing-access-permissions">Work within your existing access permissions</h2>
+
+<p>The dashboard in the Azure portal queries data using your signed-in identity. Your existing Azure resource permissions govern access; the dashboard does not grant additional access to the underlying resources.</p>
+
+<p>That distinction matters when teams collaborate on troubleshooting: each person needs the appropriate permissions to view the relevant data. Sharing a view of the dashboard does not bypass those permissions.</p>
+
+<p>This follows the <a href="https://learn.microsoft.com/azure/azure-monitor/visualize/visualize-grafana-overview">Azure Monitor dashboards with Grafana</a> model, which uses the current user’s identity for data-source authentication. It is distinct from Azure Managed Grafana, a separate service with additional configuration options.</p>
+
+<h2 id="try-it-with-your-next-application-health-check">Try it with your next application health check</h2>
+
+<p>To get started:</p>
+
+<ol>
+  <li>Open your App Service web app in the Azure portal.</li>
+  <li>Select <strong>Monitoring &gt; Dashboards with Grafana (Preview)</strong> and open the Web Apps platform metrics dashboard.</li>
+  <li>Explore the platform metrics and use the diagnostic links when you need more context.</li>
+</ol>
+
+<p>You don’t need to wait for an incident. Start with a healthy application to become familiar with its normal behavior, then use that context when you investigate a change.</p>
+
+<h2 id="resources">Resources</h2>
+
+<ul>
+  <li><a href="https://learn.microsoft.com/azure/azure-monitor/visualize/visualize-grafana-overview">Visualize Azure Monitor data with Grafana</a></li>
+  <li><a href="https://learn.microsoft.com/azure/app-service/monitor-app-service">Monitor Azure App Service</a></li>
+  <li><a href="https://learn.microsoft.com/azure/app-service/overview-diagnostics">App Service diagnostics overview</a></li>
+</ul>]]></content><author><name>Azure App Service</name></author><category term="monitoring" /><category term="grafana" /><category term="diagnostics" /><summary type="html"><![CDATA[When your web application slows down, a chart is only the beginning. You need to understand what changed, where to investigate, and which diagnostic tools can help.]]></summary></entry><entry><title type="html">Nginx package update for PHP apps on Azure App Service</title><link href="https://azure.github.io/AppService/2026/10/09/php-nginx-update.html" rel="alternate" type="text/html" title="Nginx package update for PHP apps on Azure App Service" /><published>2026-10-09T00:00:00+00:00</published><updated>2026-10-09T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2026/10/09/php-nginx-update</id><content type="html" xml:base="https://azure.github.io/AppService/2026/10/09/php-nginx-update.html"><![CDATA[<p>We’re updating the Nginx packages used in Azure App Service PHP images, moving from the deprecated <code class="language-plaintext highlighter-rouge">deb.sury.org</code> repository to the official <code class="language-plaintext highlighter-rouge">nginx.org</code> repository. This follows the <a href="https://codeberg.org/oerdnj/deb.sury.org/issues/67">upstream repository changes</a>.</p>
+
+<p><strong>We expect most PHP apps to continue working without any changes, particularly those using the default Nginx configuration.</strong> However, if you’ve customized your Nginx configuration or startup command, we recommend validating your app against the updated images.</p>
+
+<h2 id="what-should-you-check">What should you check?</h2>
+
+<p>If your app uses a custom Nginx configuration, review the following potentially affected customizations:</p>
+
+<ul>
+  <li>Loading optional Nginx modules using <code class="language-plaintext highlighter-rouge">load_module</code></li>
+  <li>Using module directives such as <code class="language-plaintext highlighter-rouge">echo</code>, <code class="language-plaintext highlighter-rouge">geoip2</code>, <code class="language-plaintext highlighter-rouge">image_filter</code>, or XSLT</li>
+  <li>Hardcoded Nginx paths, such as <code class="language-plaintext highlighter-rouge">/var/lib/nginx/</code></li>
+  <li>Custom startup commands that replace or start Nginx</li>
+</ul>
+
+<p>These are examples, not an exhaustive list. <strong>Having a customized configuration does not necessarily mean your app will be affected.</strong></p>
+
+<h2 id="how-to-prepare">How to prepare</h2>
+
+<p>The updated PHP images are already available on the <strong>Latest channel</strong>, so you can test compatibility ahead of the rollout to Standard.</p>
+
+<p>We recommend using an <a href="https://learn.microsoft.com/en-us/azure/app-service/deploy-staging-slots">App Service deployment slot</a> to validate your app without affecting production. Configure the staging slot to use the Latest channel, test your application and Nginx customizations, and keep your production slot on Standard.</p>
+
+<p>We plan to begin a gradual rollout of the updated images to the <strong>Standard (default) channel starting October 14, 2026 (UTC)</strong>, with rollout across all Azure regions expected to take several days.</p>
+
+<p>If you encounter any issues, you can temporarily switch to the <strong>Extended channel</strong> to return to an earlier image while you investigate and update your configuration.</p>
+
+<p>Once your app is compatible, we recommend using Standard (or Latest, if appropriate) to continue receiving platform and security updates.</p>
+
+<p>For instructions on viewing or changing your channel, see <a href="https://learn.microsoft.com/en-us/azure/app-service/overview-patch-os-runtime#control-runtime-patch-update-timing-with-platform-release-channel">Control runtime patch updates with Platform Release Channel</a>.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[We’re updating the Nginx packages used in Azure App Service PHP images, moving from the deprecated deb.sury.org repository to the official nginx.org repository. This follows the upstream repository changes.]]></summary></entry></feed>
