@@ -30,7 +30,6 @@ The following upstream releases were published on **25 October 2026**:
 | .NET 8 | **8.0.33** | [.NET 8.0.33](https://github.com/dotnet/core/blob/main/release-notes/8.0/8.0.33/8.0.33.md) |
 | .NET 9 | **9.0.22** | [.NET 9.0.22](https://github.com/dotnet/core/blob/main/release-notes/9.0/9.0.22/9.0.22.md) |
 | .NET 10 | **10.0.14** | [.NET 10.0.14](https://github.com/dotnet/core/blob/main/release-notes/10.0/10.0.14/10.0.14.md) |
-| .NET 11 RC3 (prerelease) | **11.0.0-rc.3.26522.148** | [.NET 11.0.0-rc.3](https://github.com/dotnet/core/blob/main/release-notes/11.0/preview/rc3/11.0.0-rc.3.md) |
 
 These releases include additional security fixes. See the official release notes for the complete scope, platform applicability, and any application-package updates required separately from the platform runtime.
 
@@ -42,7 +41,7 @@ Updated built-in .NET runtimes are rolling out across App Service for Windows th
 
 **Platform Release Channels do not apply to App Service for Windows.** There is no Latest or Standard channel to select for this rollout. Linux channel settings and rollout status do not apply to Windows apps.
 
-The platform manages updates to its built-in runtimes. This rollout does not change your app's configured .NET release line or move an app to .NET 11 RC3.
+The platform manages updates to its built-in runtimes. This rollout does not change your app's configured .NET release line.
 
 For more information, see [OS and runtime patching in Azure App Service](https://learn.microsoft.com/azure/app-service/overview-patch-os-runtime).
 
