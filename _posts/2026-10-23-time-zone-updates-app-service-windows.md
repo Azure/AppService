@@ -5,7 +5,7 @@ toc: true
 toc_sticky: true
 ---
 
-> **Update (25 October 2026):** The rollout of **Windows operating-system time-zone updates** on Azure App Service for Windows **is complete**, following accelerated Safe Deployment Practices (SDP). Application-managed time-zone data still requires separate review as described below.
+> **Update (26 October 2026):** The rollout of **Windows operating-system time-zone updates** on Azure App Service for Windows **is complete**, following accelerated Safe Deployment Practices (SDP). Application-managed time-zone data still requires separate review as described below.
 
 Time-zone rules change when governments update local timekeeping policies. Apps need current time-zone data to convert UTC timestamps to local time and calculate schedules correctly.
 

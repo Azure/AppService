@@ -5,7 +5,7 @@ toc: true
 toc_sticky: true
 ---
 
-> **Update (25 October 2026):** The rollout of updated built-in Node.js runtimes on **Azure App Service for Windows is complete**, following accelerated Safe Deployment Practices (SDP). Verify your app's running version and review pinned runtime settings as described below.
+> **Update (26 October 2026):** The rollout of updated built-in Node.js runtimes on **Azure App Service for Windows is complete**, following accelerated Safe Deployment Practices (SDP). Verify your app's running version and review pinned runtime settings as described below.
 
 Following the emergency Node.js releases on **21 October 2026**, the Azure App Service team has rolled out updated Node.js runtimes for Windows apps.
 
