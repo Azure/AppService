@@ -25,7 +25,7 @@ These statuses describe platform-managed updates. **Do not assume that every app
 
 The Azure Functions team is rolling out the applicable .NET updates for Linux function apps on the hosting plans listed above.
 
-The [App Service Linux .NET post]({{ site.baseurl }}{% post_url 2026-10-26-dotnet-brotli-security-update-app-service-linux %}) provides background on the upstream releases. **Its Latest completion status, Standard rollout status, runtime-version table, and Platform Release Channel instructions are not Azure Functions rollout or support guidance**, including for Linux functions hosted on App Service plans.
+The [App Service Linux .NET post]({% post_url 2026-10-26-dotnet-brotli-security-update-app-service-linux %}) provides background on the upstream releases. **Its Latest completion status, Standard rollout status, runtime-version table, and Platform Release Channel instructions are not Azure Functions rollout or support guidance**, including for Linux functions hosted on App Service plans.
 
 #### Azure Static Web Apps managed functions
 
@@ -37,7 +37,7 @@ This status applies to **managed functions**, not a separately linked Azure Func
 
 Windows function apps on Consumption, App Service plans, and Elastic Premium receive the applicable platform runtime updates through the **App Service Windows patching process**.
 
-Follow the [App Service Windows .NET post]({{ site.baseurl }}{% post_url 2026-10-26-dotnet-brotli-security-update-app-service-windows %}) for the corresponding rollout status. Deployment is active through SDP, but it is not yet complete.
+Follow the [App Service Windows .NET post]({% post_url 2026-10-26-dotnet-brotli-security-update-app-service-windows %}) for the corresponding rollout status. Deployment is active through SDP, but it is not yet complete.
 
 ## What the updates address
 
@@ -90,8 +90,8 @@ For isolated worker apps, verify the **.NET worker process**, not just the Funct
 
 ## Related updates
 
-- [.NET Brotli security updates on App Service for Linux]({{ site.baseurl }}{% post_url 2026-10-26-dotnet-brotli-security-update-app-service-linux %}) covers the separate App Service Linux image rollout.
-- [.NET Brotli security updates on App Service for Windows]({{ site.baseurl }}{% post_url 2026-10-26-dotnet-brotli-security-update-app-service-windows %}) covers the Windows runtime rollout on which Windows function apps depend.
-- [Azure Functions time-zone, Node.js, Python, and certificate updates]({{ site.baseurl }}{% post_url 2026-10-23-time-zone-runtime-certificate-updates-azure-functions %}) covers the earlier, separate updates. Completion of those Linux updates does not establish completion of this .NET rollout.
+- [.NET Brotli security updates on App Service for Linux]({% post_url 2026-10-26-dotnet-brotli-security-update-app-service-linux %}) covers the separate App Service Linux image rollout.
+- [.NET Brotli security updates on App Service for Windows]({% post_url 2026-10-26-dotnet-brotli-security-update-app-service-windows %}) covers the Windows runtime rollout on which Windows function apps depend.
+- [Azure Functions time-zone, Node.js, Python, and certificate updates]({% post_url 2026-10-23-time-zone-runtime-certificate-updates-azure-functions %}) covers the earlier, separate updates. Completion of those Linux updates does not establish completion of this .NET rollout.
 
 Thank you for helping us keep your .NET function apps secure.

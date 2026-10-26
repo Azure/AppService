@@ -50,10 +50,10 @@ The version selected in configuration or reported by a separate console process 
 
 ## Related updates
 
-- [Time zone updates on App Service for Windows]({{ site.baseurl }}{% post_url 2026-10-23-time-zone-updates-app-service-windows %}) covers the separate Windows OS time-zone update, whose rollout has started through accelerated SDP and is not yet complete.
-- [eMudhra / emSign certificate security updates on App Service for Windows]({{ site.baseurl }}{% post_url 2026-10-22-emudhra-certificate-issue-app-service-windows %}) covers the separate Windows OS certificate update. Runtime updates do not replace certificate bundles managed by your app.
-- [Node.js and Python emergency runtime updates on App Service for Linux]({{ site.baseurl }}{% post_url 2026-10-22-node-python-emergency-release-app-service-linux %}) covers the separate Linux rollout. Its Platform Release Channel instructions do not apply to Windows.
-- [Critical PHP security release guidance for App Service]({{ site.baseurl }}{% post_url 2026-10-21-php-critical-security-release-app-service-linux %}) covers the separate PHP security release and Windows PHP guidance.
+- [Time zone updates on App Service for Windows]({% post_url 2026-10-23-time-zone-updates-app-service-windows %}) covers the separate Windows OS time-zone update, whose rollout has started through accelerated SDP and is not yet complete.
+- [eMudhra / emSign certificate security updates on App Service for Windows]({% post_url 2026-10-22-emudhra-certificate-issue-app-service-windows %}) covers the separate Windows OS certificate update. Runtime updates do not replace certificate bundles managed by your app.
+- [Node.js and Python emergency runtime updates on App Service for Linux]({% post_url 2026-10-22-node-python-emergency-release-app-service-linux %}) covers the separate Linux rollout. Its Platform Release Channel instructions do not apply to Windows.
+- [Critical PHP security release guidance for App Service]({% post_url 2026-10-21-php-critical-security-release-app-service-linux %}) covers the separate PHP security release and Windows PHP guidance.
 
 ## Stay informed
 

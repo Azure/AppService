@@ -25,9 +25,9 @@ Completion applies to the platform-managed updates covered here; **application-m
 
 Function apps on these Windows hosting plans receive the applicable platform updates through the **App Service Windows patching process**. Follow the corresponding posts for update details and rollout status:
 
-- **Time-zone updates:** The rollout has started through accelerated Safe Deployment Practices (SDP) and is not yet complete. See [Time zone updates on App Service for Windows]({{ site.baseurl }}{% post_url 2026-10-23-time-zone-updates-app-service-windows %}).
-- **Node.js runtime fixes:** See [Emergency Node.js runtime updates on App Service for Windows]({{ site.baseurl }}{% post_url 2026-10-22-node-emergency-release-app-service-windows %}).
-- **Certificate trust updates:** See [eMudhra / emSign certificate security updates on App Service for Windows]({{ site.baseurl }}{% post_url 2026-10-22-emudhra-certificate-issue-app-service-windows %}).
+- **Time-zone updates:** The rollout has started through accelerated Safe Deployment Practices (SDP) and is not yet complete. See [Time zone updates on App Service for Windows]({% post_url 2026-10-23-time-zone-updates-app-service-windows %}).
+- **Node.js runtime fixes:** See [Emergency Node.js runtime updates on App Service for Windows]({% post_url 2026-10-22-node-emergency-release-app-service-windows %}).
+- **Certificate trust updates:** See [eMudhra / emSign certificate security updates on App Service for Windows]({% post_url 2026-10-22-emudhra-certificate-issue-app-service-windows %}).
 
 These are separate OS and runtime updates. Receiving one does not establish that all applicable updates have reached your app.
 
@@ -37,7 +37,7 @@ The **Azure Functions team has completed its separate rollout** for Linux functi
 
 This work covers the applicable time-zone, Node.js, Python, and certificate fixes. Completion does not change your app's configured language release line or replace application-managed data and dependencies.
 
-The App Service Linux posts provide background on the [time-zone changes]({{ site.baseurl }}{% post_url 2026-10-22-time-zone-updates-app-service-linux %}), [Node.js and Python releases]({{ site.baseurl }}{% post_url 2026-10-22-node-python-emergency-release-app-service-linux %}), and [certificate issue]({{ site.baseurl }}{% post_url 2026-10-22-emudhra-certificate-issue-app-service-linux %}). **Their App Service completion statuses, runtime-version tables, and Platform Release Channel instructions are not Azure Functions rollout or support guidance**, including for Linux functions hosted on App Service plans.
+The App Service Linux posts provide background on the [time-zone changes]({% post_url 2026-10-22-time-zone-updates-app-service-linux %}), [Node.js and Python releases]({% post_url 2026-10-22-node-python-emergency-release-app-service-linux %}), and [certificate issue]({% post_url 2026-10-22-emudhra-certificate-issue-app-service-linux %}). **Their App Service completion statuses, runtime-version tables, and Platform Release Channel instructions are not Azure Functions rollout or support guidance**, including for Linux functions hosted on App Service plans.
 
 #### Azure Static Web Apps managed functions
 

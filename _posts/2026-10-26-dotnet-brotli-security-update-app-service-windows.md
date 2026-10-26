@@ -69,8 +69,8 @@ For self-contained deployments, inspect the application process and rebuild with
 
 ## Related updates
 
-- [Emergency Node.js runtime updates on App Service for Windows]({{ site.baseurl }}{% post_url 2026-10-22-node-emergency-release-app-service-windows %}) covers the separate Node.js releases, including the Node.js Brotli fix.
-- [Time zone updates on App Service for Windows]({{ site.baseurl }}{% post_url 2026-10-23-time-zone-updates-app-service-windows %}) covers the separate Windows OS time-zone update.
-- [eMudhra / emSign certificate security updates on App Service for Windows]({{ site.baseurl }}{% post_url 2026-10-22-emudhra-certificate-issue-app-service-windows %}) covers the separate Windows OS certificate trust update. Runtime updates do not replace certificate bundles managed by your app.
+- [Emergency Node.js runtime updates on App Service for Windows]({% post_url 2026-10-22-node-emergency-release-app-service-windows %}) covers the separate Node.js releases, including the Node.js Brotli fix.
+- [Time zone updates on App Service for Windows]({% post_url 2026-10-23-time-zone-updates-app-service-windows %}) covers the separate Windows OS time-zone update.
+- [eMudhra / emSign certificate security updates on App Service for Windows]({% post_url 2026-10-22-emudhra-certificate-issue-app-service-windows %}) covers the separate Windows OS certificate trust update. Runtime updates do not replace certificate bundles managed by your app.
 
 Thank you for helping us keep your .NET apps on Azure App Service secure.
