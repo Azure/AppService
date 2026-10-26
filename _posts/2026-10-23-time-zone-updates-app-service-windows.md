@@ -34,9 +34,9 @@ Review the data source used by your runtime and dependencies. Update application
 
 ## Related updates
 
-- [Time zone updates on App Service for Linux]({{ site.baseurl }}{% post_url 2026-10-22-time-zone-updates-app-service-linux %}) covers the separate Linux image rollout and its runtime-specific exceptions. Its IANA release numbers, package commands, and Platform Release Channel instructions do not apply to the Windows OS rollout.
-- [Emergency Node.js runtime updates on App Service for Windows]({{ site.baseurl }}{% post_url 2026-10-22-node-emergency-release-app-service-windows %}) covers the separate Node.js runtime rollout.
-- [eMudhra / emSign certificate security updates on App Service for Windows]({{ site.baseurl }}{% post_url 2026-10-22-emudhra-certificate-issue-app-service-windows %}) covers the separate Windows OS certificate trust update.
+- [Time zone updates on App Service for Linux]({% post_url 2026-10-22-time-zone-updates-app-service-linux %}) covers the separate Linux image rollout and its runtime-specific exceptions. Its IANA release numbers, package commands, and Platform Release Channel instructions do not apply to the Windows OS rollout.
+- [Emergency Node.js runtime updates on App Service for Windows]({% post_url 2026-10-22-node-emergency-release-app-service-windows %}) covers the separate Node.js runtime rollout.
+- [eMudhra / emSign certificate security updates on App Service for Windows]({% post_url 2026-10-22-emudhra-certificate-issue-app-service-windows %}) covers the separate Windows OS certificate trust update.
 
 ## Stay informed
 

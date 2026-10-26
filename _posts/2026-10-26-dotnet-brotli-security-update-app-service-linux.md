@@ -103,8 +103,8 @@ For framework-dependent ASP.NET Core apps, check the relevant `Microsoft.NETCore
 
 ## Related updates
 
-- [Emergency Node.js and Python runtime updates on App Service for Linux]({{ site.baseurl }}{% post_url 2026-10-22-node-python-emergency-release-app-service-linux %}) covers the separate Node.js and Python releases, including the Node.js Brotli fix.
-- [Time zone updates on App Service for Linux]({{ site.baseurl }}{% post_url 2026-10-22-time-zone-updates-app-service-linux %}) covers the separate time-zone data updates.
-- [eMudhra / emSign certificate security updates on App Service for Linux]({{ site.baseurl }}{% post_url 2026-10-22-emudhra-certificate-issue-app-service-linux %}) covers the separate certificate trust-store updates. Runtime updates do not replace certificate bundles managed by your app.
+- [Emergency Node.js and Python runtime updates on App Service for Linux]({% post_url 2026-10-22-node-python-emergency-release-app-service-linux %}) covers the separate Node.js and Python releases, including the Node.js Brotli fix.
+- [Time zone updates on App Service for Linux]({% post_url 2026-10-22-time-zone-updates-app-service-linux %}) covers the separate time-zone data updates.
+- [eMudhra / emSign certificate security updates on App Service for Linux]({% post_url 2026-10-22-emudhra-certificate-issue-app-service-linux %}) covers the separate certificate trust-store updates. Runtime updates do not replace certificate bundles managed by your app.
 
 Thank you for helping us keep your .NET apps on Azure App Service secure.
