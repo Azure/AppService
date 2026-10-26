@@ -5,7 +5,7 @@ toc: true
 toc_sticky: true
 ---
 
-> **Update (22 October 2026):** Rollout of patched built-in Linux images for the **eMudhra / emSign CA certificate security incident** is **complete on Latest** for the runtimes listed below. Rollout is also **complete on Standard except for Java**, whose Standard rollout remains in progress. **Java customers on Standard should wait for that rollout to complete; no channel change is needed.** The PHP 8.2 and EOL exclusions described below remain unchanged.
+> **Update (25 October 2026):** The Java rollout is now complete on **Standard**. Rollout of patched built-in Linux images for the **eMudhra / emSign CA certificate security incident** is **complete on Latest and Standard** for all runtimes listed below, including **Java**. **No channel change is needed.** The PHP 8.2 and EOL exclusions described below remain unchanged.
 
 The eMudhra / emSign incident affects certificate trust used by TLS clients. The [Ubuntu Security Team's incident and patch guidance](https://ubuntu.com/blog/emudhra-ca-compromise-fixes-available) explains the CA trust-store changes needed to mitigate the risk of man-in-the-middle attacks.
 
@@ -14,9 +14,9 @@ This is not limited to a single language runtime. Applications can use operating
 ## What we are doing
 
 Patched built-in Linux images are available on **Latest and Standard** for **all non-EOL runtimes**, with the [PHP 8.2 exception](#php-82-exception) described below.
-**Java is available on Latest; its Standard rollout is still in progress.**
+**Java is available on both Latest and Standard; its rollout is complete.**
 
-The following runtime versions are listed by `az webapp list-runtimes -o table --os linux` as of **22 October 2026** and are included in the completed rollout to **Latest**, and to **Standard except for Java**. For Java, the table summarizes Java SE versions rather than listing individual application-server combinations.
+The following runtime versions are listed by `az webapp list-runtimes -o table --os linux` as of **22 October 2026** and are included in the completed rollout to **Latest and Standard**. For Java, the table summarizes Java SE versions rather than listing individual application-server combinations.
 
 | Runtime | Versions included in the image updates |
 |---|---|
@@ -43,15 +43,15 @@ If your app uses PHP 8.2, **update and test your app on PHP 8.3 or a later suppo
 | Channel | Availability of the updates |
 |---|---|
 | **Latest** | Rollout **complete**. |
-| **Standard** (default) | Rollout **complete except for Java**. Java rollout continues through **Safe Deployment Practices (SDP)**. |
+| **Standard** (default) | Rollout **complete** for the included runtimes, including Java. |
 
-The updated images are available on both Latest and Standard for the included runtimes **except Java, whose Standard rollout is not yet complete**.
+The updated images are available on both Latest and Standard for all included runtimes, **including Java**.
 
 Changing your Platform Release Channel does not upgrade your app to a different runtime version or make an EOL runtime supported.
 
 ## What you should do
 
-1. **Use Standard or Latest to receive these updates.** For eligible non-Java runtimes, apps on either channel do not need a channel change. **Java customers on Standard should remain on Standard and wait for the rollout to complete.**
+1. **Use Standard or Latest to receive these updates.** For eligible runtimes, including Java, apps on either channel do not need a channel change.
 2. **Upgrade PHP 8.2 and EOL runtimes.** PHP 8.2 is excluded from this certificate patch because of its OS base. EOL runtimes are also excluded. Update and test your app on a supported runtime included in the patching scope.
 3. **Update application-managed certificate bundles and dependencies.** Review the official guidance for your runtime and libraries. An updated platform trust store does not necessarily update a library's bundled certificates or an existing virtual environment.
 4. **Update custom containers and bring-your-own runtimes yourself.** App Service does not patch the contents of your custom images or runtimes. Update their OS packages, runtimes, and affected dependencies, then rebuild, test, and redeploy.
@@ -80,7 +80,7 @@ az webapp update \
 
 Replace the placeholders with your app's resource group and name. For a deployment slot, add `--slot <slot-name>`.
 
-Java apps already on **Standard** should remain on that channel and wait for rollout completion. Eligible non-Java apps already on Standard or Latest do not need a channel change.
+Eligible apps, including Java apps, already on **Standard** or **Latest** do not need a channel change.
 
 ### Verify the certificate package
 
