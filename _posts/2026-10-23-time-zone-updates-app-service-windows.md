@@ -5,7 +5,7 @@ toc: true
 toc_sticky: true
 ---
 
-> **Update (23 October 2026):** The rollout of **Windows operating-system time-zone updates** on Azure App Service for Windows **has started through accelerated Safe Deployment Practices (SDP)**. **Rollout is in progress, not complete.** We will update this post when the rollout completes.
+> **Update (25 October 2026):** The rollout of **Windows operating-system time-zone updates** on Azure App Service for Windows **is complete**, following accelerated Safe Deployment Practices (SDP). Application-managed time-zone data still requires separate review as described below.
 
 Time-zone rules change when governments update local timekeeping policies. Apps need current time-zone data to convert UTC timestamps to local time and calculate schedules correctly.
 
@@ -13,9 +13,7 @@ Older time-zone data can apply a clock change that no longer occurs, producing i
 
 ## What we are doing
 
-We are rolling out an **OS-level time-zone update** across App Service for Windows through accelerated SDP. This is a platform operating-system update, not a language-specific runtime release.
-
-**The rollout has started, but is not yet complete.** Availability varies while deployment progresses; this announcement does not establish that the update has reached every app or instance.
+We have completed the rollout of an **OS-level time-zone update** across App Service for Windows through accelerated SDP. This is a platform operating-system update, not a language-specific runtime release.
 
 The platform manages this OS update. Customers do not need to install an OS patch manually on App Service workers. For more information, see [OS and runtime patching in Azure App Service](https://learn.microsoft.com/azure/app-service/overview-patch-os-runtime).
 
@@ -27,7 +25,7 @@ Review the data source used by your runtime and dependencies. Update application
 
 ## What you should do
 
-1. **Watch this post for rollout completion.** Rollout has started through accelerated SDP, but is not complete. Do not assume that every app or instance already has the update.
+1. **No manual OS patch installation is needed.** App Service manages this platform update.
 2. **Check your app's actual date/time behavior.** Test conversions and schedules for the regions your app uses, including timestamps on both sides of the relevant rule change.
 3. **Review application-managed time-zone data.** Update affected libraries, bundled ICU data, and custom time-zone databases separately. The Windows OS update does not replace data bundled with your app or dependencies.
 4. **Update customer-provided container images and bring-your-own runtimes yourself.** This platform OS rollout does not patch time-zone data inside your custom image or runtime distribution. Follow the relevant maintainers' guidance, then rebuild, test, and redeploy.
@@ -35,9 +33,5 @@ Review the data source used by your runtime and dependencies. Update application
 ## Related updates
 
 - [Time zone updates on App Service for Linux]({{ site.baseurl }}{% post_url 2026-10-22-time-zone-updates-app-service-linux %}) covers the separate Linux image rollout and its runtime-specific exceptions. Its IANA release numbers, package commands, and Platform Release Channel instructions do not apply to the Windows OS rollout.
-- [Emergency Node.js runtime updates on App Service for Windows]({{ site.baseurl }}{% post_url 2026-10-22-node-emergency-release-app-service-windows %}) covers the separate Node.js runtime rollout.
+- [Emergency Node.js runtime updates on App Service for Windows]({{ site.baseurl }}{% post_url 2026-10-22-node-emergency-release-app-service-windows %}) covers the separate Node.js runtime rollout, whose accelerated SDP rollout is complete.
 - [eMudhra / emSign certificate security updates on App Service for Windows]({{ site.baseurl }}{% post_url 2026-10-22-emudhra-certificate-issue-app-service-windows %}) covers the separate Windows OS certificate trust update.
-
-## Stay informed
-
-We will update this post when the Windows OS time-zone update rollout is complete.
