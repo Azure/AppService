@@ -110,10 +110,10 @@ Use the interactive shell for these checks rather than detached execute mode, wh
 
 ## Related updates
 
-- [Emergency Node.js runtime updates on App Service for Windows]({{ site.baseurl }}{% post_url 2026-10-22-node-emergency-release-app-service-windows %}) covers the separate Windows Node.js rollout. Linux Platform Release Channel settings do not apply to Windows.
-- [Time zone updates on App Service for Linux]({{ site.baseurl }}{% post_url 2026-10-22-time-zone-updates-app-service-linux %}) covers the updated time-zone rules and checks for OS and application-managed time-zone data.
-- [eMudhra / emSign certificate security updates on App Service for Linux]({{ site.baseurl }}{% post_url 2026-10-22-emudhra-certificate-issue-app-service-linux %}) provides additional guidance on OS trust stores and application-managed CA bundles. Updating the runtime does not replace certificate bundles managed by your app.
-- [Critical PHP security release guidance for App Service]({{ site.baseurl }}{% post_url 2026-10-21-php-critical-security-release-app-service-linux %}) covers the separate PHP security release and actions for PHP workloads.
+- [Emergency Node.js runtime updates on App Service for Windows]({% post_url 2026-10-22-node-emergency-release-app-service-windows %}) covers the separate Windows Node.js rollout. Linux Platform Release Channel settings do not apply to Windows.
+- [Time zone updates on App Service for Linux]({% post_url 2026-10-22-time-zone-updates-app-service-linux %}) covers the updated time-zone rules and checks for OS and application-managed time-zone data.
+- [eMudhra / emSign certificate security updates on App Service for Linux]({% post_url 2026-10-22-emudhra-certificate-issue-app-service-linux %}) provides additional guidance on OS trust stores and application-managed CA bundles. Updating the runtime does not replace certificate bundles managed by your app.
+- [Critical PHP security release guidance for App Service]({% post_url 2026-10-21-php-critical-security-release-app-service-linux %}) covers the separate PHP security release and actions for PHP workloads.
 
 ## Stay informed
 

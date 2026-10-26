@@ -34,8 +34,8 @@ Review custom trust-store configuration, bundled certificates, and dependencies 
 
 ## Related updates
 
-- [Time zone updates on App Service for Windows]({{ site.baseurl }}{% post_url 2026-10-23-time-zone-updates-app-service-windows %}) covers the separate Windows OS time-zone update, whose accelerated SDP rollout is complete.
-- [Emergency Node.js runtime updates on App Service for Windows]({{ site.baseurl }}{% post_url 2026-10-22-node-emergency-release-app-service-windows %}) covers the separate Node.js security releases and runtime rollout. The OS certificate update does not replace runtime security patches.
-- [eMudhra / emSign certificate security updates on App Service for Linux]({{ site.baseurl }}{% post_url 2026-10-22-emudhra-certificate-issue-app-service-linux %}) covers the separate Linux image rollout. Its release-channel settings and Ubuntu package checks do not apply to Windows.
+- [Time zone updates on App Service for Windows]({% post_url 2026-10-23-time-zone-updates-app-service-windows %}) covers the separate Windows OS time-zone update, whose accelerated SDP rollout is complete.
+- [Emergency Node.js runtime updates on App Service for Windows]({% post_url 2026-10-22-node-emergency-release-app-service-windows %}) covers the separate Node.js security releases and runtime rollout. The OS certificate update does not replace runtime security patches.
+- [eMudhra / emSign certificate security updates on App Service for Linux]({% post_url 2026-10-22-emudhra-certificate-issue-app-service-linux %}) covers the separate Linux image rollout. Its release-channel settings and Ubuntu package checks do not apply to Windows.
 
 Thank you for helping us keep your apps on Azure App Service secure.
