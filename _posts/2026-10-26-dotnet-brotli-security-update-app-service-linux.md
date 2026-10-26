@@ -7,7 +7,7 @@ toc_sticky: true
 
 > **Update (26 October 2026):** Rollout of the updated built-in .NET images is **complete on the Latest Platform Release Channel** for Azure App Service on Linux. Rollout to **Standard** is **in progress through Safe Deployment Practices (SDP)**.
 
-Following the out-of-band .NET security releases on **25 October 2026**, Azure App Service is updating the built-in Linux images for **.NET 8, 9, 10, and 11 RC3**. The primary fix addresses a vulnerability in the Brotli decoder used by .NET and ASP.NET Core.
+Following the out-of-band .NET security releases on **25 October 2026**, Azure App Service is updating the built-in Linux images for **.NET 8, 9, and 10**. The primary fix addresses a vulnerability in the Brotli decoder used by .NET and ASP.NET Core.
 
 ## What the Brotli update addresses
 
@@ -30,7 +30,6 @@ The following upstream releases were published on **25 October 2026** and are in
 | .NET 8 | **8.0.33** | [.NET 8.0.33](https://github.com/dotnet/core/blob/main/release-notes/8.0/8.0.33/8.0.33.md) |
 | .NET 9 | **9.0.22** | [.NET 9.0.22](https://github.com/dotnet/core/blob/main/release-notes/9.0/9.0.22/9.0.22.md) |
 | .NET 10 | **10.0.14** | [.NET 10.0.14](https://github.com/dotnet/core/blob/main/release-notes/10.0/10.0.14/10.0.14.md) |
-| .NET 11 RC3 (prerelease) | **11.0.0-rc.3.26522.148** | [.NET 11.0.0-rc.3](https://github.com/dotnet/core/blob/main/release-notes/11.0/preview/rc3/11.0.0-rc.3.md) |
 
 These releases include additional security fixes. See the official release notes for the complete scope, applicability, and any application-package updates required separately from the platform runtime.
 
@@ -47,7 +46,7 @@ The updated built-in Linux images roll out through the [Platform Release Channel
 
 Apps on Standard will receive the platform image update as rollout progresses; **a channel change is not required**. If you need the updated image before the Standard rollout reaches your app, you can select Latest and verify your app's runtime version.
 
-Changing your Platform Release Channel does not change your app's configured .NET release line or move an app to .NET 11 RC3. End-of-life runtimes do not receive these updates; move to a supported release line and test your app.
+Changing your Platform Release Channel does not change your app's configured .NET release line. End-of-life runtimes do not receive these updates; move to a supported release line and test your app.
 
 **This post covers App Service for Linux.** Its Platform Release Channel settings and rollout status do not apply to App Service for Windows.
 
