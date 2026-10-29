@@ -5,7 +5,7 @@ toc: true
 toc_sticky: true
 ---
 
-> **Update (26 October 2026):** The .NET security update rollout for **Linux Azure Functions is in progress**. The applicable update for **Azure Static Web Apps managed functions is also in progress** and depends on the Functions Linux rollout. Windows function apps on Consumption, App Service plans, and Elastic Premium depend on the **App Service Windows runtime rollout**, which is active through Safe Deployment Practices (SDP) and is **not yet complete**.
+> **Update (27 October 2026):** The platform-managed .NET security update rollout is **complete** for Linux Azure Functions, Azure Static Web Apps managed functions, and Windows function apps on Consumption, App Service plans, and Elastic Premium.
 
 The out-of-band .NET releases published on **25 October 2026** address a Brotli decoder vulnerability and additional security issues. The patching process for function apps depends on their **operating system, hosting plan, and deployment model**.
 
@@ -13,23 +13,23 @@ The out-of-band .NET releases published on **25 October 2026** address a Brotli 
 
 | Hosting plan or offering | Windows | Linux |
 |---|---|---|
-| Consumption | Follows App Service Windows runtime rollout; in progress. | Azure Functions rollout in progress. |
-| App Service plan (Dedicated) | Follows App Service Windows runtime rollout; in progress. | Azure Functions rollout in progress. |
-| Elastic Premium | Follows App Service Windows runtime rollout; in progress. | Azure Functions rollout in progress. |
-| Flex Consumption | Not available on Windows. | Azure Functions rollout in progress. |
-| Static Web Apps managed functions | Not applicable. | Applicable update in progress; depends on the Azure Functions Linux rollout. |
+| Consumption | App Service Windows runtime rollout complete. | Azure Functions rollout complete. |
+| App Service plan (Dedicated) | App Service Windows runtime rollout complete. | Azure Functions rollout complete. |
+| Elastic Premium | App Service Windows runtime rollout complete. | Azure Functions rollout complete. |
+| Flex Consumption | Not available on Windows. | Azure Functions rollout complete. |
+| Static Web Apps managed functions | Not applicable. | Applicable update complete; aligned with the Azure Functions Linux rollout. |
 
-These statuses describe platform-managed updates. **Do not assume that every app or instance has received the patched runtime while rollout is ongoing.** Application-managed packages, self-contained deployments, and custom containers require separate review.
+These statuses describe platform-managed updates. Verify the runtime used by your running function process on either OS. Application-managed packages, self-contained deployments, and custom containers require separate review.
 
 ### Linux: Consumption, App Service plans, Elastic Premium, and Flex Consumption
 
-The Azure Functions team is rolling out the applicable .NET updates for Linux function apps on the hosting plans listed above.
+The Azure Functions team has completed rollout of the applicable .NET updates for Linux function apps on the hosting plans listed above.
 
-The [App Service Linux .NET post]({% post_url 2026-10-26-dotnet-brotli-security-update-app-service-linux %}) provides background on the upstream releases. **Its Latest completion status, Standard rollout status, runtime-version table, and Platform Release Channel instructions are not Azure Functions rollout or support guidance**, including for Linux functions hosted on App Service plans.
+The [App Service Linux .NET post]({% post_url 2026-10-26-dotnet-brotli-security-update-app-service-linux %}) provides background on the upstream releases. **Its Platform Release Channel rollout statuses, runtime-version table, and channel guidance are not Azure Functions rollout or support guidance**, including for Linux functions hosted on App Service plans.
 
 #### Azure Static Web Apps managed functions
 
-The applicable .NET update for **Azure Static Web Apps managed functions is in progress** and depends on the **Azure Functions Linux rollout**. It is not yet complete.
+The applicable .NET update for **Azure Static Web Apps managed functions is complete**, aligned with the **Azure Functions Linux rollout**.
 
 This status applies to **managed functions**, not a separately linked Azure Functions app. For a linked function app, use its hosting plan and OS to identify the rollout that applies. This update does not add support for a new language or runtime version in Static Web Apps managed functions.
 
@@ -37,7 +37,7 @@ This status applies to **managed functions**, not a separately linked Azure Func
 
 Windows function apps on Consumption, App Service plans, and Elastic Premium receive the applicable platform runtime updates through the **App Service Windows patching process**.
 
-Follow the [App Service Windows .NET post]({% post_url 2026-10-26-dotnet-brotli-security-update-app-service-windows %}) for the corresponding rollout status. Deployment is active through SDP, but it is not yet complete.
+The [App Service Windows .NET rollout]({% post_url 2026-10-26-dotnet-brotli-security-update-app-service-windows %}) is **complete**, reaching Stage 5 on **27 October 2026** through SDP.
 
 ## What the updates address
 
@@ -60,7 +60,6 @@ The following upstream releases were published on **25 October 2026**:
 | .NET 8 | **8.0.33** | [.NET 8.0.33](https://github.com/dotnet/core/blob/main/release-notes/8.0/8.0.33/8.0.33.md) |
 | .NET 9 | **9.0.22** | [.NET 9.0.22](https://github.com/dotnet/core/blob/main/release-notes/9.0/9.0.22/9.0.22.md) |
 | .NET 10 | **10.0.14** | [.NET 10.0.14](https://github.com/dotnet/core/blob/main/release-notes/10.0/10.0.14/10.0.14.md) |
-| .NET 11 RC3 (prerelease) | **11.0.0-rc.3.26522.148** | [.NET 11.0.0-rc.3](https://github.com/dotnet/core/blob/main/release-notes/11.0/preview/rc3/11.0.0-rc.3.md) |
 
 **This is an upstream reference table, not an Azure Functions support or availability matrix.** An upstream release or its availability in App Service does not establish support for your Functions hosting plan or execution model.
 
@@ -84,7 +83,7 @@ logger.LogInformation(
     System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription);
 ```
 
-For isolated worker apps, verify the **.NET worker process**, not just the Functions host. For in-process apps, function code runs within the host process. Inspect logs across active instances while rollout progresses; avoid exposing runtime diagnostics through an unauthenticated public endpoint.
+For isolated worker apps, verify the **.NET worker process**, not just the Functions host. For in-process apps, function code runs within the host process. Inspect logs across active instances; avoid exposing runtime diagnostics through an unauthenticated public endpoint.
 
 `dotnet --version` reports the SDK version, and a shared-runtime list only identifies installed runtimes. Neither proves which runtime your function process uses. Self-contained deployments must be verified and updated separately.
 

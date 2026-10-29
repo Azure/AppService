@@ -5,9 +5,9 @@ toc: true
 toc_sticky: true
 ---
 
-> **Update (26 October 2026):** Deployment of updated built-in .NET runtimes on **Azure App Service for Windows is active through Safe Deployment Practices (SDP)**. **Rollout is in progress, not complete.**
+> **Update (27 October 2026):** Rollout of the updated built-in .NET runtimes on **Azure App Service for Windows is complete** through Safe Deployment Practices (SDP).
 
-Following the out-of-band .NET security releases on **25 October 2026**, Azure App Service is rolling out updated .NET runtimes for Windows apps. The primary fix addresses a vulnerability in the Brotli decoder used by .NET and ASP.NET Core.
+Following the out-of-band .NET security releases on **25 October 2026**, Azure App Service has rolled out updated .NET runtimes for Windows apps. The primary fix addresses a vulnerability in the Brotli decoder used by .NET and ASP.NET Core.
 
 ## What the Brotli update addresses
 
@@ -37,7 +37,7 @@ The table identifies upstream patched versions, **not confirmation that your app
 
 ## What we are doing
 
-Updated built-in .NET runtimes are rolling out across App Service for Windows through SDP. Availability varies while deployment progresses; the active rollout does not establish that every app or instance has received the update.
+Rollout of the updated built-in .NET runtimes across App Service for Windows through SDP is complete. Verify the runtime used by your running application as described below, particularly if your app pins a runtime version or bundles its own runtime.
 
 **Platform Release Channels do not apply to App Service for Windows.** There is no Latest or Standard channel to select for this rollout. Linux channel settings and rollout status do not apply to Windows apps.
 
@@ -47,7 +47,7 @@ For more information, see [OS and runtime patching in Azure App Service](https:/
 
 ## What you should do
 
-1. **Verify the runtime used by your application.** Check the running application process rather than assuming the rollout has reached your app.
+1. **Verify the runtime used by your application.** Check the running application process rather than relying only on platform rollout completion.
 2. **Use a supported .NET release line.** End-of-life runtimes do not receive these fixes. Update and test your app on a supported release line if necessary.
 3. **Review pinned runtime settings and application-managed dependencies.** Ensure your runtime configuration permits an updated patch version. Follow the official release notes for affected packages that require updates independently of the shared runtime.
 4. **Update self-contained deployments and custom containers yourself.** The platform runtime update does not replace a .NET runtime bundled with your application or inside your custom image. Rebuild with the applicable patched runtime, test, and redeploy. The same applies to other bring-your-own runtime deployments.
@@ -61,7 +61,7 @@ Console.WriteLine(
     $"Runtime: {System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription}");
 ```
 
-Review that output in your application's logs after deployment or the next application startup. Compare it with the patched version for your release line. For scaled-out apps, verify across instances as rollout progresses. Avoid exposing runtime diagnostics through an unauthenticated public endpoint.
+Review that output in your application's logs after deployment or the next application startup. Compare it with the patched version for your release line. For scaled-out apps, verify across instances. Avoid exposing runtime diagnostics through an unauthenticated public endpoint.
 
 The configured release line or a runtime reported by a separate console process does not by itself prove which runtime your application process uses. `dotnet --version` reports the SDK version, not the running application's runtime.
 
