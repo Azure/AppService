@@ -5,9 +5,9 @@ toc: true
 toc_sticky: true
 ---
 
-> **Update (26 October 2026):** Rollout of the updated built-in .NET images is **complete on the Latest Platform Release Channel** for Azure App Service on Linux. Rollout to **Standard** is **in progress through Safe Deployment Practices (SDP)**.
+> **Update (27 October 2026):** Rollout of the updated built-in .NET images is **complete on both the Latest and Standard Platform Release Channels** for Azure App Service on Linux. Completion across all deployment stages and clouds was confirmed on **27 October 2026**.
 
-Following the out-of-band .NET security releases on **25 October 2026**, Azure App Service is updating the built-in Linux images for **.NET 8, 9, and 10**. The primary fix addresses a vulnerability in the Brotli decoder used by .NET and ASP.NET Core.
+Following the out-of-band .NET security releases on **25 October 2026**, Azure App Service has updated the built-in Linux images for **.NET 8, 9, and 10**. The primary fix addresses a vulnerability in the Brotli decoder used by .NET and ASP.NET Core.
 
 ## What the Brotli update addresses
 
@@ -37,14 +37,14 @@ The table identifies the patched versions, **not confirmation that your app alre
 
 ## What we are doing
 
-The updated built-in Linux images roll out through the [Platform Release Channels](https://learn.microsoft.com/azure/app-service/overview-patch-os-runtime#control-runtime-patch-update-timing-with-platform-release-channel) as follows:
+Rollout of the updated built-in Linux images through the [Platform Release Channels](https://learn.microsoft.com/azure/app-service/overview-patch-os-runtime#control-runtime-patch-update-timing-with-platform-release-channel) is complete:
 
 | Channel | Availability of the updates |
 |---|---|
 | **Latest** | Rollout **complete** for the release lines listed above. |
-| **Standard** (default) | Rollout **in progress** through **Safe Deployment Practices (SDP)**. |
+| **Standard** (default) | Rollout **complete** for the release lines listed above. |
 
-Apps on Standard will receive the platform image update as rollout progresses; **a channel change is not required**. If you need the updated image before the Standard rollout reaches your app, you can select Latest and verify your app's runtime version.
+The updated images are available on both channels; **a channel change is not required** to receive this update. Verify your app's running runtime version as described below.
 
 Changing your Platform Release Channel does not change your app's configured .NET release line. End-of-life runtimes do not receive these updates; move to a supported release line and test your app.
 
@@ -52,32 +52,10 @@ Changing your Platform Release Channel does not change your app's configured .NE
 
 ## What you should do
 
-1. **Review your Platform Release Channel.** Latest rollout is complete. Apps on Standard can remain on Standard while SDP rollout continues, or select Latest if the update is needed sooner.
+1. **Keep your preferred Platform Release Channel.** Rollout is complete on both Latest and Standard; no channel change is needed for this update.
 2. **Verify the runtime used by your application.** Check the running application process, not just its configured release line or the installed SDK version.
 3. **Review application-managed dependencies.** Follow the official release notes for affected packages that require updates independently of the shared runtime.
 4. **Update self-contained deployments and custom containers yourself.** The platform image update does not replace a .NET runtime bundled with your application or inside your custom image. Rebuild with the applicable patched runtime, test, and redeploy. The same applies to other bring-your-own runtime deployments.
-
-### Change your Platform Release Channel
-
-**Azure portal**
-
-1. In the Azure portal, go to your App Service app.
-2. In the left menu, select **Stack settings**.
-3. Under **Platform Release Channel**, select **Latest**.
-4. Select **Save**.
-
-**Azure CLI**
-
-Use [az webapp update](https://learn.microsoft.com/cli/azure/webapp#az-webapp-update) to select Latest:
-
-```bash
-az webapp update \
-  --resource-group <resource-group> \
-  --name <app-name> \
-  --platform-release-channel Latest
-```
-
-Replace the placeholders with your app's resource group and name. For a deployment slot, add `--slot <slot-name>`.
 
 ### Verify your runtime version
 
