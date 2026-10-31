@@ -1,0 +1,1068 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Azure Functions: .NET Brotli Security Updates - Azure App Service</title>
+<meta name="description" content="  Update (27 October 2026): The platform-managed .NET security update rollout is complete for Linux Azure Functions, Azure Static Web Apps managed functions, and Windows function apps on Consumption, App Service plans, and Elastic Premium.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="Azure Functions: .NET Brotli Security Updates">
+<meta property="og:url" content="https://azure.github.io/AppService/2026/10/26/dotnet-brotli-security-update-azure-functions.html">
+
+
+  <meta property="og:description" content="  Update (27 October 2026): The platform-managed .NET security update rollout is complete for Linux Azure Functions, Azure Static Web Apps managed functions, and Windows function apps on Consumption, App Service plans, and Elastic Premium.">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2026-10-26T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2026/10/26/dotnet-brotli-security-update-azure-functions.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/sidecars/" class="">Sidecars</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/ai-integration/" class="">AI Integration</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Azure Functions: .NET Brotli Security Updates">
+    <meta itemprop="description" content="  Update (27 October 2026): The platform-managed .NET security update rollout is complete for Linux Azure Functions, Azure Static Web Apps managed functions, and Windows function apps on Consumption, App Service plans, and Elastic Premium.">
+    <meta itemprop="datePublished" content="October 26, 2026">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Azure Functions: .NET Brotli Security Updates
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+            
+            
+              • By Byron Tardif
+            
+            • October 26, 2026
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#rollout-by-hosting-plan-and-operating-system">Rollout by hosting plan and operating system</a>
+    <ul>
+      <li><a href="#linux-consumption-app-service-plans-elastic-premium-and-flex-consumption">Linux: Consumption, App Service plans, Elastic Premium, and Flex Consumption</a>
+        <ul>
+          <li><a href="#azure-static-web-apps-managed-functions">Azure Static Web Apps managed functions</a></li>
+        </ul>
+      </li>
+      <li><a href="#windows-consumption-app-service-plans-and-elastic-premium">Windows: Consumption, App Service plans, and Elastic Premium</a></li>
+    </ul>
+  </li>
+  <li><a href="#what-the-updates-address">What the updates address</a>
+    <ul>
+      <li><a href="#brotli-decoder-vulnerability">Brotli decoder vulnerability</a></li>
+    </ul>
+  </li>
+  <li><a href="#upstream-patched-versions-and-functions-support">Upstream patched versions and Functions support</a></li>
+  <li><a href="#what-you-should-do">What you should do</a>
+    <ul>
+      <li><a href="#verify-your-running-net-runtime">Verify your running .NET runtime</a></li>
+    </ul>
+  </li>
+  <li><a href="#related-updates">Related updates</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <blockquote>
+  <p><strong>Update (27 October 2026):</strong> The platform-managed .NET security update rollout is <strong>complete</strong> for Linux Azure Functions, Azure Static Web Apps managed functions, and Windows function apps on Consumption, App Service plans, and Elastic Premium.</p>
+</blockquote>
+
+<p>The out-of-band .NET releases published on <strong>25 October 2026</strong> address a Brotli decoder vulnerability and additional security issues. The patching process for function apps depends on their <strong>operating system, hosting plan, and deployment model</strong>.</p>
+
+<h2 id="rollout-by-hosting-plan-and-operating-system">Rollout by hosting plan and operating system</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Hosting plan or offering</th>
+      <th>Windows</th>
+      <th>Linux</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Consumption</td>
+      <td>App Service Windows runtime rollout complete.</td>
+      <td>Azure Functions rollout complete.</td>
+    </tr>
+    <tr>
+      <td>App Service plan (Dedicated)</td>
+      <td>App Service Windows runtime rollout complete.</td>
+      <td>Azure Functions rollout complete.</td>
+    </tr>
+    <tr>
+      <td>Elastic Premium</td>
+      <td>App Service Windows runtime rollout complete.</td>
+      <td>Azure Functions rollout complete.</td>
+    </tr>
+    <tr>
+      <td>Flex Consumption</td>
+      <td>Not available on Windows.</td>
+      <td>Azure Functions rollout complete.</td>
+    </tr>
+    <tr>
+      <td>Static Web Apps managed functions</td>
+      <td>Not applicable.</td>
+      <td>Applicable update complete; aligned with the Azure Functions Linux rollout.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>These statuses describe platform-managed updates. Verify the runtime used by your running function process on either OS. Application-managed packages, self-contained deployments, and custom containers require separate review.</p>
+
+<h3 id="linux-consumption-app-service-plans-elastic-premium-and-flex-consumption">Linux: Consumption, App Service plans, Elastic Premium, and Flex Consumption</h3>
+
+<p>The Azure Functions team has completed rollout of the applicable .NET updates for Linux function apps on the hosting plans listed above.</p>
+
+<p>The <a href="/AppService/2026/10/26/dotnet-brotli-security-update-app-service-linux.html">App Service Linux .NET post</a> provides background on the upstream releases. <strong>Its Platform Release Channel rollout statuses, runtime-version table, and channel guidance are not Azure Functions rollout or support guidance</strong>, including for Linux functions hosted on App Service plans.</p>
+
+<h4 id="azure-static-web-apps-managed-functions">Azure Static Web Apps managed functions</h4>
+
+<p>The applicable .NET update for <strong>Azure Static Web Apps managed functions is complete</strong>, aligned with the <strong>Azure Functions Linux rollout</strong>.</p>
+
+<p>This status applies to <strong>managed functions</strong>, not a separately linked Azure Functions app. For a linked function app, use its hosting plan and OS to identify the rollout that applies. This update does not add support for a new language or runtime version in Static Web Apps managed functions.</p>
+
+<h3 id="windows-consumption-app-service-plans-and-elastic-premium">Windows: Consumption, App Service plans, and Elastic Premium</h3>
+
+<p>Windows function apps on Consumption, App Service plans, and Elastic Premium receive the applicable platform runtime updates through the <strong>App Service Windows patching process</strong>.</p>
+
+<p>The <a href="/AppService/2026/10/26/dotnet-brotli-security-update-app-service-windows.html">App Service Windows .NET rollout</a> is <strong>complete</strong>, reaching Stage 5 on <strong>27 October 2026</strong> through SDP.</p>
+
+<h2 id="what-the-updates-address">What the updates address</h2>
+
+<h3 id="brotli-decoder-vulnerability">Brotli decoder vulnerability</h3>
+
+<p>The primary fix addresses <a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-111497">CVE-2026-111497, a Brotli decoder out-of-bounds write</a> in the Brotli library used by .NET and ASP.NET Core. Processing maliciously crafted compressed data could result in <strong>denial of service, information disclosure, or elevation of privilege</strong>.</p>
+
+<p>Affected code paths include ASP.NET Core request decompression, <code class="language-plaintext highlighter-rouge">HttpClient</code> automatic response decompression, and the <code class="language-plaintext highlighter-rouge">System.IO.Compression</code> Brotli APIs. Automatic request and response decompression are <strong>not enabled by default</strong>. Review the decompression paths your functions and dependencies actually use; this does not imply that every HTTP-triggered function enables Brotli request decompression.</p>
+
+<p><strong>.NET Framework is not affected</strong> by this issue.</p>
+
+<p>These releases include additional security fixes. See the official release notes below for applicability and any separate application-package updates.</p>
+
+<h2 id="upstream-patched-versions-and-functions-support">Upstream patched versions and Functions support</h2>
+
+<p>The following upstream releases were published on <strong>25 October 2026</strong>:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>.NET release line</th>
+      <th>Upstream patched runtime</th>
+      <th>Official release notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>.NET 8</td>
+      <td><strong>8.0.33</strong></td>
+      <td><a href="https://github.com/dotnet/core/blob/main/release-notes/8.0/8.0.33/8.0.33.md">.NET 8.0.33</a></td>
+    </tr>
+    <tr>
+      <td>.NET 9</td>
+      <td><strong>9.0.22</strong></td>
+      <td><a href="https://github.com/dotnet/core/blob/main/release-notes/9.0/9.0.22/9.0.22.md">.NET 9.0.22</a></td>
+    </tr>
+    <tr>
+      <td>.NET 10</td>
+      <td><strong>10.0.14</strong></td>
+      <td><a href="https://github.com/dotnet/core/blob/main/release-notes/10.0/10.0.14/10.0.14.md">.NET 10.0.14</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>This is an upstream reference table, not an Azure Functions support or availability matrix.</strong> An upstream release or its availability in App Service does not establish support for your Functions hosting plan or execution model.</p>
+
+<p>Use a .NET version supported by Azure Functions for your OS, plan, and execution model. Review the <a href="https://learn.microsoft.com/azure/azure-functions/dotnet-isolated-process-guide#supported-versions">isolated worker supported versions</a> and <a href="https://learn.microsoft.com/azure/azure-functions/functions-dotnet-class-library#supported-versions">in-process supported versions</a>. This update does not change your configured release line, migrate your execution model, or add support for .NET 11 RC3.</p>
+
+<h2 id="what-you-should-do">What you should do</h2>
+
+<ol>
+  <li><strong>Identify your OS, hosting plan, and execution model.</strong> Use the rollout table above to determine which platform update applies. For Static Web Apps, distinguish managed functions from a separately linked function app.</li>
+  <li><strong>Verify the runtime in your running function process.</strong> Do not rely only on configured settings, an installed SDK, or an App Service rollout announcement.</li>
+  <li><strong>Review application-managed packages.</strong> Follow the official release notes and update affected dependencies through your trusted package source. Rebuild, test, and redeploy as needed.</li>
+  <li><strong>Update self-contained deployments and custom containers yourself.</strong> Platform patching does not replace runtimes bundled with your app or patch the contents of your custom image. Rebuild with the applicable patched runtime and dependencies, test, and redeploy.</li>
+  <li><strong>Test affected code paths.</strong> Exercise the decompression and networking behavior your functions actually use after updating.</li>
+</ol>
+
+<h3 id="verify-your-running-net-runtime">Verify your running .NET runtime</h3>
+
+<p>Use existing application logging or diagnostics to record <code class="language-plaintext highlighter-rouge">System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription</code> from your executing function code. With an existing <code class="language-plaintext highlighter-rouge">ILogger</code> instance named <code class="language-plaintext highlighter-rouge">logger</code>, for example:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">logger</span><span class="p">.</span><span class="nf">LogInformation</span><span class="p">(</span>
+    <span class="s">"Function runtime: {Runtime}"</span><span class="p">,</span>
+    <span class="n">System</span><span class="p">.</span><span class="n">Runtime</span><span class="p">.</span><span class="n">InteropServices</span><span class="p">.</span><span class="n">RuntimeInformation</span><span class="p">.</span><span class="n">FrameworkDescription</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>For isolated worker apps, verify the <strong>.NET worker process</strong>, not just the Functions host. For in-process apps, function code runs within the host process. Inspect logs across active instances; avoid exposing runtime diagnostics through an unauthenticated public endpoint.</p>
+
+<p><code class="language-plaintext highlighter-rouge">dotnet --version</code> reports the SDK version, and a shared-runtime list only identifies installed runtimes. Neither proves which runtime your function process uses. Self-contained deployments must be verified and updated separately.</p>
+
+<h2 id="related-updates">Related updates</h2>
+
+<ul>
+  <li><a href="/AppService/2026/10/26/dotnet-brotli-security-update-app-service-linux.html">.NET Brotli security updates on App Service for Linux</a> covers the separate App Service Linux image rollout.</li>
+  <li><a href="/AppService/2026/10/26/dotnet-brotli-security-update-app-service-windows.html">.NET Brotli security updates on App Service for Windows</a> covers the Windows runtime rollout on which Windows function apps depend.</li>
+  <li><a href="/AppService/2026/10/23/time-zone-runtime-certificate-updates-azure-functions.html">Azure Functions time-zone, Node.js, Python, and certificate updates</a> covers the earlier, separate updates. Completion of those Linux updates does not establish completion of this .NET rollout.</li>
+</ul>
+
+<p>Thank you for helping us keep your .NET function apps secure.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2026-10-26T00:00:00+00:00">October 26, 2026</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Azure+Functions%3A+.NET+Brotli+Security+Updates%20https%3A%2F%2Fazure.github.io%2FAppService%2F2026%2F10%2F26%2Fdotnet-brotli-security-update-azure-functions.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2026%2F10%2F26%2Fdotnet-brotli-security-update-azure-functions.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2026%2F10%2F26%2Fdotnet-brotli-security-update-azure-functions.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2026/10/26/dotnet-brotli-security-update-app-service-windows.html" class="pagination--pager" title=".NET Brotli Security Updates on Azure App Service for Windows
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2026/10/26/dotnet-brotli-security-update-app-service-windows.html" rel="permalink">.NET Brotli Security Updates on Azure App Service for Windows
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+        
+        
+          • By Byron Tardif
+        
+        • October 26, 2026
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+  Update (27 October 2026): Rollout of the updated built-in .NET runtimes on Azure App Service for Windows is complete through Safe Deployment Practices (SD...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2026/10/26/dotnet-brotli-security-update-app-service-linux.html" rel="permalink">.NET Brotli Security Updates on Azure App Service for Linux
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+        
+        
+          • By Byron Tardif
+        
+        • October 26, 2026
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+  Update (27 October 2026): Rollout of the updated built-in .NET images is complete on both the Latest and Standard Platform Release Channels for Azure App ...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2026/10/23/time-zone-updates-app-service-windows.html" rel="permalink">Time Zone Updates on Azure App Service for Windows
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+          • By Byron Tardif
+        
+        • October 23, 2026
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+  Update (26 October 2026): The rollout of Windows operating-system time-zone updates on Azure App Service for Windows is complete, following accelerated Sa...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2026/10/23/time-zone-runtime-certificate-updates-azure-functions.html" rel="permalink">Azure Functions: Time Zone, Node.js, Python, and Certificate Updates
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+        
+        
+          • By Byron Tardif
+        
+        • October 23, 2026
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+  Update (26 October 2026): The applicable time-zone, Node.js, and eMudhra / emSign certificate update rollouts are now complete for Windows Azure Functions...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2026 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
