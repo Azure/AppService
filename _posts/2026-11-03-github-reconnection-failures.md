@@ -11,7 +11,7 @@ App Service has deployed an update across all regions so newly generated deploy 
 
 ## What changed?
 
-Starting **October 14, 2026**, GitHub requires newly uploaded RSA SSH keys to be at least **3072 bits**. See GitHub's announcement, [Security improvements for SSH](https://github.blog/changelog/2026-09-22-security-improvements-for-ssh/).
+Starting **October 14, 2026**, GitHub requires newly uploaded RSA SSH keys to be at least **3072 bits**. See GitHub's announcement, [Security improvements for SSH](https://azeemhassni.com/blog/wire-github-ssh-rsa-key-size-requirement/).
 
 An existing 2048-bit key already registered with GitHub is not invalidated by this upload requirement. However, registering that key again can fail with:
 
