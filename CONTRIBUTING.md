@@ -127,7 +127,7 @@ You can add images, GIFs, or other digital content to your post by adding it to 
 
 1. Submit a pull request. You can use [GitHub Desktop](https://help.github.com/en/desktop/contributing-to-projects/creating-a-pull-request) or the command line.
 
-1. Request reviews from `apwestgarth`, `seligj95`, and `btardif` for your pull request.
+1. Request reviews from `apwestgarth`, `seligj95`, `btardif`, and `tulikac` for your pull request.
 
 ## The team pages
 
@@ -138,7 +138,7 @@ There are team pages in the left sidebar to help organize content from that team
 1. Find your team's page under `_pages/team_pages/`
 1. Edit the markdown content as you wish. You can use in-line HTML as well, see the [theme's utility classes](https://mmistakes.github.io/minimal-mistakes/docs/utility-classes/) for more information.
 1. Any images should be placed under `media/pages/team_pages/your-team-name/`. See [adding digital content](#adding-digital-content) for more information on adding these images to your post.
-1. When you're done making changes, submit a Pull Request and request reviews from `apwestgarth`, `seligj95`, and `btardif`.
+1. When you're done making changes, submit a Pull Request and request reviews from `apwestgarth`, `seligj95`, `btardif`, and `tulikac`.
 
 ### Add a team page
 
