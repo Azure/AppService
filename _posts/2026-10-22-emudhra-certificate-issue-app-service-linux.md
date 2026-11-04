@@ -5,7 +5,7 @@ toc: true
 toc_sticky: true
 ---
 
-> **Update (4 November 2026):** Rollout of patched built-in Linux images for the **eMudhra / emSign CA certificate security incident** is **complete on Latest and Standard** for all runtimes listed below, including **Java and PHP 8.2**. **No channel change is needed.** EOL runtimes remain excluded.
+> **Update (4 November 2026):** Rollout of patched built-in Linux images for the **eMudhra / emSign CA certificate security incident** is **complete on Latest and Standard** for all runtimes listed below, including **Java and PHP 8.2**. EOL runtimes remain excluded.
 
 The eMudhra / emSign incident affects certificate trust used by TLS clients. The [Ubuntu Security Team's incident and patch guidance](https://ubuntu.com/blog/emudhra-ca-compromise-fixes-available) explains the CA trust-store changes needed to mitigate the risk of man-in-the-middle attacks.
 
@@ -111,7 +111,7 @@ As the [Ubuntu guidance](https://ubuntu.com/blog/emudhra-ca-compromise-fixes-ava
 ## Related updates
 
 - [eMudhra / emSign certificate security updates on App Service for Windows]({% post_url 2026-10-22-emudhra-certificate-issue-app-service-windows %}) covers the separate Windows OS certificate rollout. Linux Platform Release Channel settings do not apply to Windows.
-- [Time zone updates on App Service for Linux]({% post_url 2026-10-22-time-zone-updates-app-service-linux %}) covers the separate time-zone data rollout, whose PHP 8.2 and 8.3 exclusions differ from the certificate update exclusion described here.
+- [Time zone updates on App Service for Linux]({% post_url 2026-10-22-time-zone-updates-app-service-linux %}) covers the separate time-zone data rollout, including PHP 8.2 and 8.3.
 - [Critical PHP security release guidance for App Service]({% post_url 2026-10-21-php-critical-security-release-app-service-linux %}) covers the separate PHP runtime vulnerabilities and rollout.
 - [Node.js and Python emergency runtime updates on App Service for Linux]({% post_url 2026-10-22-node-python-emergency-release-app-service-linux %}) covers the runtime releases and their rollout. Review that guidance alongside the certificate updates here; runtime patches do not replace application-managed CA bundles.
 
