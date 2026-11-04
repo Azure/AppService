@@ -5,8 +5,6 @@ toc: true
 toc_sticky: true
 ---
 
-> **Update (25 October 2026):** Rollout of patched built-in Linux images for the **eMudhra / emSign CA certificate security incident** is **complete on Latest and Standard** for the non-EOL runtimes listed below, except PHP 8.2. EOL runtimes remain excluded.
->
 > **Update (4 November 2026):** Patched built-in Linux images for **PHP 8.2** are now available on Latest and Standard. The rollout is complete for all non-EOL runtimes listed below; EOL runtimes remain excluded.
 
 The eMudhra / emSign incident affects certificate trust used by TLS clients. The [Ubuntu Security Team's incident and patch guidance](https://ubuntu.com/blog/emudhra-ca-compromise-fixes-available) explains the CA trust-store changes needed to mitigate the risk of man-in-the-middle attacks.
