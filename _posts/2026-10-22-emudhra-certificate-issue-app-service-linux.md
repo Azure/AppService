@@ -5,7 +5,7 @@ toc: true
 toc_sticky: true
 ---
 
-> **Update (4 November 2026):** Rollout of patched built-in Linux images for the **eMudhra / emSign CA certificate security incident** is **complete on Latest and Standard** for all runtimes listed below, including **Java and PHP 8.2**. EOL runtimes remain excluded.
+> **Update (25 October 2026):** Rollout of patched built-in Linux images for the **eMudhra / emSign CA certificate security incident** is **complete on Latest and Standard** for all runtimes listed below, including **Java and PHP 8.2**. EOL runtimes remain excluded.
 
 The eMudhra / emSign incident affects certificate trust used by TLS clients. The [Ubuntu Security Team's incident and patch guidance](https://ubuntu.com/blog/emudhra-ca-compromise-fixes-available) explains the CA trust-store changes needed to mitigate the risk of man-in-the-middle attacks.
 
@@ -28,7 +28,9 @@ The following runtime versions are listed by `az webapp list-runtimes -o table -
 
 Runtimes approaching EOL are included while they remain supported. **EOL runtimes do not receive these image updates.**
 
-**WordPress on App Service is also updated.** The supported images for apps deployed using the official [WordPress on App Service offering in Microsoft Marketplace](https://marketplace.microsoft.com/product/WordPress.WordPress?tab=Overview) include the certificate security updates.
+**WordPress on App Service requires a separate WordPress core update.** The supported images for apps deployed using the official [WordPress on App Service offering in Microsoft Marketplace](https://marketplace.microsoft.com/product/WordPress.WordPress?tab=Overview) include the OS certificate security updates, but **WordPress uses its own certificate trust store**.
+
+**Customers must update WordPress core to version 7.1.4 or later on their sites** to receive the updated WordPress trust store. The App Service image update does not upgrade WordPress core or replace its trust store on existing sites.
 
 ### Rollout by Platform Release Channel
 

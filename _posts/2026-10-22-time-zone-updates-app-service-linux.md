@@ -5,7 +5,7 @@ toc: true
 toc_sticky: true
 ---
 
-> **Update (4 November 2026):** Rollout of updated built-in Linux images for the time-zone rule changes in **IANA time zone database 2026e** is **complete on Latest and Standard** for all supported runtimes covered below, including **Java, PHP 8.2, and PHP 8.3**. **No channel change is needed.** EOL runtimes remain excluded.
+> **Update (25 October 2026):** Rollout of updated built-in Linux images for the time-zone rule changes in **IANA time zone database 2026e** is **complete on Latest and Standard** for all supported runtimes covered below, including **Java, PHP 8.2, and PHP 8.3**. **No channel change is needed.** EOL runtimes remain excluded.
 
 Time-zone rules change when governments update local timekeeping policies. Apps need current time-zone data to convert UTC timestamps to local time and calculate schedules correctly.
 
