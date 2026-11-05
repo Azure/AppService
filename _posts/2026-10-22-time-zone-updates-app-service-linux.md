@@ -5,7 +5,7 @@ toc: true
 toc_sticky: true
 ---
 
-> **Update (25 October 2026):** The Java rollout is now complete on **Standard**. Rollout of updated built-in Linux images for the time-zone rule changes in **IANA time zone database 2026e** is **complete on Latest and Standard** for all supported runtimes covered below, including **Java**. **No channel change is needed.** The PHP 8.2, PHP 8.3, and EOL exclusions described below remain unchanged.
+> **Update (4 November 2026):** Updated built-in Linux images with the **2026e time-zone data** for **PHP 8.2** and **PHP 8.3** are now available on Latest and Standard. The rollout is complete for all non-EOL runtimes listed below; EOL runtimes remain excluded.
 
 Time-zone rules change when governments update local timekeeping policies. Apps need current time-zone data to convert UTC timestamps to local time and calculate schedules correctly.
 
@@ -29,7 +29,7 @@ Older data can apply a clock change that no longer occurs, producing incorrect l
 
 ## What we are doing
 
-Updated built-in Linux images are available on **Latest and Standard** for **non-EOL runtimes**, with the [PHP 8.2 and 8.3 exceptions](#php-82-and-83-exceptions) described below. The updates address the time-zone data needed for these rule changes, including OS data and runtime-bundled data where applicable.
+Updated built-in Linux images are available on **Latest and Standard** for **all non-EOL runtimes**. The updates address the time-zone data needed for these rule changes, including OS data and runtime-bundled data where applicable.
 **Java is available on both Latest and Standard; its rollout is complete.**
 
 The following runtime versions are included in the completed rollout to **Latest and Standard**. For Java, the table summarizes Java SE versions rather than listing individual application-server combinations.
@@ -39,16 +39,10 @@ The following runtime versions are included in the completed rollout to **Latest
 | .NET | 8, 9, 10, 11 |
 | Node.js | 22, 24 |
 | Python | 3.10, 3.11, 3.12, 3.13, 3.14 |
-| PHP | 8.4, 8.5 |
+| PHP | 8.2, 8.3, 8.4, 8.5 |
 | Java SE | 8, 11, 17, 21, 25 |
 
 **EOL runtimes do not receive these image updates.** Updating an image does not automatically replace time-zone databases bundled in your app or its dependencies.
-
-### PHP 8.2 and 8.3 exceptions
-
-**PHP 8.2 and PHP 8.3 are not included in this initial time-zone update payload.** These stacks use a custom PHP time-zone database that is not current. We are investigating an update plan for these two stacks; no availability date is confirmed.
-
-Moving an app on either stack to Latest alone does not address this exception. If your app depends on the changed rules, update and test it on a supported PHP stack included in this rollout, such as **PHP 8.4 or 8.5**, and verify its date/time behavior before switching production traffic.
 
 ### Rollout by Platform Release Channel
 
@@ -64,7 +58,7 @@ Both channels include these updates for all covered runtimes, **including Java**
 1. **Use Standard or Latest to receive the updated rules.** For eligible runtimes, including Java, apps on either channel do not need a channel change.
 2. **Check your app's actual date/time behavior.** Test conversions and schedules for the regions your app uses, including timestamps on both sides of the relevant transition. Do not rely on the selected channel or OS package version alone.
 3. **Review application-managed time-zone data.** Libraries, bundled ICU data, and custom time-zone databases can differ from the OS database. Update affected dependencies and rebuild and redeploy your app as needed.
-4. **Review PHP 8.2, PHP 8.3, and EOL workloads.** The two PHP stacks are excluded from this initial payload, and EOL runtimes do not receive these updates. Move to an included supported stack where possible and test before production deployment.
+4. **Review EOL workloads.** EOL runtimes do not receive these updates. Move to an included supported stack where possible and test before production deployment.
 5. **Update custom containers and bring-your-own runtimes yourself.** App Service does not patch their contents. Pull an updated supported base image, update OS and runtime-specific time-zone data, then rebuild, test, and redeploy. Selecting Latest does not update your custom image.
 
 ### Change your Platform Release Channel
@@ -128,10 +122,10 @@ With the updated Manitoba rules, the expected result is:
 
 - [Critical PHP security release guidance for App Service]({% post_url 2026-10-21-php-critical-security-release-app-service-linux %}) covers the separate PHP runtime vulnerabilities and security-patch rollout.
 - [Node.js and Python emergency runtime updates on App Service for Linux]({% post_url 2026-10-22-node-python-emergency-release-app-service-linux %}) covers the related runtime releases.
-- [eMudhra / emSign certificate security updates on App Service for Linux]({% post_url 2026-10-22-emudhra-certificate-issue-app-service-linux %}) covers the separate certificate trust-store updates. Its PHP exclusions differ from the time-zone update exclusions described here.
+- [eMudhra / emSign certificate security updates on App Service for Linux]({% post_url 2026-10-22-emudhra-certificate-issue-app-service-linux %}) covers the separate certificate trust-store updates.
 
 ## Stay informed
 
-We share further updates here as the PHP 8.2 and 8.3 update plan becomes available.
+We will share further updates here as needed.
 
 Thank you for keeping your apps' time-zone data current on Azure App Service.
