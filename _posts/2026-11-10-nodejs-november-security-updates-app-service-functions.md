@@ -27,8 +27,6 @@ Upstream publication and Azure rollout completion are separate milestones. A Nov
 
 Updated built-in Node.js runtimes will roll out through the App Service Windows patching process.
 
-**Platform Release Channels do not apply to App Service for Windows.** There is no Latest or Standard channel to select for this rollout.
-
 ### Azure App Service for Linux
 
 Updated built-in Node.js images will roll out through the [Platform Release Channels](https://learn.microsoft.com/azure/app-service/overview-patch-os-runtime#control-runtime-patch-update-timing-with-platform-release-channel). Availability on Latest and Standard will be reported as the rollout progresses; neither channel is being announced as patched in this advance notice.
