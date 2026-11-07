@@ -1,0 +1,1013 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en_US"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://azure.github.io/AppService/feed.xml" rel="self" type="application/atom+xml" /><link href="https://azure.github.io/AppService/" rel="alternate" type="text/html" hreflang="en_US" /><updated>2026-11-07T00:02:44+00:00</updated><id>https://azure.github.io/AppService/feed.xml</id><title type="html">Azure App Service</title><subtitle>Announcements, updates, and release notes from the Azure App Service product team.</subtitle><author><name>Azure App Service</name></author><entry><title type="html">What’s new for Azure App Service in Azure PowerShell: September-November 2026</title><link href="https://azure.github.io/AppService/2026/11/04/azure-powershell-app-service-updates.html" rel="alternate" type="text/html" title="What’s new for Azure App Service in Azure PowerShell: September-November 2026" /><published>2026-11-04T00:00:00+00:00</published><updated>2026-11-04T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2026/11/04/azure-powershell-app-service-updates</id><content type="html" xml:base="https://azure.github.io/AppService/2026/11/04/azure-powershell-app-service-updates.html"><![CDATA[<p><a href="https://github.com/Azure/azure-powershell/releases/tag/v16.5.0-November2026">Azure PowerShell Az 16.5.0</a> adds App Service plan controls for asynchronous scaling and PowerShell management of Managed Instance on Azure App Service. Together with the September and October releases, these updates bring Isolated v4 plan support and a newer Microsoft.Web management API to your App Service automation.</p>
+
+<p>This recap covers the latest three monthly release batches. The App Service cmdlets are in the <code class="language-plaintext highlighter-rouge">Az.Websites</code> module:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Monthly release</th>
+      <th>Az version</th>
+      <th>Az.Websites version</th>
+      <th>App Service updates</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>September</td>
+      <td><a href="https://github.com/Azure/azure-powershell/releases/tag/v16.3.0-September2026">16.3.0</a></td>
+      <td>4.1.0</td>
+      <td>Isolated v4 and memory-optimized Isolated v4 plans</td>
+    </tr>
+    <tr>
+      <td>October</td>
+      <td><a href="https://github.com/Azure/azure-powershell/releases/tag/v16.4.0-October2026">16.4.0</a></td>
+      <td>4.2.0</td>
+      <td>Microsoft.Web API version 2025-05-01</td>
+    </tr>
+    <tr>
+      <td>November</td>
+      <td><a href="https://github.com/Azure/azure-powershell/releases/tag/v16.5.0-November2026">16.5.0</a></td>
+      <td>4.3.0</td>
+      <td>Managed Instance management and asynchronous scaling</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="allow-scaling-to-proceed-asynchronously-when-capacity-is-constrained">Allow scaling to proceed asynchronously when capacity is constrained</h2>
+
+<p><code class="language-plaintext highlighter-rouge">New-AzAppServicePlan</code> and <code class="language-plaintext highlighter-rouge">Set-AzAppServicePlan</code> now accept <code class="language-plaintext highlighter-rouge">-AsyncScalingEnabled</code>. For dedicated App Service plans, setting it to <code class="language-plaintext highlighter-rouge">$true</code> allows the service to use an asynchronous scaling operation when there aren’t enough workers to scale synchronously.</p>
+
+<p>For example, enable the setting and request two workers for an existing dedicated plan:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Set-AzAppServicePlan</span><span class="w"> </span><span class="se">`
+</span><span class="w">    </span><span class="nt">-ResourceGroupName</span><span class="w"> </span><span class="s2">"&lt;resource-group&gt;"</span><span class="w"> </span><span class="se">`
+</span><span class="w">    </span><span class="nt">-Name</span><span class="w"> </span><span class="s2">"&lt;app-service-plan&gt;"</span><span class="w"> </span><span class="se">`
+</span><span class="w">    </span><span class="nt">-AsyncScalingEnabled</span><span class="w"> </span><span class="bp">$true</span><span class="w"> </span><span class="se">`
+</span><span class="w">    </span><span class="nt">-NumberofWorkers</span><span class="w"> </span><span class="nx">2</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Use <code class="language-plaintext highlighter-rouge">-AsyncScalingEnabled $false</code> to disable the setting. Omitting it from an update preserves the existing value, including when a plan is passed through the pipeline.</p>
+
+<p><strong>Asynchronous scaling is not background execution.</strong> The setting controls how App Service handles scaling; the cmdlet still waits for the operation to complete. Use the separate <code class="language-plaintext highlighter-rouge">-AsJob</code> switch when you want PowerShell to run the cmdlet as a background job. Enabling asynchronous scaling doesn’t configure autoscale rules or guarantee that capacity is immediately available.</p>
+
+<h2 id="manage-windows-application-dependencies-at-the-plan-level">Manage Windows application dependencies at the plan level</h2>
+
+<p>Managed Instance on Azure App Service is generally available for Windows web apps that need operating system customization, such as COM components, MSI installers, or registry configuration. The November release adds PowerShell support for creating and configuring these plans, so you can include their infrastructure dependencies in the same automation as the rest of your App Service deployment.</p>
+
+<p>Create a Managed Instance plan with a system-assigned managed identity:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">New-AzAppServicePlan</span><span class="w"> </span><span class="se">`
+</span><span class="w">    </span><span class="nt">-ResourceGroupName</span><span class="w"> </span><span class="s2">"&lt;resource-group&gt;"</span><span class="w"> </span><span class="se">`
+</span><span class="w">    </span><span class="nt">-Name</span><span class="w"> </span><span class="s2">"&lt;managed-instance-plan&gt;"</span><span class="w"> </span><span class="se">`
+</span><span class="w">    </span><span class="nt">-Location</span><span class="w"> </span><span class="s2">"&lt;supported-region&gt;"</span><span class="w"> </span><span class="se">`
+</span><span class="w">    </span><span class="nt">-Tier</span><span class="w"> </span><span class="nx">PremiumV4</span><span class="w"> </span><span class="se">`
+</span><span class="w">    </span><span class="nt">-WorkerSize</span><span class="w"> </span><span class="nx">Small</span><span class="w"> </span><span class="se">`
+</span><span class="w">    </span><span class="nt">-ManagedInstance</span><span class="w"> </span><span class="se">`
+</span><span class="w">    </span><span class="nt">-AssignIdentity</span><span class="w"> </span><span class="bp">$true</span><span class="w"> </span><span class="se">`
+</span><span class="w">    </span><span class="nt">-DefaultIdentity</span><span class="w"> </span><span class="s2">"[system]"</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Managed Instance supports Premium v4 and memory-optimized Premium v4 plans in select regions. It doesn’t support Linux, containers, App Service Environments, or per-site scaling. Check the <a href="https://learn.microsoft.com/azure/app-service/overview-managed-instance">Managed Instance overview</a> for current regional availability and platform requirements.</p>
+
+<p>Both <code class="language-plaintext highlighter-rouge">New-AzAppServicePlan</code> and <code class="language-plaintext highlighter-rouge">Set-AzAppServicePlan</code> now expose plan-level managed identities, installation scripts, storage mounts, registry adapters, virtual network integration, and RDP settings. Use installation scripts for customizations that must survive worker restarts and platform maintenance; interactive RDP changes aren’t persistent configuration.</p>
+
+<p>When updating an existing plan, omitted settings are preserved. Collection parameters such as <code class="language-plaintext highlighter-rouge">-InstallScript</code>, <code class="language-plaintext highlighter-rouge">-StorageMount</code>, and <code class="language-plaintext highlighter-rouge">-RegistryAdapter</code> replace the entire corresponding collection. Retrieve the current plan and merge the entries you want to retain before passing an updated collection. An empty array clears that collection.</p>
+
+<h3 id="diagnose-and-recycle-individual-workers">Diagnose and recycle individual workers</h3>
+
+<p>Three new cmdlets support Managed Instance operations:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Cmdlet</th>
+      <th>Purpose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Get-AzAppServicePlanManagedInstance</code></td>
+      <td>Retrieve worker names, private IP addresses, and statuses; optionally select a worker with <code class="language-plaintext highlighter-rouge">-InstanceName</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Restart-AzAppServicePlanManagedInstance</code></td>
+      <td>Request recycling of one worker, with <code class="language-plaintext highlighter-rouge">-WhatIf</code> support</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Get-AzAppServicePlanRdpCredential</code></td>
+      <td>Retrieve RDP credentials as a <code class="language-plaintext highlighter-rouge">PSCredential</code> object</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>For a plan with RDP enabled and the required virtual network and Azure Bastion configuration, retrieve worker details and store the credentials without displaying the password:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Get-AzAppServicePlanManagedInstance</span><span class="w"> </span><span class="se">`
+</span><span class="w">    </span><span class="nt">-ResourceGroupName</span><span class="w"> </span><span class="s2">"&lt;resource-group&gt;"</span><span class="w"> </span><span class="se">`
+</span><span class="w">    </span><span class="nt">-Name</span><span class="w"> </span><span class="s2">"&lt;managed-instance-plan&gt;"</span><span class="w">
+
+</span><span class="nv">$credential</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Get-AzAppServicePlanRdpCredential</span><span class="w"> </span><span class="se">`
+</span><span class="w">    </span><span class="nt">-ResourceGroupName</span><span class="w"> </span><span class="s2">"&lt;resource-group&gt;"</span><span class="w"> </span><span class="se">`
+</span><span class="w">    </span><span class="nt">-Name</span><span class="w"> </span><span class="s2">"&lt;managed-instance-plan&gt;"</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The credential cmdlet doesn’t create a Bastion tunnel or launch an RDP client. Treat the returned credential as sensitive information. See <a href="https://learn.microsoft.com/azure/app-service/configure-managed-instance">Configure Managed Instance</a> for identity permissions, script prerequisites, and Bastion networking requirements.</p>
+
+<p>Preview a recycle request using a worker name returned by the discovery cmdlet:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Restart-AzAppServicePlanManagedInstance</span><span class="w"> </span><span class="se">`
+</span><span class="w">    </span><span class="nt">-ResourceGroupName</span><span class="w"> </span><span class="s2">"&lt;resource-group&gt;"</span><span class="w"> </span><span class="se">`
+</span><span class="w">    </span><span class="nt">-Name</span><span class="w"> </span><span class="s2">"&lt;managed-instance-plan&gt;"</span><span class="w"> </span><span class="se">`
+</span><span class="w">    </span><span class="nt">-InstanceName</span><span class="w"> </span><span class="s2">"&lt;worker-name&gt;"</span><span class="w"> </span><span class="se">`
+</span><span class="w">    </span><span class="nt">-WhatIf</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Remove <code class="language-plaintext highlighter-rouge">-WhatIf</code> to submit the request. Recycling can interrupt applications on that worker. The cmdlet returns after the service accepts the request, not when the worker is ready again; <code class="language-plaintext highlighter-rouge">-PassThru</code> reports acceptance rather than recovery. Use the instance-discovery cmdlet to check worker status afterward.</p>
+
+<h2 id="create-isolated-v4-plans-in-an-app-service-environment">Create Isolated v4 plans in an App Service Environment</h2>
+
+<p>The September release adds <code class="language-plaintext highlighter-rouge">IsolatedV4</code> and <code class="language-plaintext highlighter-rouge">IsolatedMV4</code> tier support to <code class="language-plaintext highlighter-rouge">New-AzAppServicePlan</code> and <code class="language-plaintext highlighter-rouge">Set-AzAppServicePlan</code>. This lets you select the newer isolated compute options, including memory-optimized sizes, from your PowerShell provisioning scripts.</p>
+
+<p>For example, create an I1V4 plan in an existing App Service Environment v3:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">New-AzAppServicePlan</span><span class="w"> </span><span class="se">`
+</span><span class="w">    </span><span class="nt">-ResourceGroupName</span><span class="w"> </span><span class="s2">"&lt;resource-group&gt;"</span><span class="w"> </span><span class="se">`
+</span><span class="w">    </span><span class="nt">-Name</span><span class="w"> </span><span class="s2">"&lt;app-service-plan&gt;"</span><span class="w"> </span><span class="se">`
+</span><span class="w">    </span><span class="nt">-Location</span><span class="w"> </span><span class="s2">"&lt;ase-region&gt;"</span><span class="w"> </span><span class="se">`
+</span><span class="w">    </span><span class="nt">-AseName</span><span class="w"> </span><span class="s2">"&lt;app-service-environment&gt;"</span><span class="w"> </span><span class="se">`
+</span><span class="w">    </span><span class="nt">-Tier</span><span class="w"> </span><span class="nx">IsolatedV4</span><span class="w"> </span><span class="se">`
+</span><span class="w">    </span><span class="nt">-WorkerSize</span><span class="w"> </span><span class="nx">Small</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The example assumes the environment is in the same resource group; use <code class="language-plaintext highlighter-rouge">-AseResourceGroupName</code> when it is in another resource group.</p>
+
+<p>For <code class="language-plaintext highlighter-rouge">IsolatedV4</code>, worker sizes <code class="language-plaintext highlighter-rouge">Small</code> through <code class="language-plaintext highlighter-rouge">ExtraExtraExtraLarge</code> map to I1V4 through I6V4. For <code class="language-plaintext highlighter-rouge">IsolatedMV4</code>, <code class="language-plaintext highlighter-rouge">Small</code> through <code class="language-plaintext highlighter-rouge">ExtraExtraLarge</code> map to I1MV4 through I5MV4. Use <code class="language-plaintext highlighter-rouge">Set-AzAppServicePlan</code> with the tier and worker size to update an existing plan.</p>
+
+<p>The selected SKU must be supported by your region and underlying App Service Environment deployment. Capacity is constrained, and Windows containers have additional size restrictions in some regions. Review <a href="https://learn.microsoft.com/azure/app-service/environment/app-service-configure-isolated-v4-tier">Isolated v4 availability and capacity guidance</a> before provisioning or scaling.</p>
+
+<h2 id="use-the-updated-microsoftweb-management-api">Use the updated Microsoft.Web management API</h2>
+
+<p>The October release updates <code class="language-plaintext highlighter-rouge">Az.Websites</code> from Microsoft.Web API version <code class="language-plaintext highlighter-rouge">2021-01-15</code> to <code class="language-plaintext highlighter-rouge">2025-05-01</code>. The November plan-management additions build on this newer API surface.</p>
+
+<p>This is an update to the module’s management client, not a requirement to change your application’s runtime or deployment API version. Microsoft.CertificateRegistration and Microsoft.DomainRegistration remain on API version <code class="language-plaintext highlighter-rouge">2021-01-15</code>. A newer management API also doesn’t mean every service capability has a dedicated PowerShell parameter; use the documented cmdlet options for each operation.</p>
+
+<h2 id="get-the-release">Get the release</h2>
+
+<p>Use Az 16.5.0 / Az.Websites 4.3.0 or later for all the capabilities in this recap. Update using the same installation method you originally used. For a PowerShellGet-based installation:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Update-Module</span><span class="w"> </span><span class="nt">-Name</span><span class="w"> </span><span class="nx">Az</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Start a new PowerShell session after updating, then check the available App Service module versions:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Get-Module</span><span class="w"> </span><span class="nt">-ListAvailable</span><span class="w"> </span><span class="nx">Az.Websites</span><span class="w"> </span><span class="o">|</span><span class="w">
+    </span><span class="n">Select-Object</span><span class="w"> </span><span class="nx">Name</span><span class="p">,</span><span class="w"> </span><span class="nx">Version</span><span class="w">
+</span></code></pre></div></div>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[Azure PowerShell Az 16.5.0 adds App Service plan controls for asynchronous scaling and PowerShell management of Managed Instance on Azure App Service. Together with the September and October releases, these updates bring Isolated v4 plan support and a newer Microsoft.Web management API to your App Service automation.]]></summary></entry><entry><title type="html">What’s new for Azure App Service in Azure CLI 2.92.0</title><link href="https://azure.github.io/AppService/2026/11/03/azure-cli-2-92-app-service-updates.html" rel="alternate" type="text/html" title="What’s new for Azure App Service in Azure CLI 2.92.0" /><published>2026-11-03T00:00:00+00:00</published><updated>2026-11-03T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2026/11/03/azure-cli-2-92-app-service-updates</id><content type="html" xml:base="https://azure.github.io/AppService/2026/11/03/azure-cli-2-92-app-service-updates.html"><![CDATA[<p><a href="https://learn.microsoft.com/cli/azure/release-notes-azure-cli#november-03-2026">Azure CLI 2.92.0</a> restores the established <code class="language-plaintext highlighter-rouge">appServicePlanId</code> field in <code class="language-plaintext highlighter-rouge">az webapp show</code> and <code class="language-plaintext highlighter-rouge">az webapp list</code> output. This fixes a regression that affected scripts and queries that use the field to identify a web app’s App Service plan.</p>
+
+<p><strong>Compatibility note:</strong> These commands no longer return <code class="language-plaintext highlighter-rouge">serverFarmId</code>. If you adapted your automation to use that field, change your queries back to <code class="language-plaintext highlighter-rouge">appServicePlanId</code> when upgrading.</p>
+
+<h2 id="find-your-web-apps-app-service-plan-again">Find your web app’s App Service plan again</h2>
+
+<p>The affected releases returned <code class="language-plaintext highlighter-rouge">serverFarmId</code> instead of <code class="language-plaintext highlighter-rouge">appServicePlanId</code>, so queries written against the established output could return no plan ID. Version 2.92.0 restores <code class="language-plaintext highlighter-rouge">appServicePlanId</code> and removes <code class="language-plaintext highlighter-rouge">serverFarmId</code> from the web app output.</p>
+
+<p>Get the plan resource ID for an existing web app:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp show <span class="se">\</span>
+  <span class="nt">--resource-group</span> &lt;resource-group&gt; <span class="se">\</span>
+  <span class="nt">--name</span> &lt;web-app&gt; <span class="se">\</span>
+  <span class="nt">--query</span> appServicePlanId <span class="se">\</span>
+  <span class="nt">--output</span> tsv
+</code></pre></div></div>
+
+<p>To see the plan associated with each web app in a resource group:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp list <span class="se">\</span>
+  <span class="nt">--resource-group</span> &lt;resource-group&gt; <span class="se">\</span>
+  <span class="nt">--query</span> <span class="s2">"[].{name:name,appServicePlanId:appServicePlanId}"</span>
+</code></pre></div></div>
+
+<p>Use the full <code class="language-plaintext highlighter-rouge">appServicePlanId</code> value when passing the plan resource ID to other automation. The standard <code class="language-plaintext highlighter-rouge">--output table</code> view continues to display the plan name rather than its full resource ID.</p>
+
+<p>This is a CLI output compatibility fix, not a change to your web app’s plan assignment. The existing command syntax is unchanged. See the <a href="https://learn.microsoft.com/cli/azure/webapp">web app command reference</a> for additional options.</p>
+
+<h2 id="get-the-release">Get the release</h2>
+
+<p>Run <code class="language-plaintext highlighter-rouge">az upgrade</code> to install the latest available Azure CLI release, then verify the installed version:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az upgrade
+az version
+</code></pre></div></div>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[Azure CLI 2.92.0 restores the established appServicePlanId field in az webapp show and az webapp list output. This fixes a regression that affected scripts and queries that use the field to identify a web app’s App Service plan.]]></summary></entry><entry><title type="html">Resolving GitHub repository reconnection failures in Azure App Service</title><link href="https://azure.github.io/AppService/2026/11/03/github-reconnection-failures.html" rel="alternate" type="text/html" title="Resolving GitHub repository reconnection failures in Azure App Service" /><published>2026-11-03T00:00:00+00:00</published><updated>2026-11-03T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2026/11/03/github-reconnection-failures</id><content type="html" xml:base="https://azure.github.io/AppService/2026/11/03/github-reconnection-failures.html"><![CDATA[<p>If you disconnected a private GitHub repository from Azure App Service and cannot reconnect it, the issue may be an existing <strong>2048-bit RSA deploy key</strong>.</p>
+
+<p>App Service has deployed an update across all regions so newly generated deploy keys use <strong>3072-bit RSA</strong>. Existing keys remain unchanged to avoid disrupting working integrations. Apps retaining an older key may therefore require a one-time reset before reconnecting.</p>
+
+<h2 id="what-changed">What changed?</h2>
+
+<p>Starting <strong>October 14, 2026</strong>, GitHub requires newly uploaded RSA SSH keys to be at least <strong>3072 bits</strong>. See GitHub’s announcement, <a href="https://github.blog/changelog/2026-09-22-security-improvements-for-ssh/">Security improvements for SSH</a>.</p>
+
+<p>An existing 2048-bit key already registered with GitHub is not invalidated by this upload requirement. However, registering that key again can fail with:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GitHub AddSSHKey: key is too short.
+GitHub recommends using ssh-keygen to generate a RSA key of at least 3072 bits.
+</code></pre></div></div>
+
+<p>This guidance applies to <strong>Kudu-based private GitHub repository integration</strong>, where App Service fetches repository content using an SSH deploy key. It does not apply to GitHub Actions checkout and deployment.</p>
+
+<h2 id="why-can-reconnecting-fail">Why can reconnecting fail?</h2>
+
+<p>During integration, App Service registers a public deploy key with GitHub and stores the corresponding private key in the app’s Kudu environment. Git uses this identity to fetch repository content during deployment.</p>
+
+<p>Disconnecting the repository removes its deploy-key registration, but can leave the local key pair in Kudu. When you reconnect, App Service may attempt to register the same 2048-bit public key. GitHub treats this as a new upload and rejects it.</p>
+
+<p>The App Service update generates larger keys when a key pair needs to be created; it does <strong>not</strong> automatically replace existing keys. Normal deployment sync also does not generate or rotate the key pair.</p>
+
+<h2 id="how-to-resolve-it">How to resolve it</h2>
+
+<p>For an integration failing with the <strong>“key is too short”</strong> error, remove the affected app’s persisted key pair and reconnect the repository.</p>
+
+<blockquote>
+  <p><strong>Important:</strong> Deleting the key pair temporarily prevents SSH access until reconnection succeeds. Before proceeding, check whether custom deployment scripts or private submodules also use this SSH identity; those dependencies may need the replacement public key registered separately.</p>
+</blockquote>
+
+<h3 id="1-disconnect-the-repository">1. Disconnect the repository</h3>
+
+<p>In the Azure portal, open the affected app, navigate to <strong>Deployment Center</strong>, and disconnect the GitHub repository if it is still configured.</p>
+
+<h3 id="2-delete-the-persisted-key-pair">2. Delete the persisted key pair</h3>
+
+<p>Run the following in <strong>PowerShell with Azure CLI installed</strong>. Replace the placeholders with your app’s details. Sign in with an account that has permission to access the app’s Kudu endpoint.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">az</span><span class="w"> </span><span class="nx">login</span><span class="w">
+
+</span><span class="nv">$subscriptionId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"&lt;subscription-id&gt;"</span><span class="w">
+</span><span class="nv">$resourceGroup</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"&lt;resource-group&gt;"</span><span class="w">
+</span><span class="nv">$appName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"&lt;app-name&gt;"</span><span class="w">
+
+</span><span class="nv">$scmHost</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">az</span><span class="w"> </span><span class="nx">webapp</span><span class="w"> </span><span class="nx">show</span><span class="w"> </span><span class="se">`
+</span><span class="w">  </span><span class="nt">--subscription</span><span class="w"> </span><span class="nv">$subscriptionId</span><span class="w"> </span><span class="se">`
+</span><span class="w">  </span><span class="nt">--resource-group</span><span class="w"> </span><span class="nv">$resourceGroup</span><span class="w"> </span><span class="se">`
+</span><span class="w">  </span><span class="nt">--name</span><span class="w"> </span><span class="nv">$appName</span><span class="w"> </span><span class="se">`
+</span><span class="w">  </span><span class="nt">--query</span><span class="w"> </span><span class="s2">"enabledHostNames[?contains(@, '.scm.')]|[0]"</span><span class="w"> </span><span class="se">`
+</span><span class="w">  </span><span class="nt">--output</span><span class="w"> </span><span class="nx">tsv</span><span class="w">
+
+</span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$LASTEXITCODE</span><span class="w"> </span><span class="o">-ne</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">-or</span><span class="w"> </span><span class="o">-not</span><span class="w"> </span><span class="nv">$scmHost</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="kr">throw</span><span class="w"> </span><span class="s2">"Could not determine the app's SCM hostname."</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="n">az</span><span class="w"> </span><span class="nx">rest</span><span class="w"> </span><span class="se">`
+</span><span class="w">  </span><span class="nt">--subscription</span><span class="w"> </span><span class="nv">$subscriptionId</span><span class="w"> </span><span class="se">`
+</span><span class="w">  </span><span class="nt">--method</span><span class="w"> </span><span class="nx">delete</span><span class="w"> </span><span class="se">`
+</span><span class="w">  </span><span class="nt">--url</span><span class="w"> </span><span class="s2">"https://</span><span class="nv">$scmHost</span><span class="s2">/api/sshkey"</span><span class="w"> </span><span class="se">`
+</span><span class="w">  </span><span class="nt">--resource</span><span class="w"> </span><span class="s2">"https://management.azure.com/"</span><span class="w">
+
+</span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$LASTEXITCODE</span><span class="w"> </span><span class="o">-ne</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="kr">throw</span><span class="w"> </span><span class="s2">"SSH key deletion failed. Resolve the error before reconnecting."</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>This calls Kudu’s <code class="language-plaintext highlighter-rouge">DELETE /api/sshkey</code> endpoint to remove the local private/public key pair. It does not delete your repository or application content.</p>
+
+<p>The example targets the <strong>production slot</strong>. For a deployment slot, open that slot’s Deployment Center in step 1 and add <code class="language-plaintext highlighter-rouge">--slot "&lt;slot-name&gt;"</code> to the <code class="language-plaintext highlighter-rouge">az webapp show</code> command so the reset targets that slot’s SCM endpoint. Reconnect and verify deployment on the same slot.</p>
+
+<p><strong>Do not delete the entire <code class="language-plaintext highlighter-rouge">.ssh</code> directory.</strong> Preserve files such as <code class="language-plaintext highlighter-rouge">known_hosts</code> and SSH configuration. Deleting only the deploy key in GitHub is also insufficient: the old local pair must be removed so App Service can generate a replacement.</p>
+
+<h3 id="3-reconnect-the-repository">3. Reconnect the repository</h3>
+
+<p>Return to <strong>Deployment Center</strong> and reconnect the GitHub repository and branch using the Kudu-based integration.</p>
+
+<p>With the old local pair removed, App Service generates a new <strong>3072-bit RSA key pair</strong> and registers its public key with GitHub. Triggering deployment sync alone is not a substitute for this integration step.</p>
+
+<h3 id="4-verify-deployment">4. Verify deployment</h3>
+
+<p>Trigger a sync or push a commit to the configured branch. Check Deployment Center logs for a successful repository fetch and deployment.</p>
+
+<p>If reconnection still reports that the key is too short, contact Azure Support rather than repeatedly deleting keys.</p>
+
+<h2 id="do-working-integrations-need-a-reset">Do working integrations need a reset?</h2>
+
+<p><strong>No.</strong> Do not delete keys from a working integration simply because its RSA key is 2048 bits. GitHub’s minimum-size upload requirement applies when a key is newly registered.</p>
+
+<p>Use this reset for the specific reconnection failure described above. Integrations that generate a new key pair now receive a 3072-bit key, and existing working integrations do not require a proactive reset for this upload requirement.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[If you disconnected a private GitHub repository from Azure App Service and cannot reconnect it, the issue may be an existing 2048-bit RSA deploy key.]]></summary></entry><entry><title type="html">.NET Brotli Security Updates on Azure App Service for Linux</title><link href="https://azure.github.io/AppService/2026/10/26/dotnet-brotli-security-update-app-service-linux.html" rel="alternate" type="text/html" title=".NET Brotli Security Updates on Azure App Service for Linux" /><published>2026-10-26T00:00:00+00:00</published><updated>2026-10-26T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2026/10/26/dotnet-brotli-security-update-app-service-linux</id><content type="html" xml:base="https://azure.github.io/AppService/2026/10/26/dotnet-brotli-security-update-app-service-linux.html"><![CDATA[<blockquote>
+  <p><strong>Update (27 October 2026):</strong> Rollout of the updated built-in .NET images is <strong>complete on both the Latest and Standard Platform Release Channels</strong> for Azure App Service on Linux. Completion across all deployment stages and clouds was confirmed on <strong>27 October 2026</strong>.</p>
+</blockquote>
+
+<p>Following the out-of-band .NET security releases on <strong>25 October 2026</strong>, Azure App Service has updated the built-in Linux images for <strong>.NET 8, 9, and 10</strong>. The primary fix addresses a vulnerability in the Brotli decoder used by .NET and ASP.NET Core.</p>
+
+<h2 id="what-the-brotli-update-addresses">What the Brotli update addresses</h2>
+
+<p>The official .NET release notes describe <a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-111497">CVE-2026-111497, a Brotli decoder out-of-bounds write</a>. Processing maliciously crafted compressed data could result in <strong>denial of service, information disclosure, or elevation of privilege</strong>.</p>
+
+<p>Applications can be affected when they use Brotli decompression through:</p>
+
+<ul>
+  <li>ASP.NET Core request decompression.</li>
+  <li><code class="language-plaintext highlighter-rouge">HttpClient</code> automatic response decompression.</li>
+  <li>The <code class="language-plaintext highlighter-rouge">System.IO.Compression</code> Brotli APIs.</li>
+</ul>
+
+<p>Automatic request and response decompression are <strong>not enabled by default</strong>. <strong>.NET Framework is not affected</strong> by this issue.</p>
+
+<h2 id="patched-versions-and-official-release-notes">Patched versions and official release notes</h2>
+
+<p>The following upstream releases were published on <strong>25 October 2026</strong> and are included in this App Service Linux image update:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>.NET release line</th>
+      <th>Patched runtime version</th>
+      <th>Official release notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>.NET 8</td>
+      <td><strong>8.0.33</strong></td>
+      <td><a href="https://github.com/dotnet/core/blob/main/release-notes/8.0/8.0.33/8.0.33.md">.NET 8.0.33</a></td>
+    </tr>
+    <tr>
+      <td>.NET 9</td>
+      <td><strong>9.0.22</strong></td>
+      <td><a href="https://github.com/dotnet/core/blob/main/release-notes/9.0/9.0.22/9.0.22.md">.NET 9.0.22</a></td>
+    </tr>
+    <tr>
+      <td>.NET 10</td>
+      <td><strong>10.0.14</strong></td>
+      <td><a href="https://github.com/dotnet/core/blob/main/release-notes/10.0/10.0.14/10.0.14.md">.NET 10.0.14</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>These releases include additional security fixes. See the official release notes for the complete scope, applicability, and any application-package updates required separately from the platform runtime.</p>
+
+<p>The table identifies the patched versions, <strong>not confirmation that your app already runs them</strong>. Verify your application’s running runtime as described below.</p>
+
+<h2 id="what-we-are-doing">What we are doing</h2>
+
+<p>Rollout of the updated built-in Linux images through the <a href="https://learn.microsoft.com/azure/app-service/overview-patch-os-runtime#control-runtime-patch-update-timing-with-platform-release-channel">Platform Release Channels</a> is complete:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Channel</th>
+      <th>Availability of the updates</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Latest</strong></td>
+      <td>Rollout <strong>complete</strong> for the release lines listed above.</td>
+    </tr>
+    <tr>
+      <td><strong>Standard</strong> (default)</td>
+      <td>Rollout <strong>complete</strong> for the release lines listed above.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The updated images are available on both channels; <strong>a channel change is not required</strong> to receive this update. Verify your app’s running runtime version as described below.</p>
+
+<p>Changing your Platform Release Channel does not change your app’s configured .NET release line. End-of-life runtimes do not receive these updates; move to a supported release line and test your app.</p>
+
+<p><strong>This post covers App Service for Linux.</strong> Its Platform Release Channel settings and rollout status do not apply to App Service for Windows.</p>
+
+<h2 id="what-you-should-do">What you should do</h2>
+
+<ol>
+  <li><strong>Keep your preferred Platform Release Channel.</strong> Rollout is complete on both Latest and Standard; no channel change is needed for this update.</li>
+  <li><strong>Verify the runtime used by your application.</strong> Check the running application process, not just its configured release line or the installed SDK version.</li>
+  <li><strong>Review application-managed dependencies.</strong> Follow the official release notes for affected packages that require updates independently of the shared runtime.</li>
+  <li><strong>Update self-contained deployments and custom containers yourself.</strong> The platform image update does not replace a .NET runtime bundled with your application or inside your custom image. Rebuild with the applicable patched runtime, test, and redeploy. The same applies to other bring-your-own runtime deployments.</li>
+</ol>
+
+<h3 id="verify-your-runtime-version">Verify your runtime version</h3>
+
+<p>Use <a href="https://learn.microsoft.com/cli/azure/webapp#az-webapp-exec">az webapp exec</a> (currently in preview) with Azure CLI <strong>2.90.0 or later</strong> to open an interactive shell in your running app:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp <span class="nb">exec</span> <span class="nt">--resource-group</span> &lt;resource-group&gt; <span class="nt">--name</span> &lt;app-name&gt;
+</code></pre></div></div>
+
+<p>For a deployment slot, add <code class="language-plaintext highlighter-rouge">--slot &lt;slot-name&gt;</code>. Use <code class="language-plaintext highlighter-rouge">--instance &lt;instance-id&gt;</code> to check other instances as needed.</p>
+
+<p>In the interactive shell, list the installed shared runtimes:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dotnet <span class="nt">--list-runtimes</span>
+</code></pre></div></div>
+
+<p>For framework-dependent ASP.NET Core apps, check the relevant <code class="language-plaintext highlighter-rouge">Microsoft.NETCore.App</code> and <code class="language-plaintext highlighter-rouge">Microsoft.AspNetCore.App</code> entries against the patched version for your release line.</p>
+
+<p><strong>Installed runtimes do not by themselves prove which runtime your app process uses.</strong> Use existing startup logging or diagnostics to inspect <code class="language-plaintext highlighter-rouge">System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription</code> from the running application. For scaled-out apps, verify across instances. Avoid exposing runtime diagnostics through an unauthenticated public endpoint.</p>
+
+<p><code class="language-plaintext highlighter-rouge">dotnet --version</code> reports the SDK version, not the runtime used by your app. For self-contained deployments, inspect the application process and rebuild the deployment with a patched runtime; the platform’s shared-runtime list does not verify your bundled runtime.</p>
+
+<h2 id="related-updates">Related updates</h2>
+
+<ul>
+  <li><a href="/AppService/2026/10/22/node-python-emergency-release-app-service-linux.html">Emergency Node.js and Python runtime updates on App Service for Linux</a> covers the separate Node.js and Python releases, including the Node.js Brotli fix.</li>
+  <li><a href="/AppService/2026/10/22/time-zone-updates-app-service-linux.html">Time zone updates on App Service for Linux</a> covers the separate time-zone data updates.</li>
+  <li><a href="/AppService/2026/10/22/emudhra-certificate-issue-app-service-linux.html">eMudhra / emSign certificate security updates on App Service for Linux</a> covers the separate certificate trust-store updates. Runtime updates do not replace certificate bundles managed by your app.</li>
+</ul>
+
+<p>Thank you for helping us keep your .NET apps on Azure App Service secure.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[Update (27 October 2026): Rollout of the updated built-in .NET images is complete on both the Latest and Standard Platform Release Channels for Azure App Service on Linux. Completion across all deployment stages and clouds was confirmed on 27 October 2026.]]></summary></entry><entry><title type="html">.NET Brotli Security Updates on Azure App Service for Windows</title><link href="https://azure.github.io/AppService/2026/10/26/dotnet-brotli-security-update-app-service-windows.html" rel="alternate" type="text/html" title=".NET Brotli Security Updates on Azure App Service for Windows" /><published>2026-10-26T00:00:00+00:00</published><updated>2026-10-26T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2026/10/26/dotnet-brotli-security-update-app-service-windows</id><content type="html" xml:base="https://azure.github.io/AppService/2026/10/26/dotnet-brotli-security-update-app-service-windows.html"><![CDATA[<blockquote>
+  <p><strong>Update (29 October 2026):</strong> Rollout of the updated built-in .NET runtimes on <strong>Azure App Service for Windows in the public cloud is complete</strong> through Safe Deployment Practices (SDP). Restart your apps to proactively pick up the updated runtime, then verify the runtime used by the running application.</p>
+</blockquote>
+
+<p>Following the out-of-band .NET security releases on <strong>25 October 2026</strong>, Azure App Service has rolled out updated .NET runtimes for Windows apps. The primary fix addresses a vulnerability in the Brotli decoder used by .NET and ASP.NET Core.</p>
+
+<h2 id="what-the-brotli-update-addresses">What the Brotli update addresses</h2>
+
+<p>The official .NET release notes describe <a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-111497">CVE-2026-111497, a Brotli decoder out-of-bounds write</a>. Processing maliciously crafted compressed data could result in <strong>denial of service, information disclosure, or elevation of privilege</strong>.</p>
+
+<p>Applications can be affected when they use Brotli decompression through:</p>
+
+<ul>
+  <li>ASP.NET Core request decompression.</li>
+  <li><code class="language-plaintext highlighter-rouge">HttpClient</code> automatic response decompression.</li>
+  <li>The <code class="language-plaintext highlighter-rouge">System.IO.Compression</code> Brotli APIs.</li>
+</ul>
+
+<p>Automatic request and response decompression are <strong>not enabled by default</strong>. <strong>.NET Framework is not affected</strong> by this issue.</p>
+
+<h2 id="patched-versions-and-official-release-notes">Patched versions and official release notes</h2>
+
+<p>The following upstream releases were published on <strong>25 October 2026</strong>:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>.NET release line</th>
+      <th>Patched runtime version</th>
+      <th>Official release notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>.NET 8</td>
+      <td><strong>8.0.33</strong></td>
+      <td><a href="https://github.com/dotnet/core/blob/main/release-notes/8.0/8.0.33/8.0.33.md">.NET 8.0.33</a></td>
+    </tr>
+    <tr>
+      <td>.NET 9</td>
+      <td><strong>9.0.22</strong></td>
+      <td><a href="https://github.com/dotnet/core/blob/main/release-notes/9.0/9.0.22/9.0.22.md">.NET 9.0.22</a></td>
+    </tr>
+    <tr>
+      <td>.NET 10</td>
+      <td><strong>10.0.14</strong></td>
+      <td><a href="https://github.com/dotnet/core/blob/main/release-notes/10.0/10.0.14/10.0.14.md">.NET 10.0.14</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>These releases include additional security fixes. See the official release notes for the complete scope, platform applicability, and any application-package updates required separately from the platform runtime.</p>
+
+<p>The table identifies upstream patched versions, <strong>not confirmation that your app already runs them</strong>. Verify your application’s running runtime as described below.</p>
+
+<h2 id="what-we-are-doing">What we are doing</h2>
+
+<p>Rollout of the updated built-in .NET runtimes across App Service for Windows in the public cloud through SDP completed on <strong>29 October 2026</strong>. Availability of the updated runtime on a VM does not mean an already-running application has started using it. Restart your apps to proactively pick up the updated runtime, then verify the runtime used by your running application as described below, particularly if your app pins a runtime version or bundles its own runtime.</p>
+
+<p><strong>Platform Release Channels do not apply to App Service for Windows.</strong> There is no Latest or Standard channel to select for this rollout. Linux channel settings and rollout status do not apply to Windows apps.</p>
+
+<p>The platform manages updates to its built-in runtimes. This rollout does not change your app’s configured .NET release line.</p>
+
+<p>For more information, see <a href="https://learn.microsoft.com/azure/app-service/overview-patch-os-runtime">OS and runtime patching in Azure App Service</a>.</p>
+
+<h2 id="what-you-should-do">What you should do</h2>
+
+<ol>
+  <li><strong>Restart apps that use the built-in .NET runtime, then verify the runtime used by your application.</strong> Restart your app in the Azure portal to proactively pick up the updated runtime. Check the running application process rather than relying only on platform rollout completion.</li>
+  <li><strong>Use a supported .NET release line.</strong> End-of-life runtimes do not receive these fixes. Update and test your app on a supported release line if necessary.</li>
+  <li><strong>Review pinned runtime settings and application-managed dependencies.</strong> Ensure your runtime configuration permits an updated patch version. Follow the official release notes for affected packages that require updates independently of the shared runtime.</li>
+  <li><strong>Update self-contained deployments and custom containers yourself.</strong> The platform runtime update does not replace a .NET runtime bundled with your application or inside your custom image. Rebuild with the applicable patched runtime, test, and redeploy. The same applies to other bring-your-own runtime deployments.</li>
+</ol>
+
+<h3 id="verify-your-runtime-version">Verify your runtime version</h3>
+
+<p>Use existing startup logging or diagnostics to inspect <code class="language-plaintext highlighter-rouge">System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription</code> from the running application. For example, log the runtime during application startup:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Console</span><span class="p">.</span><span class="nf">WriteLine</span><span class="p">(</span>
+    <span class="s">$"Runtime: </span><span class="p">{</span><span class="n">System</span><span class="p">.</span><span class="n">Runtime</span><span class="p">.</span><span class="n">InteropServices</span><span class="p">.</span><span class="n">RuntimeInformation</span><span class="p">.</span><span class="n">FrameworkDescription</span><span class="p">}</span><span class="s">"</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Review that output in your application’s logs after deployment or the next application startup. Compare it with the patched version for your release line. For scaled-out apps, verify across instances. Avoid exposing runtime diagnostics through an unauthenticated public endpoint.</p>
+
+<p>The configured release line or a runtime reported by a separate console process does not by itself prove which runtime your application process uses. <code class="language-plaintext highlighter-rouge">dotnet --version</code> reports the SDK version, not the running application’s runtime.</p>
+
+<p>For self-contained deployments, inspect the application process and rebuild with a patched runtime; a platform shared-runtime update does not replace your bundled runtime.</p>
+
+<h2 id="related-updates">Related updates</h2>
+
+<ul>
+  <li><a href="/AppService/2026/10/22/node-emergency-release-app-service-windows.html">Emergency Node.js runtime updates on App Service for Windows</a> covers the separate Node.js releases, including the Node.js Brotli fix.</li>
+  <li><a href="/AppService/2026/10/23/time-zone-updates-app-service-windows.html">Time zone updates on App Service for Windows</a> covers the separate Windows OS time-zone update.</li>
+  <li><a href="/AppService/2026/10/22/emudhra-certificate-issue-app-service-windows.html">eMudhra / emSign certificate security updates on App Service for Windows</a> covers the separate Windows OS certificate trust update. Runtime updates do not replace certificate bundles managed by your app.</li>
+</ul>
+
+<p>Thank you for helping us keep your .NET apps on Azure App Service secure.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[Update (29 October 2026): Rollout of the updated built-in .NET runtimes on Azure App Service for Windows in the public cloud is complete through Safe Deployment Practices (SDP). Restart your apps to proactively pick up the updated runtime, then verify the runtime used by the running application.]]></summary></entry><entry><title type="html">Azure Functions: .NET Brotli Security Updates</title><link href="https://azure.github.io/AppService/2026/10/26/dotnet-brotli-security-update-azure-functions.html" rel="alternate" type="text/html" title="Azure Functions: .NET Brotli Security Updates" /><published>2026-10-26T00:00:00+00:00</published><updated>2026-10-26T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2026/10/26/dotnet-brotli-security-update-azure-functions</id><content type="html" xml:base="https://azure.github.io/AppService/2026/10/26/dotnet-brotli-security-update-azure-functions.html"><![CDATA[<blockquote>
+  <p><strong>Update (27 October 2026):</strong> The platform-managed .NET security update rollout is <strong>complete</strong> for Linux Azure Functions, Azure Static Web Apps managed functions, and Windows function apps on Consumption, App Service plans, and Elastic Premium.</p>
+</blockquote>
+
+<p>The out-of-band .NET releases published on <strong>25 October 2026</strong> address a Brotli decoder vulnerability and additional security issues. The patching process for function apps depends on their <strong>operating system, hosting plan, and deployment model</strong>.</p>
+
+<h2 id="rollout-by-hosting-plan-and-operating-system">Rollout by hosting plan and operating system</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Hosting plan or offering</th>
+      <th>Windows</th>
+      <th>Linux</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Consumption</td>
+      <td>App Service Windows runtime rollout complete.</td>
+      <td>Azure Functions rollout complete.</td>
+    </tr>
+    <tr>
+      <td>App Service plan (Dedicated)</td>
+      <td>App Service Windows runtime rollout complete.</td>
+      <td>Azure Functions rollout complete.</td>
+    </tr>
+    <tr>
+      <td>Elastic Premium</td>
+      <td>App Service Windows runtime rollout complete.</td>
+      <td>Azure Functions rollout complete.</td>
+    </tr>
+    <tr>
+      <td>Flex Consumption</td>
+      <td>Not available on Windows.</td>
+      <td>Azure Functions rollout complete.</td>
+    </tr>
+    <tr>
+      <td>Static Web Apps managed functions</td>
+      <td>Not applicable.</td>
+      <td>Applicable update complete; aligned with the Azure Functions Linux rollout.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>These statuses describe platform-managed updates. Verify the runtime used by your running function process on either OS. Application-managed packages, self-contained deployments, and custom containers require separate review.</p>
+
+<h3 id="linux-consumption-app-service-plans-elastic-premium-and-flex-consumption">Linux: Consumption, App Service plans, Elastic Premium, and Flex Consumption</h3>
+
+<p>The Azure Functions team has completed rollout of the applicable .NET updates for Linux function apps on the hosting plans listed above.</p>
+
+<p>The <a href="/AppService/2026/10/26/dotnet-brotli-security-update-app-service-linux.html">App Service Linux .NET post</a> provides background on the upstream releases. <strong>Its Platform Release Channel rollout statuses, runtime-version table, and channel guidance are not Azure Functions rollout or support guidance</strong>, including for Linux functions hosted on App Service plans.</p>
+
+<h4 id="azure-static-web-apps-managed-functions">Azure Static Web Apps managed functions</h4>
+
+<p>The applicable .NET update for <strong>Azure Static Web Apps managed functions is complete</strong>, aligned with the <strong>Azure Functions Linux rollout</strong>.</p>
+
+<p>This status applies to <strong>managed functions</strong>, not a separately linked Azure Functions app. For a linked function app, use its hosting plan and OS to identify the rollout that applies. This update does not add support for a new language or runtime version in Static Web Apps managed functions.</p>
+
+<h3 id="windows-consumption-app-service-plans-and-elastic-premium">Windows: Consumption, App Service plans, and Elastic Premium</h3>
+
+<p>Windows function apps on Consumption, App Service plans, and Elastic Premium receive the applicable platform runtime updates through the <strong>App Service Windows patching process</strong>.</p>
+
+<p>The <a href="/AppService/2026/10/26/dotnet-brotli-security-update-app-service-windows.html">App Service Windows .NET rollout</a> is <strong>complete</strong>, reaching Stage 5 on <strong>27 October 2026</strong> through SDP.</p>
+
+<h2 id="what-the-updates-address">What the updates address</h2>
+
+<h3 id="brotli-decoder-vulnerability">Brotli decoder vulnerability</h3>
+
+<p>The primary fix addresses <a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-111497">CVE-2026-111497, a Brotli decoder out-of-bounds write</a> in the Brotli library used by .NET and ASP.NET Core. Processing maliciously crafted compressed data could result in <strong>denial of service, information disclosure, or elevation of privilege</strong>.</p>
+
+<p>Affected code paths include ASP.NET Core request decompression, <code class="language-plaintext highlighter-rouge">HttpClient</code> automatic response decompression, and the <code class="language-plaintext highlighter-rouge">System.IO.Compression</code> Brotli APIs. Automatic request and response decompression are <strong>not enabled by default</strong>. Review the decompression paths your functions and dependencies actually use; this does not imply that every HTTP-triggered function enables Brotli request decompression.</p>
+
+<p><strong>.NET Framework is not affected</strong> by this issue.</p>
+
+<p>These releases include additional security fixes. See the official release notes below for applicability and any separate application-package updates.</p>
+
+<h2 id="upstream-patched-versions-and-functions-support">Upstream patched versions and Functions support</h2>
+
+<p>The following upstream releases were published on <strong>25 October 2026</strong>:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>.NET release line</th>
+      <th>Upstream patched runtime</th>
+      <th>Official release notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>.NET 8</td>
+      <td><strong>8.0.33</strong></td>
+      <td><a href="https://github.com/dotnet/core/blob/main/release-notes/8.0/8.0.33/8.0.33.md">.NET 8.0.33</a></td>
+    </tr>
+    <tr>
+      <td>.NET 9</td>
+      <td><strong>9.0.22</strong></td>
+      <td><a href="https://github.com/dotnet/core/blob/main/release-notes/9.0/9.0.22/9.0.22.md">.NET 9.0.22</a></td>
+    </tr>
+    <tr>
+      <td>.NET 10</td>
+      <td><strong>10.0.14</strong></td>
+      <td><a href="https://github.com/dotnet/core/blob/main/release-notes/10.0/10.0.14/10.0.14.md">.NET 10.0.14</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>This is an upstream reference table, not an Azure Functions support or availability matrix.</strong> An upstream release or its availability in App Service does not establish support for your Functions hosting plan or execution model.</p>
+
+<p>Use a .NET version supported by Azure Functions for your OS, plan, and execution model. Review the <a href="https://learn.microsoft.com/azure/azure-functions/dotnet-isolated-process-guide#supported-versions">isolated worker supported versions</a> and <a href="https://learn.microsoft.com/azure/azure-functions/functions-dotnet-class-library#supported-versions">in-process supported versions</a>. This update does not change your configured release line, migrate your execution model, or add support for .NET 11 RC3.</p>
+
+<h2 id="what-you-should-do">What you should do</h2>
+
+<ol>
+  <li><strong>Identify your OS, hosting plan, and execution model.</strong> Use the rollout table above to determine which platform update applies. For Static Web Apps, distinguish managed functions from a separately linked function app.</li>
+  <li><strong>Verify the runtime in your running function process.</strong> Do not rely only on configured settings, an installed SDK, or an App Service rollout announcement.</li>
+  <li><strong>Review application-managed packages.</strong> Follow the official release notes and update affected dependencies through your trusted package source. Rebuild, test, and redeploy as needed.</li>
+  <li><strong>Update self-contained deployments and custom containers yourself.</strong> Platform patching does not replace runtimes bundled with your app or patch the contents of your custom image. Rebuild with the applicable patched runtime and dependencies, test, and redeploy.</li>
+  <li><strong>Test affected code paths.</strong> Exercise the decompression and networking behavior your functions actually use after updating.</li>
+</ol>
+
+<h3 id="verify-your-running-net-runtime">Verify your running .NET runtime</h3>
+
+<p>Use existing application logging or diagnostics to record <code class="language-plaintext highlighter-rouge">System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription</code> from your executing function code. With an existing <code class="language-plaintext highlighter-rouge">ILogger</code> instance named <code class="language-plaintext highlighter-rouge">logger</code>, for example:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">logger</span><span class="p">.</span><span class="nf">LogInformation</span><span class="p">(</span>
+    <span class="s">"Function runtime: {Runtime}"</span><span class="p">,</span>
+    <span class="n">System</span><span class="p">.</span><span class="n">Runtime</span><span class="p">.</span><span class="n">InteropServices</span><span class="p">.</span><span class="n">RuntimeInformation</span><span class="p">.</span><span class="n">FrameworkDescription</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>For isolated worker apps, verify the <strong>.NET worker process</strong>, not just the Functions host. For in-process apps, function code runs within the host process. Inspect logs across active instances; avoid exposing runtime diagnostics through an unauthenticated public endpoint.</p>
+
+<p><code class="language-plaintext highlighter-rouge">dotnet --version</code> reports the SDK version, and a shared-runtime list only identifies installed runtimes. Neither proves which runtime your function process uses. Self-contained deployments must be verified and updated separately.</p>
+
+<h2 id="related-updates">Related updates</h2>
+
+<ul>
+  <li><a href="/AppService/2026/10/26/dotnet-brotli-security-update-app-service-linux.html">.NET Brotli security updates on App Service for Linux</a> covers the separate App Service Linux image rollout.</li>
+  <li><a href="/AppService/2026/10/26/dotnet-brotli-security-update-app-service-windows.html">.NET Brotli security updates on App Service for Windows</a> covers the Windows runtime rollout on which Windows function apps depend.</li>
+  <li><a href="/AppService/2026/10/23/time-zone-runtime-certificate-updates-azure-functions.html">Azure Functions time-zone, Node.js, Python, and certificate updates</a> covers the earlier, separate updates. Completion of those Linux updates does not establish completion of this .NET rollout.</li>
+</ul>
+
+<p>Thank you for helping us keep your .NET function apps secure.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[Update (27 October 2026): The platform-managed .NET security update rollout is complete for Linux Azure Functions, Azure Static Web Apps managed functions, and Windows function apps on Consumption, App Service plans, and Elastic Premium.]]></summary></entry><entry><title type="html">Azure Functions: Time Zone, Node.js, Python, and Certificate Updates</title><link href="https://azure.github.io/AppService/2026/10/23/time-zone-runtime-certificate-updates-azure-functions.html" rel="alternate" type="text/html" title="Azure Functions: Time Zone, Node.js, Python, and Certificate Updates" /><published>2026-10-23T00:00:00+00:00</published><updated>2026-10-23T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2026/10/23/time-zone-runtime-certificate-updates-azure-functions</id><content type="html" xml:base="https://azure.github.io/AppService/2026/10/23/time-zone-runtime-certificate-updates-azure-functions.html"><![CDATA[<blockquote>
+  <p><strong>Update (26 October 2026):</strong> The applicable time-zone, Node.js, and eMudhra / emSign certificate update rollouts are now <strong>complete for Windows Azure Functions</strong> on Consumption, App Service plans, and Elastic Premium through the App Service Windows patching process. The applicable time-zone, Node.js, Python, and certificate updates remain <strong>complete for Linux Azure Functions</strong> on Consumption, App Service plans, Elastic Premium, and Flex Consumption, and for <strong>Azure Static Web Apps managed functions</strong>.</p>
+</blockquote>
+
+<p>The patching process depends on your function app’s <strong>operating system and hosting plan</strong>.</p>
+
+<h2 id="rollout-by-hosting-plan-and-operating-system">Rollout by hosting plan and operating system</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Hosting plan or offering</th>
+      <th>Windows</th>
+      <th>Linux</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Consumption</td>
+      <td>App Service Windows rollout complete.</td>
+      <td>Azure Functions rollout complete.</td>
+    </tr>
+    <tr>
+      <td>App Service plan (Dedicated)</td>
+      <td>App Service Windows rollout complete.</td>
+      <td>Azure Functions rollout complete.</td>
+    </tr>
+    <tr>
+      <td>Elastic Premium</td>
+      <td>App Service Windows rollout complete.</td>
+      <td>Azure Functions rollout complete.</td>
+    </tr>
+    <tr>
+      <td>Flex Consumption</td>
+      <td>Not available on Windows.</td>
+      <td>Azure Functions rollout complete.</td>
+    </tr>
+    <tr>
+      <td>Static Web Apps managed functions</td>
+      <td>Not applicable.</td>
+      <td>Managed functions update rollout complete.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Completion applies to the platform-managed updates covered here; <strong>application-managed dependencies, trust stores, and time-zone data require separate review</strong>. Python functions run on Linux; the Python runtime updates below do not apply to Windows function apps.</p>
+
+<p>The separate <a href="/AppService/2026/10/26/dotnet-brotli-security-update-azure-functions.html">.NET Brotli security update rollout</a> is not covered by this completion notice.</p>
+
+<h3 id="windows-consumption-app-service-plans-and-elastic-premium">Windows: Consumption, App Service plans, and Elastic Premium</h3>
+
+<p>Function apps on these Windows hosting plans receive the applicable platform updates through the <strong>App Service Windows patching process</strong>. Follow the corresponding posts for update details and rollout status:</p>
+
+<ul>
+  <li><strong>Time-zone updates:</strong> Rollout is complete through accelerated Safe Deployment Practices (SDP). See <a href="/AppService/2026/10/23/time-zone-updates-app-service-windows.html">Time zone updates on App Service for Windows</a>.</li>
+  <li><strong>Node.js runtime fixes:</strong> Rollout is complete. See <a href="/AppService/2026/10/22/node-emergency-release-app-service-windows.html">Emergency Node.js runtime updates on App Service for Windows</a>.</li>
+  <li><strong>Certificate trust updates:</strong> Rollout is complete. See <a href="/AppService/2026/10/22/emudhra-certificate-issue-app-service-windows.html">eMudhra / emSign certificate security updates on App Service for Windows</a>.</li>
+</ul>
+
+<p>These are separate OS and runtime updates. Their completion does not replace application-managed dependencies, trust stores, or time-zone data.</p>
+
+<h3 id="linux-consumption-app-service-plans-elastic-premium-and-flex-consumption">Linux: Consumption, App Service plans, Elastic Premium, and Flex Consumption</h3>
+
+<p>The <strong>Azure Functions team has completed its separate rollout</strong> for Linux function apps on all four hosting plans.</p>
+
+<p>This work covers the applicable time-zone, Node.js, Python, and certificate fixes. Completion does not change your app’s configured language release line or replace application-managed data and dependencies.</p>
+
+<p>The App Service Linux posts provide background on the <a href="/AppService/2026/10/22/time-zone-updates-app-service-linux.html">time-zone changes</a>, <a href="/AppService/2026/10/22/node-python-emergency-release-app-service-linux.html">Node.js and Python releases</a>, and <a href="/AppService/2026/10/22/emudhra-certificate-issue-app-service-linux.html">certificate issue</a>. <strong>Their App Service completion statuses, runtime-version tables, and Platform Release Channel instructions are not Azure Functions rollout or support guidance</strong>, including for Linux functions hosted on App Service plans.</p>
+
+<h4 id="azure-static-web-apps-managed-functions">Azure Static Web Apps managed functions</h4>
+
+<p>The rollout of the applicable fixes for <strong>Azure Static Web Apps managed functions is also complete</strong>. These managed API backends are included in this Linux update guidance.</p>
+
+<p>This status applies to <strong>managed functions</strong>, not a separately linked Azure Functions app. For a linked function app, use its hosting plan and OS to identify the rollout that applies.</p>
+
+<h2 id="what-the-updates-address">What the updates address</h2>
+
+<h3 id="time-zone-rules">Time-zone rules</h3>
+
+<p>Current time-zone data is needed to convert UTC timestamps to local time and calculate schedules correctly when governments change local timekeeping rules. <strong>UTC itself does not change.</strong></p>
+
+<p>Test the locations your app depends on using timestamps before and after the relevant rule change. Verify both local times and UTC offsets, and check the next execution times of recurring jobs. For timer-triggered functions, review the <a href="https://learn.microsoft.com/azure/azure-functions/functions-bindings-timer#ncrontab-time-zones">Azure Functions timer trigger documentation</a> for the time-zone settings supported by your OS and hosting plan; this patch does not add support for a previously unsupported setting.</p>
+
+<p>An OS update does not replace time-zone databases bundled with your application or libraries. Test through the APIs and scheduling code your function actually uses.</p>
+
+<h3 id="nodejs-runtime-fixes">Node.js runtime fixes</h3>
+
+<p>The updates address the recent Node.js security releases described in the linked App Service posts. Use a <a href="https://learn.microsoft.com/azure/azure-functions/functions-reference-node#supported-versions">Node.js version supported by Azure Functions</a> and verify the actual runtime in your running function worker.</p>
+
+<p>An upstream patched version or its availability in App Service does not, by itself, establish availability for your Functions hosting plan or configured release line.</p>
+
+<h3 id="python-runtime-and-dependency-fixes">Python runtime and dependency fixes</h3>
+
+<p>The Python updates address the recent Python releases and related certificate-bundle changes described in the linked runtime post. Use a <a href="https://learn.microsoft.com/azure/azure-functions/functions-reference-python#python-version">Python version supported by Azure Functions</a> for your hosting plan.</p>
+
+<p><strong>A platform runtime update does not update packages already deployed with your app</strong>, including packages in an existing virtual environment. Review application-managed certificate bundles and affected dependencies, update them through your trusted package source, and rebuild and redeploy as needed.</p>
+
+<h3 id="emudhra--emsign-certificate-trust-issue">eMudhra / emSign certificate trust issue</h3>
+
+<p>The certificate updates address trust associated with the eMudhra / emSign CA incident. Applications can use OS certificate stores, runtime-specific trust stores, or CA bundles supplied by dependencies.</p>
+
+<p><strong>An updated platform trust store does not prove that every TLS client in your function app uses updated trust data.</strong> Review custom trust stores and bundled CA data separately. Test outbound TLS connections after updating, and work with endpoint owners to resolve certificate-chain failures rather than disabling certificate validation.</p>
+
+<h2 id="what-you-should-do">What you should do</h2>
+
+<ol>
+  <li><strong>Identify your hosting plan and OS.</strong> Use the table above to determine which rollout applies.</li>
+  <li><strong>Review the updates for your platform.</strong> The applicable Windows, Linux Functions, and Static Web Apps managed functions rollouts covered here are complete. Follow the linked posts for update details.</li>
+  <li><strong>Use supported runtime versions.</strong> Check Azure Functions support for your language version and hosting plan rather than copying the App Service runtime tables.</li>
+  <li><strong>Verify your running workers.</strong> Use existing application logging or diagnostics to check <code class="language-plaintext highlighter-rouge">process.version</code> for Node.js or <code class="language-plaintext highlighter-rouge">sys.version</code> for Python inside the function worker. Verify across instances; avoid exposing diagnostics through an unauthenticated public endpoint.</li>
+  <li><strong>Test date/time behavior and outbound TLS.</strong> Verify the code paths your functions actually use, including timers, application-managed time-zone data, and certificate bundles.</li>
+  <li><strong>Update custom container contents yourself.</strong> For function apps using customer-provided images, update the image’s OS data, runtimes, and dependencies, then rebuild, test, and redeploy. Platform patching does not patch the contents of your custom image.</li>
+</ol>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[Update (26 October 2026): The applicable time-zone, Node.js, and eMudhra / emSign certificate update rollouts are now complete for Windows Azure Functions on Consumption, App Service plans, and Elastic Premium through the App Service Windows patching process. The applicable time-zone, Node.js, Python, and certificate updates remain complete for Linux Azure Functions on Consumption, App Service plans, Elastic Premium, and Flex Consumption, and for Azure Static Web Apps managed functions.]]></summary></entry><entry><title type="html">Time Zone Updates on Azure App Service for Windows</title><link href="https://azure.github.io/AppService/2026/10/23/time-zone-updates-app-service-windows.html" rel="alternate" type="text/html" title="Time Zone Updates on Azure App Service for Windows" /><published>2026-10-23T00:00:00+00:00</published><updated>2026-10-23T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2026/10/23/time-zone-updates-app-service-windows</id><content type="html" xml:base="https://azure.github.io/AppService/2026/10/23/time-zone-updates-app-service-windows.html"><![CDATA[<blockquote>
+  <p><strong>Update (26 October 2026):</strong> The rollout of <strong>Windows operating-system time-zone updates</strong> on Azure App Service for Windows <strong>is complete</strong>, following accelerated Safe Deployment Practices (SDP). Application-managed time-zone data still requires separate review as described below.</p>
+</blockquote>
+
+<p>Time-zone rules change when governments update local timekeeping policies. Apps need current time-zone data to convert UTC timestamps to local time and calculate schedules correctly.</p>
+
+<p>Older time-zone data can apply a clock change that no longer occurs, producing incorrect local-time displays, job schedules, deadlines, and date-based calculations. Apps using different data versions can also disagree about the same timestamp.</p>
+
+<h2 id="what-we-are-doing">What we are doing</h2>
+
+<p>We have completed the rollout of an <strong>OS-level time-zone update</strong> across App Service for Windows through accelerated SDP. This is a platform operating-system update, not a language-specific runtime release.</p>
+
+<p>The platform manages this OS update. Customers do not need to install an OS patch manually on App Service workers. For more information, see <a href="https://learn.microsoft.com/azure/app-service/overview-patch-os-runtime">OS and runtime patching in Azure App Service</a>.</p>
+
+<h3 id="windows-and-application-managed-time-zone-data">Windows and application-managed time-zone data</h3>
+
+<p>An app can use Windows time-zone rules, runtime-bundled data, or a database supplied by a library. <strong>An OS time-zone update alone is not proof that every date/time API or scheduler in your application uses the updated rules.</strong></p>
+
+<p>Review the data source used by your runtime and dependencies. Update application-managed time-zone data separately through the relevant maintainers’ supported update process, then test and redeploy as needed.</p>
+
+<h2 id="what-you-should-do">What you should do</h2>
+
+<ol>
+  <li><strong>No manual OS patch installation is needed.</strong> App Service manages this platform update.</li>
+  <li><strong>Check your app’s actual date/time behavior.</strong> Test conversions and schedules for the regions your app uses, including timestamps on both sides of the relevant rule change.</li>
+  <li><strong>Review application-managed time-zone data.</strong> Update affected libraries, bundled ICU data, and custom time-zone databases separately. The Windows OS update does not replace data bundled with your app or dependencies.</li>
+  <li><strong>Update customer-provided container images and bring-your-own runtimes yourself.</strong> This platform OS rollout does not patch time-zone data inside your custom image or runtime distribution. Follow the relevant maintainers’ guidance, then rebuild, test, and redeploy.</li>
+</ol>
+
+<h2 id="related-updates">Related updates</h2>
+
+<ul>
+  <li><a href="/AppService/2026/10/22/time-zone-updates-app-service-linux.html">Time zone updates on App Service for Linux</a> covers the separate Linux image rollout and its runtime-specific exceptions. Its IANA release numbers, package commands, and Platform Release Channel instructions do not apply to the Windows OS rollout.</li>
+  <li><a href="/AppService/2026/10/22/node-emergency-release-app-service-windows.html">Emergency Node.js runtime updates on App Service for Windows</a> covers the separate Node.js runtime rollout, whose accelerated SDP rollout is complete.</li>
+  <li><a href="/AppService/2026/10/22/emudhra-certificate-issue-app-service-windows.html">eMudhra / emSign certificate security updates on App Service for Windows</a> covers the separate Windows OS certificate trust update.</li>
+</ul>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[Update (26 October 2026): The rollout of Windows operating-system time-zone updates on Azure App Service for Windows is complete, following accelerated Safe Deployment Practices (SDP). Application-managed time-zone data still requires separate review as described below.]]></summary></entry><entry><title type="html">eMudhra / emSign Certificate Security Updates on Azure App Service for Linux</title><link href="https://azure.github.io/AppService/2026/10/22/emudhra-certificate-issue-app-service-linux.html" rel="alternate" type="text/html" title="eMudhra / emSign Certificate Security Updates on Azure App Service for Linux" /><published>2026-10-22T00:00:00+00:00</published><updated>2026-10-22T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2026/10/22/emudhra-certificate-issue-app-service-linux</id><content type="html" xml:base="https://azure.github.io/AppService/2026/10/22/emudhra-certificate-issue-app-service-linux.html"><![CDATA[<blockquote>
+  <p><strong>Update (25 October 2026):</strong> The Java rollout is now complete on <strong>Standard</strong>. Rollout of patched built-in Linux images for the <strong>eMudhra / emSign CA certificate security incident</strong> is <strong>complete on Latest and Standard</strong> for all runtimes listed below, including <strong>Java</strong>. <strong>No channel change is needed.</strong> The PHP 8.2 and EOL exclusions described below remain unchanged.</p>
+</blockquote>
+
+<p>The eMudhra / emSign incident affects certificate trust used by TLS clients. The <a href="https://ubuntu.com/blog/emudhra-ca-compromise-fixes-available">Ubuntu Security Team’s incident and patch guidance</a> explains the CA trust-store changes needed to mitigate the risk of man-in-the-middle attacks.</p>
+
+<p>This is not limited to a single language runtime. Applications can use operating-system certificates, runtime-managed trust stores, or certificate bundles supplied by dependencies. <strong>Updating the platform image does not replace certificate bundles managed by your application.</strong></p>
+
+<h2 id="what-we-are-doing">What we are doing</h2>
+
+<p>Patched built-in Linux images are available on <strong>Latest and Standard</strong> for <strong>all non-EOL runtimes</strong>, with the <a href="#php-82-exception">PHP 8.2 exception</a> described below.
+<strong>Java is available on both Latest and Standard; its rollout is complete.</strong></p>
+
+<p>The following runtime versions are listed by <code class="language-plaintext highlighter-rouge">az webapp list-runtimes -o table --os linux</code> as of <strong>22 October 2026</strong> and are included in the completed rollout to <strong>Latest and Standard</strong>. For Java, the table summarizes Java SE versions rather than listing individual application-server combinations.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Runtime</th>
+      <th>Versions included in the image updates</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>.NET</td>
+      <td>8, 9, 10, 11</td>
+    </tr>
+    <tr>
+      <td>Node.js</td>
+      <td>22, 24</td>
+    </tr>
+    <tr>
+      <td>Python</td>
+      <td>3.10, 3.11, 3.12, 3.13, 3.14</td>
+    </tr>
+    <tr>
+      <td>PHP</td>
+      <td>8.3, 8.4, 8.5</td>
+    </tr>
+    <tr>
+      <td>Java SE</td>
+      <td>8, 11, 17, 21, 25</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Runtimes approaching EOL are included while they remain supported. <strong>EOL runtimes do not receive these image updates.</strong></p>
+
+<p><strong>WordPress on App Service is also updated.</strong> The supported images for apps deployed using the official <a href="https://marketplace.microsoft.com/product/WordPress.WordPress?tab=Overview">WordPress on App Service offering in Microsoft Marketplace</a> include the certificate security updates.</p>
+
+<h3 id="php-82-exception">PHP 8.2 exception</h3>
+
+<p><strong>The built-in PHP 8.2 image is not included in this initial patch payload.</strong> Although PHP 8.2 itself has not yet reached EOL, its underlying <strong>Debian 11 (Bullseye)</strong> operating system is beyond Debian’s standard/LTS support period and is not providing the patch for this image.</p>
+
+<p><strong>We are investigating options to provide a patch for PHP 8.2.</strong> No availability date is confirmed.</p>
+
+<p>If your app uses PHP 8.2, <strong>update and test your app on PHP 8.3 or a later supported version</strong>, then configure your app to use that runtime. Moving a PHP 8.2 app to Latest alone does not address this exception.</p>
+
+<h3 id="rollout-by-platform-release-channel">Rollout by Platform Release Channel</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Channel</th>
+      <th>Availability of the updates</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Latest</strong></td>
+      <td>Rollout <strong>complete</strong>.</td>
+    </tr>
+    <tr>
+      <td><strong>Standard</strong> (default)</td>
+      <td>Rollout <strong>complete</strong> for the included runtimes, including Java.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The updated images are available on both Latest and Standard for all included runtimes, <strong>including Java</strong>.</p>
+
+<p>Changing your Platform Release Channel does not upgrade your app to a different runtime version or make an EOL runtime supported.</p>
+
+<h2 id="what-you-should-do">What you should do</h2>
+
+<ol>
+  <li><strong>Use Standard or Latest to receive these updates.</strong> For eligible runtimes, including Java, apps on either channel do not need a channel change.</li>
+  <li><strong>Upgrade PHP 8.2 and EOL runtimes.</strong> PHP 8.2 is excluded from this certificate patch because of its OS base. EOL runtimes are also excluded. Update and test your app on a supported runtime included in the patching scope.</li>
+  <li><strong>Update application-managed certificate bundles and dependencies.</strong> Review the official guidance for your runtime and libraries. An updated platform trust store does not necessarily update a library’s bundled certificates or an existing virtual environment.</li>
+  <li><strong>Update custom containers and bring-your-own runtimes yourself.</strong> App Service does not patch the contents of your custom images or runtimes. Update their OS packages, runtimes, and affected dependencies, then rebuild, test, and redeploy.</li>
+  <li><strong>Test outbound TLS connections.</strong> Check the services your app calls after updating. Do not work around certificate errors by disabling TLS certificate validation.</li>
+  <li><strong>Check the running image’s certificate package.</strong> Use the instructions below to inspect the OS certificate package. This check does not verify application-managed trust stores.</li>
+</ol>
+
+<h3 id="change-your-platform-release-channel">Change your Platform Release Channel</h3>
+
+<p><strong>Azure portal</strong></p>
+
+<ol>
+  <li>In the Azure portal, go to your App Service app.</li>
+  <li>In the left menu, select <strong>Stack settings</strong>.</li>
+  <li>Under <strong>Platform Release Channel</strong>, select <strong>Standard</strong>.</li>
+  <li>Select <strong>Save</strong>.</li>
+</ol>
+
+<p><strong>Azure CLI</strong></p>
+
+<p>Use <a href="https://learn.microsoft.com/cli/azure/webapp#az-webapp-update">az webapp update</a> to move your app to Standard:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp update <span class="se">\</span>
+  <span class="nt">--resource-group</span> &lt;resource-group&gt; <span class="se">\</span>
+  <span class="nt">--name</span> &lt;app-name&gt; <span class="se">\</span>
+  <span class="nt">--platform-release-channel</span> Standard
+</code></pre></div></div>
+
+<p>Replace the placeholders with your app’s resource group and name. For a deployment slot, add <code class="language-plaintext highlighter-rouge">--slot &lt;slot-name&gt;</code>.</p>
+
+<p>Eligible apps, including Java apps, already on <strong>Standard</strong> or <strong>Latest</strong> do not need a channel change.</p>
+
+<h3 id="verify-the-certificate-package">Verify the certificate package</h3>
+
+<p>Use <a href="https://learn.microsoft.com/cli/azure/webapp#az-webapp-exec">az webapp exec</a> (currently in preview) with Azure CLI <strong>2.90.0 or later</strong> to open an interactive shell in your running app:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp <span class="nb">exec</span> <span class="nt">--resource-group</span> &lt;resource-group&gt; <span class="nt">--name</span> &lt;app-name&gt;
+</code></pre></div></div>
+
+<p>Replace the placeholders with your app’s resource group and name. For a deployment slot, add <code class="language-plaintext highlighter-rouge">--slot &lt;slot-name&gt;</code>.</p>
+
+<p>Inside the container, identify the OS and installed certificate-package version:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat</span> /etc/os-release
+dpkg-query <span class="nt">-W</span> <span class="nt">-f</span><span class="o">=</span><span class="s1">'${Package} ${Version}\n'</span> ca-certificates
+</code></pre></div></div>
+
+<p>For Ubuntu-based images, compare the installed version with the fixed version for the <strong>same Ubuntu release</strong> in the <a href="https://ubuntu.com/blog/emudhra-ca-compromise-fixes-available">Ubuntu incident and patch guidance</a>. For example:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Ubuntu release</th>
+      <th>Fixed <code class="language-plaintext highlighter-rouge">ca-certificates</code> version</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>24.04</td>
+      <td><code class="language-plaintext highlighter-rouge">20260816ubuntu0.24.04.1</code></td>
+    </tr>
+    <tr>
+      <td>26.04</td>
+      <td><code class="language-plaintext highlighter-rouge">20260816ubuntu0.26.04.1</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The listed version or a subsequent version containing the fix is the expected result. Do not compare package versions across different OS releases. For Debian-based images, use the corresponding Debian package guidance rather than the Ubuntu versions.</p>
+
+<p>This check inspects the OS certificate package on <strong>one running instance</strong>, not every trust store used by your app. Use <code class="language-plaintext highlighter-rouge">--instance &lt;instance-id&gt;</code> to connect to other instances as needed. Application-managed CA bundles and runtime-specific trust stores require separate checks. A successful HTTPS request alone is not proof that the issue is mitigated.</p>
+
+<h3 id="application-managed-trust-stores-and-dependencies">Application-managed trust stores and dependencies</h3>
+
+<p>The platform update covers the built-in images, not certificate bundles or trust stores that your app supplies. Review your app’s libraries, dependencies, and custom trust-store configuration, and follow their maintainers’ incident guidance. Update affected dependencies through your trusted package source, then rebuild, test, and redeploy as needed.</p>
+
+<p>As the <a href="https://ubuntu.com/blog/emudhra-ca-compromise-fixes-available">Ubuntu guidance</a> notes, removing affected trust anchors can also cause connections to legitimate endpoints that rely on those anchors to fail. Test outbound TLS connections and work with the endpoint owner to resolve affected certificate chains rather than disabling certificate validation.</p>
+
+<h2 id="related-updates">Related updates</h2>
+
+<ul>
+  <li><a href="/AppService/2026/10/22/emudhra-certificate-issue-app-service-windows.html">eMudhra / emSign certificate security updates on App Service for Windows</a> covers the separate Windows OS certificate rollout. Linux Platform Release Channel settings do not apply to Windows.</li>
+  <li><a href="/AppService/2026/10/22/time-zone-updates-app-service-linux.html">Time zone updates on App Service for Linux</a> covers the separate time-zone data rollout, whose PHP 8.2 and 8.3 exclusions differ from the certificate update exclusion described here.</li>
+  <li><a href="/AppService/2026/10/21/php-critical-security-release-app-service-linux.html">Critical PHP security release guidance for App Service</a> covers the separate PHP runtime vulnerabilities and rollout.</li>
+  <li><a href="/AppService/2026/10/22/node-python-emergency-release-app-service-linux.html">Node.js and Python emergency runtime updates on App Service for Linux</a> covers the runtime releases and their rollout. Review that guidance alongside the certificate updates here; runtime patches do not replace application-managed CA bundles.</li>
+</ul>
+
+<h2 id="stay-informed">Stay informed</h2>
+
+<p>We share further updates here as needed, including any changes to the PHP 8.2 patch plan.</p>
+
+<p>Thank you for helping us keep your apps on Azure App Service secure.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[Update (25 October 2026): The Java rollout is now complete on Standard. Rollout of patched built-in Linux images for the eMudhra / emSign CA certificate security incident is complete on Latest and Standard for all runtimes listed below, including Java. No channel change is needed. The PHP 8.2 and EOL exclusions described below remain unchanged.]]></summary></entry><entry><title type="html">eMudhra / emSign Certificate Security Updates on Azure App Service for Windows</title><link href="https://azure.github.io/AppService/2026/10/22/emudhra-certificate-issue-app-service-windows.html" rel="alternate" type="text/html" title="eMudhra / emSign Certificate Security Updates on Azure App Service for Windows" /><published>2026-10-22T00:00:00+00:00</published><updated>2026-10-22T00:00:00+00:00</updated><id>https://azure.github.io/AppService/2026/10/22/emudhra-certificate-issue-app-service-windows</id><content type="html" xml:base="https://azure.github.io/AppService/2026/10/22/emudhra-certificate-issue-app-service-windows.html"><![CDATA[<blockquote>
+  <p><strong>Update (25 October 2026):</strong> The rollout of <strong>Windows operating-system certificate updates</strong> for the <strong>eMudhra / emSign CA certificate security incident is complete</strong> on Azure App Service for Windows. Application-managed certificate bundles and trust stores still require separate review as described below.</p>
+</blockquote>
+
+<p>The eMudhra / emSign incident affects certificate trust used by TLS clients. Compromised certificate authorities can allow an attacker to impersonate TLS endpoints when a client continues to trust the affected certificate chains.</p>
+
+<p>For background on the incident, see the <a href="https://ubuntu.com/blog/emudhra-ca-compromise-fixes-available">Ubuntu Security Team’s incident explanation</a>. That article describes the cross-platform certificate issue; its Linux package versions and installation commands do <strong>not</strong> apply to Windows.</p>
+
+<h2 id="what-we-are-doing">What we are doing</h2>
+
+<p>We have completed the rollout of an <strong>OS-level certificate trust update</strong> to App Service for Windows. This is a platform operating-system update, not a language-specific runtime release.</p>
+
+<p><strong>Platform Release Channels do not apply to App Service for Windows.</strong> There is no Latest or Standard channel to select for this rollout. The Linux channel instructions in our related posts do not apply to Windows apps.</p>
+
+<p>The platform manages this OS update. Customers do not need to install an OS patch manually on App Service workers. For more information, see <a href="https://learn.microsoft.com/azure/app-service/overview-patch-os-runtime">OS and runtime patching in Azure App Service</a>.</p>
+
+<h2 id="what-you-should-do">What you should do</h2>
+
+<ol>
+  <li><strong>No manual OS patch installation is needed.</strong> The Windows OS certificate update rollout is complete, and App Service manages this platform update.</li>
+  <li><strong>Review application-managed certificate bundles and trust stores.</strong> The Windows OS patch does not replace certificates bundled with your application, runtime, or dependencies. Follow the relevant maintainers’ guidance and update affected components separately.</li>
+  <li><strong>Test outbound TLS connections.</strong> Check connections to the services your app calls. Removing affected trust can cause connections to endpoints relying on those certificate chains to fail. Work with the endpoint owner to resolve the certificate chain rather than disabling TLS certificate validation.</li>
+  <li><strong>Update customer-provided container images yourself.</strong> This platform OS rollout does not patch certificate stores or dependencies inside your custom container image. Follow your image’s OS and dependency guidance, then rebuild, test, and redeploy.</li>
+</ol>
+
+<h3 id="application-managed-trust-stores-and-dependencies">Application-managed trust stores and dependencies</h3>
+
+<p>An app can use the Windows certificate store, a runtime-specific trust store, or a CA bundle supplied by a library. <strong>An OS certificate update alone is not proof that every TLS client in your application is protected.</strong></p>
+
+<p>Review custom trust-store configuration, bundled certificates, and dependencies that maintain their own CA data. Update affected components through your trusted sources and test the application after redeployment.</p>
+
+<h2 id="related-updates">Related updates</h2>
+
+<ul>
+  <li><a href="/AppService/2026/10/23/time-zone-updates-app-service-windows.html">Time zone updates on App Service for Windows</a> covers the separate Windows OS time-zone update, whose accelerated SDP rollout is complete.</li>
+  <li><a href="/AppService/2026/10/22/node-emergency-release-app-service-windows.html">Emergency Node.js runtime updates on App Service for Windows</a> covers the separate Node.js security releases and runtime rollout. The OS certificate update does not replace runtime security patches.</li>
+  <li><a href="/AppService/2026/10/22/emudhra-certificate-issue-app-service-linux.html">eMudhra / emSign certificate security updates on App Service for Linux</a> covers the separate Linux image rollout. Its release-channel settings and Ubuntu package checks do not apply to Windows.</li>
+</ul>
+
+<p>Thank you for helping us keep your apps on Azure App Service secure.</p>]]></content><author><name>Azure App Service</name></author><summary type="html"><![CDATA[Update (25 October 2026): The rollout of Windows operating-system certificate updates for the eMudhra / emSign CA certificate security incident is complete on Azure App Service for Windows. Application-managed certificate bundles and trust stores still require separate review as described below.]]></summary></entry></feed>
