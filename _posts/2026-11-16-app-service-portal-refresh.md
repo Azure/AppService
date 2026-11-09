@@ -1,7 +1,6 @@
 ---
 title: "A fresh look at the Azure App Service portal experience"
 author_name: "Byron Tardif"
-published: false
 toc: true
 toc_sticky: true
 ---
