@@ -6,8 +6,8 @@ The November 2026 .NET release is scheduled to go live on November 10, 2026. Thi
 
 This release also marks an important milestone for the .NET ecosystem: .NET 11 reaches General Availability (GA).
 
-
 ## November 2026 releases
+
 The following .NET and SDK versions will be available:
 
 - .NET 11.0.0 GA
