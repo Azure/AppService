@@ -3,6 +3,8 @@ title: "Introducing Azure App Service Builder (Public Preview)"
 author_name: "Jordan Selig"
 ---
 
+> This is a summarized version of the full post which can be found here: [Introducing Azure App Service Builder: From code to a running app](https://builder.appservice.azure.com/blog/posts/introducing-app-service-builder.html)
+
 Getting from code to a running application should be as straightforward as writing it. **Azure App Service Builder is now in public preview**, introducing a code-first, agent-ready application hosting experience in Azure App Service.
 
 Builder brings application builds, hosting, and deployment management into one app-focused workflow. Connect an authorized GitHub repository for source-based builds or deploy a ZIP package, track deployment progress, and open your app at its service-provided URL. The initial preview focuses on static sites, web applications, and HTTP APIs.
