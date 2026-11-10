@@ -5,8 +5,6 @@ toc: true
 toc_sticky: true
 ---
 
-Originally published on [Microsoft Tech Community](https://techcommunity.microsoft.com/blog/AppsonAzureBlog/run-on-your-schedule-app-service-plan-startstop-now-in-public-preview/4566184).
-
 ## Start and stop your apps together
 
 Managing an environment with multiple apps shouldn't mean stopping and starting each app individually. App Service plan start/stop brings that control to the plan level, letting you manage the apps and deployment slots it hosts together.
