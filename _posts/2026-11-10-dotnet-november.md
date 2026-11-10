@@ -1,5 +1,6 @@
 ---
 title: "November 2026 .NET Security Release: What You Need to Know"
+author: Igor Titanov
 ---
 
 The November 2026 .NET release is scheduled to go live on November 10, 2026. This is a security release, so teams running supported .NET versions should be prepared to evaluate and deploy the updates promptly.
