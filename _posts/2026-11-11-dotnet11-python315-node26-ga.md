@@ -15,7 +15,7 @@ Following the [preview announcement]({{ site.baseurl }}{% post_url 2026-09-11-do
 
 **The [.NET 11 GA release](https://github.com/dotnet/core/blob/main/release-notes/11.0/11.0.0/11.0.0.md) includes the latest batch of security fixes released on Tuesday, November 10, 2026.** For the security advisories, affected components, and remediation guidance, see the [.NET and .NET Framework November 2026 servicing updates](https://devblogs.microsoft.com/dotnet/dotnet-and-dotnet-framework-november-2026-servicing-updates/).
 
-The November 10 servicing release also patched **[.NET 8](https://github.com/dotnet/core/blob/main/release-notes/8.0/8.0.34/8.0.34.md), [.NET 9](https://github.com/dotnet/core/blob/main/release-notes/9.0/9.0.23/9.0.23.md), and [.NET 10](https://github.com/dotnet/core/blob/main/release-notes/10.0/10.0.15/10.0.15.md)** in both the latest and stable channels.
+The November 10 servicing release also patched **[.NET 8](https://github.com/dotnet/core/blob/main/release-notes/8.0/8.0.34/8.0.34.md), [.NET 9](https://github.com/dotnet/core/blob/main/release-notes/9.0/9.0.23/9.0.23.md), and [.NET 10](https://github.com/dotnet/core/blob/main/release-notes/10.0/10.0.15/10.0.15.md)** in both the **Latest** and **Standard** [Platform Release Channels](https://learn.microsoft.com/en-us/azure/app-service/overview-patch-os-runtime#control-runtime-patch-update-timing-with-platform-release-channel).
 
 App Service manages updates to its built-in runtime images. If you deploy a self-contained .NET application or a custom container, update and redeploy the runtime you package with your application. Review your application's NuGet dependencies separately as part of your upgrade.
 
