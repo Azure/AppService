@@ -1,5 +1,6 @@
 ---
 title: "App Service Ignite 2026 Updates"
+date: 2026-11-17 00:00:00 -0800
 author_name: "Byron Tardif"
 toc: true
 toc_sticky: true
