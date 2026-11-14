@@ -1,0 +1,977 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>.NET 11 and Python 3.15 are generally available, and Node.js 26 LTS is now on Azure App Service - Azure App Service</title>
+<meta name="description" content=".NET 11 and Python 3.15 are now generally available on Azure App Service for Linux, alongside Node.js 26 Long Term Support (LTS). You can use these runtimes for production applications, whether you’re creating a new app or upgrading an existing workload.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content=".NET 11 and Python 3.15 are generally available, and Node.js 26 LTS is now on Azure App Service">
+<meta property="og:url" content="https://azure.github.io/AppService/2026/11/11/dotnet11-python315-node26-ga.html">
+
+
+  <meta property="og:description" content=".NET 11 and Python 3.15 are now generally available on Azure App Service for Linux, alongside Node.js 26 Long Term Support (LTS). You can use these runtimes for production applications, whether you’re creating a new app or upgrading an existing workload.">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2026-11-11T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2026/11/11/dotnet11-python315-node26-ga.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/sidecars/" class="">Sidecars</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/ai-integration/" class="">AI Integration</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content=".NET 11 and Python 3.15 are generally available, and Node.js 26 LTS is now on Azure App Service">
+    <meta itemprop="description" content=".NET 11 and Python 3.15 are now generally available on Azure App Service for Linux, alongside Node.js 26 Long Term Support (LTS). You can use these runtimes for production applications, whether you’re creating a new app or upgrading an existing workload.">
+    <meta itemprop="datePublished" content="November 11, 2026">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">.NET 11 and Python 3.15 are generally available, and Node.js 26 LTS is now on Azure App Service
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+            
+            
+              • By Byron Tardif
+            
+            • November 11, 2026
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#net-11-generally-available-with-the-latest-security-fixes">.NET 11: generally available, with the latest security fixes</a>
+    <ul>
+      <li><a href="#linux-is-the-default-for-new-net-11-apps">Linux is the default for new .NET 11 apps</a></li>
+    </ul>
+  </li>
+  <li><a href="#python-315-generally-available">Python 3.15: generally available</a></li>
+  <li><a href="#nodejs-26-now-in-lts">Node.js 26: now in LTS</a></li>
+  <li><a href="#a-shared-ubuntu-2604-foundation">A shared Ubuntu 26.04 foundation</a></li>
+  <li><a href="#get-started">Get started</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <p><strong>.NET 11 and Python 3.15 are now generally available on Azure App Service for Linux, alongside Node.js 26 Long Term Support (LTS).</strong> You can use these runtimes for production applications, whether you’re creating a new app or upgrading an existing workload.</p>
+
+<p>Following the <a href="/AppService/AppService/2026/09/11/dotnet11-python315-node26.html">preview announcement</a>, these releases bring the latest runtime capabilities to App Service’s managed hosting experience. This release also makes <strong>Linux the default operating system for new .NET 11 apps created through the Azure portal</strong>.</p>
+
+<h2 id="net-11-generally-available-with-the-latest-security-fixes">.NET 11: generally available, with the latest security fixes</h2>
+
+<p>.NET 11 brings improvements across the runtime, ASP.NET Core, libraries, and C# 15. Runtime-native async and JIT improvements target lower overhead and better application performance, while new language capabilities help developers model application data and behavior.</p>
+
+<p><strong>The <a href="https://github.com/dotnet/core/blob/main/release-notes/11.0/11.0.0/11.0.0.md">.NET 11 GA release</a> includes the latest batch of security fixes released on Tuesday, November 10, 2026.</strong> For the security advisories, affected components, and remediation guidance, see the <a href="https://devblogs.microsoft.com/dotnet/dotnet-and-dotnet-framework-november-2026-servicing-updates/">.NET and .NET Framework November 2026 servicing updates</a>.</p>
+
+<p>The November 10 servicing release also patched <strong><a href="https://github.com/dotnet/core/blob/main/release-notes/8.0/8.0.34/8.0.34.md">.NET 8</a>, <a href="https://github.com/dotnet/core/blob/main/release-notes/9.0/9.0.23/9.0.23.md">.NET 9</a>, and <a href="https://github.com/dotnet/core/blob/main/release-notes/10.0/10.0.15/10.0.15.md">.NET 10</a></strong> in both the <strong>Latest</strong> and <strong>Standard</strong> <a href="https://learn.microsoft.com/en-us/azure/app-service/overview-patch-os-runtime#control-runtime-patch-update-timing-with-platform-release-channel">Platform Release Channels</a>.</p>
+
+<p>App Service manages updates to its built-in runtime images. If you deploy a self-contained .NET application or a custom container, update and redeploy the runtime you package with your application. Review your application’s NuGet dependencies separately as part of your upgrade.</p>
+
+<h3 id="linux-is-the-default-for-new-net-11-apps">Linux is the default for new .NET 11 apps</h3>
+
+<p>When you select .NET 11 while creating a new app in the Azure portal, <strong>Linux is now the default OS selection</strong>. Windows remains available for applications that need it.</p>
+
+<p>This changes the default for new apps; it does not migrate existing apps or change their operating system. Before moving a Windows-hosted application to Linux, validate Windows-specific dependencies, file-path casing, native libraries, and startup behavior.</p>
+
+<p><a href="https://learn.microsoft.com/dotnet/core/whats-new/dotnet-11/overview">Explore what’s new in .NET 11</a>.</p>
+
+<h2 id="python-315-generally-available">Python 3.15: generally available</h2>
+
+<p>Python 3.15 is now available for production workloads on App Service for Linux. Highlights include:</p>
+
+<ul>
+  <li><strong>Explicit lazy imports</strong>, which let applications defer loading modules until they’re needed and reduce unnecessary startup work.</li>
+  <li><strong>New profiling capabilities</strong>, including the Tachyon statistical sampling profiler, to help investigate application performance.</li>
+  <li><strong>UTF-8 as the default encoding</strong>, making text handling more consistent across environments. Check code that relies on a different implicit encoding before upgrading.</li>
+</ul>
+
+<p>Validate your dependency pins and native wheels against Python 3.15 before moving production traffic. As noted in the preview, the leaner Python image no longer includes the C/C++ compiler toolchain, SWIG, or the Microsoft SQL Server ODBC driver and command-line tools. Use compatible prebuilt wheels or a custom container when your application needs additional native build or system dependencies.</p>
+
+<p><a href="https://docs.python.org/3.15/whatsnew/3.15.html">Explore what’s new in Python 3.15</a>.</p>
+
+<h2 id="nodejs-26-now-in-lts">Node.js 26: now in LTS</h2>
+
+<p>Node.js 26 has moved into <strong>Long Term Support</strong>, making this release line a production upgrade target on App Service for Linux.</p>
+
+<p>The release brings the <strong>Temporal API enabled by default</strong> for working with dates, times, time zones, and durations, along with the V8 14.6 engine and Undici 8 HTTP client improvements.</p>
+
+<p>The runtime configuration introduced in the preview is unchanged: App Service uses <strong><code class="language-plaintext highlighter-rouge">NODE|26</code></strong> as the <code class="language-plaintext highlighter-rouge">LinuxFxVersion</code> value. The Azure portal selects this value automatically.</p>
+
+<p>Remember to declare application dependencies explicitly. The Node.js 26 image no longer includes Corepack, a system Python interpreter, or the globally installed Application Insights npm package. Install Corepack explicitly if your package-manager workflow requires it, and include the Application Insights SDK in your application’s <code class="language-plaintext highlighter-rouge">package.json</code> if you use it.</p>
+
+<p>See the <a href="https://nodejs.org/en/blog/release/v26.0.0">Node.js 26 release highlights</a> and <a href="https://nodejs.org/en/blog/release/v26.13.1">Node.js 26 LTS release notes</a>.</p>
+
+<h2 id="a-shared-ubuntu-2604-foundation">A shared Ubuntu 26.04 foundation</h2>
+
+<p>All three Linux runtime images use <strong><a href="https://documentation.ubuntu.com/release-notes/26.04/summary-for-lts-users/">Ubuntu 26.04 LTS (Resolute Raccoon)</a></strong> and the leaner package baseline introduced in the preview.</p>
+
+<p>If you’re upgrading from an older runtime image, test any startup scripts or native dependencies that rely on preinstalled OS packages. Ubuntu 26.04 also uses Rust-based uutils for common commands such as <code class="language-plaintext highlighter-rouge">ls</code>, <code class="language-plaintext highlighter-rouge">cp</code>, and <code class="language-plaintext highlighter-rouge">cat</code>; validate scripts that depend on GNU-specific options or output.</p>
+
+<h2 id="get-started">Get started</h2>
+
+<p>Create a new app in the <a href="https://portal.azure.com/">Azure portal</a> and select .NET 11, Python 3.15, or Node.js 26 on Linux. You can also configure these runtimes through Azure CLI or your existing ARM/Bicep deployment workflow.</p>
+
+<p>For existing applications:</p>
+
+<ol>
+  <li>Deploy to a staging app or deployment slot configured with the target runtime.</li>
+  <li>Run your application tests, including startup, dependency installation, authentication, and external service connections.</li>
+  <li>Compare request latency, CPU, and memory with your current runtime, then move production traffic after validation.</li>
+</ol>
+
+<p>These runtimes are no longer preview-only on App Service for Linux. Bring your production workloads forward with the latest language capabilities and App Service’s managed runtime experience.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2026-11-11T00:00:00+00:00">November 11, 2026</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=.NET+11+and+Python+3.15+are+generally+available%2C+and+Node.js+26+LTS+is+now+on+Azure+App+Service%20https%3A%2F%2Fazure.github.io%2FAppService%2F2026%2F11%2F11%2Fdotnet11-python315-node26-ga.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2026%2F11%2F11%2Fdotnet11-python315-node26-ga.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2026%2F11%2F11%2Fdotnet11-python315-node26-ga.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2026/11/10/app-service-plan-start-stop-public-preview.html" class="pagination--pager" title="Run on your schedule: App Service plan start/stop now in public preview
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2026/11/10/app-service-plan-start-stop-public-preview.html" rel="permalink">Run on your schedule: App Service plan start/stop now in public preview
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+        
+        
+          • By Jordan Selig
+        
+        • November 10, 2026
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Start and stop your apps together
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2026/11/09/x64-support-app-service-free-windows.html" rel="permalink">64-bit support is now available for App Service Free sites on Windows
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Byron Tardif
+        
+        • November 9, 2026
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Newer runtimes, including Node.js 24 and Node.js 26, no longer provide 32-bit builds. To help you get started with these runtimes without moving to a paid pl...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2026/11/09/post-quantum-tls-app-service-azure-functions.html" rel="permalink">Preparing Azure App Service and Azure Functions TLS for post-quantum cryptography
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+        
+        
+          • By Byron Tardif
+        
+        • November 9, 2026
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Azure App Service and Azure Functions are beginning a phased rollout of support
+for the TLS 1.3 hybrid key exchange group X25519MLKEM768.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2026/11/04/azure-powershell-app-service-updates.html" rel="permalink">What’s new for Azure App Service in Azure PowerShell: September-November 2026
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+        
+        
+          • By Byron Tardif
+        
+        • November 4, 2026
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Azure PowerShell Az 16.5.0 adds App Service plan controls for asynchronous scaling and PowerShell management of Managed Instance on Azure App Service. Togeth...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2026 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
