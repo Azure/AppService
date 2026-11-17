@@ -11,15 +11,15 @@ toc_sticky: true
 
 For many organizations, the hardest part of modernizing a Windows web application isn't moving the code. It's understanding the dependencies that tie the application to its current server: installed components, registry settings, Windows services, network shares, and other operating system configuration.
 
-Since **[Managed Instance on Azure App Service became generally available in August 2026](https://techcommunity.microsoft.com/blog/appsonazureblog/announcing-general-availability-of-managed-instance-on-azure-app-service/4541283)**, we've continued investing in ways to make these migrations easier to discover, assess, and execute. At Microsoft Ignite 2026, we're highlighting three updates: **Azure Migrate support**, **Premium v3 availability**, and **Isolated v4 support**.
+Since **[Managed Instance on Azure App Service became generally available in August 2026](https://techcommunity.microsoft.com/blog/appsonazureblog/announcing-general-availability-of-managed-instance-on-azure-app-service/4541283)**, we've continued investing in ways to make these migrations easier to discover, assess, and execute. At Microsoft Ignite 2026, we're highlighting three updates: **Azure Catalyst support**, **Premium v3 availability**, and **Isolated v4 support**.
 
 Together, they make Managed Instance easier to include in portfolio-scale modernization plans and give customers more flexibility in choosing where to host eligible applications.
 
-## Start with discovery: Azure Migrate support for Managed Instance
+## Start with discovery: Azure Catalyst support for Managed Instance
 
 Modernization begins with understanding which applications you have and which Azure destination fits their requirements. Applications with Windows-specific dependencies may have been ruled out for conventional App Service migrations, leaving teams to choose between extensive rewrites and continuing to manage virtual machines.
 
-**Azure Migrate support for Managed Instance** helps bring this hosting option into migration discovery and assessment workflows. Teams can revisit Windows web applications that were previously considered unsuitable for standard App Service hosting, assess their dependencies, and evaluate whether Managed Instance is an appropriate destination.
+**Azure Catalyst support for Managed Instance** helps bring this hosting option into migration discovery and assessment workflows. Teams can revisit Windows web applications that were previously considered unsuitable for standard App Service hosting, assess their dependencies, and evaluate whether Managed Instance is an appropriate destination.
 
 This supports a more repeatable modernization approach:
 
@@ -29,7 +29,7 @@ This supports a more repeatable modernization approach:
 4. **Validate** one representative application in a non-production environment.
 5. **Expand** from a proven migration pattern to a wider application portfolio.
 
-Azure Migrate assessment informs the decision; it does not guarantee compatibility or eliminate the need to test installation scripts, networking, configuration, and application behavior. Managed Instance also complements GitHub Copilot modernization for .NET, which can help teams assess, remediate, validate, and deploy suitable applications.
+Azure Catalyst assessment informs the decision; it does not guarantee compatibility or eliminate the need to test installation scripts, networking, configuration, and application behavior. Managed Instance also complements Azure Catalyst in GitHub Copilot modernization for .NET, which can help teams assess, remediate, validate, and deploy suitable applications.
 
 ## More hosting flexibility: Premium v3 availability
 
@@ -79,4 +79,4 @@ A practical first step is to revisit one Windows web application previously excl
 - [Managed Instance samples and configuration scripts](https://aka.ms/managedinstanceonappservicesamples)
 - [Managed Instance overview on Microsoft Learn](https://learn.microsoft.com/azure/app-service/overview-managed-instance)
 
-**Revisit applications that previously seemed too complex for App Service. With Azure Migrate support and more hosting choices, Managed Instance can help you move more of your Windows application portfolio to a managed platform with fewer changes.**
+**Revisit applications that previously seemed too complex for App Service. With Azure Catalyst support and more hosting choices, Managed Instance can help you move more of your Windows application portfolio to a managed platform with fewer changes.**
