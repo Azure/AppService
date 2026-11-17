@@ -15,14 +15,6 @@ toc_sticky: true
 
 App Service manages updates to its built-in runtimes. If you deploy a self-contained .NET application or a custom container, update and redeploy the runtime you package with your application. Review your application's NuGet dependencies separately as part of your upgrade.
 
-### Choosing an operating system for new .NET 11 apps
-
-When you select .NET 11 while creating a new app in the Azure portal, Linux is the default OS selection. **Windows remains fully supported**: select Windows during app creation when your application needs it, for example for Windows-specific APIs, native libraries, or existing Windows-hosted dependencies.
-
-Existing Windows apps are not migrated or changed; upgrading an existing Windows app to .NET 11 keeps it on Windows.
-
-[Explore what's new in .NET 11](https://learn.microsoft.com/dotnet/core/whats-new/dotnet-11/overview).
-
 ## Node.js 26: now in LTS
 
 Node.js 26 has moved into **Long Term Support**, making this release line a production upgrade target on App Service for Windows.
