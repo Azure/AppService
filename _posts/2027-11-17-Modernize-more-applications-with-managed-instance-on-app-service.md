@@ -7,7 +7,7 @@ toc_sticky: true
 
 # Modernize more Windows applications with Managed Instance on Azure App Service
 
-*What's new since general availability: Azure Migrate support, Premium v3 hosting, and Isolated v4 for App Service Environment.*
+*What's new since general availability: Azure Catalyst support, Premium v3 hosting, and Isolated v4 for App Service Environment.*
 
 For many organizations, the hardest part of modernizing a Windows web application isn't moving the code. It's understanding the dependencies that tie the application to its current server: installed components, registry settings, Windows services, network shares, and other operating system configuration.
 
@@ -24,7 +24,7 @@ Modernization begins with understanding which applications you have and which Az
 This supports a more repeatable modernization approach:
 
 1. **Discover** Windows application workloads across the estate.
-2. **Assess** application and infrastructure dependencies, using Azure Migrate and available assessment tooling.
+2. **Assess** application and infrastructure dependencies, using Azure Catalyst and available assessment tooling.
 3. **Identify candidates** whose requirements align with Managed Instance capabilities.
 4. **Validate** one representative application in a non-production environment.
 5. **Expand** from a proven migration pattern to a wider application portfolio.
@@ -65,8 +65,8 @@ Managed Instance is intended for eligible **Windows web applications**. It is no
 
 These updates connect the key stages of modernization:
 
-- **Discover and assess:** Use Azure Migrate and application assessment tools to identify candidates.
-- **Modernize where needed:** Use GitHub Copilot modernization for .NET and targeted changes to address compatibility gaps.
+- **Discover and assess:** Use Azure Catalyst and application assessment tools to identify candidates.
+- **Modernize where needed:** Use Azure Catalyst in GitHub Copilot modernization for .NET and targeted changes to address compatibility gaps.
 - **Choose the hosting model:** Evaluate Managed Instance on Premium v3, Premium v4, or Isolated v4, subject to region and plan support.
 - **Migrate and operate:** Validate dependencies and deploy to App Service with managed operational capabilities.
 
