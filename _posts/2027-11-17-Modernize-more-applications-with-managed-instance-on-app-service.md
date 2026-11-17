@@ -9,8 +9,6 @@ toc_sticky: true
 
 *What's new since general availability: Azure Migrate support, Premium v3 hosting, and Isolated v4 for App Service Environment.*
 
-**By Andrew Westgarth, Principal Product Manager, Azure App Service**
-
 For many organizations, the hardest part of modernizing a Windows web application isn't moving the code. It's understanding the dependencies that tie the application to its current server: installed components, registry settings, Windows services, network shares, and other operating system configuration.
 
 Since **Managed Instance on Azure App Service became generally available in August 2026**, we've continued investing in ways to make these migrations easier to discover, assess, and execute. At Microsoft Ignite 2026, we're highlighting three updates: **Azure Migrate support**, **Premium v3 availability**, and **Isolated v4 support**.
