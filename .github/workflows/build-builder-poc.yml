@@ -1,0 +1,62 @@
+name: Build App Service Builder POC site
+
+# Builds the Jekyll site for root hosting and force-pushes the static output
+# plus builder.yaml to the builder-poc-site branch, which the Builder app uses
+# as its GitHub source. Does not touch master, gh-pages, or the staging site.
+on:
+  push:
+    branches:
+    - seligj95-builder-poc
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency: builder-poc
+
+env:
+  DEPLOY_BRANCH: builder-poc-site
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out repo
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+    - name: Set up Ruby 3.0
+      uses: ruby/setup-ruby@26e5b7d197ebf60545ee9667bcbace0be11ccaec # v1.334.0
+      with:
+        ruby-version: '3.0'
+        bundler-cache: true
+
+    - name: Install Ruby dependencies
+      run: |
+        gem install bundler
+        bundle install --jobs 4 --retry 3
+
+    - name: Build site
+      run: bundle exec jekyll build --config _config.yml,_config.builder.yml
+      env:
+        JEKYLL_ENV: production
+
+    - name: Stage Builder source
+      run: |
+        mkdir -p "$RUNNER_TEMP/deploy"
+        mv _site "$RUNNER_TEMP/deploy/public"
+        cp _builder/builder.yaml "$RUNNER_TEMP/deploy/builder.yaml"
+        printf 'User-agent: *\nDisallow: /\n' > "$RUNNER_TEMP/deploy/public/robots.txt"
+        du -sh "$RUNNER_TEMP/deploy/public"
+
+    - name: Push to deployment branch
+      working-directory: ${{ runner.temp }}/deploy
+      run: |
+        git init -q -b "$DEPLOY_BRANCH"
+        git config user.name "${GITHUB_ACTOR}"
+        git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+        git add .
+        git commit -q -m "Builder POC build from ${GITHUB_SHA}"
+        git push --force "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "$DEPLOY_BRANCH"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

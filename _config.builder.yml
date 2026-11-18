@@ -1,0 +1,14 @@
+# Overrides for the App Service Builder POC build only.
+# Used by .github/workflows/build-builder-poc.yml as:
+#   bundle exec jekyll build --config _config.yml,_config.builder.yml
+# Production (GitHub Pages) builds do not read this file.
+
+# Builder serves the site at the root of its own hostname.
+url: ""
+baseurl: ""
+
+# Keep POC traffic out of production analytics and comment threads.
+analytics:
+  provider: false
+comments:
+  provider: false

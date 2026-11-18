@@ -1,0 +1,8 @@
+# App Service Builder manifest for the POC deployment branch.
+# The build-builder-poc workflow copies this file to the root of the
+# builder-poc-site branch, next to the prebuilt Jekyll output in public/.
+components:
+  - name: site
+    role: static
+    output: public
+    path: /
