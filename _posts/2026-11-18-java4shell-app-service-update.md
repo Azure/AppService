@@ -29,7 +29,6 @@ The following Oracle Java releases include the fix:
 | Java 17 | **17.0.21.1+4** |
 | Java 21 | **21.0.13.1+4** |
 | Java 25 | **25.0.5.1+4** |
-| Java 27 | **27.0.1.1+4** |
 
 Use the supported fixed release that is appropriate for your application and deployment model. See [Oracle's November 2026 security alert](https://www.oracle.com/security-alerts/cspunov2026.html) for the complete release information.
 
