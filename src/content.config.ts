@@ -61,7 +61,7 @@ const postsLoader: Loader = {
       let author: string | undefined = data.author_name ?? data.author;
 
       if (legacy) {
-        body = unwrapHtmlDocument(body);
+        body = unwrapHtmlDocument(body).replace(/<hr\s*\/?>\s*(?=<div id="content")/i, '');
         const byline = /<a[^>]*profile-usercard-hover[^>]*>([^<]+)<\/a>\s*<time>[^<]*<\/time>/i.exec(body);
         if (byline) {
           author ??= byline[1].trim();

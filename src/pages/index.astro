@@ -6,7 +6,9 @@ import { getPosts, matchesSection, SECTIONS, SITE } from '../lib/site';
 
 const posts = await getPosts();
 const [featured, ...rest] = posts;
-const latest = rest.slice(0, 9);
+const alsoNew = rest.slice(0, 4);
+const latest = rest.slice(4, 13);
+const formatShort = (d: Date) => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
 const topics = SECTIONS.map((section) => {
   const sectionPosts = posts.filter((p) => matchesSection(p, section.match));
   return { section, count: sectionPosts.length, recent: sectionPosts.slice(0, 3) };
@@ -40,8 +42,18 @@ const topics = SECTIONS.map((section) => {
         <div><h2>Latest posts</h2></div>
         <a class="link-arrow" href="/posts/">All posts</a>
       </div>
-      <div class="grid">
+      <div class="lead">
         {featured && <PostCard post={featured} featured />}
+        <aside class="also-new" aria-label="Also new">
+          <h3>Also new</h3>
+          <ol>
+            {alsoNew.map((p) => (
+              <li><a href={p.data.url}><span>{p.data.title}</span><time datetime={p.data.date.toISOString()}>{formatShort(p.data.date)}</time></a></li>
+            ))}
+          </ol>
+        </aside>
+      </div>
+      <div class="grid">
         {latest.map((post) => <PostCard post={post} />)}
       </div>
     </div>

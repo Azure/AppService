@@ -30,6 +30,20 @@ const current = (href: string) => (path === href || path === `${href}index.html`
       <a class="search-btn" href="/search/" aria-label="Search posts">
         <Icon name="search" /><span>Search posts</span><kbd>/</kbd>
       </a>
+      <details class="mobile-menu" data-menu>
+        <summary class="icon-btn" aria-label="Menu"><Icon name="hamburger" /></summary>
+        <div class="menu">
+          <a href="/posts/">All posts</a>
+          <hr />
+          <h4>Topics</h4>
+          {SECTIONS.map((s) => (
+            <a href={s.url} style={`--hue:${s.hue}`}><span class="dot" />{s.shortTitle}</a>
+          ))}
+          <hr />
+          <h4>Resources</h4>
+          {RESOURCES.map((r) => <a href={r.url}>{r.title}</a>)}
+        </div>
+      </details>
       <button class="icon-btn theme-toggle" type="button" aria-label="Toggle dark mode" data-theme-toggle>
         <Icon name="moon" /><Icon name="sun" />
       </button>
