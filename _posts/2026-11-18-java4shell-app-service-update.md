@@ -21,6 +21,8 @@ The rollout is expected to complete across Linux and Windows environments by the
 
 This status applies to platform-managed Java runtimes. Applications that bundle their own Java runtime or run in a custom container remain responsible for rebuilding and redeploying with a fixed runtime.
 
+> **Update (18 November 2026, 23:30 UTC)**: Rollout for Linux Standard channel is estimated to complete around 19 November 2026, 02:30 UTC
+
 ## Fixed Java release lines
 
 The following Oracle Java releases include the fix:
