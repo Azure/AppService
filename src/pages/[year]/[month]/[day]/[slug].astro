@@ -1,0 +1,132 @@
+---
+import { render } from 'astro:content';
+import Base from '../../../../layouts/Base.astro';
+import Icon from '../../../../components/Icon.astro';
+import { tagSlug } from '../../../../lib/jekyll';
+import { formatDate, getPosts, sectionFor, SITE, type Post } from '../../../../lib/site';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post, i) => ({
+    params: { year: post.data.year, month: post.data.month, day: post.data.day, slug: post.data.slug },
+    props: { post, newer: posts[i - 1], older: posts[i + 1] },
+  }));
+}
+
+interface Props {
+  post: Post;
+  newer?: Post;
+  older?: Post;
+}
+const { post, newer, older } = Astro.props;
+const { data } = post;
+const { Content, headings } = await render(post);
+const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
+const showToc = !data.legacy && toc.length >= 3;
+const section = sectionFor(post);
+const initials = (data.author ?? 'App Service')
+  .split(/\s+/)
+  .map((w) => w[0])
+  .join('')
+  .slice(0, 2)
+  .toUpperCase();
+---
+<Base title={data.title} description={data.excerpt} type="article">
+  <header class="post-head">
+    <div class="container">
+      <div class="inner">
+        {section ? (
+          <a class="tag-label" href={section.url} style={`--hue:${section.hue}`}><span class="dot" />{section.shortTitle}</a>
+        ) : (
+          <a class="tag-label" href={`/${data.year}/`}>{data.year}</a>
+        )}
+        <h1>{data.title}</h1>
+        <div class="byline">
+          <span class="avatar" aria-hidden="true">{initials}</span>
+          <div>
+            <strong>{data.author ?? 'Azure App Service team'}</strong>
+            <span class="meta">
+              <time datetime={data.date.toISOString()}>{formatDate(data.date)}</time>
+              <span class="sep" />
+              <span>{data.readingMinutes} min read</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class:list={['container', 'post-layout', { 'no-toc': !showToc }]}>
+    <article>
+      {data.legacy && (
+        <p class="notice">This post was imported from the original MSDN blog archive, so some formatting and links may be out of date.</p>
+      )}
+      <div class="prose" data-pagefind-body>
+        {data.legacy ? <Fragment set:html={post.rendered?.html} /> : <Content />}
+      </div>
+      <footer class="post-foot">
+        {data.tags.length > 0 && (
+          <div class="tags">
+            {data.tags.map((t) => <a class="chip" href={`/tag/${tagSlug(t)}/`}>{t}</a>)}
+          </div>
+        )}
+        <div class="meta">
+          <a href={`${SITE.repo}/blob/${SITE.branch}/${encodeURI(data.sourcePath)}`}>
+            <Icon name="github" class="inline-icon" /> Suggest an edit on GitHub
+          </a>
+        </div>
+        <nav class="pager" aria-label="More posts">
+          {newer && <a href={newer.data.url}><small>← Newer</small>{newer.data.title}</a>}
+          {older && <a class="next" href={older.data.url}><small>Older →</small>{older.data.title}</a>}
+        </nav>
+      </footer>
+    </article>
+
+    {showToc && (
+      <aside class="toc" aria-label="On this page">
+        <h2>On this page</h2>
+        <ol>
+          {toc.map((h) => (
+            <li><a class={`depth-${h.depth}`} href={`#${h.slug}`}>{h.text}</a></li>
+          ))}
+        </ol>
+      </aside>
+    )}
+  </div>
+</Base>
+
+<script>
+  // Copy buttons for code blocks.
+  document.querySelectorAll<HTMLPreElement>('.prose pre').forEach((pre) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'copy-btn';
+    button.textContent = 'Copy';
+    button.addEventListener('click', async () => {
+      await navigator.clipboard.writeText(pre.querySelector('code')?.innerText ?? pre.innerText);
+      button.textContent = 'Copied';
+      setTimeout(() => (button.textContent = 'Copy'), 1500);
+    });
+    pre.append(button);
+  });
+
+  // Highlight the current heading in the table of contents.
+  const links = new Map<string, HTMLAnchorElement>();
+  document.querySelectorAll<HTMLAnchorElement>('.toc a').forEach((a) => links.set(decodeURIComponent(a.hash.slice(1)), a));
+  if (links.size) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          links.forEach((a) => a.classList.remove('active'));
+          links.get(entry.target.id)?.classList.add('active');
+        }
+      },
+      { rootMargin: '-80px 0px -70% 0px' },
+    );
+    links.forEach((_a, id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+  }
+</script>

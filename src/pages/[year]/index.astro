@@ -1,0 +1,23 @@
+---
+import Base from '../../layouts/Base.astro';
+import PostList from '../../components/PostList.astro';
+import { getPosts } from '../../lib/site';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  const years = [...new Set(posts.map((p) => p.data.year))];
+  return years.map((year) => ({ params: { year }, props: { posts: posts.filter((p) => p.data.year === year) } }));
+}
+const { year } = Astro.params;
+const { posts } = Astro.props;
+---
+<Base title={`Posts from ${year}`}>
+  <section class="page-head">
+    <div class="container">
+      <a class="eyebrow" href="/posts/" style="text-decoration:none">← All posts</a>
+      <h1>{year}</h1>
+      <p class="lede">{posts.length} posts</p>
+    </div>
+  </section>
+  <section class="section"><div class="container"><PostList posts={posts} /></div></section>
+</Base>

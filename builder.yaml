@@ -1,0 +1,10 @@
+# App Service Builder manifest. Builder builds the Astro site from source
+# and publishes the generated static files at the root of the app URL.
+components:
+  - name: site
+    role: static
+    platform: nodejs
+    platformVersion: "24"
+    build: npm ci && npm run build && mkdir -p "$DESTINATION_DIR/dist" && cp -R dist/. "$DESTINATION_DIR/dist/"
+    output: dist
+    path: /

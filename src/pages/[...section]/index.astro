@@ -1,0 +1,58 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PostCard from '../../components/PostCard.astro';
+import PostList from '../../components/PostList.astro';
+import { getPosts, matchesSection, SECTIONS, type Page } from '../../lib/site';
+
+export async function getStaticPaths() {
+  const pages = await getCollection('pages');
+  return pages.map((page) => ({
+    params: { section: page.data.permalink.replace(/^\/|\/$/g, '') },
+    props: { page },
+  }));
+}
+
+const { page } = Astro.props as { page: Page };
+const { Content } = await render(page);
+const known = SECTIONS.find((s) => s.url === page.data.permalink);
+const match = page.data.pagination?.category
+  ? { category: page.data.pagination.category }
+  : page.data.pagination?.tag
+    ? { tag: page.data.pagination.tag }
+    : undefined;
+const posts = match ? (await getPosts()).filter((p) => matchesSection(p, match)) : [];
+const title = known?.title ?? page.data.title ?? 'Zero to Hero';
+---
+<Base title={title}>
+  <section class="page-head" style={known ? `--hue:${known.hue}` : undefined}>
+    <div class="container">
+      <span class="tag-label" style={known ? `--hue:${known.hue}` : undefined}>
+        {known ? <><span class="dot" />Topic</> : 'Guide'}
+      </span>
+      <h1>{title}</h1>
+      {posts.length > 0 && <p class="lede">{posts.length} posts</p>}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container" style="max-width:var(--content)">
+      <div class="prose" style="max-width:var(--prose)"><Content /></div>
+    </div>
+  </section>
+
+  {posts.length > 0 && (
+    <section class="section" style="padding-top:0">
+      <div class="container">
+        <div class="section-head"><h2>Recent posts</h2></div>
+        <div class="grid">{posts.slice(0, 6).map((p) => <PostCard post={p} />)}</div>
+        {posts.length > 6 && (
+          <>
+            <div class="section-head" style="margin-top:3rem"><h2>Earlier posts</h2></div>
+            <PostList posts={posts.slice(6)} showSection={false} />
+          </>
+        )}
+      </div>
+    </section>
+  )}
+</Base>

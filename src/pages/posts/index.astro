@@ -1,0 +1,53 @@
+---
+import Base from '../../layouts/Base.astro';
+import PostList from '../../components/PostList.astro';
+import { getPosts } from '../../lib/site';
+
+const posts = await getPosts();
+const years = [...new Set(posts.map((p) => p.data.year))];
+---
+<Base title="All posts" description="Every post from the Azure App Service team blog, newest first.">
+  <section class="page-head">
+    <div class="container">
+      <span class="eyebrow">Archive</span>
+      <h1>All posts</h1>
+      <p class="lede">{posts.length} posts since {years.at(-1)}.</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <div class="toolbar">
+        <label class="sr-only" for="filter">Filter by title</label>
+        <input class="input" id="filter" type="search" placeholder="Filter by title…" autocomplete="off" />
+        <nav class="year-nav" aria-label="Jump to year">
+          {years.map((y) => <a href={`#y${y}`}>{y}</a>)}
+        </nav>
+      </div>
+      {years.map((year) => {
+        const items = posts.filter((p) => p.data.year === year);
+        return (
+          <section class="year-group" id={`y${year}`} data-year-group>
+            <h2><a href={`/${year}/`} style="color:inherit;text-decoration:none">{year}</a> <span>{items.length} posts</span></h2>
+            <PostList posts={items} />
+          </section>
+        );
+      })}
+    </div>
+  </section>
+</Base>
+
+<script>
+  const input = document.querySelector<HTMLInputElement>('#filter');
+  input?.addEventListener('input', () => {
+    const q = input.value.trim().toLowerCase();
+    document.querySelectorAll<HTMLElement>('[data-year-group]').forEach((group) => {
+      let visible = 0;
+      group.querySelectorAll<HTMLElement>('li[data-title]').forEach((li) => {
+        const match = !q || li.dataset.title!.includes(q);
+        li.hidden = !match;
+        if (match) visible++;
+      });
+      group.hidden = visible === 0;
+    });
+  });
+</script>

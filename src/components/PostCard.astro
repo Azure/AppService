@@ -1,0 +1,26 @@
+---
+import { formatDate, sectionFor, type Post } from '../lib/site';
+interface Props {
+  post: Post;
+  featured?: boolean;
+}
+const { post, featured = false } = Astro.props;
+const section = sectionFor(post);
+const { data } = post;
+---
+<article class:list={['card', { featured }]} style={`--hue:${section?.hue ?? 205}`}>
+  {section ? (
+    <a class="tag-label" href={section.url} style={`--hue:${section.hue}`}><span class="dot" />{section.shortTitle}</a>
+  ) : featured ? (
+    <span class="tag-label">Latest post</span>
+  ) : null}
+  <h3><a href={data.url}>{data.title}</a></h3>
+  <p>{data.excerpt}</p>
+  <div class="meta">
+    {data.author && <span>{data.author}</span>}
+    {data.author && <span class="sep" />}
+    <time datetime={data.date.toISOString()}>{formatDate(data.date)}</time>
+    <span class="sep" />
+    <span>{data.readingMinutes} min read</span>
+  </div>
+</article>

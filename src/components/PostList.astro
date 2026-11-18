@@ -1,0 +1,22 @@
+---
+import { formatDate, sectionFor, type Post } from '../lib/site';
+interface Props {
+  posts: Post[];
+  showSection?: boolean;
+}
+const { posts, showSection = true } = Astro.props;
+---
+<ul class="post-list">
+  {posts.map((post) => {
+    const section = showSection ? sectionFor(post) : undefined;
+    return (
+      <li data-title={post.data.title.toLowerCase()}>
+        <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+        <span>
+          <a href={post.data.url}>{post.data.title}</a>
+          {section && <span class="tag-label" style={`--hue:${section.hue}`}>{section.shortTitle}</span>}
+        </span>
+      </li>
+    );
+  })}
+</ul>

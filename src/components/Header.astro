@@ -1,0 +1,62 @@
+---
+import Icon from './Icon.astro';
+import { RESOURCES, SECTIONS, SITE } from '../lib/site';
+const path = Astro.url.pathname;
+const current = (href: string) => (path === href || path === `${href}index.html` ? 'page' : undefined);
+---
+<header class="site-header">
+  <div class="container bar">
+    <a class="brand" href="/">
+      <img src="/favicon.svg" alt="" width="30" height="30" />
+      <span>{SITE.title}</span>
+      <small>{SITE.tagline}</small>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <details class="hide-sm" data-menu>
+        <summary>Topics</summary>
+        <div class="menu">
+          {SECTIONS.map((s) => (
+            <a href={s.url} style={`--hue:${s.hue}`}><span class="dot" />{s.shortTitle}</a>
+          ))}
+        </div>
+      </details>
+      <details class="hide-sm" data-menu>
+        <summary>Resources</summary>
+        <div class="menu">
+          {RESOURCES.map((r) => <a href={r.url}>{r.title}</a>)}
+        </div>
+      </details>
+      <a href="/posts/" class="hide-sm" aria-current={current('/posts/')}>All posts</a>
+      <a class="search-btn" href="/search/" aria-label="Search posts">
+        <Icon name="search" /><span>Search posts</span><kbd>/</kbd>
+      </a>
+      <button class="icon-btn theme-toggle" type="button" aria-label="Toggle dark mode" data-theme-toggle>
+        <Icon name="moon" /><Icon name="sun" />
+      </button>
+    </nav>
+  </div>
+</header>
+
+<script>
+  document.querySelector('[data-theme-toggle]')?.addEventListener('click', () => {
+    const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = next;
+    localStorage.setItem('theme', next);
+  });
+
+  const menus = document.querySelectorAll<HTMLDetailsElement>('[data-menu]');
+  document.addEventListener('click', (event) => {
+    menus.forEach((menu) => {
+      if (!menu.contains(event.target as Node)) menu.open = false;
+    });
+  });
+
+  document.addEventListener('keydown', (event) => {
+    const target = event.target as HTMLElement;
+    if (event.key === '/' && !/INPUT|TEXTAREA|SELECT/.test(target.tagName) && !target.isContentEditable) {
+      event.preventDefault();
+      window.location.href = '/search/';
+    }
+    if (event.key === 'Escape') menus.forEach((menu) => (menu.open = false));
+  });
+</script>

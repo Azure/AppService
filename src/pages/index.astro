@@ -1,0 +1,70 @@
+---
+import Base from '../layouts/Base.astro';
+import PostCard from '../components/PostCard.astro';
+import Icon from '../components/Icon.astro';
+import { getPosts, matchesSection, SECTIONS, SITE } from '../lib/site';
+
+const posts = await getPosts();
+const [featured, ...rest] = posts;
+const latest = rest.slice(0, 9);
+const topics = SECTIONS.map((section) => {
+  const sectionPosts = posts.filter((p) => matchesSection(p, section.match));
+  return { section, count: sectionPosts.length, recent: sectionPosts.slice(0, 3) };
+}).filter((t) => t.count > 0);
+---
+<Base>
+  <section class="hero">
+    <div class="container">
+      <span class="eyebrow">Azure App Service · Team Blog</span>
+      <h1>News and deep dives from the <span class="accent-text">App Service</span> team</h1>
+      <p class="lede">{SITE.description}</p>
+      <form class="hero-search" action="/search/" role="search">
+        <Icon name="search" />
+        <label class="sr-only" for="hero-q">Search posts</label>
+        <input id="hero-q" name="q" type="search" placeholder={`Search ${posts.length} posts…`} />
+        <button class="btn" type="submit">Search</button>
+      </form>
+      <div class="chips">
+        {topics.map(({ section, count }) => (
+          <a class="chip" href={section.url} style={`--hue:${section.hue}`}>
+            <span class="dot" />{section.shortTitle}<span class="count">{count}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div><h2>Latest posts</h2></div>
+        <a class="link-arrow" href="/posts/">All posts</a>
+      </div>
+      <div class="grid">
+        {featured && <PostCard post={featured} featured />}
+        {latest.map((post) => <PostCard post={post} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <h2>Explore by topic</h2>
+          <p>Guides and announcements grouped by product area.</p>
+        </div>
+        <a class="link-arrow" href="/tags/">Browse tags</a>
+      </div>
+      <div class="grid">
+        {topics.map(({ section, count, recent }) => (
+          <a class="card topic-card" href={section.url} style={`--hue:${section.hue}`}>
+            <span class="tag-label" style={`--hue:${section.hue}`}><span class="dot" />{count} posts</span>
+            <h3>{section.title}</h3>
+            <ul>{recent.map((p) => <li>{p.data.title}</li>)}</ul>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>

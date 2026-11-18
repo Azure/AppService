@@ -1,0 +1,34 @@
+---
+import { RESOURCES, SECTIONS, SITE } from '../lib/site';
+---
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a class="brand" href="/"><img src="/favicon.svg" alt="" width="30" height="30" /><span>{SITE.title}</span></a>
+        <p>{SITE.description}</p>
+      </div>
+      <div>
+        <h3>Topics</h3>
+        <ul>{SECTIONS.slice(0, 5).map((s) => <li><a href={s.url}>{s.shortTitle}</a></li>)}</ul>
+      </div>
+      <div>
+        <h3>Resources</h3>
+        <ul>{RESOURCES.slice(0, 4).map((r) => <li><a href={r.url}>{r.title}</a></li>)}</ul>
+      </div>
+      <div>
+        <h3>Follow</h3>
+        <ul>
+          <li><a href="/feed.xml">RSS feed</a></li>
+          <li><a href={SITE.repo}>GitHub</a></li>
+          <li><a href="https://azure.microsoft.com/blog/">Azure Blog</a></li>
+          <li><a href="/tags/">Browse tags</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© {new Date().getFullYear()} Microsoft</span>
+      <span><a href="https://go.microsoft.com/fwlink/?LinkId=521839">Privacy</a> · <a href="https://go.microsoft.com/fwlink/?LinkID=206977">Terms of use</a></span>
+    </div>
+  </div>
+</footer>
