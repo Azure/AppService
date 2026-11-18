@@ -9,8 +9,6 @@ export const SITE = {
   tagline: 'Team Blog',
   description:
     'Announcements, updates, deep-dive content, and event information from the Product and Engineering teams that run App Service at Microsoft.',
-  repo: 'https://github.com/Azure/AppService',
-  branch: 'master',
 };
 
 export interface Section {

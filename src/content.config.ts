@@ -96,7 +96,6 @@ const postsLoader: Loader = {
           excerpt,
           toc: Boolean(data.toc),
           legacy,
-          sourcePath: `${POSTS_DIR}/${file}`,
           readingMinutes: Math.max(1, Math.round(text.split(' ').length / 200)),
         },
       });
@@ -123,7 +122,6 @@ const posts = defineCollection({
     excerpt: z.string(),
     toc: z.boolean(),
     legacy: z.boolean(),
-    sourcePath: z.string(),
     readingMinutes: z.number(),
   }),
 });

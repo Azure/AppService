@@ -1,9 +1,8 @@
 ---
 import { render } from 'astro:content';
 import Base from '../../../../layouts/Base.astro';
-import Icon from '../../../../components/Icon.astro';
 import { tagSlug } from '../../../../lib/jekyll';
-import { formatDate, getPosts, sectionFor, SITE, type Post } from '../../../../lib/site';
+import { formatDate, getPosts, sectionFor, type Post } from '../../../../lib/site';
 
 export async function getStaticPaths() {
   const posts = await getPosts();
@@ -70,11 +69,6 @@ const initials = (data.author ?? 'App Service')
             {data.tags.map((t) => <a class="chip" href={`/tag/${tagSlug(t)}/`}>{t}</a>)}
           </div>
         )}
-        <div class="meta">
-          <a href={`${SITE.repo}/blob/${SITE.branch}/${encodeURI(data.sourcePath)}`}>
-            <Icon name="github" class="inline-icon" /> Suggest an edit on GitHub
-          </a>
-        </div>
         <nav class="pager" aria-label="More posts">
           {newer && <a href={newer.data.url}><small>← Newer</small>{newer.data.title}</a>}
           {older && <a class="next" href={older.data.url}><small>Older →</small>{older.data.title}</a>}
