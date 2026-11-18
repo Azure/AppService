@@ -1,6 +1,7 @@
 ---
 title: "Java4Shell Security Updates on Azure App Service"
 author_name: "Igor Titanov"
+category: java
 toc: true
 toc_sticky: true
 ---
@@ -35,9 +36,9 @@ Use the supported fixed release that is appropriate for your application and dep
 
 ## What you should do
 
-1. **Verify the Java runtime used by your running application.** Do not rely only on an installed Java binary or a configured application setting.
-2. **Restart applications that use a built-in Java runtime after the platform rollout completes**, then confirm that your application is using a fixed release.
-3. **Update custom containers and bundled runtimes yourself.** Rebuild with a fixed Java runtime, test the application, and redeploy the image.
+1. **Verify the Java runtime used by your running application and determine whether it is affected.** Do not rely only on an installed Java binary or a configured application setting. [Standard Java 8 and Java 11 are not affected](https://phoenix.security/java4shell-cve-2026-114938-openjdk-base64-heap-overflow/) and do not require a major-version upgrade for this CVE; Oracle Java 8 Enterprise Performance Pack is an exception, with **8u513-perf** as its fixed release.
+2. **For affected applications that use a built-in Java runtime, restart after the platform rollout completes**, then confirm that your application is using a fixed release.
+3. **Update affected custom containers and bundled runtimes yourself.** Rebuild with a fixed Java runtime, test the application, and redeploy the image.
 4. **Continue normal application validation and deployment practices.** Test each application in your usual validation environment before production deployment where possible.
 
 ## What the updates address
