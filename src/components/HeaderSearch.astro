@@ -1,0 +1,28 @@
+---
+import Icon from './Icon.astro';
+---
+<div class="header-search" data-header-search>
+  <form action="/search/" role="search" aria-label="Search posts">
+    <label class="search-btn">
+      <Icon name="search" />
+      <span class="sr-only">Search posts</span>
+      <input
+        id="header-search-input"
+        name="q"
+        type="search"
+        placeholder="Search posts"
+        autocomplete="off"
+        maxlength="200"
+      />
+      <kbd aria-hidden="true">/</kbd>
+    </label>
+  </form>
+  <div class="search-popover" hidden>
+    <p class="search-status" role="status" aria-live="polite">Type to search the blog.</p>
+    <ul id="header-search-results" role="listbox" aria-label="Matching posts"></ul>
+    <a class="search-all" href="/search/">View all results</a>
+  </div>
+</div>
+<script>
+  import '../scripts/header-search';
+</script>

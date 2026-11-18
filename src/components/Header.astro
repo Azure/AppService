@@ -1,5 +1,6 @@
 ---
 import Icon from './Icon.astro';
+import HeaderSearch from './HeaderSearch.astro';
 import { RESOURCES, SECTIONS, SITE } from '../lib/site';
 const path = Astro.url.pathname;
 const current = (href: string) => (path === href || path === `${href}index.html` ? 'page' : undefined);
@@ -27,9 +28,7 @@ const current = (href: string) => (path === href || path === `${href}index.html`
         </div>
       </details>
       <a href="/posts/" class="hide-sm" aria-current={current('/posts/')}>All posts</a>
-      <a class="search-btn" href="/search/" aria-label="Search posts">
-        <Icon name="search" /><span>Search posts</span><kbd>/</kbd>
-      </a>
+      <HeaderSearch />
       <details class="mobile-menu" data-menu>
         <summary class="icon-btn" aria-label="Menu"><Icon name="hamburger" /></summary>
         <div class="menu">
@@ -66,11 +65,6 @@ const current = (href: string) => (path === href || path === `${href}index.html`
   });
 
   document.addEventListener('keydown', (event) => {
-    const target = event.target as HTMLElement;
-    if (event.key === '/' && !/INPUT|TEXTAREA|SELECT/.test(target.tagName) && !target.isContentEditable) {
-      event.preventDefault();
-      window.location.href = '/search/';
-    }
     if (event.key === 'Escape') menus.forEach((menu) => (menu.open = false));
   });
 </script>

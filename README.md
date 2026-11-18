@@ -16,3 +16,9 @@ npm run check:urls   # verify every live post URL exists in dist/
 ```
 
 App Service Builder builds the site from source using `builder.yaml`.
+
+The header searches posts inline with Pagefind. Use `/` to focus the field,
+arrow keys to select a result, and Escape to dismiss results. Enter opens the
+selected post, or the full results page when no result is selected. Run
+`npm run build && npm run preview` to try search locally; the development
+server does not generate the search index.
