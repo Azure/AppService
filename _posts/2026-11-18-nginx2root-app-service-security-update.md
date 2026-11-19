@@ -33,10 +33,17 @@ The App Service team initiated the emergency security response on 18 November 20
 ## What you should do
 
 1. **For Linux applications, keep built-in PHP or WordPress images on a supported and receiving channel.** Latest receives accelerated updates, while Standard advances through validated rollout stages.
-2. **Check the running NGINX version after the update becomes available.** If the fixed NGINX version is present, no additional action is required.
+2. **Check the running NGINX version after the update becomes available.** The fixed release is NGINX **1.30.7 or later** (or **1.31.9 or later** on the 1.31.x branch). Open an interactive shell in your Linux app container and run `nginx -v`:
+
+   ```bash
+   az webapp exec --name <app-name> --resource-group <resource-group>
+   nginx -v
+   ```
+
+   You can also use [SSH from the Azure portal](https://learn.microsoft.com/azure/app-service/configure-linux-open-ssh-session). For a scaled-out app, check an updated instance; use `--instance` to target a specific instance. If the fixed NGINX version is present, no additional action is required.
 3. **Plan for PHP 8.2 follow-up remediation.** Update to a supported implementation when the separate App Service remediation is available, test your application, and redeploy as needed.
 4. **Update custom containers yourself.** Rebuild images with a fixed NGINX release or vendor-provided package update, test the image, and redeploy.
-5. **Validate once, then consider your application up to date.** Check the NGINX version used by the running application or an instance in a scaled-out app; if it includes the fixed version, you do not need to repeat the check.
+5. **Validate once, then consider your application up to date.** After step 2 confirms a fixed NGINX version on an updated instance, you do not need to repeat the check.
 
 For instructions on viewing or changing your Platform Release Channel, see [Control runtime patch updates with Platform Release Channel](https://learn.microsoft.com/azure/app-service/overview-patch-os-runtime#control-runtime-patch-update-timing-with-platform-release-channel).
 
