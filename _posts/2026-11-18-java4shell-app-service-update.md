@@ -21,7 +21,7 @@ The rollout is expected to complete across Linux and Windows environments by the
 
 This status applies to platform-managed Java runtimes. Applications that bundle their own Java runtime or run in a custom container remain responsible for rebuilding and redeploying with a fixed runtime.
 
-> **Update (18 November 2026, 18:40 PT)**: Rollout for Linux Standard and Latest channels are complete and customers using auto-update on Standard will automatically receive the version upgrade outside local business hours. The restart may cause a brief interruption, and timing may vary by region and application instance. 
+> **Update (18 November 2026, 15:40 PT)**: Rollout for Linux Standard and Latest channels are complete and customers using auto-update on Standard will automatically receive the version upgrade outside local business hours. The restart may cause a brief interruption, and timing may vary by region and application instance. 
 
 ## Fixed Java release lines
 
