@@ -6,7 +6,7 @@ toc: true
 toc_sticky: true
 ---
 
-> **Update (18 November 2026):** Azure App Service has started rolling out the platform security update for **CVE-2026-114938**, also known as Java4Shell, across both Linux and Windows environments. The rollout is expected to complete by the end of the day .
+> **Update (18 November 2026, 17:40 PT)**: Rollout for Linux Standard and Latest channels are complete and customers using auto-update will automatically receive the version upgrade outside local business hours. The restart may cause a brief interruption, and timing may vary by region and application instance. Manually restarting the application will also pick up the version upgrade.
 
 Oracle published fixed Java releases on 17 November 2026. Azure App Service is applying the appropriate platform updates for the built-in Java runtime environments.
 
@@ -14,10 +14,10 @@ Oracle published fixed Java releases on 17 November 2026. Azure App Service is a
 
 | Platform | Availability of the update |
 |---|---|
-| Azure App Service for Linux | Platform rollout started. |
-| Azure App Service for Windows | Platform rollout started. |
+| Azure App Service for Linux | Platform rollout is done. |
+| Azure App Service for Windows | Platform rollout in progress. |
 
-The rollout is expected to complete across Linux and Windows environments by the end of 18 November 2026.
+The rollout is expected to complete for Windows environments by the end of 19 November 2026.
 
 This status applies to platform-managed Java runtimes. Applications that bundle their own Java runtime or run in a custom container remain responsible for rebuilding and redeploying with a fixed runtime.
 
