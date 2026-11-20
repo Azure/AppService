@@ -31,11 +31,11 @@ Azure App Service has started rolling out updated built-in PHP images for Linux.
 
 ## What you should do
 
-1. **If you use a built-in PHP runtime on App Service for Linux, the updated image will be rolled out to your app automatically.**
+1. **If you use a supported built-in PHP runtime on App Service for Linux, the updated image will be rolled out to your app automatically.** End-of-life PHP runtimes will not receive these patches; update and test your app on a [supported PHP version](https://www.php.net/supported-versions.php), then configure your app to use that version.
 2. **Verify the PHP version used by your running application after the rollout.** If it reports the patched version for your release line, no further action is needed for this update.
 3. **Update custom containers and bring-your-own PHP runtimes yourself.** Rebuild or update them with a patched PHP release, then test and redeploy.
 4. **Review the PHP release notes** for the release line you use and assess any application-specific guidance.
 
-PHP on Azure App Service for Windows uses a custom runtime rather than a platform-managed built-in PHP runtime. If you bring your own PHP runtime on Windows, you are responsible for applying vendor security updates.
+The legacy built-in PHP runtimes on Azure App Service for Windows are **end-of-life (EOL)** and do not receive platform security patches. Migrate to a supported PHP runtime on App Service for Linux, or [bring your own supported, patched PHP runtime on Windows](https://azureossd.github.io/2022/05/18/Custom-PHP-runtime-for-App-Service-Windows/index.html). If you bring your own runtime, you are responsible for applying vendor security updates.
 
 Thank you for helping us keep PHP applications on Azure App Service secure.
