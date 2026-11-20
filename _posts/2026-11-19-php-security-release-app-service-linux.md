@@ -20,10 +20,10 @@ The PHP project recommends upgrading to the following security releases:
 
 | PHP release line | Patched version |
 |---|---|
-| PHP 8.5 | **8.5.13** |
-| PHP 8.4 | **8.4.28** |
-| PHP 8.3 | **8.3.37** |
-| PHP 8.2 | **8.2.36** |
+| PHP 8.5 | [**8.5.13**](https://www.php.net/releases/8_5_13.php) |
+| PHP 8.4 | [**8.4.28**](https://www.php.net/releases/8_4_28.php) |
+| PHP 8.3 | [**8.3.37**](https://www.php.net/releases/8_3_37.php) |
+| PHP 8.2 | [**8.2.36**](https://www.php.net/releases/8_2_36.php) |
 
 ## What we are doing
 
