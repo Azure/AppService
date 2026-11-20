@@ -5,6 +5,7 @@ category: java
 toc: true
 toc_sticky: true
 ---
+> **Update (20 November 2026, 15:00 PT)**: Rollout for Windows is complete. Customers using auto-update will need to manually restart their application to receive the version upgrade. The restart may cause a brief interruption.
 
 > **Update (18 November 2026, 17:40 PT)**: Rollout for Linux Standard and Latest channels are complete and customers using auto-update will automatically receive the version upgrade outside local business hours. The restart may cause a brief interruption, and timing may vary by region and application instance. Manually restarting the application will also pick up the version upgrade.
 
@@ -15,9 +16,7 @@ Oracle published fixed Java releases on 17 November 2026. Azure App Service is a
 | Platform | Availability of the update |
 |---|---|
 | Azure App Service for Linux | Platform rollout is done. |
-| Azure App Service for Windows | Platform rollout in progress. |
-
-The rollout is expected to complete for Windows environments by the end of 19 November 2026.
+| Azure App Service for Windows | Platform rollout is done. |
 
 This status applies to platform-managed Java runtimes. Applications that bundle their own Java runtime or run in a custom container remain responsible for rebuilding and redeploying with a fixed runtime.
 
