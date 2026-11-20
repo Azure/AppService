@@ -18,12 +18,12 @@ The PHP security releases address vulnerabilities in PHP. The PHP security team 
 
 The PHP project recommends upgrading to the following security releases:
 
-| PHP release line | Patched version |
-|---|---|
-| PHP 8.5 | [**8.5.13**](https://www.php.net/releases/8_5_13.php) |
-| PHP 8.4 | [**8.4.28**](https://www.php.net/releases/8_4_28.php) |
-| PHP 8.3 | [**8.3.37**](https://www.php.net/releases/8_3_37.php) |
-| PHP 8.2 | [**8.2.36**](https://www.php.net/releases/8_2_36.php) |
+| PHP release line | Patched version | Official release notes |
+|---|---|---|
+| PHP 8.5 | **8.5.13** | [PHP 8.5.13](https://www.php.net/releases/8_5_13.php) |
+| PHP 8.4 | **8.4.28** | [PHP 8.4.28](https://www.php.net/releases/8_4_28.php) |
+| PHP 8.3 | **8.3.37** | [PHP 8.3.37](https://www.php.net/releases/8_3_37.php) |
+| PHP 8.2 | **8.2.36** | [PHP 8.2.36](https://www.php.net/releases/8_2_36.php) |
 
 ## What we are doing
 
@@ -37,13 +37,5 @@ Azure App Service has started rolling out updated built-in PHP images for Linux.
 4. **Review the PHP release notes** for the release line you use and assess any application-specific guidance.
 
 PHP on Azure App Service for Windows uses a custom runtime rather than a platform-managed built-in PHP runtime. If you bring your own PHP runtime on Windows, you are responsible for applying vendor security updates.
-
-## Official PHP release information
-
-- [PHP 8.5.13](https://www.php.net/releases/8_5_13.php)
-- [PHP 8.4.28](https://www.php.net/releases/8_4_28.php)
-- [PHP 8.3.37](https://www.php.net/releases/8_3_37.php)
-- [PHP 8.2.36](https://www.php.net/releases/8_2_36.php)
-- [PHP News Archive for 2026](https://www.php.net/archive/2026.php)
 
 Thank you for helping us keep PHP applications on Azure App Service secure.
