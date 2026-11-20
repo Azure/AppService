@@ -7,6 +7,7 @@ toc_sticky: true
 ---
 
 > **Update (18 November 2026):** Azure App Service on Linux began an emergency rollout of updated PHP and WordPress images following the disclosure of NGINX2Root. As of approximately 12:00 PM PT on 18 November 2026, rollout validation was underway for the Latest and Standard Platform Release Channels. We currently expect the rollout to complete by the end of 19 November 2026 PT subject to successful validation.
+**Update (19 November 2026):** Azure App Service on Linux has completed the roll out
 
 ## What the update addresses
 
