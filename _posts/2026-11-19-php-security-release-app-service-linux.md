@@ -31,7 +31,7 @@ Azure App Service has started rolling out updated built-in PHP images for Linux.
 
 ## What you should do
 
-1. **If you use a built-in PHP runtime on App Service for Linux, keep your app on a supported Platform Release Channel** to receive the updated image as it rolls out.
+1. **If you use a built-in PHP runtime on App Service for Linux, the updated image will be rolled out to your app automatically.**
 2. **Verify the PHP version used by your running application after the rollout.** If it reports the patched version for your release line, no further action is needed for this update.
 3. **Update custom containers and bring-your-own PHP runtimes yourself.** Rebuild or update them with a patched PHP release, then test and redeploy.
 4. **Review the PHP release notes** for the release line you use and assess any application-specific guidance.
