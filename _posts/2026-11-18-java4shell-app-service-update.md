@@ -23,13 +23,13 @@ This status applies to platform-managed Java runtimes. Applications that bundle 
 
 ## Fixed Java release lines
 
-The following Oracle Java releases include the fix:
+The following Open JDK Java releases include the fix:
 
 | Java release line | First fixed release |
 |---|---|
-| Java 17 | **17.0.21.1+4** |
-| Java 21 | **21.0.13.1+4** |
-| Java 25 | **25.0.5.1+4** |
+| Java 17 | **17.0.21.1** |
+| Java 21 | **21.0.13.1** |
+| Java 25 | **25.0.5.1** |
 
 Use the supported fixed release that is appropriate for your application and deployment model. See [Oracle's November 2026 security alert](https://www.oracle.com/security-alerts/cspunov2026.html) for the complete release information.
 
