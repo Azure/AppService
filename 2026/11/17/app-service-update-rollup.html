@@ -1,0 +1,960 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>App Service Ignite 2026 Updates - Azure App Service</title>
+<meta name="description" content="Building an app is only part of the job. Keeping it current, making it useful to agents, and figuring out what went wrong should not mean taking on more infrastructure work. The latest Azure App Service updates carry that thread from your first deployment to everyday production operations.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure App Service">
+<meta property="og:title" content="App Service Ignite 2026 Updates">
+<meta property="og:url" content="https://azure.github.io/AppService/2026/11/17/app-service-update-rollup.html">
+
+
+  <meta property="og:description" content="Building an app is only part of the job. Keeping it current, making it useful to agents, and figuring out what went wrong should not mean taking on more infrastructure work. The latest Azure App Service updates carry that thread from your first deployment to everyday production operations.">
+
+
+
+  <meta property="og:image" content="https://azure.github.io/AppService/assets/images/icon.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2026-11-17T08:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://azure.github.io/AppService/2026/11/17/app-service-update-rollup.html">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://azure.github.io/AppService",
+      "logo": "https://azure.github.io/AppService/assets/images/icon.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Azure App Service",
+      "url": "https://azure.github.io/AppService",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/AppService/feed.xml" type="application/atom+xml" rel="alternate" title="Azure App Service Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/AppService/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<!-- Jekyll env: production -->
+
+
+
+    <!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+<link rel="shortcut icon" 
+      type="image/png" 
+      href="/AppService/media/pages/new_app_service_logo_16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/AppService/"><img src="/AppService/media/pages/new_app_service_logo_64.svg" alt=""></a>
+        
+        <a class="site-title" href="/AppService/">
+          Azure App Service
+          <span class="site-subtitle">Team Blog</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/AppService/tags/" >Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/AppService/"><span class="nav__sub-title">Home</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Product Areas</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/networking/" class="">Networking & ASE</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/java/" class="">Java</a>
+              
+                
+                
+                
+                
+    
+                
+                
+                <ul>
+                  <li style="padding-left: 6px;"><a href="/AppService/java/videos/" class="">Videos</a></li>
+                </ul>
+                
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/diagnostics/" class="">Diagnostics</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/certsdomains/" class="">Certs and Domains</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/deployment/" class="">Deployment, CI/CD, Slots</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/windows-containers/" class="">Windows Containers</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/sidecars/" class="">Sidecars</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/ai-integration/" class="">AI Integration</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Reference</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://docs.microsoft.com/azure/app-service/" class="">Documentation</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://github.com/Azure/app-service-linux-docs" class="">Linux FAQ</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://aka.ms/appservicewindowscontainerwiki" class="">Windows Containers Wiki</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/zero-to-hero/" class="">Zero to Hero tutorials</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">More</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://twitter.com/Azure" class="">Twitter</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/feed.xml" class="">RSS Feed</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/blog/" class="">Azure Blog</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="https://azure.microsoft.com/updates/" class="">Azure Updates</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Archives</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2020" class="">2020</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2019" class="">2019</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2018" class="">2018</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2017" class="">2017</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/2016" class="">2016</a>
+              
+            </li>
+          
+            
+            
+
+            
+            
+
+            <li>
+              <a href="/AppService/posts/" class="">All posts</a>
+              
+            </li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="App Service Ignite 2026 Updates">
+    <meta itemprop="description" content="Building an app is only part of the job. Keeping it current, making it useful to agents, and figuring out what went wrong should not mean taking on more infrastructure work. The latest Azure App Service updates carry that thread from your first deployment to everyday production operations.">
+    <meta itemprop="datePublished" content="November 17, 2026">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">App Service Ignite 2026 Updates
+</h1>
+          <p class="page__meta">
+            
+              <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+            
+            
+              • By Byron Tardif
+            
+            • November 17, 2026
+          </p>
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#a-fresh-foundation-for-your-next-deployment">A fresh foundation for your next deployment</a></li>
+  <li><a href="#multi-region-resilience-less-assembly-required">Multi-region resilience, less assembly required</a></li>
+  <li><a href="#better-tools-for-developers-and-agents">Better tools for developers and agents</a></li>
+  <li><a href="#more-control-over-everyday-operations">More control over everyday operations</a></li>
+  <li><a href="#keeping-the-platform-current">Keeping the platform current</a></li>
+  <li><a href="#from-a-symptom-to-an-answer">From a symptom to an answer</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <p>Building an app is only part of the job. Keeping it current, making it useful to agents, and figuring out what went wrong should not mean taking on more infrastructure work. The latest Azure App Service updates carry that thread from your first deployment to everyday production operations.</p>
+
+<p>Here are the highlights, with links to the announcements and practical guidance.</p>
+
+<h2 id="a-fresh-foundation-for-your-next-deployment">A fresh foundation for your next deployment</h2>
+
+<p><strong><a href="https://azure.github.io/AppService/2026/11/11/dotnet11-python315-node26-ga.html">.NET 11 and Python 3.15 are generally available, and Node.js 26 is now in LTS on App Service for Linux</a>.</strong> New language capabilities, managed hosting, and a production-ready upgrade path for your next release.</p>
+
+<p>Underneath those runtimes is a shared <strong><a href="https://azure.github.io/AppService/2026/09/11/dotnet11-python315-node26.html">Ubuntu 26.04 foundation</a></strong> with leaner images. This is a change to the new runtime images, not a blanket OS upgrade for existing apps. Before upgrading, check startup scripts and native dependencies that rely on preinstalled packages.</p>
+
+<p>Getting started on Windows gets easier, too: <strong><a href="https://azure.github.io/AppService/2026/11/09/x64-support-app-service-free-windows.html">64-bit support is now available on the Free tier</a></strong>. Try newer runtimes and x64 dependencies without moving to a paid plan just for the process architecture. Existing Free-tier resource limits still apply.</p>
+
+<h2 id="multi-region-resilience-less-assembly-required">Multi-region resilience, less assembly required</h2>
+
+<p>Taking an app across regions should not mean stitching together every moving part yourself. <strong><a href="https://aka.ms/Ignite26/AppService/GeoRedundancyBlog">Geo-redundancy in Azure App Service (public preview)</a></strong> brings managed regional replicas, content and configuration synchronization, and health-based routing together, with active-active distribution or active-passive failover. Less multi-region plumbing, more focus on your application.</p>
+
+<h2 id="better-tools-for-developers-and-agents">Better tools for developers and agents</h2>
+
+<p>Your app can serve people in a browser and agents that prefer text. <strong><a href="https://techcommunity.microsoft.com/blog/appsonazureblog/announcing-public-preview-markdown-for-agents-in-azure-app-service/4537023">Markdown for Agents (public preview)</a></strong> lets eligible Windows apps return Markdown when a client requests it, without changing application code.</p>
+
+<p>Agents and automation also need a practical way to work with running apps. <strong><a href="https://azure.github.io/AppService/2026/09/01/azure-cli-2-90-app-service-updates.html"><code class="language-plaintext highlighter-rouge">az webapp exec</code> (preview)</a></strong> brings a consistent local-terminal shell and headless command execution to Linux apps, including tasks such as database migrations. The accompanying container-access improvements remove the need to bake an SSH server and credentials into custom images. Detached execution confirms acceptance, not completion, so automation still needs to verify the result.</p>
+
+<h2 id="more-control-over-everyday-operations">More control over everyday operations</h2>
+
+<p>Spend less time navigating and more time working. The <strong><a href="https://azure.github.io/AppService/2026/11/16/app-service-portal-refresh.html">refreshed portal management experience (preview)</a></strong> brings deployment-slot switching, search, and logs closer to your current task. Availability is phased.</p>
+
+<p>For environments that do not need to run around the clock, <strong><a href="https://azure.github.io/AppService/2026/11/10/app-service-plan-start-stop-public-preview.html">App Service plan start/stop (public preview)</a></strong> lets you stop eligible Premium v4 and memory-optimized Premium v4 plans together with their apps and slots. Compute billing pauses while the plan is stopped; other charges can continue.</p>
+
+<p>Prefer scripts to clicks? <strong><a href="https://azure.github.io/AppService/2026/11/04/azure-powershell-app-service-updates.html">Azure PowerShell updates</a></strong> bring Managed Instance management on Premium v4 plans and asynchronous scaling controls, alongside Isolated v4 plan support. More of your App Service configuration can live in repeatable automation.</p>
+
+<h2 id="keeping-the-platform-current">Keeping the platform current</h2>
+
+<p>Some improvements happen below the application. <strong><a href="https://azure.github.io/AppService/2026/11/09/post-quantum-tls-app-service-azure-functions.html">Hybrid post-quantum TLS key exchange</a></strong> is beginning a phased rollout for inbound connections, preparing App Service for a post-quantum future without application changes. Compatible clients negotiate it where available; existing clients retain classical key exchange.</p>
+
+<p><strong>This is where investing in PaaS pays off.</strong> When <a href="https://azure.github.io/AppService/2026/10/21/php-critical-security-release-app-service-linux.html">critical PHP vulnerabilities</a>, Brotli decoder flaws in <a href="https://azure.github.io/AppService/2026/10/22/node-python-emergency-release-app-service-linux.html">Node.js</a> and .NET (<a href="https://azure.github.io/AppService/2026/10/26/dotnet-brotli-security-update-app-service-linux.html">Linux</a>, <a href="https://azure.github.io/AppService/2026/10/26/dotnet-brotli-security-update-app-service-windows.html">Windows</a>), and the eMudhra / emSign certificate incident (<a href="https://azure.github.io/AppService/2026/10/22/emudhra-certificate-issue-app-service-linux.html">Linux</a>, <a href="https://azure.github.io/AppService/2026/10/22/emudhra-certificate-issue-app-service-windows.html">Windows</a>) required urgent action, App Service patched the affected platform-managed runtimes and trust stores. Customers using the covered built-in components did not have to rebuild and redeploy their apps or patch the underlying infrastructure themselves.</p>
+
+<p><strong><a href="https://azure.github.io/AppService/2026/05/06/platform-release-channel.html">Platform Release Channel</a></strong> helps deliver that response on the platform. Customers can leverage  <strong>Latest</strong> to received priority updates while <strong>Standard</strong> followed an accelerated Safe Deployment Practices rollout and <strong>Extended</strong> stays one release behind. This gives you the flexibility to choose the update cadence that best fits your operational needs and risk tolerance.</p>
+
+<p>Platform maintenance also covers less visible details that applications depend on. Recent <strong>Canadian time-zone rule updates</strong> are covered in the guidance for <strong><a href="https://azure.github.io/AppService/2026/10/22/time-zone-updates-app-service-linux.html">Linux</a></strong> and <strong><a href="https://azure.github.io/AppService/2026/10/23/time-zone-updates-app-service-windows.html">Windows</a></strong>.</p>
+
+<h2 id="from-a-symptom-to-an-answer">From a symptom to an answer</h2>
+
+<p>When something does go wrong, the path from monitoring to investigation is getting shorter. Start with <strong><a href="https://azure.github.io/AppService/2026/10/12/grafana-dashboards-for-azure-app-service.html">Dashboards with Grafana (preview)</a></strong> in the portal, then follow the diagnostic links into the issue.</p>
+
+<p>For Linux apps, <strong><a href="https://azure.github.io/AppService/2026/09/17/network-capture.html">Network Capture (preview)</a></strong> brings packet collection and built-in analysis into Kudu and the CLI. For Node.js workloads, <strong><a href="https://azure.github.io/AppService/2026/09/17/cpu-memory-profiling.html">CPU and memory profiling</a></strong> helps connect high resource usage to the code and objects behind it.</p>
+
+<p>New runtimes to build on, better tools to operate with, and fewer steps between a problem and useful evidence. That is the direction: keep moving your applications forward while App Service handles more of the platform work.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+          <p class="page__date"><strong><a href="https://docs.microsoft.com/answers/topics/azure-webapps.html">Post questions</a> | <a href="https://feedback.azure.com/forums/169385-web-apps">Provide product feedback</a></strong></p>
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2026-11-17T08:00:00+00:00">November 17, 2026</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=App+Service+Ignite+2026+Updates%20https%3A%2F%2Fazure.github.io%2FAppService%2F2026%2F11%2F17%2Fapp-service-update-rollup.html" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fazure.github.io%2FAppService%2F2026%2F11%2F17%2Fapp-service-update-rollup.html" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fazure.github.io%2FAppService%2F2026%2F11%2F17%2Fapp-service-update-rollup.html" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/AppService/2026/11/17/introducing-app-service-builder.html" class="pagination--pager" title="Introducing Azure App Service Builder (Public Preview)
+">Previous</a>
+    
+    
+      <a href="/AppService/2026/11/18/java4shell-app-service-update.html" class="pagination--pager" title="Java4Shell Security Updates on Azure App Service
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2026/11/19/php-security-release-app-service-linux.html" rel="permalink">PHP Security Updates on Azure App Service for Linux
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+          • By Igor Titanov
+        
+        • November 19, 2026
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+  Update (19 November 2026): The rollout of updated built-in PHP images for Azure App Service on Linux has started. We expect it to complete by noon on 20 N...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2026/11/18/nginx2root-app-service-security-update.html" rel="permalink">NGINX2Root Security Updates on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+          • By Igor Titanov
+        
+        • November 18, 2026
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+  Update (19 November 2026): Azure App Service on Linux has completed the roll out.
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2026/11/18/java4shell-app-service-update.html" rel="permalink">Java4Shell Security Updates on Azure App Service
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+        
+        
+          • By Igor Titanov
+        
+        • November 18, 2026
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+  Update (20 November 2026, 15:00 PT): Rollout for Windows is complete. Customers using auto-update will need to manually restart their application to recei...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/AppService/media/pages/new_app_service_logo_64.svg"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/AppService/2026/11/17/introducing-app-service-builder.html" rel="permalink">Introducing Azure App Service Builder (Public Preview)
+</a>
+      
+    </h2>
+    
+      <p class="page__meta">
+        
+          <i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+        
+        
+          • By Jordan Selig
+        
+        • November 17, 2026
+      </p>
+    
+    <p class="archive__item-excerpt" itemprop="description">
+  This is a summarized version of the full post which can be found here: Introducing Azure App Service Builder: From code to a running app
+
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form onsubmit="return googleCustomSearchExecute();" id="cse-search-box-form-id">
+    <label class="sr-only" for="cse-search-input-box-id">
+      Enter your search term...
+    </label>
+    <input type="search" id="cse-search-input-box-id" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results">
+    <gcse:searchresults-only></gcse:searchresults-only>
+  </div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  
+    <a class="page-microsoft" href="https://www.microsoft.com"><img src="/AppService/media/pages/Microsoft_logo.svg" alt=""></a>
+  
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/AzAppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/Azure/AppService" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/AppService/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2026 Azure App Service. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/AppService/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+<script>
+  (function () {
+    var cx = '015057007851139702326:ob8gaepprli';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+
+  function googleCustomSearchExecute() {
+    var input = document.getElementById('cse-search-input-box-id');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+      element.clearAllResults();
+    } else {
+      element.execute(input.value);
+    }
+    return false;
+  }
+
+  
+    $(document).ready(function () {
+      $('input#cse-search-input-box-id').on('keyup', function () {
+        googleCustomSearchExecute();
+      });
+    });
+  
+</script>
+
+
+
+
+  <script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-112478220-2']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
